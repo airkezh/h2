@@ -1,0 +1,27 @@
+<script type="text/html" id="attrWall">
+<? $.each(tInfo , function(k , v){?>
+<div class="poster_grid poster_wall">
+	<div class="groupBox">
+		<div class="groupCon">
+			<div class="gc_title">
+				<h4><a target="_blank" href="<?= v.link?>"><?= v.name?></a></h4>
+			</div>
+			<a target="_blank" href="<?= v.link?>" class="imgBox">
+				<?if(v.mix_pic){?>
+					<img src="<?= v.mix_pic?>" class="maxpic" />
+				<?}else{?>
+					<?$.each(v.pics , function(i , value){?>
+						<img style="<?if(++i % 3 == 0){?> margin-right:0px;<?}?>" src="<?= value?>" class="minpic" />
+					<?});?>	
+				<?};?>
+				<div class="clear_f"></div>
+			</a>
+			<div class="lookBox">
+				<a class="btn" href="<?= v.link ?>" target="_blank">去看看</a>
+				<span class="tex"><?= v.number ?>个分享</span>
+			</div>
+		</div>
+	</div>
+</div>
+<?});?>
+</script>

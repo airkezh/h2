@@ -1,0 +1,49 @@
+<%#head.html%>
+<div class="game">
+	<div class="syq">
+		<img src="<%= this.PICTURE_URL%>images/lark/textgame/syq.png"/>
+		<textarea class="text" placeholder="输入文字有惊喜" maxlength="21"></textarea>
+	</div>
+		
+	<div class="spider">
+		<img class="spiderman" src="<%= this.PICTURE_URL%>images/lark/textgame/spiderm.png"/>
+	</div>
+	<div class="blackbgc">
+		<div class="black">
+			<img src="<%= this.PICTURE_URL%>images/lark/textgame/whiteBack.png"/>
+			<div class="content">	
+			</div>
+		</div> 
+
+	</div>
+	<img class="end" src="<%= this.PICTURE_URL%>images/lark/textgame/end.png"/>	
+	<img class="loading" src="<%= this.PICTURE_URL%>images/group/g_loading1.gif">
+	<div id="wx-tips"></div>
+</div>
+<div class="sensitiveWords">
+	<img src="http://d04.res.meilishuo.net/pic/_o/2b/aa/95b436e3f69ac3ab511a66824c38_640_1136.ch.png"/>
+</div>
+<script type="text/html" id="shareDialog">
+	<div class="shade"></div>
+	<div class="shareD">
+		<div class="toFriend"></div>
+		<div class="toGroup"></div>
+		<div class="close"></div>
+	</div>
+</script>
+<script type="text/html" id="share_md">
+</script>
+<script>
+	var isLogin = <%=this.isLogin%>;
+	var pic = <%= this.pic %>;
+	var imgUrl = 'http://i.meilishuo.net/css/images/lark/textgame/end.png';
+	var lineLink = location.href;  
+	var descContent = '【美丽说】圣诞有钱，壁炉点火够任性！每天N次拿礼物，无上限！';
+	var shareTitle = '【美丽说】圣诞炉火大转盘';
+	var shareTimelineText = '【美丽说】圣诞有钱，壁炉点火够任性！每天N次拿礼物，无上限!';
+</script>
+<script src="<%= this.JCSTATIC_BASE  %>/js/open/shareCollect.js?<%= this.SVERSION%>"></script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/lark/textgame');
+_use:", this._JSstack, this._JSmods); %>
+<%#foot.html%>

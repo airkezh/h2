@@ -1,0 +1,21 @@
+<%
+	var coupons = this.shop_coupon;
+%>
+<%if(coupons && coupons.length){%>
+<div class="shop_coupon" id="shop_coupon_couplet">
+	<div class="t"></div>
+	<div>
+		<%coupons.map && coupons.map(function(c){%>
+		<div class="u">
+			<span><%= c.credit %></span>
+			<a href="javascript:void(0);" class="get_shop_coupon" id="shopcoupon_<%= c.coupon_apply_code %>"></a>
+		</div>
+		<%});%>
+	</div>
+	<div class="b"></div>
+</div>
+<%}%>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/doota/shop_coupon');
+_use:", this._JSstack , this._JSmods ); %>

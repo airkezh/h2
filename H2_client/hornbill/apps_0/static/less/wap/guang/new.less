@@ -1,0 +1,84 @@
+@import "../block.less";
+
+// 危险引用 @icon_bg
+@lazyLoad_bg: 'http://d03.res.meilishuo.net/pic/_o/99/35/40c6aaf5fc823010eff6496ee06e_300_300.cf.jpg';
+
+body{ .pr;.w(6.4rem);.f(.24rem);.bgc(#f4f4f4); }
+
+// 页面组件
+.wap_head;
+.wap_foot;
+.goTopRem;
+.pullUpRem;
+
+// 公共部分
+.bs_load_img{ -webkit-transition: opacity .5s ease;transition: opacity .5s ease; }
+
+// 下载引导条 || 二级榜单属性词
+.head_img{
+	.pf;top: 0;left: 0;.w(6.4rem);.h(1.69rem);.hidden;z-index: 0;
+
+	.mls_desc{ .block;.w(6.4rem); }
+}
+#attr_block{
+	.pf;top: 0;left: 0;.w(6rem);.hidden;z-index: 0;.bgc(#fff);padding: .2rem;.pb(0);
+
+	a{ .left;.mb(.2rem);.w(20%);.c;.f(.22rem);.fc(#666);background: url(@lazyLoad_bg) no-repeat center -.3rem;background-size: 2rem; }
+	.bs_load_img{ .block;.w(1.2rem);.h(1.2rem);background: no-repeat center;background-size: cover;opacity: 0; }
+}
+
+// 榜单主体
+#poster_blcok{ .pr;z-index: 10;.mt(6.84rem);.bgc(#f8f8f8);box-shadow: 0 -4px 5px 0 rgba(224,224,224,0.35); }
+
+// 无搜索结果词
+.none_search{
+	padding: .24rem 1rem .2rem;.mb(-.2rem);.bgc(#fff);.l(.36rem);
+
+	img{ .left;.w(.68rem); }
+	span{ .fc(#FF7A9A); }
+	p{ .ml(1rem);.w(3.3rem);word-break: break-all; }
+}
+
+// 卡片属性词
+.cards_block{
+	.mt(.2rem);.h(5.96rem);.hidden;
+
+	a{ .pr;.left;.h(5.96rem); }
+	img{ .h(100%);-webkit-transform: scale(.8);transform-origin: center; }
+	.cards_inner{ .pr;.w(4.26rem);.h(5.96rem);.ml(1.07rem); }
+	.swipe{ .pr;.h(5.96rem); }
+}
+
+// 相关流行
+.tags_block{
+	.mt(.2rem);.w(6.4rem);.bgc(#fff);.hidden;
+
+	a{ .i_block;.w(1.38rem);.h(1.38rem);.ml(.1rem);.indent;background: url(@lazyLoad_bg) no-repeat center;background-size: 2rem; }
+	span{ .i_block;.w(1.38rem);.h(1.38rem);background: no-repeat center;background-size: cover;opacity: 0; }
+	.title{ padding: .1rem;.fc(#333); }
+	.tags_inner{ .h(1.38rem);padding: .1rem 0 .16rem;overflow-x: auto;white-space: nowrap;.f(0);-webkit-overflow-scrolling: touch; }
+}
+
+// 瀑布流筛选器
+.poster_nav{
+	.w(100%);.bgc(rgba(255,255,255,.95));.hidden;z-index: 200;
+
+	div{ .left;.w(33.33%);padding: .2rem 0; }
+	span{ .i_block;.w(100%);.l(.32rem);box-sizing: border-box;border-right: 1px solid #ccc;.c; }
+	div.last-child span{ border: none; }
+	.active span{ .f(.28rem);.fc(#ff7a9a); }
+}
+
+// 瀑布流
+.poster_wrap{
+	.bgc(#fff);.mt(.2rem);min-height: 10rem;
+
+	.goods_wall{ .pr;.w(6.3rem);.ml(.05rem); }
+	.poster_grid{ .pa;.c;padding: .25rem .05rem 0;box-sizing: border-box; }
+	.pic_load{ .hidden;.w(3.05rem);background: #FFF url(@lazyLoad_bg) center center no-repeat;background-size: 2rem; }
+	.bs_load_img{ .block;.w(100%);.h(3.95rem);background: no-repeat;background-size: cover;opacity: 0; }
+	.clothesTitle{ .w(90%);.auto;.mt(.1rem);.mb(.14rem);.f(.22rem);.fc(#666);.ellipsis; }
+	.price{ .f(.26rem);.fc(#FF7A9A);.pr(.18rem); }
+	.like{ .pl(.3rem);.f(.26rem);.fc(#999);background: url(@icon_bg) no-repeat -.1rem 81.8%;background-size: .45rem; }
+	.h_mark{ .left;.ml(.08rem);.mt(-1px);background: no-repeat;background-size: cover;opacity: 0; }
+}

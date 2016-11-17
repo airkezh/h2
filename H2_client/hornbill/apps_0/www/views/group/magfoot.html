@@ -1,0 +1,97 @@
+<script type="text/html" id="pagingNav">
+<div class="pageNav1">
+	<? if(page > 0){?>
+		<a index="-1" class="pagePrev" href="javascript:void(0)">&lt;上一页</a>
+	<?};?>
+	<?
+		var left_num = page >5 ? page - 5: 0 , right_num = left_num + 10;
+		if ( right_num > pageLen) right_num = pageLen;
+	?>
+	<?if (left_num >= 1){?>
+		<a index="1" href="javascript:void(0)" class="pageitem <?if(page == 1){?>currentpage<?}?>"><?= 1?></a>
+		<span>...</span>
+	<?}?>
+	<?for (var i = left_num ;i < right_num;i++ ){?>
+		<a index="<?= i?>" href="javascript:void(0)" class="pageitem <?if(page == i){?>currentpage<?}?>"><?= i+1?></a>
+	<?}?>
+	<?if (right_num < pageLen) {?>
+		<span>...</span>	
+		<a index="<?= pageLen?>" href="javascript:void(0)" class="pageitem <?if(page == pageLen){?>currentpage<?}?>"><?= pageLen?></a>
+	<?}?>
+	<? if(page != pageLen - 1){?>
+		<a class="pageNext" href="javascript:void(0)" index="1">下一页&gt;</a>
+	<?}?>
+</div>
+</script>
+<script id="edit_magazine" type="text/html">
+<ul class="edit_magazine add_menu_leo" style="width: 72px;">
+	<li><a href="/group/<%= this.group_header.group_info.group_id%>/members">管理成员</a></li>
+	<li><a href="/group/<%= this.group_header.group_info.group_id%>/set_avatar?mode=1">修改背景</a></li>
+	<li><a href="/board/<%= this.group_header.group_info.group_id%>">设置杂志</a></li>
+</ul>
+</script>
+<script type="text/html" id="group_rec">
+<div class="rec_layout">
+	<div class="top_ico"></div>
+	<div class="group_rec">
+		<div class="rec_con" style="width:606px;">
+			<div class="rec_t">
+				<div class="close_z close_group"></div>
+				<p>看看关注<b>#<%= this.group_header.group_info.name%>#</b>的用户还关注了什么杂志吧！</p>
+			</div>
+			<ul class="list">
+				<?$.each(ginfo , function(k , v){?>
+				<li>
+					<a href="/group/<?= v.group_id?>?frm=group_reco" target="_blank">
+						<img class="avatar64_f" src="<?= v.huge_picture_url?>" />
+					</a>
+					<p class="rc_tle"><input  class="right_f checkedList" type="checkbox" checked="true" gid="<?= v.group_id?>" />
+						<a href="/group/<?= v.group_id?>?frm=group_reco" target="_blank"><strong class="f14_f"><?= v.name?></strong></a>
+					</p>
+					<p class="mt14_f">
+						<a href="/group/<?= v.group_id?>?frm=group_reco" target="_blank">
+							<?$.each(v.little_picture_url , function(i , url){?>
+								<img class="avatar32_f" src="<?= url?>" />
+							<?});?>
+						</a>
+					</p>
+				</li>
+				<?});?>
+			</ul>
+			<div class="clear_f"></div>
+			<div class="bot">
+				<input type="checkbox" checked="true" class="checkedBtn">
+				<a class="small_btn followAll"><em class="small_btnr"></em>关注，回我的首页</a>
+			</div>
+		</div>
+	</div>
+</div>      
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	Meilishuo.config.header_show_collection = '%s';
+	var group_info = %j;
+	Meilishuo.config.mag_name = group_info.name;
+	fml.use(['jquery' , 'app/shareTo'] , function(){
+		var $ = this.jquery;	
+		var name = group_info.name;
+		var group_id = group_info.group_id;
+		var pic_src = group_info.mixpic;
+		var reply_one = '[花心]我在@美丽说 发现了杂志#' + name + '#，快来围观啊';
+		var reply = '刚才在逛美丽说时发现一个杂志《'+ name +'》，推荐给你们看看，真的蛮值得关注的。';
+		var description = '美丽说杂志是爱美丽们的时尚聚集地，无论你是哪种女孩儿，无论你有什么小癖好，在美丽说杂志，你都能正确归队。和你的喜好尽情的拥抱吧，和姐妹们痛快的分享吧~';
+		var title = document.title;
+		$('.i_qzone').bind('click' , $.proxy(function(){
+			this.shareTo.shareGroupToQzone(name , pic_src , group_id , reply , description , title);
+		} , this));
+		$('.i_sina').bind('click' , $.proxy(function(){
+			this.shareTo.shareGroupToSinaWeibo(name , pic_src , group_id , reply_one);
+		} , this));
+		$('.i_tx').bind('click' , $.proxy(function(){
+			this.shareTo.shareToQQWeiBo(name , pic_src , group_id , reply);
+		} , this));
+	});
+	fml.use('app/kickPoster_guang' , function(){
+		this('.goods_wall' , '.poster_del' , %j , %j , %j);	
+	});
+	fml.vars.isShowConfirm = %j; 
+_use:", this._JSstack , this._JSmods  ,this.header_show_collection , this.group_header.group_info , this.group_header.group_admins , this.group_header.group_info.group_id , this.group_header.role , this.isAdmin); %>

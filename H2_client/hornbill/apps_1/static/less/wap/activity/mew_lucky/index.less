@@ -1,0 +1,315 @@
+@import "../../block.less";
+@import "./common.import.less";
+
+body {
+  background-color : #ffe8ab;
+}
+
+.hd {
+  position        : relative;
+  background      : url("http://d04.res.meilishuo.net/pic/_o/59/42/0dbb84e10805333f8962091b22df_640_640.cg.png") no-repeat;
+  background-size : cover;
+  padding-top     : 100%;
+}
+
+.has-tip, .has-tip body {
+  height   : 100%;
+  overflow : hidden;
+}
+
+.has-tip .mask {
+  display : block;
+}
+
+.kitty {
+  position        : absolute;
+  top             : 13%;
+  left            : 29%;
+  width           : 43.4375%;
+  padding-top     : 44%; //285/640
+  background      : url("http://d02.res.meilishuo.net/pic/_o/f5/d1/0af896050c4f3c78cf76f7b8f8c0_275_268.cf.png") no-repeat;
+  background-size : contain;
+}
+
+.state-normal .kitty, .state-fetched .kitty {
+  top              : 10%;
+  background-image : url("http://d04.res.meilishuo.net/pic/_o/e9/62/6c8cc2172b8b17b4c9b2ae42188f_278_285.ch.png");
+}
+
+.state-none .lucky-num {
+  left        : 53%;
+  font-size   : 38*@px;
+  font-weight : bold;
+}
+
+.state-full .lucky-num {
+  left        : 53%;
+  font-size   : 34*@px;
+  line-height : 38*@px;
+  font-weight : bold;
+}
+
+.state-fail .lucky-num {
+  line-height : 1.2;
+  text-align  : center;
+}
+
+.fetched-stamp {
+  display          : none;
+  position         : absolute;
+  top              : 50%;
+  left             : 10%;
+  width            : 132*@px;
+  height           : 78*@px;
+  background-image : url("http://d01.res.meilishuo.net/pic/_o/79/44/4f693f66f77081b90bc505475a48_133_78.ch.png");
+  background-size  : contain;
+}
+
+.state-fetched .fetched-stamp {
+  display : block;
+}
+
+.lucky-num {
+  position          : absolute;
+  top               : 10%;
+  left              : 50%;
+  color             : #ee5857;
+  font-size         : 30*@px;
+  z-index           : 20;
+  -webkit-transform : translateX(-50%);
+  transform         : translateX(-50%);
+
+  .num {
+    font-size  : 68*@px;
+    font-style : normal;
+  }
+}
+
+.lucky-bag {
+  position        : absolute;
+  top             : 34%;
+  left            : 16%;
+  width           : 64.2%;
+  padding-top     : 49.53%;
+  background      : url("http://d04.res.meilishuo.net/pic/_o/8d/79/cb232ce37ba02dd7e28cda31e2af_411_317.cf.png") no-repeat;
+  background-size : contain;
+}
+
+.bd {
+  position        : relative;
+  margin-top      : -15.625%; //空白区域高度为 100， 100/640
+  z-index         : 10;
+  background      : url("http://d01.res.meilishuo.net/pic/_o/49/de/a609799c056576b5f39710f59892_641_622.cg.png") no-repeat;
+  background-size : contain;
+  padding-top     : 100%;
+}
+
+.bd-wrap {
+  margin-top : -75%;
+}
+
+.bd-full, .bd-none {
+  display : none;
+}
+
+.state-full {
+  .bd-normal, .bd-none {
+    display : none;
+  }
+
+  .bd-full {
+    display : block;
+  }
+}
+
+.state-none {
+  .bd-normal, .bd-full {
+    display : none;
+  }
+
+  .bd-none {
+    display : block;
+  }
+}
+
+.link {
+  display          : block;
+  width            : 65.625%;
+  height           : 96*@px;
+  line-height      : 96*@px;
+  margin           : 0 auto 18*@px;
+  background-color : #ff5959;
+  font-size        : 36*@px;
+  color            : #fff;
+  text-align       : center;
+  border-radius    : 6px;
+}
+
+.tip-text-1 {
+  height      : 30*@px;
+  line-height : 30*@px;
+  font-size   : 24*@px;
+  text-align  : center;
+
+  .nickname {
+    display        : inline-block;
+    max-width      : 40%;
+    color          : #f13333;
+    vertical-align : bottom;
+    .ellipsis;
+  }
+}
+
+.tip-text-2 {
+  display     : block;
+  height      : 26*@px;
+  line-height : 26*@px;
+  font-size   : 22*@px;
+  color       : #000;
+  text-align  : center;
+}
+
+.bd-normal .tip-text-2 {
+  color : rgba(0, 0, 0, .7);
+}
+
+.bd-none, .bd-full {
+  .tip-text-1 {
+    color     : rgba(0, 0, 0, .6);
+    font-size : 22*@px;
+  }
+
+  .tip-text-2 {
+    margin          : 40*@px auto 60*@px;
+    color           : #f13333;
+    font-size       : 30*@px;
+    text-decoration : underline;
+  }
+}
+
+/*
+    立即使用优惠券
+    todo
+*/
+.coupon-area {
+  display          : block;
+  margin           : 30*@px auto 18*@px;
+  background-color : #fff;
+
+  .text {
+    padding    : 34*@px 0 10*@px;
+    font-size  : 34*@px;
+    color      : #f13333;
+    text-align : center;
+  }
+}
+
+.goods-list {
+  width     : 92.1875%;
+  margin    : auto;
+  font-size : 0;
+  overflow  : hidden;
+}
+
+.goods-item {
+  float              : left;
+  width              : 33.3333%;
+  padding            : 0 10*@px;
+  -webkit-box-sizing : border-box;
+  -moz-box-sizing    : border-box;
+  box-sizing         : border-box;
+  overflow           : hidden;
+
+  img {
+    display : block;
+    width   : 100%;
+  }
+
+  .img-wrap {
+    display           : block;
+    width             : 100%;
+    padding-top       : 100%;
+    background-repeat : no-repeat;
+    background-size   : cover;
+  }
+
+  .price {
+    display   : inline-block;
+    margin    : 20*@px 0 30*@px;
+    font-size : 32*@px;
+    color     : #f13333;
+  }
+
+  .label {
+    float            : right;
+    margin           : 20*@px 0 30*@px;
+    padding          : 6*@px 8*@px;
+    font-size        : 20*@px;
+    color            : #fff;
+    background-color : #f13333;
+  }
+}
+
+//其他猫奴的赏金
+.money-list {
+  background-color : #fffefc;
+
+  h3 {
+    height      : 84*@px;
+    line-height : 84*@px;
+    font-size   : 34*@px;
+    color       : #bf5c18;
+    text-align  : center;
+  }
+}
+
+.money-item {
+  height      : 90*@px;
+  line-height : 90*@px;
+  border-top  : 1px solid #eee;
+
+  .avatar {
+    display        : inline-block;
+    width          : 70*@px;
+    margin         : 0 20*@px 0 50*@px;
+    border         : 2px solid #ffe56f;
+    border-radius  : 50%;
+    vertical-align : middle;
+  }
+
+  .credit {
+    float        : right;
+    height       : 90*@px;
+    line-height  : 90*@px;
+    margin-right : 30*@px;
+    font-size    : 34*@px;
+    color        : #f13333;
+  }
+
+  .num {
+    font-style : normal;
+    font-size  : 40*@px;
+  }
+}
+
+.money-info {
+  display        : inline-block;
+  height         : 90*@px;
+  line-height    : 90*@px;
+  padding-top    : 12*@px;
+  vertical-align : middle;
+
+  .nickname {
+    display     : block;
+    line-height : 40*@px;
+    font-size   : 30*@px;
+    color       : #bf5c18;
+  }
+
+  .time {
+    display     : block;
+    line-height : 30*@px;
+    font-size   : 20*@px;
+    color       : #efcab1;
+  }
+}

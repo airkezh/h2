@@ -1,0 +1,25 @@
+<%#shop/settled/settle_head.html%>
+<div class="container">
+	<h3 class="page_title">入驻流程</h3>
+	<div class="process">
+		<div class="content">
+			<% this.register_process && this.register_process.info && this.register_process.info.forEach(function(item,index,arr){%>
+			<div class="c_item <%if(index==arr.length-1){%>last<%}%>">
+				<h4><%=item.title %></h4>
+				<p><%=item.content %></p>
+				<%if(item.is_reg){%><a href="https://account.meilishuo.com/user/register" class="btn" target="_blank">马上注册</a><%}%>
+				<%if(item.is_apply){%><a href="https://shop.meilishuo.com/user/login/" class="btn" target="_blank">马上申请</a><%}%>
+			</div>
+			<%});%>
+			<div class="clear_f"></div>
+		</div>
+	</div>
+	<% if(this.qualification){ %>
+	<div class="qualification">
+		<h3 class="page_title"><%=this.qualification.title || '' %></h3>
+		<div class="content"><%=this.qualification.content %></div>
+	</div>
+	<%}%>
+</div>
+
+<%#foot.html%>

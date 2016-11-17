@@ -1,0 +1,51 @@
+/*common*/
+require('jquery')
+
+var subNavUp = require('app/subNavUp')
+var shareTmp = require('component/shareTmp')
+var posterWall = require('app/posterWalls11')
+var scroll = require('component/windowScroll')
+
+$(window).scroll(function(event) {
+	var scoll = $(document).scrollTop()
+	if (scoll > 180) {
+		$('.nav_right').show()
+	}else{
+		$('.nav_right').hide()
+	}
+})
+$(".go_top").on("click",function(){
+	$(window).scrollTop(0);
+});
+
+posterInit()
+
+function posterInit(){
+	var urlData = { 
+		'frame' : 0,
+		'page_size':20,
+		'pstrc' : fml.vars.pstrc,
+		'asid' : fml.vars.asid
+	};
+	posterWall(urlData , '/aj/xuanguan/middle', {'Infinite' : '1'});
+}
+
+
+//吸顶
+var tabBox = $('#tab_position')
+if(tabBox.length!==0){
+	var	tabBoxHeight = tabBox.height(),
+		goods_wall_box=$('.goods_wall'),
+		navHeight = $('#nav').height(),
+		y = tabBox.offset().top - navHeight;
+	scroll.yIn(y, function() {
+		tabBox.addClass('tab_wrap_fixed');
+		goods_wall_box.css('margin-top', tabBoxHeight + 'px');
+		tabBox.addClass('shadow');
+	}, function() {
+		tabBox.removeClass('tab_wrap_fixed');
+		goods_wall_box.css('margin-top', '0');
+		tabBox.removeClass('shadow');
+	})
+}
+

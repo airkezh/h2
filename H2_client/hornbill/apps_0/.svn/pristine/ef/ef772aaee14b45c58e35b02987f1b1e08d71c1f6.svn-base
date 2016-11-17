@@ -1,0 +1,126 @@
+<%# head.html%>
+<div <%if(this.audio){%>style="background:url('<%= this.audio.banner_url%>') no-repeat center top;"<%}%>>
+	<div class="season">
+		<div class="time_box">
+			<%if(this.audio){%>
+			<div class="time_bg">
+				<div>
+					<h1>2013秋冬换季月</h1>
+				</div>
+				<p class="time"><%= this.audio.period %></p>
+			</div>
+			<%}%>
+			<div class="time_a"></div>
+		</div>
+		<%if(this.audio && this.audio.audio.audio_url && this.audio.audio.audio_duration != ''){%>
+		<div class="audio_box">
+			<%= requireFn('block/audio.html')({
+				'audio' : this.audio.audio
+				, 'id' : 'season'
+			});%>
+		</div>
+		<%}%>
+	</div>
+	<div class="description commonBox">
+		<%if(this.audio){%>
+			<%= this.audio.description%>
+		<%}%>
+	</div>
+	<div class="friend commonBox">
+		<h2 class="title1"><span></span></h2>
+		<% this.friend && this.friend.map(function(data) { %>
+		<div class="imgBox">
+			<img src="<%= data.image_url%>" />
+			<p><span class="ico"></span><%= data.description%></p>
+		</div>
+		<% }); %>
+		<div class="clear_f"></div>
+	</div>
+	<div class="attr commonBox">
+		<h2 class="title1"><span></span></h2>
+		<div class="attr_tle">从T台秀场吸取时尚灵感，美丽说贴心推荐本季必备流行款，平价时尚同样穿出大牌范儿。</div>
+		<p>
+		<% this.attr && this.attr.map(function(data,index) { %>
+			~<span><%= data.attr_name%></span>
+		<% }); %>
+		</p>
+	</div>
+	<div class="goods commonBox">
+		<h2 class="title1"><span></span></h2>
+		<% this.goods && this.goods.map(function(data) { %>
+		<div class="poster_grid poster_wall">
+			<a target="_blank" class="pic_load" href="<%= data.pic_link%>">
+				<%if(data.is_sale==1){%><span class="issaled"></span><%}%>
+				<img src="<%= data.pic_url%>" />
+			</a>
+			<div class="pic_intro">
+				<p class="title"><span class="line-l"></span><%= data.title%><span class="line-r"></span></p>
+				<p class="con"><%= data.content%></p>
+				<span class="l_price"><%= data.price%></span>
+				<span class="price"><%= data.sale_price%></span>
+			</div>
+		</div>
+		<% }); %>
+		<div class="clear_f"></div>
+	</div>
+
+	<%if(this.calendar){%>
+	<div class="calendarArea">
+		<h2 class="title2 redline3">明日精彩预告</h3>
+		<%= requireFn('block/calendar.html')({
+			'calendar' : this.calendar
+		});%>
+	</div>
+	<%}%>
+	<div class="keywords commonBox">
+		<h2 class="title2 redline3">流行关键词</h2>
+		<p>
+		<% this.keywords && this.keywords.map(function(data,index) { %>
+			<a target="_blank" <%if(index == 0){%>class="first"<%}%> target="_blank" href="<%= data.url%>"><%= data.title%></a>
+		<% }); %>
+		</p>
+	</div>
+	<div class="shop_logo commonBox">
+		<h2 class="title2 redline3">权威合作媒体</h2>
+		<p>
+		<% this.logo && this.logo.map(function(data) { %>
+			<a target="_blank" href="<%= data.shop_url%>"><img title="<%=data.shop_name%>" src="<%=data.img_url%>" /></a>
+		<% }); %>
+		</p>
+	</div>
+</div>
+<!-- <div class="share_group">
+	<p>推荐到</p>
+	<ul>
+		<li><span class="i_qzone"></span></li>
+		<li><span class="i_sina"></span></li>
+		<li><span class="i_tx"></span></li>
+	</ul>
+</div> -->
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/audio');
+	fml.use('page/season');
+	fml.use(['jquery' , 'app/shareTo'] , function(){
+		var $ = this.jquery;	
+		var share_info = %j;
+		var name = share_info.title;
+		var pic_src = share_info.pic;
+		var reply = share_info.text;
+		var title = share_info.text;
+		var description = share_info.text;
+		var url = share_info.url;
+		$('.i_qzone').bind('click' , $.proxy(function(){
+			this.shareTo.shareToQzone(url,  reply , description, name , pic_src);
+		} , this));
+		$('.i_sina').bind('click' , $.proxy(function(){
+			this.shareTo.shareToWeibo(url + '&frm=huiliu_weibo', reply, pic_src);
+		} , this));
+		$('.i_tx').bind('click' , $.proxy(function(){
+			this.shareTo.shareToQQ(url, reply, pic_src);
+		} , this));
+	});
+
+_use:", this._JSstack , this._JSmods, this.share_info ); %>
+
+<%# foot.html%>

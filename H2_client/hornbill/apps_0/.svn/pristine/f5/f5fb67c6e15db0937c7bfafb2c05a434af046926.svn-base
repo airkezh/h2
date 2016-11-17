@@ -1,0 +1,29 @@
+<%
+	var single_promotion = this.single_promotion.data;
+%>
+<div class="welfare">
+	<% if(0){ %>
+		<% single_promotion.forEach(function(item, index){ %>
+			<% if(index == 0 || item.title.indexOf('快捷') === 0) return ''; %>
+			<a class="item activity" <% if(item.url != ''){ %>href="<%= item.url %>"<% } %> xr="<%= this.single_promotion.r %>"><span><%= item.title %></span></a>
+		<% }); %>
+	<% } %>
+
+	<%
+		var _promotions = single_promotion && single_promotion[0],
+			_coupons = _promotions && _promotions.coupon_applys;
+	%>
+	<% if(_coupons && _coupons.length > 1){ %>
+		<div class="item coupon_bannar">
+			<p>店铺优惠</p>
+			<% _coupons.map(function(data, index){ %>
+				<% if(index > 2) return '' %>
+				<span><% if(data.threshold){ %>满<%= data.threshold %>减<% } else { %>直减<% } %><%= data.credit %></span>
+			<% }); %>
+		</div>
+
+		<% this._coupons = _coupons; %>
+		<%# block/coupon.html %>
+
+	<% } %>
+</div>

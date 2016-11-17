@@ -1,0 +1,115 @@
+@import "md.less";
+
+.ios_simple;
+
+.pullUp{
+	.pullUpDown > .common;.pullUpDown > .loading;
+	&:before{
+		.nowrap;
+		.ml(-10px);
+	}
+	&[status="tap"]{
+		background:0 none;	
+		/*
+		&:before{
+			content:"上拉看更多..."	
+		}
+		*/
+	}
+	&[status="stop"]{
+		background:0 none;	
+		.h(2px);
+		/*
+		&:before{
+			content:"木有了...";	
+		}
+		*/
+	}
+}
+
+.store_wrap {
+	.bgwhite; .border-bd9;.border-td9; .mod_pd30; .mb(20*@px);
+	.store_cont { .clearfix; .pb(20*@px);}
+	.store_pic { .w(100*@w); .h(100*@w); .border-r(50%); .left; .hidden;}
+	.detail_store_pic { .mt(22*@w);}
+	.store_info { 
+		.pt(20/600*100%); .ml(120*@w);
+		.store_name { .f(28*@px);
+			a {.black;}
+		}
+		.black_col{
+			a{.fc(#262626)}
+		}
+		p{
+			&:nth-child(2){.pt(10*@px);}
+		}
+		.goods_num { .f(22*@px); .pt(20*@px); .fc(#262626);}
+		.goods_weixin { .f(24*@px);}
+	}
+	.guang_btn { .wd_btn_white; .w(165/580*100%); .h(60*@px); .l(60*@px); .f(24*@px); .right;  .mt(22*@w);}
+	.store_intro { .f(24*@px); .l(32*@px); .pt(20*@px); .pb(4*@px);}
+}
+
+.goods_wrap {
+	.goods_tab {
+		.bgc(#fff); .border-td9; .border-bd9; .h(68*@px);.l(68*@px); .clearfix;
+		li { .f(26*@px); .left; .w(110/580*100%); .c; .mr(6*@px); .ml(6*@px); .h(68*@px);}
+		.tab_cur { .bred; .f(28*@px); border-bottom: 2px solid #d22626;.mt(-2px);}
+		li.more { 
+			.border-ld9; .w(26*@px); .pl(29*@px); .pr(25*@px); .right;
+			b {  .mt(24*@px); .right; }
+		}
+		li.tab_title { .ml(10*@px);}
+	}
+	.tab_list {}
+	.tab_cont {
+		.pr; .none;
+		.tab_list_info { .w(100%); .bgwhite; .pa; top: 72*@px;  z-index: 22;}
+		.goods_tab_list {
+			.bgwhite; .pl(30*@px); .pr(30*@px);
+			p { .border-bd9; .clearfix;
+				&:last-child{border:none;}
+				a{
+					&:last-child{
+						b{.none;}
+					}
+				}
+			} 
+			a {
+				.left; .w(145/580*100%); .l(30*@px); .h(30*@px); .c; .f(26*@px); .pt(30*@px); .pb(30*@px);
+				b { .fc(#d6d6d6); .w(1px); .right; .fn;}
+			}
+		}
+	}
+
+	.goods_list { 
+		.clearfix; .pr;
+		li{
+			.left;.pa;
+		}
+		.list_border {
+			.ml(10px); 
+			.pr;border:1px solid #f3f3f3;.mb(10*@w); .bgc(#fff);
+			.list_img {.block;.hidden;
+				p{.pr;.i_block;
+					.list_presa{.w(60*@px); .h(30*@px);.f(20*@px);.pa;.bgblack;.white;right: 0px; bottom:0px;.l(30*@px);.c}					
+				}
+			}
+			.list_title {.f(24*@px);.fc(#666); .l(32*@px);.hidden;}
+		}
+		.sale_out{.pa;.fc(#fff);.w(55px);.h(55px);.l(55px);.c;top:25%;left: 35%;border-radius: 50%;background: rgba(0,0,0,0.8)}
+		.img_bt { border-bottom: 1px solid #b9b9b9;}
+		.list_info { .mod_pd20;}
+		.list_num { 
+			.f(20px); .bred; .pt(20*@px); 
+			span { .pr(4*@px);.ml(-2px);}
+			.list_presa_price{.f(32*@px);.fc(#cacaca);}
+			.love { .right; .pr; .gray;
+				&:before {
+						background:url("@{pic_url}/images/wap/wd/love.png") no-repeat 0 0;
+						background-size: 26*@px; .pa; left: -32*@px; top:-2*@px; content:'';.w(26*@px); .h(26*@px);
+					}
+			}
+		}
+		}
+}

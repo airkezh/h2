@@ -1,0 +1,99 @@
+<%# head.html%>
+<%
+	var mSubstr = _extFn.mSubstr;
+%>
+<div class="activeBg">
+<div class="oreal_top">
+	<div class="try_box">
+		<div class="left_f activeBtnRole">
+			<p><a id="tryLucky" status="<%= this.oreal_activity.status%>" href="javascript:void(0)"></a><p>
+			<p class="try_num">
+				<span class="left_f">已有<span class="red_f joinNums"><%= this.oreal_activity.total_num%></span>人转发活动</span>
+				<a class="showActiveRole" href="javascript:void(0)">活动规则</a>
+			</p>
+		</div>
+		<div class="clear_f"></div>
+		<div class="try_list">
+			<div class="share_list _img">
+			<ul>
+			<%this.oreal_userlist && this.oreal_userlist.userInfo.forEach(function(data , num){%>
+				<li>
+					<a href="/person/u/<%= data.user_id%>"><img title="<%= data.nickname%>" src="<%= data.avatar_c%>" /> <span class="try_share_name"><%= mSubstr(data.nickname , 6)%> <%= data.info%></span></a></li>
+				<%if(num % 6 == 0 && num != 0 ){%>
+					</ul>
+					<ul>
+				<%};%>
+			<%});%>
+			</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<%
+	var arr = [];
+	if(this.oreal_activity.nums.length > 5040){
+		for(var i=0;i<10080;i++){
+			if(this.oreal_activity.nums.indexOf(i) == -1){
+				arr.push(i);
+			}
+		}
+		var showBg = 'http://i.meilishuo.net/css/images/huodong/choujiang/showCoverBg.jpg';
+		var useBg = 'http://i.meilishuo.net/css/images/huodong/choujiang/useCoverBg.jpg'; 
+	}else{
+		arr = this.oreal_activity.nums;
+		var showBg = 'http://i.meilishuo.net/css/images/huodong/choujiang/useCoverBg.jpg'; 
+		var useBg = 'http://i.meilishuo.net/css/images/huodong/choujiang/showCoverBg.jpg';
+	}
+%>
+<script>
+fml.vars.useBg = "<%= useBg%>";
+</script>
+<div class="lucky_box" style="background:url(<%= showBg%>);">
+	<%for(var j=0;j<arr.length;j++){%>
+	<%var top = Math.floor(arr[j]/96),left = Math.floor(arr[j] % 96);%>
+		<div style="position:absolute;background:url(<%= useBg%>) <%= -(left*10) + 'px'%> <%= -(top * 10) + 'px'%>;top : <%= (top*10) + 'px'%>;left : <%= (left*10) + 'px'%>">
+		</div>
+	<%}%>
+</div>
+<div class="clear_f"></div>
+</div>
+<script type="text/html" id="activeRole">
+	<div class="showRolePanel">
+		<p>1、活动时间：2012年12月17日——2012年12月31日</p>
+		<p>2、参加办法：</p>
+		<p class="tab">(a) 按"我来解密"键，转发得越多海报即可越快呈现，新品与代言人就越快露面;</p>
+		<p  class="tab">(b) 每次转发都可有机会获取新品正装或试用装，参与次数越多，中奖几率越大。</p>
+		<p>3、活动奖项：</p>
+		<p class="tab">(a) 欧莱雅肌底透白柔肤液+多重滋润霜 正品 20份</p>
+		<p class="tab">(b) 欧莱雅肌底透白柔肤液+多重滋润霜 试用装 100份</p>
+	</div>
+</script>
+<script type="text/html" id="forwardActive">
+<div class="add_share_goods">
+	<div class="forwardMagazin">
+		<h4 class="goods_title">动动手指,你就能解开巴黎欧莱雅新品和全新代言人的庐山真面目！并有100份试用装和20份正品等你来拿。</h4>
+		<div class="maga_img"><img class="magaImgage"  width="180" src="http://imgst-dl.meilishuo.net/pic/r/87/c8/2688b74360bf5b51b8fc5bd0dc59_440_520.jpg" /></div>
+	    <div class="maga_cr">
+			<p>转发附言：</p>
+	        <textarea style="height:110px;" id="forwardContent" class="maxConent maga_area" placeholder="写点什么,评论一下"></textarea>
+            <span class="message show_message_tips none_f">正在提交...</span>
+	        <div class="maga_zf">
+	            <span class="hackie right_f share_published">
+					同步到：
+					<span class="cursor_f" s_type="<%= this.userInfo.weibo %>" s_name="weibo">&nbsp;</span>
+	            </span>
+	            <div class="left_f">
+					<div class="sj_box left_f mr4_f" style="width:auto;">
+						<span class="prize_btn btn" id="forwardPrize">马上转发</span>
+					</div>
+				</div>
+	        </div>
+	    </div>
+    </div>
+</div>
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/huodong/choujiang');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

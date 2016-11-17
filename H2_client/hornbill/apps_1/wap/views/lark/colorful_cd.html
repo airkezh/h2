@@ -1,0 +1,21 @@
+<%#head_simple.html%>
+    <script>
+            (function(win,doc){
+                var docel = doc.documentElement;
+                var meta = doc.querySelectorAll('meta[name=viewport]');
+                meta[0].setAttribute('content','');
+            })(window,document)
+     </script>  
+</head>
+<body>
+
+    <canvas id = 'canvas'  style="height: 100%;width: 100%;background: #fff">
+        浏览器不支持绚丽多彩的倒计时显示，建议换个浏览器吧！      
+    </canvas>   
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+    fml.use('wap/page/lark/digit')
+    fml.use('wap/page/lark/colorful_cd');
+    
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

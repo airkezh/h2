@@ -1,0 +1,537 @@
+function lark(){
+	return this;
+}
+var controlFns = {
+	'index' : function(args){
+		args = (args in controlFns) ? args  : 'test'
+		this[args]()
+		
+	},
+
+	'diamond' : function(){
+		var php = {}
+		this.setMDefault(php)
+		this.bridgeMuch(php)
+		this.listenOver(function(data){
+			data.pageTitle = '俄罗斯方块';
+			data._CSSLinks = ["lark/diamond"];
+			this.render('lark/diamond.html' , data);
+		})
+	},
+	'memory' : function(){
+		var php = {}
+		this.setMDefault(php)
+		this.bridgeMuch(php)
+		this.listenOver(function(data){
+			data.pageTitle = '记忆翻牌';
+			data._CSSLinks = ["lark/memory"];
+			this.render('lark/memory.html' , data);
+		})
+	},
+	'close' : function(){
+		var php = {}
+		this.setMDefault(php)
+		this.bridgeMuch(php)
+		this.listenOver(function(data){
+			data.pageTitle = '关灯';
+			data._CSSLinks = ["lark/close"];
+			this.render('lark/close.html' , data);
+		})
+	},
+	'crazyFinger' : function(){
+		var php = {}
+		this.setMDefault(php)
+		this.bridgeMuch(php)
+		this.listenOver(function(data){
+			data.pageTitle = '疯狂的手指';
+			data._CSSLinks = ["lark/crazyFinger"];
+			this.render('lark/crazyFinger.html' , data);
+		})
+	},
+	'live' : function(){
+		var php = {}
+		this.setMDefault(php)
+		this.bridgeMuch(php)
+		this.listenOver(function(data){
+			data.pageTitle = '一个都不能死';
+			data._CSSLinks = ["lark/live"];
+			this.render('lark/live.html' , data);
+		})
+	},
+	'findName' : function(){
+		var php = {}
+		this.setMDefault(php)
+		this.bridgeMuch(php)
+		this.listenOver(function(data){
+			data.pageTitle = ' 寻找明星姓名';
+			data._CSSLinks = ["lark/findName"];
+			this.render('lark/findName.html', data);
+		})
+	},
+	'cubeFind' : function(){
+		var php = {}
+		this.setMDefault(php)
+		this.bridgeMuch(php)
+		this.listenOver(function(data){
+			data.pageTitle = '小块块';
+			data._CSSLinks = ['lark/cubeFind'];
+			this.render('lark/cubeFind.html' , data);
+		})
+	},
+	'shake' : function(){
+		var php = {};
+		var img={
+			"img":"http://i.meilishuo.net/css//images/yaoyaotest/yb.png",
+			"bc":"#fff",
+			"bg":"#fff"
+		}
+
+		var mSelf = this;
+		this.setDefaultData(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			data.img_src=img;
+			data._CSSLinks = ['lark/shake'];
+			data.pageTitle = '摇一摇';
+			data.headTag = 'shake';
+			mSelf.render('lark/shake.html' , data);
+		});
+
+	},
+	'znm' : function(){
+		var mSelf = this;
+		var php = {}
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			var aLuanXu=[];
+		    for (var i = 0; i < 32; i++) {
+		        aLuanXu[i] = {};
+		        aLuanXu[i].num = i + 1;
+		        if (i === 1 || i === 2 || i === 3 || i === 4 || i === 5 || i === 6 || i === 0 || i === 25 || i === 26 || i === 24 || i === 30) {
+		        	aLuanXu[i].at = 1;
+		        }else{
+		        	aLuanXu[i].at = 0;
+		        }
+		    }
+		    aLuanXu.sort(function(){return Math.random()>0.5?-1:1;})
+		    data.pic = aLuanXu;
+
+		    data.productNum = 6;
+		    data.chanceNum = 3;
+
+			data.pageTitle = '找你妹';
+			data._CSSLinks = ['lark/znm'];
+			this.render('lark/znm.html', data);
+		});
+	},
+	'whiteBlock' : function(){
+		var php = {}
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			data.pageTitle = '别踩白块儿';
+			data._CSSLinks = ['lark/whiteBlock'];
+			this.render('lark/whiteBlock.html', data);
+		});
+	},
+	'filter' : function(){
+		var php = {};
+		this.setDefaultData(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			data._CSSLinks = ['lark/filter'];
+			this.render('lark/filter.html' , data);
+		});
+	},
+	'pt' : function(){
+		var mSelf = this;
+		var php = {};
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			data.pageTitle = '拼图';
+			data._CSSLinks = ['lark/pt_new'];
+			this.render('lark/pt_new.html', data);
+		});
+	},
+	'ppl' : function(){
+		var mSelf = this;
+		var php = {};
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			data.pageTitle = '拼拼乐/拼图';
+			this.render('lark/ppl.html', data);
+		});
+	},
+	'ko' :function(){
+		var php = {};
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			data.pageTitle = '街霸';
+			data._CSSLinks = ['lark/ko'];
+			this.render('lark/ko.html', data);
+		});
+	},
+	'textgame' : function(){
+		var mSelf = this;
+		var php = {};
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			(data.userInfo.user_id == 0) ? isLogin = 0 : isLogin = 1;
+			data.pic = JSON.stringify([
+				{src:'http://i.meilishuo.net/css/images/lark/textgame/1.png'}
+				,{src:'http://i.meilishuo.net/css/images/lark/textgame/2.png'}
+				,{src:'http://i.meilishuo.net/css/images/lark/textgame/3.png'}
+				,{src:'http://i.meilishuo.net/css/images/lark/textgame/4.png'}
+				,{src:'http://i.meilishuo.net/css/images/lark/textgame/5.png'}
+				,{src:'http://i.meilishuo.net/css/images/lark/textgame/6.png'}
+				,{src:'http://i.meilishuo.net/css/images/lark/textgame/7.png'}
+				,{src:'http://i.meilishuo.net/css/images/lark/textgame/8.png'}
+				,{src:'http://i.meilishuo.net/css/images/lark/textgame/9.png'}
+				,{src:'http://i.meilishuo.net/css/images/lark/textgame/10.png'}
+				,{src:'http://i.meilishuo.net/css/images/lark/textgame/11.png'}
+				,{src:'http://i.meilishuo.net/css/images/lark/textgame/12.png'}
+				,{src:'http://i.meilishuo.net/css/images/lark/textgame/13.png'}
+				,{src:'http://i.meilishuo.net/css/images/lark/textgame/14.png'}
+				,{src:'http://i.meilishuo.net/css/images/lark/textgame/15.png'}
+				,{src:'http://i.meilishuo.net/css/images/lark/textgame/16.png'}
+			]);
+			data.isLogin = isLogin;
+			// console.log(111);
+			data.pageTitle = '文字游戏';
+			data._CSSLinks = ['lark/textgame'];
+			this.render('lark/textgame.html', data);
+		});
+	},
+
+	'ground' : function(){
+		var php = {}
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			data.pageTitle = '打地鼠游戏';
+			data._CSSLinks = ['lark/ground'];
+			this.render('lark/ground.html', data);
+		});
+	},
+	'basketball' : function(){
+		var php = {}
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			data.pageTitle = 'basketball';
+			data._CSSLinks = ['lark/basketball'];
+			this.render('lark/basketball.html', data);
+		});
+	},
+	'circular' : function(){
+		var php = {}
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			data.pageTitle = 'circular';
+			data._CSSLinks = ['lark/circular'];
+			this.render('lark/circular.html', data);
+		});
+	},
+	'wood' : function(){
+		var php = {}
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			data.pageTitle = 'wood';
+			data._CSSLinks = ['lark/wood'];
+			this.render('lark/wood.html', data);
+		});
+	},
+	'wood2' : function(){
+		var php = {}
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			data.pageTitle = 'wood2';
+			data._CSSLinks = ['lark/wood2'];
+			this.render('lark/wood2.html', data);
+		});
+	},
+	'ddl' : function(){
+		var php = {}
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			data.pageTitle = '堆堆乐';
+			data._CSSLinks = [''];
+			this.render('lark/ddl.html', data);
+		});
+	},
+	'1024' : function(){
+		var php = {}
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			data.pageTitle = '1024';
+			data._CSSLinks = ['lark/1024'];
+			this.render('lark/1024.html', data);
+		});
+	},
+	'gravity' : function(){
+		var php = {}
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			data.pageTitle = 'gravity';
+			data._CSSLinks = ['lark/gravity'];
+			this.render('lark/gravity.html', data);
+		});
+	},
+	'football' : function(){
+		var php = {}
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+		data.pageTitle = 'football';
+		data._CSSLinks = ['lark/football'];
+		this.render('lark/football.html', data);
+		});
+
+	},
+	'color' : function(){
+		var php = {}
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+		data.pageTitle = 'color';
+		data._CSSLinks = ['lark/color'];
+		this.render('lark/color.html', data);
+		});
+
+	},
+	'orderNum' : function(){
+		var php = {}
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+		data.pageTitle = 'orderNum';
+		data._CSSLinks = ['lark/orderNum'];
+		this.render('lark/orderNum.html', data);
+		});
+	},
+	'bubble' : function(){
+		var php = {}
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			data.pageTitle = 'bubble';
+			data._CSSLinks = ['lark/bubble'];
+			this.render('lark/bubble.html', data);
+		});
+	},
+	'cssFilter' : function(){
+		var php = {}
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			data.pageTitle = 'cssFilter';
+			data._CSSLinks = ['lark/cssFilter'];
+			this.render('lark/cssFilter.html', data);
+		});
+	},
+	'money' : function(){
+		var php = {}
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			data.pageTitle = 'money';
+			data._CSSLinks = ['lark/money'];
+			this.render('lark/money.html', data);
+		});
+	},
+	'QRcode' : function(){
+		var php = {}
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			data.pageTitle = 'QRcode';
+			data._CSSLinks = ['lark/QRcode'];
+			this.render('lark/QRcode.html', data);
+		});
+	},
+	'shuf' : function(){
+		var php = {}
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+		data.pageTitle = '轮播--竖直';
+		data._CSSLinks = ['lark/shuf'];
+		this.render('lark/shuf.html', data);
+		});
+  
+	},
+	'2cars' : function(){
+		var php = {}
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			data.pageTitle = '2cars';
+			data._CSSLinks = ['lark/2cars'];
+			this.render('lark/2cars.html', data);
+		});
+	},
+	'dabai' : function(){
+		var php = {}
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			data.pageTitle = '大白photo';
+			data._CSSLinks = ['lark/dabai'];//指定less文件渲染
+			this.render('lark/dabai.html', data);//指定渲染页
+		});
+	},
+	'colorful_cd' : function(){
+		var php = {}
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			data.pageTitle = '炫彩倒计时';
+			data._CSSLinks = ['lark/colorful_cd'];//指定less文件渲染
+			this.render('lark/colorful_cd.html',data);
+		})
+	},
+	'jjl' : function(){
+		 
+		var mSelf = this
+		var php = {
+			// 'connect_weixin' : '/connect/weixin?type=1' ,//拉用户信息
+			// 'userWxInfo' : '/customactivity/CustomActivity_weixin_christmas_init',
+			// 'userInfo': '/customactivity/CustomActivity_wap_user_info'
+		}
+		
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			data.pageTitle = '接接乐';
+			data._CSSLinks = ['lark/jjl'];
+			this.render('lark/jjl.html', data);
+		});
+	},
+	'facePlusPlus' : function(){
+		 
+		var mSelf = this
+		var php = {
+		}
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			data.pageTitle = 'facePlusPlus ';
+			//data._CSSLinks = ['lark/jjl'];
+			this.render('lark/facePlusPlus.html', data);
+		});
+	},
+	'fileReader' : function(){
+		 
+		var mSelf = this
+		var php = {
+		}
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			data.pageTitle = 'fileReader';
+			//data._CSSLinks = ['lark/jjl'];
+			this.render('lark/fileReader.html', data);
+		});
+	},
+	'uploadImg' : function(){
+		 
+		var mSelf = this
+		var php = {
+		}
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			data.pageTitle = 'ajax 上传图片';
+			//data._CSSLinks = ['lark/jjl'];
+			this.render('lark/uploadImg.html', data);
+		});
+	},
+	'faceDress' : function(){
+		 
+		var mSelf = this
+		var php = {
+		}
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			data.pageTitle = 'ajax 上传图片';
+			data._CSSLinks = ['lark/faceDress'];
+			this.render('lark/faceDress.html', data);
+		});
+	},
+	'countDown' : function(){
+		var mSelf = this
+		var php = {
+		}
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			data.pageTitle = '倒计时';
+			this.render('lark/countDown.html', data);
+		});
+	},
+	'uploadImg-compatibleApp' : function(){
+		var mSelf = this
+		var php = {
+		}
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			data.pageTitle = 'uploadImg compatible App';
+			this.render('lark/uploadImg-compatibleApp.html', data);
+		});
+	},
+	'blowBalloon' : function(){
+		var mSelf = this
+		var php = {
+			'connect_weixin': '/connect/weixin?type=1'
+		};
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			var weixinBrowser = this.req.headers['user-agent'].indexOf('MicroMessenger') > -1;
+        	if(weixinBrowser){
+				connectWX(mSelf, data);
+			}
+			data.isWx = weixinBrowser;
+			data.islogin = 0;
+			if (this.req.headers.referer && this.req.headers.referer.match(/user\/login/g)) {
+				data.islogin = 1;
+			};
+			
+			data.pageTitle = '吹气球';
+			data._CSSLinks = ['lark/blowBalloon'];
+			this.render('lark/blowBalloon.html', data);
+		});
+	},
+	'ladder3d' : function(){
+		var mSelf = this
+		var php = {
+			
+		};
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			
+			data.pageTitle = '三维阶梯';
+			data._CSSLinks = ['lark/ladder3d'];
+		this.render('lark/ladder3d.html', data);
+		});
+	}
+};
+var connectWX = function(mSelf, data){
+	if(data.connect_weixin && data.connect_weixin.redirect)
+		return mSelf.redirectTo(data.connect_weixin.redirect ,true);	
+}
+exports.__create = controller.__create(lark , controlFns);

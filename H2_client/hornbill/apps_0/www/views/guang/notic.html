@@ -1,0 +1,64 @@
+<% 
+	var notic = this.notic;
+	var sub = notic.sub; 
+	var group_keywords = sub['group_keywords'];
+	var group_info = sub['group_info'];
+	var group_map = sub['group_map']; 
+	var attrName = this.attrName;
+	var addTrace = this.ViewTools.addTrace;
+	var prev_pos = this.prev_pos;
+%>
+<div class="notic">
+	<ul class="list">
+		<% 
+			var maxLength;
+			group_map.length > 4 ? maxLength = 4 : maxLength = group_map.length;
+
+			for(var index = 0; index < maxLength; index++){
+			var item = group_map[index];
+		%>
+			<li class="item">
+				<div class="item_tit">
+					<h3 class="item_name"><%= item%></h3>
+					<% if(group_info[item].pic){%>
+						<img src="<%= group_info[item].pic%>" class="item_pic" />
+					<%}%>
+				</div>
+				<div class="links">
+					<% var count = 0;%>
+					<% while(group_keywords[item].length){
+						var group = group_keywords[item].splice(0,4);
+					%>
+						<ul class="data_block">
+							<% for(var dataIndex = 0, len = group.length; dataIndex < len; dataIndex++){
+								var data = group[dataIndex];
+							%>
+								<li>
+									<% 
+									var traceval = attrName + '_words_' + index + '_' + (count * 4 + dataIndex);
+									var classval = '';
+									if(parseInt(data.isred) == 1){
+										classval = 'highlight';
+									}
+									if(notic.currentSubWord == data.word_name){
+										prev_pos = traceval;
+										if(classval){
+											classval += ' bgred';
+										}else{
+											classval = 'bgred';
+										}
+									} 
+									var link = addTrace(data.url, traceval);
+									%>
+									<a data-pstrc="<%= traceval%>" href="<%= link%>" class="<%= classval%>"><%= data.word_name.length < 6 ? data.word_name : data.word_name.substr(0,5)%></a>
+								</li>
+							<%}%>
+						</ul>
+					<%count++;}%>
+
+				</div>
+			</li>
+		<%}%>
+	</ul>
+</div>
+<% this.prev_pos = prev_pos;%>

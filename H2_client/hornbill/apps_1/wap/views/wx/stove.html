@@ -1,0 +1,66 @@
+<%# head_simple.html%>
+<%
+  var coreInfo = this.core.data || {}
+%>
+<div class="wrap">
+	<section>
+		<img src="<%=this.PICTURE_URL%>/images/wap/web/wx/bg-11.jpg">
+	</section>
+	<section class="middle-wrap">
+		<img src="<%=this.PICTURE_URL%>/images/wap/web/wx/socks1.png" class="pic">
+		<div class="luck">
+			<p> 
+				<img src="<%=this.PICTURE_URL%>/images/wap/web/wx/watch.png">
+				<span class="gray" style="border-top-left-radius: 100%;"></span> 
+			</p>
+			<p> 
+				<img src="<%=this.PICTURE_URL%>/images/wap/web/wx/gift.png">
+				<span class="gray"></span> 
+			</p>
+			<p> 
+				<img src="<%=this.PICTURE_URL%>/images/wap/web/wx/scarf.png"> 
+				<span class="gray" style="border-top-right-radius: 100%;"></span>
+			</p>
+			<p> 
+				<img src="<%=this.PICTURE_URL%>/images/wap/web/wx/happy.png">
+				<span></span> 
+			</p>
+			<p> 
+				<img src="<%=this.PICTURE_URL%>/images/wap/web/wx/coupon5.png"> 
+				<span class="gray"></span>
+			</p>
+			<p> 
+				<img src="<%=this.PICTURE_URL%>/images/wap/web/wx/wallet.png">
+				<span class="gray"></span>
+			</p>
+			<p> 
+				<img src="<%=this.PICTURE_URL%>/images/wap/web/wx/coupon10.png">
+				<span class="gray"></span>
+			</p>
+			<a class="fire">点击火焰</a>
+		</div>
+		<div class="opp">今天还剩<span id="leftTimes"><%= coreInfo.leftTimes%></span>次点火机会</div>
+	</section>
+	<section class="share-wrap">
+		<span class="share">一起分享喜悦</span>
+		<a href="http://m.meilishuo.com/wx/record">查看中奖记录 >></a>
+	</section>
+</div>
+<script type="text/html" id="share_md">
+</script>
+<script>
+	fml.vars.useId = <%= JSON.stringify(this.user_id)%>;
+	fml.vars.myId = <%= JSON.stringify(this.fromid)%>;
+	var imgUrl = 'http://i.meilishuo.net/css/images/wap/web/wx/stitle.jpg';
+	var lineLink = /uid/g.test(location.href) ? location.href.replace(/(uid=)\d*/g,'$1' + fml.vars.useId + '&page_name=xmas_fire&suid=' + fml.vars.useId) : location.href + '&uid=' + fml.vars.useId + '&page_name=xmas_fire&suid=' + fml.vars.useId;  
+	var descContent = '【美丽说】圣诞有钱，壁炉点火够任性！每天N次拿礼物，无上限！';
+	var shareTitle = '【美丽说】圣诞炉火大转盘';
+	var shareTimelineText = '【美丽说】圣诞有钱，壁炉点火够任性！每天N次拿礼物，无上限！';
+</script>
+
+<script src="<%= this.JCSTATIC_BASE  %>/js/open/shareCollect.js?<%= this.SVERSION%>"></script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/wx/stove');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

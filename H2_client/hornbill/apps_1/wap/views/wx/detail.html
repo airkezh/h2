@@ -1,0 +1,136 @@
+<%# wx/header.html%>
+<%
+	var goodsInfo = this.goods_info || {}
+		, goods = this.goods || {}
+
+	var cur_time  = (new Date).getTime() / 1000
+	var globalKey = this._Request_cookies.MEILISHUO_GLOBAL_KEY;
+
+	function getTimeRemain(end_time){
+		if (end_time && end_time > cur_time) return end_time - cur_time
+		else return end_time
+	}
+
+%>
+<div class="wrap">
+<%if(goodsInfo){%>
+	<h2 class="wx_title">商品详情</h2>
+	<div class="layer_wrap" id="propNotice"></div>
+	<figure class="piciture goodsArea" goods_id="<%= goodsInfo.goods_id %>" twitter_id="<%= goodsInfo.twitter_id%>" pid="<%= goodsInfo.pid || 0%>">
+		<span class="pic_wrap">
+			<img src="<%= goodsInfo.image.image[0]%>"/>
+		</span>
+		<div class="name">
+			<h2 class="goods_name"><%= goodsInfo.goods_title%></h2>
+			<div class="price">
+				<span class="ml_color now now_price">￥<%= goodsInfo.price%>
+					<%if(goodsInfo.price_max && (goodsInfo.price != goodsInfo.price_max)){%>
+						~ <%= goodsInfo.price_max%> 
+					<%}%></span>
+				<span class="normal"><% if (goodsInfo.original_price != ''){%>￥<%= goodsInfo.original_price%>
+						<%if(goodsInfo.original_price_max && (goodsInfo.original_price != goodsInfo.original_price_max)){%>~ <%= goodsInfo.original_price_max%> <%}%>
+					<%}%> </span>
+			</div>
+		</div>
+	</figure>
+	<div class="sale">
+	<%
+		var promptRemain = getTimeRemain(goodsInfo.end_time)
+		if(goodsInfo.show_clock != 0){
+	%>
+		<div class="time">
+			<span class="status_line detail_line"></span>
+			<p class="countdown" remain="<%= promptRemain%>">
+				<img src="<%=this.PICTURE_URL%>/images/wap/web/wx/detail_time.png" class="detail_time"/>
+			<%	if(promptRemain){ %>
+				仅剩&nbsp;<span>-天--小时--分--秒</span>
+			<%  } else {%>
+				活动结束
+			<%  } %>
+			</p>
+			<span class="status_line line_right detail_line"></span>
+		</div>
+		<%}%>
+		<ul class="sale_info">
+			<li class="baoyou">
+				运费<span class="ml_color">包邮</span>
+			</li>
+			<li>
+				销量<span class="ml_color"><%= goodsInfo.sales%>件</span>
+			</li>
+			<li>
+				库存<span class="ml_color"><%= goodsInfo.repertory%>件</span>
+			</li>
+		</ul>
+	</div>
+	<div class="goods_info">
+
+		<% if (goodsInfo.prop && goodsInfo.prop.color && goodsInfo.prop.color.is_show) { %>
+		<dl class="prop info_list">
+			<dt class="type"><%= goodsInfo.prop.color.name%>：</dt>
+			<dd class="info">
+				<ul id="colorList">
+					<% goodsInfo.prop.color.value.forEach(function(item , key){ %>
+						<li><span <%if(goodsInfo.prop.color.image && !goodsInfo.is_cosmetic){%>imgurl="<%= goodsInfo.prop.color.image[key] %>"<%}%>><%= goodsInfo.prop.color.value[key] %></span></li>
+					<%});%>
+				</ul>
+				<div class="colorShow"></div>
+			</dd>
+		</dl>
+		<%}%>
+
+		<% if (goodsInfo.prop && goodsInfo.prop.size && goodsInfo.prop.size.is_show) { %>
+		<dl class="prop info_list pdtop sizes">
+			<dt class="type"><%= goodsInfo.prop.size.name%>：</dt>
+			<dd class="info">
+				<ul id="sizeList">
+					<% goodsInfo.prop.size.value.forEach(function(item , key){%>
+						<li><span><%= item%></span></li>
+					<%});%>
+				</ul>
+			</dd>
+		</dl>
+		<%}%>
+
+		<dl class="amount pdtop">
+			<dt class="type">数 量：</dt>
+			<dd class="info">
+				<div class="numBox">
+					<%if(!goodsInfo.in_seckill){%>
+						<span class="minus">-</span>
+					<%}%>
+					<input class="nums" title="请输入购买数量" type="text" value="1" <%if(goodsInfo.in_seckill){%>readonly="readonly" <%}%> />
+					<%if(!goodsInfo.in_seckill){%>
+					<span class="plus">+</span>
+					<%}%>
+				</div>
+				<span class="stock now_num">(库存<span>-</span>件)</span>
+			</dd>
+		</dl>
+	</div>
+	<%# wx/goods_promise.html %>
+	<%# wx/goods_detail.html %>
+	<%
+		var buy_text = ['不能购买', '立即购买', '原价购买']
+			, buy_style = ['non_buy', 'buy_btn', 'still_buy_btn']
+	%>
+	<div class="btn_box buy">
+		<span class="<%= buy_style[goodsInfo.buy_button_status] %>"><%= buy_text[goodsInfo.buy_button_status] %></span>
+	</div>
+<%}%>
+</div>
+
+
+<script>
+fml.vars.count_discuss = "<%= goodsInfo.twitter_stat.discuss_num%>";
+fml.vars.goods = {"id" : "<%=goodsInfo.goods_id %>" , "twitter_id": "<%= goodsInfo.twitter_id%>" ,"pid" :"<%= goodsInfo.pid || 0%>","price" : "<%= goodsInfo.price %>" , "price_max" : "<%= goodsInfo.price_max %>", "original_price" : "<%= goodsInfo.original_price || 0 %>","original_price_max" : "<%= goodsInfo.original_price_max || 0 %>"};
+fml.vars.goods_stock = <%= JSON.stringify(goodsInfo.stock)%>;
+fml.vars.goods_prop = <%= JSON.stringify(goodsInfo.prop)%>;
+fml.vars.globalKey = '<%= globalKey %>'
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/wx/sale');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# wx/footer.html%>

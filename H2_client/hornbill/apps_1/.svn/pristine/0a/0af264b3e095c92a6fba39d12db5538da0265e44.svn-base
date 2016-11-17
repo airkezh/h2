@@ -1,0 +1,38 @@
+<%# head.html%>
+<% this.headName = '注册美丽说'; %>
+<%# head_share.html%>
+<div class="register">
+	<fieldset>
+		<form id="registerForm" method="post" onsubmit="return false" action="">
+			<p><input id="mobile" name="mobile" type="tel" placeholder="手机号" autocomplete="off" /><span></span></p>
+			<p><input id="nickname" name="nickname" type="text" placeholder="昵称" autocomplete="off" /><span></span></p>
+			<p><input id="password" name="password" type="password" placeholder="密码" autocomplete="off" /><span></span></p>
+			<div class="pic_checkBox" id="checkBox">
+				<input id="checkcode" name="checkcode" type="text" value="" maxlength="4" placeholder="验证码"/>
+				<div class="checkImage">
+					<span id="checkcodeImage">
+						<img width="90" height="36" isblank="true" src="<%= this.PICTURE_URL %>images/register/blank.jpg">
+					</span>
+					<span class="red_f">换一张</span>
+				</div>
+			</div>
+			<div class="checkBox">
+				<input id="code" name="code" class="enter_code"  type="text" placeholder="短信验证码" maxlength="6" />
+				<input id="get_code" class="get_code" type="button" value="获取短信验证码" />
+				<span></span>
+			</div>
+			<div class="regErrorMessage"></div>
+			<div class="submitBox"><input class="reg_mob_btn button left_f" type="submit" value="立即注册"/></div>
+			<div name="agreement" class="agree">
+				<input type="checkbox" checked="checked" id="agreement" name="agreement">
+				<label for="agreement">同意</label><a target="_blank" href="/agree">美丽说注册条款</a>
+				<span></span>
+			</div>
+		</form>
+	</fieldset>
+</div>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/register');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html %>

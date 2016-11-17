@@ -1,0 +1,56 @@
+<script type="text/html" id="posterWall">
+<?
+	var imgWidth = 224;
+$.each(tInfo , function(k , v){
+		var goods_title = v.title || "";
+		var imgBoxHeight=imgWidth* v.poster_small_img_height / v.poster_small_img_width +'px';
+?>
+<div class="poster_grid retsop poster_wall" twitter_id="<?=v.twitter_id?>" like_twitter_id="<?=v.twitter_id?>">
+	<div class="new_poster">
+		<div class="np_pic hover_pic">
+			<?if(v.horizontal_mark && v.horizontal_mark.length){?>
+				<div class="mark">
+					<? for (var i=0,j = v.horizontal_mark.length ; i< j; i++) {
+						var data = v.horizontal_mark[i]; ?>	
+						<?
+							data.line_height = !data.text_margin_top ? data.img_height : 14;
+						?>
+						<?
+							!data.text_margin_top ? data.fs = 12 : data.fs = 14;
+						?>
+						<span class="m_ico" style="font-size:<?=data.fs?>px;<?if(data.text_font_color){?>color:<?=data.text_font_color?>;<?}?>position: relative;background:url(<?=data.img_url?>) no-repeat; height:<?=data.img_height?>px;line-height:<?= data.line_height?>px;width:<?=data.img_width?>px;">
+							<?if(data.mark_text){?>
+								<span style="width:<?=data.img_width?>px;left: 0;position: absolute;text-align: center;top: <?= data.text_margin_top?>px;"><?=data.mark_text?>
+								</span>
+							<?}?>
+						</span>
+					<?};?>
+				</div>
+			<?}?>
+			<? var show_pic = v.poster_small_img || ''; ?>
+			<? var goodsUrl = '/share/item/' + v.twitter_id; ?>
+			<a class="pic_load" href="<?= goodsUrl?>" target="_blank" title="<?= goods_title?>">
+				<img height="<?= imgBoxHeight ?>" class="goods_pic" src="<?= show_pic ?>" alt="<?= goods_title?>" />
+			</a>
+		</div>
+		<?if(goods_title != ''){?>
+			<div class="title">
+				<p>
+					<a href="<?= goodsUrl?>" target="_blank"><?= goods_title ?></a>
+				</p>
+			</div>
+		<?}?>
+		<div class="price-box">
+			<span>￥<?= v.sale_price ?></span>
+			<del>￥<?= v.price ?></del>
+		</div>
+		<span class="discount">
+			<? if(v.discount!='10.0'){ ?>
+				<i><?= v.discount ?>折</i>
+			<? } ?>
+		</span>
+		<div class="clear_f"></div>
+	</div>
+</div>
+<? }); ?>
+</script>

@@ -1,0 +1,112 @@
+<%
+	/**
+ 	 * @fileoverview 首页－我的抽礼卡记录
+     * @requires zepto
+     * @author kehuang@meilishuo.com
+     * @date 2016-01-11
+     */
+%>
+
+<%#head.html%>
+<%
+	var curUserIsLogin = this.isLogin;
+	var curIsNormalGetData = this.isNormalGetData;
+%>
+
+<div class="main">
+	<div class="records_list_wrap">
+		<ul class="records_list_box"></ul>
+	</div>
+
+    <div class="pullUp" status="loading"></div>
+
+	<div class="gotop_wrap">
+		<a class="gotop">
+			<img src="http://d03.res.meilishuo.net/pic/_o/d0/68/f89d059f09d440f4ee7a37669383_80_80.cg.png" alt="">
+		</a>
+	</div>
+</div>
+
+<script type="text/html" id="records_item_tpl">
+	<?
+		var is_first_load = this.isFirstLoad,
+			records_data_arr = (this.data && this.data.data && this.data.data.list) ? this.data.data.list : [],
+			records_data_len = records_data_arr.length || 0;
+
+		if (records_data_len > 0) {
+			for (var i = 0; i < records_data_len; i++) {
+				var data = records_data_arr[i],
+					shop_id = data.shop_id || '',
+					records_time = data.ctime || '',
+					goods_img = data.goods_image || '',
+					goods_url = data.twitter_url || '',
+					goods_twitter_id = data.twitter_id || '',
+					records_status = parseInt(data.status || 0);
+
+				if (goods_img != '') {
+					var records_title = '',
+						records_title_class = '',
+						records_status_class = 'records_status_' + records_status,
+						goods_img_style = 'background:url(' + goods_img + ') no-repeat;background-size:60px auto;background-position:left center;';
+
+					switch (records_status) {
+						case 0:
+							records_title_class = '';
+							records_title = '差一点儿> <下周五再接再厉！';
+
+							break;
+						case 1:
+							records_title_class = 'icon_title';
+							records_title = '运气超赞！有事 联系卖家';
+
+							break;
+						case 2:
+							records_title_class = 'icon_title';
+							records_title = '22:00公布幸运名单！查看';
+
+							break;
+						default:
+
+							break;
+					}
+	?>
+	<li>
+		<div class="left_item">
+			<div class="icon_goods" data-href="<?= goods_url ?>" style="<?= goods_img_style ?>"></div>
+			<div class="records_info">
+				<p class="title <?= records_title_class ?>" data-status="<?= records_status ?>" data-sid="<?= shop_id ?>" data-tid="<?= goods_twitter_id ?>"><?= records_title ?></p>
+				<p class="desc">申请时间：<?= records_time ?></p>
+			</div>
+		</div>
+		<div class="right_item">
+			<div class="status <?= records_status_class ?>"></div>
+		</div>
+	</li>
+	<?
+				}
+			}
+		} else {
+			if (is_first_load) {
+	?>
+	<div class="no_data_bg"></div>
+	<div class="no_data_text">还没有使用过抽礼卡！快去使用吧~</div>
+	<?
+			}
+		}
+	?>
+</script>
+
+<script>
+	fml.vars.r = '<%= this.xr.r || '' %>';
+	fml.vars.isLogin = <%= curUserIsLogin %>;
+	fml.vars.isNormalGetData = <%= curIsNormalGetData %>;
+	fml.vars.is_lazyload_poster = true;
+</script>
+
+<!-- <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script> -->
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/member/gift_card_records');
+_use:", this._JSstack, this._JSmods); %>
+
+<%#foot_simple.html%>

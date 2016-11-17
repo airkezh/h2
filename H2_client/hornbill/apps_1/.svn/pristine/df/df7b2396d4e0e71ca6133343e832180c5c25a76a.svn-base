@@ -1,0 +1,53 @@
+ <strong class="title">手机绑定</strong>
+ <fieldset class="bindMobile">
+ 	<div class="bie-phone">
+ 		<div class="bie">
+	 		<div class="check-p">
+	 			<span class="on pro" style="border-radius:4px 0 0 4px;">验证原手机</span>
+	 						<span class="no-on">设置新手机</span>
+	 			<span class="no-on"id="success"style="border-radius:0 4px 4px 0">完成设置</span>
+	 		</div>
+
+		</div>
+	<form id="bindMobileForm" method="post" onsubmit="return false" action="">
+
+		<p class="form-list"><label id="protel" for="mobile">原手机号:</label>
+		<input class="lipt l_ipt" autocomplete="off" id="mobile"    name="mobile" type="text" value="<%=(this.userInfo.mobile_is_actived > 0 && this.userInfo.mobile != 0) ? this.userInfo.mobile.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2'):""%>" <%=(this.userInfo.mobile_is_actived > 0 && this.userInfo.mobile != 0) ? "disabled":""%> />
+			<input class="s_button" type="button" name="s_code" id="s_code" style="" value="发送验证码" />
+			<input class="s_button2" type="button" name="s_code2" id="s_code2" style="display:none" value="发送验证码" />
+
+
+
+
+		</p>
+		<p class="form-list">
+			<label for="code">验证码:</label><input class="lipt l_ipt" autocomplete="off" id="code" name="code" type="text" value="" /><strong></strong>
+			
+		</p>
+		<div class="setPasswordErrorMessageLine"></div>
+
+		<div class="submitBox">
+			<input id="send_next" name="s_bind" class="ext_submit" type="submit" value="下一步"/>
+			<input id="change_bind" name="change_bind" class="ext_submit" type="submit" style="display:none;" value="下一步"/>
+			<span class="bindErrorMessage" style="display:none;"></span>
+		</div>
+		
+	
+
+
+
+
+		<div class="bie-info">
+			<p>
+				说明：
+			</p>
+			<p>
+				1.修改绑定手机后，原手机号将不能用于登录。您可以使用更换后的手机号进行登录。
+			</p>
+
+			<p>
+				2.若因手机号丢失无法进行验证，请联系美丽说客服。
+			</p>
+		</div>	
+	</div>
+ </fieldset>

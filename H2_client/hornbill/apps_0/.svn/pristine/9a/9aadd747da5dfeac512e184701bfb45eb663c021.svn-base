@@ -1,0 +1,81 @@
+/*common*/
+var $ = require('wap/zepto');
+var WaterFall = require( 'circle/component/waterfall' )
+	,lazy = require( 'm/component/lazyLoad' )
+	,tracking = require('wap/app/tracking')
+	,Alert = require('wap/ui/alert')
+
+var lazyLoad = lazy.init({xpath:'.pic_load'})
+
+var waterFallInstance = WaterFall.init({
+	el: '.goods_wall',
+	url: '/aj/wx_new/daily_list',
+	dataName: 'tInfo', //默认
+	colNum: 2,
+	colGap : '10 8',
+	hasSideGap : true,
+	// onFetchStart: function(wf){
+	// 	// wf.data.offset = wf.data.frame*10;
+	// },
+	onFetchSuccess: function(data){
+		lazyLoad.scroll()
+		if(data.length === 0){
+			$('.pullUp').attr('status','stop');
+			this.lock();
+		}
+	},
+	onFetchFinished: function(data){
+		lazyLoad.load()
+		// hide_loading();
+	}
+}).start()
+
+/**
+ * 搜索
+ */
+var oForm = $('#form_search')
+var oInput = oForm.children('.ipt')
+
+oForm.on('submit',function(e){
+	e.preventDefault();
+	var v = $.trim(oInput[0].value)
+	if(v){
+		window.location.assign('/wx/search?key=' + encodeURIComponent(v) ); 
+	}else{
+		new Alert({
+			content : '请输入搜索关键词'
+		})
+	}
+})
+
+
+
+window.onload =  function(){
+	tracking.cr('wx/onload');
+}
+
+
+/* 砸蛋逻辑 */
+/*var $egg = $('#egg')
+	,mark = true
+
+$egg.find('.egg').click(function(event) {
+	if(mark){
+		mark = false
+		$.post('/aj/wx_new/hit_egg', function(data){
+			if (data && data.ret == 0) {
+				tracking.cr('wx/receive_coupon', {'action' : 'click', 'result' : 'success','name':'320大促'});
+				$egg.find('.egg').hide();
+				$egg.find('.egg-open').show();
+				setTimeout(function(){
+					alertCon('恭喜您获得10元优惠券，马上可以使用哦！');
+					$egg.find('.egg-open').hide();
+				},500);
+			}else{
+				tracking.cr('wx/receive_coupon', {'action' : 'click', 'result' : 'fail','name':'320大促'});
+				alertCon(data.msg);
+			}
+			mark = true
+		}, 'json')
+	}
+});*/

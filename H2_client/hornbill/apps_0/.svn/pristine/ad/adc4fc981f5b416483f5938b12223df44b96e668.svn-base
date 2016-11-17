@@ -1,0 +1,79 @@
+function xuanguan_new (){
+	return this;	
+}
+var controlFns = {
+	'index' : function (){
+		var mSelf = this;
+		var locationUrl = "http://" + this.req.headers.host + this.req.url;
+		var php = {
+			'pageData' : '/customactivity/CustomActivity_common_tool_single?id=bs_sales_520'
+		};
+		var wapMod = base.loadModel('wap/tools.js');
+		var nav_index = this.readData('nav_index', this.req.__get, 0);
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			data.banner = {
+			   "banner_image": "http://imgst-dl.meilishuo.net/img/_o/27/85/26c3a4b423b8dcc09ac5885e3fe7_640_240.cg.jpg",
+			   "banner_width": 640,
+			   "banner_height": 240,
+			   "cata_info": [
+			      {
+			         "name": "全部",
+			         "url": "http://m.meilishuo.com/activity/xuanguan/middle/?",
+			         "is_selected": 1
+			      },
+			      {
+			         "name": "美衣",
+			         "url": "http://m.meilishuo.com/activity/xuanguan/middle/?",
+			         "is_selected": 0
+			      },
+			      {
+			         "name": "包包",
+			         "url": "http://m.meilishuo.com/activity/xuanguan/middle/?",
+			         "is_selected": 0
+			      },
+			      {
+			         "name": "自定义分类",
+			         "url": "http://m.meilishuo.com/activity/xuanguan/middle/?",
+			         "is_selected": 0
+			      },
+			      {
+			         "name": "自定义分类",
+			         "url": "http://m.meilishuo.com/activity/xuanguan/middle/?",
+			         "is_selected": 0
+			      }
+			    ],
+			    "pageTitle": "stylish买手启示录"
+			};
+			var params = {
+				'title' : {
+					'weixin' : data.banner.pageTitle,
+					'weixin_timeline' : data.banner.pageTitle,
+					'default' : data.banner.pageTitle
+				},
+				'text' : {
+					'weixin' : data.banner.pageTitle,
+					'weixin_timeline' : data.banner.pageTitle,
+					'weibo' : data.banner.pageTitle,
+					'txweibo' : data.banner.pageTitle,
+					'default' : data.banner.pageTitle
+				},
+				'pic' : {
+					'weixin' : data.banner.banner_image,
+					'weixin_timeline' : data.banner.banner_image,
+					'default' : data.banner.banner_image
+				},
+				'url' : locationUrl + '&isFromShare=true'
+			};
+			if (!data.os.iphone ||  wapMod.isNewest(this.req , '6.2.0') ) params.shareImg = true
+			data.share = wapMod.shareTo(mSelf.req , params);
+
+			data.nav_index = nav_index;
+			data.pageTitle = data.banner.pageTitle;
+			data._CSSLinks = ['activity/xuanguan'];
+			mSelf.render('activity/xuanguan.html', data);
+		});
+	}
+};
+exports.__create = controller.__create(xuanguan_new , controlFns);

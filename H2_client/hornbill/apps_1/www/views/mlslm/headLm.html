@@ -1,0 +1,35 @@
+<%# head_simple.html%>
+<%
+var query = this._Request_query;
+var getLink = _extFn.getLink;
+var navFrm = 'frm=daeh';
+var mSubstr = _extFn.mSubstr;
+%>
+</head>
+<body>
+<div class="header_bg">
+	<div class="clear_f"></div>
+	<div class="header_top logo_wrap">
+		<a class="logo_new"></a>
+	</div>
+</div>
+<div id="navbar">
+	<div class="wheader">
+		<div class="header_b">
+		<%
+		function tagHLight(tag){
+			return tag == this.headTag ? ['r_d' , '' , ''] : ['' , '' , '']; 
+			}
+		%>
+			<ul class="nav_new">
+				<%this.navigate_top && this.navigate_top.forEach(function(data){%>
+				<li>
+					<a href="<%= data.url%>"><%=data.name%></a>
+				</li>
+				<%});%>
+			</ul>
+		</div>
+	</div>
+	<div class="sec_nav"></div>	
+</div>
+<div class="clear_f"></div>

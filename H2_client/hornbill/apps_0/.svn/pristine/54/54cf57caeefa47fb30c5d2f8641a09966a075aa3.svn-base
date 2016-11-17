@@ -1,0 +1,237 @@
+<%
+	var refund_info = this.refund_info;
+	var wrapData = this.wrapData;
+	var is_setPayPsd = this.setPayPsd.info.is_setPayPsd;
+	var checkToWallet = this.refund.checkWallet||"true";
+	var refund_mode = this.refund_mode;
+%>
+<%
+	function couponTip(f){
+		if(f){ %><p class="more-desc coupon_tip">亲，订单中使用了优惠券，退款时优惠券不退的哦</p><% }
+	}
+	function refundGoods(nocheck){
+		%>
+			<div>
+				<label>
+					<input type="radio" class="mls-input-radio" id="radio-refund-goods" name="is_refund_goods" value="1" <%=nocheck?'':'checked'%>/>
+					<label class="mls-input-label mls-input-radio-label" for="radio-refund-goods" ></label>
+					<span>退款且退货
+						<span class="more-desc">
+							(收货后需退还已收到商品)
+						</span>
+					</span>
+				</label>
+			</div>
+		<%
+	}
+	function refundMoney(nocheck){
+		%>
+		<div>
+			<label>
+				<input type="radio" class="mls-input-radio" name="is_refund_goods" value="0" id="radio-refund-money" <%=nocheck?'':'checked'%>/>
+				<label class="mls-input-label mls-input-radio-label" for="radio-refund-money" ></label>
+				<span>仅退款
+					<span class="more-desc">
+					(已与商家协商一致，无需退货即可退款)
+					</span>
+				</span>
+			</label>
+		</div>
+		<%
+	}
+%>
+
+<div class="apply-form">
+	<ul class="block-container">
+		<li>
+			<div class="label-wrap">
+				<i class="icon icon-pink">*</i>
+					是否退货：
+			</div>
+			<div class="content-wrap">
+				<%if(!wrapData.refund_id){
+					if(wrapData.can_refund_goods){
+				 		refundGoods('nocheck')
+					}
+					if(wrapData.can_refund_money){
+						refundMoney('nocheck')
+					}
+					%>
+				<%}else{
+					if(wrapData.refund_type=="5"||wrapData.refund_type=="3"){
+						refundGoods()
+					}else{
+						refundMoney()
+					}
+				}%>
+			</div>
+		</li>
+		<li>
+			<div class="label-wrap">
+				<i class="icon icon-pink">*</i>
+					退款原因：
+			</div>
+
+			<div class="content-wrap">
+				<select class="mls-select" id="goods_refund_reason" name="refund_reason" <% if(wrapData.refund_detail){%>isEdit="2" selectVal="<%=wrapData.refund_detail.select_reason%>"<%}%> >
+                    <option data-id="-1" value="">请选择退款原因</option>
+                    <%refund_info && refund_info.reasons && refund_info.reasons.goods.forEach(function(item,index){%>
+                        <option data-id="<%=index%>" value="<%=item.val == 100 ? -1 : item.option%>" must="<%=item.e%>"><%=item.option%></option><!--val==100表示选择了其它-->
+                    <%});%>
+				</select>
+				<select class="mls-select" id="refund_reason" <% if(wrapData.refund_detail){%>isEdit="2" selectVal="<%=wrapData.refund_detail.select_reason%>"<%}%> name="refund_reason" class="none_f">
+                    <option data-id="-1" value="">请选择退款原因</option>
+                    <%refund_info && refund_info.reasons && refund_info.reasons.cash.forEach(function(item,index){%>
+                        <option data-id="<%=index%>" value="<%=item.val == 100 ? -1 : item.option%>" must="<%=item.e%>"><%=item.option%></option><!--val==100表示选择了其它-->
+                    <%});%>
+				</select>
+				<textarea name="refund_reason_other" class="none_f refund-other"><%=wrapData.refund_detail.select_reason_id==100 && wrapData.refund_detail.select_reason && wrapData.refund_detail.select_reason.trim()||''%></textarea>
+				<div class="none_f" class="refund-tip" id="refundTip">
+					<div class="refund-tip-text" id="refundTipText"></div>
+				</div>
+			</div>
+		</li>
+		<li>
+			<div class="label-wrap">
+				<i class="icon icon-pink"></i>
+					上传凭证：
+			</div>
+			<div class="upload-wrap">
+				<%if(wrapData.refund_detail){%>
+					<%wrapData.refund_detail.refund_evidence && wrapData.refund_detail.refund_evidence.forEach(function(e){ %>
+						<a class="pic" href="javascript:void(0)">
+							<img src="<%=e.thumb%>" width="100%" asrc="<%=e.orig%>" />
+						</a>
+					<%});%>
+				<%}%>
+				
+				<%if(wrapData.refund_detail.refund_evidence && wrapData.refund_detail.refund_evidence.length==5){%>
+				<%}else{%>
+					<a class="pic addBtn" href="javascript:void(0)"></a>
+				<%}%>
+				<div class="clear_f"></div>
+			</div>
+			<div class="more-desc">
+				如商品破损图、客服聊天截屏等（最多5张）
+			</div>
+			<%#common/low_version_tip.html%>
+		</li>
+		<li>
+			<div class="label-wrap">
+					补充说明：
+			</div>
+			<div class="content-wrap">
+				<textarea name="reason"><%if(wrapData.refund_detail){%> <%= wrapData.refund_detail.reason%> <%}%></textarea>
+			</div>
+		</li>
+		<%if(this.isWxOrSq){%>
+			<li>
+		<%}else{%>
+			<li class="one-line no-margin-bottom">
+		<%}%>
+			<div class="label-wrap">
+				<div class="label-inner">
+					<i class="icon icon-pink">*</i>退款金额:&nbsp;&nbsp;
+				</div>
+				<div class="label-inner money-input-wrap">
+					<input name="refund_price_apply" class="maxReturn_in" type="text" value="<%if(wrapData.refund_detail){%><%=parseFloat(wrapData.refund_detail.refund_price_apply).toFixed(2)%><%}else{%><%=parseFloat(wrapData.refund_with_freight).toFixed(2)%><%}%>"/><span>元</span>
+				</div>
+			</div>
+
+			<div class="label-wrap">
+				<div class="more-desc money-desc-wrap">
+					最多
+					<span class="no_freight max_sum" <%if(wrapData.refund_freight){%>style="display:none;"<%}%> ><%=wrapData.refund_cash %></span>
+					<%if(wrapData.refund_freight){%>
+					<span class="with_freight max_sum"><%= wrapData.refund_with_freight %></span>
+					<%}%>元
+					<%if(wrapData.refund_freight){%>
+					<span class="cash_info">(商品<%=wrapData.refund_cash %>元+运费<%=wrapData.refund_freight %>元)</span>
+					<%}%>
+				</div>
+			</div>
+			<% couponTip(wrapData.use_coupon); %>
+		</li>
+		<%if(!this.isWxOrSq){%>
+		<li class="refund_way_li">
+			<div class="label-wrap">
+				<div class="refund-way-select">
+					<%if(checkToWallet=="false"){%>
+					<div class="refund_way disabled_ways">
+						<label>
+							<input type="radio" class="mls-input-radio refund_ways_radio" name="refund_ways" value="0" disabled/>
+							<label class="mls-input-label mls-input-radio-label"></label>
+							<span>退至钱包余额
+								<span class="tips">
+								(立即到账)
+								</span>
+							</span>
+							<p class="more-tips">白条支付不能退至钱包余额</p>
+						</label>
+					</div>
+					<%}if(checkToWallet =="true"){%>
+					<div class="refund_way">
+						<label>
+							<%if(refund_mode == 1){%>
+								<input type="radio" class="mls-input-radio refund_ways_radio" name="refund_ways" value="0" checked id="refund_ways_wallet"/>
+							<%}else{%>
+								<input type="radio" class="mls-input-radio refund_ways_radio" name="refund_ways" value="0" id="refund_ways_wallet"/>
+							<%}%>
+							<label class="mls-input-label mls-input-radio-label" for="refund_ways_wallet" ></label>
+							<span>退至钱包余额
+								<span class="tips">
+								(立即到账)
+								</span>
+							</span>
+							<%if(is_setPayPsd=="1"){%>
+								<p class="more-tips">消费时可抵现金，也可提现</p>
+							<%}else{%>
+								<p class="more-tips">消费时可抵现金，也可提现 -- 需设置钱包密码</p>
+							<%}%>
+						</label>
+					</div>
+					<%}%>
+					<div class="refund_way">
+						<label>
+							<%if(checkToWallet == "true"){%>
+								<%if(refund_mode == 1){%>
+									<input type="radio" class="mls-input-radio refund_ways_radio" name="refund_ways" value="1" id="refund_ways_back"/>
+								<%}else{%>
+									<input type="radio" class="mls-input-radio refund_ways_radio" name="refund_ways" checked value="1" id="refund_ways_back"/>
+								<%}%>
+							<%}else{%>
+							<input type="radio" class="mls-input-radio refund_ways_radio" name="refund_ways" value="1" checked id="refund_ways_back"/>
+							<%}%>
+							<label class="mls-input-label mls-input-radio-label" for="refund_ways_back" ></label>
+							<span>退回原支付账户</span>
+							<p class="more-tips">到账周期:信用卡20工作日内，其他10工作日内</p>
+						</label>
+					</div>
+				</div>
+			</div>
+		</li>
+		<%}%>
+
+		<% if(refund_info.refund_coin && +refund_info.refund_coin){ %>
+		<li>
+			<div class="content-wrap">
+				<div>
+					<label><%=refund_info.refund_name%>：<%= refund_info.refund_coin %><%=refund_info.refund_unit%></label>
+					<span class="coupon_tip">（只有全额退款时,才<%=refund_info.refund_name%>）</span>
+				</div>
+			</div>
+		</li>
+		<% } %>
+
+	</ul>
+
+	<div class="bottom-tips none_f">
+		若商家确认未按约定时间发货，即补偿您一张美丽说优惠券，面额为退款金额的30%。单个订单补偿最低1元，最高不超过50元
+	</div>
+
+	<%if(refund_info.appeal_times!=0){%>
+	<div class="button-wrap">
+		<span class="btn" id="refund_apply_goods" type="button">提交申请</span>
+	</div>
+	<%}%>
+</div>

@@ -1,0 +1,103 @@
+<%#head.html%>
+<div class="main">
+	<div class="top">
+		<img src="<%=this.actData.bg_pic%>" alt="" class="banner"/>
+	</div>
+	<div class="middle">
+		<div class="turntableWrap">
+			<img class="turntable "src="<%=this.actData.disc_pic%>" alt=""/>
+
+		</div>
+
+		<div class="pointerWraper">
+			<img class="pointer" src="<%=this.actData.handler_pic%>" alt=""/>
+
+		</div>
+
+
+	</div>
+	<div class="bottom">
+		<div class="bottomWrap">
+			<div class="ins">今天还剩<span id="leftTimes" style="color: #ffec50"><%=this.core.data.leftTimes%></span>次抽奖机会</div>
+			<div class="btn_show_one_share"></div>
+
+			<div class="winners">
+				<div class="winners_info">
+					<%=this.winnersTipHtml%>
+				</div>
+			</div>
+
+			<div class="bigWiner">
+				<div class="firstHeadPic" >
+					<img src="http://i.meilishuo.net/css/images/wap/activity/turntable/crown.png" alt=""/>
+				</div>
+
+			<span class="noFirstTip">
+				<%=this.core.data.activity.no_first_winner_tip%>
+			</span>
+
+			</div>
+
+		</div>
+
+	</div>
+</div>
+
+
+
+<script type="text/html" id="noPrizeDialog">
+	<div class="shade"></div>
+	<div class="dialogBox">
+		<img src="<?=this.bgPic?>" alt="" width="100%"/>
+		<div class="noPrizeControl">
+			<a class="dialogShare"></a>
+			<a class="dialogClose"> </a>
+		</div>
+
+	</div>
+</script>
+
+<script type="text/html" id="prizeDialog">
+	<div class="shade"></div>
+	<div class="dialogBox">
+		<img src="<?=this.bgPic?>" alt="" width="100%"/>
+		<div class="prizeControl">
+			<a class="dialogShare"></a>
+			<a class="dialogClose"> </a>
+		</div>
+
+	</div>
+</script>
+
+<script >
+	var guo = "20:00";
+
+	fml.vars.awards = <%=JSON.stringify(this.awards)%>;
+	fml.vars.leftTimes = <%=this.core.data.leftTimes%>;
+
+
+	fml.vars.noPirzeSharePic = '<%=this.core.data.activity.share_notwin_pic%>' ;
+	fml.vars.noPirzeShareContent = '<%=this.core.data.activity.share_notwin_tip%>' ;
+	fml.vars.noPrizeShareBigPic = "<%=this.core.data.activity.share_notWin_big_pic%>" ;
+
+
+	fml.vars.firstWinner = '<%=this.core.data.activity.first_winner%>' ;
+	fml.vars.firstWinnerTip = '<%=this.core.data.activity.first_winner_tip%>' ;
+	fml.vars.noFirstWinner = '<%=this.core.data.activity.no_first_winner_tip%>';
+
+	fml.vars.share_nowin_title = '<%=this.core.data.activity.share_notwin_title%>';
+	fml.vars.share_win_title = '<%=this.core.data.activity.share_win_title%>' ;
+
+	fml.vars.winners_tip = '<%=this.core.data.activity.winner_tip%>';
+	fml.vars.haveShared = <%=this.core.data.user.haveShared || 0%> ;
+	fml.vars.noAwards = <%=JSON.stringify(this.noAwards)%>;
+
+	fml.vars.headPic = '<%=this.mobUserInfo.data.avatar_b %>';
+	fml.vars.isLogin = <%=this.isLogin%>;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+
+fml.use('wap/page/activity/turntable');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot_simple.html%>

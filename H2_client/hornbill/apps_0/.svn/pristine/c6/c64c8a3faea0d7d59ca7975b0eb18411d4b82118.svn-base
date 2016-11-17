@@ -1,0 +1,176 @@
+/*common*/
+require('m/zepto/touch');
+
+var slipPageFn = require('cooper/component/slipPage');
+var checkLogin = require('circle/app/checkLogin');
+var signWX = require( 'wx/sign' );
+var shareWX = require( 'wx/share' );
+var shareTmp = require('wap/component/shareTmp')
+var dialog = require('wap/ui/dialog')
+var tracking = require('wap/app/tracking')
+// var openApp = require('wap/app/openAppCustom');
+// var openAppLink = require('wap/app/openAppLink');
+
+// 判断登录，包含app和wx
+ checkLogin();
+
+//滑动翻页效果
+window.slipPage = slipPageFn.init({
+	outer:'.wrap .main'
+	, page:'.page'
+	, transitionExt : function(dir, type, y){
+        var scaleType = {
+            'curr' : [1,1]
+            , 'prev' : [0.8, 0.8]
+            , 'next' : [0.8, 0.8]
+        }
+        return {'transform':'scale3d(' + scaleType[type][0] + ', ' + scaleType[type][1] + ', ' + '1' + ')'}
+
+    }
+})
+
+/*music*/
+var music = $('audio')[0]
+	, $musicicon = $('.music')
+	, musicStatus = 0
+musicon()
+$musicicon.on('tap', function(){
+	if(musicStatus == 0){
+		musicon()
+		musicStatus = 1		
+	}else{
+		musicoff()
+		musicStatus = 0
+	}
+})
+function musicon(){
+	if(!music) return;
+	$musicicon
+		.removeClass('musicoff')
+		.addClass('musicon')
+	music.play()
+	musicStatus = 1	
+}
+function musicoff(){
+	if(!music) return;
+	$musicicon
+		.removeClass('musicon')
+		.addClass('musicoff')
+	music.pause()
+	musicStatus = 0
+}
+
+/*微信分享*/
+var $tShareBtn = $('.tShareBtn') //weixin share btn
+	, $shareMask = $('.mask') //weixin share mask
+if(Meilishuo.config.os.weixinBrowser){
+	signWX()
+	// tracking.cr('cooper_page'+ fml.vars.CONFIG_ID, {'action':'in:wx'});
+	shareWX.bind({
+        'desc':'我是微信分享',
+        'imgUrl':'http://d04.res.meilishuo.net/pic/_o/9c/b7/4e3606165fa675d5609515b4a7e8_98_98.ch.jpg',
+        'title':'我是微信分享标题',
+        'link': 'http://m.meilishuo.com/goto/open/?appUrl=' + encodeURIComponent('/activity/timeMachine/mm/') + '&bg='+ encodeURIComponent('/activity/timeMachine/mm/'),
+        'success': function(res, name, eventName){
+            hideMask()
+
+            /*if(fml.vars.CONFIG_APPID == 'wd'){
+                tracking.cr('weiquan_h5', {'action':'click', 'subject':'share', 'name':eventName, 'detail':'magazine:' + fml.vars.CONFIG_ID});
+				sence.cr('cooper', {'action':'share','detail':fml.vars.CONFIG_ID + ':' + fml.vars.CONFIG_APPID})
+
+            }else{
+                tracking.cr('cooper_page'+ fml.vars.CONFIG_ID, {'action':'wxshare:success'});
+            }*/
+        }
+    })
+
+	$tShareBtn
+		.on('tap', showMask)
+		.on('tap', function(){
+			alert('aaa')
+			// tracking.cr('cooper_page'+ fml.vars.CONFIG_ID, {'action':'wxshare:start'});
+		})
+
+	$shareMask
+		.on('tap', hideMask)
+}
+function showMask(){
+    if(Meilishuo.config.os.weixinBrowser) $shareMask.show();
+}
+function hideMask(){
+    if(Meilishuo.config.os.weixinBrowser) $shareMask.hide()
+}
+
+/*app内分享*/
+if(Meilishuo.config.os.mlsApp){
+	var tpl = shareTmp('wapShare' , {"share" :JSON.parse(fml.vars.share)})
+	$tShareBtn.on('tap', function(){
+		var sharePalDlg = new dialog({
+			content:tpl
+		})
+		var share_url = $('#share_ico .active').attr('share_url')
+		$('#share_ico a').bind('click', function(){
+			$('#share_ico a.active').removeClass('active')
+			$(this).addClass('active')
+			share_url = $(this).attr('share_url')
+		});
+		$('#shareBtn').on('click', function(){
+			//console.log(share_url)
+			alert(share_url)
+			window.location.href =  share_url  
+		})		
+	})
+}	
+	
+
+
+
+
+
+
+	/*shareApp.bind({
+        'desc' : 'asdfasd',
+        'imgUrl' : '',
+        'title' : '',
+        'link' : ''
+    }, function(data){
+		if(!data) return;
+
+		var tpl = shareTmp('wapShare', {share:data})
+
+		$('body')
+			.on('tap', '.share_ico a', function(){
+				$(this)
+					.addClass('active')
+					.siblings().removeClass('active')
+			})
+			.on('tap', '.shareToBtn', function(){
+				var $share = $('.share_ico .active')
+				var share_url = Meilishuo.config.cooper_url + shareApp.getUrl($share)
+				share_url 用goto/open，打开app。没有安装app，打开wap页面，wap里如果没有登录，微信互联，用志东那个CheckLogin
+
+				tracking.cr('cooper_page'+ fml.vars.CONFIG_ID, {'action':'mlsappshare:start'});
+
+				window.location.href = share_url 
+			})
+
+		if($tShareBtn[0]){
+			$tShareBtn.on('tap', function(){
+				var sharePalDlg = new dialog({
+					content:tpl
+				});
+			})
+		}else{
+			var sharePage = slipPageFn.addPage('end').page
+			//sharePage.css('background', fml.vars.CONFIG_BACKGROUND)
+			sharePageFn.append(tpl)
+		}
+
+	})*/
+
+
+
+
+
+
+

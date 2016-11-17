@@ -1,0 +1,19 @@
+<script type="text/html" id="poster_tpl">
+	<? $.each(this.gInfo, function(k, v){ ?>
+	<? var posterHeight = v.img_height * fml.vars.posterWidth / v.img_width; ?>
+	<div class="poster" data-height="<?= posterHeight ?>">
+		<figure>
+			<a class="poster-link img_frame" href="/share/<?= v.twitter_id ?>" data-src="<?= v.goods_img ?>" style="display: block; width: 100%; height: <?= posterHeight ?>px;">
+				<img class="none" alt="goods" />
+			</a>
+			<figcaption>
+				<p class="poster-info-title"><?= v.goods_title ?></p>
+				<div>
+					<span class="poster-info-price"><?= v.goods_price ?></span>
+					<span class="poster-info-like"><?= v.count_like ?></span>
+				</div>
+			</figcaption>
+		</figure>
+	</div>
+	<? }); ?>
+</script>

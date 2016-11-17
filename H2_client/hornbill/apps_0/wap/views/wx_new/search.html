@@ -1,0 +1,95 @@
+<%# wx_new/header.html%>
+
+<%
+	var searchInfo = this.searchInfo || {};
+%>
+
+<!-- 搜索模块 -->
+<%= requireFn('wx_new/mdl_search.html')({
+	'data' : this.defaultKey.word || '立即搜你想要的商品'
+	,'value' : this.key
+	,'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+});%>
+
+<div class="posterWall wrap scroller" id='warpCon'>
+	
+	<% if( searchInfo.is_recommend == 1 ){%>
+	<figure class="search-tips">
+		<span class="tip-icon"><img  src="http://d04.res.meilishuo.net/pic/_o/8b/c9/0a492284f6ae6453dfa477c3daa1_80_73.cg.png" alt=""></span>
+		<figcaption>
+			<p class="msg">抱歉，没有找到合适的商品,</p>
+			<p class="msg">我们为您推荐“<%=searchInfo.word %>”相关产品</p>
+		</figcaption>
+	</figure>
+	<%}%>
+	
+	<% if( searchInfo.is_recommend == 0 ){%>
+	<section class="search-nav">
+		<%* 
+		   is_recommend 是否是推荐的瀑布流 = 1 就取word这个字段
+           is_recommend＝0且banner不为空才取bannner 
+	    *%>
+		<% if( searchInfo.banner ){%>
+		<a class="ad-banner" href="<%= searchInfo.banner.url %>">
+			<img src="<%= searchInfo.banner.pic %>">
+		</a>
+		<% } %>
+		
+		<%
+			var tabArr = [
+				{ 'dataType' : 'base', 'urlTab' : 'base' ,'name' : '流行'},
+				{ 'dataType' : 'hot', 'urlTab' : 'hot' , 'name' : '热销'},
+				{ 'dataType' : [
+						{ 'dataType' : 'price' ,'urlTab' : 'price-l' , 'name' : '价格' },
+						{ 'dataType' : 'price-l' ,'urlTab' : 'price-h' , 'name' : '价格' },
+						{ 'dataType' : 'price-h' ,'urlTab' : 'price-l' , 'name' : '价格' }
+					] }
+			],
+			tabType = this.tabType;
+		%>
+		<ul class="goods_sort_by">
+			<% var url = '/wx/search?key=' + this.key; %>
+			<%
+				function generateHTML( data ) {
+					var d = data.dataType,
+						result;
+					if ( Array.isArray( d ) ) {
+						result = d.filter( function( v ) { return v.dataType == tabType } )
+						generateHTML( result.length ? result[ 0 ] : d[ 0 ] )
+					} else {
+					%>
+					<li class="s_item <%=tabType == d ? 'active' : '' %>" data-type="<%=d %>" >
+						<a href="<%= url + '&tab=' + data.urlTab %> "><span class="s-txt"><%= data.name %></span>
+							<i class="icon"></i></a>
+					</li>
+					<%	
+					}
+				};
+				tabArr.forEach(function( tab ) {
+					generateHTML( tab )
+				})
+			%>
+		</ul>
+	</section>
+	<% } %>
+
+	<ul class="new_goods goods_wall">
+	</ul>
+	<div class="pullUp" status="loading"></div>
+</div>
+<!-- wx_new/searchPoster.html  posterWX -->
+<%# wx_new/posterWX.html%>
+<script>
+fml.vars.key = '<%== this.key %>';
+fml.vars.tabType = '<%== this.tabType %>';
+fml.vars.is_recommend = <%= this.is_recommend %>;
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/wx_new/search');
+_use:", this._JSstack , this._JSmods ); %>
+<%# wx_new/side.html%>
+<%# wx_new/footer.html%>
+
+
+

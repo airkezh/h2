@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+	<style>
+		body{background: url('http://img.meilishuo.net/css/images/wap/open/order_BG.jpg');}
+		.main{width: 100%;padding-top:120%;background: url('http://img.meilishuo.net/css/images/wap/open/order_title.png') no-repeat center center;background-size: 171px;}
+	</style>
+</head>
+<body>
+<%
+if (this.bgPage  && this.bgPage.indexOf('/download/latest/') == -1){
+	this.weixinBrowser = false
+	}
+if ((this.weixinBrowser || this.weiboBrowser) && this.gotoLead){%>
+	<% if(this.isAndroid){ %>
+		<img src="//img.meilishuo.net/css/images/wap/weixin/download_lead_an.png" style="width:100%" />
+	<% } else {%>
+		<img src="//img.meilishuo.net/css/images/wap/weixin/download_lead_ios.png" style="width:100%" />
+	<% } %>
+<%}else{%>
+<div class="main"></div>
+<%}%>
+<iframe id="inApp" style="display:none;" ></iframe>
+<script>
+var appUrl = '<%= this.appUrl && this.appUrl.replace(/\\/g,'\\\\').replace(/'/g,"\\'")%>';
+var toOpenUrl;
+if (appUrl) {
+	var pa = {};
+	pa.url = appUrl;
+	pa.inApp = '1';
+	pa.require_app_info = '1';
+	var u = encodeURIComponent(JSON.stringify(pa));
+	toOpenUrl = "meilishuo://openURL.meilishuo?json_params=" + u
+}else {
+	toOpenUrl = '<%= this.url.replace(/\\/g,'\\\\').replace(/'/g,"\\'")%>';
+}
+if (toOpenUrl){
+	var protocol = toOpenUrl.split('://')[0];
+	if ('meilishuo' == protocol || 'meilishuohd' == protocol){
+		var inApp = document.getElementById('inApp');
+		
+		<% if( !this.weiboBrowser && !this.mlsApp){%>
+		function gotoDownLoad(){
+			<%if(this.weixinBrowser && !this.gotoLead){%>
+				if(isAndroid){
+					window.location.href = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.meilishuo'
+				} else {
+					window.location.href = '/download/latest/wap'
+				}
+			<%}else{%>
+			window.location.replace('<%= this.bgPage%>');
+			<%}%>
+		}
+		window.setTimeout(gotoDownLoad , 1000);
+		<% }%>
+		var ua = window.navigator.userAgent;
+		var isIphone = /iPhone/.test(ua)
+			,isAndroid = /Android/.test(ua);
+		if (isAndroid) {
+			inApp.src = toOpenUrl;
+		}else if (isIphone){
+			window.location.href = toOpenUrl;
+		}
+
+	}else{
+		window.location.replace(toOpenUrl);
+	}
+}
+
+</script>
+</body>
+</html>

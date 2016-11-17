@@ -1,0 +1,156 @@
+<%# head_simple.html%>
+	<%	
+	var welcome = this.welcome || {};
+	var error_code = welcome.error_code;
+
+if(error_code == 0){
+	var arrFriend = welcome.data.assistant;
+	var role = welcome.data.role;
+	var status = welcome.data.originator.fin_status;
+	var have_origed = welcome.data.have_origed;
+	var originatorId = welcome.data.originator.user_id;
+	var is_app=welcome.data.originator.is_app;
+	var extra = welcome.data.extra;
+	if(extra.length!=0){
+		var award_name=extra[0].award_name;
+	}else{
+		var award_name="";
+	}
+}else{
+	var arrFriend = [];
+	var role = '';
+	var status = '';
+	var have_origed = '';
+	var originatorId = '';
+	var extra = [];
+	var award_id=0;
+	var is_app=-1;
+	var discount=0;
+}
+%>
+		</head>
+
+		<body>
+			<div class="award_main">
+				<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/out.png" class="lh_out" />
+				<%if(extra.length==0){%>
+					<div class="award_no">
+						<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/icon_no_award.png" class="icon_no_award" />
+						<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/award_no_bg_01.jpg" class="bg_imgs" />
+						<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/award_no_bg_02.jpg" class="bg_imgs" />
+						<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/award_no_bg_03.jpg" class="bg_imgs" />
+						<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/award_no_bg_04.jpg" class="bg_imgs" />
+						<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/award_no_bg_05.jpg" class="bg_imgs" />
+					</div>
+					<div class="award_no_tips">
+						<a href="http://m-promotion.meilishuo.com/promotion/sale_1511/mv/?mid=419&frm=friend_help" class="btn_guan btn_own_guang"><img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/btn_guangguang.png" /></a>
+						<a href="javascript:void(0);" class="btn_share" id="btn_find_friend"><img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/btn_yaoqinghaoyou.png"  /></a>
+					</div>
+					<%}else{%>
+						<div class="awarding">
+							<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/icon_award.png" class="icon_award" />
+							<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/awarding_bg_01.jpg" class="bg_imgs" />
+							<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/awarding_bg_02.jpg" class="bg_imgs" />
+							<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/awarding_bg_03.jpg" class="bg_imgs" />
+							<%if(award_name=="满100减50"){%>
+								<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/awarding_quan_50.jpg" class="bg_imgs" />
+								<%}else if(award_name=="满50减25"){%>
+									<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/awarding_new_quan_25.jpg" class="bg_imgs" />
+									<%}else if(award_name=="满10减10"){%>
+										<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/awarding_new_quan_10.jpg" class="bg_imgs" />
+										<%}else if(award_name=="满20减10"){%>
+											<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/awarding_new_quan_10_1.jpg" class="bg_imgs" />
+											<%}else if(award_name=="满5减5"){%>
+												<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/awarding_new_quan_5.jpg" class="bg_imgs" />
+												<%}%>
+						</div>
+						<div class="award_tips">
+							<%if(is_app==2){%>
+								<!--微信发起-->
+								<p class="award_p">优惠券已发放至美丽说账户,请微信登陆App并查看!</p>
+								<%}else if(is_app==1){%>
+									<p class="award_p">优惠券已发放至美丽说账户,请在App中查看!</p>
+									<%}%>
+										<div class="btn_wrap">
+											<a href="http://m-promotion.meilishuo.com/promotion/sale_1511/mv/?mid=419&frm=friend_help" class="btn_guan btn_own_guang"><img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/btn_guangguang.png" /></a>
+											<a href="javascript:void(0);" class="btn_share" id="btn_find_friend"><img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/btn_yaoqinghaoyou.png"  /></a>
+										</div>
+						</div>
+						<%}%>
+
+			</div>
+			<!--好友列表-->
+			<div class="friend_list">
+				<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/start_icon_01.jpg" class="friend_img" />
+				<!--描述：没有好友-->
+				<% if(arrFriend.length == 0){ %>
+					<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/start_icon_02.jpg" class="friend_img" />
+					<%}else{%>
+						<!--描述：好友列表-->
+						<div class="friends-list">
+							<% arrFriend.forEach(function(item,index){%>
+								<div class="friends-msg">
+									<img class="friend-img" src="<%=item.user_pic%>">
+									<span class="friend-name"><%=item.nick_name%></span>
+									<span class="friend-desc">&nbsp;&nbsp;&nbsp;<%= item.ass_desc %></span>
+								</div>
+								<% }) %>
+						</div>
+						<%}%>
+			</div>
+			<!--游戏规则-->
+			<div class="first_rules"></div>
+			<div class="first_popwin">
+				<img class="first-popwin-rules" src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/cb_rules.png" />
+				<div class="rules-content">
+					<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/guize_new_bg_01.jpg" />
+					<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/guize_new_bg_02.jpg" />
+					<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/guize_new_bg_03.jpg" />
+				</div>
+				<img class="first-popwin-know" src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/cb_rules_btn.png" />
+			</div>
+			<!--分享样式-->
+			<div class="share-popwin">
+				<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/wx_share2.png">
+			</div>
+			<audio src="http://i.meilishuo.net/css//images/wap/activity/crackbrand/friend_bgm2.MP3" autoplay="autoplay" loop="loop">
+				您的浏览器不支持audio标签
+			</audio>
+			<a href="http://m-promotion.meilishuo.com/promotion/sale_1511/mv/?mid=419&frm=friend_help" id="hide_link" style="display: none;"></a>
+		</body>
+		<script>
+			fml.vars.isWxLogin = <%= this.isWxLogin || false %> ;
+			fml.vars.isWx = <%= this.isWx %> ;
+			fml.vars.originatorId = "<%= originatorId %>";
+			fml.vars.role = "<%= role %>";
+			fml.vars.status = "<%= status %>";
+			fml.vars.ass_gid = '<%== this.ass_gid %>';
+			fml.vars.error_code = "<%= error_code %>";
+			fml.vars.is_app = "<%=is_app%>";
+			fml.vars.pageId = "award";
+			fml.vars.extra="<%=extra%>";
+			fml.vars.award_name="<%=award_name%>";
+			var frm = fml.vars.isWx ? '&frm=isWx' : '&frm=isMLS';
+			if ((Meilishuo.config.os.mlsApp && Meilishuo.config.user_id) || fml.vars.isWx) {
+				if (fml.vars.role == "0" || fml.vars.role == "2") {
+					if (fml.vars.status == "1") {
+						/*没有完成撕名牌*/
+						fml.vars.hrefstr = "awardF";
+						window.location.href = '/activity/crackbrand/awardFriend/?ass_gid=' + fml.vars.ass_gid + frm;
+					} else {
+						fml.vars.hrefstr = "friendBefore";
+						window.location.href = '/activity/crackbrand/friendBefore/?ass_gid=' + fml.vars.ass_gid + frm;
+					}
+				} else {
+					if (fml.vars.status == "0") {
+						fml.vars.hrefstr = "start";
+						window.location.href = '/activity/crackbrand/start/?ass_gid=' + fml.vars.ass_gid + frm;
+					}
+				}
+			}
+		</script>
+		<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+		<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/crackbrand/award');
+_use:", this._JSstack, this._JSmods); %>
+			<%# foot.html%>

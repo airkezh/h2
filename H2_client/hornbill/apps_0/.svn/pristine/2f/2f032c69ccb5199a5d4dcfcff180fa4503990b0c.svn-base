@@ -1,0 +1,161 @@
+@import "block.less";
+img.tleImg{
+	.block;
+}
+body{
+	.bgc(#FFFFFF);
+}
+.wrap::-webkit-scrollbar{
+        display:none;
+    }
+.wrap{
+	.selectedWrap{
+		border-bottom: 10px solid #EEEEEE;
+		.selectedTitle{
+			.w(100%);
+		}
+		.selectedTopic{
+			margin: 0 auto;
+			padding: 0.1rem 0;
+			overflow: hidden;
+			.w(6.16rem);
+			.selectedInfo{
+				.left;
+				// .block;
+				.w(2rem);
+				.h(2rem);
+				background-image: url('http://d01.res.meilishuo.net/pic/_o/df/19/871e116cc15bf4b33295770387eb_81_81.cf.jpg');
+				background-repeat: no-repeat;
+				background-position: 50% 50%;
+				background-size: 1rem;
+				img{
+					.w(100%);
+					.block;
+				}
+			}
+			.selectedInfo:nth-child(n+4){
+				.mt(0.08rem);
+			}
+			.selectedInfo:nth-child(3n+1),.selectedInfo:nth-child(3n+2){
+				.mr(0.08rem);
+			}
+		}
+	}
+	.popularWrap{
+		.popolarImg{
+			img{
+				.w(100%);
+			}
+		}
+		.loading{
+			.pullUpDown > .common;.pullUpDown > .loading;
+			.w(.4rem);
+			.h(.4rem);
+			background-size: 100%;
+			&:before{
+				.nowrap;
+				.ml(-.1rem);
+			}
+			&[status="tap"]{
+				background:0 none;	
+			}
+			&[status="stop"]{
+				background:0 none;	
+			}
+		}
+		.popularTopic{
+			margin: 0 auto;
+			.w(6.2rem);
+			.bgc(#FFFFFF);
+			.timeWrap{
+				position: -webkit-sticky;
+				position: -moz-sticky;
+				position: -o-sticky;
+				position: -ms-sticky;
+				position: sticky;
+				top:0;
+				left:0;
+				.h(0.79rem);
+				.forFixed{
+					.w(100%);
+					background: RGBA(255,255,255,0.94);
+					.clearfix;
+					border-bottom: 1px solid #F0F0F0;
+					img{
+						.ml(0.1rem);
+						.w(0.3rem);
+						.h(0.3rem);
+						.mt(0.24rem);
+						.mb(0.24rem);
+						.block;
+						.left;
+					}
+					.time{
+						.ml(0.1rem);
+						.fc(#999999);
+						.f(0.28rem);
+						.l(0.78rem);
+						.block;
+						.left;
+					}
+				}
+
+			}
+			.popularTitle{
+					overflow: hidden;
+					margin:  0 auto;
+					.w(6.16rem);
+					.popularInfo{
+						.left;
+						// .block;
+						.mt(0.1rem);
+						.w(2rem);
+						.h(2rem);
+						background-image: url('http://d01.res.meilishuo.net/pic/_o/df/19/871e116cc15bf4b33295770387eb_81_81.cf.jpg');
+						background-repeat: no-repeat;
+						background-position: 50% 50%;
+						background-size: 1rem;
+						img{
+							.w(2rem);
+							.h(2rem);
+							.block;
+							.left;
+						}
+					}
+					.popularInfo:nth-child(3n+1),.popularInfo:nth-child(3n+2){
+						.mr(0.08rem);
+					}
+				}
+		}
+	}
+}
+.more{
+	.pullUp > .pullUp;
+	// .pullUpDown > .loading;
+	display:none;
+	.w(2rem);
+	.h(40px);
+	margin: 0 auto;
+	.fc(#FF839F);
+	.f(0.24rem);
+	background-size: 100%;
+	&[status="tap"]{
+		background:0 none;	
+		&:before{
+			content:"···加载更多···";	
+		}
+	}
+	&[status="stop"]{
+		background:0 none;	
+		&:before{
+			content:"···木有了···";	
+		}
+	}
+	// &[status="stop"]{
+	// 	background:0 none;	
+	// }
+}
+/*回顶部*/
+.gotop{ .pf; right:20px; .w(12.5%); .none;  }
+.img100 { .w(100%); .block; }
+.fixed{position: fixed;top: 0;left: 0;}

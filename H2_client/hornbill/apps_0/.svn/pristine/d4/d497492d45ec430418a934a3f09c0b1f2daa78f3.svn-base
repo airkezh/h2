@@ -1,0 +1,54 @@
+<%# head_simple.html%>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+<%
+	var weixinBrowser = this.weixinBrowser;
+%>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+
+<%
+	var qa = this.qa || {}
+		, qaList = qa && qa.question
+		, firQa = [];
+	if(qaList && qaList.length > 0){
+		firQa = qaList.slice(0, 1)
+	}
+%>
+<div class="qa-main">
+	<img src="<%= this.PICTURE_URL%>/images/wap/activity/fuide/null.gif">
+	<%if(firQa && firQa.length > 0){
+		firQa.forEach(function(qa, i){
+	%>
+	<section class="qa-list num-<%=i%>" number="<%= i%>" style="display:block;">
+		<img src="<%= qa.img %>">
+			<ul class="qa-cont">
+				<li>
+					<% qa && qa.items && qa.items.forEach(function(item, t){ %>
+					<label>
+						<input class="m-radio" name="answer-<%=i%>" type="radio"/>
+						<span><%= item.answer%></span>	
+					</label>
+					<%});%>
+				</li>
+			</ul>
+	</section>
+	<%
+		});
+	}
+	%>
+	<div class="btn-area">
+		<span class="btn_qa_next">下一题</span>
+	</div>
+</div>
+
+<script>
+	fml.vars.qustions = <%= JSON.stringify(this.qa && this.qa.question)%>;
+</script>
+<script type="text/html" id="wrongTips">
+	<div class="tips"><img src="http://d01.res.meilishuo.net/pic/_o/81/b2/3b7b5f4542194e00cd30bfcb8e09_361_176.cg.gif" />
+	</div>
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+  	fml.use('wap/page/activity/summerFuide/question');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

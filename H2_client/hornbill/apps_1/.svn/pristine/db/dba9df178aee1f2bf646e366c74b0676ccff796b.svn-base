@@ -1,0 +1,43 @@
+<%#head.html%>
+<% var pageData = this.pageData; %>
+<style>
+	body{background: <%= pageData.pageControl.main_bg || '#fff' %>;}
+	.good_shop_wrap  .shop_box div{background: url(<%= pageData.good_shop_setting.coupon_bg %>) no-repeat;background-size: 100%;}
+	.fashion_shop_wrap .shop_box div{background: url(<%= pageData.fashion_shop_setting.coupon_bg %>) no-repeat;background-size: 100%;}
+</style>
+
+<div class="top">
+	<% pageData.head.forEach(function(data){ %>
+		<img src="<%= data.img_src %>" />
+	<% }); %>
+</div>
+<img src="<%= pageData.good_shop_setting.title_bg %>">
+<div class="good_shop_wrap">
+	<% this.good_shop.data.forEach(function(data, index){ %>
+		<a class="shop_box <%= index%2 ? 'odd' : ''%> <%= index>=6 ? 'none_f' : '' %>" href="<%= _extFn.getAppLink('shop' , {'shop_id': data.shop_id } , this.os, this.r) %>"><img src="<%= data.src %>"><div><span><%= data.coupon.credit || 0 %>元优惠券</span></div></a>
+	<% }); %>
+</div>
+<img class="check_all" src="<%= pageData.good_shop_setting.check_bg %>">
+<img src="<%= pageData.fashion_shop_setting.title_bg %>">
+<div class="fashion_shop_wrap">
+	<% this.fashion_shop.data.forEach(function(data, index){ %>
+		<div class="shop_box <%= index%2 ? 'odd' : ''%> <%= index>=8 ? 'none_f' : '' %>">
+			<a href="<%= _extFn.getAppLink('shop' , {'shop_id': data.shop_id } , this.os, this.r) %>"><img src="<%= data.src %>"><div><span><%= data.coupon.credit || 0 %>元优惠券</span></div></a>
+		</div>
+	<% }); %>
+</div>
+<img class="check_all" src="<%= pageData.fashion_shop_setting.check_bg %>" alt="">
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/app/hackWeixin');
+	fml.use('wap/zepto/touch', function(){
+		$('.check_all').on('tap', function(event){
+			event.preventDefault();
+			var mSelf = this;
+			setTimeout(function(){
+				$(mSelf).addClass('none_f');
+				$(mSelf).prev().find('.shop_box').removeClass('none_f');
+			}, 500);
+		});
+	});
+_use:", this._JSstack , this._JSmods); %>
+<%#foot_simple.html%>

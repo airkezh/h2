@@ -1,0 +1,60 @@
+<%# sq/header.html%>
+<%
+	var address_list = this.addr_list_all.data || []
+	var address_list_city = this.addr_list_city.data || []
+	var address_list_dis = this.addr_list_dis.data || []
+	var user_id = this.addr_id || ''
+	var edit_type = this.edit_type || ''
+	var parms = this.parms || ''
+%>
+<div class="warp">
+	<div class="textarea">
+		<input type="text" id="hidden">
+		 <p>
+		 	<input type="text" name="user_name" placeholder="收件人姓名" class="addres_txt user_name" value="<%= (this.edit_type == 'edit') ? this.user_name : ''%>"/>
+		 </p>
+		 <p>
+		 	<input type="text" name="user_tel" placeholder="手机号" class="addres_txt user_tel" value="<%= (this.edit_type == 'edit') ? this.user_tel : ''%>" />
+		 </p>
+		 <p class="area_select">
+		 	<span class="addres_select">省份:
+		 		<select class='pid'>
+		 			<option value ="select">请选择省份</option>
+					<% address_list.province && address_list.province.map(function(data){%>
+						<option value ="<%= data.pid %>" <%= ((data.pid == this.user_pid) && this.edit_type == 'edit') ? 'selected' : ''%>><%= data.province %></option>
+					<%})%>
+				</select>
+		 	</span>
+		 	<span class="addres_select">城市:
+		 		<select class='cid'>
+		 			<option value ="select">请选择城市</option>
+			 		<% address_list_city.city && address_list_city.city.map(function(data){%>
+						<option value ="<%= data.cid %>" <%= (data.cid == this.user_cid) ? 'selected' : ''%>><%= data.city %></option>
+					<%})%>
+				</select>
+		 	</span>
+		 	<span class="addres_select">地区:
+		 		<select class='did'>
+		 			<option value ="select">请选择地区</option>
+		 			<% address_list_dis.district && address_list_dis.district.map(function(data){%>
+						<option value ="<%= data.did %>" <%= (data.did == this.user_did) ? 'selected' : ''%>><%= data.district %></option>
+					<%})%>
+				</select>
+		 	</span>
+		 </p>
+		 <p class="addres_txt_last">
+		 	<input type="text" name="user_add" placeholder="街道地址" class="addres_txt user_add" value="<%= (this.edit_type == 'edit') ? this.user_str : ''%>"/>
+		 </p>
+	</div>
+	<div class="save_add">
+		<div class="save_button"><p class="save_text">保存</p></div>
+	</div>
+</div>
+<script>
+	fml.vars.addr_info = {id : '<%= user_id%>', type : '<%= edit_type%>'};
+	<%= 'fml.vars.parms =' + JSON.stringify(this.parms) + ';' %>
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/sq/address_edit');
+_use:", this._JSstack , this._JSmods ); %>
+<%# sq/footer.html%>

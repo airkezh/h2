@@ -1,0 +1,56 @@
+<%# head.html %>
+
+<%= requireFn('block/page_head.html')({
+	'pageTitle' : '我喜欢的宝贝'
+	, 'title_url' : '/welcome'
+	, 'right_type' : 'item_new'
+	, 'xr' : this.xr
+	, '_JSstack' : this._JSstack
+	, '_JSmods' :  this._JSmods
+}); %>
+
+<%if(this.poster0.data.tInfo && this.poster0.data.tInfo.length > 0){%>
+	<div class="poster_wrap">
+		<div class="goods_wall"></div>
+		<div class="pullUp" status="loading"></div>
+	</div>
+	<a href="/guessulike" class="guessLike" xr="<%= this.xr.r %>">
+		<img src="http://d05.res.meilishuo.net/pic/_o/d2/48/db6ac234c5010e1c32f743508613_152_50.cj.png"/ >
+	</a>
+<%} else {%>
+	<div class="noLove">
+		<img src="http://d05.res.meilishuo.net/pic/_o/7a/c4/d6a05684868e8e8ed64b7dbc70c5_196_190.cj.png" />
+		<p>还没有喜欢过任何宝贝呢</p>
+		<a href="/welcome" xr="<%= this.xr.r %>">去首页逛逛 > </a>
+	</div>
+<%}%>
+
+<script type="text/html" id="posterWall">
+	<? var v = this.v;if(!v.ginfo) return; ?>
+	<div class="poster_grid poster_wall" twitter_id="<?= v.twitter_id ?>">
+		<figure>
+			<div class="pic_load">
+				<a xr="<?= fml.vars.poster_r ?>" class="bs_load_img" href="<?= v.url ?>" asrc="<?= v.show_pic ?>">
+					<? v.horizontal_mark.map(function(mark){ ?>
+						<img class="h_mark" style="width:<?= mark.img_width / 88 ?>rem;" src="<?= mark.img_url ?>"/>
+					<? }); ?>
+				</a>
+			</div>
+			<p class="clothesTitle"><?= v.ginfo.goods_title ?></p>
+			<figcaption>
+				<span class="price"><?= v.ginfo.goods_price ?></span>
+				<span class="like icon-heart"><?= v.count_like ?></span>
+			</figcaption>
+		</figure>
+	</div>
+</script>
+
+<script>
+	fml.vars.userId = <%= this.userInfo.user_id %>;
+	fml.vars.posterData = <%= JSON.stringify(this.poster0.data.tInfo)%>;
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/person/myLove');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

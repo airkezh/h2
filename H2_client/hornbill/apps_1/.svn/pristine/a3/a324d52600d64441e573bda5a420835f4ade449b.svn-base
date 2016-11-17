@@ -1,0 +1,107 @@
+<%# head.html%>
+<%
+	var mz_info = this.mz_check.info;
+	var nation = { "referer":0 };
+%>
+<% if(this.add_result != '' && typeof this.add_result.info.error_code != 'number' && this.add_result.info.length != 0 ){
+		var info = this.add_result.info,
+ 	 		goods = this.add_result.info.goods[0];
+ 	 	var nation = { "referer":0 };
+ 	 		nation.referer = goods.is_haitao || ''
+%>
+<div class="status_cart">
+	<p class="suc_cart">已成功将<%= goods.amount %>件商品加入购物车</p>
+</div>
+<div class="content_cart">
+	<div class="goods_info">
+		<%if( mz_info && typeof mz_info.error_code != 'number'){%>
+			<a href="<%=this.DOMAIN.www%>/share/item/<%= goods.twitter_id%>"><img src="<%= goods.b_pic_url %>"/></a>
+			<p class="goods_tle">
+				<a href="<%=this.DOMAIN.www%>/share/item/<%= goods.twitter_id%>"><%= goods.goods_title %></a>
+			</p>
+		<%}%>
+		<p class="goods_attr">
+			<% if(goods.prop.length>0){%>
+			<% goods.prop.forEach(function(data){ %>
+				<% if(data.is_show == 1){ %>
+				<span class="mr20_f"><%= data.name %>：<%= data.value%></span>
+				<%}%>
+			<%});%>
+			<%}%>
+			<span class="mr20_f">价格：￥<%= goods.goods_activity_price %></span>
+		</p>
+	</div>
+	<p class="cs_btn">
+
+
+		<% if( nation.referer && nation.referer == 1 ){%>
+			<a href="<%= this.DOMAIN.order%>/cart/haitao/?frm=cart_to_buy" class="cart_btn cur_btn">去购物车结算</a>
+		<%}else{%>
+			<a href="<%= this.DOMAIN.order%>/cart/index/?frm=cart_to_buy" class="cart_btn cur_btn">去购物车结算</a>
+		<%}%><!--go back chinese-->
+
+		<!--a href="<%= this.DOMAIN.order%>/cart/?frm=cart_to_buy" class="cart_btn cur_btn">去购物车结算</a-->
+
+		<%if( mz_info && typeof mz_info.error_code != 'number'){%>
+			<%if(mz_info.is_mz){%>
+			<a href="<%=this.DOMAIN.www+mz_info.ac_link%>&frm=cart_to_activity" class="shopping_btn">继续逛特卖</a>
+			<%}else{%>
+				
+			<% if( nation.referer && nation.referer == 1 ){%>
+			<a href="<%=this.DOMAIN.www%>/korea" class="shopping_btn">去韩国馆逛逛</a>
+			<%}else{%>
+			<a href="<%=this.DOMAIN.www%>/shop/<%= info.shop_id %>?frm=cart_to_shop" class="shopping_btn">去店铺逛逛</a>
+			<%}%><!--go back chinese-->
+			<%}%>
+		<%}%>
+	</p>
+	<div class="clear_f"></div>
+	<%if(this.coupon != ''){%>
+	<ul class="coupon">
+		<% this.coupon.map(function(data) { %>
+		<li><span class="btn_red"><%=data.benefit%></span><%=data.tips%><%if(data.type=='coupon_apply'){%><a class="ml10_f red_f" href="<%=(this.DOMAIN.www+data.url)%>" target="_blank">立即领取</a><%}%></li>
+		<%});%>
+	</ul>
+	<%}%>
+</div>
+<%}%>
+<div class="may_like">
+	<div class="cmn_title">
+		<h3 class="f16_f ml10_f">
+			<%if(this.cartIsRecommend && this.isActBack){%>
+				【败家嘉年华】惊喜好货再度来袭”
+			<%}else if(this.isAct || this.isActBlank){%>
+				更多宝贝就在【11.11】败家嘉年华专场
+			<%}else if(this.cartIsRecommend){%>
+				你可能对以下商品感兴趣
+			<%}else{%>
+				人气单品
+			<%}%>
+		</h3>
+			
+		<p class="attr_words" id="attr_words">
+		</p>
+	</div>
+	<ul class="like_list" id="like_list">
+		<li class="loading"><img src="<%= this.PICTURE_URL %>images/indicator_medium.gif" /></li>
+	</ul>
+</div>
+<div class="pro_line" id="promise_proline"></div>
+<div class="promise" id="promise">
+	<ul id="promise_wrapper">
+	</ul>
+</div>
+<script>
+	var CONSTANT = CONSTANT || {};
+	CONSTANT.needPromise = <%=!nation.referer%>;
+	CONSTANT.twitter_id = "<%=this.twitter_id%>";
+	CONSTANT.shop_id = "<%==this.shop_id%>";
+	CONSTANT.sid = "<%==this.sid%>";
+	CONSTANT.isAct = <%=this.isAct%>;
+	CONSTANT.isActBlank = <%=this.isActBlank%>;
+	CONSTANT.isActBack = <%=this.isActBack%>;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('order_pc/cart/addToCart');
+_use:", this._JSstack , this._JSmods); %>
+<%# foot.html%>

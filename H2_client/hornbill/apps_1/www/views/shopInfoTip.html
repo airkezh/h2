@@ -1,0 +1,86 @@
+<script type="text/html" id="shopFacePop" >
+<div class="face_pop">
+	<div class="corner corner_t none_f"></div>
+	<div class="corner corner_tr none_f"></div>
+	<div class="pop_con">
+		<div class="sp_con">
+			<?
+				var _tmpClassName = '';
+				if ( is_cs == 1 ) {
+				    _tmpClassName = 'competitive-shop'
+				} else if ( is_star == 1 ) {
+				    _tmpClassName = 'star-shop'
+				}
+			?>
+			<i class="shop-flag <?= _tmpClassName?>"></i>
+			<div class="fp_info">
+				<a class="avatar64_f" href="/shop/<?=shop_id?>" target="_blank"><img src="<?= shop_face_img?>" /></a>
+				<p><a class="" href="/shop/<?=shop_id?>" target="_blank"><?= shop_nick?></a></p>
+				<p><?= location?></p>
+				<p class="nowrap_f"> 
+					<span>粉丝<em class="red_f js-fans" ><?=followerNum?></em></span>
+					<span>商品数<em class="red_f"><?= goods_count?></em></span>
+					<span>销售数<em class="red_f"><?= goods_sales?></em></span>
+				</p>
+			</div>
+			<div class="clear_f"></div>
+			<ul class="shop-assess">
+			    <?
+				    var trend = points_trend;
+				    if(trend) {
+					    [
+					        [ "描述", "accord", "first" ],
+					        [ "质量", "quality", "middle" ],
+					        [ "服务", "attitude", "middle" ],
+					        [ "发货", "fast", "last" ]
+					    ].forEach(function(data, i) {
+						    var prop = data[1],
+						        mark, avg, content, stateClass;
+
+						    if ( !trend[prop] ) return;
+
+						    mark = trend[prop].mark;
+						    avg  = trend[prop].avg;
+
+						    if ( mark == 1 ) {
+						        stateClass = "up";
+						    } else if ( mark == 0 ) {
+						        stateClass = "fair";
+						    } else {
+						        stateClass = "down";
+						    };
+
+						    if ( !avg || avg == "0.0" ) {
+						        content = "--";
+						    } else {
+						        content = '<i class="arrow-ico">--</i>' + avg;
+						    };
+			    ?>
+							    <li class="shop-assess-<?=data[2]?>">
+							        <?=data[0]?>
+							        <a href="/shop/rating/?shop_id=<?=shop_id?>&frm=rate_to_rateall" class="shop-point <?=stateClass?>" target="_blank"><?=content?></a>
+							    </li>
+			    <?
+				    	});
+				    };
+			    ?>
+			</ul>
+			<div class="isFollowedStatus" >
+				<p class="fp_follow">
+					<a class="<?if(isFollowing == 0){?>shop_pop_btn<?} else {?>shop_pop_followed<?}?>" data-shop="<?=shop_id?>">
+					    <?if(isFollowing == 0){?>
+					    	+加关注
+					    <?}else{?>
+					    	已关注
+					    <?}?>
+					</a>
+				</p>
+			</div>	
+		</div>
+	</div>
+	<div class="corner corner_b none_f"></div>
+	<div class="corner corner_br none_f"></div>
+</div>
+</script>
+
+

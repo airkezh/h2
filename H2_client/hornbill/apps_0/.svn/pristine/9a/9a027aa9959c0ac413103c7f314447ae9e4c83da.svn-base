@@ -1,0 +1,289 @@
+/*common*/
+/**
+ * @name: biWaterfallPlugin
+ * @desc: bi = bidirectional 双向滚动瀑布流
+ *
+ *        瀑布流会记录 col 在每一帧中的位置信息，通过 getColsHistoryInfo() 获取
+ *        该插件将信息存储在 sessionStorage 中
+ */
+var Waterfall        = require( 'circle/component/waterfall' ),
+    URLHandle        = require( 'component/urlHandle' ),
+
+    doc              = document,
+    $doc             = $( doc ),
+    $win             = $( window ),
+    $winHeight       = $win.height(),
+
+    scrollData       = {
+        scroll:   0, //滚动条位置
+        frame:    0,
+        height:   0, //容器高度
+        remember: 1
+    },
+    framesData       = [],
+    elOffsetTop      = 0,
+    requestFrame     = 0,
+
+    NORMAL           = Waterfall.CONS.NORMAL,
+    REVERSE          = Waterfall.CONS.REVERSE,
+
+    DEFAULT_OFFSET   = $winHeight / 2,
+    DATA_KEY         = 'waterfall-cols-data',
+    isFirstLoaded    = true,
+    isLayoutFinished = true,
+    isTriggerFinish  = false,
+    initLoadingParam = [ 'up', 'down' ],
+    colsHistoryInfo, waterfallInstance
+
+function init( instance ) {
+    instance.start = function() {
+        return true
+    }
+    elOffsetTop    = instance.$el.offset().top
+
+    instance._config = $.extend( instance._config, {
+        canFetch: scrollFn,
+
+        onFetchStart: function( config ) {
+            config.data.frame = requestFrame
+        },
+
+        onLayoutFinished: function() {
+            scrollData.height = this.$el.height()
+
+            updateURL()
+            backupColsData()
+            isLayoutFinished  = true
+            colsHistoryInfo  = waterfallInstance.getColsHistoryInfo()
+
+            updateFrameData()
+
+            /**
+             * 第一次加载的时候，判断所处的位置，是不是处于两帧之间，避免屏幕部分出现空白
+             * 两次 trigger 应该有间隔，如果同时触发，isLayoutFinished 会阻止第二次触发的检测
+             */
+            if ( isFirstLoaded ) {
+                isFirstLoaded = false
+
+                //在某些 Android 机器上，获取的屏幕高度会有问题，所以在这里再次获取
+                $winHeight = $win.height()
+                DEFAULT_OFFSET = $winHeight / 2
+
+                setTimeout( function initTrigger() {
+                    waterfallInstance.triggerScroll( initLoadingParam.shift() )
+                    if ( !requestFrame && !isTriggerFinish ) {
+                        isTriggerFinish = true
+                        initTrigger()
+                    } else if ( initLoadingParam.length ) {
+                        isFirstLoaded = true
+                    }
+                }, 0 )
+            }
+        },
+
+        onFetchError: function() {
+            isLayoutFinished = true
+        }
+    } )
+
+    var urlObj = parseURL( location.search )
+    scrollData = $.extend( {}, scrollData, urlObj )
+
+    if ( !urlObj.remember ) {
+        reset()
+    }
+
+    initPage()
+    updateURL()
+
+    return instance
+}
+
+/**
+ * 判断是否为稠密数组，如果不是，证明存储的数据有问题，无法正常使用
+ * @param arr
+ * @returns {boolean}
+ */
+function isDenseArray( arr ) {
+    var flag = !!arr.length
+    arr.forEach( function( v ) {
+        if ( !v ) {
+            return flag = false
+        }
+    } )
+    return flag
+}
+
+function initPage() {
+    if ( waterfallInstance._config.forceClearBackup ) {
+        clearBackup()
+    }
+
+    colsHistoryInfo = getColsData()
+
+    var $el             = waterfallInstance.$el,
+        containerHeight = +scrollData.height,
+        scroll          = +scrollData.scroll,
+        frame           = +scrollData.frame,
+        colsHisotoryLen = colsHistoryInfo.length,
+        colsData, index
+
+    requestFrame = frame
+    updateFrameData()
+
+    if ( !isDenseArray( colsHistoryInfo ) ) {
+        colsHisotoryLen = 0
+        reset()
+    }else{
+        if ( containerHeight != 0 ) {
+            $el.height( containerHeight )
+        }
+
+        if ( scroll != 0 ) {
+            window.scrollTo( 0, scroll )
+        }
+    }
+
+    if ( frame && colsHisotoryLen ) {
+        waterfallInstance.setColsHistoryInfo( colsHistoryInfo )
+        index    = frame >= colsHisotoryLen ? ( colsHisotoryLen - 1) : frame
+        colsData = colsHistoryInfo[ index ]
+        waterfallInstance.setColsInfo( colsHistoryInfo[ frame - 1 ] )
+
+        framesData[ index ] = colsData.sort( function( a, b ) {
+            return b.max - a.max
+        } )[ 0 ].max
+    }
+
+    waterfallInstance.fetch()
+}
+
+//topObj:{scroll:val}
+function reset(topObj) {
+
+    scrollData = $.extend( {}, scrollData, {
+        scroll:   0, //滚动条位置
+        frame:    0,
+        height:   0, //容器高度
+        remember: 1
+    } ,topObj)
+
+    requestFrame = 0
+    window.scrollTo( 0, scrollData.scroll ) 
+    updateURL()
+    clearBackup()
+}
+
+function updateFrameData() {
+    colsHistoryInfo.forEach( function( history, i ) {
+        if ( !history ) {
+            return
+        }
+
+        framesData[ i ] = history.sort( function( a, b ) {
+            return ( b.max - a.max ) || ( a.left - b.left )
+        } )[ 0 ].max
+    } )
+}
+
+function backupColsData() {
+    try {
+        sessionStorage.setItem( DATA_KEY, JSON.stringify( waterfallInstance.getColsHistoryInfo() ) )
+    } catch ( e ) {
+    }
+}
+
+/**
+ * 清除缓存
+ */
+function clearBackup() {
+    try {
+        sessionStorage.removeItem( DATA_KEY )
+    } catch ( e ) {
+    }
+}
+
+/**
+ * 获取列信息
+ * @returns {Array}
+ */
+function getColsData() {
+    var colsData = sessionStorage.getItem( DATA_KEY )
+
+    return colsData ? JSON.parse( colsData ) : []
+}
+
+function parseURL( url ) {
+    return URLHandle.getParams( url )
+}
+
+function updateURL() {
+    history.replaceState( null, '', '?' + URLHandle.http_build_query( scrollData ) )
+}
+var globalCount = 0
+function scrollFn( scrollTop, isDown ) {
+    var relativeTop = scrollTop - elOffsetTop,
+        len         = framesData.length,
+        areaBox     = colsHistoryInfo[ requestFrame ],
+        flag
+
+    if ( !areaBox ) {
+        areaBox = {
+            min: 0,
+            max: 0
+        }
+    } else {
+        //@TODO 默认瀑布流所有元素都是等高的，所以取第一个。这样处理比较简单
+        areaBox = {
+            min: areaBox[ 0 ].min,
+            max: areaBox[ 0 ].max
+        }
+    }
+
+    /**
+     * 判断当前视口显示的数据属于哪一帧
+     */
+    if ( isLayoutFinished ) {
+        globalCount++
+        while ( len-- ) {
+            if ( framesData[ len ] - DEFAULT_OFFSET > relativeTop ) {
+                requestFrame = scrollData.frame = len
+            }
+        }
+    }
+
+    /**
+     * 是否需要获取新数据
+     */
+    if ( isDown ) {
+        if ( areaBox.max - $winHeight - relativeTop < DEFAULT_OFFSET ) {
+            if ( isLayoutFinished ) {
+                requestFrame++                
+                waterfallInstance.updateLayoutDirection( NORMAL )
+            }
+        }
+    } else if ( areaBox.min > 0 ) {
+        if ( relativeTop - areaBox.min < 2 * DEFAULT_OFFSET ) {
+            if ( isLayoutFinished ) {
+                requestFrame--
+                if ( requestFrame < 0 ) {
+                    requestFrame = 0
+                }
+                waterfallInstance.updateLayoutDirection( REVERSE )
+            }
+        }
+    }
+
+    /**
+     * 判断数据是否已经加载过
+     */
+    flag = !waterfallInstance.isFrameLoaded( requestFrame )
+    scrollData.scroll = scrollTop
+    updateURL()
+    //isLayoutFinished 不要重复赋值
+    return isLayoutFinished && flag
+}
+exports.reset = reset
+exports.init = function( config ) {
+    return init( waterfallInstance = Waterfall.init( config ) )
+}

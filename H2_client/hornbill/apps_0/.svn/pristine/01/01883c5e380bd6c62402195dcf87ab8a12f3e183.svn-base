@@ -1,0 +1,161 @@
+@import "../block.less";
+
+body{ .w(6.4rem); .f(.2rem); }
+
+.main{ .w(100%); .h(8.31rem); background: url('http://d03.res.meilishuo.net/pic/_o/8a/35/4f8ec679ffbfcb79d3460b23c5da_640_831.cg.jpg') no-repeat #ff4b4d; background-size: 100%; }
+.list{ .w(100%); background-color: #ff4b4d;  }
+/* 我的美美豆样式 */
+.user_info{ .h(1.02rem); .l(1.02rem); .c; .f(.26rem); .fc(#fff);
+	.beans{ padding:.1rem 0 .1rem .4rem; background: url('http://d05.res.meilishuo.net/pic/_o/86/19/2e28632211db8e6700a11dcc0480_32_36.cf.png') no-repeat left 0.06rem; background-size: 17%;  }
+    .beans_num{ .fb; .f(.36rem); .fc(#fff04d); }
+    .add_beans{ .pa; top:0.15rem; left:4.6rem; .opacity(0); .fc(#fff04d); .f(.46rem); font-style: normal; }
+    .beans_act{ animation:beans 1600ms ease 300ms; 
+    	-webkit-animation:beans 1600ms ease 300ms; }
+    .login_tips{ .fc(#fff); .f(.2rem); padding:0.06rem 0.2rem; .border-r(.2rem); border:1px solid rgba(255,255,255,.5);}
+}
+@keyframes beans {
+    0% { opacity: 1; }
+    70%{ opacity: 1; transform:translateY(-0.4rem); -webkit-transform:translateY(-0.4rem);   }
+    100% { opacity: 0;   }
+}
+@-webkit-keyframes beans {
+    0% { opacity: 1; }
+    70%{ opacity: 1; transform:translateY(-0.4rem); -webkit-transform:translateY(-0.4rem);   }
+    100% { opacity: 0;   }
+}
+
+/*九宫格*/
+.nine-lottery{ .w(5.7rem); .auto; .mt(0.15rem); .hidden; 
+	td{ .pr; .w(1.9rem); .h(1.9rem); .hidden; }
+	.draw_btn{  
+		img{ .w(1.8rem); .h(1.8rem); margin: .05rem; }
+	}
+	.td_box{ .pa; left: 0; top: 0; .w(1.8rem); .h(1.8rem); .hidden; background-color: #fff; margin: .05rem; .border-r(0.12rem); .fc(#333); .f(.2rem); .c;  
+		img{ .block; .w(1.35rem); .auto; .mt(.1rem); }
+		p{ .w(1.8rem); .ellipsis; }
+	}
+	.active{ .none; .pa; left: 0; top: 0; .w(1.8rem); .h(1.8rem); background-color:rgba(0, 0, 0, 0.5); margin: .05rem; .border-r(0.12rem); z-index: 3;  }
+	.btn_l , .inactive{ .td_box; .fc(#fff); background: url('http://d04.res.meilishuo.net/pic/_o/7a/08/3df113ad9757a4f0e2e822bddf76_540_180.cg.png') no-repeat left top; background-size: cover;  
+		p{ .mt(1.36rem); }
+	}
+	.btn_log{ .td_box; .fc(#fff); background: url('http://d04.res.meilishuo.net/pic/_o/7a/08/3df113ad9757a4f0e2e822bddf76_540_180.cg.png') no-repeat -3.6rem top; background-size: cover; 
+		a{ .fc(#fff); .block; .f(.36rem); .l(1.7rem); }
+	}
+	.inactive{ background: url('http://d04.res.meilishuo.net/pic/_o/7a/08/3df113ad9757a4f0e2e822bddf76_540_180.cg.png') no-repeat -1.8rem top; background-size: cover;  }
+}
+
+/* 中奖区域样式 */
+.person_main{  .w(5.6rem); .h(3rem); border-top: 1px solid #ff8183; .auto; .hidden;
+    li{ .w(100%); .h(.8rem); .l(.4rem); margin: 0.28rem 0;
+        .top{ .w(.7rem); .h(0.7rem); .border-r(50%); border:2px solid #fff; .left; }
+        .text{ .fc(#fff); .ml(1rem);
+            p{ .hidden; white-space:nowrap; text-overflow:ellipsis; 
+				span{ .fc(#fff04d); }
+            }
+            .t{ .f(.2rem); }
+            .m{ .f(.2rem); }
+        }
+    }
+}
+
+/*奖品剩余数量*/
+.prize_num{ .w(100%); .c; .fc(#fff); .mt(.64rem); .f(.28rem); }
+
+/*活动入口list*/
+.act_list{ .w(100%); .h(1rem); background-color: #ff4b4d;  padding: .3rem 0 1.1rem 0;
+	td{ .w(1.86rem); .h(1rem); .c; 
+		img{ .w(1.86rem);}
+	}
+}
+
+/* 底部banner样式 */
+.bottom_banner{ .pf; left:0; bottom:0; .w(100%); .h(.3rem); padding: 0.25rem 0; .hidden; background-color: #fff04d; z-index:99;
+    span{ .c; .f(.28rem); .fc(#f46700); .left; .w(49.5%); }
+    .my_prize{ border-right: 1px solid #f46700; }   
+}
+
+/* 弹窗样式 */
+.dialog();
+.dialogTitle{ .none; }
+#dialogLayer{ background: none; box-shadow: none; padding: 0; }	
+
+.layer_main{ .w(4.71rem); .h(5.6rem); .f(.32rem); .fc(#fff);
+	.pop_img{ .w(4.71rem); .h(4.37rem); }
+	img{ .w(4.71rem); }
+	.pop_btn{ .w(2.1rem); .h(.7rem); .l(.7rem); .auto; .c; background-color: #fff; .fc(#666666); .f(.3rem); .mt(.2rem); }
+	p{ .w(100%); .c; }
+	.title{  .pa; .fc(#fee503); top:1.8rem; 
+		span{ .fc(#fee503); }
+	}
+	.sub_title{ .fc(#ffb4ae); .pa; top:2.3rem; 
+		.icon{ .pl(.45rem);
+                background:url("http://d01.res.meilishuo.net/pic/_o/86/c1/e2ae0dd849f61e58b421eed652e0_28_25.ch.png") no-repeat;
+                background-size:.35rem auto; }
+	}
+	.address{ .pa; top:2.3rem; .f(.28rem); .w(3.1rem); left: .9rem; .l(.38rem); }
+	.buttons{ .clearfix; 
+		.alter_btn , .close_btn{  .left; .pop_btn; }
+		.sure_btn{ .right; .pop_btn; }
+		.looks_btn{ .sure_btn; .fc(#fe6054); }
+
+	}
+	.write_btn{ .pop_btn; .fc(#fe6054); }
+	.info , .desc{ .address;  top:2.8rem;  }
+}
+
+.rule{ background-color: #fff; .w(5.7rem); .h(7rem); overflow-y: scroll; .border-r(.08rem); .c;
+	img{ .w(5.45rem);}
+	h2{ .c; .f(.32rem); .h(1.1rem); .l(1.1rem); .fc(#666666); }
+	.bu{ .h(1rem); }
+	
+}
+.iknow{ .pa; .c; .w(100%); .h(.9rem); .l(.9rem); .fc(#ff6666); .f(.32rem); bottom: 0; background-color: #fff; border-top: 1px solid #e5e5e5; border-bottom-right-radius:.08rem; border-bottom-left-radius:.08rem;  }
+
+/*验证码*/
+.checkBox{
+    .captchaImgBox{ .pf; .w(76%); top:25%; left:12%; z-index:1000; background:#fff;
+	    .imgTop{ .pr; .w(100%); .pt(35%);
+			background:url("http://d02.res.meilishuo.net/pic/_o/d0/55/d6af30741598b4497e51b8d1aa58_570_180.ch.png") no-repeat top center;
+			background-size:100%;
+	        input{ .pa; .w(30%); .h(30%); top:50%; left:14%; .f(10px); border:1px solid #d9d9d9; }
+	        .captchaImg{ .pa; .w(26%); top:50%; right:25%; }
+	        .newImg{ .pa; .w(15%); .pt(10%); top:58%; right:9%; border:0px solid red; }
+	    }
+	    .imgCenter{ .none; .w(100%); .pt(10%);
+	        background:url("http://d02.res.meilishuo.net/pic/_o/09/d2/235259ee81d3976a359b425ed66b_570_48.cg.png") no-repeat top center;
+	        background-size:100%;
+	    }
+	    .imgBottom{ .pr; .w(100%); .pt(18%);
+	        background:url("http://d05.res.meilishuo.net/pic/_o/0b/ae/e13932dbfc6864970bc8bcf8c599_570_101.cg.png") no-repeat top center;
+	        background-size:100%;
+	        .imgCaptchaCheck{ .pa; .w(50%); top:0; right:0; .pt(18%); border:0px solid red; }
+	        .imgCaptchaClose{ .pa; .w(50%); top:0; left:0; .pt(18%); border:0px solid red; }
+	    }
+    }
+    .captchaSmsBox{ .pf; .w(76%); left:12%; top:25%; z-index:1000; background:#fff;
+        .smsTop{ .mb(2%); .w(100%); .pt(35%);
+            background:url("http://d04.res.meilishuo.net/pic/_o/c1/69/a20b15570647e6d78105065b4b1c_570_199.cf.png") no-repeat top center;
+            background-size:100%;
+            .getSmsCaptcha{ .c; .w(86%); .ml(7%); .pt(5%); .pb(5%); .fc(#ff95b6); .border-r(4%); border:1px solid #ff94b7; }
+        }
+        .smsCenter{ .none; .w(100%); .pt(10%);
+            background:url("http://d02.res.meilishuo.net/pic/_o/7a/2b/f2385920609e67d33d292cb4fabf_570_59.cf.png") no-repeat top center;
+            background-size:100%;
+        }
+        .smsBottom{ .pr; .mt(5%); .w(100%); .pt(30%);
+            .captchaInput{ .pa; .block; top:0; left:7%; .w(50%); .h(30%); .border-r(4%); border:1px solid #e6e5e6; }
+            .captchaCheck{ .c;.pa; .w(32%); top:0; right:7%; .fc(#fff); padding:1% 0; .bgc(#e6e5e6); .border-r(4%); }
+        }
+        .smsClose{ .pa; .w(20%); .pt(20%); top:-13%; right:-14%;
+            background:url("http://d02.res.meilishuo.net/pic/_o/fe/d4/041dd4cdce2245eecb4f7dbf46de_45_45.ch.png") no-repeat top center;
+            background-size:50%
+        }
+    }
+}
+
+
+
+
+
+
+

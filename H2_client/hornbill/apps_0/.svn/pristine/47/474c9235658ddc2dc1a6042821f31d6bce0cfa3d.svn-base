@@ -1,0 +1,881 @@
+/*common*/
+
+/**
+ * @fileoverview 会员信息补全－会员中心
+ * @requires zepto
+ * @author kehuang@meilishuo.com
+ * @date 2015-09-07
+ */
+
+require('jquery');
+//require('wap/zepto/fastclick');
+
+//var $ = require('wap/zepto');
+var openApp = require('wap/app/openApp');
+var tracking = require('wap/app/tracking');
+var Swipe = require('wap/component/swipe');
+var shareTmp = require('wap/component/shareTmp');
+var urlHandle = require('wap/component/urlHandle');
+var checkLogin = require('circle/app/checkLogin');
+
+var reback_timer = false;
+var errorPromptLayerTimeout;
+var clickEventIsComplete = false;
+var ajaxRequestIsComplete = false;
+var QQ_REG_EXP = /^\d{5,11}$/;
+var MOBILE_REG_EXP = /^\d{11}$/;
+var CAPTCHA_REG_EXP = /^[0-9]{6}$/;
+var OPTION_STYLE_MAX_SELECT_NUM = 5;
+var SECECT_BG_COLOR_VALUE_ARRAY = ['#ffa279', '#ffcf59', '#9ea7f6', '#70d2ef', '#bbe080'];
+var SECECT_BG_COLOR_VALUE_OBJ_ARRAY = [{'#ffa279': 'active_0'}, {'#ffcf59': 'active_1'}, {'#9ea7f6': 'active_2'}, {'#70d2ef': 'active_3'}, {'#bbe080': 'active_4'}];
+var SECECT_BG_COLOR_VALUE_ARRAY_LENGTH = SECECT_BG_COLOR_VALUE_ARRAY.length || 0;
+var curUrlSearchParams = urlHandle.getParams(window.location.search); 
+var isFromShare = curUrlSearchParams.isFromShare;
+
+// 客户端app回调函数
+window.MLS = {
+    didLogin: function(){
+        // 成功登录，跳转到下一步
+        window.location.reload();
+    }
+};
+
+/**
+ * each是一个集合迭代函数，它接受一个函数作为参数和一组可选的参数
+ * 这个迭代函数依次将集合的每一个元素和可选参数用函数进行计算，并将计算得的结果集返回
+ * @param {Function} fn 进行迭代判定的函数
+ * @param more ... 零个或多个可选的用户自定义参数
+ * @returns {Array} 结果集，如果没有结果，返回空集
+ */
+Array.prototype.each = function(fn){
+    fn = fn || Function.K;
+
+    var a = [];
+    var args = Array.prototype.slice.call(arguments, 1);
+
+    for (var i = 0; i < this.length; i++) {
+        var res = fn.apply(this, [this[i], i].concat(args));
+
+        if (res != null) {
+            a.push(res);
+        }
+    }
+
+    return a;
+};
+
+Array.prototype.contains = function(obj){
+    var i = this.length;
+
+    while (i--) {
+        if (this[i] === obj) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+/**
+ * 得到一个数组不重复的元素集合
+ * 唯一化一个数组
+ * @returns {Array} 由不重复元素构成的数组
+ */
+Array.prototype.uniquelize = function(){
+    var arr = [];
+
+    for (var i = 0; i < this.length; i++) {
+        if (!arr.contains(this[i])) {
+            arr.push(this[i]);
+        }
+    }
+
+    return arr;
+};
+
+/**
+ * 求两个集合的交集
+ * @param {Array} a 集合A
+ * @param {Array} b 集合B
+ * @returns {Array} 两个集合的交集
+ */
+Array.intersect = function(a, b){
+    return a.uniquelize().each(function(o){return b.contains(o) ? o : null});
+};
+
+/**
+ * 求两个集合的差集
+ * @param {Array} a 集合A
+ * @param {Array} b 集合B
+ * @returns {Array} 两个集合的差集
+ */
+Array.minus = function(a, b){
+    return a.uniquelize().each(function(o){return b.contains(o) ? null : o});
+};
+
+/**
+ * 求两个集合的并集
+ * @param {Array} a 集合A
+ * @param {Array} b 集合B
+ * @returns {Array} 两个集合的并集
+ */
+Array.union = function(a, b){
+    return a.concat(b).uniquelize();
+};
+
+/**  
+ * 求两个集合的补集 
+ * @param {Array} a 集合A
+ * @param {Array} b 集合B
+ * @returns {Array} 两个集合的补集
+ */
+Array.complement = function(a, b){
+    return Array.minus(Array.union(a, b), Array.intersect(a, b));
+};
+
+// 倒计时
+var timeDown = function(times, cbk){
+    if (!times) {
+        return;
+    } else if (reback_timer) {
+        cbk(0);
+
+        reback_timer = false;
+    }else {
+        times--;
+
+        cbk(times);
+
+        win_timer = setTimeout(function(){
+            timeDown(times, cbk);
+        }, 1000);
+    }
+};
+
+var complement_info = {
+    oStepSwipe: null,
+    oStyleBlink: $('#option_style').siblings('.blink_wrap'),
+    oProfessionBlink: $('#option_profession').siblings('.blink_wrap'),
+
+    // 初始化页面
+    init: function(){
+        if (isFromShare || (navigator.userAgent.indexOf('MicroMessenger') != -1)) {
+            openApp(window.location.href, '', '', true, 'member');
+        }
+
+        // 判断是否登陆
+        /*if (!fml.vars.isLogin) {
+            window.location.href = 'meilishuo://login.meilishuo/';
+            return;
+        }*/
+
+        if (!fml.vars.isLogin) {
+            setTimeout(function(){
+                // 判断登录，包含app和wx
+                checkLogin();
+            }, 500);
+
+            return;
+        }
+
+        this.initEvent();
+    },
+
+    // 初始化事件
+    initEvent: function(){
+        var self = this;
+
+        window.onload = function(){
+            // 初始化组图滑动
+            self.tabSwipe('j_step_swipe');
+            self.hideLoading();
+            self.initSlide();
+            self.initArrow();
+        };
+
+        //if (fml.vars.isAndroid) {
+            /*var oDateInput = document.getElementById('birthday_input');
+
+            oDateInput.onfocus = function(event){
+                this.type = 'date';
+                this.focus();
+            };
+
+            oDateInput.onblur = function(){
+                this.type = 'text';
+                this.blur();
+            };*/
+        //}
+
+        $('#option_style').on('scroll', function(){
+            var st = $(this).scrollTop() || 0;
+
+            if (st > 90) {
+                self.oStyleBlink.hide();
+            } else {
+                self.oStyleBlink.show();
+            }
+        });
+
+        $('#option_profession').on('scroll', function(){
+            var st = $(this).scrollTop() || 0;
+
+            if (st > 280) {
+                self.oProfessionBlink.hide();
+            } else {
+                self.oProfessionBlink.show();
+            }
+        });
+
+        $('body').on('blur', '#birthday_input', function(){
+            var dateStr = $.trim($(this).val()) || '',
+                formatedDate = self.formatDate(dateStr) || '';
+
+            (formatedDate != '') && $(this).val(formatedDate);
+        });
+
+        $('body').on('change', '#gender_select', function(){
+            var value = $(this).children('option:selected').val() || '';
+
+            if (value == '男') {
+                $('.gender_icon').addClass('man_icon');
+            } else {
+                $('.gender_icon').removeClass('man_icon');
+            }
+        });
+
+        $('body').on('click', '#change_mobile', function(){
+            window.location.href = '/member/bind_mobile/original';
+        });
+
+        $('body').on('click', '#option_education li, #option_profession li', function(){
+            $(this).toggleClass('active').siblings().removeClass('active');
+        });
+
+        $('body').on('click', '#step_area li', function(){
+            var index = $(this).data('index') || 0;
+
+            self.oStepSwipe.slide(index);
+        });
+
+        $('body').on('click', '#option_style li', function(){
+            if (clickEventIsComplete) {
+                return;
+            }
+
+            clickEventIsComplete = !clickEventIsComplete;
+
+            var that = $(this);
+
+            if (that.hasClass('active')) {
+                that.removeClass('active active_0 active_1 active_2 active_3 active_4').data('color', '');
+
+                clickEventIsComplete = !clickEventIsComplete;
+            } else {
+                var oActiveLis = that.siblings('.active'),
+                    curActiveLisLen = oActiveLis.length || 0;
+
+                if (curActiveLisLen < OPTION_STYLE_MAX_SELECT_NUM) {
+                    var colorValue = self.getUniqueColorValue(oActiveLis) || '',
+                        colorClass = self.getUniqueColorClass(colorValue) || '';
+
+                    if ((colorValue != '') && (colorClass != '')) {
+                        that.addClass('active ' + colorClass).data('color', colorValue);
+                    }
+
+                    clickEventIsComplete = !clickEventIsComplete;
+                } else {
+                    self.togglePromptLayer('最多可选择' + OPTION_STYLE_MAX_SELECT_NUM + '种您喜欢的风格哦~');
+                }
+            }
+        });
+
+        $('body').on('click', '#send_captcha', function(){
+            if ($(this).hasClass('disabled')) {
+                return;
+            }
+
+            var mobile = $.trim($('#mobile_input').val());
+
+            if (mobile == '') {
+                self.togglePromptLayer('手机号码还没填写哦~');
+                return;
+            }
+
+            if (!MOBILE_REG_EXP.test(mobile)) {
+                self.togglePromptLayer('手机号码格式不正确，<br>请检查后重新填写哦~');
+                return;
+            }
+
+            var url = '/aj/sendcode/sendCode',
+                data = {
+                    'mobile': mobile,
+                    'frm': 'post_bind'
+                };
+
+            self.sendCaptchaRequest(url, data);
+        });
+
+        $('body').on('click', '.save_btn', function(){
+            if (clickEventIsComplete) {
+                return;
+            }
+
+            clickEventIsComplete = !clickEventIsComplete;
+
+            var that = $(this),
+                index = that.data('index') || 0,
+                bonus = that.data('bonus') || 0,
+                status = that.data('status') || 0,
+                opts = {
+                    'btn': that,
+                    'data': {},
+                    'index': index,
+                    'bonus': bonus,
+                    'status': status
+                };
+
+            switch (index) {
+                case 0:
+                    var nickname = $.trim($('#nickname_input').val()) || '',
+                        realname = $.trim($('#realname_input').val()) || '',
+                        birthday = $.trim($('#birthday_input').val()) || '',
+                        //gender = $.trim($('#gender_select').val()) || '';
+                        gender = $.trim($('#gender_select').find('option:selected').text()) || '';
+
+                    if (nickname == '') {
+                        self.togglePromptLayer('昵称还没填写哦~');
+                        return;
+                    }
+
+                    if (realname == '') {
+                        self.togglePromptLayer('姓名还没填写哦~');
+                        return;
+                    }
+
+                    if ((gender == '') || (gender == '请选择性别')) {
+                        self.togglePromptLayer('请选择性别');
+                        return;
+                    }
+
+                    if (birthday == '') {
+                        self.togglePromptLayer('请输入生日，<br>格式为yyyymmdd');
+                        return;
+                    }
+
+                    if (!self.isDate(birthday)) {
+                        self.togglePromptLayer('生日格式为yyyymmdd，请重新输入');
+                        return;
+                    }
+
+                    opts.data = {
+                        'step': index + 1,
+                        'nickname': nickname,
+                        'realname': realname,
+                        'gender': gender,
+                        'birthday': birthday,
+                        'mobile': '',
+                        'qq': '',
+                        'educationRank': '',
+                        'workType': '',
+                        'likeType': ''
+                    };
+
+                    self.saveUserInfo(opts);
+
+                    break;
+                case 1:
+                    var mobile = $.trim($('#mobile_input').val()) || '',
+                        qq = $.trim($('#qq_input').val()) || '';
+
+                    if (mobile == '') {
+                        self.togglePromptLayer('请填写真实手机号码，<br>不定期收到美丽说现金券哦~');
+                        return;
+                    }
+
+                    if (!MOBILE_REG_EXP.test(mobile)) {
+                        self.togglePromptLayer('手机号码格式不正确，<br>请检查后重新填写哦~');
+                        return;
+                    }
+
+                    if (qq == '') {
+                        self.togglePromptLayer('QQ号还没填写哦~');
+                        return;
+                    }
+
+                    if (!QQ_REG_EXP.test(qq)) {
+                        self.togglePromptLayer('QQ号格式不正确，<br>请检查后重新填写哦~');
+                        return;
+                    }
+
+                    opts.data = {
+                        'step': index + 1,
+                        'nickname': '',
+                        'realname': '',
+                        'gender': '',
+                        'birthday': '',
+                        'mobile': mobile,
+                        'qq': qq,
+                        'educationRank': '',
+                        'workType': '',
+                        'likeType': ''
+                    };
+
+                    if ($('#captcha_input').length < 1) {
+                        self.saveUserInfo(opts);
+                    } else {
+                        self.verifyBindMobile(opts);
+                    }
+
+                    break;
+                case 2:
+                    var oCurSelectLi = $('#option_education').find('li.active'),
+                        educationRank = $.trim($(oCurSelectLi[0]).text());
+
+                    if (educationRank == '') {
+                        self.togglePromptLayer('请选择教育程度~');
+                        return;
+                    }
+
+                    opts.data = {
+                        'step': index + 1,
+                        'nickname': '',
+                        'realname': '',
+                        'gender': '',
+                        'birthday': '',
+                        'mobile': '',
+                        'qq': '',
+                        'educationRank': educationRank,
+                        'workType': '',
+                        'likeType': ''
+                    };
+
+                    self.saveUserInfo(opts);
+
+                    break;
+                case 3:
+                    var oCurSelectLi = $('#option_profession').find('li.active'),
+                        workType = $.trim($(oCurSelectLi[0]).text());
+
+                    if (workType == '') {
+                        self.togglePromptLayer('请选择职业~');
+                        return;
+                    }
+
+                    opts.data = {
+                        'step': index + 1,
+                        'nickname': '',
+                        'realname': '',
+                        'gender': '',
+                        'birthday': '',
+                        'mobile': '',
+                        'qq': '',
+                        'educationRank': '',
+                        'workType': workType,
+                        'likeType': ''
+                    };
+
+                    self.saveUserInfo(opts);
+
+                    break;
+                case 4:
+                    var oCurSelectLi = $('#option_style').find('li.active'),
+                        oCurSelectLiLen = oCurSelectLi.length || 0;
+
+                    if (oCurSelectLiLen < 1) {
+                        self.togglePromptLayer('请至少选择1种您喜欢的风格~');
+                        return;
+                    }
+
+                    var likeType = '';
+
+                    for (var i = 0; i < oCurSelectLiLen; i++) {
+                        var oLi = $(oCurSelectLi[i]),
+                            text = $.trim(oLi.text());
+
+                        if (text != '') {
+                            if ((oCurSelectLiLen == 1) || (i == (oCurSelectLiLen - 1))) {
+                                likeType += text;
+                            } else {
+                                likeType += (text + ',');
+                            }
+                        }
+                    }
+
+                    opts.data = {
+                        'step': index + 1,
+                        'nickname': '',
+                        'realname': '',
+                        'gender': '',
+                        'birthday': '',
+                        'mobile': '',
+                        'qq': '',
+                        'educationRank': '',
+                        'workType': '',
+                        'likeType': likeType
+                    };
+
+                    self.saveUserInfo(opts);
+
+                    break;
+                default:
+                    break;
+            }
+        });
+    },
+
+    hideLoading: function(){
+        $('#j_step_wrap').show();
+        $('#j_loading_status').hide();
+    },
+
+    initSlide: function(){
+        var index = 0;
+
+        if (fml.vars.userStep) {
+            index = fml.vars.userStep - 1;
+        } else {
+            index = parseInt((window.location.hash + '').substring(1)) || 0;
+        }
+
+        index && this.oStepSwipe.slide(index);
+    },
+
+    initArrow: function(){
+        var st = 0,
+            mt = 30,
+            oBlinks = $('.blink_wrap').find('.blink'),
+            slide = function(){
+                var time = 10;
+
+                (0 == st) ? mt++ : mt--;
+                (mt > 60) && (st = 1);
+                (30 > mt) && (st = 0, time = 500);
+
+                oBlinks.css('margin-top', mt);
+
+                setTimeout(function() {
+                    slide();
+                }, time);
+            };
+
+        slide();
+    },
+
+    // 组图swipe
+    tabSwipe: function(id){
+        var self = this,
+            oSteps = $('#j_step_wrap').find('.step');
+
+        self.oStepSwipe = new Swipe(document.getElementById(id), {
+            startSlide: 0,
+            speed: 300,
+            //auto: 3000,
+            //stopPropagation: true,
+            callback: function(index, element){
+                window.location.hash = '';
+
+                oSteps.removeClass('show').eq(index).addClass('show'); // 当前状态
+            }
+        });
+    },
+
+    getUniqueColorValue: function(oActiveLis){
+        var colorValue = '',
+            minColorValueArray = [],
+            tempColorValueArray = [],
+            oActiveLisLen = oActiveLis.length || 0;
+
+        for (var j = 0; j < oActiveLisLen; j++) {
+            var curActiveLi = $(oActiveLis[j]),
+                curColorValue = curActiveLi.data('color') || '';
+
+            (curColorValue != '') && tempColorValueArray.push(curColorValue);
+        }
+
+        minColorValueArray = Array.complement(tempColorValueArray, SECECT_BG_COLOR_VALUE_ARRAY);
+
+        colorValue = minColorValueArray[0] || '';
+
+        return colorValue;
+    },
+
+    getUniqueColorClass: function(colorValue){
+        var colorClass = '';
+
+        for (var i = 0; i < SECECT_BG_COLOR_VALUE_ARRAY_LENGTH; i++) {
+            var curColorValueObj = SECECT_BG_COLOR_VALUE_OBJ_ARRAY[i],
+                curColorClass = curColorValueObj[colorValue] || '';
+
+            if (curColorClass != '') {
+                colorClass = curColorClass;
+
+                break;
+            }
+        }
+
+        return colorClass;
+    },
+
+    sendCaptchaRequest: function(url, data){
+        var self = this,
+            time = 60,
+            oBtn = $('#send_captcha');
+
+        var start = function(){
+            timeDown(time, function(times){
+                if (!times) {
+                    reback_timer = false;
+                    oBtn.removeClass('disabled').text('发送验证码');
+                } else {
+                    oBtn.addClass('disabled').text(times + '秒');
+                }
+            });
+        };
+
+        start();
+
+        $.ajax({
+            url: url,
+            timeout: 10000,
+            type: 'post',
+            data: data,
+            dataType: 'json',
+            success: function(data){
+                var code = data.code;
+
+                if (code == 0) {
+                    
+                } else {
+                    reback_timer = true;
+
+                    var errorText = (code == 4) ? '绑定失败，该手机号已被其他账户绑定，可使用该手机号登录后完善信息' : data.message;
+
+                    self.togglePromptLayer(errorText);
+                }
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown){
+                var errorText = (textStatus == 'timeout') ? '请求超时~' : '服务器开小差，请稍后重试~';
+
+                self.togglePromptLayer(errorText);
+            }
+        });
+    },
+
+    verifyBindMobile: function(opts){
+        if (ajaxRequestIsComplete) {
+            return;
+        }
+
+        ajaxRequestIsComplete = !ajaxRequestIsComplete;
+
+        var self = this,
+            mobile = $.trim($('#mobile_input').val()),
+            captcha = $.trim($('#captcha_input').val()),
+            url = '/aj/sendcode/sendBind',
+            data = {
+                'mobile': mobile,
+                'active_code': captcha,
+                'frm': 'bindok'
+            };
+
+        if (mobile == '') {
+            self.togglePromptLayer('手机号码还没填写哦~');
+
+            ajaxRequestIsComplete = !ajaxRequestIsComplete;
+
+            return;
+        }
+
+        if (!MOBILE_REG_EXP.test(mobile)) {
+            self.togglePromptLayer('手机号码格式不正确，<br>请检查后重新填写哦~');
+
+            ajaxRequestIsComplete = !ajaxRequestIsComplete;
+
+            return;
+        }
+
+        if (captcha == '') {
+            self.togglePromptLayer('验证码还没填写哦~');
+
+            ajaxRequestIsComplete = !ajaxRequestIsComplete;
+
+            return;
+        }
+
+        if (!CAPTCHA_REG_EXP.test(captcha)) {
+            self.togglePromptLayer('验证码填写有误，<br>请检查后重新填写哦~');
+
+            ajaxRequestIsComplete = !ajaxRequestIsComplete;
+
+            return;
+        }
+
+        $.ajax({
+            url: url,
+            timeout: 10000,
+            type: 'post',
+            data: data,
+            dataType: 'json',
+            success: function(data){
+                ajaxRequestIsComplete = !ajaxRequestIsComplete;
+
+                var code = data.code;
+
+                if (code == 0) {
+                    self.saveUserInfo(opts);
+                } else {
+                    var errorText = (code == 4) ? '绑定失败，该手机号已被其他账户绑定，可使用该手机号登录后完善信息，或先解绑后才能绑定' : data.message;
+
+                    self.togglePromptLayer(errorText);
+                }
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown){
+                ajaxRequestIsComplete = !ajaxRequestIsComplete;
+
+                var errorText = (textStatus == 'timeout') ? '请求超时~' : '服务器开小差，请稍后重试~';
+
+                self.togglePromptLayer(errorText);
+            }
+        });
+    },
+
+    saveUserInfo: function(opts){
+        var self = this,
+            data = opts.data || null;
+
+        if (!data || ajaxRequestIsComplete) {
+            return;
+        }
+
+        ajaxRequestIsComplete = !ajaxRequestIsComplete;
+
+        $.ajax({
+            url: '/aj/member/saveUserInfo',
+            timeout: 10000,
+            type: 'post',
+            data: data,
+            dataType: 'json',
+            success: function(data){
+                ajaxRequestIsComplete = !ajaxRequestIsComplete;
+
+                var code = data.error_code;
+
+                if (code == 0) {
+                    var index = opts.index || 0,
+                        bonus = opts.bonus || 0,
+                        status = opts.status || 0,
+                        oBtn = opts.btn || $('.save_btn[data-index="' + index + '"]'),
+                        captionText = (status == 0) ? '恭喜，保存成功并获得' + bonus + '美美豆！' : '恭喜，保存成功！';
+
+                    self.togglePromptLayer(captionText);
+
+                    self.updateSaveBtnStatus(index, oBtn);
+
+                    var tempIndex = index + 1,
+                        btnText = $.trim(oBtn.text()) || '';
+
+                    // 发送数据统计请求
+                    tracking.cr('page_element', {'_action': 'click', 'r': '_page_id=1100004:_page_area=step' + tempIndex + ':_pos_id=1:_pos_name=' + btnText});
+
+                    window.setTimeout(function(){
+                        if (index < 4) {
+                            self.oStepSwipe.slide(tempIndex);
+                        } else {
+                            window.location.href = '/member/beans_paradise/?frm=huiyuaninfocomplement';
+                        }
+                    }, 2000);
+                } else {
+                    self.togglePromptLayer(data.message);
+                }
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown){
+                ajaxRequestIsComplete = !ajaxRequestIsComplete;
+
+                var errorText = (textStatus == 'timeout') ? '保存好久都没有反应，请试下重新保存吧~' : '服务器开小差，请重新保存~';
+
+                self.togglePromptLayer(errorText);
+            }
+        });
+    },
+
+    updateSaveBtnStatus: function(index, oBtn){
+        var text = '',
+            index = index || 0,
+            text = (index == 4) ? '开启全新会员体验' : '保存',
+            oBtn = oBtn || $('.save_btn[data-index="' + index + '"]');
+
+        oBtn && oBtn.data('status', 1).text(text);
+    },
+
+    togglePromptLayer: function(text){
+        var text = text || '服务器开小差，请重新保存~',
+            tpl = shareTmp('j_error_prompt_tpl', {'text': text});
+
+        $('body').append(tpl);
+
+        var oLayer = $('#j_error_prompt_layer');
+
+        oLayer.animate({'opacity': 1}, 500, function(){
+            if (errorPromptLayerTimeout) {
+                clearTimeout(errorPromptLayerTimeout);
+                errorPromptLayerTimeout = null;
+            }
+
+            errorPromptLayerTimeout = window.setTimeout(function(){
+                oLayer.animate({'opacity': 0}, 500, function(){
+                    oLayer.remove();
+
+                    clickEventIsComplete = !clickEventIsComplete;
+                });
+            }, 1000);
+        });
+    },
+
+    isDate: function(dateStr){
+        var reg = /^(\d{4})-(\d{2})-(\d{2})$/,
+            str = dateStr,
+            arr = reg.exec(str);
+
+        if (str == '') {
+            return true;
+        }
+
+        if (!reg.test(str) && (RegExp.$2 <= 12) && (RegExp.$3 <= 31)) {
+            return false;
+        }
+
+        return true;
+    },
+
+    isDateStr: function(dateStr){
+        var reg = /^(\d{4})(\d{2})(\d{2})$/,
+            str = dateStr,
+            arr = reg.exec(str);
+
+        if (str == '') {
+            return true;
+        }
+
+        if (!reg.test(str) && (RegExp.$2 <= 12) && (RegExp.$3 <= 31)) {
+            return false;
+        }
+
+        return true;
+    },
+
+    formatDate: function(dateStr){
+        var self = this,
+            formatedDate = '',
+            reg = /(\d{4})(\d{2})(\d{2})/;
+
+        if (self.isDateStr(dateStr)) {
+            formatedDate = dateStr.replace(reg, '$1-$2-$3');
+        }
+
+        return formatedDate;
+    }
+};
+
+// 初始化页面
+complement_info.init();

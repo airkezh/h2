@@ -1,0 +1,18 @@
+<%
+	var rulesList=this.onSale.rules || [];
+%>
+
+<% if(rulesList.length>0){ %>
+	<a href="javascript:;" class="rules" id="btn-rules">活动规则></a>
+	<div class="rules-box" id="rulesBox">
+		<ul>
+			<% rulesList.map(function(item){ %>
+				<li>
+					<span></span>
+					<p><%= item.des %></p>
+				</li>
+			<% }) %>
+		</ul>
+		<a href="javascript:;" class="close-rules" id="closeRules">知道了</a>
+	</div>
+<% } %>

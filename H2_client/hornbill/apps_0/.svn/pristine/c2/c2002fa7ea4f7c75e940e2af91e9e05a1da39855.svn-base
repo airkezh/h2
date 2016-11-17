@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<!--[if IE 7]><html class="ie7 lt-ie10"><![endif]-->
+<!--[if IE 8]><html class="ie8 lt-ie10"><![endif]-->
+<!--[if IE 9]><html class="ie9 lt-ie10"><![endif]-->
+<!--[if gt IE 9]><!-->
+<html>
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8" />
+	<title>登录 － 美丽说</title>
+	<link rel="stylesheet" type="text/css" href="http://slab.meilishuo.net/css/base.css?1506161630.7.0095">
+	<script src="http://slab.meilishuo.net/js/jquery.js"></script>
+	<script src="http://slab.meilishuo.net/passport/dist/v1.js"></script>
+</head>
+<body>
+
+<div id="loginBox">
+</div>
+
+<div id="mobileBox">
+</div>
+<div id="riskBox2">
+</div>
+<script>
+var passport = new MLSPassport.passport({
+	app_id:"10001",
+	defaultCSS:true,
+
+	jcstatic:'slab.meilishuo.net',
+	domain:'newlab.meilishuo.com',
+	blank:'http://slab.meilishuo.net/passport/blank_lab.html',
+
+	captcha:'http://captchalab.meilishuo.com'
+})
+
+var login = passport.getLogin({
+	ui:{},
+	risk_sms_custom:true,
+	watch:function(res){
+		console.log(res);
+	}
+})
+
+</script>
+
+
+</body>
+</html>
+

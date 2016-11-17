@@ -1,0 +1,135 @@
+/* @group general styles
+--------------------------------------------------*/
+@import "sq.less";
+@import "search_md.less";
+
+body{
+	.f(12*@f);
+	.bgc(#efefef);
+}
+
+h3 { .fn; }
+
+/* @group page structure
+--------------------------------------------------*/
+.search {
+	.pf; top: 0; left: 0;
+	width: 100%;
+}
+
+.section_wrap {
+	.mt(.8rem);
+}
+
+.popular {
+	.bgwhite;
+	h3 {
+		.pt(.2rem);
+		.pl(.24rem);
+		.f(.28rem);
+	}
+}
+.popular-wrapper {
+	.h(1.56rem);
+	.pt(.15rem);
+	.pb(.2rem);
+	.f(0);
+	white-space: nowrap;
+	overflow-x: scroll;
+	overflow-y: hidden;
+	-webkit-overflow-scrolling: touch;
+	&::-webkit-scrollbar {
+		display: none;
+	}
+	.popular-goods {
+		.i_block;
+		.w(1.56rem);
+		.h(100%);
+		.ml(.06rem);
+		.mr(.06rem);
+		background-repeat: no-repeat;
+		background-position: center center;
+		background-size: cover;
+		&:first-child {
+			.ml(.24rem);
+		}
+		&:last-child {
+			.mr(.24rem);
+		}
+	}
+}
+
+.sec1-ctn { 
+	.f(.26rem);
+	 .c;
+	.bgwhite;
+	.flexbox; 
+	.hidden;
+	li { 
+		.flex(1); 
+		.pt(.2rem);
+		.pb(.2rem);
+	}
+	.selected { 
+		.red; 
+		.f(.28rem);
+	}
+	span { 
+		.block;
+		border-left: 1px solid #d9d9d9; 
+	}
+	li:first-child { 
+		span {
+			.border-n; 
+		}
+	}
+}
+
+.sec2-ctn {
+	.pr;
+	.mt(.2rem);
+	figure {
+		.bgwhite;
+	}
+}
+
+/* @group page components
+--------------------------------------------------*/
+.pullUp {
+	.pullUpDown > .common;
+	.pullUpDown > .loading;
+	&:before{
+		.nowrap;
+		.ml(-.64rem);
+	}
+	&[status="tap"] {
+		background: 0 none;	
+	}
+	&[status="stop"] {
+		background: 0 none;
+		.h(.04rem);
+		&:before {
+			.i_block;
+			content: "未能找到更多商品";
+		}
+	}
+}
+
+// 右下角的挂件
+.pendant {
+	.pf;
+	bottom: .2rem; 
+	right: 0;  
+	.mr(.08rem);
+	z-index: 49;
+	li {
+		.w(.80rem);
+		.h(.80rem); 
+		.mb(.16rem);
+		.c;
+	}
+	.pendant-b {
+		.icon > .gotop;
+		opacity: 0;
+	}
+}

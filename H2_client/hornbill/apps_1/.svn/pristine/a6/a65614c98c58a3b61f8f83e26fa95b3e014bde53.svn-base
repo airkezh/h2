@@ -1,0 +1,18 @@
+<%# head_simple.html%>
+</head>
+<body>
+<div class="top_bnr">
+	<%if(this.success){%>
+		<img src="<%= this.PICTURE_URL%>images/wap/activity/mario/award_suc.jpg" />
+	<%}else{%>
+		<img src="<%= this.PICTURE_URL%>images/wap/activity/mario/fail.jpg" />
+	<%}%>
+</div>
+<div class="inner">
+	<a id="closemls"><img src="<%= this.PICTURE_URL%>images/wap/activity/mario/ok.gif" /></a>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/close');
+_use:", this._JSstack , this._JSmods);%>
+
+<%# foot_simple.html%>

@@ -1,0 +1,97 @@
+@import "../../block.less";
+
+body { .bgc(#3d3a71);}
+img { .block; .w(100%);}
+
+/* 分享 */
+.starBox { .star_box;}
+
+/*dialog*/
+.dialog();
+.dialog {
+	#maskLayer { background:rgba(0 ,0 ,0 , 0.8);}
+	#dialogLayer { 
+		background: none;
+		box-shadow: none;
+		.dialogTitle { .none;}
+	}
+}
+.dialog_box {
+	.bgwhite; .c; .border-r(10*@px); .pt(50*@px); .fc(#343434); .pr;
+	p { .pb(24*@px);} 
+	label { .f(30*@px);}
+	.txt { .border-n; .border-r(40*@px); .bgc(#eee); .l(50*@px); .h(50*@px); .pl(10*@px); .f(28*@px);}
+	.submit { .w(100%); .border-n; .bgc(#91bb2d); .white; .c; .l(60*@px); .h(68*@px); .f(38*@px); border-bottom-right-radius: 10*@px; border-bottom-left-radius: 10*@px; border-top-left-radius: 0; border-top-right-radius: 0;}
+	.errorTips { .f(24*@px); .ml(10%);}
+	p.errorTips { .pb(8*@px);}
+	.close { 
+		.w(50*@px); .h(50*@px); .block; .pa; top: 0; right: 1px;
+		background: url('http://d05.res.meilishuo.net/pic/_o/b1/11/8d6056569c2665456c22941db69a_28_28.cg.png') center center no-repeat;
+		background-size: 60% 60%;
+	}
+	.tips { .f(22*@px); .fc(#8d8d8d); border-top: 1px solid #eee; .mr(10*@px); .ml(10*@px); .l(48*@px); .fn;}
+	
+}
+.dialog_share {
+	.share_pic {
+		.w(494*@px); .h(514*@px); .i_block; .bgc(#331621);
+		background: url("@{pic_url}/images/wap/activity/baoyang/shareLead.png");
+		background-size: 100% 100%;
+	}
+}
+
+.wrap{
+	.w(100%);
+	background: url("http://d02.res.meilishuo.net/pic/_o/a8/ac/eee3dae6465d183a78358e85c6dd_640_1136.cg.jpg") top center no-repeat;
+	background-size: 100%;
+
+	header {
+		.pt(6%); .pb(10%);
+		.icon { .w(45%); .ml(8%);}
+		h1 { .f(60*@px); .white; .c; .pt(9%); .pb(3%);}
+		p { .c; .bgc(#fbe639); .w(90%); .auto; text-transform:uppercase; .f(24*@px); .l(38*@px); .fc(#000);}
+	}
+	section {
+		.pr; .pb(120%); .white;
+		a { .white;}
+		.link_icon { 
+			.w(20%); .pa; .block;
+			-webkit-animation: scaleIcon 2s linear 0s infinite;
+		}
+		.ticket_icon {
+			.w(20%); .pa; .block;
+			-webkit-animation: ticketIcon 1s ease-in-out 0s infinite alternate;
+		}
+		.xian_icon { top: 9%; left: 14.5%;}
+		.mls_icon { top: 29%; left: 25%;}
+		.love_icon { top: 57%; left: 20%;}
+		.caomei_icon { top: 45%; left: 65%;}
+		.get_ticket { top: 3%; left: 61.5%;}
+		.get_prize { top: 78%; left: 30%;}
+	}
+
+	.shareBtn { .w(30%); .pa; top: 85%; left: 62%;}
+
+	@keyframes scaleIcon {
+		0% { transform: scale(1.1, 1.1); opacity: 1;}
+		50% { transform: scale(1, 1); opacity: .8;}
+		100% { transform: scale(1.1, 1.1); opacity: 1;}
+	}
+	@-webkit-keyframes scaleIcon {
+		0% { -webkit-transform : scale(1.1, 1.1); opacity: 1;}
+		50% {  -webkit-transform: scale(1, 1); opacity: .8;}
+		100% { -webkit-transform: scale(1.1, 1.1); opacity: 1;}
+	}
+
+	@-webkit-keyframes ticketIcon {
+		0% { -webkit-transform: rotate(25deg);}
+		100% { -webkit-transform: rotate(-25deg);}
+	}
+	@keyframes ticketIcon {
+		0% { transform: rotate(25deg);}
+		100% { transform: rotate(-25deg);}
+	}
+
+}
+
+

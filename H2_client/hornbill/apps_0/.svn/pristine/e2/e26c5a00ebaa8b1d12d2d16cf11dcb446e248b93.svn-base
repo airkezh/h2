@@ -1,0 +1,79 @@
+<%# head_simple.html%>
+<% var pageData = this.pageData.data
+	, topBanner = pageData.banner
+	, goodShop = pageData.goodShop
+	, category = pageData.category
+	, page_r = this.pageData.r;
+%>
+<% if(topBanner && topBanner.length){ %>
+	<div id='slider' class="swipe">
+		<div class='swipe-wrap'>
+			<% topBanner.forEach(function(item, index){ %>
+				<a href="<%= item.url %>" xr="<%= page_r %>" style="background-image: url(<%= item.image.pic_url %>);"></a>
+			<% }); %>
+		</div>
+	</div>
+<% } %>
+
+<!-- 品牌推荐 -->
+
+<%if(goodShop.shops && goodShop.shops.length){%>
+<div class="recommend brand">
+	<div class="title">
+		<img src="<%= goodShop.banner.pic_url%>">
+	</div>
+	<div class="list">
+		<%goodShop.shops.forEach(function(k, i){%>
+			<a class="item" xr="<%= page_r%>" href="<%= _extFn.getAppLink('shop' , {'shop_id': k.shop_id} , this.os, null, '/shop/' + k.shop_id)%>">
+				<img src="<%= k.shop_face_img%>" />
+				<p><%= k.shop_nick%></p>
+				<span><%= k.following_num%></span>
+			</a>
+		<%})%>
+	</div>
+	<div class="lookall">
+		<a xr="<%= page_r%>" href="<%= _extFn.getAppLink('openURL' , {'url': 'http://wwjm.fedevot.meilishuo.com/brand/all/'} , this.os, null, '/brand/all/')%>">查看所有品牌<span>></span></a>
+	</div>
+</div>
+<%}%>
+
+<!-- 专题推荐 -->
+
+<%if(category.brand_items && category.brand_items.length >= 3){%>
+<div class="recommend topic">
+	<div class="title">
+		<img src="<%= category.banner.pic_url%>">
+	</div>
+	<div class="list<%= category.brand_items.length > 3 ? ' gtthree' : ''%>">
+		<div class="wraper">
+			<%category.brand_items.forEach(function(k, i){%>
+				<a xr="<%= page_r%>" href="<%= _extFn.getAppLink('openURL' , {'url': k.url} , this.os, null, k.url)%>" class="item" style="background: url('<%= k.image.pic_url%>'); background-size: cover;"></a>
+			<%})%>
+		</div>
+	</div>
+</div>
+<%}%>
+
+<!-- 活动推荐 -->
+<div class="recommend activity">
+	<div class="title">
+		<img src="http://d05.res.meilishuo.net/pic/_o/02/41/bba69d6699c89c1b336acf063bb4_752_64.cj.jpg">
+	</div>
+	<div class="list">
+		
+	</div>
+	<div class="pullUp" status="loading"></div>
+</div>
+<script type="text/javascript">
+	fml.vars.activityList = <%= JSON.stringify( this.activitys )%>;
+</script>
+<script type="text/html" id="posterWall">
+<div>
+	<a data-title="<?= this.v.title?>" class="item bs_load_img js-stats" xr="<%= page_r%>" asrc="<?= this.v.image.pic_url?>" href="<?= this.v.url?>" style="background-size: cover;">
+	<span class="num">已参与<?= this.v.number?>人</span></a>
+</div>
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/brand/activity');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

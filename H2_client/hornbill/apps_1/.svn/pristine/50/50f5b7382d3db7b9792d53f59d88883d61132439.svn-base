@@ -1,0 +1,171 @@
+<%
+var query = this._Request_query;
+var getLink = _extFn.getLink;
+%>
+<%if(this.order_info && this.order_info.info){
+	var order = this.order_info.info.order
+		, address = this.order_info.info.address
+		, goods = this.order_info.info.goods
+
+%>
+<div class="order_goods">
+	<table class="order_list">
+		<colgroup>
+			<col width="360">
+			<col width="120">
+			<col width="80">
+			<col width="100">
+			<col width="130">
+			<col width="120">
+		</colgroup>
+		<thead>
+			<tr>
+				<th>商品信息</th>
+				<th>单价（元）</th>
+				<th>数量</th>
+				<th>售后</th>
+				<th>合计（元）</th>
+				<th>订单状态</th>
+			</tr>
+		</thead>
+		<tbody class="order_list">
+			<tr class="order_info">
+				<td colspan="6">
+					<span><%if(order.is_haitao){%><%}else{%>商家：<%}%><a class="red_f" href="<%= this.DOMAIN.www%>/shop/<%= order.shop_id %>" target="_blank"><%= order.shop_name%></a></span>
+					<% if(order.im || order.qq){ %><a class="getserviceqq knilmi" href="<%= this.ViewTools.callIM(order.im , order.qq) %>" target="_blank">&nbsp;</a><% } %>
+				</td>
+			</tr>
+			<% goods && goods.map(function(g, i){ %>
+			<tr class="order_goods_list">
+				<td class="order_goods_goods<%if(i != 0){%> bb<%}%>">
+					  <a target="_blank" href="<%= this.DOMAIN.www%>/share/<%if(g.is_doota == '1'){%>item/<%}%><%= g.twitter_id %>">
+							<img class="pic" src="<%= g.b_pic_url%>"/>
+					  </a>
+						<p class="title"><%= g.goods_title.length > 30 ? g.goods_title.substr(0,30)+'...' : g.goods_title %><br/><% if(g.has_snapshot == '1'){ %><span class="snap-wrapper">【<a class="snap-link" href="<%=this.DOMAIN.www%>/share/snapshot/<%= g.mid %>" target="_blank">交易快照</a>】</span><%}%></p>
+						<p class="prop">
+							<% g.prop && g.prop.map(function(prop){ %>
+							<%if(prop.is_show){%>
+							<span class="order_detail_prop"><%= prop.name%>：<%= prop.value%></span>
+							<%}%>
+							<%});%>
+						</p>
+					</a>
+				</td>
+				<td class="<%if(i != 0){%> bb<%}%>"><%= g.price%></td>
+				<td class="<%if(i != 0){%> bb<%}%>"><%= g.amount%></td>
+				<td class="<%if(i != 0){%> bb<%}%>">
+					<%if(g.refund_id){%><p><a href="<%= this.DOMAIN.order%>/refund/detail?refund_id=<%=g.refund_id%>"><%= g.refund_status_text %></a></p><%}%>
+					<%if(g.appeal_id){%><p><a href="<%= this.DOMAIN.order%>/appeal/?refund_id=<%=g.refund_id%>"><%= g.appeal_status_text %></a></p><%}%>
+				</td>
+				<% if(i==0){ %>
+					<td class="bl" rowspan="<%= goods.length %>"><%= order.goods_price %></td>
+					<td class="bl" rowspan="<%= goods.length %>">
+						<%=order.status_text%>
+					</td>
+				<% } %>
+			</tr>
+			<%});%>
+		</tbody>
+	</table>
+<!-- 	<%if(order.comment){%>
+	<ul>
+		<li class="order_timer">
+			<p>顾客备注：<%==order.comment%></p>
+		</li>
+	</ul>
+	<%}%>
+ -->
+	<ul>
+		<li class="order_timer">
+			<p>
+				<span class="first">订单号：<%= order.order_id %> <%if(order.pre_sale && order.pre_sale.type==2){%><em class="presale presale-btn"><%= order.pre_sale.label_text%></em><%}%></span>
+				<%if(order.ctime){%><span>成交时间：<%= order.ctime %></span><%}%>
+				<%if(order.pay_time){%><span>成功付款时间：<%= order.pay_time%></span><%}%>
+				<!--<%if(order.send_time){%><span>发货时间：<%= order.send_time%></span><%}%>-->
+				<%if(order.auto_confirm_time){%><span>系统自动确认收货时间：<%= order.auto_confirm_time%></span><%}%>
+				<!--<%if(order.receive_time){%><span>确认收货时间：<%= order.receive_time%></span><%}%>
+			-->
+
+				<%if(order.last_status_time){%><span>订单关闭时间：<%= order.last_status_time%></span><%}%>
+				<%if(order.auto_close_time){%><span>未付款订单关闭时间：<%= order.auto_close_time%></span><%}%>
+			</p>
+		</li>
+
+<!-- 		<li class="order_discount">
+			<%if(order.coupon){%>
+			<span class="left_f">
+				<%if(order.coupon){%><span class="order_discount_item order_discount_coupon"><%=order.coupon%></span><%}%>
+			</span>
+			<p class="left_f">
+				<%if(order.coupon_price){%><span class="order_discount_item order_discount_couponprice">优惠券扣减：<%= order.coupon_price%>元</span><%}%>
+			</p>
+			<%}else{%>
+			<span>
+				优惠券：未使用
+			</span>
+			<%}%>
+			<%if(order.pre_sale && order.pre_sale.type==2){%>
+			<span class="red_f right_f order_discount_presale order_discount_item">
+				<%= order.pre_sale.text%>
+			</span>
+			<%}%>
+		</li>
+ -->
+		<%if(order.comment || (order.favorable && order.favorable.length>0)){%>
+		<li class="order_comment_discount">
+			<table>
+				<tbody>
+					<tr>
+						<td class="comment">
+							<%if(order.comment){%>
+							<p>顾客备注：<%=order.comment%></p>
+							<%}%>
+						</td>
+						<td class="discount">
+							<table>
+								<%if(order.favorable && order.favorable.length>0){%>
+								<tr class="discount_info">
+									<td><strong>已选择优惠</strong></td>
+								</tr>
+								<%for(var i=0;i<order.favorable.length;i++){%>
+									<tr class="discount_info">
+										<td>
+											<%if(order.favorable[i].src){%><img src="<%=order.favorable[i].src%>?asdf"/><%}%><span><%=order.favorable[i].title%></span>
+										</td>
+									</tr>
+								<%}%>
+								<%}%>
+							</table>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</li>
+		<%}%>
+		<li>
+			<p class="right_f">
+				<span class="last">
+					<span>运费：<em class="red_f f15_f"><%= order.express_price == 0 ? '0.00': order.express_price %>&nbsp;</em>元
+					</span>
+
+
+					<%if( 1 == order.is_haitao ){%>
+
+						<span>关税：<em class="red_f"><%= order.tax == 0 ? '0.00': order.tax %>&nbsp;</em>元
+						</span>
+
+
+					<%}%>
+          <span>共计优惠：<strong class="red_f f15_f"> - <%=order.favorable_credit%></strong>&nbsp;元</span>
+					<% if(order.coin_price && +order.coin_price){ %>
+						<span><%=order.coin_words%>：<strong class="red_f f15_f"> - <%=order.coin_price%></strong>&nbsp;元</span>
+					<% } %>
+					<span>实付金额：<strong class="red_f f18_f"><%= order.total_price %></strong>&nbsp;&nbsp;元</span>
+				</span>
+			</p>
+			<div class="clear_f"></div>
+		</li>
+
+	</ul>
+</div>
+<%}%>

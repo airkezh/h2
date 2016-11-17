@@ -1,0 +1,33 @@
+<%#head.html%>
+<div class="banner" >
+	<a class="btn" href="<%=this.btnHref%>"></a>
+</div>
+
+<div class="staticPic" >
+	<div class="btn1"></div>
+	<div class="btn2"></div>
+</div>
+<div class="bottom">
+	<div></div>
+</div>
+<script>
+	//登陆成功后的回掉函数
+	window.MLS = {
+		didLogin : function() {
+			// 成功登录，跳转到下一步
+			window.location.reload();
+		}
+	};
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use('wap/zepto/touch', function() {
+	$(".staticPic div").on("tap", function() {
+		window.location.href = $(".btn").attr("href");
+	});
+	$(".bottom div").on("tap", function() {
+		window.location.href = 'http://mapp.meilishuo.com/activity/sign/sign_in/?frm=qiandaonewuser';
+	})
+});
+
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

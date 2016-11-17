@@ -1,0 +1,138 @@
+@import "wx-rem.less";
+body{.bgwhite; .f(.24rem);}
+.pullUp{
+	.pullUpDown > .common;.pullUpDown > .loading;
+	&:before{
+		.nowrap;
+		.ml(-0.35rem);
+	}
+	&[status="tap"]{
+		background:0 none;	
+	}
+	&[status="stop"]{
+		background:0 none;	
+		.h(.02rem);
+		&:before{.i_block;
+			content:"没有更多内容了...";
+		}
+	}
+}
+div.pullUp{
+	.l(.8rem); .f(.28rem); .h(.8rem); .w(.8rem); background-size: .8rem 1.6rem;
+}
+
+// .posterWall{/*.pt(.18rem);*/ .bgwhite; }
+.new_goods{ .f(.24rem);
+	.clearfix; .pr; 
+	.goods_li{
+		.pa;.hidden;
+	}
+	.li_border {
+		.pr;/*.border-1(#d9d9d9);*/
+		background: #fff url(http://i.meilishuo.net/css/images/huodong/tuan/prebg.png) no-repeat;
+		background-size: contain;
+		.list_img {.block;background-size:100%;.hidden;
+		}
+		.list_title {.f(.24rem);.fc(#000); .l(.32rem);.hidden;}
+	}
+	// .img_bt { border-bottom: 1px solid #ddd;}
+	.list_info { padding: .2rem;}
+	.list_cost {.pt( .2rem); .pb( .1rem);}
+	.money_now {.f(.30rem); .pr(.1rem);}
+	.money_normal {.f(.22rem); .t-through;}
+	.goods_type{.pa; top: -0.04rem;; left: .1rem;.l(.34rem); .white; .c; .border-r(0 0 .06rem .06rem);
+		img{.i_block;}
+	}
+	.colorgrey{ .f(.2rem); }
+}
+
+
+
+.goTop();
+/* 重写返回顶部按钮 */
+#goTop{ bottom: 1.1rem;
+	li{
+		padding-top: .16rem;
+	    padding-bottom: .08rem;
+	    .c;
+	    padding-right: .08rem;
+		.icon-gotop{
+		   .h(.8rem); .w(.8rem); .border-r(50%);
+		}
+	}
+}
+
+/*搜索*/
+.mdl-search();
+
+.search-tips{
+	padding: .45rem .7rem ; .pr; .fc(#666); .f(.28rem); .pr(.1rem);
+	.tip-icon{.i_block; .w(.8rem); .h(.8rem); .left; .mr(.3rem);}
+	.msg{.l(.45rem); .ellipsis;}
+}
+
+.search-nav{
+	.ad-banner{.mb(.35rem);.block; }
+}
+
+
+.goods_sort_by {
+	.flexbox; .mt(.2rem);
+	.mb(.26rem);
+	.f(.32rem);
+	li {
+		.flex(1);.l(.35rem);.c;
+		.s-txt{.i_block; .h(100%); .pl(.04rem); .pr(.04rem); }
+		&:nth-of-type(2){
+			.border-ld9;.border-rd9;
+			// border-right: 1px solid red;
+		}
+		a{.block;}
+	}
+	.active{ 
+		a{.red; }
+	}
+	li[data-type=price-l],li[data-type=price],li[data-type=price-h]{
+		.icon{
+			.pr;
+			.ml(1px);
+			.c;
+			&::before,
+			&::after {
+				content: '';
+				.pa; top: 0; left: 0;
+				.i_block;
+				.w(.13rem);
+				.h(.13rem);
+			}
+			&::before {
+				border-top: 1px solid @gray;
+				border-left: 1px solid @gray;
+				-webkit-transform: translateY(.04rem) rotateZ(45deg) scale(.7,.7);
+				transform: translateY(.05rem) rotateZ(45deg) scale(.7,.7);
+			}
+			&::after {
+				border-right: 1px solid @gray;
+				border-bottom: 1px solid @gray;
+				-webkit-transform: translateY(.15rem) rotateZ(45deg) scale(.7,.7);
+				transform: translateY(.15rem) rotateZ(45deg) scale(.7,.7);
+			}
+		
+		}
+	}
+	
+	
+	li[data-type=price-l] {
+		.icon::before {
+			border-top: 1px solid @red;
+			border-left: 1px solid @red;
+		}
+	}
+	li[data-type=price-h] {
+		.icon::after {
+			border-right: 1px solid @red;
+			border-bottom: 1px solid @red;
+		}
+	}
+}
+

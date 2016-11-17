@@ -1,0 +1,44 @@
+<%# head.html %>
+<% 
+	var pageData = this.pageData || ''
+%>
+<div class="wrap">
+	<section>
+		<% pageData && pageData.banners && pageData.banners.map(function(data){ %>
+			<img src="<%= data.src %>" />
+		<%}); %>
+	</section>
+	<div class="tip">
+		<img src="<%= pageData.tip.tip_src %>" />
+	</div>
+	<div class="yybBtn">
+		<img src="<%= pageData.button.src %>" />
+	</div>
+</div>
+
+<% 
+var link = 'meilishuo://changetab.meilishuo?json_params=' + encodeURIComponent(JSON.stringify({"r":"","tab":"首页"}));
+%>
+
+<script type="text/html" id="couponStation">
+	<div class="dialog_content">
+		<div class="dialog_main">
+			<h2 class="title">领取成功!</h2>
+			<p class="tips">快去优惠券中查看吧～</p>
+		</div>
+		<a href="<%= link%>" class="guang" xr="<%= this.xr.r %>">去逛逛</a>
+	</div>
+</script>
+<script type="text/html" id="dialogTip">
+	<div class="dialog_tip dialog_main">
+		<img src="<%= pageData.tip.dialog_src %>" />
+	</div>
+</script>
+
+<script>
+	fml.vars.userId = <%= this.userInfo.user_id %>;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/yingyongbao');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

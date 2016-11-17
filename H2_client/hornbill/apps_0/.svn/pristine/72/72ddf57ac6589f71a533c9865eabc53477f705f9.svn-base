@@ -1,0 +1,44 @@
+<%if(this.order_info && this.order_info.data){
+	var order = this.order_info.data.order
+		, address = this.order_info.data.address
+		, goods = this.order_info.data.goods
+		, status = order.pc_status
+	var showTip = function(str){
+		return '如需' + str + '，请前往美丽说网站（www.meilishuo.com）或使用美丽说客户端。'
+	}
+%>
+	<%if(status == '10'){%>
+	<div class="order_connect">
+		<p class="connect">
+			<%= showTip('取消订单')%>
+		</p>
+	</div>
+	<%}else if(status == '51' || status == '55' || status == '54'){%>
+
+	<%}else{%>
+	<div class="order_connect">
+		<p class="connect">美丽说官方客服：<%= order.mls_phone%><%if(order.mls_qq){%><span>或</span><a class="getmlsqq" href="<%= this.lang.callQQ(order.mls_qq) %>" target="_blank">QQ 咨询</a><%}%>（客服工作时间：9:00至19:00）</p>
+		<%if(status == '36' || status == '56' || status == '37' || status == '39' || status == '38'){%>
+		<p class="control">
+			<%= showTip('查看退款详情')%>
+		</p>
+		<%}else if(status == '30' || status == '40' || status == '41'){%>
+		<p class="control">
+			<%if(order.refund_button == '1'){%>
+			<%= showTip('申请退款')%>
+			<%}%>
+		</p>
+		<%}%>
+	</div>
+	<%if(status == '39' || status == '38'){%>
+	<%if(order.show_receive_button == '1'){%>
+	<div class="order_connect">
+		<p class="connect">如果您因为误操作而发起了退款申请，您现在依然可以确认收货。确认收货后，退款申请将自动取消，并且您将不能再次发起退款。</p>
+		<p class="control">
+			<a href="javascript:void(0)" class="recvOrder" order_id="<%= order.order_id %>">&nbsp;</a>
+		</p>
+	</div>
+	<%}%>
+	<%}%>
+	<%}%>
+<%}%>

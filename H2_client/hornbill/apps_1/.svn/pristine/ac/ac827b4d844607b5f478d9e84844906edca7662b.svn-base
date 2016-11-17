@@ -1,0 +1,24 @@
+<%# header.html%>
+<%
+  var orderDetailInfo = this.md_orderDetail.data
+%>
+<div>
+	<div class="wrap">
+		<div class="success">
+			<p class="scs"><span class="success_icon"></span>支付成功</p>
+			<p class="intro">商家已经收到了您的货款，请等待商家发货</p>
+		</div>
+		<div class="after_sale_wrap">
+			<h3>关于售后与退款：</h3>	
+			<p>本次交易款项将直接支付给设计师的蜜店，如有售后问题或需要退款请直接通过微信与设计师蜜店客服联系。</p>
+			<p><b>客服微信号：<%= orderDetailInfo.order_goods.goods_shop.shop_weixin%></b></p>
+		</div>
+		<div class="scs_btn_wrap">
+			<a href="javascript:void(0)" class="scs_btn">完成</a>
+		</div>
+	</div>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('md/page/success');
+_use:", this._JSstack , this._JSmods ); %>
+<%# footer.html%>

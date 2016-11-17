@@ -1,0 +1,405 @@
+/*common*/
+var alert = require('ui/alert')
+	, pastePic = require('ui/pastePic')
+	, uploadPic = require('app/im/uploadPic')
+	, message = require('app/im/messageNew')
+	, shareTmp = require('component/shareTmp')
+	, client = require('app/im/client')
+	, $listBox
+	, $mainBox
+	, $userTabNow
+	, box_height = 0
+	, box_num = 4 //顶部保留box 数量
+	, sound
+	, socket
+
+window.userListObj = {}
+
+// 统计未读消息数量
+var unreadTipObj = new function(){
+	var tipObj = $('.tab_now .unread_tip')
+	this.fresh = function(){
+		var unreadNum = getUnreadNum()
+		if(unreadNum==0){
+			hide()
+		}
+		else{ 
+			show(unreadNum>99?'99+':unreadNum)
+		}
+	}
+	function hide(){
+		tipObj.text('')
+		tipObj.hide()
+	}
+	function show(num){
+		tipObj.text(num)
+		tipObj.show()
+	}
+	function getUnreadNum(){
+		var unreadNum = 0
+		for(var o in userListObj){
+			unreadNum += userListObj[o].num
+		}
+		// console.log('unread',unreadNum)
+		return unreadNum || 0
+	}
+}
+
+var unreadNumFresh = function(){
+	unreadTipObj.fresh();
+}
+
+var init = function(opts){
+	socket = opts.socket
+	sound = opts.sound
+
+	$listBox = opts.listBox
+	$mainBox = opts.mainBox
+	$userTabNow = opts.listTab
+
+	if(fml.vars.im.recently){
+		prepend(fml.vars.im.recently)
+		box_height = $listBox.children().eq(0).outerHeight()
+
+	}
+
+	//分帧加载列表
+	$('.user_list .list_now').on('scroll',userlistScroll)
+	function userlistScroll(event) {
+		var self = $(this)
+		if(self.prop('scrollHeight')-20<self.height()+self.scrollTop()){
+			self.off('scroll')
+			$.get('/www/aj/recently_new',{
+				source:'web'
+				,limit:50
+				,offset:fml.vars.im.offset
+			} , function(res) {
+				var data = res.data
+				fml.vars.im.offset = data.offset
+				prepend(data.datas)
+				if(!data.is_last){
+					self.on('scroll',userlistScroll)
+				}
+			},'json')
+		}
+	}
+}
+
+var talkListPush = function(data){
+	if(data['new']){
+		prepend(data['new'])
+		update(data['new'])
+	}
+}
+
+var talkList = function(data){
+	if(data){
+		talkListPush(data)
+
+	}else{
+		$.get('/www/aj/talkList', {imclient : fml.vars.im.imClient}, function(res){
+			talkListPush(res)
+
+		}, 'json')
+		$.get('/www/aj/publicTalkList', {imclient : fml.vars.im.imClient}, function(res){
+			talkListPush(res)
+
+		}, 'json')
+	}
+}
+
+
+var prepend = function(data){
+	if(!data || !data.length) return;
+
+	var listCF = document.createDocumentFragment()
+		, boxCF = document.createDocumentFragment()
+
+	$.each(data, function(k, v){
+		if(v.user_id) v.uid=v.user_id
+		var toid = v.uid
+		if(userListObj[toid]) return;
+		v.nickname =  v.nickname || v.nick_name;
+		v.avatar_b =  v.avatar_b || v.avatar;
+		v.avatar_b = v.avatar_b != '' ? v.avatar_b : 'http://d21.higo.res.meilishuo.net/higo/orig/2015-04-28/d8f9e339d1edb5ff2b894cf91d786e61.png'||v.avatar;
+		userListObj[toid] = {
+			userList : $(shareTmp('im_userlist_item', {v:v}))
+			, mainBox : $(shareTmp('im_main_item', {v:v}))
+			, name : v.nickname
+			, avatar : v.avatar_b
+			, history : 0
+			, status : 0
+			, utype : v.utype || ''
+			, num : v.msg_num || 0
+		}
+
+		userListObj[toid].userList.fadeIn(200);
+
+		$(listCF).append(userListObj[toid].userList)
+		$(boxCF).append(userListObj[toid].mainBox)
+
+		uploadPic.bind(userListObj[toid].mainBox, message.send, socket)
+
+		pastePic.bind({
+			'behind' : '/imageupload/pic_upload'	
+			, 'input' : userListObj[toid].mainBox.find('.im_inputbox_input')  
+			, 'success' : function(data,$obj){
+				if (typeof data.code != 'number') {
+					var $tmp = $(shareTmp('im_inputbox_picbox_item', data))
+					$tmp
+						.children('a')
+						.append($obj)
+
+					$tmp.prependTo(this.input.parent().children('.im_inputbox_picbox'))
+
+				} else {
+					new alert({content:data.msg, width:370});
+					$obj.remove()
+					userListObj[toid].upLoadPicNum--
+					if(userListObj[toid].upLoadPicNum == 0)
+						this.input.parent().removeClass('havePic')
+				}
+			}
+			, 'onStart' : function(cbk, inp){
+				if(userListObj[toid].upLoadPicNum >= 5){
+					if(!fml.vars.saveItem)
+						new alert({content:'一次最多发送5张图片噢', width:370})
+
+					$(inp).remove()
+
+				}else{
+					if(!userListObj[toid].upLoadPicNum){
+						userListObj[toid].upLoadPicNum = 1
+						this.input.parent().addClass('havePic')
+					}else{
+						userListObj[toid].upLoadPicNum++
+					}
+
+					cbk()
+				}
+			}
+		})
+		if(userListObj[toid].num>0){
+			topDialog(toid, 'new', true)
+		}
+	})
+
+    $listBox && ($listBox.append(listCF));
+    $mainBox.append(boxCF)
+
+	unreadTipObj.fresh()
+}
+
+var update = function(data){
+	if(!data || !data.length) return;
+
+	$.each(data, function(k, v){
+		var uid = v.uid
+		if(!userListObj[uid]) return;
+
+		var $box = userListObj[uid].userList
+
+		if(!userListObj[uid].numBox)
+			userListObj[uid].numBox = $box.children('.num') 
+
+		if(uid == fml.vars.im.toid) return;
+		if(userListObj[uid].num == v.msg_num) return;
+		if(userListObj[uid].num==0){
+			topDialog(uid, 'new', true)
+		}
+		userListObj[uid].numBox.text(v.msg_num)
+		userListObj[uid].num = v.msg_num
+		if(v.msg_num==0){
+			userListObj[uid].userList.removeClass('newMsg')
+		} else {
+			userListObj[uid].userList.addClass('newMsg')
+			if(userListObj[uid].utype == 'public')
+				sound.newOrder && sound.newOrder.play()
+			else
+				sound.newMsg && sound.newMsg.play()
+		}
+
+		if(!fml.vars.im.imClient) return;
+
+		client.notify({
+			"title":userListObj[uid].name
+			,"text":v.last_msg ? (v.last_msg.type == 'text' ? v.last_msg.msg : '[图片]') : '[转接消息]'
+			,"uid":uid
+			, 'img':userListObj[uid].avatar
+		})
+
+	});
+	unreadTipObj.fresh()
+}
+
+var topDialog = function(toid, type, notIntoView){
+	if(!toid) return;
+	if(!userListObj[toid]) return;
+
+	var $box = userListObj[toid].userList
+
+	if(type == 'auto'){
+		if($box.is('.newMsg')) type = 'new'	
+		else type = 'normal'
+	}
+
+	if(type == 'new'){
+		if(toid!=fml.vars.im.toid){
+			$box.find('.num').html(userListObj[toid].num);
+			$box.addClass('newMsg')
+			$box.prependTo($listBox)
+		}
+
+	}else if(type =='read'){
+		$box.removeClass('newMsg')
+		userListObj[toid].num = 0
+		$box.prependTo($listBox)
+	}else{
+		$box.removeClass('newMsg')
+		userListObj[toid].num = 0
+		// $box.siblings().not('.newMsg').eq(0).before($box)
+	}
+
+	if(!notIntoView){
+		$listBox.scrollTop(($box.index() - box_num) * box_height)
+	}
+	unreadTipObj.fresh()
+}
+
+var addDialog = function(data){
+	var uid = data.uid
+
+	if(!userListObj[uid]){
+		prepend([data])
+	}
+	var $box = userListObj[uid].userList
+
+	topDialog(uid, 'auto')
+
+	if(getUserCount() == 1 && userListObj[uid]){
+		userListObj[uid].num = 0;
+		changeUser(uid);
+		unreadTipObj.fresh();
+	}
+
+	$userTabNow.click()
+}
+
+function getUserCount(){
+	var n, count = 0;
+	for(n in userListObj){
+		if(userListObj.hasOwnProperty(n)){
+			count++;
+		}
+	}
+	return count;
+}
+
+var deleteDialog = function(uid, fn){
+	userListObj[uid].closeStatus++;
+
+	if(userListObj[uid].closeStatus != 3)
+		return;
+
+	var $box = userListObj[uid].userList
+	if($box.is('.act')){
+		var toid = $box.next().attr('uid')
+
+		if(!toid)
+			toid = $box.prev().attr('uid')
+
+		if(toid && userListObj[toid]){
+			changeUser(toid)
+		}else{
+			fml.vars.im.toid = 0
+			socket.emit('changeUser', {toid : 0})
+		}
+	}
+	$box.remove()
+	userListObj[uid].mainBox.remove()	
+	delete userListObj[uid]
+	fn && fn()
+}
+
+var closeDialog = function(uid, fn){
+	userListObj[uid].closeStatus = 1
+
+	userListObj[uid].userList.fadeOut(300, function(){
+		deleteDialog(uid, fn)
+	})
+
+	$.get('/www/aj/closeUser', {
+		to : uid
+		, source: fml.vars.im.source
+
+	}, function(res){
+		if(res.successful== 1){
+			deleteDialog(uid, fn)
+		}else{
+			new alert({content:'关闭对话失败', width:370});
+			userListObj[uid].userList.slideDown(300)
+		}
+		
+	}, 'json')
+
+	.fail(function(){
+
+		new alert({content:'关闭对话失败', width:370});
+		userListObj[uid].userList.slideDown(300)
+	})
+
+}
+
+function isAllIntoView(){
+	var $list = $('#list_now')
+		,listHeight = $list.outerHeight(true)
+		,$currUser = $list.find('.user_info.act')
+		,itemStart = $currUser.position().top
+		,itemEnd = itemStart + $list.find('.user_info.act').outerHeight(true)
+
+	if(itemStart<0 || itemEnd>listHeight){
+		return false;
+	}
+	return true;
+}
+
+var toPrevUser = function(){
+	var list = $('#list_now')
+		,currUser = list.find('.user_info.act')
+		,toId = currUser.prev().attr('uid')
+	if(!toId) return;
+	changeUser(toId)
+	if(!isAllIntoView()){
+		list.find('.user_info.act')[0].scrollIntoView()
+	}
+}
+
+var toNextUser = function(){
+	var list = $('#list_now')
+		,currUser = list.find('.user_info.act')
+		,toId = currUser.next().attr('uid')
+	if(!toId) return;
+	changeUser(toId)
+	if(!isAllIntoView()){
+		list.find('.user_info.act')[0].scrollIntoView()
+	}
+}
+
+var optInit = function(opts) {
+    socket = opts.socket
+    sound = opts.sound
+
+    $mainBox = opts.mainBox
+}
+
+exports.init = init
+exports.optInit = optInit
+exports.addDialog = addDialog
+exports.topDialog = topDialog
+exports.prepend = prepend
+exports.closeDialog = closeDialog
+exports.talkList = talkList
+exports.toPrevUser = toPrevUser
+exports.toNextUser = toNextUser
+exports.getUserCount = getUserCount
+exports.unreadNumFresh = unreadNumFresh

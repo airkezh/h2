@@ -1,0 +1,43 @@
+<%# head.html%>
+<%
+	var curUserInfo = this.userInfo;
+	var curUserNickName = curUserInfo.nickname || '';
+	var curUserAmount = this.userAmount.data.amount_available || 0;
+	var curUserAvatar = curUserInfo.avatar_e || 'http://i.meilishuo.net/css/images/wap/activity/sign_mall/default_head.jpg';
+%>
+<div class="wrap">
+	<div class="user_wrap">
+		<div class="user_box">
+			<div class="user_head">
+				<img src="<%= curUserAvatar %>" alt="<%= curUserNickName %>">
+			</div>
+			<div class="user_gold">
+				<div>我的金币</div>
+				<div class="gold"><%= curUserAmount %>元</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="tab_title">
+		<span class="title">这样花金币</span>
+	</div>
+
+	<div class="gold_explain">
+		<p>1. 找到有金币标志的商品，按照标志的金额，可以用金币1：1抵扣对应额度的现金。</p>
+		<p>2. 将商品加入购物车，或直接购买。</p>
+		<p>3. 结算时，选中使用金币。</p>
+		<p>4. 退货时，如果该笔交易只有一件商品，全额退款成功后，金币会全数退回给您。如果该笔交易有多件商品，只退款其中一部分商品的全额，则金币按照退款金额占订单商品总金额的比例退回。如果您与卖家协商，只退款单件宝贝的部分金额，此时金币不会退回。</p>
+	</div>
+
+	<div class="tab_title">
+		<span class="title">如何获得金币</span>
+	</div>
+
+	<div class="sign_wrap">
+		<a href="http://mapp.meilishuo.com/activity/sign/sign_in/?frm=qiandaocoin">
+			<img src="http://d05.res.meilishuo.net/pic/_o/f2/0b/99b1c430d368c613b6af2c6b4c96_580_100.ch.jpg" alt="">
+		</a>
+	<div>
+</div>
+
+<%# foot_simple.html%>

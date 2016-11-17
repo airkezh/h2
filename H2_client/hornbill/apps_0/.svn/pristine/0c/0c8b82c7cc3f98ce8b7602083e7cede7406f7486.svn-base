@@ -1,0 +1,173 @@
+<%#head.html%>
+<%  var isAdmins = {};
+	var nl2br = _extFn.nl2br;
+	function linkUrl(str){
+		var reg = /((http\:\/\/)?(\w+\.)+(\w{2,3}))\b/g;
+		if(reg.test(str)){
+			return str.replace(reg , function(a){
+				var href = a.replace('http://' , '');	
+				return '<a href="http://'+ href +'" target="_blank">' + a + '</a>';
+			});
+		}
+		return str;
+	}
+%>
+<div class="group_top">
+	<%if( this.group_header.group_info.header_path){%>
+	<a href="http://www.meilishuo.com/u/EBn3yz?frm=maybelline" target="_blank" style="background: url('<%= this.group_header.group_info.header_path%>') repeat;" class="g_pic block_f"></a>
+	<%}%>
+	<a name="bar" ></a>
+	<div class="group_bar <%if( !this.group_header.group_info.header_path){%>mt14_f<%}%>">
+		<div class="info">
+			<ul class="members">
+				<% var group_editor = this.group_header.group_admins.concat(this.group_header.group_members);
+				%>
+				<% group_editor.map(function(data){%>
+				<% isAdmins[data.user_id] = true; %>
+				<li><a class="avatar32_f" href="/person/u/<%= data.user_id%>" title="<%= data.nickname%>" target="_blank"><img src="<%= data.avatar_c%>" /></a></li>
+				<%});%>
+				<% if(this.group_header.count_editor > 3){%>
+					<li class="ml4_f"><a href="/group/<%= this.group_header.group_info.group_id%>/members" target="_blank">所有成员<samp>&gt;&gt;</samp></a></li>
+				<%}else{%>
+					<% if(group_editor.length == 1){%>
+						<li class="ml4_f"><a href="/person/u/<%= group_editor[0].user_id%>" target="_blank"><%= group_editor[0].nickname %></a></li>
+					<%}%>
+				<%}%>
+			</ul>
+			<ul class="fans">
+				<li>分享<b class="block_f"><%= this.group_header.group_info.num%></b></li>
+				<li style="border-left: 1px solid #ccc;"><a href="/group/<%= this.group_header.group_info.group_id%>/followerlist" target="_blank">粉丝<b class="block_f"><%= this.group_header.group_info.count_member%></b></a></li>
+			</ul>
+			<div class="name">
+				<%if(this.group_header.high_quality == 1){%>
+					<a class="quality" href="/act/32" target="_blank" title="优质杂志">&nbsp;</a>
+				<%}%>
+				<span class="font">
+					<%== _extFn.mSubstr(this.group_header.group_info.name , 40)%>
+				</span>
+			</div>
+		</div>
+	</div>
+	<div class="notes" style="height:19px;overflow:hidden;">
+		<b class="f14_f left_f">卷首语：</b>
+		<div class="notesText left_f" style="width:650px;">
+			<!--<pre><%=this.group_header.group_info.description;%></pre>-->
+			<pre>活动规则：<br/>1.前往<a href="http://www.meilishuo.com/u/EBn3yz?frm=maybelline" target="_blank">美宝莲潮妆学院</a><br/>2.查看潮妆达人的分享内容<br/>3.点击“喜欢”分享内容回美丽说活动页面<br/>4.10名幸运网友将获得美宝莲提供的彩妆正品奖励（分享越多中奖几率越大哦）<br/>5.把本活动页面中的分享内容收入自己的一本美容类杂志，就有机会成为优质杂志，受到美丽说和美宝莲的共同推荐哦</pre>
+		</div>
+	</div>
+	<div class="clear_f"></div>
+	<div class="click putUp none_f">展开<small class="f8_f">▼</small></div>
+	<div class="click none_f putDown">收起<small class="f8_f">▲</small></div>
+</div>
+
+<!-- <div class="share_group">
+	<p>推荐到</p>
+	<ul>
+		<li><span class="i_qzone"></span></li>
+		<li><span class="i_sina"></span></li>
+		<li><span class="i_tx"></span></li>
+	</ul>
+</div> -->
+<div class="clear_f"></div>
+<div class="spinner topSpinner"></div>
+<div class="content_fluid v_hidden">
+	<div class="goods_wall">
+	</div>
+	<div class="paging_panel c_f none_f">
+	<%#paging.html%>
+	</div>
+	<div class="spinner botSpinner none_f"></div>
+	<div class="clear_f"></div>
+	<% if(this.isLastPage){%>
+	<div class="lookmore"><a class="big_btn" href="/group?frm=one_page" target="_blank"><em class="big_btnr"></em>查看更多&gt;&gt;</a></div>
+	<%}%>
+	<div class="ads_banner ads_bottom none_f"></div>
+</div>
+<input type="hidden" value="<%= this.magid%>" id="magazne_id" />
+<%#poster.html%>
+
+<% if (this.isMagFavor_mag) {%>
+<div class="mag_favor none_f" style="width:216px; padding:8px; height:70px; border:1px solid #dddddd; border-right:0 none; border-radius:0 4px 4px 0; background-color:#fff4fa; text-align:center; left:0; top:260px; position:fixed;float:left;">
+	<p style="height:30px; line-height:30px;font-size:14px;font-weight:bold;">
+		<span class="close_fav" style="background:url('<%= this.PICTURE_URL%>images/person/close.gif') no-repeat right center; cursor:pointer; float:right; width:10px; height:10px; margin:7px;"></span>
+		#<span class="mag_fav_name"><%=this.group_header.group_info.name%></span># 每天更新
+	</p>
+	<a class='add_fav' style="margin-top:4px; width:52px; height:32px; line-height:32px; text-aligh:center; color:#ffffff; font-weight:bold; font-size:14px; padding-left:6px; cursor:pointer; background:url('<%= this.PICTURE_URL%>images/header/btn_pic.png') no-repeat 0 -43px; display:inline-block; *display:inline; *zoom:1; position:relative;">
+		<em style=" background:url('<%= this.PICTURE_URL%>images/header/btn_pic.png') no-repeat -194px -43px; height:32px; position:absolute; right:-6px; top:0; width:6px;"></em>
+		收藏
+	</a>
+</div>
+<% } %>
+<script id="edit_magazine" type="text/html">
+<ul class="edit_magazine add_menu_leo" style="width: 72px;">
+	<li><a href="/group/<%= this.group_header.group_info.group_id%>/members">管理成员</a></li>
+	<li><a href="/group/<%= this.group_header.group_info.group_id%>/set_avatar?mode=1">修改背景</a></li>
+	<li><a href="/board/<%= this.group_header.group_info.group_id%>">设置杂志</a></li>
+</ul>
+</script>
+<script type="text/html" id="group_rec">
+<div class="rec_layout">
+	<div class="top_ico"></div>
+	<div class="group_rec">
+		<div class="rec_con" style="width:606px;">
+			<div class="rec_t">
+				<div class="close_z close_group"></div>
+				<p>看看关注<b>#<%= this.group_header.group_info.name%>#</b>的用户还关注了什么杂志吧！</p>
+			</div>
+			<ul class="list">
+				<?$.each(ginfo , function(k , v){?>
+				<li>
+					<a href="/group/<?= v.group_id?>?frm=group_reco" target="_blank">
+						<img class="avatar64_f" src="<?= v.huge_picture_url?>" />
+					</a>
+					<p class="rc_tle"><input  class="right_f checkedList" type="checkbox" checked="true" gid="<?= v.group_id?>" /><strong class="f14_f"><?= v.name?></strong></p>
+					<p class="mt14_f">
+						<a href="/group/<?= v.group_id?>?frm=group_reco" target="_blank">
+							<?$.each(v.little_picture_url , function(i , url){?>
+								<img class="avatar32_f" src="<?= url?>" />
+							<?});?>
+						</a>
+					</p>
+				</li>
+				<?});?>
+			</ul>
+			<div class="clear_f"></div>
+			<div class="bot">
+				<input type="checkbox" checked="true" class="checkedBtn">
+				<a class="small_btn followAll"><em class="small_btnr"></em>关注，回我的首页</a>
+			</div>
+		</div>
+	</div>
+</div>      
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	Meilishuo.config.header_show_collection = '%s';
+	var group_info = %j;
+	Meilishuo.config.mag_name = group_info.name;
+	fml.use('page/huodong');
+	fml.use('page/poster');
+	fml.use(['jquery' , 'app/shareTo'] , function(){
+		var $ = this.jquery;	
+		var name = group_info.name;
+		var group_id = group_info.group_id;
+		var pic_src = group_info.mixpic;
+		var reply_one = '[花心]我在@美丽说 发现了杂志#' + name + '#，快来围观啊';
+		var reply = '刚才在逛美丽说时发现一个杂志《'+ name +'》，推荐给你们看看，真的蛮值得关注的。';
+		var description = '美丽说杂志是爱美丽们的时尚聚集地，无论你是哪种女孩儿，无论你有什么小癖好，在美丽说杂志，你都能正确归队。和你的喜好尽情的拥抱吧，和姐妹们痛快的分享吧~';
+		var title = document.title;
+		$('.i_qzone').bind('click' , $.proxy(function(){
+			this.shareTo.shareGroupToQzone(name , pic_src , group_id , reply , description , title);
+		} , this));
+		$('.i_sina').bind('click' , $.proxy(function(){
+			this.shareTo.shareGroupToSinaWeibo(name , pic_src , group_id , reply_one);
+		} , this));
+		$('.i_tx').bind('click' , $.proxy(function(){
+			this.shareTo.shareToQQWeiBo(name , pic_src , group_id , reply);
+		} , this));
+	});
+	fml.use('app/kickPoster' , function(){
+		this('.goods_wall' , '.poster_del' , %j , %j , %j);	
+	});
+	fml.vars.isShowConfirm = %j; 
+_use:", this._JSstack , this._JSmods  ,this.header_show_collection , this.group_header.group_info , this.group_header.group_admins , this.group_header.group_info.group_id , this.group_header.role , isAdmins[this.userInfo.user_id]); %>
+<%#foot.html%>

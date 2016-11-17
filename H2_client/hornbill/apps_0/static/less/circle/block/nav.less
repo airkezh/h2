@@ -1,0 +1,111 @@
+.navBan(){
+	.nav_ban{
+		.c; .bgwhite; border-bottom: 1px solid #dfdddc;
+		.h(@header_top);.hidden;
+		h1{
+			.fn;.i_block;.h(@header_top);.pr;.l(@header_top);.f(1.8rem); .fc(#80737b);
+			.logo{.w(118*@px);.pt(@header_top);.i_block;
+				background:url("@{pic_url}/images/wap/web/icon-mls.png") no-repeat center center;
+				background-size:100%;
+			}
+			a{.white;}
+		}
+	}
+	.personArea{
+		.pa;.w(100%);.f(1.4rem);z-index:20;
+		.userInfo{
+			.pl(20*@px);.bgwhite;
+			.l(60*@px);.pt(10*@px);.pb(10*@px);
+			border-bottom:1px solid #d2d0cf;
+			img{.border-r(60*@px);.w(60*@px);.h(60*@px);.left;}
+			span{.ml(20*@px);}
+		}
+		ul{
+			box-shadow:0px 1px 1px rgba(0,0,0,0.1);
+			.mb(2px);.bgwhite;.l(2.8);
+			li{border-bottom:1px solid #d2d0cf;.pl(20*@px);
+				a{.block;}
+			}	
+		}
+		&[isShow="1"]{
+		//	.h(auto);
+		}
+		&[isShow="0"]{
+		//	.h(0px);
+			.none;
+		}
+		&:before{
+			content:"";
+			.pa;.w(20*@px);.h(20*@px);top:-20/2*@px;right:(@header_top - (20/2)) /2;.bgwhite;
+			.transform(rotate(45deg));	
+			.mr(10*@px);
+		}
+	}
+}
+.navLine(){
+	&:after{
+		content:"";
+		.pa;
+		.w(100%);.h(15*@px);bottom:-12*@px;left:0px;
+		background:url("@{pic_url}/images/wap/web/nav_top_line.png") repeat-x;
+		background-size:210*@px 16*@px;
+	}
+}
+.navTop(){
+	.nav_top{
+		.gpu;
+		-webkit-transition:height 0.2s ease-out 0.2s;
+
+		.pr;
+		.w(100%);z-index:10;
+		.h(@header_nav);
+
+		.bgc(@wap_bgpink);
+		border-top:1px solid #fff;
+		.navLine;
+
+		.goods{
+			.pr(30*@px);
+			.c;
+			li{
+				.left;.w(100%/3);
+			}
+		}
+		.catalog{
+			.pr(@header_top);
+			.clearfix;
+			li{ .left;.ml(4*@px);.mr(4*@px);}
+		}
+		.openClosed{
+			.icon > .openClosed;
+
+			.red;
+			.transform(rotate(-180deg));	
+			.transform-origin(50% 50%);
+			-webkit-transition:all 0.2s ease-out 0s;
+		}
+		.nav_box{
+			.h(100%);.hidden;
+			.gpu;
+			.pl(30*@px);
+			-webkit-transition:right 0.2s ease-out 0s;
+			text-shadow:0px 1px 1px rgba(255,255,255,1);
+			.pr;right:0px;
+			.clearfix;
+			li{
+				.fc(@wap_f5e);.pt(10px*@px);.pb(10px*@px);
+				a{
+					.f(28*@px);.l(28*@px);.i_block;
+					.pt(8px*@px);.pb(8px*@px);.pl(20*@px);.pr(20*@px);
+				}
+			}
+			.active{
+				a{
+					.eventNone;.white;.bgred;.border-r-a(@header_nav);
+					box-shadow:1px 1px 0px rgba(0,0,0,0.2) inset, 0px 1px 0px rgba(255,255,255,1);
+					text-shadow:0px 1px 1px rgba(0,0,0,0.2);
+				}
+			}
+		}
+	}
+}

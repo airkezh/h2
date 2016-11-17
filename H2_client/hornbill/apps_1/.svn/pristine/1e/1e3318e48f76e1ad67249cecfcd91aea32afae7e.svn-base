@@ -1,0 +1,135 @@
+<%#head.html%>
+
+<div class="t_main">
+	<div class="mp_top">
+		<div class="clock_main">
+			<div class="clock banner_top">
+				<span><%=this.remainText%><span id="remainDay" style="color: #ff0000"><%=this.remainDay%></span><%if(this.remainDay != '') {%>天<%}%></span>
+			</div>
+		</div>
+	</div>
+
+	
+	<div id="coupon_rg">
+		<%# biz/huodong/820coupon.html %>
+	</div>
+	<div id="mp_firlook" style="position:relative; top:-40px;"></div>
+	<div class="links bgred" id="goods_rg">
+		<div class="content" >
+			<a class="a_li li0 current" href="http://www.meilishuo.com/biz/sale820/act820/40525?k=1#mp_firlook"></a>
+			<a class="a_li li1" href="http://www.meilishuo.com/biz/sale820/act820/40523?k=2&word=40523#mp_firlook"></a>
+			<a class="a_li li2" href="http://www.meilishuo.com/biz/sale820/act820/40519?k=3&word=40519#mp_firlook"></a>
+			<a class="a_li li3" href="http://www.meilishuo.com/biz/sale820/act820/40517?k=4&word=40517#mp_firlook"></a>
+			<a class="a_li li4" href="http://www.meilishuo.com/biz/sale820/act820/40511?k=5&word=40511#mp_firlook"></a>
+			<a class="a_li li5" href="http://www.meilishuo.com/biz/sale820/act820/40509?k=6&word=40509#mp_firlook"></a>
+			<a href="http://www.meilishuo.com/biz/beauty/sale820/classics?pid=40469&hdtrc=mz820main_820mainbutton" target="_blank" style="right:150px;" class="a_li li6"></a>
+			<a href="http://www.meilishuo.com/activity/tuan/tg512/?event_id=1109&hdtrc=tuan1109_PCdaohang" target="_blank" class="a_li li7 end"></a>
+		</div>
+	</div>
+	<%
+	var query = this._Request_query;
+	var getLink = _extFn.getLink;
+	%>
+	<div class="spinner midSpinner pa_f" style="top:250px;"></div>
+	<div style="width:1200px;margin:auto;" class="content_fluid v_hidden">
+		
+		<% if (this.attr_description && false){ %>
+			<div class="dcb">
+				<h1 class="dcb_title redline3"><%= this.attr_description.title %></h1>
+				<p class="dcb_prefix"><%= this.attr_description.prefix %></p>
+				<p class="dcb_content"><%= this.attr_description.content %></p>
+				<div class="clear_f"></div>
+			</div>
+		<% } %>
+		
+		<div class="cata_title">
+			<% if (this.attr_title_keywords){ %>
+			<h1><%= this.attr_title_keywords.word_name%></h1>
+			<% } %>
+			<%# block/price.html%>
+		</div>
+		<div class="goods_wall">
+			<div class="corner_notic">
+				<div class="attr_box">
+					<h2 class="f14_f">人气单品排行</h2>
+					<ul class="items_pop">
+						<%if(this.attr_top.length > 0){%>
+							<% this.attr_top.map(function(data , index){%>
+								<li class="<%if(index % 2 == 0){%>odd_num<%}%>">
+									<a href="<%= data.url%>" target="_self">
+									<span class="right_f gray_f"><%= data.total%>件</span>
+									<span class="<%if(index >= 3){%>num2<%}else{%>num1<%}%>"><%= index+1%></span>
+										<%= data.word_name%>
+									</a>
+								</li>
+							<%});%>
+						<%}%>
+					</ul>
+				</div>
+				<%# block/goods_sidebar.html%>
+			</div>
+		</div>
+		<div class="spinner botSpinner none_f"></div>
+		<div class="clear_f"></div>
+		<div class="paging_panel c_f none_f">
+		<%# paging.html%>
+		</div>
+		<%if(this.adm3 && this.adm3.ad){%>
+			<%
+			this.adm3.admId = 'adm_bot';
+			this.adm3._JSstack = this._JSstack;
+			this.adm3._JSmods = this._JSmods;
+			%>
+			<%= requireFn('commerce/adm_banner.html')(this.adm3);%>
+		<%}%>
+
+	</div>
+	<%# block/attr_word.html%>
+	
+	<%# poster.html%>
+	
+
+	<div class="rignav">
+		<a href="#coupon_rg" class="rlink">抢卷专区</a>
+		<a href="#mp_firlook" class="rlink">初秋新款</a>
+		<a href="http://www.meilishuo.com/biz/beauty/sale820/classics?pid=40469&hdtrc=mz820main_820mainfloat" target="_blank" class="rlink">美妆专区</a>
+		<a href="http://www.meilishuo.com/activity/tuan/tg512/?event_id=1109&hdtrc=tuan1109_PCdaohang" target="_blank" class="rlink">拼单专区</a>
+		<a href="javascript:;" class="rlink gotop"></a>
+	</div>
+	
+</div>
+
+<script type="text/html" id="poster_price">
+	<ul class="poster_price add_menu_leo hw76">
+		<li><a href="<%=getLink({'price' : 'all'} , query)%>">全部</a></li>
+		<li><a href="<%=getLink({'price' : '0~50'} , query)%>">0~50</a></li>
+		<li><a href="<%=getLink({'price' : '51~100'} , query)%>">51~100</a></li>
+		<li><a href="<%=getLink({'price' : '101~200'} , query)%>">101~200</a></li>
+		<li><a href="<%=getLink({'price' : '201~500'} , query)%>">201~500</a></li>
+		<li><a href="<%=getLink({'price' : '501~10000'} , query)%>">500以上</a></li>
+	</ul>
+</script>
+
+
+
+<script>
+	fml.vars.sTime = <%=this.sTime%>;
+	<%= this.p4p? 'Meilishuo.config.p4p = { tInfo : '+JSON.stringify(this.p4p)+'};':'' ;%>
+	
+	fml.vars.word_id = <%= this.attr_title_keywords.word_id%>;
+	fml.vars.notFluid =true;
+	fml.vars.k = <%=this.k %>;
+</script>
+<% this.hideGoTop = true; %>
+<% $_ENGINE_SELF.callFn("useModule")("fml.use('page/poster0');", this._JSstack , this._JSmodsFast ); %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/attr');
+	fml.use('page/huodong/act820');
+	fml.use('page/poster_guang');
+_use:", this._JSstack , this._JSmods); %>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+     fml.use('page/huodong/tshirt');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot.html%>

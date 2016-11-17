@@ -1,0 +1,42 @@
+<%
+var mSubstr = _extFn.mSubstr;
+if(this.rec_poster && this.rec_poster.recommends != ''){%>
+<div class="catalog_rec">
+	<div class="redline1"></div>
+	<div class="catalog_rec_box">
+		<%if(this.catalog_point.length != 0){%>
+		<div class="catalog_point">
+			<h2 class="catalog_point_name"><%= this.catalog_point.name %></h2>
+			<p class="catalog_point_prefix"><%= this.catalog_point.prefix %></p>
+			<p class="catalog_point_content"><%= mSubstr(this.catalog_point.content, 54 , '...') %></p>
+		</div>
+		<%}else{%>
+		<h3 class="catalog_rec_title">人气<%=this.rec_poster.title%>推荐</h3>
+		<%}%>
+		<div class="catalog_rec_con">
+			<div class="catalog_rec_roll">
+				<div class="lt"><samp><</samp></div>
+				<div class="rt"><samp>></samp></div>
+				<% var len = this.rec_poster.recommends ? this.rec_poster.recommends.length : 0;%>
+				<div class="catalog_rec_roll_img boxImg" num="<%=len%>">
+					<div class="_img pa_f">
+						<% this.rec_poster.recommends && this.rec_poster.recommends.map(function(data) { %>
+						<div class="bigpic _imgItem">
+							<a href="<%=data.url%>" target="_blank">
+								<img src="<%=data.pic%>" width="128" height="157"/>
+								<div class="info">
+									<h3><%=data.name%></h3>
+									<p class="detail"><%=data.desc%></p>
+									<p class="num">共<%=data.num%>件宝贝&gt;&gt;</p>
+								</div>
+							</a>
+						</div>
+						<%});%>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<%}%>
+

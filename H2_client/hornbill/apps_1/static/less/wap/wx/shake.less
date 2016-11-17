@@ -1,0 +1,191 @@
+@import "../block.less";
+button{
+	border: none;
+}
+.main{
+	.w(100%);
+}
+.nav{
+	.bgc(@red);
+	.h(100*@px);
+	.white();
+	.c;
+	.l(100*@px);
+	.f(40*@px);
+}
+.shake{
+	.maskAll(259,0)
+}
+.content img{
+	.w(100%);
+}
+
+
+/*定义动画*/
+
+@-webkit-keyframes move{ 
+
+    0%{-webkit-transform:translateX(0%)}
+    15%{-webkit-transform:translateX(-40%) rotate(-30deg)}
+   	30%{-webkit-transform:translateX(40%) rotate(30deg)}
+   	45%{-webkit-transform:translateX(-20%) rotate(-7deg)}
+    60%{-webkit-transform:translateX(20%)  rotate(7deg)}
+    75%{-webkit-transform:translateX(-10%) rotate(-3deg)}
+    100%{-webkit-transform:translateX(0%)}
+}
+   
+.shake-act{
+    -webkit-animation-name:move; 
+    -webkit-animation-iteration-count:4; 
+    -webkit-animation-timing-function:ease;
+    -webkit-animation-duration:0.75s; 
+     -webkit-animation-direction:normal; 
+    -webkit-animation-fill-mode:both; 
+ }
+.mask{
+	top: 0;
+	.w(100%);
+	.h(100%);
+	.pa;
+	z-index: 200;
+	.none;
+}
+.mask img{
+	.w(100%);
+	.h(100);
+}
+.mask-bottom{
+	.none;
+	.w(100%);
+	.h(100%);
+	.bgc(black);
+	.pa;
+	top: 0;
+	filter:alpha(opacity=40);  /*支持 IE 浏览器*/
+    -moz-opacity:0.40; /*支持 FireFox 浏览器*/
+	opacity:0.40;  /*支持 Chrome, Opera, Safari 等浏览器*/
+	z-index: 102;
+}
+
+.login, .rogerT-1, .rogerT-2, .rogerT-3, .rogerT-4, .rogerT-5, .rogerT-6, .rogerT-7{
+	.maskAll();
+	.mask-sub{
+		.pa;
+		bottom: 50*@w;
+		.mast-btn{
+			.ml(6%);
+			.left;
+			.w(40%);
+		}
+		.mask-btn-one{
+			.ml(15%);
+			.left;
+			.w(70%);
+		}
+	}
+	.mask-msg{
+		.pa;
+		top:250*@px;
+		.w(80%);
+		left:10%;
+		label{
+			.w(40%);
+			text-align: center;
+			.left;
+			.h(50*@px);
+			.l(50*@px);
+		}
+		input{
+			.w(50%);
+			.h(50*@px);
+			.left;
+		}
+		.mask-msg-inner{
+			.mb(20px);
+			overflow: hidden;
+		}
+	}
+	.mask-good{
+		.mask-good-inner{
+			.w(150px);
+			margin: 0 auto 0;
+			.pr;
+			img.mask-good-img{
+				.block;
+			}
+			.mask-good-tag{
+				.c;
+				.w(100%);
+				.bgc(black);
+				.pa;
+				top: 125px;
+				filter:alpha(opacity=50);  /*支持 IE 浏览器*/
+			    -moz-opacity:0.50; /*支持 FireFox 浏览器*/
+				opacity:0.50;  /*支持 Chrome, Opera, Safari 等浏览器*/
+				bottom: 0;
+				height: 25px;
+				.l(25px);
+				.white;
+				img{
+					.ml(15px);
+					.mt(3px);
+					.mr(10px);
+					.w(20px);
+					.h(20px);
+					.block;
+					.left;
+				}
+				span{
+					.w(95px);
+					.left;
+					text-align: left;
+				}
+				.hidden;
+			}
+		}
+		.pa;
+		top:150*@w;
+		.w(80%);
+		left:10%;
+		.c;
+		p{
+			.f(10px);
+			.h(12px);
+			.hidden;
+			.mt(10px);
+			.l(12px);
+			span{
+				.red;
+			}
+		}
+	}
+}
+
+.maskAll(@wi:511, @l:65, @t:100px){
+  .pa;
+	.w(@wi*@w);
+	left : @l*@w;
+	top : @t;
+	.none;
+	z-index: 30;
+    img{
+        .w(100%);
+    }
+}
+
+.app-1,.app-2,.app-3,.app-4,.app-5,.wx-1,.wx-2,.wx-3,.wx-4,.wx-5, .th-1, .th-2{
+	.none;
+}
+
+.share-main{
+	.pa;
+	.w(340*@w);
+	left: (50%);
+	.ml(-170*@w);
+	top: 420*@w;
+}
+
+/*调用动画并设置动画的参数*/
+@import "../../footer.less";
+
+

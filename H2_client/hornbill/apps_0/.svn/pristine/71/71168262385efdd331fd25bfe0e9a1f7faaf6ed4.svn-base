@@ -1,0 +1,79 @@
+<% var goodsInfo = this.goods_info;%>
+<%if(goodsInfo.url.indexOf('?') != -1){
+	var str = '&';
+}else{
+	var str = '?';
+}%>
+<div class="goods_info">
+	<h1 class="tui_tle">
+		<a <%if(goodsInfo.url != ''){%> href="<%= goodsInfo.url%><%= str%>frm=out_title" target="_blank"<%}%>><%= goodsInfo.ginfo.title%> <%if(goodsInfo.ginfo.is_taobao){%><span class="i_taobao">&nbsp;</span><%}%></a>
+	</h1>
+	<p class="tui_sour"><%= goodsInfo.repin%></p>
+</div>
+<div class="btn_box">
+	<div class="tui_heart twiiter_box">
+		<a class="love_pro none_f">这是你自己分享的哦！</a>
+		<p class="hackie">
+			<%if(goodsInfo.beauty_me){%>
+			<a class="t_like twitter_like liked" like_twitter_id="<%= goodsInfo.twitter_id%>" isshowlike="<%= this.goods_info.showLike%>" >
+				<span class="likes_status">已喜欢</span>
+			<%}else{%>
+			<a class="t_like twitter_like" isshowlike="<%= this.goods_info.showLike%>" like_twitter_id="<%= goodsInfo.twitter_id%>" >
+				<span class="likes_status"><em class="lm_love">&nbsp;</em>喜欢</span>
+			<%}%>
+				<span class="likeNum poster_like_num"><%= goodsInfo.count_like%></span>
+			</a>
+			<a class="t_collect twitter_forward"><span><em class="lm_income">&nbsp;</em>收进杂志</span><span class="poster_forward_num"><%= goodsInfo.count_forward%></span></a>
+		</p>
+	</div>
+	<% if(this.goods_info.shelf){%>
+		<a class="price_go" href="<%= goodsInfo.url%><%= str%>frm=out_link" target="_blank"><span>去店铺逛逛</span><span><%= goodsInfo.ginfo.price%></span></a>
+	<%}else if(this.isBaidu){%>
+		<% if(this.goods_info.shelf){%>
+			<a class="price_go" href="<%= goodsInfo.url%><%= str%>frm=out_link" target="_blank"><span>去店铺逛逛</span><span><%= goodsInfo.ginfo.price%></span></a>
+		<%}else{%>
+			<%if(goodsInfo.url != ''){%>
+				<a class="price_go" href="<%= goodsInfo.url%><%= str%>frm=out_link" target="_blank"><span>去<%if(goodsInfo.ginfo.is_taobao){%>淘宝<%}%>购买</span><span><%= goodsInfo.ginfo.price%></span></a>
+			<%}else{%>
+				<a class="price_go"><span style="margin-top: 12px;"><%= goodsInfo.ginfo.price%></span></a>
+			<%}%>
+		<%}%>
+	<%}else{%>
+		<%if(goodsInfo.url != ''){%>
+			<a class="price_go" href="<%= goodsInfo.url%><%= str%>frm=out_link" target="_blank"><span>去购买</span><span><%= goodsInfo.ginfo.price%></span></a>
+		<%}else{%>
+			<a class="price_go"><span style="margin-top: 12px;"><%= goodsInfo.ginfo.price%></span></a>
+		<%}%>
+	<%}%>
+</div>
+<div class="clear_f"></div>
+<div class="codepic_box">
+	<div id="tb_sr">
+		<span id="tb_sr_close">X</span>
+		<p>
+		由于对方网站接口出现临时故障，部分爱美丽无法去淘宝购买，我们正在火速抢修中！您若无法正常前往，
+			<span class="clearTool">请清除浏览器缓存再试，<a target="_blank"  href="<%= this.taobaoCookieHelpUrl%>">查看清除浏览器缓存方法</a></span>
+			<a target="_blank" class="outLink"  href="<%= goodsInfo.url%><%= str%>frm=out_link">点击这里,快速解决</a>。
+		</p>
+	</div>
+	<div class="code_pic">
+		<% if(goodsInfo.isLimitTimeOffer){%>
+			<span class="limit"></span>
+		<%}%>
+		<% if(goodsInfo.shelf){%>
+			<span class="off_shelf"></span>
+		<%}%>
+		<div class="buyer_ico_box">
+			<% if(goodsInfo.buyer_verify == 1 && !goodsInfo.shelf){%>
+			<span class="buyer"></span>
+			<%}%>
+			<p class="buyer_txt">美丽说买手团队精心挑选，为您诚意推荐够流行、宜穿搭、质量好的时尚商品。</p>
+		</div>
+		<div class="pic_view">
+			<a <%if(goodsInfo.url != ''){%> href="<%= goodsInfo.url%><%= str%>frm=out_pic" target="_blank"<%}%>><img class="twitter_pic" src="<%= goodsInfo.show_pic%>"></a>		
+			<div class="view_pic none_f"><a href="<%= goodsInfo.original%>" target="_blank"><img src="<%=this.PICTURE_URL%>images/original_pic_ico_n.gif"></a></div>
+		</div>
+	</div>
+</div>
+
+

@@ -1,0 +1,20 @@
+<%#head.html%>
+<style>
+body{
+heigth:100%;
+background:url(<%= this.h5_video && this.h5_video.bg%>);
+
+}
+</style>
+<div style=" ">
+<% if ( this.h5_video && this.h5_video.src ) { %>
+
+<video width="100%" height="100%"  autoplay controls <% if (this.h5_video.poster){ %> poster="<%= this.h5_video.poster%>" <%}%>>
+  <source src="<%= this.h5_video.src%>" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+<% } else { %>
+	video not input 
+<% } %>
+</div>
+<%#foot.html%>

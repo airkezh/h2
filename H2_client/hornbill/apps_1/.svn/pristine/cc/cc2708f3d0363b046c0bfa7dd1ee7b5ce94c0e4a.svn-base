@@ -1,0 +1,92 @@
+<script type="text/html" id="posterWall">
+	<?
+		var self = this;
+		var query = self.fml._Request_query;
+		function getStringLengthArr(s , len){
+			var w = 0;
+			var time = 0;
+			for(length=s.length; time<length; ){
+				if(/[^\x00-\xff]/.test(s[time])){
+					w+=2;
+				}else{
+					w+=1;
+				}	
+				time ++;
+				if(w >= (len*2)){
+					break;
+				}
+			}
+			return time;
+		}
+		function mSubstr(str , len , pad){
+			if (!str || 0 == str.length) return '';
+			if (undefined == pad ) pad = '...';
+			len = getStringLengthArr(str , len);
+			return str.substr( 0 , len) + ((pad && str.length> len) ? pad : '');
+		}
+
+		this.poster && this.poster.map(function(data){
+			var data_desc = mSubstr(data.description , 20 , '...');
+			var buy_link = '';
+			if (query && query.frmOpen)
+				buy_link = '/goto/open/?url='+ encodeURIComponent(buy_link);
+			if(self.fml.download == 1)
+				buy_link = '/goto/download/';
+			if(data.wap_url){
+				buy_link = data.wap_url;	
+			}else{
+				buy_link = data.url;
+				if(self.fml.phoneType == 'ipad'){
+					buy_link = 'meilishuohd' + buy_link;
+				}else{
+					buy_link = 'meilishuo'+ buy_link;
+				}
+				if(data.link_to == 2){
+					buy_link = "/goto/count/?p="+encodeURIComponent(buy_link)+"&access_token="+self.fml.access_token+"&twitter_id="+data.twitter_id+"&r="+data.r+"&goods_id="+data.goods_id+"&frm=temai";
+				}		
+			}
+		?>
+		<div class="single_goods2">
+			<a href="<?= buy_link?>"><img class="radiusTop" src="<?= data.pic_pathe?>" /></a>
+
+			<? if(data.marks){
+				var _l = 0; var style = '';
+				data.marks.forEach(function(marks_data, index){
+					if(index > 1) return;
+			?>
+					<div class="Farm" style="<?= style ?>">
+						<img class="Standard" src="<?= marks_data.img_url?>" style="width:<?= marks_data.img_width/1.2 ?>px;"/>
+					</div>
+			<?		style = 'left: ' + (parseInt(marks_data.img_width/1.2) + 6) + 'px;';
+				});
+			} ?>
+
+			<div class="overed">
+			<? if(data.sell_status == 1){ ?>
+				<? if(data.is_end == 0){ ?>
+					<img class="zeroflag" src="<?= self.fml.PICTURE_URL?>images/wap/activity/summer_match/over3.png" />
+				<?}else{?>
+					<img class="zeroflag" src="<?= self.fml.PICTURE_URL?>images/wap/activity/summer_match/over5.png" />
+				<?}?>
+			<?}?>
+			</div>
+			<div class="desc_box">
+				<div class="padd">
+					<p class="desc"><a href="<?= buy_link?>"><?= data_desc ?></a></p>
+					<p><a href="<?= buy_link?>"><span class="red_f bigfont">¥<?= data.goods_price?></span><span class=""><del><? if(data.cost){ ?>¥<?= data.cost?><? } ?></del></span></a></p>
+				</div>
+				<hr />
+				<p class="sell"><span class="red_f"><?= data.sell_num ? data.sell_num : 0 ?></span>人已购买</p>
+			</div>
+		</div>
+		<span class="sm_tid none_f"><?=data.twitter_id?></span><span class="sm_r none_f"><?=data.r?></span><span class="sm_gid none_f"><?=data.goods_id?></span>
+	<?});?>
+</script>
+
+
+
+
+
+
+
+

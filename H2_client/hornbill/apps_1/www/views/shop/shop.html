@@ -1,0 +1,43 @@
+<%# head.html%>
+
+<%if(this.adm61 && this.adm61.ad){%>
+	<div class="shop_bnr">
+		<div class="boxImg" style="width:228px;height:160px;">
+			<% var seclen = this.adm61.ad ? this.adm61.ad.length : 0; %>
+			<ul class="_img" style="position:absolute;left:0;width:<%= (seclen+1)*228 %>px;display:inline-block;">
+				<% this.adm61.ad && this.adm61.ad.map(function(data, index){ %>
+				<li class="left_f">
+					<a class="adm_mon" href="/api/adm/?spm=<%=data.ad_clickspm%>" target="_blank" monitor="<%=data.ad_click_monitor%>" show_mon="<%=data.ad_view_monitor%>">
+							<img src="<%=data.ad_filedata%>">
+					</a>
+				</li>
+				<% }); %>
+			</ul>
+		</div>
+		<div class="_num adType1 <% if(seclen == 1) { %>none_f<% } %>">
+			<% for (var i=1; i<=seclen; i++) { %>
+			<% var current = i==1 ? 'current' : ''; %>
+			<a class="<%= current %>"><span class="none_f"><%= i %></span></a>
+			<% } %>
+		</div>
+	</div>
+<%}%>
+<div class="shop_auto">
+	<div class="goods_wall" style="height:1000px;">
+	</div>
+	<div class="paging_panel c_f">
+		<%#paging.html%>
+	</div>
+</div>
+<%# shop/shopitem.html%>
+<script>
+<%= this.poster0? 'Meilishuo.config.poster0 = '+JSON.stringify(this.poster0)+';':'' ;%>
+fml.vars.notFluid = true;
+</script>
+<% $_ENGINE_SELF.callFn("useModule")("fml.use('page/poster0');", this._JSstack , this._JSmodsFast ); %>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/doota/shop');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot.html%>

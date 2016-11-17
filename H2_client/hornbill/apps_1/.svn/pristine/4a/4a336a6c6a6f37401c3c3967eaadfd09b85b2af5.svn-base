@@ -1,0 +1,122 @@
+<%#head.html%>
+
+<div class="medal">
+<div class="medal-all">
+<%#medal/sidebar.html%>
+
+<div class="xz-right">
+<div class="xz-container">
+		<ul class="xz-tab">
+			<li><a class="active" href="#">所有勋章</a></li>
+			<li><a href="#">系统升级勋章</a></li>
+			<li><a href="#">兴趣勋章</a></li>
+			<li><a href="#">可申请勋章</a></li>
+			<li><a href="#">活动勋章</a></li>
+		</ul>
+
+	<div id="xz">
+		<ul class="on">
+		<%if(this.list0){%>
+		<%for (var i in this.list0){%>
+
+			<div class="xz-content">
+				<%if(this.list0[i].update_time){%><div class="medal-label"></div><%}%>
+					<a href="/medal/detail/<%= this.list0[i].medal_id%>" class="xz-info">
+						<span class="xz-pic" style='background: url(http://img.meiliworks.com/css/images/medal/icons/<%= this.list0[i].medal_icon%>) no-repeat'></span>
+					</a>
+					<span class="xz-title"><%= this.list0[i].medal_title%></span>
+			</div>
+
+		<%}%>
+		<%}%>
+		</ul>
+<!-- 1 -->
+		<ul>
+		<%if(this.list1){%>
+		<%for (var i in this.list1){%>
+
+			<div class="xz-content">
+				<%if(this.list1[i].update_time){%><div class="medal-label"></div><%}%>
+					<a href="/medal/detail/<%= this.list1[i].medal_id%>" class="xz-info">
+						<span class="xz-pic" style='background: url(http://img.meilishuo.net//css/images/medal/icons/<%= this.list1[i].medal_icon%>) no-repeat'></span>
+					</a>
+					<span class="xz-title"><%= this.list1[i].medal_title%></span>
+			</div>
+
+		<%}%>
+		<%}%>
+		</ul>
+<!--  -->
+<!-- 2 -->
+		<ul>
+		<%if(this.list2){%>
+		<%for (var i in this.list2){%>
+
+			<div class="xz-content">
+				<%if(this.list2[i].update_time){%><div class="medal-label"></div><%}%>
+					<a href="/medal/detail/<%= this.list2[i].medal_id%>" class="xz-info">
+						<span class="xz-pic" style='background: url(http://img.meilishuo.net//css/images/medal/icons/<%= this.list2[i].medal_icon%>) no-repeat'></span>
+					</a>
+					<span class="xz-title"><%= this.list2[i].medal_title%></span>
+			</div>
+
+		<%}%>
+		<%}%>
+		</ul>
+<!--  -->
+
+<!-- 3 -->
+		<ul>
+		<%if(this.list3){%>
+		<%for (var i in this.list3){%>
+
+			<div class="xz-content">
+				<%if(this.list3[i].update_time){%><div class="medal-label"></div><%}%>
+					<a href="/medal/detail/<%= this.list3[i].medal_id%>" class="xz-info">
+						<span class="xz-pic" style='background: url(http://img.meilishuo.net//css/images/medal/icons/<%= this.list3[i].medal_icon%>) no-repeat'></span>
+					</a>
+					<span class="xz-title"><%= this.list3[i].medal_title%></span>
+			</div>
+
+		<%}%>
+		<%}%>
+		</ul>
+<!--  -->
+
+<!-- 4 -->
+		<ul>
+		<%if(this.list4){%>
+		<%for (var i in this.list4){%>
+
+			<div class="xz-content">
+				<%if(this.list4[i].update_time){%><div class="medal-label"></div><%}%>
+					<a href="/medal/detail/<%= this.list4[i].medal_id%>" class="xz-info">
+						<span class="xz-pic" style='background: url(http://img.meilishuo.net//css/images/medal/icons/<%= this.list4[i].medal_icon%>) no-repeat'></span>
+					</a>
+					<span class="xz-title"><%= this.list4[i].medal_title%></span>
+			</div>
+
+		<%}%>
+		<%}%>
+		</ul>
+<!--  -->
+
+
+	</div>
+		
+		
+
+	</div>
+</div>
+
+
+</div>
+
+
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use('page/medal/medal');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot.html%>
+

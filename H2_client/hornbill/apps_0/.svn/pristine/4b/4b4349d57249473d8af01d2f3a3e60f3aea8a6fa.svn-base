@@ -1,0 +1,75 @@
+@import "../../block.less";
+
+html{ .f(10*@f); }
+body{ background:#fff; }
+img{ .block; .w(100%); }
+a{outline: none;}
+
+.top_rank{.bgc(#fff);}
+.top_rank{.pl(20*@w);}
+.t_rank{
+	.border-1(#D9D9D9);.w(558/620*100%);padding: 20/620*100%;.hidden;.mb(20/620*100%);
+	.img_wrap{
+		.w(210/558*100%);.left;.border-1();.hidden;.pr;.pt(320/558*100%);
+		img{.pa;top: 0;left: 0;.w(100%);.h(100%);}
+		span{.block;.bp(-8px, -218px);.w(80px);.h(80px);.pa;top: 0;left: 0;}
+	}
+	.tr_con{
+		.w(326/558*100%);.right;.f(1.2rem);.fc(#666);
+		.title{.fc(#fc5d89);}
+		.name{.f(2rem);.fc(#333);.fb;.h(2rem);.pb(1.4rem);.pt(.4rem);}
+		.text_t{.fc(#333);.pb(.4rem);.fb;}
+		.text{.l(1.6rem);.hidden;}
+		.rank_like{
+			.pt(.4rem);.border-tc(dotted);.mt(1rem);
+			span{.right;}
+			.like {.w(22*@px);.h(20*@px);.left;.mr(2px);.mt(2px);background:url("@{pic_url}/images/wap/activity/project/fw_xin.png") no-repeat;background-size:100%;}
+		}
+	}
+}
+
+.pic_box { .clearfix;
+	.small_pic { .pa; .ml(5px); border: 1px solid #D9D9D9;.border-r(4px); .hidden; }
+	figure { .bgwhite;.pa;
+		img{.border-r(3px 3px 0 0);}
+		i.like {.w(22*@px);.h(20*@px);.left;.mr(2px);.mt(2px);background:url("@{pic_url}/images/wap/activity/project/fw_xin.png") no-repeat;background-size:100%;}
+		p{.l(1.4rem);.ml(14*@px); .mr(14*@px);}
+		.rank_t{.h(2.8rem);.pt(.4rem);}
+		.rank_like{
+			.pt(.4rem);
+			span{.right;}
+		}
+		.rank_con{ .h(2.8rem); .hidden; .border-tc(dotted); .mt(10*@px); .pr; .pt(.4rem); .mb(.4rem); }
+	}
+}
+
+.ios_simple;
+.poster_simple;
+.poster > ._pa;
+
+.colFlag{ z-index: 2; }
+.pullUp{
+	.pullUpDown > .common;.pullUpDown > .loading;
+	&:before{
+		.nowrap;
+		.ml(-10px);
+	}
+	&[status="tap"]{
+		background:0 none;
+		&:before{
+			content:"上拉看更多..."
+		}
+	}
+	&[status="stop"]{
+		background:0 none;
+		&:before{
+			content:"木有了...";
+		}
+	}
+}
+.test2{ .pb(100px); }
+
+/*分享*/
+.starBox{
+	.star_box;
+}

@@ -1,0 +1,115 @@
+/*--/Users/MLS/Documents/H2/H2_client/hornbill/apps_0/www/views/head_simple.html--*/ 
+     var est = require(config.path.lib + 'est/est.js'); 
+     var _extFn = require('/Users/MLS/Documents/H2/H2_client/hornbill/nestnew/server/lib/est/extFn.js'); 
+     function requireFn(tpl) { return est.renderFile('/Users/MLS/Documents/H2/H2_client/hornbill/apps_0/www/views/' ,tpl , null , null ,'www' ,true); } ; 
+     function __getHtml (_data) { 
+       function jsRender(tpl , id) { return est.jsRender(requireFn(tpl)(_data), id  ); } ; 
+       var __htm ='';
+__htm += '<!DOCTYPE html>\n';
+__htm += est.renderFile("/Users/MLS/Documents/H2/H2_client/hornbill/apps_0/www/views/" ,"lang.conf",_data,null,"www" )||"";
+__htm += '\n<!--[if IE 7]><html class="ie7 lt-ie10"><![endif]-->\n<!--[if IE 8]><html class="ie8 lt-ie10"><![endif]-->\n<!--[if IE 9]><html class="ie9 lt-ie10"><![endif]-->\n<!--[if gt IE 9]><!-->\n<html>\n<!--<![endif]-->\n<head>\n	<meta charset="utf-8" />\n	<title>';
+__htm += _extFn.html_encode( _data.pageTitle);
+__htm += '</title>\n    <meta name="description" content="';
+__htm += _data.meta_description;
+__htm += '" />\n    <meta name="keywords" content="';
+__htm += _data.keywords;
+__htm += '" />\n	<link rel="dns-prefetch" href="http://s.meilishuo.net/">\n	<link rel="dns-prefetch" href="http://i.meilishuo.net/">\n	<link rel="dns-prefetch" href="http://d01.res.meilishuo.net/">\n	<link rel="dns-prefetch" href="http://d02.res.meilishuo.net/">\n	<link rel="dns-prefetch" href="http://d03.res.meilishuo.net/">\n	<link rel="dns-prefetch" href="http://d04.res.meilishuo.net/">\n	<link rel="dns-prefetch" href="http://d05.res.meilishuo.net/">\n    ';
+if(_data.author){;__htm += '\n		<meta name="author" content="';
+__htm += _data.author;
+__htm += '"/>\n    ';
+};__htm += '\n    <meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1" />\n    <meta property="qc:admins" content="173137167465514130576375" />\n    <meta name="chinaz-site-verification" content="500e4417-e595-40ac-98da-dec66c97a9e5" />\n    ';
+ if (_data._mobileAgent) { ;__htm += '\n		<meta name="mobile-agent" content="format=html5;url=http://m.meilishuo.com';
+__htm +=_data._mobileAgent;
+__htm += '">\n	';
+ } ;__htm += '\n	';
+ if (_data._canonical) { ;__htm += '\n		<link rel="canonical" href="http://www.meilishuo.com';
+__htm +=_data._canonical;
+__htm += '"/>\n	';
+ } ;__htm += '\n	';
+ if(!_data.noBasecss){ ;__htm += '\n    <link rel="stylesheet" type="text/css" href="';
+__htm += _data.JCSTATIC_BASE ;
+__htm += 'css/base.css?';
+__htm += _data.SVERSION;
+__htm += '" />\n    <!--[if IE 6]><link rel="stylesheet" type="text/css" href="';
+__htm += _data.JCSTATIC_BASE ;
+__htm += 'css/ie6.css?';
+__htm += _data.SVERSION ;
+__htm += '" /><![endif]-->\n	';
+  } ;__htm += '\n    <link rel="apple-touch-icon-precomposed" href="';
+__htm += _data.CSS_JS_BASE_URL;
+__htm += 'css/images/custom_icon_precomposed.png"/>\n    ';
+
+		_data.user_id = (_data.userInfo ? _data.userInfo.user_id:0) || 0;
+	;__htm += '\n	';
+__htm += (function(link){
+		var str = '';
+		var base = _data.JCSTATIC_BASE;
+		var sversion = _data.SVERSION;
+		link && link.map(function(src){
+			str += '<link rel="stylesheet" type="text/css" href="'+base+'css/'+src+'.css?'+ sversion +'"/>';
+			});
+		return str;
+		})(_data._CSSLinks);
+__htm += '\n	';
+ if (_data._CSSstack && _data._CSSstack.length) { ;__htm += '\n		<style>\n		';
+__htm += _data._CSSstack.join("\n");;
+__htm += '\n		</style>\n	';
+ }
+	;__htm += '\n	<script type="text/javascript" src="';
+__htm += _data.JCSTATIC_BASE  ;
+__htm += '~fml?';
+__htm += _data.SVERSION;
+__htm += '" ></script>\n	';
+
+		//配置文件中的 domain 后面没有斜杠
+		var globalSideBarURL = '/~order:common/biu?v52';
+		globalSideBarURL = ( _data.isHTTPS ? _data.DOMAIN.biz_https : _data.DOMAIN.biz ) + globalSideBarURL;
+	;__htm += '\n	<script type="text/javascript" src="';
+__htm += globalSideBarURL ;
+__htm += '"></script>\n	<script>\n	fml.setOptions({\'sversion\' : \'';
+__htm += _data.SVERSION ;
+__htm += '\',\'defer\' : ';
+__htm += _data.JS_Defer ;
+__htm += ' ,\'modulebase\' : \'';
+__htm += _data.JCSTATIC_BASE + _data.SCRIPT_BASE ;
+__htm += '\'});\n	fml.vars.globalSidebarSelector = \'#global-sidebar\';\n	fml.vars.globalSidebarServiceIM = \'';
+__htm += _data._serviceIM ? JSON.stringify(_data._serviceIM) : "" ;
+__htm += '\';\n	fml.vars.globalSidebarDomain = \'';
+__htm += JSON.stringify(_data.DOMAIN) ;
+__htm += '\';\n	';
+
+	var MeilishuoConfig = {
+		config : {
+			nt : _data.nToken,
+			main_site_domain: _data.MAIN_SITE_DOMAIN,
+			server_url : _data.SERVER_BASE,
+			picture_url : _data.PICTURE_URL,
+			captcha_url : _data.CAPTCHA_ULR,
+			im_url : _data.IM_ULR,
+			user_id : _data.user_id ,
+			nickname : _data.userInfo.nickname || '',
+			fairy_id : 219,
+			forSale : !!_data.SaleChannel,
+			qzone_notfans : _data.userInfo.qzone_notfans,
+			is_actived : typeof _data.userInfo.is_actived !== 'undefined' ? _data.userInfo.is_actived : 1,
+			controller : _data.headTag,
+			avatar_c : _data.userInfo.avatar_c,
+			level :_data.userInfo.level || 0,
+			weibo_bind : _data.userInfo.weibo,
+			weibo_act : _data.userInfo.weibo_act,
+			block_remain : _data.userInfo.block_remain || 0,
+			mobile_is_actived : _data.userInfo.mobile_is_actived || 0,
+			need_active : _data.userInfo.need_active || 0 ,
+			is_iPad : _data.is_iPad || false ,
+			is_service : _data.userInfo.is_service || 0,
+			apiHost : _data.apiHost,
+			proxyPath : '/ja/proxy/'
+		}
+	}
+	;__htm += '\n    var Meilishuo = ';
+__htm +=JSON.stringify(MeilishuoConfig) ;
+__htm += ';\n	';
+if(_data.staticize == 1){;__htm += '\n		Meilishuo.config.login_state = 0;\n	';
+};__htm += '\n	</script>\n</head>\n';
+return __htm;} 
+ exports.html = __getHtml; 

@@ -1,0 +1,80 @@
+<%# head.html%>
+
+<%
+	var class_type = {
+		'0' : 'add',
+		'1' : 'minus'
+	}, handle_type = { 
+		'0' : '+',
+		'1' : '-'
+	}
+%>
+
+<div class="wrap">
+	<div class="user_info">
+		<a href="" class="user_pic">
+			<img src="<%= this.user_info.data.avatar_b%>">
+		</a>
+		<div class="user_main">
+			<h3><a href=""><%= this.user_info.data.nickname %></a></h3>
+			<p class="jifen">
+				<span><%= this.user_info.data.point%></span>积分
+			</p>
+			<a href="<%= _extFn.getAppLink('twitter_list' , {'method':'twitter/popular'} , this.os, this.r) %>" class="more_good">
+				<!--<b><img src="<%=this.PICTURE_URL%>/images/wap/member/shop_icon.png"></b>-->
+				去购物领取更多积分 &gt;&gt;
+			</a>
+		</div>
+	</div>
+	<form>
+		<table class="mem_talbe" cellspacing="0" border-spacing="0">
+			<thead>
+				<tr>
+					<td>时间</td>
+					<td width="33%">行为</td>
+					<td width="33%">积分数</td>
+				</tr>
+			</thead>
+			<tbody class='list_comm'>
+				<% this.point_list.infos.map(function (data,idx){%>
+				<tr <%if(idx % 2 == 1) {%>class="even"<%}%>>
+					<td><%= data.time%></td>
+					<td><%= data.op_text%></td>
+					<td>
+						<span class="<%= class_type[data.mark]%>"><%= handle_type[data.mark]%><%= data.point%></span>
+					</td>
+				</tr>		
+				<%});%>
+			</tbody>
+			<tfoot>
+				<tr >
+					<td colspan = "3" class="more_wrap">
+						<% if(this.point_list.pages.total_num > 10){%>
+						<a href="javascript:void(0);" class="more">
+							查看更多积分明细
+							<span class="xiala_icon">
+								<img src="<%=this.PICTURE_URL%>/images/wap/member/xiala.png">
+							</span>
+						</a>
+						<%}%>
+					</td>
+				</tr>
+			</tfoot>
+		</table>
+	</form>
+</div>
+<script type="text/html" id="list_more">
+<? item && $.each(item , function(idx , data){?>
+	<tr <?if(idx % 2 == 1) {?>class="even"<?}?>>
+		<td><?= data.time?></td>
+		<td><?= data.op_text?></td>
+		<td>
+			<span class="<?= class_type[data.mark]?>"><?= handle_type[data.mark]?><?= data.point?></span>
+		</td>
+	</tr>
+<?});?>
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/member/member');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

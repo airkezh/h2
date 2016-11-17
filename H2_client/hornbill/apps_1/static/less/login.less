@@ -1,0 +1,222 @@
+@import "block.less";
+
+.connect_buttom;
+.login {
+	.pr;
+	.common_shadowBox;.mt(14px);.auto;.w(724px);padding:38px 112px;
+	&_mls{
+		.pr(30px);.w(400px);.left;
+		h2{.f(24px);.l(54px);}
+		fieldset { 
+			.border-tc; .mt(8px);
+			form{
+				.mt(26px);
+				input{.f(12px);}
+				label{.mr(8px);.tr;.l(22px);}
+				p, .checkBox {
+					.mb(16px);
+					label{.left}
+				}
+				.checkBox{
+					.l_ipt{.w(52px);}
+				}
+				.checkImage{
+					.pa;.inline;.w(148px);.mt(-7px); .ml(8px);
+					span{.left;.l(36px);.h(36px);.mr(8px);.cursor;}	
+				}
+				.loginErrorMessage {.ml(40px);.mt(22px);}
+				.submitBox {.ml(40px);.mt(14px);.l(30px);
+					.button{.common_button; .common_button > .redBtn; .border-n; .f(14px); .fb; .mr(10px); padding:4px 10px; .w(100px);}
+				}
+			}
+		}	
+	}
+	&_other{
+		.left;.pl(30px);.w(260px);.h(340px);
+		border-left: 1px solid #ddd;margin:14px 0px;
+		p{.l(48px);}
+		.msg { .border-1(#e6e6e6); .bgwhite; .dgray; .left; .h(48px); .p5_10; .l(24px); .w(210px);
+			.pa; top: 52px; left: -36px; z-index: 9; 
+			.arrow1 { .f(24px); .fc(#e6e6e6); .left; .hidden; .pa; top: -14px; left: 48px; }
+			.arrow2 { .f(22px); .white; .left; .hidden; .pa; top: -12px; left: 49px; }
+		}
+		.icos_wrap a span { .none; }
+		.icos_wrap a:hover span { .block; }
+	}
+}
+.l_ipt_s { .border-1; .gray; .l(20px); .p05; .w(52px);}
+.trlogin {.common_shadowBox;.mt(14px);.w(900px);padding:50px 24px 0;.auto;
+	.t_sorry {background:url("@{pic_url}/images/log_in/i_trlogin131024.png") no-repeat;.pl(110px);.pb(50px);.w(400px);.auto;
+	h1 {.f(24px);.red;.mb(12px);.fn;}
+	p {.f(16px);.l(24px);
+		span {.red;}
+	}
+  }
+	.line {border-bottom:1px dashed #DDD;}
+	.try { float:none;border:none;.h(230px);.auto;.mt(20px);.w(240px); }
+}
+
+
+//登录改版
+body{
+	background: url("@{pic_url}/images/register/login_bg_m1.jpg") no-repeat center top;
+}
+.wrap{
+	.w(100%);
+	.pb(50px);
+	.reg_wrap {
+		.w(980px); margin: 0 auto;
+		.head { 
+			.pt(40px); .pb(30px); .block;
+			.reg_logo { .i_block; background: url("@{pic_url}/images/register/register_logo.png") no-repeat; .w(157px); .h(56px); .mr(25px);}
+			.welcome_txt { .i_block; background: url("@{pic_url}/images/register/welcome_txt.png") no-repeat; .w(336px); .h(50px); }
+		}
+		.main {
+			.clearfix; .bgwhite; .pt(40px); .pr(50px); .pl(80px);
+			.ad_wrap{
+				.left;
+			}
+			.login_form {
+				.msg_error{
+					.fc(#f69);
+					.l(30px);
+				}
+				.right; .w(320px); .mr(30px);
+				.pw_safe {.mt(8px);.h(22px);
+					.txt {.left;.w(58px);.gray;}
+				}
+				.pw_strength {.left;.w(129px);.bgc(#ccc);.h(14px);.pr;
+					span {.white;.inline;.left;.h(14px);.l(14px);.c;.w(42px);border-right:1px solid #FFF;}	
+					&_color {.bgred;}
+				}
+				.get_code {.w(170px);.h(34px);.l(34px); .left; .block; .c; .cursor; .bgc(#f5f5f5); .border-1(#ddd); .fc(#666);
+				}
+				.reg_icon () { background: url("@{pic_url}/images/window/login_icon-4.png") no-repeat;  .i_block; .w(25px); .h(25px);}
+				.tel_icon { .reg_icon; .pa; .bp(-75px,0); top: 6px; left: 5px;}
+				.user_icon {.reg_icon; .pa; .bp(0,0); top: 6px; left: 5px;}
+				.pwd_icon {.reg_icon; .pa; .bp(-25px,0); top: 5px; left: 5px;}
+				.code_icon { .reg_icon; .pa; .bp(-50px,0); top: 5px; left: 4px;}
+				.reload_icon { .reg_icon; .pa; .bp(0,-25px); top: 5px; right: -30px;}
+				.code_img { .w(92px); .h(36px); .i_block; .pa; top: 1px; right: 95px; .cursor;}
+				.check_icon() { top: 6px; right: -30px;}
+				.msg_err {.reg_icon; .pa; .check_icon; .bp(-25px,-25px);}
+				.msg_ok { }
+				.codeImage { .i_block; border-right: 1px solid #ddd;}
+				h3 { 
+					.f(14px); .pt(10px); .pb(15px);
+					a { .red; .tunder; .right; .fn; .pr(3px);}
+				}
+				.login_list {
+					min-height: 68px;
+					p { .l(30px);}
+					.login_box { 
+						.pr;
+					}
+					.login_txt { 
+						.w(280px); .h(34px); line-height:34px\9; .border-1(#ddd); .fc(#999); .pl(35px);
+						&:focus{
+							border-color:#f69;
+						}
+					}
+					.enter_code {.w(122px);.left;.mr(10px); .pl(10px);}
+					.red_border { .border-1(#f69);}
+				}
+				.verifcode,.confpass{
+					.none;
+				}
+				.checkImage{
+					.pa;
+					right: 1px;
+					top: 1px;
+					img{
+						.cursor;
+					}
+					.refresh{
+						background: url("@{pic_url}/images/register/reload_m.png") no-repeat center;
+						border-left: 1px solid #ddd;
+						.h(36px);
+						.w(36px);
+						.il-block;
+						.cursor;
+					}
+				}
+				.loginErrorMessage {
+					.mb(12px);
+					.fc(#ff6699);
+				}
+				.login_btn_wrap {
+					.login_btn { .white; .block; .f(16px); .c; .border-n; .w(320px); .h(46px); .bgred; .l(46px); .cursor;}
+				}
+				.remember{
+					.left;
+					.pr(16px);
+					.cursor;
+					line-height: 30px;
+					input{
+						vertical-align: middle\9;
+					}
+				}
+				.forget_pwd{
+					line-height: 30px;
+					border-bottom: 1px dotted #ccc;
+					.tunder;
+					.pb(5px);
+					a{
+						.tunder;
+						.fc(#ff6699);
+					}
+				}
+				.agree_reg { 
+					.pt(12px); 
+					.pb(20px);
+					.fc(#999);
+					border-bottom: 1px dotted #ccc;
+					a { .red;.tunder;} 
+				}
+				.fast_login{
+					h3{ .pt(20px); .pb(15px); .f(14px); .fn;}
+					.fast_way {
+						.clearfix; .pb(20px);
+						a {.left; .w(100px); .h(35px); background: url("@{pic_url}/images/window/login_fast_new.png") no-repeat;}
+						a.qq_way { .bp(0,-120px);}
+						a.sina_way { .bp(0,-160px); .ml(10px); .mr(10px);}
+						a.weixin_way { .bp(0,-200px);}
+					}
+				}
+				.more_way_wrap {
+					.clearfix; .l(26px);
+					h4 { .left; .mr(10px); .f(12px); .fn; .pb(2px); .cursor;}
+					.more_way {
+						.clearfix; .left;
+						a{
+							.reg_icon; .left; .mr(7px); .vm;
+						}
+						a.txweibo { .bp(-125px,-25px);}
+						a.douban { .bp(-100px,-25px);}
+						a.renren { .bp(-150px,-25px);}
+						a.baidu { .bp(-75px,-25px);}
+					}
+				}
+				.notice{
+					background: url("@{pic_url}/images/register/notice_m.png") no-repeat 0 center; 
+					line-height: 30px;
+					.fc(#999);
+					.pl(22px);
+					.mb(15px);
+					a{
+						.fc(#ff6699);
+						.tunder;
+					}
+				}
+			}
+		}
+	}
+}
+.footer{
+	margin-top: 0;
+	border-top:none;
+	background-color: transparent;
+}
+
+
+

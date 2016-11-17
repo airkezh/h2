@@ -1,0 +1,262 @@
+<!--
+/**
+ * @fileoverview 首页 － 签到商城
+ * @requires zepto
+ * @author kehuang@meilishuo.com
+ * @date 2014-12-04
+ */
+-->
+
+<%#head.html%>
+<%
+	var curGoodsData = this.goodsInfo.data || {};
+	var curCouponData = this.couponInfo.data || {};
+	var headPic = this.mobUserInfo.data.avatar_b || this.PICTURE_URL + 'images/wap/activity/sign_mall/default_head.jpg';
+%>
+
+<div class="main">
+	<div class="banner">
+		<%
+			var banner_bg = curCouponData.banner_img || this.PICTURE_URL + 'images/wap/activity/sign_mall/sign_mall_banner.jpg';
+		%>
+		<img src="<%= banner_bg %>">
+	</div>
+
+	<div class="head_wrap">
+		<a href="javascript:;" class="head">
+			<img src="<%= headPic %>">
+		</a>
+		<span class="award">我的奖金：<%= curCouponData.bonus || 0 %>元</span>
+	</div>
+
+	<!-- <div class="caption_title"><p>双倍兑换说明</p></div>
+
+	<div class="caption_pic">
+		<%
+			var caption_bg = curCouponData.rule_img || this.PICTURE_URL + 'images/wap/activity/sign_mall/caption.jpg';
+		%>
+		<img src="<%= caption_bg %>">
+	</div>
+
+	<div class="dotted_line">
+		<p>今日上新<em><%= curGoodsData.total || 0 %></em>件</p>
+	</div> -->
+
+	<div class="goods_wrap">
+		<div class="new_box">
+			<ul class="even goods_wall"></ul>
+		</div>
+	</div>
+
+	<div class="pullUp" status="loading"></div>
+
+	<div class="gotop_wrap" style="bottom:40px">
+		<a class="gotop">
+			<img src="<%= this.PICTURE_URL%>images/wap/korea/gotop.png">
+		</a>
+	</div>
+</div>
+
+<script type="text/html" id="posterWall">
+	<?
+		var goodsData = this.data.list;
+
+		if (goodsData.length > 0) {
+			$.each(goodsData, function(index, goods){
+				var shopData = goods.shop,
+					couponData = goods.coupon,
+					goods_title = goods.title || '',
+					goods_price = goods.price || '',
+					goods_img = goods.img || '<%= this.PICTURE_URL%>/images/wap/activity/sign_mall/default_pic.png';
+	?>
+	<li>
+		<a href="<?= goods.url ?>">
+			<div class="lazy_pic" asrc="<?= goods_img ?>"></div>
+			<?
+				if (goods_title != '') {
+			?>
+			<p class="goods_title"><?= goods_title ?></p>
+			<?
+				}
+
+				if (goods_price != '') {
+					var goods_credit = parseFloat(couponData.credit || 10),
+						cur_price = goods_price.substring(1),
+						old_price = parseInt(cur_price),
+						sub_price = parseFloat(cur_price) - goods_credit,
+						new_price = (sub_price < 0) ? 0 : sub_price.toFixed(2);
+			?>
+			<p class="price">用券价<span>￥<?= new_price?></span><del>￥<?= old_price ?></del></p>
+			<?
+				}
+			?>
+		</a>
+		<?
+			if (couponData && (couponData.constructor == Object)) {
+				var title = shopData.title || '',
+					avater = shopData.avater || '',
+					shopurl = shopData.url || '',
+					code = couponData.code || '',
+					price = couponData.price || 0,
+					credit = couponData.credit || 0,
+					status = couponData.status || 0,
+					threshold = couponData.threshold || 0,
+					flag = (status == 0) ? 'robbed' : '',
+					coupon_type = (threshold == 0) ? '直减券' : '满减券',
+					start = (couponData.expiration && couponData.expiration.start) ? couponData.expiration.start : '',
+					end = (couponData.expiration && couponData.expiration.end) ? couponData.expiration.end : '';
+		?>
+		<div class="coupon <?= flag ?>" code="<?= code ?>" url="<?= goods.url ?>" shopurl="<?= shopurl ?>" title="<?= title ?>" avater="<?= avater ?>" price="<?= price ?>" credit="<?= credit ?>" status="<?= status ?>" threshold="<?= threshold ?>" start="<?= start ?>" end="<?= end ?>">
+			<div class="tit1"><?= credit ?>元店铺券</div>
+			<div class="tit2 <?= flag ?>">花费<?= price ?>元奖金</div>
+		</div>
+		<?
+			} else {
+		?>
+		<div class="coupon robbed">
+			<div class="tit1">10元店铺券</div>
+			<div class="tit2 robbed">花费5元奖金</div>
+		</div>
+		<?
+			}
+		?>
+	</li>
+	<?
+			});
+		}
+	?>
+</script>
+
+<script type="text/html" id="j_coupon_layer">
+	<?
+		var code = '',
+			url = '',
+			shopurl = '',
+			price = 0,
+			credit = 0,
+			threshold = 0,
+			title = '',
+			desc = '无门槛限制',
+			avater = '',
+			start = '',
+			end = '',
+			couponType = '',
+			jsonData = this.data;
+
+		if (jsonData) {
+			code = jsonData.code;
+			url = jsonData.url;
+			shopurl = jsonData.shopurl;
+			price = jsonData.price;
+			credit = jsonData.credit;
+			threshold = jsonData.threshold;
+			title = jsonData.title;
+			avater = jsonData.avater;
+			start = jsonData.start;
+			end = jsonData.end;
+		}
+
+		if (threshold > 0) {
+			couponType = '满减券';
+			desc = '<em>满' + threshold + '元</em>可用';
+		} else {
+			couponType = '直减券';
+		}
+	?>
+	<div class="layer_shade j_layer_shade"></div>
+	<div class="layer_main j_layer_main">
+		<div class="t"></div>
+		<div class="m">
+			<p class="t1">温馨提示</p>
+			<p>你将花费<em><?= price ?>元</em>签到奖金，</p>
+			<p>领取<em><?= credit ?>元</em>店铺券，<?= desc ?>，</p>
+			<?
+				if (title != '') {
+			?>
+			<p>仅限<em><?= title ?></em>店铺内使用。</p>
+			<?
+				}
+
+				if ((start != '') && (end != '')) {
+			?>
+			<p>有效期：<?= start ?>~<?= end ?></p>
+			<?
+				}
+			?>
+			<p class="tip">下单时记得选中这张店铺优惠券哦~</p>
+			<a href="javascript:;" class="ok_btn" code="<?= code ?>" url="<?= url ?>" shopurl="<?= shopurl ?>" title="<?= title ?>" avater="<?= avater ?>" credit="<?= credit ?>" threshold="<?= threshold ?>" start="<?= start ?>" end="<?= end ?>"></a>
+			<a href="javascript:;" class="no_btn"></a>
+		</div>
+		<div class="f"></div>
+	</div>
+</script>
+
+<script type="text/html" id="j_convert_layer">
+	<?
+		var credit = 0,
+			threshold = 0,
+			url = '',
+			shopurl = '',
+			title = '',
+			desc = '无门槛限制',
+			avater = '',
+			start = '',
+			end = '',
+			jsonData = this.data;
+
+		if (jsonData) {
+			credit = jsonData.credit;
+			threshold = jsonData.threshold;
+			url = jsonData.url;
+			shopurl = jsonData.shopurl;
+			title = jsonData.title;
+			avater = jsonData.avater;
+			start = jsonData.start;
+			end = jsonData.end;
+		}
+
+		if (threshold > 0) {
+			desc = '满' + threshold + '使用';
+		}
+	?>
+	<div class="layer_shade j_layer_shade"></div>
+	<div class="layer_main j_layer_main layer_big">
+		<div class="t"></div>
+		<div class="m">
+			<p class="t1">兑换成功！</p>
+			<div class="coupon_bg">
+				<div class="title_wrap">
+					<a href="javascript:;" class="head">
+						<img src="<?= avater ?>">
+					</a>
+					<span class="title"><?= title ?></span>
+				</div>
+				<div class="desc_wrap">
+					<div class="left"><?= credit ?><em>元</em></div>
+					<div class="right">
+						<div>仅限店内使用</div>
+						<div><?= desc ?></div>
+						<div><?= start ?>~<?= end ?></div>
+					</div>
+				</div>
+			</div>
+			<a href="<?= url ?>" class="buy_btn"></a>
+			<a href="<?= shopurl ?>" class="visit_btn"></a>
+		</div>
+		<div class="f"></div>
+	</div>
+</script>
+
+<script>
+	fml.vars.cur_cid = <%=this.curGoodsCid%>;
+	fml.vars.isLogin = <%=this.isLogin%>;
+	fml.vars.is_lazyload_poster = true;
+	fml.vars.goods_data = <%=JSON.stringify(curGoodsData.list)%>;
+	<%= this.goodsInfo ? 'Meilishuo.config.fallWall0 = ' + JSON.stringify(this.goodsInfo) + ';' : ''; %>
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use("wap/page/activity/sign_mall");
+_use:", this._JSstack, this._JSmods); %>
+
+<%#foot_simple.html%>

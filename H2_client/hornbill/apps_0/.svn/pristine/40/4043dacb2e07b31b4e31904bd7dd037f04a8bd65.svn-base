@@ -1,0 +1,40 @@
+<%
+var details     = this.details,
+	item_detail = details.detail,
+	quality     = this.share_quality;
+	anchors = [],
+	i = 0,
+	anchors_map = {},
+	formatName = '规格尺码',
+	sampling = '抽检合格'
+
+this.anchors_map = anchors_map
+this.formatName = formatName
+this.sampling = sampling
+if (item_detail && !item_detail.is_taobao ) {
+	if ( details.specifications_size ) {
+		anchors_map[formatName] = 'da'+ (i++);
+		anchors.push( formatName);		
+	}
+	if(quality && quality.length){
+		anchors_map[sampling] = 'da' + (i++);
+		anchors.push( sampling);
+	}
+	item_detail.forEach(function(data){
+		var title = data.title
+		anchors_map[ title ] = 'da'+ (i++)
+		anchors.push( title )
+	});
+}
+if (anchors.length) {
+%>
+<div class="detail_items">
+	<% if(this.headTag == "snap"){ %>
+		<span>商品详情</span>
+	<%}%>
+	<% anchors.forEach(function( anchr ) { %>
+		<a href="#<%= anchors_map[anchr] %>" class="js-anchor-btn"><%= anchr%></a>
+	<%});%>
+</div>
+<% } %>
+

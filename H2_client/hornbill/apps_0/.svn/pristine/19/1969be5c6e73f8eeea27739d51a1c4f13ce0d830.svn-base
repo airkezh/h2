@@ -1,0 +1,115 @@
+<%# head.html%>
+<% var getLink = _extFn.getLink; %>
+<%
+	var eventId = this.event_id;
+	var banner = this.banner && this.banner.data && this.banner.data.pc_qingcang_top_banner;
+%>
+
+<div class="wrap">
+	<%if(banner && banner.length > 0){%>
+	<div class="banner" style="background:url('<%= banner[0].show_pic%>') no-repeat center top;"></div>
+	<%}%>
+	<div class="rush_nav" id="rush_nav">
+		<div class="nav_box">
+			<div class="nav_cont">
+				
+				<ul class="nav_tabs">
+					<li <%= (!this.cata || this.cata ==0 ) ? 'class="curr"' : ''%>>
+						<a href="/activity/clearance/index/<%= eventId%><%=getLink({'cata':0,'sbase':this.sbase,'sort':this.sort})%>#rush_nav">全部</a>
+					</li>
+					<li <%= (this.cata == 1 ) ? 'class="curr"' : ''%>>
+						<a href="/activity/clearance/index/<%= eventId%><%=getLink({'cata':1,'sbase':this.sbase,'sort':this.sort})%>#rush_nav">衣服</a>
+					</li>
+					<li <%= (this.cata == 2 ) ? 'class="curr"' : ''%>>
+						<a href="/activity/clearance/index/<%= eventId%><%=getLink({'cata':2,'sbase':this.sbase,'sort':this.sort})%>#rush_nav">鞋子</a>
+					</li>
+					<li <%= (this.cata == 3 ) ? 'class="curr"' : ''%>>
+						<a href="/activity/clearance/index/<%= eventId%><%=getLink({'cata':3,'sbase':this.sbase,'sort':this.sort})%>#rush_nav">包包</a>
+					</li>
+					<li <%= (this.cata == 4 ) ? 'class="curr"' : ''%>>
+						<a href="/activity/clearance/index/<%= eventId%><%=getLink({'cata':4,'sbase':this.sbase,'sort':this.sort})%>#rush_nav">男装</a>
+					</li>
+					<li <%= (this.cata == 5 ) ? 'class="curr"' : ''%>>
+						<a href="/activity/clearance/index/<%= eventId%><%=getLink({'cata':5,'sbase':this.sbase,'sort':this.sort})%>#rush_nav">配饰家居</a>
+					</li>
+					<li <%= (this.cata == 6 ) ? 'class="curr"' : ''%>>
+						<a href="/activity/clearance/index/<%= eventId%><%=getLink({'cata':6,'sbase':this.sbase,'sort':this.sort})%>#rush_nav">美妆</a>
+					</li>
+				</ul>
+				<ul class="range">
+			        <li <%if(this.sbase === "0"||!this.sbase){%> class="active"<%}%>>
+			        	<a href="/activity/clearance/index/<%=eventId%><%=getLink({'cata':(this.cata ? this.cata : ''),'sbase':0,'sort':0})%>#rush_nav">默认</a>
+			        	<span class="special">|</span>
+			        </li>
+			        <li<%if(this.sbase === "1"){%> class="active"<%}%>>
+			          	<a href="/activity/clearance/index/<%=eventId%><%=getLink({'cata': (this.cata ? this.cata : ''),'sbase':1,'sort':(this.sbase === "1" && this.sort === "1")? '0' : '1'})%>#rush_nav">人气<i class="<%= (this.sbase === "1"&&this.sort === "1")? 'arrow_t' : 'arrow_d';%>">&nbsp;</i></a>
+			          	<span class="special">|</span>
+			        </li>
+			        <li<%if(this.sbase === "2"){%> class="active"<%}%>>
+			          	<a href="/activity/clearance/index/<%=eventId%><%=getLink({'cata': (this.cata ? this.cata : ''),'sbase':2,'sort':(this.sbase === "2" && this.sort === "1")? '0' : '1'})%>#rush_nav">折扣<i class="<%= (this.sbase === "2"&&this.sort === "1")? 'arrow_t' : 'arrow_d';%>">&nbsp;</i></a>
+			          	<span class="special">|</span>
+			        </li>
+			        <li<%if(this.sbase === "3"){%> class="active"<%}%>>
+			          	<a href="/activity/clearance/index/<%=eventId%><%=getLink({'cata': (this.cata ? this.cata : ''),'sbase':3,'sort':(this.sbase === "3" && this.sort === "1")? '0' : '1'})%>#rush_nav">价格<i class="<%= (this.sbase === "3"&&this.sort === "1")? 'arrow_t' : 'arrow_d';%>">&nbsp;</i></a>
+			          	<span class="special">|</span>
+			        </li>
+			        <li<%if(this.sbase === "4"){%> class="active"<%}%>>
+			          	<a href="/activity/clearance/index/<%=eventId%><%=getLink({'cata': (this.cata ? this.cata : ''),'sbase':4,'sort':(this.sbase === "4" && this.sort === "1")? '0' : '1'})%>#rush_nav">销量<i class="<%= (this.sbase === "4"&&this.sort === "1")? 'arrow_t' : 'arrow_d';%>">&nbsp;</i></a>
+			        </li>
+			    </ul>
+			</div>
+		</div>
+	</div>
+	<div class="goods_wall_box">
+		<div class="spinner midSpinner"></div>
+		<div class="goods_wall"></div>
+	</div>
+	<div class="spinner botSpinner none_f"></div>
+	<div class="clear_f"></div>
+	<div class="paging_panel c_f none_f">
+		<%# paging.html%>
+	</div>
+</div>
+<div class="nav_right d-nav">
+	<div class="menu_main">
+	</div>
+</div>
+<script type="text/html" id="posterWall">
+	<?for(var i = 0 ; i < tInfo.length; i++){
+		var item = tInfo[i];
+	?>
+		<li class="goodsItem poster_wall">
+			<?if(item.horizontal_mark && item.horizontal_mark.length > 0 && item.horizontal_mark[0] && item.horizontal_mark[0].img_url){?>	
+			<div class="new-png">
+				<span style="position:relative;left:0px">
+					<img src="<?= item.horizontal_mark[0].img_url?>">
+				</span>
+			</div> 	
+			<?}?>		 			
+			<a class="s_pic" href="<?= item.url?>" target="_blank" title="">	 
+				<img src="<?= item.show_pic?>" class="bs_load_img">
+			</a>
+			<div class="desc_box">
+				<p class="txt">
+					<a href="<?= item.link ?>" target="_blank"><?= item.ginfo.goods_title?></a>
+				</p>
+				<p class="pold">原价：<s><?= item.ginfo.goods_price ?></s></p>
+				<p class="info-goods" style="border:none;">
+					疯抢价<span class="f-18">¥</span>
+					<span class="f-14"><?= item.ginfo.discount_goods_price ?></span>
+					<span class="num"><?= item.ginfo.discount ?></span>
+				</p>
+			</div>
+		</li>
+	<?}?>
+</script>
+<script type="text/javascript">
+fml.vars.event_id = <%= this.event_id%>;
+fml.vars.isShow = <%= this.ViewTools.timeStuff({'2015/11/1 00:00:00' : 1, '2015/11/11 23:59:59' : 0} , 0 ) %>;
+</script>
+
+<% $_ENGINE_SELF.callFn("useModule")("fml.use('page/poster0');", this._JSstack , this._JSmodsFast ); %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/huodong/clearance');
+_use:", this._JSstack , this._JSmods); %>
+<%# foot.html%>

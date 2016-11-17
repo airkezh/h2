@@ -1,0 +1,165 @@
+<script type="text/html" id="userInfo">
+	<? if(this.nurturing.timeleft == 0 && this.rewards != "" || this.nurturing.price <= this.rewards.countPrice){?>
+		<div class="user_info">
+			<span class="top_icon"></span>
+			<p class="user_name">
+				<span class="redOne nickname" nickname="<?= this.nurturing.uinfo.nickname ?>"><?= this.nurturing.uinfo.nickname ?></span>
+				卖身成功！
+			</p>
+			<div class="user_get">
+				<div class="user_pic avatar" avatar="<?= this.nurturing.uinfo.avatar ?>">
+					<img src="<%=this.PICTURE_URL%>/images/wap/activity/baoyang/userIcon_bg2.png" />
+					<img src="<?= this.nurturing.uinfo.avatar ?>"/>
+				</div>
+				<div class="get_money">
+					<p>获得<span class="red countPrice" countPrice="<?= this.rewards.countPrice?>"><?= this.rewards.countPrice ?></span>元</p>
+					<p><?= this.rewards.count ?>位土豪想玩她</p>
+					<a class="useCoupon">
+						<img src="<%=this.PICTURE_URL%>/images/wap/activity/baoyang/buybuy.png">
+					</a>
+				</div>
+			</div>
+			<div class="intro">
+				<img src="<%=this.PICTURE_URL%>/images/wap/activity/baoyang/mustDo2.jpg" />
+			</div>
+			<ul class="list_info listInfo_wrap">
+				<? this.rewards && this.rewards.users && this.rewards.users.map(function(item,index){ ?>
+				<?if(index == 0){?>
+					<li>
+						<span class="user_icon">
+							<img src="<?= item.wx_avatar ?>" />
+							<img src="<%=this.PICTURE_URL%>/images/wap/activity/baoyang/top1.png" />
+						</span>	
+						<div class="usre_info">
+							<p>
+								<span class="user_name"><?= item.wx_nick ?></span>
+								<span class="money">打赏<span><?= item.price ?></span>元</span>
+							</p>
+							<p><?= item.utime ?></p>
+							<p class="comment"><?= item.comment ?></p>
+							<p><?= item.task?></p>
+						</div>
+					</li>
+				<?}?>
+			<?}); ?>
+			</ul>
+			<span class="left_icon"></span>
+			<span class="right_icon"></span>
+		</div>
+		<?} else {?>
+		<div class="rewards_user" totalMoney="<?=this.nurturing.price?>" rewardsMoney="<?=this.rewards.countPrice?>">
+			<dl userId = <?= this.nurturing.uinfo.user_id ?> class="user_wrap">
+				<dt class="user_pic avatar" avatar="<?= this.nurturing.uinfo.avatar?>">
+					<img src="<%=this.PICTURE_URL%>/images/wap/activity/baoyang/userIcon_bg.png" />
+					<img src="<?= this.nurturing.uinfo.avatar ?>" />
+				</dt>
+				<dd>
+					<p nickname="<?= this.nurturing.uinfo.nickname?>" class="nickname"><?= this.nurturing.uinfo.nickname ?></p>
+					<p class="want">
+						<img src="<%=this.PICTURE_URL%>/images/wap/activity/baoyang/want2.png"/>
+					</p>
+				</dd>
+			</dl>
+			<div>
+				<img src="<%=this.PICTURE_URL%>/images/wap/activity/baoyang/rewardsInfo3.jpg"/>
+			</div>
+			<div class="intro">
+				<img src="<%=this.PICTURE_URL%>/images/wap/activity/baoyang/how2.jpg" />
+			</div>
+			<ul class="select_wrap">
+				<? this.mission && this.mission.map(function(item){ ?>
+					<li>
+						<span <? if (item.type == 'picture') {?>class="picture_icon type"<?}
+							else if(item.type == 'meal') {?>class="meal_icon type"<?}
+							else if(item.type == 'video') {?>class="video_icon type"<?}
+							else {?>class="song_icon type"<?}?> type="<?= item.type?>"></span>
+						<span class="service"><?= item.content ?></span>
+						<span class="normal" isSelected="0"></span>
+					</li>
+				<?}); ?>
+			</ul>
+			<div class="intro pt20">
+				<img src="<%=this.PICTURE_URL%>/images/wap/activity/baoyang/rewardsIntro4.jpg" />
+			</div>
+			<div class="reward_btn">
+				<?if(this.rewards.length == 0){?>
+					<a class="try_btn rewardBtn">
+						<img src="<%=this.PICTURE_URL%>/images/wap/activity/baoyang/try_btn.png" />
+					</a>
+				<?} else {?>
+					<?if(this.rewards.rank == 0){?>
+						<a class="now_btn rewardBtn">
+							<img src="<%=this.PICTURE_URL%>/images/wap/activity/baoyang/nowBtn.png" />
+						</a>
+					<?} else {?>
+						<p class="rank">你已经打赏<b class="red"><?= this.rewards.myPrice ?></b>元，目前排名第<b class="red"><?= this.rewards.rank ?></b></p>
+						<a class="add_btn rewardBtn">
+							<img src="<%=this.PICTURE_URL%>/images/wap/activity/baoyang/add_btn.png" />
+						</a>
+					<?}?>
+				<?}?>
+				<p class="timeleft" timeleft="<?= this.nurturing.timeleft?>">
+					<?if(this.nurturing.timeleft > 0){ ?>
+						还剩：<span class="time" remain="<?= this.nurturing.timeleft ?>">--时--分--秒</span>
+					<?} else {?>
+						本轮打赏已结束！
+					<?}?>
+				</p>
+				<span class="left_icon"></span>
+				<span class="right_icon"></span>
+			</div>
+		</div>
+	<?}?>
+
+	<div class="list_wrap">
+		<? if(this.rewards.length == 0){?>
+			<div class="no_money">
+				<p class="progress">
+					<span style="width: 0%;"></span>
+					<span class="cur_money" style="left: 0%;">¥ 0</span>
+				</p>
+				<p class="total_money">
+					￥<?= this.nurturing.price ?>
+				</p>
+				<p class="noBody">这位姑娘好可怜，还没有人愿意包养她T.T</p>
+				<p class="cryIcon">
+					<img src="<%=this.PICTURE_URL%>/images/wap/activity/baoyang/noMoney_pic.png" />
+				</p>
+			</div>
+		<?} else {?>
+			<div class="plan_wrap">
+				<p>有<span class="red"><?= this.rewards.count ?></span>位土豪打赏，共<span class="red"><?= this.rewards.countPrice ?></span>元</p>
+				<?if(this.nurturing.price <= this.rewards.countPrice){?>
+					<p class="progress">
+						<span style="width:100%;" ></span>
+						<span class="cur_money" style="right:0;">¥ <?= this.rewards.countPrice ?></span>
+					</p>
+				<?} else {?>
+					<p class="progress">
+						<span style="width:<?= this.rewards.countPrice / this.nurturing.price * 100 ?>%;" ></span>
+						<span class="cur_money" style="left:<?= this.rewards.countPrice / this.nurturing.price * 100 - 2 ?>%;">¥ <?= this.rewards.countPrice ?></span>
+					</p>
+				<?}?>
+				<p class="total_money">￥<?= this.nurturing.price ?></p>
+			</div>
+		<?}?>
+		<ul class="list_info">
+			<? this.rewards && this.rewards.users && this.rewards.users.map(function(item,index){ ?>
+				<li>
+					<span class="user_icon">
+						<img src="<?= item.wx_avatar ?>" />
+					</span>	
+					<div class="usre_info">
+						<p>
+							<span class="user_name"><?= item.wx_nick ?></span>
+							<span class="money">打赏<span><?= item.price ?></span>元</span>
+						</p>
+						<p><?= item.utime ?></p>
+						<p class="comment"><?= item.comment ?></p>
+						<p><?= item.task?></p>
+					</div>
+				</li>
+			<?}); ?>
+		</ul>
+	</div>
+</script>

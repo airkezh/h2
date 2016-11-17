@@ -1,0 +1,22 @@
+<%#head.html%>
+<%
+	var data = this.my_poster.data;
+%>
+<div class="main">
+	<div class="vote_1"></div>
+	<div class="vote_2">
+		<div class="vote_con">
+			<img src="<%= data.show_pic %>" height="320" />
+			<p><%= data.uinfo.nickname %>参加了<a href="/biz/airAsia/girls/" target="_blank">#亚航女生月特辑－宠爱自己我买单#</a>活动</br>
+			目前票数：<span class="red_f vote_num"><%= data.score %></span></br>
+			还差<span class="red_f next_num"><%= data.nextScore %></span>票，排名就能上升一位了。</p>
+			<a class="<%= data.is_vote == 1 ? 'has_vote' : 'vote_btn' %>" href="javascript:;" pid="<%= data.pid %>" user_id="<%= data.uinfo.user_id %>" username="<%= data.uinfo.nickname %>">投票</a>
+			<a class="to_welcome" href="/biz/airAsia/girls/">查看参赛榜单</a>
+		</div>
+	</div>
+	<div class="vote_3"></div>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/huodong/airAsia_vote');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

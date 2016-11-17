@@ -1,0 +1,30 @@
+<%# head.html%>
+<%
+var mSubstr = _extFn.mSubstr;
+%>
+<%if(this.uinfo && this.uinfo.data){%>
+<div class="suc_bg_invite">
+	<div class="pic_con"><img src="<%=this.uinfo.data.pic_url%>" /></div>
+	<article>
+		<h1 class="tle"><%= mSubstr(this.uinfo.data.nickname , 4 , '...')%><%= this.title.title%></h1>
+		<div class="info">
+			<p>目前票数<strong><%=this.uinfo.data.score%></strong></p>
+			<p>还差<strong class="red_f"><%=this.uinfo.data.nextScore%></strong>票</p>
+			<p>排名就能上升一位啦！</p>
+		</div>
+	</article>
+</div>
+<%}%>
+<%= requireFn('wapShare.html')({
+	'share' : this.share
+	,'shareID' : 'picshow' + this.banner_id
+	, 'shareTitle' : '选择分享到'
+	, 'shareBtn' : '邀请好友来投票'
+	, '_JSstack' : this._JSstack
+	, '_JSmods' : this._JSmods
+}); %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/shareTo2');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot_simple.html%>

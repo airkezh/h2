@@ -1,0 +1,17 @@
+<%
+if(!this.navs) return '';
+var navsL = this.navs.length;
+var targets = this.targets;
+var navsWidth = 1/navsL*100+'%';
+if(navsL <= 1 || navsL != targets.length) return '';
+%>
+
+<div class="fix_nav_wrap">
+	<% this.navs.forEach(function(data, index){ %>
+		<div class="nav_item" style="width:<%= navsWidth %>" data_target="<%= targets[index] %>"><span class="br"><%= data %></span></div>
+	<% }); %>
+</div>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/biz/fix_nav_top', function(){});
+_use:", this._JSstack , this._JSmods ); %>

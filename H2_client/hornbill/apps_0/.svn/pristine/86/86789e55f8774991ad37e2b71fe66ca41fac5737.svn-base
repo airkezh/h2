@@ -1,0 +1,44 @@
+<%#head.html%>
+<%= requireFn('slider.html')({
+	'os' : this.os
+	, 'footBanner' : true
+	, 'isIqiyiApp' : this.isIqiyiApp
+	,'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+	, 'showDaoLiu' : this.showDaoLiu
+	, 'showZhiDing' : this.showZhiDing
+	, 'leadApp' : this.leadApp
+	, 'appUrl' : this.appUrl
+	, 'frm' : this.frm
+});%>
+<%#head_welcome.html%>
+<section id="wrapper_main" class="wrapper">
+
+	<%= requireFn('block/banner.html')({
+		'banner' :this.homeBanner 
+		,'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+	});%>
+
+	<% this.essential && this.essential.map(function(v,k){ %>
+	<h3 style="background-image:url('<%= v.logo%>');"></h3>
+	<a href="<%= v.url%>">更多</a>
+	<nav>
+		<img src="<%= v.example%>"/>
+		<ul>
+		<% v.children.map(function(v,k){ %>
+			<li><a href="<%= v.url%>"><%= v.word_name%></a></li>
+		<%});%>
+		</ul>
+		<a href="<%= v.boom_url%>">热销<%= v.word_name%></a>
+	</nav>
+	<%});%>
+	<%#block/foot.html%>
+
+</section>
+
+<script>
+fml.vars.frm = '<%= this.frm %>';
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('m/page/welcome');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

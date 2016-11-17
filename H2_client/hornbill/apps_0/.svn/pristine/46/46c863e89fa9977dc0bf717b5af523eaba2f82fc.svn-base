@@ -1,0 +1,29 @@
+<%# head_simple.html%>
+<div class="pay_form_wrapper"></div>
+<script>
+	var data = {
+		"order_id" : "<%= this.order_id %>",
+		"total_price" : "<%= this.total_price %>"
+	},
+	total_id = "<%= this.total_id %>",
+	frm = "<%= this.frm %>",
+	source = "<%= this.source %>";
+	var id = "<%= this.userInfo.user_id %>";
+</script>
+<script>
+	fml.define('m/page/doota/pay',['m/component/shareTmp','m/component/callApi'],function (require){
+		var shareTmp = require('m/component/shareTmp'),
+			callApi = require('m/component/callApi');
+		if(frm === 'wxmall'){
+			callApi.write({'url':'/order/wechat_store_fetch?source='+source},data,function(data){
+				window.location.href = data.form;
+			});
+		} else {
+			callApi.write({'url':'/order/fetch_url?source='+source},data,function(data){
+				window.location.href = data.form;
+			});
+
+		}
+	})
+</script>
+<%# foot_simple.html%>

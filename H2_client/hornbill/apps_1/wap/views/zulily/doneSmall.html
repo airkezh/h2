@@ -1,0 +1,105 @@
+<%#head.html%>
+<%
+	var userInfo = this.userInfo || {};
+	var special = this.special || {};
+	var prevSpecial = special.prev || [];
+	var nextSpecial = special.next || [];
+%>
+<div class="wrap" id="wrap">
+	<%# zulily/header.html%>
+	<nav class="tab-new" id="tabNew">
+		<div id="prevTabNew">
+			<a href="javascript:;">当日上新</a>
+		</div>
+		<div id="nextTabNew">
+			<a href="javascript:;">往日热卖</a>
+		</div>
+	</nav>
+	<ul class="special" id="prevSpecial">
+		<% if(prevSpecial.length){ %>
+			<% prevSpecial.forEach(function(v, index){ %>
+				<li>
+					<a href="<%= v.url %>">
+						<img src="<%= v.img %>" alt="">
+					</a>
+				</li>
+			<% }); %>
+		<% } %>
+	</ul>
+	<ul class="special" id="nextSpecial">
+		<% if(nextSpecial.length){ %>
+			<% nextSpecial.forEach(function(v, index){ %>
+				<li>
+					<a href="<%= v.url %>">
+						<img src="<%= v.img %>" alt="">
+					</a>
+				</li>
+			<% }); %>
+		<% } %>
+	</ul>
+	<ul id="recommend"></ul>
+	<div class="posterWall wall" id="content">
+		<ul class="goods_wall goods"></ul>
+		<div class="pullUp" status="loading"></div>
+	</div>
+</div>
+<%= requireFn('wapShare.html')({
+	'share' : this.share 
+    , 'shareTitle' : '选择分享到'
+    , '_JSstack' : this._JSstack
+	, '_JSmods' : this._JSmods
+}); %>
+<script type="text/html" id="recommendTpl">
+	<? this.recommend.forEach(function(v, index){ ?>
+		<li class="salelUrl" styleId="<?= v.id ?>" twitter_id="<?= v.twitter_id ?>" data-status="<?= v.status ?>">
+			<div class="goods_info">
+				<div class="most">
+					<img src="<?= v.poster_small_img?>" alt="">
+				</div>
+				<p class="most_intro sale-title"><?= v.title ?></p>
+				<p class="price">
+					<span><?= v.sale_price ?></span>
+					<del><?= v.price ?></del>
+				</p>
+			</div>
+		</li>
+	<? }); ?>
+</script>
+<script type="text/html" id="posterWall">
+	<li class="most_wrap salelUrl" styleId="<?= this.v.id ?>" twitter_id="<?= this.v.twitter_id ?>" data-status="<?= this.v.status ?>">
+		<? var imgBoxHeight=parseInt($(window).width()/2)* 400 / 320 +'px'; ?>
+		<div class="goods_info">
+			<div class="most">
+				<div class="most" style="height:<?= imgBoxHeight ?>">
+					<img src="<?= this.v.poster_small_img?>" alt="">
+					<? if(parseInt(this.v.status)==5){ ?>
+						<span class="sold"></span>
+					<? } ?>
+				</div>
+				<div data-index="<?= this.v.id ?>" class="danmu d<?= this.v.id ?>"></div>
+				<div class="tips-box">
+					<span class="tips">
+						<b><?= parseInt(this.v.want_base) +  parseInt(this.v.want_num) ?>人想买
+						</b>
+					</span>
+				</div>
+			</div>
+			<p class="most_intro sale-title"><?= this.v.title ?></p>
+			<p class="price">
+				<span><?= this.v.sale_price ?></span>
+				<del><?= this.v.price ?></del>
+			</p>
+		</div>
+	</li>
+</script>
+
+<script>
+	fml.vars.trace_id = '<%= this.desireTraceId %>'; 
+	fml.vars.appShare = <%= this.appShare %>; 
+	fml.vars.params = <%= JSON.stringify(this.params) %>; 
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/zulily/doneSmall');
+_use:", this._JSstack, this._JSmods); %>
+
+<%# foot.html%>

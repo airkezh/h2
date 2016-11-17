@@ -1,0 +1,53 @@
+/*common*/
+require('wap/zepto/fastclick');
+var checkLogin = require('circle/app/checkLogin');
+var shareTmp = require('wap/component/shareTmp');
+var dialog = require('wap/app/dialog');
+
+var cloth = $('.cloth_box').find('img');
+var r = $('.cloth_box').attr('xr');
+
+cloth.on('click' , function(){
+	var select = $(this).attr('select');
+
+	if(fml.vars.p == 'try'){
+		window.location.href = window.__get_r( "/popular/answer/"+select , r);
+	}else{
+		if(Meilishuo.config.user_id == 0){
+			var tpl = shareTmp('noLogin_pop');
+			$.fn.dialog({ dialogContent : tpl , dialogWidth : '4.6rem' });
+			$('.login').on('click' , function(){
+				checkLogin();
+			});
+			$('.again').on('click' , function(){
+				window.location.href = window.__get_r("/popular/question/try" , r);
+			});
+		}else{
+			if(select == "yes"){
+				//发送请求
+				$.get('/popular/aj/red_black' , {'operate' : 'set'} , function(res){
+					if(res.error_code == 200){
+						window.location.href = window.__get_r('/popular/answer/'+select , r);	
+					}
+				} , 'json');
+			}else{
+				window.location.href = window.__get_r('/popular/answer/'+select , r);
+			}
+		}
+	}
+});
+
+
+
+// $('.no').on('click' , function(){
+// 	$('.yes').addClass('da');
+// });
+// $('.yes').on('webkitAnimationEnd' , function(){
+// 	$('.chui').show().addClass('hite');
+// });
+
+// $('.chui').on('webkitAnimationEnd' , function(){
+// 	$('.correct').addClass('shake');
+// });
+
+

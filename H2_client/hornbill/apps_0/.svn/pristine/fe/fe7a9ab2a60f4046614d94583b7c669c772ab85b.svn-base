@@ -1,0 +1,96 @@
+<%*
+ * @fileoverview 818大促模板页-for微信&手Q
+ * @author qindai@meilishuo.com
+ * @date 2015-08-06
+%>
+<%#head_simple.html%>
+<%	
+	var type = 0;
+	var bgType = ['bg-red','bg-gray'];
+	var userType = this.coupon.ret || 0; 
+	var bgColor = bgType[userType] || 'bg-gray';
+	var mainInfo = this.mainInfo;
+	var shareArr = this.mainInfo.share;
+%>
+<%* 
+  * userType: 0,1,2,3 可抢，已抢到，今日抢光明日再来，结束（已抢光）
+%>
+
+
+<div class="top-head">
+	<%if( mainInfo.topBanner){%>
+	<img src="<%= mainInfo.topBanner %>" alt="">
+	<%};%>
+	<!-- 领券 -->
+	<%if(this.coupon){%>
+	<div class="coupon-box">
+		<div class="mid">
+			<h3 class="tc">注：每天0点开抢，每人限一张</h3>		
+			<div class="coupon <%= bgColor %>">
+				<div class="c-left">
+					<span class="rmb">RMB</span>
+					<span class="price"><%=this.coupon.credit%></span>
+					<span class="info">
+						<em class="fsn">优惠劵</em>
+						<i class="fsn">满<%=this.coupon.threshold %>元可用</i>
+					</span>
+					<p class="amount"><%=this.coupon.inform_msg%></p>
+					<!-- <p class="amount">本日还剩10000/30000张</p> -->
+				</div>
+				<div class="c-right">
+					<%if(userType == 0){%>
+						<span class="go b-red get-coupon">马上抢</span>
+					<%}else if(userType == 1){%>
+						<a class="fc-red" href="/wx/newcoupon/index/">
+							<span class="go">查看我的</span>
+							<span class="go b-gray">优惠劵</span>
+						</a>
+					<%}else if(userType == 2){%>
+						<span class="go">明天<br>再来</span>
+					<%}else{%>
+						<span class="go over">已抢光</span>
+					<%}%>
+				</div>
+			</div>
+			<p class="rule">点击查看活动规则 >></p>
+		</div>
+	</div>
+	<%};%>
+
+</div>
+
+<!-- 中部img -->
+<%if( mainInfo.themeActivities ){%>
+<div class="mid-img">
+	<img src="<%= mainInfo.themeActivities %>" alt="">
+</div>
+<%};%>
+<!-- 场馆 -->
+<div class="waterfall" style="<%if(mainInfo.bg_color){%>background-color: <%= mainInfo.bg_color %>; <%}%>">
+<% mainInfo.themePavilions && mainInfo.themePavilions.map(function(data,idx){%>
+	<a class="m-box" href="<%= data.url %>">
+		<img src="<%= data.image_url %>" alt="">
+	</a>
+<%});%>
+</div>
+
+
+<div class="mark-rule" id="rule" style="background-image:url(<%= mainInfo.couponRule %>);"></div>
+
+<script type="text/html" id="getCoupon">
+	<p class="tag"><?=msg ?></p>
+	<div class="url-box">
+		<a class="alink" href="/wx/newcoupon/index/">查看我的优惠劵</a>
+		<a class="alink closeBtn">去逛逛</a>
+	</div>
+</script>
+
+<script>
+	fml.vars.isShare = <%= this.share || false %>;
+	fml.vars.shareData = {"title" : "<%= shareArr.title || '美丽说' %>","desc" :  "<%= shareArr.desc || '美丽说狂欢节' %>",'imgUrl' : "<%= shareArr.img ||  mainInfo.topBanner %>"};
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use('wap/page/activity/wxsqActivity');
+_use:", this._JSstack , this._JSmods ); %>
+<%# wx_new/footer.html%>

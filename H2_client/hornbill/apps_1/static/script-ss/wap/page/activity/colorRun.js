@@ -1,0 +1,316 @@
+/*common*/
+require('wap/zepto');
+//调用ui的提示框
+var Alert = require('wap/ui/alert');
+function alertCon(msg){
+    var a = new Alert({
+        content : msg
+    });
+};
+
+//touchmove禁止事件冒泡
+function touchmoveStop(dom){
+    if ($.isArray(dom)) {
+        $.each(dom,function(index, item){
+            $(dom[index]).on('touchmove', function(e) {
+                e = e || window.event;
+                e.preventDefault();
+                e.stopPropagation();
+            });
+        });
+    }else{
+        if(dom){
+            $(dom).on('touchmove', function(e) {
+                e = e || window.event;
+                e.preventDefault();
+                e.stopPropagation();
+            });
+        }
+    };
+};
+//touchmoveStop('.warp');
+
+// //页面初始化
+// var windowWidth = $(window).width()
+//     ,windowHeight = $(window).height();
+// $('.warp').css({'height':windowHeight});
+
+
+//在美丽说app中，设置回调。
+if(Meilishuo.config.os.mlsApp){
+    
+    $("#fileInput").hide();
+    var jsonParams = '{"action":"desire", "max":1, "source":"photo"}';
+    $("#fileA").show()
+        .attr('href','meilishuo://upload.meilishuo?json_params='+encodeURIComponent(jsonParams));
+
+    window.MLS ={
+        didLogin : function(){  
+            //美丽说app 登录后回调  成功登录后，返回刷新页面。
+            window.location.reload();
+        },
+        onUploadComplete : function(json) {
+            //美丽说app 成功上传图片，回调
+            var obj = JSON.parse(json);
+            var mypic_url = obj['pictures'][0]['o_pic_url'];
+            
+            $('#upImg_img').on('load',function(){
+                imgVerticalCenter(); //图片垂直居中
+            })
+
+            //显示文件
+            $('#upImg_img').attr('src',mypic_url);
+
+            $('#upimgBut')[0].onclick = function(){callFace(mypic_url)};
+            
+        }
+    }
+};
+
+
+//在美丽说app中，未登录调用scheme 。
+if (!Meilishuo.config.user_id && Meilishuo.config.os.mlsApp) {
+
+    $('body').click(function(){
+        window.location.href = 'meilishuo://login.meilishuo/?json_params=';
+    });
+};
+
+
+if(fml.vars.isWx){
+                        
+    //初始化加载分享的资源。
+    var shareData;
+    var signWX = require('wx/sign'),
+        shareWX = require('wx/share');
+        signWX();
+}
+
+
+$('#index_but').click(function(){
+    $('.index').hide();
+    $('.upImg').show();
+});
+
+var fileInput = document.getElementById("fileInput");
+//验证图片的类型，禁止gif和非图片格式。
+function testImgType(){  
+    var file = fileInput.files[0];  
+    //console.log(file);
+    if(/gif/i.test(file.type)){  
+        alertCon("不要gif的图片哦！");
+        return false;  
+    }
+    if(!/image\/\w+/i.test(file.type)){
+        alertCon("需要图片哦！");
+        return false;  
+    } 
+    return true;
+}
+//验证图片的占用空间
+function testImgSize(){  
+    var file = fileInput.files;  
+    if(file.length > 0){
+        if(file[0].size > 1024*1024*10){
+            alertCon("图片太大了！");
+            return false;  
+        }
+    }
+    return true;
+}
+
+//选择图片后，验证图片，
+var imgBase64;
+function readAsDataURL(){
+    //检验是否为图像文件  
+    var file = fileInput.files[0];  
+    var reader = new FileReader();  
+    //将文件以Data URL形式读入页面  
+    reader.readAsDataURL(file); 
+    reader.onload=function(e){  
+        
+        imgBase64 = this.result;
+
+        $('#upImg_img').on('load',function(){
+            imgVerticalCenter(); //图片垂直居中
+        });
+        //显示文件  
+        $('#upImg_img').attr('src',this.result);
+
+    }
+}
+
+//选择图片后，验证图片，获取图片的base64数据
+fileInput.onchange = function(){
+    if(testImgType()){
+        if(testImgSize()){
+            readAsDataURL();
+        }
+    }
+}
+
+//上传图片
+var uploadImg = require('wap/ui/uploadImg');
+var dataURItoBlob = require('component/dataURItoBlob');
+
+if(!Meilishuo.config.os.mlsApp){
+    $('#upimgBut').click(function(){
+        
+            if(!imgBase64){
+                alertCon("请选择图片哦");
+            }else{
+                uploadImg(dataURItoBlob(imgBase64), opts , '#imgShowBox');
+            }
+    });
+}
+
+var opts = {
+    behind:'/imageupload/pic_upload' //上传api
+    , success:function(data,$fileInput){
+        console.log(data);
+        var pic_url = data.o_pic_url ? data.o_pic_url : data.pic_url ;
+        callFace(pic_url);
+    }//成功后
+    , onStart:function(cbk,$fileInput ){
+        cbk()
+        $('#upImg_warp').hide();
+        $('#upImg_loadWarp').show();
+    }//开始前
+}
+
+function callFace(pic_url){
+    
+    $('#upImg_warp').hide();
+    $('#upImg_loadWarp').show();
+
+    $.ajax({
+        'url' : 'http://apicn.faceplusplus.com/v2/detection/detect'
+        ,'dataType': "jsonp"
+        ,'data' : {
+            'api_key' : 'c50579ed735edc566adb52c070768eab'
+            ,'api_secret' : '1sE-VDpLBL9jCX52vOm0PmWnylHLqRTn'
+            ,'url' : pic_url 
+            ,'attribute' : 'gender,age'
+            //,'attribute' : 'glass,pose,gender,age,race,smiling'
+        }
+        ,'success' : function(result){
+            
+
+            var ret = [];
+            //console.log(result)
+            result.face.forEach(function(face){
+                ret.push({gender:face.attribute.gender.value.toLocaleLowerCase(), age : face.attribute.age.value})
+            })
+            //console.log(ret);
+            if(ret.length < 1){
+               
+                $("#upImg_alert").show();
+                //alertCon('重新传一张照片吧！');
+                $('#upImg_warp').show();
+                $('#upImg_loadWarp').hide();
+
+            }else{
+                getResult(pic_url,ret[0].gender,ret[0].age);
+            }
+            
+            ret = [];
+        }
+        ,'error' : function(err) {
+            alertCon('没有成功，再传一张试试吧！');
+            $('#upImg_warp').show();
+            $('#upImg_loadWarp').hide();
+        }
+    })
+}
+
+function getResult(url,sex,age){
+    $.ajax({
+        type : 'get',
+        url : '/aj/colorRun/get',
+        data : {
+            img : url,
+            sex : sex,
+            age : age,
+            cid : 10179
+        },
+        success : function(data){
+            res = JSON.parse(data);
+            //console.log(res);
+            if(res.code == 0){
+                $('#result_img').on('load',function(){
+                    $('#upImg_warp').show();
+                    $('#upImg_loadWarp').hide();
+                    $('.upImg').hide();
+                    $('.result').show();
+
+                    shareData = {
+                        'desc' : res.data.share_content,
+                        'imgUrl' : res.data.share_icon,
+                        'title' : res.data.response_name +' '+ res.data.share_title,
+                        'url' : 'http://m.meilishuo.com/activity/colorRun/index/?frm=WX_QshareColor'
+                    };
+
+                    if (Meilishuo.config.os.mlsApp) {
+
+                        var  schemeLink = "meilishuo://share.meilishuo/?json_params=" 
+                            + encodeURIComponent('{"type":"weixin_timeline","text":"'
+                            + shareData.desc +'","url":"'
+                            + shareData.url +'","thumb_url":"'
+                            + shareData.imgUrl +'","message_type":"webpage","title":"'
+                            + shareData.title +'"}') ;
+
+                        $('#result_shareBut').attr('href',schemeLink);
+
+        
+                    }else if(fml.vars.isWx){
+                        
+                        shareWX.bind(shareData);
+
+                        $('#result_shareBut').attr('href','javascript:;').click(function(){
+                            $('#mypopbox').show();
+                        });
+                    };
+                })
+                $('#result_img').attr('src',res.data.response_img)
+            }else{
+                alertCon('再试一次吧！');
+                $('#upImg_warp').show();
+                $('#upImg_loadWarp').hide();
+                $('.upImg').show();
+                $('.result').hide();
+            }
+        },
+        beforeSend : function(xhr){
+        },
+        error:  function (XMLHttpRequest, textStatus, errorThrown) {
+            alertCon('额，再试一次看看！');
+            $('#upImg_warp').show();
+            $('#upImg_loadWarp').hide();
+            $('.upImg').show();
+            $('.result').hide();
+        },
+        complete : function(xhr,status){
+        }
+    });
+};
+
+
+//微信分享引导浮层 隐藏
+$('#mypopbox').click(function(){
+    $(this).hide();
+});
+
+
+function imgVerticalCenter(){
+    $("#upImg_alert").hide();
+
+    var boxW = $(".upImg_box").width();
+    var boxH = $(".upImg_box").height();
+    var imgH = $("#upImg_img").height();
+    if( Math.abs(imgH - boxH) > 4 ){
+        $("#upImg_img").css('margin-top',(boxH - imgH)/2+'px');
+    }
+}
+
+
+

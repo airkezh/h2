@@ -1,0 +1,85 @@
+<%# head_simple.html%>
+</head>
+<body>
+
+<div class="im_main" id="im_main">
+</div>
+
+<div class="layout">
+	<p>连接中... </p>
+</div>
+
+<script type="text/html" id="im_main_item">
+<div class="im_mainitem" uid="<?= uid ?>">
+	<div class="im_right">
+		<div class="goods"></div>
+	</div>
+	<div class="im_mainbox">
+		<div class="im_dialogbox">
+			<div class="im_dialog" id="did_<?= uid?>">
+				<div class="history hide">
+					<div toid="<?= uid?>" class="historyBtn">查看历史聊天记录</div>
+					<div class="history_intro"><span>以上是聊天记录</span></div>
+				</div>
+			</div>
+		</div>
+		<div class="im_inputbox">
+			<div class="im_inputbox_tools">
+				<a class="uploadImg" href="meilishuo://upload.meilishuo?json_params=%7B%22action%22%3A%22upload_refund%22%7D"></a>
+			</div>
+			<form method="post" onsubmit="return false" action>
+				<textarea class="im_inputbox_input" placeholder="添加评论..."></textarea>
+				<input class="button sentBtn" type="submit" value="发送" />
+			</form>
+		</div>
+	</div>
+</div>
+</script>
+
+<script type="text/html" id="im_goods_item">
+<div>
+	<img class="goods_img" src="<?= goods_img ?>"/>
+	<p class="goods_title"><?= goods_title ?></p>
+	<p class="goods_price">¥<?= goods_price ?></p>
+</div>
+</script>
+
+<script type="text/html" id="im_dialog_item">
+<div class="<?= who?> d_<?= type?>">
+	<? if(ctime){?>
+	<div class="ctime">－ <?= ctime ?> －</div>
+	<?}?>
+	<div class="user_info">
+		<span class="user_img"><img src="<?= avatar ?>" /></span>
+		<p class="user_name"><?= name ?></p>
+	</div>
+	<div class="con">
+		<p <?if(send){?>class="wait"<?}?> id="mid_<?= messageId?>">
+			<?if(type == 'text'){?>
+			<?= content ?>
+			<?}else if(type == 'img'){?>
+			<span class="imgUpload" ahref="<?= content.o_pic_url ?>" n_h="<?= content.nheight ?>" n_w="<?= content.nwidth ?>">
+				<img src="<?= content.pic_url ?>" />
+			</span>
+			<?}?>
+			<span class="shap"></span><span class="shapb"></span>
+		</p>
+	</div>
+	<div class="clear_f"></div>
+</div>
+</script>
+
+<script>
+fml.vars.im = {
+	fromid : <%= this.user_id %>
+	, toid : <%= this.toid || 0 %>
+	, type : "<%= this.type || 0 %>"
+	, source : 'mob'
+	, isfirst : 0
+};
+</script>
+<script src="<%= this.IM_ULR %>socket.io/socket.io.js"></script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/im/im');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html%>

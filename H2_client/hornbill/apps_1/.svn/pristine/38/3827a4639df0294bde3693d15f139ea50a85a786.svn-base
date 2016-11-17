@@ -1,0 +1,54 @@
+<%# wx/header.html%>
+<%
+	var goods = this.order_info ? this.order_info.info.goods : []
+%>
+<div class="wrap">
+	<div class="order_ses">
+		<p class="ok_wrap">
+			<img src="<%=this.PICTURE_URL%>/images/wap/web/wx/ok_icon.png" class="ok_icon" />
+			恭喜，支付成功
+		</p>
+	</div>
+	<div class="order_info">
+		<div class="goods">
+			<% goods && goods.map(function(goods, i){ %>
+			<a href="/wx/detail?tid=<%= goods.twitter_id%>" class="next_icon ses_next">
+				<img src="<%=this.PICTURE_URL%>/images/wap/web/wx/next.png" />
+			</a>
+			<div class="goods_info_wrap">
+				<a href="/wx/detail?tid=<%= goods.twitter_id%>" class="goods_img">
+					<img src="<%= goods.b_pic_url%>" />
+				</a>
+				<div class="goods_info">
+					<a href="/wx/detail?tid=<%= goods.twitter_id%>">
+						<p class="goods_title"><%= goods.goods_title%></p>
+					</a>
+					<p class="goods_size">
+					<%goods.prop && goods.prop.map(function(data, i){%>
+					<%if(data.is_show){%>
+						<span><%= data.name%>：<%= data.value%></span>
+					<%}%>
+					<%});%>
+					</p>
+					<p class="goods_price">
+						<span>价格：<%= goods.price%></span>
+						<span>数量：<%= goods.amount%></span>
+					</p>
+				</div>
+			</div>
+			<%});%>
+		</div>
+	</div>
+	<div class="check_new">
+		<a href="/wx/" class="ml_color check_btn">继续逛</a>
+	</div>
+	<!--p class="attention">
+		<input type="checkbox" checked="checked" />
+		关注美丽说服务号
+	</p-->
+	<div class="mls_kefu">
+		如果你对该笔交易有任何疑问<br/>
+		请致电美丽说客服：<a href="tel:4000800577">400-080-0577</a>
+	</div>
+</div>
+<%# foot_simple.html%>

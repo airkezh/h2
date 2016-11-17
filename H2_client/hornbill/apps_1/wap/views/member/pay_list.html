@@ -1,0 +1,75 @@
+<!--
+/**
+ * @fileoverview 金币收支明细－会员专区
+ * @requires zepto
+ * @author kehuang@meilishuo.com
+ * @date 2015-03-11
+ */
+-->
+
+<%# head.html%>
+<%
+	var curPageTotal = this.pageTotal;
+	var curUserGoldData = this.goldList.data;
+%>
+<div id="j_page_wrap" class="wrap">
+	<div class="pay_list mb0">
+		<ul id="j_pay_list"></ul>
+	</div>
+
+	<div class="pullUp" status="loading"></div>
+
+	<%
+		if (curPageTotal > 1) {
+	%>
+	<div class="load_more_btn">加载更多...</div>
+	<%
+		}
+	%>
+</div>
+
+<script type="text/html" id="j_detail_tpl">
+	<?
+		var jsonData = this.data,
+			list = jsonData.list || [],
+			listLen = list.length || 0;
+
+		if (listLen > 0) {
+			for (var i = 0; i < listLen; i++) {
+				var link = '',
+					href_html = '',
+					class_name = '',
+					obj = list[i],
+					text = obj.text || '',
+					ctime = obj.ctime || '',
+					amount = obj.amount || '0',
+					order_id = obj.order_id || '';
+
+				class_name = (amount.indexOf('-') != -1) ? '' : 'income';
+
+				if (order_id != '') {
+					link = 'meilishuo://order_detail.meilishuo?json_params=' + encodeURIComponent(JSON.stringify({'order_id': order_id}));
+					href_html = '<a href="' + link + '">' + order_id + '</a>';
+				}
+	?>
+	<li>
+		<span class="title"><?= text ?><?= href_html ?><br><em><?= ctime ?></em></span>
+		<span class="gold <?= class_name ?>"><?= amount ?></span>
+	</li>
+	<?
+			}
+		}
+    ?>
+</script>
+
+<script>
+	fml.vars.isLogin = <%=this.isLogin%>;
+
+	var curPageTotal = <%=curPageTotal%>;
+	var curUserGoldData = <%=JSON.stringify(curUserGoldData)%>;
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/member/pay_list');
+_use:", this._JSstack, this._JSmods); %>
+<%# foot_simple.html%>

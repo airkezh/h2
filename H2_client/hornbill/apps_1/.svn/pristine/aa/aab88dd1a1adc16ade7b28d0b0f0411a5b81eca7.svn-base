@@ -1,0 +1,27 @@
+<% var order = this.order;%>
+<% if(order.express_id){ %>
+	<div class="clear">
+		<h4>发货信息</h4>
+		<p>
+			<span>物流公司：<%= order.express_company %></span>
+			<span>物流单号：<%= order.express_id %></span>
+		</p>
+		<% if(order.express && order.express.length){ %>
+		<p class="l">物流状态:</p>
+		<ul class="l">
+			<% order.express.forEach(function(express){%>
+			<li><%== express %></li>
+			<% }); %>
+		</ul>
+		<% } %>
+		
+	</div>
+<% } %>
+<%if(0){%>
+<div>
+	<h4>商家信息</h4>
+	<span>商家：<%= order.shop_name %></span>
+	<span>联系电话：<%= order.phone %></span>
+	<%if(order.qq){%><span>商家QQ：<%= order.qq %></span><%}%>
+</div>
+<%}%>

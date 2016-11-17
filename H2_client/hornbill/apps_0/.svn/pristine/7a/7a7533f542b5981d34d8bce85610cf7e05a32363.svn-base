@@ -1,0 +1,40 @@
+function xuanguan_new (){
+	return this;	
+}
+var controlFns = {
+	'index' : function (){
+		var pstrc = this.readData('pstrc',this.req.__get, 0);
+		var asid = this.readData('asid',this.req.__get, 0);
+		var php = {	
+			'pageInfo' : '/commerce/middlepage_banner?pstrc='+pstrc+'&asid='+asid
+		};
+		this.setDefaultData(php);
+		this.bridgeMuch(php);
+		this.listenOver(function (data){
+			//console.log(asid + 'aa');
+			if(!data.pageInfo) return this.errorPage();
+			data.pageTitle = data.pageInfo && data.pageInfo.pageTitle;
+			data.pstrc = pstrc;
+			data.asid = asid;
+			data._CSSLinks = ['activity/xuanguan'];
+			this.render('activity/xuanguan.html', data);		
+		});
+	},
+	'cps' : function(){
+		var index_id = this.readData('index_id',this.req__get,0)|0;
+		var php = {	
+			'pageInfo' : '/commerce/middlepage_banner'
+			, 'navigate_top':'/alliance/navigate_top?index_id='+ index_id,
+		};
+		this.setDefaultData(php);
+		this.bridgeMuch(php);
+		this.listenOver(function (data){
+			if(!data.pageInfo) return this.errorPage();
+			data.pageTitle = data.pageInfo.pageTitle;
+			data._CSSLinks = ['activity/xuanguan'];
+			this.render('activity/xuanguan_cps.html', data);	
+			
+		});
+	}
+};
+exports.__create = controller.__create(xuanguan_new , controlFns);

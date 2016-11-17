@@ -1,0 +1,69 @@
+<script type="text/html" id="im_goods_item">
+<div class="goods_box">
+	<a class="goods_img" target="_blank" href="<%= this.host%>/share/item/<?= data.twitter_id ?>"><img src="<?= data.goods_img ?>"/></a>
+	<p class="title"><a target="_blank" href="<%= this.host%>/share/item/<?= data.twitter_id ?>"><?= data.goods_title ?></a></p>
+	<div class="clear_f"></div>
+	<p class="price">¥<?= data.goods_price ?></p>
+</div>
+</script>
+
+<script type="text/html" id="im_shop_item">
+<div class="shop_box">
+	<p class="shop_name"><a href="<%= this.host%><?= data.url?>" target="_blank"><?= data.shop_nick ?></a></p>
+	<div class="shop_con">
+		<ul class="shop_con_l">
+			<li class="fb_f">商家评分</li>
+			<li>款式流行：
+				 <span><?= data.points_trend.fashion.avg?></span>
+			</li>
+			<li>质量满意：
+				<span><?= data.points_trend.quality.avg?></span>
+			</li>
+			<li>服务态度：
+				<span><?= data.points_trend.attitude.avg?></span>
+			</li>
+			<li>发货速度：
+				<span><?= data.points_trend.fast.avg?></span>
+			</li>
+		</ul>
+		<ul class="shop_con_m">
+			<li class="fb_f">比同行平均</li>
+			<?
+			var trend = data.points_trend;
+			$.each(['fashion','quality','attitude','fast'], function(k, attr){
+				var item = trend[attr];
+			?>
+			<li>
+			  <?if(item.mark==1){?>
+			  <span class="redlevbtn">高</span>
+			  <?}else if(item.mark==0){?>
+			  <span class="redlevbtn">平</span>
+			  <?}else if(item.mark== -1){?>
+			  <span class="grenlevbtn">低</span>
+			  <?}?>
+			  <?=item.ratio?>
+			</li>
+		   <?});?>
+		</ul>
+		<div class="clear_f"></div>
+		<ul class="shop_con_r">
+		   <li class="fb_f">商家信息</li>
+		   <li>所在地区：
+			   <span><?=data.location?></span>
+		   </li>
+		   <li>商品数量：
+			   <span><?=data.goods_count?></span>
+		   </li>
+		   <li>销售数量：
+			   <span><?=data.goods_sales?></span>
+		   </li>
+		   <li>创建时间：
+			   <span><?=data.shop_ctime?></span>
+		   </li>
+		</ul>
+
+	</div>
+
+</div>
+</script>
+

@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<%# lang.conf%>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title><%= this.pageTitle%></title>
+    <meta name="keywords" content="<%= this.keywords%>" />
+    <meta name="description" content="<%= this.meta_description%>" />
+    <meta http-equiv="x-ua-compatible" content="ie=7" />
+    <meta property="qc:admins" content="710767155765514130576375" />
+    <meta name="chinaz-site-verification" content="500e4417-e595-40ac-98da-dec66c97a9e5" />
+    <link rel="stylesheet" type="text/css" href="<%= this.JCSTATIC_BASE %>css/paipai/base.css?<%= this.SVERSION%>" />
+    <link rel="apple-touch-icon-precomposed" href="<%= this.CSS_JS_BASE_URL%>css/images/custom_icon_precomposed.png"/>
+	<% if (this.isSetTargetBlank) { %><base target="_blank" /> <% } %>
+	<% this.user_id = this.userInfo.user_id || 0;%>
+    <%= (function(link){
+        var str = '';
+        var base = this.JCSTATIC_BASE;
+		var sversion = this.SVERSION;
+        link && link.map(function(src){
+            str += '<link rel="stylesheet" type="text/css" href="'+base+'css/'+src+'.css?'+ sversion +'"/>';
+            });
+        return str;
+        })(this._CSSLinks)%>
+      <% if (this._CSSstack && this._CSSstack.length) { %>
+         <style>
+         <%= this._CSSstack.join("\n");%>
+         </style>
+      <% }
+      %>
+    <script type="text/javascript" src="<%= this.JCSTATIC_BASE + this.SCRIPT_BASE %>fml.js?<%= this.SVERSION%>" ></script>
+    <script >
+    fml.setOptions({'sversion' : '<%= this.SVERSION %>','defer' : <%= this.JS_Defer %> ,'modulebase' : '<%= this.JCSTATIC_BASE + this.SCRIPT_BASE %>'});
+    var Meilishuo = {
+        'config' : {
+			nt : '<%= this.nToken%>',
+			server_url : '<%= this.SERVER_BASE %>',
+			picture_url : '<%= this.PICTURE_URL %>',
+			user_id : <%= this.user_id%>,
+			fairy_id : 219,
+			qzone_notfans : <%= this.userInfo.qzone_notfans %>,
+			is_actived : <%= typeof this.userInfo.is_actived !== 'undefined' ? this.userInfo.is_actived : 1%>,
+			controller : '<%= this.headTag%>',
+			avatar_c : '<%= this.userInfo.avatar_c %>',
+			level : <%= this.userInfo.level || 0%>,
+			block_remain : <%= this.userInfo.block_remain || 0%>
+		}
+    };
+	</script>
+	<%
+	var query = this._Request_query;
+	var getLink = _extFn.getLink;
+	%>
+</head>
+<%
+if ('null' == this.topbanner) this.topbanner = false;
+var bodyStyle= (this.topbanner && this.topbanner.background_pic) ? 'style="background: #f2f0f0 url('+ this.AVATOR_PIC + this.topbanner.background_pic+') repeat-x"':'';
+%>
+<body>
+	<div class="header_paipai <% if(this.fluid){%>wheader<%}else{ %>nheader<%}%>">
+		<div class="paipai_menu">
+			<div class="header_top">
+				<ul class="pp-tb-l">
+					<li><a href="http://buy.qq.com" target="_blank">QQ网购</a></li>
+					<li class="current"><a href="http://www.paipai.com" target="_blank">拍拍</a></li>
+					<li><a href="http://shop.qq.com" target="_blank">QQ商城</a></li>
+					<li><a href="http://www.51buy.com" target="_blank">易迅</a></li>
+				</ul>
+				<ul class="pp-tb-r">
+					<li><a href="http://search.paipai.com" target="_blank">我要买</a></li>
+					<li><a href="http://my.paipai.com/myppindex/buyer" target="_blank">我的拍拍</a></li>
+					<li><a href="http://auction.paipai.com/cgi-bin/shopcart/detail" target="_blank">购物车</a></li>
+					<li><a href="http://my.paipai.com/cgi-bin/favorite_new/Entry?type=item" target="_blank">收藏夹</a></li>
+					<li><a href="https://www.tenpay.com/app/v1.0/cftaccount.cgi" target="_blank">财付通</a></li>
+					<li><a href="http://help.paipai.com/index.shtml" target="_blank">帮助</a></li>
+					<li><a href="http://bbs.paipai.com/portal.php" target="_blank">社区</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="paipai_logo">
+			<div class="logo_paipai header_top"></div>
+		</div>
+	</div>
+	<div id="navbar">
+		<div class="cheader wheader">
+			<div class="header_b">
+			<% function tagHLight(tag){
+				return tag == this.headTag ? ['r_d' , '<span class="item_right"></span>' , '<span class="item_right2"></span>'] : ['' , '' , '']; 
+			} %>
+				<ul class="nav_new">
+					<li class="guang">
+						<% var tagH = tagHLight('guang');%>
+						<a class="r_l <%= tagH[0]%>" href="/paipaiguang/hot">逛宝贝<%= tagH[1]%></a>
+						<% var tagH = tagHLight('dress');%>
+						<a class="<%= tagH[0]%>" href="/paipaiguang/catalog/dress?cata_id=2000000000000">衣服<%= tagH[1]%></a>
+						<% var tagH = tagHLight('shoes');%>
+						<a class="<%= tagH[0]%>" href="/paipaiguang/catalog/shoes?cata_id=6000000000000">鞋子<%= tagH[1]%></a>
+						<% var tagH = tagHLight('bag');%>
+						<a class="<%= tagH[0]%>" href="/paipaiguang/catalog/bag?cata_id=5000000000000">包包<%= tagH[1]%></a>
+						<% var tagH = tagHLight('access');%>
+						<a class="<%= tagH[0]%>" href="/paipaiguang/catalog/access?cata_id=7000000000000">配饰<%= tagH[1]%></a>
+						<% var tagH = tagHLight('jiaju');%>
+						<a class="<%= tagH[0]%>" href="/paipaiguang/catalog/jiaju?cata_id=9000000000000">家居<%= tagH[1]%></a>
+						<% var tagH = tagHLight('beauty');%>
+						<a class="<%= tagH[0]%>" href="/paipaiguang/catalog/beauty?cata_id=8000000000000">美容<%= tagH[1]%></a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<% if (this.secondNav && this.showSecNavHeader) { %>
+		<div class="sec_nav">
+			<ul class="guide">
+				<li><a class="dress<%if(query.cata_id == 2000000000000 || !query.cata_id){%>_d<%}%>" href="?cata_id=2000000000000">衣服</a></li>
+				<li><a class="coat<%if(query.cata_id == 2001000000000){%>_d<%}%>" href="?cata_id=2001000000000">上衣</a></li>
+				<li><a class="skirt<%if(query.cata_id == 2004000000000){%>_d<%}%>" href="?cata_id=2004000000000">裙子</a></li>
+				<li><a class="pants<%if(query.cata_id == 2006000000000){%>_d<%}%>" href="?cata_id=2006000000000">裤子</a></li>
+				<li style="border: none;"><a class="bra<%if(query.cata_id == 2009000000000){%>_d<%}%>" href="?cata_id=2009000000000">内衣</a></li>
+			</ul>
+		</div>
+		<%};%>
+	</div>

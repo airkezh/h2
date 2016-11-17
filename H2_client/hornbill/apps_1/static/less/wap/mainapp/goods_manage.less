@@ -1,0 +1,184 @@
+@import "../block.less";
+
+html {
+  font-size : 62.5%; /* 10/16 = 62.5% */
+}
+
+body {
+  background : #f8f8f8;
+  padding    : 0;
+  margin     : 0;
+}
+
+.nav-wrap {
+  width      : 100%;
+  height     : 50*@px;
+  background : #fff;
+  padding    : 15*@px 0;
+  .nav {
+    height      : 50*@px;
+    color       : #CCC2C9;
+    font-size   : 24*@px;
+    line-height : 50*@px;
+    div {
+      float              : left;
+      width              : 50%;
+      -webkit-box-sizing : border-box;
+      box-sizing         : border-box;
+      text-align         : center;
+    }
+    div:first-child {
+      border-right : 1px solid #CCC2C9;
+    }
+  }
+  .active {
+    color : #595056;
+  }
+}
+
+.wall {
+  margin-top : 20*@px;
+  padding    : 0 20*@px;
+  background : #fff;
+  .item {
+    padding       : 20*@px 0;
+    border-bottom : 1px solid rgba(204, 194, 201, 0.5);
+  }
+  a:last-child .item {
+    margin-bottom: 24*@px;
+  }
+  .title {
+      width: 400*@px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+  }
+  .image {
+    display         : inline-block;
+    width           : 90*@px;
+    height          : 90*@px;
+    vertical-align  : middle;
+    background-size : cover;
+  }
+  .go-ico {
+    float               : right;
+    right               : 20*@px;
+    width               : 14*@px;
+    height              : 90*@px;
+    background-image    : url('http://d03.res.meilishuo.net/pic/_o/76/ed/e05c2160ab8868f00a243d01eb33_15_25.cf.png');
+    background-position : center;
+    background-repeat   : no-repeat;
+    background-size     : contain;
+    vertical-align      : middle;
+  }
+}
+
+.goods-remove-list {
+  display : none;
+}
+
+.item-info {
+  height         : 90*@px;
+  display        : inline-block;
+  line-height    : 30*@px;
+  margin-left    : 20*@px;
+  vertical-align : middle;
+  .title {
+    color     : #595056;
+    font-size : 26*@px;
+  }
+  .price {
+    color     : #FF6699;
+    font-size : 22*@px;
+  }
+  .extra {
+    color     : #CCC2C9;
+    font-size : 20*@px;
+    span {
+      display : inline-block;
+      width   : 120*@px;
+    }
+  }
+}
+
+.publish-goods {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #fff;
+  border-top: 1px solid rgba(51,51,51,.1);
+  padding: 34*@px 0;
+  text-align: center;
+
+  .add-icon {
+    display: inline-block;
+    width: 28*@px;
+    height: 28*@px;
+    background: url('http://d01.res.meilishuo.net/pic/_o/62/b0/49e86b404cc99f0cfc55ea96b430_29_28.ch.png') no-repeat;
+    background-size: contain;
+    margin-right: 0px; 
+    vertical-align: middle;
+  }
+  .note {
+    color: #FF7A9A;
+    font-size: 30*@px;
+    vertical-align: middle;
+  }
+}
+
+
+.empty {
+  margin-top : 100*@px;
+  width      : 100%;
+  text-align : center;
+  display    : none;
+  img {
+    width : 160*@px;
+  }
+  .desc {
+    font-size : 28*@px;
+    color     : #6C6369;
+    margin    : 20*@px auto 40*@px;
+  }
+  .add-goods {
+    width         : 210*@w;
+    padding       : 12*@px;
+    font-size     : 24*@px;
+    color         : #80737B;
+    border        : 1px solid #80737b;
+    border-radius : 6*@px;
+  }
+}
+
+.pull-up {
+  .w(100%); .c; .h(40px); .l(40px); .f(14px); color : #888; .pr; .auto;
+  background                                        : url("@{pic_url}/images/webwap/pull-icon@2x.png") 0 0 no-repeat;
+  -webkit-background-size                           : 40px 80px; background-size : 40px 80px;
+  -webkit-transition                                : -webkit-transition 0.25s ease-out 0;
+  .w(40px); .h(40px);
+  &[status="loading"] {
+    background-position         : 0 100%;
+    .transform(rotate(0deg) translateZ(0));
+    -webkit-transition-duration : 0ms;
+    -webkit-animation           : loading 2s linear infinite;
+  }
+  @-webkit-keyframes loading {
+    from { .transform(rotate(0deg) translateZ(0)); }
+    to { .transform(rotate(360deg) translateZ(0)); }
+  }
+  &[status="tap"], &[status="stop"] {
+    -webkit-animation-name : none;
+  }
+  &:before { .nowrap; .ml(-10px); }
+  &[status="tap"] { background : 0 none; }
+  &[status="stop"] {
+    background : 0 none; .h(2px);
+  }
+}
+
+.gotop-wrap {
+  .none; .pf; z-index : 1000; right : 10px; .w(80*@w); bottom : 20px;
+  .sort { .mb(10px); }
+  .gotop { .block; .w(100%); }
+  img { .w(100%); }
+}

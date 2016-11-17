@@ -1,0 +1,30 @@
+<%# head_simple.html%>
+<% this.headName = '登录美丽说'; %>
+<div class="login">
+	<fieldset>
+		<form id="loginForm" method="post" onsubmit="return false" action="">
+			<legend>美丽说登录表单</legend>
+			<p><input id="mlsUser" type="text" name="mlsUser" value="" placeholder="注册时使用的邮箱/昵称"/></p>
+			<p><input id="mlsPass" name="password" type="password" value="" placeholder="密码"/></p>
+			<div class="checkBox" id="checkBox">
+				<input id="checkcode" name="checkcode" type="text" value="" maxlength="4" placeholder="验证码"/>
+				<div class="checkImage">
+					<span id="checkcodeImage">
+						<img width="90" height="36" isblank="true" src="<%= this.PICTURE_URL %>images/register/blank.jpg">
+					</span>
+					<span class="red_f">换一张</span>
+				</div>
+			</div>
+			<div class="loginErrorMessage"></div>
+			<div class="submitBox"><input class="loginBtn button" type="submit" value="登录美丽说"/></div>
+		</form>
+	</fieldset>
+	<div class="exBtn">
+		还没有美丽说账号？<a class="red_f" href="/user/register">立即注册</a>
+	</div>
+</div>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/im/login');
+_use:", this._JSstack , this._JSmods); %>
+<%# foot_simple.html%>

@@ -1,0 +1,51 @@
+<%#head.html%>
+
+<%
+    var circle  = this.cirInfo
+        ,cid = this.cid
+        ,type = this.type
+        ,paramR = decodeURIComponent( this.r || '' );
+%>
+
+<div class="content js_content">
+    <div class="circle_wall js_circle_wall"></div>
+    <div class="pullUp" status="tap"></div>
+</div>
+
+<div class="gotop_wrap">
+    <a class="gotop">
+        <img src="http://i.meilishuo.net/css/images/wap/tuan/gotop.png" />
+    </a>
+</div>
+
+<script type="text/html" id="circlePosterWall">
+    <?
+        function getAppLink(tid){
+            return 'meilishuo://circle.meilishuo?json_params='+encodeURIComponent(JSON.stringify({"circle_id" : tid,"r": "<%= paramR %>"}));
+        }
+         this.circle.forEach(function(circle) {
+    ?>
+    <a href="<?= getAppLink(circle.id) ?>" class="circle">
+            <div class="info">
+                <div class="icon" style="background-image: url(<?= circle.img ?>);"></div>
+            </div>
+            <p class="title"><?= circle.name ?></p>
+            <p class="number">成员数:<?= circle.member_num ?></p>
+        </a>
+    <? }); ?>
+        
+   
+</script>
+
+
+<script>
+fml.vars.cid = "<%= this.cid %>";
+fml.vars.type = "<%= this.type %>";
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+    fml.use('circle/page/circle_more');
+_use:", this._JSstack , this._JSmods ); %>
+
+
+<%#foot_simple.html%>

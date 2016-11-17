@@ -1,0 +1,118 @@
+<%# head.html%>
+<%
+var query = this._Request_query;
+var getLink = _extFn.getLink;
+%>
+<div class="route well">
+	花小美教你谨防诈骗不上当：不点陌生链接，不向陌生账户汇款。<a class="red_f" target="_blank" href="<%= this.DOMAIN.www %>/biz/huodong/fuide/?cid=5697">点击查看防骗指南&gt;&gt;</a>
+	<span class="close js-close-tip-btn">&times</span>
+</div>
+<input type="hidden" id="order_id" value="<%=this.order_id%>">
+<div class="order_header">
+	<span class="icon"></span>
+</div>
+<div class="route">
+	<div class="route_bread">
+		<a href="<%=this.DOMAIN.www%>/">美丽说</a>
+		<samp>&gt;</samp>
+		<a href="<%= this.DOMAIN.order%>/order/list/">我的美丽说订单</a>
+		<samp>&gt;</samp>
+		<span class="red_f">订单详情</span>
+	</div>
+</div>
+<div class="order_area">
+<%if(this.order_info && this.order_info.info){
+	var order = this.order_info.info.order
+		, address = this.order_info.info.address
+		, goods = this.order_info.info.goods
+		, step = order.step
+		, address = this.order_info.info.address
+		, msgObj = order.words
+		, status = order.status;
+		this.order = order;
+
+		var displayText = msgObj.msg;
+		if(msgObj.redmsg){
+			for(var i = 0;i<msgObj.redmsg.length;i++){
+				displayText = displayText.replace('%s','<span class="red_f">'+msgObj.redmsg[i]+'</span>');
+			}
+		}
+%>
+<div class="order_status_bar">
+	<p>当前状态：<%= order.status_text %></p>
+	<%= requireFn('common/order_status_bar.html')({
+		'steps' : ["拍下宝贝","支付订单","卖家发货","确认收货"],
+		'needTime' : true,
+		'times' : [order.ctime,order.pay_time,order.send_time,order.auto_confirm_time||order.receive_time],
+		'distance' : 140,
+		'current_step' : step
+	});%>
+    <%if(query.merged != 1){%>
+	<div class="status_text">
+        <%if(displayText){%>
+            <div class="status_text">
+            <%= displayText %>
+            </div>
+        <%}%>
+        <%if(order.show_pay_and_close){%>
+        <div class="status_text">交易高峰时段，可能会存在订单状态更新不及时，如果您已经完成支付，请耐心等待，不要取消订单。</div>
+        <a target="_blank" id="pay_now" href="<%= this.DOMAIN.zhifu%>/wallet/?orderId=<%=order.order_id%>" class="btn">立即支付</a>
+        <a id="cancel_order" href="javascript:;" class="btn gray">取消订单</a>
+        <%}%>
+        <% if(order.show_receive_button){ %>
+            <a href="<%= this.DOMAIN.order%>/order/confirm_receive/?order_id=<%=order.order_id%>" class="btn">确认收货</a>
+        <% } %>
+				<% if(order.show_extend_recv_button){ %>
+					<span class="extend_recv_text">或者您可以选择<a href="javascript:void(0)" data-orderid="<%=order.order_id%>" class="red_f extend_recv_btn">延长收货时间</a></span>
+				<% } %>
+	</div>
+    <%}%>
+</div>
+<%if(step===3&&order.has_commented===0){
+	var _array_goods = []
+		, goodsList;
+        if(goods && goods.length > 0){
+            goods.forEach(function(item){
+                _array_goods.push(item.goods_id);
+            })
+            goodsList = _array_goods.join(',');
+        }else{
+            goodsList = ''
+        }
+%>
+<div class="order_comment_bar">
+	<div>您已成功确认收货，去评价一下吧<a class="order_gocomment btn" href="<%= this.DOMAIN.order%>/shop/comment/?order_id=<%=order.order_id%>&goods_id=<%= goodsList%>">立即去评价</a></div>
+</div>
+<%}%>
+<%if(order.show_download_button){%>
+<div class="download">
+	<a href="<%=this.DOMAIN.www%>/client/?frm=daeh" target="_blank" class="red_f">下载美丽说客户端</a>，随时随地无忧购买，物流查询更方便。
+</div>
+<%}%>
+<% if(address){ %>
+	<div class="order_address">
+		<div id="express">
+			<h4>收货信息</h4>
+			<p>收货人：<%= address.nickname %></p>
+			<p>收货地址：<%= address.address %></p>
+			<p>收货邮编：<%= address.postcode %></p>
+			<p>联系电话：<%= address.phone %></p>
+			<%if( 1 == order.is_haitao ){%>
+				<p>身份证：<%= address.id_number %></p>
+			<%}%>
+
+
+		</div>
+		<%# common/order_status.html %>
+	</div>
+<% } %>
+	<%# common/order_goods.html%>
+<%}%>
+</div>
+<script>
+    window.orderDetailFrom = "order-detail";
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+		fml.use('order_pc/common/orderDetail');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

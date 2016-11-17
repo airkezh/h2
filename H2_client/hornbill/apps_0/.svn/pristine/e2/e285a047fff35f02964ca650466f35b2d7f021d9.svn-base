@@ -1,0 +1,36 @@
+<script type="text/html" id="posterWall">
+<? $.each(this.tInfo , function(k , data){ ?>
+<li coupon_id="<?= data.coupon_id?>">
+	<div class="dis_list">
+		<div class="dis_l_bg"></div>
+		<div class="dis_r_bg"></div>
+		<div class='dis_cont <?= coupon_color?>'>
+			<? if(data.status == 'used'){ ?>
+					<div class="coupon_used">
+						<img src="<?=this.PICTURE_URL?>/images/wap/web/wx/used_icon.png"/>
+					</div>
+					<div class="title"><?= data.coupon_sign ?> - NO.<?= data.coupon_id?></div>
+				<? } else { ?>
+					<div class="title">
+						<span><?=getStatusText(data.status) ?></span>
+						<?= data.coupon_sign ?> - NO.<?= data.coupon_id?>
+					</div>
+			<? } ?>
+			<div class="value_wrap <?= coupon_value?>">
+				<div class="value_bg <?= coupon_l_bg?>"></div>
+				<div class="value_bg <?= coupon_r_bg?>"></div>
+				<div class="value">
+					<span class="money_icon">¥</span>
+					<span class="money"><?= coupon_rmb?></span>
+					<?= data.remark?>
+				</div>
+			</div>
+			<div class="condition">
+				<p><b class="coupon_icon <?= coupon_type?>"></b><?= data.condition?></p>
+				<p><b class="coupon_icon <?= coupon_time?>"></b>有效期：<?= data.start_time?> ~ <?= data.expire_time?></p>
+			</div>
+		</div>
+	</div>
+</li>
+<?});?>
+</script>

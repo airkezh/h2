@@ -1,0 +1,68 @@
+<%# head.html%>
+<% 
+var os = this.os,
+    r = this.r;
+	var data = this.main.data,
+		banner=data.banner,
+		post_list=data.poster_list;
+	var btn = ['http://d01.res.meilishuo.net/pic/_o/56/69/656e5fbecfbca247007943d81c3c_240_55.ch.png','http://d02.res.meilishuo.net/pic/_o/ab/fa/c961f26812c815f4ad6a99dfec10_240_55.ch.png','http://d02.res.meilishuo.net/pic/_o/4c/58/5e8a2b298589ad33921eb94d9341_240_55.cf.png'];
+	var getAppLink=_extFn.getAppLink;
+%>
+<div class="banner">
+	<img class="img" src="<%= banner.img%>" alt="">	
+	<p class="ad"><%= banner.word%></p>	
+</div> 
+
+
+<ul class="post-list">
+	<% this.main.data.poster_list.forEach(function(v,i){%>
+	<% var url1="/mainapp/detail/"+v.msg_id%>
+	<% var url2="http://circle.meilishuo.com/circle/chat?circle_id="+v.circle_id%>
+	<li class="item">
+		<% if(v.header){%>
+		<p class="hd">·&nbsp<%= v.header %>&nbsp·</p>
+		<%}else{}%>		
+		<div class="post">
+			<div class="post-info">
+				<a class="img" href="<%=getAppLink('rich_message', {type:'miscpic',msg_id: v.msg_id},os,r,v.url || url1)%>"><img src="<%=v.pic%>" alt=""></a>
+				<a class="user" href="<%= getAppLink( 'circle', { circle_id:v.circle_id },os,r,url2)%>">
+					<div><img class="avator"  src="<%=v.circle_pic%>" alt=""></div>
+					<p class="user-info"><%=v.circle_name%></p>
+				</a>
+			</div>
+			<p class="post-title"><%= v.title %></p>
+			<a class="post-price" href="<%=getAppLink('rich_message', {type:'miscpic',msg_id: v.msg_id},os,r,v.url || url1)%>" >¥<%=v.price%></a>
+			<p class="post-desc"><%=v.text%></p>
+		</div>
+		<div class="ft">
+			<% if(v.tips&&v.goods_status!=3) {%>
+                <% if(v.goods_status == 1){%>
+                    <a  href="<%=getAppLink('rich_message', {type:'miscpic',msg_id: v.msg_id},os,r,v.url || url1)%>">
+                        <img class="state" src="<%=btn[v.goods_status]%>" alt=""> 
+                    </a>
+                    <p class="time"><%=v.tips%></p>
+                <% }else{ %>
+                    <img class="state" src="<%=btn[v.goods_status]%>" alt=""> 
+                    <p class="time"><%=v.tips%></p>
+                <% } %>			
+			<% }else{}%>
+		</div>
+	</li>
+	<%});%>
+</ul>
+<div class="gotop-wrap">
+    <a class="gotop">
+        <img src="http://i.meilishuo.net/css/images/wap/tuan/gotop.png"/>
+    </a>
+</div>
+
+ <%= requireFn('wapShare.html')({
+    'share' : this.share 
+    , 'shareTitle' : '选择分享到'
+    , '_JSstack' : this._JSstack
+    , '_JSmods' : this._JSmods
+  }); %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+    fml.use('wap/page/mainapp/qunquan');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html%>

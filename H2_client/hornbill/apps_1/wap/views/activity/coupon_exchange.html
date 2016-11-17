@@ -1,0 +1,20 @@
+<%# head.html %>
+<div class="main">
+	<div class="step1">
+		<input class="code placeholder" type="text" value="输入兑换码">
+		<span id="submit">确定</span>
+	</div>
+	<section class="step2">
+		<div class="step2-coupon">
+			<p class="cost"><span class="threshold"></span><i class="price"></i><span class="cost-sign">￥</span></p>
+			<p class="desc"><span class="declare"></span><span class="num">1张<span></p>
+			<p class="time"></p>
+		</div>
+		<h1>优惠券到账啦！妥妥的~</h1>
+		<a href="<%if(this.from=='my_coupon'){%>meilishuo://close.meilishuo/<%}else{%>javascript:0;<%}%>">查看优惠券</a>
+	</section>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/coupon_exchange');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html %>

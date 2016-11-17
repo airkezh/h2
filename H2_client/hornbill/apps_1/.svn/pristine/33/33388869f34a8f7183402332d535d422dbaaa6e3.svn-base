@@ -1,0 +1,83 @@
+@import "wx-rem.less";
+html,body{ .w(6.4rem); .bgc(#fff);.h(100%);}
+/*购物车*/
+nav.nav-c{
+    .nav-c-new();
+}
+.bg_set() {
+	background-repeat: no-repeat;
+	background-position: center bottom;
+	background-size: contain;
+}
+/*二级分类*/
+.wall {
+	//min-height: 100%;
+	padding: .05rem .1rem;
+	.clearfix;
+	figure {
+		.left;
+		.w(1.55rem);
+
+		a {
+			.block;
+			.h(1.22rem);
+			margin: .1rem .15rem;
+			.bg_set;
+		}
+		figcaption { 
+			.mb(.3rem);
+			.f(.24rem);
+			.fc(#717171);
+			.c; 
+		}
+	}
+}
+
+/*瀑布流*/
+.new_goods{
+	.clearfix; .pr; .bgc(#fff);	
+	.goods_li{
+		.pa; 
+		.hidden;
+	}
+	.li_border {
+		.pr;.bgwhite; 
+		.list_img {.block; background-size:100%;.hidden;
+		}
+		.sell_title {.f(.24rem); .c; .fc(#505050); .hidden; .nowrap; }
+		.list_title {.f(.22rem); .c; .fc(#9f9f9f); .pt(.06rem); .ellipsis;}
+	}
+	.img_bt { border-bottom: .01rem solid #ddd;}
+	.list_info { .pt(.14rem); .pl(.04rem);.pr(.04rem); }
+	.list_cost { .c; .f(0); .pt(.13rem);.pb(.14rem);
+		.money_now {.f(.26rem); .vm; .pr(.18rem); .fc(#ff7a9a);}
+		.like-img{ .i_block; .w(.22rem); .h(.2rem); .vm;}
+		.like-num{ .vm;  .f(.24rem);  .fc(#898989); .pl(.07rem);}
+	}
+	
+	.goods_type {.pa; top: 0; left: .1rem; .w(.7rem); .h(.34rem); .l(.34rem); .white; .c; .border-r(0 0 .06rem .06rem);}
+	.two_type { left: .9rem;}
+	.new {.bgc(#ff96b9);}
+	.hot {.bgc(#ff6f80);}
+}
+/*加载*/
+.pullUp{
+	.pullUpDown > .common;.pullUpDown > .loading;
+	&:before{
+		.nowrap;
+		.ml(-35px);
+	}
+	&[status="tap"]{
+		background:0 none;	
+	}
+	&[status="stop"]{
+		background:0 none;	
+		.h(2px);
+		&:before{.i_block;
+			content:"没有更多内容了...";
+		}
+	}
+}
+div.pullUp{
+	.l(.8rem); .f(.28rem); .h(.8rem); .w(.8rem); background-size: .8rem 1.6rem;
+}

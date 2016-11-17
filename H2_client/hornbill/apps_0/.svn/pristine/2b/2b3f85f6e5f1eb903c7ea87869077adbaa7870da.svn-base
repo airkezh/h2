@@ -1,0 +1,242 @@
+<%# head_simple.html%>
+</head>
+<body <%if(this.os.ios){%>class="ios"<%}%>>
+<% this.headName = '宝贝详情'; %>
+<%
+var goodsInfo  = this.goods_info || {},
+	shopId     = goodsInfo.shop_id,
+    circle     = this.circle || {},
+    circleData = circle.data,
+    circleId   = circleData && circleData.id,
+    circleBanner = this.item_circle_banners || [];
+
+var cur_time  = (new Date).getTime() / 1000
+var promptRemain = getTimeRemain(goodsInfo.end_time)
+var globalKey = this._Request_cookies.MEILISHUO_GLOBAL_KEY;
+var shop_in = this.shop_in || '';
+
+var oldMlsApp = this.os.mlsApp;
+this.os.mlsApp = true;
+var red_url = _extFn.getAppLink('twitter_single', {'twitter_info' : {'twitter_id' : goodsInfo.twitter_id, 'is_doota' : goodsInfo.is_doota}, 'r' : 'wap-slideOpen'}, this.os, this.r,null,this.source);
+this.os.mlsApp = oldMlsApp;
+var appUrl = this.appUrl;
+
+function getTimeRemain(end_time){
+	if (end_time && end_time > cur_time) return end_time - cur_time
+	else return ''
+}
+%>
+<section id="wrapper_main" class="wrapper">
+	<div class="picture">
+		<span style="background-image:url('<%= goodsInfo.image.image[0]%>');"></span>
+	</div>
+    <div class="product-info">
+        <h2 class="title"><%= goodsInfo.goods_title%></h2>
+        <%
+            var price = '' + goodsInfo.price;
+
+            if( goodsInfo.price_max &&
+                (goodsInfo.price != goodsInfo.price_max )) {
+                price += '~ ' + goodsInfo.price_max
+
+            }
+        %>
+        <p class="price">￥<%= price%></p>
+        <p class="extra">
+            <span>运费:￥<%= goodsInfo.freight%></span>
+            <span>销量: <%= goodsInfo.sales%></span>
+        </p>
+    </div>
+
+    <div class="sku_main">
+        <div class="sku_tab skuInfoNew">
+            <h2 class="sku_size" id="skuSize">
+                <span class="normal_title">选择颜色尺码</span>
+                <span class="choice_size"></span>
+                <span class="hide_msg" msgStatu="0"></span>
+            </h2>
+            <div class="sku_info_new" id="sku_info_new">
+                <div class="skin">
+                    <%if(1 == goodsInfo.shelf ){%>
+                    <p class="notice none_f">请选择<span>尺寸/颜色分类</span></p>
+                    <ul class="selected none_f">
+                        <li class="colorInfo">颜色：<span></span></li>
+                        <li class="sizeInfo">尺寸：<span></span></li>
+                    </ul>
+                    <% if (goodsInfo.prop && goodsInfo.prop.color && goodsInfo.prop.color.is_show) { %>
+                    <dl class="prop">
+                        <dt><%= goodsInfo.prop.color.name%>：</dt>
+                        <dd>
+                            <ul id="colorList">
+                                <% goodsInfo.prop.color.value.forEach(function(item , key){
+                                    if (goodsInfo.prop.color.color_image && goodsInfo.prop.color.color_image[key]) {%>
+                                    <li class="img_list"><span><img src="<%= goodsInfo.prop.color.color_image[key] %>" bsrc="<%= goodsInfo.prop.color.image[key] %>"  title="<%= item%>" alt="<%= item%>" /></span></li>
+                                    <% }else{%>
+                                    <li><span><%= goodsInfo.prop.color.value[key] %></span></li>
+
+                                    <%}%>
+                                <%});%>
+                            </ul>
+                        </dd>
+                    </dl>
+                    <%}%>
+                    <% if (goodsInfo.prop && goodsInfo.prop.size && goodsInfo.prop.size.is_show) { %>
+                    <dl class="prop">
+                        <dt><%= goodsInfo.prop.size.name%>：</dt>
+                        <dd>
+                            <ul id="sizeList">
+                                <% goodsInfo.prop.size.value.forEach(function(item , key){%>
+                                    <li><span><%= item%></span></li>
+                                <%});%>
+                            </ul>
+                        </dd>
+                    </dl>
+                    <%}%>
+                    <dl class="amount">
+                        <dt>数量：</dt>
+                        <dd>
+                            <div class="numBox">
+                                <span class="minus">-</span>
+                                <input class="nums" title="请输入购买数量" type="text" value="1">
+                                <span class="plus">+</span>
+                            </div>
+                            <span class="stock">(库存<span>-</span>件)</span>
+                        </dd>
+                    </dl>
+                    <div class="msg_box">
+                        <p class="msg_limit"><span class="msg_ico"></span>对不起！每人最多限购100件！</p>
+                        <p class="msg_zero"><span class="msg_ico"></span>对不起，这件宝贝已经卖光啦！</p>
+                        <p class="msg_over"><span class="msg_ico"></span>您所填写的宝贝数量超过库存！</p>
+                    </div>
+                    <%}%>
+                    <%
+                    var promptRemain = getTimeRemain(goodsInfo.end_time)
+                    if (goodsInfo.end_time && !promptRemain) goodsInfo.shelf = 0
+                    %>
+                    <% if (goodsInfo && 1 == goodsInfo.shelf ) { %>
+                    <div class="btn_box">
+                        <span href="javascript:void(0)" class="sure_btn">确定</span>
+                    </div>
+                    <%}else{%>
+                    <% if(!this.goods_info.is_zero){ %>
+                    <span class="msg_shelf">宝贝已下架!</span>
+                    <% } else { %>
+                    <span class="msg_shelf">请回活动换购</span>
+                    <% }%>
+                    <%}%>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <% if(circleData) {%>
+    <div class="circle js-circle"></div>
+    <%}%>
+
+    <%
+        if ( circleBanner.length ) {
+            var circleBannerData = circleBanner[ 0 ]
+    %>
+    <div class="circle-banner">
+        <a target="_blank" href="<%=circleBannerData.url%>">
+        <img src="<%=circleBannerData.image_url%>" title="<%=circleBannerData.title%>">
+        </a>
+    </div>
+    <% } %>
+
+	<%	var count_like = goodsInfo.twitter_stat && goodsInfo.twitter_stat.count_like
+			,beauty_me = goodsInfo.beauty_me
+		%>
+
+    <%# share/goods_detail.html %>
+
+	<div class="buyBox btn_box">
+		<a href="javascript:void(0)" class="cnt_seller">
+			<img src="<%=this.PICTURE_URL%>/images/wap/web/mls_icon.png" />
+			联系卖家
+		</a>
+		<span href="javascript:void(0)" class="add_cart">加入购物车</span>
+		<span href="javascript:void(0)" class="buy_btn">立即购买</span>
+	</div>
+</section>
+
+<div class="mask">
+	<div class="content">
+		<p>步骤1: 下载美丽说</p>
+		<a href="http://m.meilishuo.com/download/latest/wap">
+			<span class="download-ico"></span>
+			<span>下载美丽说</span>
+		</a>
+		<p>步骤2: 返回本页点击进群逛逛</p>
+	</div>
+</div>
+
+<a class="headApp" red_url="<%= this.appUrl%>" href="<%= red_url %>">
+</a>
+
+<script type="text/html" id="twitter_comment">
+<? item && $.each(item , function(key , data){?>
+	<li>
+		<img class="avatar" src="<?= data.uinfo.avatar_b?>" />
+		<p class="twitter_comment_name"><?= data.uinfo.nickname?></p>
+		<p class="l_con"><?= data.twitter_content?></p>
+		<p class="date"><?= data.twitter_create_time?></p>
+	</li>
+<?});?>
+</script>
+
+<script type="text/html" id="shopCoupon">
+<?if(this.item.length > 0){?>
+	<div class="sku_tab sku_coupon">
+		<span class="hide_msg" msgStatu="0"></span>
+		<dl class="cpn_info" shopId="<%= shopId %>" id="cpn_info">
+			<dt>店铺优惠:</dt>
+			<dd class="normal">
+				<span><?= this.item[0].credit ?></span>  <?= this.item[0].tips ?>
+			</dd>
+			<? this.item && $.each(this.item, function(i, v) { ?>
+				<dd class="cpn_list">
+					<span><?= v.credit ?></span>  <?= v.tips ?>
+				</dd>
+			<?});?>
+		</dl>
+	</div>
+<?}?>
+</script>
+
+<script type="text/html" id="downloadApp">
+	<div class="dialog_box">
+		<p class="intro">您尚未安装美丽说APP</br>立即下载美丽说访问更多内容</p>
+		<p class="downloadBtn btn" >立即下载</p>
+		<p class="noDownload btn">忽略</p>
+	</div>
+</script>
+
+<script type="text/html" id="tagshow">
+    <%# share/tagshow.html%>
+</script>
+
+<script>
+fml.vars.count_discuss = "<%= goodsInfo.twitter_stat.discuss_num%>";
+fml.vars.goods = {"id" : "<%=goodsInfo.goods_id %>" , "twitter_id": "<%= goodsInfo.twitter_id%>" ,"pid" :"<%= goodsInfo.pid || 0%>","price" : "<%= goodsInfo.price || 0 %>" , "price_max" : "<%= goodsInfo.price_max || 0%>", "original_price" : "<%= goodsInfo.original_price || 0 %>","original_price_max" : "<%= goodsInfo.original_price_max || 0 %>"};
+fml.vars.goods_stock = <%= JSON.stringify(goodsInfo.stock)%>;
+fml.vars.goods_prop = <%= JSON.stringify(goodsInfo.prop)%>;
+fml.vars.globalKey = '<%= globalKey %>';
+fml.vars.frm = '<%= this.frm %>';
+fml.vars.shop_id = <%= shopId%>;
+fml.vars.goodsId = <%= goodsInfo.goods_id%>;
+fml.vars.twitter_id = '<%= goodsInfo.twitter_id%>';
+fml.vars.circleId = <%= circle.data.id%>;
+fml.vars.circle = <%= JSON.stringify(circle.data)%>;
+
+
+</script>
+<%# block/gotop.html%>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('m/page/global');
+	fml.use('wap/page/share/item');
+    fml.use('wap/page/share/item_circle');
+    fml.use('wap/app/slideOpen');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html%>

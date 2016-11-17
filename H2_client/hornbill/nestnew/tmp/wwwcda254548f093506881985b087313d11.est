@@ -1,0 +1,151 @@
+/*--/Users/MLS/Documents/H2/H2_client/hornbill/apps_0/www/views/head.html--*/ 
+     var est = require(config.path.lib + 'est/est.js'); 
+     var _extFn = require('/Users/MLS/Documents/H2/H2_client/hornbill/nestnew/server/lib/est/extFn.js'); 
+     function requireFn(tpl) { return est.renderFile('/Users/MLS/Documents/H2/H2_client/hornbill/apps_0/www/views/' ,tpl , null , null ,'www' ,true); } ; 
+     function __getHtml (_data) { 
+       function jsRender(tpl , id) { return est.jsRender(requireFn(tpl)(_data), id  ); } ; 
+       var __htm ='';
+__htm += '';
+__htm += est.renderFile("/Users/MLS/Documents/H2/H2_client/hornbill/apps_0/www/views/" ,"head_simple.html",_data,null,"www" )||"";
+__htm += '\n';
+__htm += '\n	';
+
+		if (_data.is_iPad) {
+	;__htm += '\n		';
+__htm += est.renderFile("/Users/MLS/Documents/H2/H2_client/hornbill/apps_0/www/views/" ,"head_ipad.html",_data,null,"www" )||"";
+__htm += '\n	';
+
+		} else {
+	;__htm += '\n';
+__htm += '\n';
+
+	var navFrm = 'frm=daeh';
+	var getLink = _extFn.getLink;
+	var mSubstr = _extFn.mSubstr;
+	var query = _data._Request_query;
+	var addTrace = _data.ViewTools.addTrace;
+	var proData = _data.promotionData || {};
+;__htm += '\n</head>\n<body>\n';
+
+	if (!_data.noHeaderBg) {
+		var actShow = _data.ViewTools.timeStuff({'2015/3/10 10:00:00': 0, '2015/3/21 00:00:00': 0}, 0);
+;__htm += '\n<div class="header_bg ';
+ if (actShow == 1) { ;__htm += 'header_bg_christmas';
+ } ;__htm += '">\n	';
+
+		if (proData && proData.main && (proData.branch.length > 0)) {
+			var navStyle = proData,
+				main = proData.main,
+				branch = proData.branch;
+	;__htm += '\n	<script type="text/javascript">\n		var style = document.createElement(\'style\'),\n			head = document.head || document.getElementsByTagName(\'head\')[0],\n			css = \'#promo_nav{min-width:1260px;overflow:hidden;background-color:';
+__htm += navStyle.navBgColor ;
+__htm += ';';
+ if(navStyle.navBgImg){ ;__htm += 'background-image:url(';
+__htm += navStyle.navBgImg ;
+__htm += ');background-repeat: no-repeat;background-position:center top;background-size:auto 100%;';
+ } ;__htm += '}#promo_nav .itemswrap{width:1200px;margin-left:auto;margin-right:auto;}#promo_nav li{font-size:14px;padding-left:10px;padding-right:10px;line-height:57px;height:57px;}#promo_nav .nav-items-main:hover,#promo_nav .nav-items-branch:hover{background-color:';
+__htm += navStyle.hoverStyle ;
+__htm += ';}#promo_nav .nav-items-main{font-size:18px;padding-right:8px;}#promo_nav .main-a{padding-left:';
+__htm += 2 + 1 * navStyle.iconLeft.width ;
+__htm += 'px;background:url(';
+__htm += navStyle.iconLeft.img ;
+__htm += ') left center no-repeat;}#promo_nav a{display:block;}#promo_nav span{padding-right:10px;background:url(';
+__htm += navStyle.itemsIcon ;
+__htm += ') right center no-repeat;background-size:auto 64%;color:';
+__htm += navStyle.itemsColor ;
+__htm += ';}#promo_nav .nav-items-main,#promo_nav .nav-items-branch{float:left;}#promo_nav .nav-items-itemright{float:right;padding-right:0;}#promo_nav .nav-items:after{content:".";clear:both;display:block;height:0;visibility:hidden;}#promo_nav .nav-items-itemright a{padding-top:6px;height:45px;}#promo_nav .nav-items-itemright img{height:100%;}\';\n		style.type = \'text/css\';\n		if (style.styleSheet) {\n			style.styleSheet.cssText = css;\n		} else {\n			style.appendChild(document.createTextNode(css));\n		}\n		head.appendChild(style);\n	</script>\n	<div id="promo_nav">\n		<div class="itemswrap">\n			<ul class="nav-items">\n				<li class="nav-items-main"><a class="main-a" target="_blank" href="';
+__htm += main.url ;
+__htm += '"><span class="main-icon">';
+__htm += main.name ;
+__htm += '</span></a></li>\n				';
+
+					branch.forEach(function(item, index){
+				;__htm += '\n				<li class="nav-items-branch"><a target="_blank" href="';
+__htm += item.url ;
+__htm += '"><span class="branch-icon">';
+__htm += item.name ;
+__htm += '</span></a></li>\n				';
+
+					});
+				;__htm += '\n				';
+ if(navStyle.iconRight.img){;__htm += '\n				<li class="nav-items-itemright"><a target="_blank" href="';
+__htm += navStyle.iconRight.url ;
+__htm += '"><img src="';
+__htm += navStyle.iconRight.img ;
+__htm += '"></a></li>\n				';
+};__htm += '\n			</ul>\n		</div>\n	</div>\n	';
+
+		}
+	;__htm += '\n	<div id="topbar" style="height:31px;"></div>\n	';
+
+		if (!_data.hideBindTip){
+	;__htm += '\n	<div class="bind_tip_wrap">\n		<div class="bind_tip" data-isweak="';
+__htm += _data.userInfo.is_weak_password ;
+__htm += '">\n			<strong>X</strong>\n			<span>安全提醒：</span>\n			近期不法分子通过攻击其他网站获取密码薄弱的用户账号信息后，试图登陆美丽说诈骗用户信息或进行其它欺诈行为，为此我们强烈建议您立即。\n			<a href="/settings/setPassword" target="_blank">修改登录密码</a>拒不修改将存在较大风险。\n		</div>\n	</div>\n	';
+
+		}
+	;__htm += '\n	';
+
+		if (!_data.hideHeaderTop){
+			if (_data.topbanner && _data.topbanner.length && _data.top_bnr_close && _data.top_bnr_close.data === 0) {
+	;__htm += '\n	<div class="header_top pr_f">\n		<ul class="head_bnr">\n			';
+
+				_data.topbanner.forEach(function(data , i) {
+					data.links = addTrace(data.links , 'header_banner_' + i);
+			;__htm += '\n			<li>\n				<span class="close_bnr_btn"></span>\n				';
+
+					if (0 === i ) {
+				;__htm += '\n				<a class="pic" href="';
+__htm += data.links ;
+__htm += '" target="_blank" style="background:url(';
+__htm += data.img_url ;
+__htm += ') repeat center top;"></a>\n				';
+
+					} else {
+				;__htm += '\n				<a class="pic" href="';
+__htm += data.links ;
+__htm += '" target="_blank" data-img ="';
+__htm += data.img_url ;
+__htm += '" style="background: repeat center top;"></a>\n				';
+
+					}
+				;__htm += '\n			</li>\n			';
+
+				});
+			;__htm += '\n		</ul>\n		<div class="adType1">\n			';
+
+				(_data.topbanner.length > 1) && _data.topbanner.forEach(function(data){
+			;__htm += '\n			<a></a>\n			';
+
+				});
+			;__htm += '\n		</div>\n		<div class="clear_f"></div>\n	</div>\n	';
+
+			}
+		}
+	;__htm += '\n	<div class="clear_f"></div>\n	';
+
+		if (!_data.hideSearch){
+	;__htm += '\n		<div id="search" style="height:120px;"></div>\n	';
+
+		}
+	;__htm += '\n</div>\n';
+
+	}
+;__htm += '\n';
+
+	if (!_data.hideNav) {
+;__htm += '\n<div id="nav" style="height:50px;"></div>\n';
+
+	}
+;__htm += '\n<script type="text/javascript" src="';
+__htm +=_data.JCSTATIC_BASE ;
+__htm += '~common/blast?v47"></script>\n<script>\n	Blast.init({\n		topbar : \'#topbar\',\n		search : \'#search\',\n		nav : \'#nav\',\n		foot : \'#foot\',\n		domain : \'';
+__htm +=_data.MAIN_SITE_DOMAIN;
+__htm += '\'\n	});\n</script>\n';
+__htm += '\n	';
+
+		}
+	;__htm += '\n';
+__htm += '\n';
+return __htm;} 
+ exports.html = __getHtml; 

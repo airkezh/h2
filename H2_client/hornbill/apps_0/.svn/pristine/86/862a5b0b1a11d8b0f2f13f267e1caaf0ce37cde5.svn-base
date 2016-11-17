@@ -1,0 +1,62 @@
+/*common*/
+var banner = require('app/focus_banner'),
+    scroll = require('component/windowScroll');
+var rightMenu = require('page/huodong/promotion/rightNav');
+
+//posterWalls
+fml.use(['jquery', 'app/posterWalls', 'component/shareTmp','component/waterfall', 'component/urlHandle'], function() {
+    var shareTmp = this.shareTmp;
+    var pin = this.waterfall;
+    var query = this.urlHandle.getParams(window.location.href.toString());
+    var urlData = {
+        'frame': query.frame || 1,
+        'page': query.page || 0,
+        'event_id': fml.vars.event_id,
+        'frame_size': 30
+    };
+    pin.init({
+        offset: {
+            x: 0,
+            y: 6
+        }
+    });
+    var opts = this.jquery.extend({}, urlData, query);
+    this.posterWalls(opts, '/aj/tuan_aj/tuan/rushlist',{
+        'Infinite': 1
+    });
+});
+
+
+//nav
+var navBox = $('#rush_nav'),
+    subNav = navBox.find('.nav_box'),
+    subHolder = $('#navbar .topnav'),
+    wheader = $('#navbar').find('.topnav,.sale_nav'),
+    frstNavHeight = $('#navbar').find('.topnav').height(),
+    y = subNav.offset().top - frstNavHeight;
+scroll.yIn(y, function() {
+    subHolder.after(subNav)
+    wheader.stop().animate({
+        'margin-top': -frstNavHeight
+    }, function() {
+        if (subNav.parent().is(subHolder)) $(this).hide()
+    })
+    subNav.addClass('shadow');
+}, function() {
+    navBox.prepend(subNav)
+    wheader.show().stop().animate({
+        'margin-top': 0
+    })
+    subNav.removeClass('shadow');
+})
+
+//右侧导航大促
+rightMenu.rNav('/aj/sale/right_nav?actid=415');
+$(window).scroll(function(event) {
+    var scoll = $(document).scrollTop()
+    if (scoll > 180) {
+        $('.nav_right').show()
+    }else{
+        $('.nav_right').hide()
+    }
+})

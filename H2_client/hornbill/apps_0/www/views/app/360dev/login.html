@@ -1,0 +1,30 @@
+<%# head_simple.html %>
+	<script>
+	Meilishuo.config.headTag = '<%= this.headTag %>';
+	</script>
+</head>
+<body>
+<div class="win_login">
+	<a class="logo_new" href="http://www.meilishuo.com/welcome"></a>
+	<div class="l_ico">
+		<a class="small_qq" href="/connect/auth/qzone?r=360" onclick="window.external.setwindowsize(600,480);"></a>
+		<a class="small_sina ml10_f" href="/connect/auth/weibo?r=360" onclick="window.external.setwindowsize(600,430);"></a>
+	</div>
+	<fieldset>
+		<form method="post" onsubmit="return false" action="">
+		<legend>美丽说登录表单</legend>
+		<p><input class="l_ipt" id="mlsUser" type="text" name="mlsUser" value="" placeholder="用户名或邮箱"/></p>
+		<p>
+			<input class="l_ipt" id="vmPass" type="text" value="密码" />
+			<input class="l_ipt none_f" id="mlsPass" name="password"  type="password" value="" />
+			<a class="left_f gray_f ml10_f" href="javascript:;" onclick="window.external.openurl('http://www.meilishuo.com/users/forgetPassword')">忘记密码？</a>
+		</p>
+		<p class="loginErrorMessage red_f none_f"></p>
+		<div><input class="loginBtn button left_f" type="submit" value="登录"/><a class="left_f gray_f" href="javascript:;" onclick="window.external.openurl('http://www.meilishuo.com/user/register')">立即注册</a></div>
+		</form>
+	</fieldset>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/app/360dev');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html %>

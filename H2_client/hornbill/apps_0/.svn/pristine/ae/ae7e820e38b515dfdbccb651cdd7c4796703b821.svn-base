@@ -1,0 +1,67 @@
+<%# sq/header.html%>
+<%# sq/search_md.html %>
+
+<%
+	var getLink = _extFn.getLink;
+	var tuanD = this.basic || {};
+	var sec1D = tuanD.banner;
+	var sec2D = tuanD.actarea;
+	var sec3D = tuanD.category;
+%>
+<div class="section_wrap">
+
+	<% if(sec1D){ %>
+	<section class="sec1">
+		<%= requireFn('block/banner.html')({
+			'banner'   : sec1D,
+			'hide_btn' : false,
+			'_JSstack' : this._JSstack,
+			'_JSmods'  :  this._JSmods
+		});%>
+	</section>
+	<% } %>
+
+	<% if(sec2D){ %>
+	<section class="sec2">
+		<div class="sec2-part1">
+		<% sec2D.forEach(function (image){ %>
+			<a href="<%= image.url %>" alt="banner" style="background-image: url(<%= image.img %>);"></a>
+		<% }); %>
+		</div>
+	</section>
+	<% } %>
+
+	<% if(sec3D){ %>
+	<section class="sec3">
+		<ul>
+		<% sec3D.map(function (data, index){%>
+			<% var url =  "/sq/tuan/" + getLink({'cate_id' : data.id}); %>
+			<li><a href="<%= url %>" class="jumpto<%= (this.cate_id == data.id) ? ' type_select' : '' %>"><%= data.name%></a></li>
+		<% }); %>
+		</ul>
+	</section>
+	<% } %>
+	
+	<section class="sec4 posterWall">		
+		<h3></h3>
+		<ul class="goods_wall"></ul>
+		<div class="pullUp" status="loading"></div>
+	</section>
+
+	<%# sq/tuanPosterSQ.html%>
+</div>
+
+<script>
+	fml.vars.poster = {
+		'totalColNum':2,
+		'cate_id' : '<%= this.cate_id%>'
+	};
+</script>
+
+<script src="http://pub.idqqimg.com/qqmobile/qqapi.js?_bid=152"></script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/sq/tuan');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# sq/footer.html%>

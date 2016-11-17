@@ -1,0 +1,54 @@
+<%# head_simple.html%>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+<%
+	var weixinBrowser = this.weixinBrowser;
+%>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<%
+	var type = this.type;
+	var coupon = this.coupon
+		, status = coupon && coupon.error_code; 
+%>
+<div class="mark-main answer-<%=type%>">
+	<div class="logo">
+		<img src="<%=this.PICTURE_URL%>images/wap/activity/fuide/mls-logo.png">
+	</div>
+	<%if(status == 0 || status == -1){%>
+	<div class="no-coupon">
+		<figure class="sadcloud">
+			<img src="<%=this.PICTURE_URL%>images/wap/activity/fuide/lose-coupon.png">
+		</figure>
+		<figure class="try-again">
+			<a href="/activity/summerFuide/home/">
+			<img src="<%=this.PICTURE_URL%>images/wap/activity/fuide/test-again.png">
+			</a>
+		</figure>
+	</div>
+	<%}else if(status == 1){%>
+	<div class="width-coupon">
+		<img src="http://d04.res.meilishuo.net/pic/_o/cf/5b/ecf8225b3ed49826dc14cfd61938_386_158.ch.png"/>
+	</div>
+	<%}%>
+	<!-- <div class="got-coupon">
+		<img src="<%=this.PICTURE_URL%>images/wap/activity/fuide/got-coupon.png"/>
+	</div> -->
+	<a class="go-link"><img src="http://d05.res.meilishuo.net/pic/_o/7f/df/a2b1f49ae4d3b5b278998c027305_418_121.cf.gif"></a>
+	<a class="mark-share"><img src="http://d04.res.meilishuo.net/pic/_o/32/54/f63d1b878d384237ca39cdde6c6e_522_78.ch.gif"></a>
+	<div class="popwin">
+	</div>
+</div>
+<div class="appshare">
+	<%= requireFn('wapShare.html')({
+		'share' : this.share 
+	    , 'shareTitle' : '选择分享到'
+	    , '_JSstack' : this._JSstack
+		, '_JSmods' : this._JSmods
+	}); %>
+</div>
+<script>
+	fml.vars.desc = '<%= this.desc || ''%>'
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+  	fml.use('wap/page/activity/summerFuide/mark');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

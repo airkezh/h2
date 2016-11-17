@@ -1,0 +1,17 @@
+<%#head.html%>
+
+<div class="main"><%= this.pageData.header.desc || '前方有一大波礼包正在袭来...' %></div>
+
+<script>
+	fml.vars.url = '<%= this.pageData.header.link %>';
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/zepto', function(){
+		if(fml.vars.url){
+			window.location.href= fml.vars.url;
+		}
+	});
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot.html%>

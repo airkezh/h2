@@ -1,0 +1,46 @@
+<%# head_simple.html%>
+<div class="wrap">
+	<section>
+		<% var tid = this.tid;
+	        if(tid == 5){%>
+				<img src="<%=this.PICTURE_URL%>/images/wap/web/wx/wallet-bg1.jpg">
+	        <%}else if(tid == 2){%>
+				<img src="<%=this.PICTURE_URL%>/images/wap/web/wx/colour-bg1.jpg">
+			<%}else if(tid == 3){%>
+				<img src="<%=this.PICTURE_URL%>/images/wap/web/wx/scarf-bg1.jpg">
+			<%}else{%>
+				<img src="<%=this.PICTURE_URL%>/images/wap/web/wx/watch-bg11.png">
+			<%}%>
+	</section>
+	<section>
+		<div id="address_popup" class="popup">
+			<p class="title">请填写礼物邮寄地址，提交后不得修改</p>
+			<p><i>姓名</i><input class="name" type="text"/></p>
+			<p><i>手机号</i><input class="tel" type="text"/></p>
+			<p><i>收货地址</i><input class="addr" type="text"/></p>
+			<p><input id="address_cancel_btn" class="sub" type="submit" value="提交" /></p>
+		</div>
+	</section>
+	<section class="share-wrap1">
+		<span class="share">一起分享喜悦</span>
+	</section>
+</div>
+<script type="text/html" id="share_md">
+</script>
+<script>
+	fml.vars.tid = <%= this.tid%>;
+
+	fml.vars.useId = <%= JSON.stringify(this.user_id)%>;
+	var imgUrl = 'http://i.meilishuo.net/css/images/wap/web/wx/stitle.jpg';
+	var lineLink = 'http://m.meilishuo.com/wx/stove?uid=' + fml.vars.useId + '&page_name=xmas_fire&suid=' + fml.vars.useId;
+	var descContent = '【美丽说】圣诞有钱，壁炉点火够任性！每天N次拿礼物，无上限！';
+	var shareTitle = '【美丽说】圣诞炉火大转盘';
+	var shareTimelineText = '【美丽说】圣诞有钱，壁炉点火够任性！每天N次拿礼物，无上限！';
+</script>
+
+<script src="<%= this.JCSTATIC_BASE  %>/js/open/shareCollect.js?<%= this.SVERSION%>"></script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/wx/stove');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

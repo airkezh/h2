@@ -1,0 +1,319 @@
+<%
+	/**
+ 	 * @fileoverview 首页－美物详情
+     * @requires zepto
+     * @author kehuang@meilishuo.com
+     * @date 2016-01-06
+     */
+%>
+
+<%#head.html%>
+<%
+	var curDeviceIsIos = this.isIos;
+	var curUserIsLogin = this.isLogin;
+	var curServerDate = this.serverDate;
+	var curUserInfo = this.userInfo;
+	var curGoodsData = this.goodsData;
+	var curPrizeData = this.prizeData;
+	var curCardsData = this.cardsData;
+	var curIsNormalGetData = this.isNormalGetData;
+	var curUserCardsData = (curCardsData && curCardsData.data) ? curCardsData.data : {};
+	var curUserLevel = (curUserInfo && curUserInfo.user_grade) ? curUserInfo.user_grade : 0;
+	var curGoodsPrizeData = (curPrizeData && curPrizeData.data) ? curPrizeData.data : {};
+	var curGoodsDetailData = (curGoodsData && curGoodsData.data) ? curGoodsData.data : {};
+	var curUserAvailableCards = curUserCardsData.left || 0;
+	var curGoodsShopData = curGoodsDetailData.shop_info || {};
+	var curGoodsPrizeArray = curGoodsPrizeData.award_list || [];
+	var curGoodsPrizeLength = curGoodsPrizeArray.length || 0;
+%>
+
+<div class="main">
+	<%
+		var goods_detail_url = curGoodsDetailData.goods_url || '',
+			curGoodsImgSwipeData = (curGoodsDetailData && curGoodsDetailData.goods_image) ? curGoodsDetailData.goods_image : [],
+			swipe_img_len = curGoodsImgSwipeData.length || 0;
+
+		if (swipe_img_len > 0) {
+	%>
+	<div id="img_swipe_box" class="swipe">
+		<div class="swipe_wrap" style="width:32000px;">
+			<%
+				for (var i = 0; i < swipe_img_len; i++) {
+					var img_src = curGoodsImgSwipeData[i] || '';
+
+					if (img_src != '') {
+			%>
+			<div class="swipe_pic" data-href="<%= goods_detail_url %>">
+				<img src="<%= img_src %>" alt="">
+			</div>
+			<%
+					}
+				}
+			%>
+		</div>
+		<%
+			if (swipe_img_len > 1) {
+		%>
+		<ul class="swipe_num">
+			<%
+				for (var j = 0; j < swipe_img_len; j++) {
+					var className = (j == 0) ? 'active' : '';
+
+					if (img_src != '') {
+			%>
+			<li class="<%= className %>"></li>
+			<%
+					}
+				}
+			%>
+		</ul>
+		<%
+			}
+		%>
+	</div>
+	<%
+		}
+
+		var cur_activity_status = curGoodsDetailData.status || 0,
+			cur_goods_title = curGoodsDetailData.goods_title || '',
+			goods_shop_id = curGoodsDetailData.shop_id || '',
+			goods_twitter_id = curGoodsDetailData.twitter_id || '',
+			goods_activity_date = curGoodsDetailData.activity_date || '',
+			goods_sale_price = curGoodsDetailData.sale_price || '0.00',
+			goods_origin_price = curGoodsDetailData.origin_price || '0.00',
+			goods_stock_amount = curGoodsDetailData.stock || 0,
+			goods_apply_amount = curGoodsDetailData.exchange_num || 0;
+	%>
+
+	<div class="goods_detail_wrap">
+		<p class="goods_title"><%= cur_goods_title %></p>
+		<p class="goods_price">￥<%= goods_sale_price %> <del>￥<%= goods_origin_price %></del></p>
+		<p class="goods_desc">限量:<%= goods_stock_amount %>&nbsp;&nbsp;&nbsp;&nbsp;<i><%= goods_apply_amount %>人已参与</i></p>
+
+		<%
+			var cur_btn_text = '活动已结束',
+				cur_btn_class = '';
+
+			if (cur_activity_status == 1) {
+				cur_btn_text = '使用抽礼卡',
+				cur_btn_class = 'use_cards_btn';
+			}
+		%>
+		<p class="goods_bottom_btn <%= cur_btn_class %>" data-tid="<%= goods_twitter_id %>" data-date="<%= goods_activity_date %>"><%= cur_btn_text %></p>
+	</div>
+
+	<%
+		curGoodsDetailImgData = (curGoodsDetailData && curGoodsDetailData.goods_show_image) ? curGoodsDetailData.goods_show_image : [],
+			goods_img_len = curGoodsDetailImgData.length || 0;
+
+		if (goods_img_len > 0) {
+	%>
+	<div class="more_detail_wrap" data-href="<%= goods_detail_url %>">
+		<div class="left_item">更多详情</div>
+		<div class="right_item">
+			<%
+				var goods_img_html = '';
+
+				for (var k = 0; k < goods_img_len; k++) {
+					var goods_img_src = curGoodsDetailImgData[k] || '';
+
+					if (goods_img_src != '') {
+						(k < 3) && (goods_img_html += '<img src="' + goods_img_src + '" alt="">');
+					}
+				}
+			%>
+			<%= goods_img_html %>
+		</div>
+	</div>
+	<%
+		}
+	%>
+
+	<div class="cards_process_wrap">
+		<div class="title_wrap">
+			<div class="pro_title"><p>抽礼卡使用流程</p></div>
+		</div>
+		<div class="process_title"></div>
+		<ul class="process_desc">
+			<li>每周五10点</li>
+			<li>当晚22点</li>
+			<li>1-3天</li>
+			<li>3-15天</li>
+		</ul>
+		<%
+			if (curDeviceIsIos) {
+		%>
+		<div class="activity_remind_btn">提醒我</div>
+		<%
+			}
+		%>
+	</div>
+
+	<%
+		if (curGoodsPrizeLength > 0) {
+			var lucky_member_main_style = (curGoodsPrizeLength > 5) ? '' : 'height:auto;';
+	%>
+	<div id="lucky_member_wrap" class="lucky_member_wrap">
+		<div class="title_wrap">
+			<div class="pro_title"><p>幸运会员</p></div>
+		</div>
+
+		<div class="lucky_member_main" style="<%= lucky_member_main_style %>">
+			<ul class="lucky_member_box">
+				<%
+					for (var l = 0; l < curGoodsPrizeLength; l++) {
+						var data = curGoodsPrizeArray[l],
+							nickname = data.nickname || '',
+							phone_num = data.phone_num || '';
+
+						if ((nickname != '') || (phone_num != '')) {
+				%>
+				<li>
+					<p class="left_item">用户名：<%= nickname %></p>
+					<p class="right_item">手机号：<%= phone_num %></p>
+				</li>
+				<%
+						}
+					}
+				%>
+			</ul>
+		</div>
+	</div>
+	<%
+		}
+
+		var goods_shop_url = curGoodsShopData.shop_url || '',
+			goods_shop_name = curGoodsShopData.shop_name || '';
+
+		if ((goods_shop_url != '') && (goods_shop_name != '')) {
+	%>
+	<div class="title_wrap goods_shop_title" data-pos="2" data-href="<%= goods_shop_url %>">
+		<div class="pro_title"><p>本商品由<i><%= goods_shop_name %></i>提供</p></div>
+	</div>
+	<%
+		}
+	%>
+
+	<section class="container">
+		<ul class="even goods_wall">
+			<%
+				var goods_shop_arr = curGoodsShopData.shop_goods || [],
+					goods_shop_len = goods_shop_arr.length || 0;
+
+				for (var m = 0; m < goods_shop_len; m++) {
+					var data = goods_shop_arr[m],
+						goods_url = data.goods_url || '',
+						goods_title = data.goods_title || '',
+						goods_image = data.goods_image || '',
+						goods_twitter_id = data.twitter_id || '',
+						goods_sale_price = data.sale_price || '0.00',
+						goods_origin_price = data.origin_price || '0.00';
+			%>
+			<li>
+				<figure data-tid="<%= goods_twitter_id %>" data-pos="1" data-href="<%= goods_url %>">
+				    <span class="bs_load_img" asrc="<%= goods_image %>"></span>
+				</figure>
+
+				<figcaption>
+					<div class="goods_title"><%= goods_title %></div>
+					<div class="goods_price">￥<%= goods_sale_price %></div>
+				</figcaption>
+			</li>
+			<%
+				}
+			%>
+		</ul>
+		<!-- <div class="pullUp" status="loading"></div> -->
+		<div class="bottom_more_btn" data-pos="3" data-href="<%= goods_shop_url %>">进店查看更多</div>
+    </section>
+
+	<div class="gotop_wrap">
+		<a class="gotop">
+			<img src="http://d03.res.meilishuo.net/pic/_o/d0/68/f89d059f09d440f4ee7a37669383_80_80.cg.png" alt="">
+		</a>
+	</div>
+</div>
+
+<script type="text/html" id="j_prompt_tpl">
+	<div id="j_prompt_layer" class="prompt_layer_main">
+		<div class="prompt_layer_text"><?= this.text ?></div>
+	</div>
+</script>
+
+<script type="text/html" id="posterWall">
+	<?
+		var is_login = this.isLogin,
+			goods_list = (this.data && this.data.data && this.data.data.list) ? this.data.data.list : [];
+
+		$.each(goods_list, function(index, data){
+	    	var pos = data.pos || 0,
+	    		stock = data.stock || 0,
+	    		status = data.status || 0,
+	    		goods_url = data.goods_url || '',
+	    		goods_img = data.goods_img || '',
+	    		goods_title = data.goods_title || '',
+	    		twitter_id = data.twitter_id || 0,
+	    		exchange_num = data.exchange_num || 0;
+
+	    	if (goods_img != '') {
+	?>
+	<li>
+		<figure data-tid="<?= twitter_id ?>" data-pos="<?= pos ?>" data-href="<?= goods_url ?>">
+			<?
+		    	if (fml.vars.is_lazyload_poster) {
+		    		if (index < 2) {
+		    ?>
+		    <span class="df_show_img" style="opacity: 1;background-image: url(<?= goods_img ?>);"></span>
+		    <?
+		    		} else {
+		    ?>
+		    <span class="bs_load_img" asrc="<?= goods_img ?>"></span>
+		    <?
+		    		}
+				} else {
+			?>
+		    <img src="<?= goods_img ?>" alt="">
+		    <?
+				}
+
+				if ((stock < 1) || (status == 0)) {
+			?>
+			<div class="soldout"></div>
+			<?
+				}
+			?>
+		</figure>
+
+		<figcaption>
+			<div class="goods_title"><?= goods_title ?></div>
+			<div class="goods_desc">
+				<p class="left_text">限量<?= stock ?>件</p>
+				<p class="right_text"><?= exchange_num ?>人已参与</p>
+			</div>
+		</figcaption>
+	</li>
+	<?
+			}
+		});
+	?>
+</script>
+
+<script>
+	fml.vars.r = '<%= this.xr.r || '' %>';
+	fml.vars.isIos = <%= curDeviceIsIos %>;
+	fml.vars.isLogin = <%= curUserIsLogin %>;
+	fml.vars.userLevel = <%= curUserLevel %>;
+	fml.vars.isNormalGetData = <%= curIsNormalGetData %>;
+	fml.vars.goodsPrizeLength = <%= curGoodsPrizeLength %>;
+	fml.vars.userAvailableCards = <%= curUserAvailableCards %>;
+	fml.vars.goodsShopData = <%= JSON.stringify(curGoodsShopData) %>;
+	fml.vars.is_lazyload_poster = true;
+</script>
+
+<!-- <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script> -->
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/member/welfare_goods_details');
+_use:", this._JSstack, this._JSmods); %>
+
+<%#foot_simple.html%>

@@ -1,0 +1,32 @@
+<%# head.html %>
+<div class="settingsWrap">
+	<h3>亲，淘宝登录方式已失效，动动手指，立即更新你的账号信息！</h3>
+	<div class="setContent">
+		<p>完成以下操作，继续你的美丽旅程：</p>
+		<p>更新你的用户信息<span>完成邮箱验证</span><span>开始你的美丽之旅</span></p>
+		<form class="setNewInfo registerForm" id="setNewInfo"  method="post" onsubmit="return false" action="">
+			<div>
+				<span class="input_title">设置新昵称：</span>
+				<input class="r_ipt" id="mlsName" type="text" name="nickname" value="" placeholder="昵称"/><strong></strong>
+			</div>
+			<div>
+				<span class="input_title">设置新密码：</span>
+				<input class="r_ipt" id="mlsPass" name="password" type="password" value="" placeholder="密码" autocomplete="off" /><strong></strong>
+			</div>
+			<div>
+				<span class="input_title">填写电子邮箱：</span>
+				<input class="r_ipt" id="mlsEmail" type="text" name="email" value="" placeholder="电子邮箱"/><strong></strong><span class="registerInfoMessage" style="display:none;"><span></span>建议使用QQ邮箱。</span>
+			</div>
+			<input class="nextBtn" type="submit" value="下一步"/>
+		</form>
+	</div>
+</div>
+
+<%# user/windows.html%>
+<script>
+	Meilishuo.config.gender = '<%==this.setPersonal.gender%>';
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/settingsPersonal');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html %>

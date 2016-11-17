@@ -1,0 +1,42 @@
+<%#head.html%>
+<% var item = this.rapid.data;%>
+<% 
+var pageWidth = item.pageWidth || 640;
+var baseWidth = 6.4;
+%>
+<div class="container" style="width:6.4rem;">
+	<% item.picArr && item.picArr.forEach(function(o){ %>
+	<img src="<%=o.o_pic_url %>" style="width:100%;height:<%=o.height/pageWidth*baseWidth %>rem;">
+	<% }); %>
+	<% item.hotArr && item.hotArr.forEach(function(o){ %>
+	<a class="hotarea"<%if(o.opennew){%> target="_blank"<%}%> xr="<%=this.xr.r %>" href="<%=o.link || '###' %>" style="left:<%=o.left/pageWidth*baseWidth %>rem;top:<%=o.top/pageWidth*baseWidth %>rem;width:<%=o.width/pageWidth*baseWidth %>rem;height:<%=o.height/pageWidth*baseWidth %>rem;"></a>
+	<% }); %>
+</div>
+<% if(item.needWxShare && item.wxShareInfo){ %>
+
+<% if(this.os.mlsApp && this.share){ %>
+<%= requireFn('wapShare.html')({
+	'share' : this.share
+	, 'shareTitle' : '选择分享到'
+	, '_JSstack' : this._JSstack
+	, '_JSmods' : this._JSmods
+}); %>
+<% } else if(this.os.weixinBrowser){ %>
+<script>
+	var wxShareInfo = <%=JSON.stringify(item.wxShareInfo)%> || {} ;
+</script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+    fml.use(['wx/sign','wx/share'], function(){
+    	this.sign()
+		this.share.bind({
+		    'desc':wxShareInfo.wxshare_title||''
+		    ,'imgUrl':wxShareInfo.wxshare_imgurl||''
+		    ,'title':wxShareInfo.wxshare_desc||''
+		    ,'link': wxShareInfo.wxshare_link||''
+		});
+    });
+_use:", this._JSstack , this._JSmods ); %>
+<% } %>
+<% } %>
+<%#foot.html%>

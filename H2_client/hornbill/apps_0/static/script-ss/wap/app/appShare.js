@@ -1,0 +1,35 @@
+/*common*/
+/**
+ * wap页面直接调用客户端的分享Scheme,iPhone6.6.0+/Android6.6.0+ 才支持
+ * 7.3.1版本更改了scheme，现在是兼容了新老版本，等7.3.1覆盖一段时间再干掉老版本
+ * 老版本建议继续用WAP share
+ * @author 徐德明 demingxu@meilishuo.com
+ * @param {param} 分享的参数对象，一般有title，text，pic和url，每个字段可以是对象
+ * @param {channels} 分享去哪个平台，默认包括weibo，qzone，qq，weixin和weixin_timeline
+ * @param {shareType} 分享的类型，包括webpage, image, music, video，默认为webpage；可以为对象，如：{
+    'weixin':'webpage',
+    'weixin_timeline':'image'
+ }
+ */
+var isNewest = require('wap/app/isNewest'),
+    appShareFun = require('wap/app/appShareFun');
+
+function appShare(param, channels, shareType) {
+    var shareObj = {};
+    if (isNewest('7.3.1')) {
+        shareObj = {
+            'buttons': [{
+                'type': 'share',
+                'share_items': {}
+            }]
+        };
+    } else {
+        shareObj = {
+            'share_items': {}
+        };
+    }
+    appShareFun(shareObj, param, channels, shareType);
+}
+
+
+return appShare;

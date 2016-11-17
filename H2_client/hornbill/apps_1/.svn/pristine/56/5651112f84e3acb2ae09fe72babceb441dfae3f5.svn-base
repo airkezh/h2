@@ -1,0 +1,62 @@
+<%#head.html%>
+<%
+	var user_info = this.ranking.user_info;
+%>
+<div class="ranking <%if(this.headTag == 'yesterday'){%>yesterday<%}%>">
+	<%if(this.headTag == ''){%>
+	<div class="ranking_top"></div>
+	<div class="ranking_intro">
+	<%}else{%>
+	<div>
+	<%}%>
+		<a class="link" href="http://m.meilishuo.com/activity/four_years/prepare/?cid=85       "></a>
+		<%if(this.headTag == 'yesterday'){%>
+		<h4 class="ranking_title"><%= this.m%>月<%= this.d%>日无忧购款姐排行榜</h4>
+		<%}%>
+		<div class="ranking_info">
+		<%if(this.userInfo.data.user_id){%>
+			<p><%= user_info.user_name%>，您的消费总金额是：￥<%= user_info.money%></p>
+			<p><%= user_info.rank == 1 ? '距离上一名差距' : '距离获得富士拍立得还差'%><%= user_info.next_money%>元</p>
+		<%}%>
+		</div>
+		<div class="ranking_list <%if(this.headTag == 'yesterday'){%>yesterday<%}%>">
+			<ul>
+				<%
+				var noArray = ['一','二','三','四','五','六','七','八','九','十'];
+				var This = this
+				if(this.ranking.list.length != 0){
+					this.ranking.list.map(function(list,i){%>
+					<li><b><%= i+1%></b><span>第<%if(This.headTag == ''){%><%= noArray[i]%><%}else{%><%= i + 1%><%}%>名：</span><span><%= list.user_name%></span><span>￥<%= list.money%></span></li>
+					<%});
+				}%>
+			</ul>
+		</div>
+		<%
+			var firstDay = Date.parse("2013.11.29")
+				, now = Date.parse(new Date())
+			if(this.headTag == '' && this.userInfo.data.user_id && now >= firstDay){
+		%>
+		<a class="ranking_yesterday" href="yesterday"></a>
+		<%}%>
+		<a class="ranking_ad wyg" href="http://wap.meilishuo.com/activity/project/audio/?banner_id=67b1583054d90732cf68cc889a0e2f3a"></a>
+		<a class="ranking_ad zer" href="/biz/fouryears/zero/?app_access_token=<%= this.app_access_token %>"></a>
+	</div>
+</div>
+	
+<% if(this.share){ %>
+	<%= requireFn('wapShare.html')({
+	    'share' : this.share 
+		, 'shareTitle' : '点击分享，快乐+1，福利+1：'
+	    , '_JSstack' : this._JSstack
+		, '_JSmods' : this._JSmods
+	}); %>
+<%}%>
+<script>
+Meilishuo.config.app_access_token = '<%= this.app_access_token %>';
+fml.vars.ranking = {
+	'user' : <%= JSON.stringify(this.ranking.user_info)%>
+};
+</script>
+
+<%#foot_simple.html%>
+

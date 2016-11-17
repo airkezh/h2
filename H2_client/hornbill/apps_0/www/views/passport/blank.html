@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>passport - 美丽说</title>
+</head>
+<body>
+
+<%if(this.bridge_type == 1){%>
+<script src="<%= this.jcstatic %>/passport/dist/blank.min.js"></script>
+<script>
+new MLSPassport.bridge().setDomain().send("<%= this.bridge_params %>")
+</script>
+<%}%>
+
+<%if(this.bridge_type == 2){%>
+<iframe style="display:none;" src="<%= this.bridge_src + '?' + this.bridge_params %>"></iframe>
+<%}%>
+
+</body>
+</html>

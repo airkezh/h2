@@ -1,0 +1,52 @@
+fml.define('wap/component/wapfall' , ['component/iStorage', 'wap/jquery'] , function(require , exports){
+	var storage = require('component/iStorage');
+	var _settings = {
+			'containerId' : '.goods_wall'
+			,'colFlagId' : '.col_flag'
+			,'pinMark' : 'poster_wall'
+		}	
+		,container
+		,colFlag
+		,_inited = false		
+		,_removeHeightCache = false
+		,_data = {
+			'colNo' : 0
+			,'colNum' : 0
+			,'containerCols' : []
+		} 
+
+	function _dataInit(){
+		if (_inited) return
+		_inited = true
+		_data.colNo = 0
+		_data.colNum = colFlag.css('z-index') | 0
+	}	
+	function onLayed(){
+		_inited = false
+	}
+	function layout (index , pin){
+		if (!pin || 1 != pin.nodeType) return
+		pin = $(pin)
+        if (!pin.data('layed')){
+            pin.data('layed' , 1)
+            pin.appendTo(container)
+		}
+//		console.log(index , pin , col)
+	}
+	exports.init = function(settings){
+		$.extend(_settings , settings)
+		colFlag = $(_settings.colFlagId).eq(0)
+		container = $(_settings.containerId).eq(0)
+		container.html('')
+		for(var i = 0; i < _data.colNum; i++){
+			container.append("<div col=" + i + "></div>")
+		}
+		_dataInit()
+		return this
+	}
+	exports.append = function(elems){
+		$(elems).each(layout)
+		onLayed()
+		return this
+	}
+});

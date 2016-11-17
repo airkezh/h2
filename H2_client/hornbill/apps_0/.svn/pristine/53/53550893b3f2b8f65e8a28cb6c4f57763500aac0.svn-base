@@ -1,0 +1,14 @@
+function desire_push() {
+    return this;
+}
+var controlFns = {
+    index : function(params){
+    	// this.debugSnake({'target':'maoanli.rdlab'});
+		var php = {
+			'waterFall' : '/style/Style_push_page_pc'
+		}
+		this.ajaxTo(php[params]);
+	}
+}
+
+exports.__create = controller.__create(desire_push, controlFns);

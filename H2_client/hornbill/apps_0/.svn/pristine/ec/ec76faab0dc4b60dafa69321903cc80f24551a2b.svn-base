@@ -1,0 +1,83 @@
+/*common*/
+
+var $ = require('wap/zepto')
+	, timedown = require('wap/app/doota/timedown')
+	, WaterFall = require('wap/component/circleWaterfall')
+	, optimiseFn = require('wap/component/waterfallOptimise')
+	, lazy = require('wap/component/lazzyLoad')
+	, Swipe = require('wap/component/swipe')
+
+/*
+ * 详情页跳转对应的tab
+ *
+ */
+$('.js_open_detail').on('click', function(){
+	window.location.href = $(this).data('href')
+})
+
+timedown.down('.countdown>span', parseInt($('.countdown').attr('remain')))
+$('.countdown_l').each(function(){
+	var ele = $(this)
+	var remain = parseInt(ele.attr('remain'))
+	if (!remain) return
+	timedown.down(this , remain)
+})
+
+/*  lazyload  */
+var lazy_pic = lazy.init({'xpath' : '.bs_load_img'})
+lazy_pic.scroll()
+lazy_pic.load()
+
+/*  更多商品  */
+var waterFallInstance = createWaterFall();
+function createWaterFall(type){
+	var waterFallInstance = WaterFall.init({
+		el: '#goods_wall',
+		url: '/aj/shop/shop',
+		tmpl: 'poster_tpl',
+		data: {
+			frame : 0 ,
+			shop_id : fml.vars.shop_id,
+			limit : 20
+		},
+		dataFilter : function(data){
+			fml.vars.poster_r = data.r || '';
+			return data.data.gInfo
+		},
+		colNum : 2,
+		colGap : 6,
+		hasSideGap: true,
+		optimiseFn : optimiseFn,
+		onFetchSuccess: function(data){
+			if(data.length == 0){
+				$('.pullUp').attr('status','stop');
+				this.lock();
+			}
+		}
+	}).start();
+	return waterFallInstance;
+}
+
+var cur_num = $('.slide_num .cur')
+var slide = new Swipe($('#slider')[0], {
+	speed: 200,
+	continuous: false,
+	callback: function() {
+		cur_num.html(slide.getPos() + 1)
+	},
+	transitionEnd : function(){
+		lazy_pic.load()
+	}
+})
+
+;(function(){
+	var btn = $('.icon_back')
+
+	var history = window.history;
+	if(history && history.length > 1){
+		btn.show()
+		btn.on('click', function(){
+			history.back()
+		})
+	}
+})()

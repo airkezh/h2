@@ -1,0 +1,104 @@
+<%#head.html%>
+<div class="feedback">
+	<div class="help fb_con">
+		<h2 class="tle">意见反馈与帮助</h2>
+
+		<%if(this.show_list){%>
+		<div class="list">
+			<p class="list-p">
+			为节约您的时间，您可以先看看以下的常见问题进行自助操作，无需等待客服处理。如果仍无法解决，您可以拨打美丽说客服电话或留下您的意见。花小美谢谢您的理解！
+			</p>
+			<h3 class="list-head red_f">
+				常见问题FAQ
+			</h3>
+			<h3 class="list-head-oth">
+				Frequently Asked Questions
+			</h3>
+			<ul id="question-list">
+				<% this.list && this.list.forEach(function(v,k){%>
+				<li>
+					<p class="ask"><%= v.txt%><a>﹀</a></p>
+					<p class="que none_f"><%= v.con%></p>
+				</li>
+				<%});%>
+			</ul>
+			<h3 class="list-head red_f">还没能解决您的问题？</h3>
+			<h3 class="list-head-oth">More Questions</h3>
+			<p class="mt14_f">
+				您可以拨打客服电话：<span class="red_f f14_f">4000-800-577</span>（工作时间：每天8:00-24:00）
+			</p>
+			<p>
+				或在下面填写您的反馈意见，我们会有专人为您服务。
+			</p>
+		</div>
+		<%}%>
+
+		<%this.feedbackList && this.feedbackList.map(function(data){ %>
+			<%if ( data.flag == 0 ) {%>
+			<div class="qa">
+				<a class="avatar48 right_f"><img src="<%=data.avatar%>" /></a>
+				<div class="ask talk">
+					<div class="corner_r"></div>
+					<p><%=data.feedback_detail%></p>
+					<p class="gray_f"><%=data.time%></p>
+				</div>
+			</div>
+			<%} else if ( data.flag == 1 ) { %>
+			<div class="qa">
+				<a class="avatar48 left_f"><img src="<%=this.PICTURE_URL%>images/window/jingling.jpg" /></a>
+				<div class="talk answer">
+					<div class="corner_l"></div>
+					<p><span class="red_f">花小意：</span><%=data.feedback_detail%></p>
+					<p class="gray_f"><%=data.time%></p>
+				</div>
+			</div>
+			<%}%>
+		<%});%>
+		<div class="askBox">
+			<p class="type">
+				请选择问题类型：
+				<select id="htype" name="htype">
+				<% var feedName = {
+					'1' : '建议反馈',
+					'2' : '账号问题',
+					'3' : '网站bug',
+					'4' : '投诉举报',
+					'5' : '手机美丽说',
+					'6' : '我是商家'
+				};%>
+				<% for(var i in feedName){ %>
+					<option value="<%= i %>"<%if(this.feedTag == i){%> selected="true"<%}%>><%= feedName[i] %></option>
+				<%}%>
+				</select>
+			</p>
+			<textarea id="fb_content">在这里，尽情的吐槽吧...</textarea>
+			<div class="error_msg none_f"></div>
+			<%if ( !this.user_id ) {%>
+				<div class="mt14_f">
+					<p>请留下您的邮箱，我们会第一时间给您答复。</p>
+					<p class="fb_mail"><input type="text" id="mymail" style="width: 260px;" class="gray_f" value="美丽说绝对不会泄露您的隐私" /><span class="error_msg none_f">您的邮箱填写有误，请重新填写。</span></p>
+				</div>
+			<%}%>
+			<span class="btn" id="fb_sub">确认提交</span>
+		</div>
+	</div>
+	<div class="service">
+		<h3 class="tle">联系客服</h3>
+		<p class="fit_tle">CUSTOMER SERVICE</p>
+		<div class="hotline">
+			<span class="hotline_ico"></span>
+			<p class="tel">4000-800-577</p>
+			<p class="f14_f">美丽说客服热线</p>
+			<p class="tel">工作时间：每天8:00-24:00</p>
+		</div><a href="/help/robot">
+		<div class="hotline ">
+			<span class="hotline_ico robot"></span>
+			<p class="f14_f">智能客服MIXI</p>
+			<p class="tel">7X24小时竭诚为您服务</p>
+		</div></a>
+	</div>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+    fml.use('page/feedback');
+ _use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

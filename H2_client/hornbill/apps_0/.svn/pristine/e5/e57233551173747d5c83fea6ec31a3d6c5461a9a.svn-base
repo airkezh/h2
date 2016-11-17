@@ -1,0 +1,17 @@
+<%#head.html%>
+
+<div class="content_page"></div>
+<div class="pullUp" status="loading"></div>
+
+<%# biz/beauty_sale/act_pktai.html %>
+
+<script>
+	fml.vars.r = '<%= this.params_r %>';
+	<%= this.pk_online ? 'fml.vars.pk_online = ' + JSON.stringify(this.pk_online) + ';' : '' %>
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/biz/new_pk');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot_simple.html%>

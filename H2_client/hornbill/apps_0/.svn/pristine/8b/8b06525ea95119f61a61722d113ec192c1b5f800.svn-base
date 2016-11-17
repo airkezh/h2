@@ -1,0 +1,145 @@
+<%#head.html%>
+	<script> 
+            (function(win,doc){
+                var docel = doc.documentElement;
+                var meta = doc.querySelectorAll('meta[name=viewport]');
+                meta[0].setAttribute('content','width=device-width,user-scalable=no,initial-scale=1');
+                function recalc(){
+                    var width = docel.clientWidth;
+                    docel.style.fontSize = 100 * width/640+'px';
+                }
+                if(doc){
+                    recalc();
+                    win.addEventListener('orientationchange',recalc,false);
+                }else if (doc.addEventListener){
+                    doc.addEventListener('DOMContentLoaded', recalc, false);
+                }
+            })(window,document)
+     </script>
+</head>
+<%  
+    var classify = this.classify;
+    var shopNew = this.shopNew.data;
+    var banner = this.banner;
+%>
+<div class="wrap">
+    <%if( banner.data[0] ){%>
+    <div class="bannerwrap">
+        <img class="banner" data-xr="<%= banner.r %>" data-url="<%= banner.data[0].link %>" src="<%= banner.data[0].pic_url%>">
+    </div> 
+    <%}%>
+    <div class="qualityWrap">
+        <div class="saler">
+            <span class="icon"  style="background-image:url('http://d02.res.meilishuo.net/pic/_o/09/9a/d60390afcdc486afee1d3f71fd60_38_36.ch.png');"></span>
+            <span>精选好店</span>
+        </div>
+        <div class="saler">
+            <span class="icon"  style="background-image:url('http://d02.res.meilishuo.net/pic/_o/2f/c9/9bc7534f30097c317e66747fbed3_39_37.ch.png');"></span>
+            <span>买手推荐</span>
+        </div>
+        <div class="saler">
+            <span class="icon"  style="background-image:url('http://d03.res.meilishuo.net/pic/_o/14/03/974fa8c2c46ccddb2db502d3bf6e_39_37.cf.png');"></span>
+            <span>专柜品质</span>
+        </div>
+    </div>
+    <div class="contentWrap">
+        <div class="segmentation"></div>
+        <div class="preferablyText">TOP好货细解读</div>
+        <img class="segLine" src = "http://d02.res.meilishuo.net/pic/_o/bf/a2/e48442cfa1ad332c062a524eb6b4_640_12.cg.png">
+        <div class="newInfo">每天10：00更新最优款式</div>
+        <div id='slider' class='swipe'>
+            <div class='swipe-wrap' data-xr = "<%= this.shopNew.r %>">
+                <% shopNew && shopNew.forEach(function(data,index){ %>
+                <div class="preferablyInfoWrap">
+                    <div class="goodsImgWrap" data-posid="<%= index %>" data-tid="<%= data.goodsinfo.twitter_id %>" >
+                        <img src="<%= data.goodsinfo.goods_img %>"/>
+                    </div>
+                    <div class="topGoodWrap">
+                        <div class="topGood">
+                            <div class="noImage"></div>
+                            <div class="num">NO.<%= index+1 %></div>
+                            <div class="numLine numLine<%= index %>"></div>
+                        </div>
+                        <div class="preferablyInfo">
+                            <div class="designerDesc">
+                                <span class="salerRead">买手解读</span> &nbsp;<span class="salerInfo"><%= data.buyer_tips %></span>
+                            </div>
+                            <div class="shopInfo">
+                                <span class="shopFrom">来自商家&nbsp;&nbsp;/</span>
+                                <span class="shopName" data-posid="<%= index %>" data-shopid= "<%= data.shopinfo.shop_id %>"><%= data.shopinfo.shop_nick %></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <% }) %>
+            </div>
+            <div class="spotWrap"></div>
+        </div>
+        <div class="segmentation"></div>
+        <div class="designerShop">
+            <div class="classification">
+                <div class="selectWrap">
+                <% classify && classify.forEach(function(data,index){%>
+                <span class="classficationInfo select<%= index %>" data-key="<%= data.key %>" data-key="<%=data.key%>"><%= data.class %></span>
+                <% }) %>
+                </div>
+            </div>
+            <div class="goods_wall designerGoods" data-xr = "<%= this.class_list.r %>"></div>
+        </div>
+    </div>
+</div>
+
+<a class="gotop" style="bottom:<%if(this.isIphone){%>60<%}else{%>20<%}%>px">
+    <img class="img100" src="<%= this.PICTURE_URL%>/images/wap/tuan/gotop.png" />
+</a>
+<script type="text/html" id="posterWall">
+    <?  var data = this.v;
+    ?>
+
+    <div class="shopWrap" data-shopindex="<?= this.index ?>">
+        <div class="shopInfo">
+            <div class="desigerWrap">
+                <img class="designPortrait" data-shopid= "<?= data.shop_id ?>" src="<?= data.user_img ?>"/>
+                <? 
+                    if( data.shop_style  && data.shop_pt_advantage ){ 
+                ?>
+                <div class="designerInfo">
+                    <? if(data.shop_style){ ?>
+                        <div class="designerNameWrap">
+                            <span>擅长风格/</span>
+                            <?= data.shop_style ?>
+                        </div>
+                    <? } ?>
+                    <? if(data.shop_pt_advantage){ ?>
+                        <div class="designerDesc">
+                            <span>货品优势/</span>
+                            <?= data.shop_pt_advantage?>
+                        </div>
+                    <? } ?>
+                </div>
+                <? } ?>
+            </div>
+            <div class="goodsWrap">
+                <? data.newest_goods && data.newest_goods.forEach(function(res ,index){ ?>
+                    <a class="goodsLink" data-tid="<?=  res.twitter_id ?>" data-posid=<?= index ?> >
+                        <img class="goods" src="<?= res.goods_img ?>"/>
+                        <div class="goodsInfo">
+                            <div class="goodsName"><?= res.goods_title.substring( 0 , 7) ?></div>
+                            <div class="goodsPrice">￥<?= res.goods_price.substring(0,res.goods_price.indexOf('.')) ?></div>
+                        </div>
+                    </a>
+                <? }); ?>
+            </div>
+            <div data-shopid="<?= data.shop_id ?>" class="visitShop">
+                <span>进店逛逛&nbsp;</span>
+                <img class="visitBig" src="http://d03.res.meilishuo.net/pic/_o/2b/d2/3eef528fcf7449b27137b12e2031_12_22.ch.png">
+            </div>
+            <div class="segmentation"></div>
+        </div>
+   </div>
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/excellentShop');
+_use:", this._JSstack , this._JSmods); %>
+
+<%#foot_simple.html%>

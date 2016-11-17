@@ -1,0 +1,96 @@
+Bridge.prototype._iframes = {}
+Bridge.prototype._callbacks = {}
+Bridge.prototype._loadedCssFiles = {}
+
+Bridge.prototype.init = function(opts){
+	var mSelf = this
+	this.opts = opts ||{}
+	this.protocol = document.location.protocol + '//' //当前协议
+	this.domain = this.getUrl(document.location.href) //当前域名
+
+	var _hosts = {
+		"https://":{
+			"jcstatic":this.fixUrl(this.opts.jcstatic || 'account.meilishuo.com') + '/'//静态域名
+			,"domain":this.fixUrl(this.opts.domain || 'account.meilishuo.com')//passport接口域名
+			,"captcha":this.fixUrl(this.opts.captcha || 'account.meilishuo.com') + "/Register/Captcha?token=asde39ad9"
+		}
+		,"http://":{
+			"jcstatic":this.fixUrl(this.opts.jcstatic || 's.meilishuo.net') + '/'
+			,"domain":this.fixUrl(this.opts.domain || 'www.meilishuo.com')
+			,"captcha":this.fixUrl(this.opts.captcha || 'captcha.meilishuo.com') + "/Register/Captcha?token=asde39ad9"
+		}
+	}
+	this.hosts = _hosts[this.protocol] || _hosts['http://']
+
+	this.blank = this.opts.blank
+
+/*
+	if(this.protocol == 'https://')
+		this.bridge_type = 0
+
+	else */if(this.fixUrl(this.domain.hostDomain) == this.hosts.domain)
+		this.bridge_type = 0
+
+	else if(this.domain.rootDomain == this.bridge_domain)
+		this.bridge_type = 1
+
+	else
+		this.bridge_type = 2
+
+
+	window.MLSPassport.callbacks = mSelf._callbacks
+}
+
+Bridge.prototype.loadCssFile = function(url,cbk){
+	var url = this.hosts.jcstatic + url
+	if(!this._loadedCssFiles[url]){
+		this._loadedCssFiles[url]=true;
+		var link=document.createElement("link");
+		link.rel="stylesheet";
+		link.type="text/css";
+		link.href=url;
+		cbk && (link.onload = cbk)
+		document.getElementsByTagName("head")[0].appendChild(link)
+
+	}else{
+		cbk && cbk()	
+	}
+	return this;
+}
+
+Bridge.prototype.setCookies = function(cookies){
+	var mSelf = this
+	for(var i = 0; i < cookies.length; i++){
+		var cookie = cookies[i]	
+
+		if('.'+this.bridge_domain == cookie.domain){
+			mSelf.setCookie(cookie)
+
+		}else{
+			var action = 'cookie|'+cookie.domain
+			var src = this.blank + '?' + this.http_build_query({
+					action:action
+					, cookie : this.http_build_query(cookie)
+				})
+
+			this.addIframe(action,src)
+		}
+	}
+}
+
+Bridge.prototype.addWatch = function(fn){
+	!this.watchs && (this.watchs = [])
+	this.watchs.push(fn)
+
+	return this;
+}
+Bridge.prototype.watch = function(res){
+	var len = this.watchs.length
+//	console.log('all', this.watchs, len);
+	for(var i = 0; i < len; i++){
+		//console.log('watching',i, len,this.watchs[i]);
+		this.watchs[i](res)
+	}	
+	return this;
+}
+

@@ -1,0 +1,451 @@
+<%#head.html%>
+
+<%
+	var wlInfoRenderFn = requireFn('welfare/welfare_info.html');
+%>
+<style>
+img {
+	border: none;
+}
+div {
+	margin: 0 auto;
+}
+ul, li {
+	list-style: none;
+	list-style-type: none;
+	list-style-image: none;
+	margin-top: 0;
+	margin-bottom: 0;
+	border: none;
+	padding: 0;
+}
+.tit_banner {
+	background: url(http://i.meilishuo.net/css/images/huodong/fancl/fancl_03.jpg) no-repeat center center;
+	height: 538px;
+}
+.fls {
+	width: 950px;
+	margin-bottom: 10px;
+	margin-top: 10px;
+}
+.lb {
+	background: url(http://i.meilishuo.net/css/images/huodong/fancl/fancl_06.jpg) no-repeat center center;
+	height: 802px;
+}
+.lb_1 {
+	width: 950px;
+	height: 304px;
+}
+.lb_left {
+	width: 500px;
+	height: 300px;
+	float: left;
+	border: 1px solid #dadada;
+	margin-right: 22px;
+	position:relative;
+	overflow:hidden;
+}
+.lb_right_video {
+	width: 425px;
+	height: 300px;
+	float: left;
+}
+.lb_2 {
+	width: 950px;
+	height: 496px;
+	position: relative;
+}
+.lb_link {
+	width: 70px;
+	height: 20px;
+	position: absolute;
+	display: block;
+	left: 337px;
+	top: 453px;
+}
+.lb_link1 {
+	width: 70px;
+	height: 20px;
+	position: absolute;
+	display: block;
+	left: 744px;
+	top: 441px;
+}
+.dr {
+	background: url() no-repeat center center;
+	height: 440px;
+}
+.dr_div {
+	width: 950px;
+	height: 440px;
+}
+.dr1 {
+	width: 950px;
+	height: 441px;
+}
+.dr2 {
+	width: 950px;
+	height: 431px;
+}
+.bott {
+	background: url(http://i.meilishuo.net/css/images/huodong/fancl/fancl_11.jpg) no-repeat center center;
+	height: 537px;
+}
+.bott_div {
+	width: 950px;
+	height: 537px;
+	position: relative;
+}
+.bott_div_left {
+	width: 228px;
+	height: 293px;
+	position: absolute;
+	left: 158px;
+	top: 121px;
+}
+.bott_div_right {
+	width: 228px;
+	height: 293px;
+	position: absolute;
+	left: 560px;
+	top: 121px;
+}
+
+
+
+
+
+
+#content {
+	width: 400px;
+	margin: 40px auto 0 auto;
+	padding: 0 60px 30px 60px;
+	border: solid 1px #cbcbcb;
+	-moz-box-shadow: 0px 0px 10px #cbcbcb;
+	-webkit-box-shadow: 0px 0px 10px #cbcbcb;
+}
+
+
+
+#fancybox-wrap {
+	position: absolute;
+	top: 0;
+	left: 0;
+	padding: 20px;
+	z-index: 1101;
+	outline: none;
+	display: none;
+}
+
+#fancybox-outer {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	border:none;
+}
+
+#fancybox-content {
+	border:none;
+	width: 0;
+	height: 0;
+	padding: 0;
+	outline: none;
+	position: relative;
+	overflow: hidden;
+	z-index: 1102;
+	border: 0px solid #fff;
+}
+
+
+#fancybox-close {
+	position: absolute;
+	top: 40px;
+	right: 55px;
+	width: 26px;
+	height: 26px;
+	background: transparent url('http://i.meilishuo.net/css/images/huodong/fancl/fancy_close.png') no-repeat;
+	cursor: pointer;
+	z-index: 1103;
+	display: none;
+}
+
+
+
+.fancybox-bg {
+	display:none;
+	position: absolute;
+	padding: 0;
+	margin: 0;
+	border: 0;
+	width: 20px;
+	height: 20px;
+	z-index: 1001;
+}
+
+
+
+
+
+
+/* IE6 */
+
+.fancybox-ie6 #fancybox-close { background: transparent; filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://i.meilishuo.net/css/images/huodong/fancl/fancy_close.png', sizingMethod='scale'); }
+
+.fancybox-ie6 #fancybox-left-ico { background: transparent; filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://i.meilishuo.net/css/images/huodong/fancl/fancy_nav_left.png', sizingMethod='scale'); }
+.fancybox-ie6 #fancybox-right-ico { background: transparent; filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://i.meilishuo.net/css/images/huodong/fancl/fancy_nav_right.png', sizingMethod='scale'); }
+
+.fancybox-ie6 #fancybox-title-over { background: transparent; filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://i.meilishuo.net/css/images/huodong/fancl/fancy_title_over.png', sizingMethod='scale'); zoom: 1; }
+.fancybox-ie6 #fancybox-title-float-left { background: transparent; filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://i.meilishuo.net/css/images/huodong/fancl/fancy_title_left.png', sizingMethod='scale'); }
+.fancybox-ie6 #fancybox-title-float-main { background: transparent; filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://i.meilishuo.net/css/images/huodong/fancl/fancy_title_main.png', sizingMethod='scale'); }
+.fancybox-ie6 #fancybox-title-float-right { background: transparent; filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://i.meilishuo.net/css/images/huodong/fancl/fancy_title_right.png', sizingMethod='scale'); }
+
+.fancybox-ie6 #fancybox-bg-w, .fancybox-ie6 #fancybox-bg-e, .fancybox-ie6 #fancybox-left, .fancybox-ie6 #fancybox-right, #fancybox-hide-sel-frame {
+	height: expression(this.parentNode.clientHeight + "px");
+}
+
+#fancybox-loading.fancybox-ie6 {
+	position: absolute; margin-top: 0;
+	top: expression( (-20 + (document.documentElement.clientHeight ? document.documentElement.clientHeight/2 : document.body.clientHeight/2 ) + ( ignoreMe = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop )) + 'px');
+}
+
+#fancybox-loading.fancybox-ie6 div	{ background: transparent; filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://i.meilishuo.net/css/images/huodong/fancl/fancy_loading.png', sizingMethod='scale'); }
+
+/* IE6, IE7, IE8 */
+
+.fancybox-ie .fancybox-bg { background: transparent !important; }
+
+.fancybox-ie #fancybox-bg-n { filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://i.meilishuo.net/css/images/huodong/fancl/fancy_shadow_n.png', sizingMethod='scale'); }
+.fancybox-ie #fancybox-bg-ne { filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://i.meilishuo.net/css/images/huodong/fancl/fancy_shadow_ne.png', sizingMethod='scale'); }
+.fancybox-ie #fancybox-bg-e { filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://i.meilishuo.net/css/images/huodong/fancl/fancy_shadow_e.png', sizingMethod='scale'); }
+.fancybox-ie #fancybox-bg-se { filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://i.meilishuo.net/css/images/huodong/fancl/fancy_shadow_se.png', sizingMethod='scale'); }
+.fancybox-ie #fancybox-bg-s { filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://i.meilishuo.net/css/images/huodong/fancl/fancy_shadow_s.png', sizingMethod='scale'); }
+.fancybox-ie #fancybox-bg-sw { filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://i.meilishuo.net/css/images/huodong/fancl/fancy_shadow_sw.png', sizingMethod='scale'); }
+.fancybox-ie #fancybox-bg-w { filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://i.meilishuo.net/css/images/huodong/fancl/fancy_shadow_w.png', sizingMethod='scale'); }
+.fancybox-ie #fancybox-bg-nw { filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://i.meilishuo.net/css/images/huodong/fancl/fancy_shadow_nw.png', sizingMethod='scale'); }
+
+
+
+.lb_left .hd{ height:20px; overflow:hidden; position:absolute; right:5px; bottom:5px; z-index:1; }
+.lb_left .hd ul{ overflow:hidden; zoom:1; float:left;  }
+.lb_left .hd ul li{ float:left; margin-right:2px;  width:20px; height:20px; line-height:19px; font-size:14px; text-align:center; background:#82bad4; cursor:pointer; color:#fff;}
+.lb_left .hd ul li.on{ background:#cce3ed; color:#fff; }
+.lb_left .bd{ position:relative; height:100%; z-index:0;   }
+.lb_left .bd li{ zoom:1; vertical-align:middle; }
+.lb_left .bd img{ width:500px; height:300px; display:block;  }
+.left{float: left;}
+.m14{margin-left: 14px;}
+</style>
+
+
+</head>
+<body>
+<div class="tit_banner"></div>
+<div class="fls">
+	<div class="left">
+	<%=wlInfoRenderFn(this.wl_header)%>
+	</div>
+	<div class="left m14">
+	<%# userinfo.html%>
+	</div>
+	<div class="clear_f"></div>
+</div>
+<div class="lb">
+		<div class="lb_1">
+				<div class="lb_left">
+						<div class="hd">
+							<ul>
+								<li>1</li>
+								<li>2</li>
+							</ul>
+						</div>
+					<div class="bd">
+						<ul>
+							<li><a href="http://www.meilishuo.com/u/ENftpn?frm=fancl01" target="_blank"><img src="http://i.meilishuo.net/css/images/huodong/fancl/lb1.jpg" /></a></li>
+							<li><a href="http://www.meilishuo.com/u/ENftpn?frm=fancl02" target="_blank"><img src="http://i.meilishuo.net/css/images/huodong/fancl/lb2.jpg" /></a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="lb_right_video">
+						<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,19,0" width="425" height="300">
+								<param name="movie" value="http://player.youku.com/player.php/sid/XNjMzODI2ODQw/v.swf?VideoIDS=XNjMzODI2ODQw&amp;isAutoPlay=true">
+								<param name="quality" value="high">
+								<param name="wmode" value="transparent">
+								<embed src="http://player.youku.com/player.php/sid/XNjMzODI2ODQw/v.swf?VideoIDS=XNjMzODI2ODQw&amp;isAutoPlay=true" quality="high" wmode="transparent" pluginspage="http://www.macromedia.com/go/getflashplayer" allowscriptaccess="always" allowfullscreen="false" type="application/x-shockwave-flash" width="425" height="300">
+						</object>
+				</div>
+		</div>
+		<div class="lb_2"> <a href="http://www.meilishuo.com/u/ENdqlF?frm=fancl03" target="_blank" class="lb_link"></a> <a href="http://www.meilishuo.com/u/ENdqlF?frm=fancl04" target="_blank" class="lb_link1"></a> </div>
+</div>
+<div class="dr_div"><a id="example3" href="http://i.meilishuo.net/css/images/huodong/fancl/d1.png" ><img src="http://i.meilishuo.net/css/images/huodong/fancl/fancl_07.jpg" class="pimg" width="950" height="440"  alt=""/></a> </div>
+<div class="dr1"><a id="example3" href="http://i.meilishuo.net/css/images/huodong/fancl/d2.png" ><img src="http://i.meilishuo.net/css/images/huodong/fancl/fancl_08.jpg" class="pimg" width="950" height="440"  alt=""/></a></div>
+<div class="dr2"><a id="example3" href="http://i.meilishuo.net/css/images/huodong/fancl/d3.png" ><img src="http://i.meilishuo.net/css/images/huodong/fancl/fancl_09.jpg" class="pimg" width="950" height="440"  alt=""/></a></div>
+<div class="bott">
+		<div class="bott_div">
+				<div class="bott_div_left">
+					<% 
+					var showimg = 0;
+					var magItemRenderFn = requireFn('group/magitem.html');
+					this.len_group && this.len_group.map(function(magazine){ %>
+						<%= magItemRenderFn(magazine , showimg++)%>	
+					<% });%>
+				</div>
+				<div class="bott_div_right">
+					<% 
+					var showimg = 0;
+					var magItemRenderFn = requireFn('group/magitem.html');
+					this.len_group1 && this.len_group1.map(function(magazine){ %>
+						<%= magItemRenderFn(magazine , showimg++)%>	
+					<% });%>
+				</div>
+		</div>
+</div>
+
+
+<script type="text/javascript">  var _gaq = _gaq || [];  _gaq.push(['_setAccount', 'UA-44967046-1']);  _gaq.push(['_trackPageview']);  (function() {    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);  })();</script>
+
+<%*弹窗部分--转发到微博@好友--通过绑定%>
+<script type="text/html" id="welfare_apply">
+<div class="welfare_apply" id="welfare_apply_after">
+	<p class="wf_explain">我们会优先选择有真人头像的姑娘获奖~</p>
+	<form class="wf_form" onsubmit="return false;" action="">
+		<input type="hidden" name="activity_id" value="<%=this.wl_header.activity_id%>">
+		<p>
+			<span class="wa_info">真实姓名：</span>
+			<input id="real_name" class="wfipt1" type="text" value="<?=info.realname?>" name="real_name">
+		</p>
+		<p>
+			<span class="wa_info">联系电话：</span>
+			<input id="telephone" class="wfipt1" type="text" value="<?=info.mobile?>" name="telephone">
+		</p>
+		<p>
+			<span class="wa_info">收货地址：</span>
+			<input id="address" class="wfipt2" type="text" value="<?=info.shipping_address?>" name="address">
+		</p>
+		<p>
+			<span class="wa_info">申请理由：</span>
+			<textarea id="reason" class="wfipt3" name="reason"></textarea>
+		</p>
+		<p>
+			<span class="wa_info">备注：</span>
+			<input id="note" class="wfipt2" type="text" placeholder="非必填选项，按此活动需求，请填写你衣服或鞋子的尺寸" name="note">
+		</p>
+		<p class="l22_f">
+			<span class="wa_info">同步：</span>
+			<div id="weibo_area">
+				<p>
+					<?if(fans && fans.length>0) {?><span id="weibo_area_change">换一组</span>同步到我的微博，并@美丽说和我的好友
+					<?} else {?>
+					同步到我的微博，并@美丽说。
+					<?}?>
+				</p>
+				<div class="mt5_f">
+					<?fans && $.each(fans, function(k, v){?>
+					<img class="avatar48_f" alt="<?=v.screen_name?>" src="<?=v.image_url?>">
+					<?});?>
+					<div class="clear_f"></div>
+				</div>
+				<?if(fans && fans.length>0) {?>
+				<p class="mt5_f">你@了<span id="weibo_area_info">0</span>位微博好友</p>
+				<?}?>
+			</div>
+		</p>
+		<p>
+			<label class="cursor_f"><input fuid="<%=this.wl_info.userInfo.user_id%>" id="fol_actor" type="checkbox" checked>关注<%=this.user_list.nickname%></label>
+			<br/>
+			<label class="cursor_f"><input id="share_home" type="checkbox" checked>分享到我的首页</label>
+		</p>
+		<p>
+			<input id="applying_submit" type="submit" value="提交申请">
+			<a class="wf_cancel" href="javascript:void(0)">取消</a>
+		</p>
+	</form>
+</div>
+</script>
+<%*弹窗部分--转发到微博@好友--未绑定%>
+<script type="text/html" id="welfare_apply_before">
+<div class="welfare_apply_before">
+	<p class="c_f">亲，绑定以下任意微博就能参加活动啦！</p>
+	<div class="mt14_f wf_bind">
+		<a class="wfr_ico1" href="/settings/syncBind/weibo"></a>
+		<a class="wfr_ico2" href="/settings/syncBind/txweibo"></a>
+		<div class="clear_f"></div>
+	</div>
+</div>
+</script>
+<%*弹窗部分--转发到微博@好友--绑定失败%>
+<script type="text/html" id="welfare_apply_error">
+<div class="c_f">
+	<p class="erro_info">授权失败，请再试一次吧！</p>
+	<p>
+		<span class="btn sure" id="welfare_sure">确定</span>
+		<span class="" id="welfare_return">返回</span>
+	</p>
+</div>
+</script>
+<%*申请成功提示%>
+<script type="text/html" id="welfare_apply_success">
+<div class="apply_success">
+	<p>你已经成功提交申请了，我们会尽快处理，</p>
+	<%*207号福利社定制功能 4.16下线%>
+	<%if(this.wl_header.activity_id == 207){%>
+	<p>来<a class="red_f fb_f" href="http://c.admaster.com.cn/c/a13079,b200160760,c1981,i0,m101,h" target="_blank">ORBIS官网</a>浏览，寻找更多惊喜。</p>	
+	<%}else{%>
+	<p>获得试用资格的MM将收到系统消息通知，</p>
+	<p>请注意查收哦～</p>
+	<%}%>
+	<%if(this.wf_girl.followed == 0){%>
+	<p>想获得更多福利情报，请关注福利花小美^_^</p>
+	<div class="mt8_f clearfix_f" style="margin-left:20px;">
+		<a class="left_f" target="_blank" href="/person/u/<%=this.wf_girl.user_id%>">
+			<img width="86" height="86" src="<%=this.wf_girl.avatar_a%>">
+		</a>
+		<div class="wf_girl_r">
+			<a class="f14_f fb_f block_f" target="_blank" href="/person/u/<%=this.wf_girl.user_id%>"><%=this.wf_girl.nickname%>
+				<span class="identity_big_style">
+				<%= jsRender('identity.html')(this.wf_girl) ;%>
+				</span>
+			</a>
+			<span class="red_follow add_follow_ok" fuid="<%= this.wf_girl.user_id%>" following=<%= this.wf_girl.following%> followed="<%= this.wf_girl.followed%>">+ 加关注</span>
+		</div>
+	</div>
+	<%}else{%>
+	<p class="mt14_f" style="margin-left:100px;"><input class="apply_success_ok cursor_f btn sure" type="button" value="确定"/></p>
+	<%}%>
+</div>
+</script>
+<script>
+	Meilishuo.config.begin = <%=this.wl_header.begin%>;
+	Meilishuo.config.activity_id = <%=this.wl_header.activity_id%>;
+	Meilishuo.config.editor = <%=this.wl_header.editor%>;
+	Meilishuo.config.pid = <%=this.wl_header.twitter_images_id%>;
+	Meilishuo.config.wl_title = '<%=this.wl_header.title%>';
+	Meilishuo.config.topic_title = '<%=this.wl_header.topic_title%>';
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+    fml.use('page/huodong/fancl');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>
+<script src="http://i.meilishuo.net/css/images/huodong/fancl/jquery-1.4.3.min.js"></script>
+<script type="text/javascript" src="http://i.meilishuo.net/css/images/huodong/fancl/jquery.fancybox-1.3.4.pack.js"></script>
+<script type="text/javascript" src="http://i.meilishuo.net/css/images/huodong/fancl/jquery.SuperSlide.2.1.1.1.js"></script>
+<script type="text/javascript">
+		$(".lb_left").slide({mainCell:".bd ul",effect:"left",trigger:"click",delayTime:1200,autoPlay:true,});
+</script>
+<script>
+		!window.jQuery && document.write('<script src="http://i.meilishuo.net/css/images/huodong/fancl/jquery-1.4.3.min.js"><\/script>');
+</script>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+	
+		$("a#example3").fancybox({
+			'opacity'		: false,
+			'overlayShow'	: false,
+			'autoScale':false,
+			'transitionIn'	: 'fade',
+			'transitionOut'	: 'fade'	
+		});
+		
+	});
+	
+</script>

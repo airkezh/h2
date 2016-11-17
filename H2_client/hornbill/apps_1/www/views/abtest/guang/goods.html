@@ -1,0 +1,160 @@
+<%# head.html%>
+<%
+var query = this._Request_query;
+var getLink = _extFn.getLink;
+%>
+<div class="spinner topSpinner"></div>
+<div class="content_fluid v_hidden">
+	<% if (this.attrName != 'popular'&&this.attrName != 'new') {%>
+	<%# commerce/ads_top_banner.html%>
+	<% } %>
+	<div class="cata_title">
+		<h2><%= this.currentWord %></h2>
+		<%if(this.isShow){%>
+		<div class="hotnew">
+			<a <%if(query.section == 'hot' || !query.section){%> class="red_f" <%}%> href="<%=getLink({'section' : 'hot' , 'page' : '0'} , query)%>">最热</a>
+			<span>|</span>
+			<a <%if(query.section == 'new'){%> class="red_f" <%}%> href="<%=getLink({'section' : 'new' , 'page' : '0'} , query)%>">最新</a>
+		</div>
+		<%}%>
+	</div>
+	<div class="goods_wall">
+		<div class="corner_notic">
+			<div class="attr_box rec_nav">
+				<h3 class="f14_f">社区热荐</h3>
+				<div class="category">
+					<a class="<%if(this.attrName == 'hot'){%> active <%};%>" href="/guang/hot">24小时最热</a>
+					<a class="<%if(this.attrName == 'popular'){%> active <%};%>" href="/guang/popular">7天最热</a>
+					<a class="<%if(this.attrName == 'new'){%> active <%};%>" href="/guang/new">最新</a>
+					<div class="clear_f"></div>
+				</div>
+				<p><a class="rec_bnr" target="_blank" href="/group/15670190?frm=navguang"></a></p>
+				<ul class="items_pop">
+					<li class="odd_num"><a target="_blank" href="/guang/attr/34362?frm=navguang"><span class="num1">1</span>秋意凉 出街混搭<span class="red_f">外套</span>最有型</a></li>
+					<li><a target="_blank" href="/guang/attr/34485?frm=navguang"><span class="num1">2</span>轻松出街 百搭<span class="red_f">平底鞋</span>最出众</a></li>
+					<li class="odd_num"><a target="_blank" href="/group/15816321?frm=navguang"><span class="num1">3</span>每日更新 跟<span class="red_f">北京青年</span>学穿搭</a></li>
+					<li><a target="_blank" href="/group/15671983?frm=navguang"><span class="num2">4</span>爆红热剧<span class="red_f">爱情公寓</span>同款搜罗</a></li>
+					<li class="odd_num"><a target="_blank" href="/guang/attr/34328?frm=navguang"><span class="num2">5</span>入秋换<span class="red_f">针织衫</span>通勤约会都能穿</a></li>
+					<li><a target="_blank" href="/group/11103929?frm=navguang"><span class="num2">6</span>换季甩暗沉 口碑<span class="red_f">美妆品</span>推荐</a></li>
+					<li class="odd_num"><a target="_blank" href="/guang/attr/34516?frm=navguang"><span class="num2">7</span>时髦单品<span class="red_f">短靴</span>混搭明星范儿</a></li>
+					<li><a target="_blank" href="/guang/attr/34423?frm=navguang"><span class="num2">8</span>修身<span class="red_f">打底裤</span>穿出俏身材</a></li>
+					<li class="odd_num"><a target="_blank" href="/guang/attr/34332?frm=navguang"><span class="num2">9</span>万能<span class="red_f">衬衫</span>满分过渡夏末初秋</a></li>
+					<li><a target="_blank" href="/guang/attr/38180?frm=navguang"><span class="num2">10</span>时髦<span class="red_f">包包</span>推荐 俏妞出行必备</a></li>
+				</ul>
+			</div>
+			<% if((this.attr_keywords && this.attr_keywords.length > 0) || (this.attr_match && this.attr_match.length > 0)){%>
+				<div class="rec_nav">
+					<% if(this.attr_keywords && this.attr_keywords.length > 0){%>
+						<h2>喜欢<%= this.attr_title_keywords.word_name%>的MM还喜欢</h2>
+							<div class="category">
+							<% this.attr_keywords && this.attr_keywords.map(function(data){%>
+								<%  
+									if(data.isBrand){
+									var url = '/guang/brand/' + data.word_name + getLink({'frm' : 'section4_keyWords'});    
+									}else{
+									var url = '/guang/attr/' + data.word_id + getLink({'frm' : 'section4_keyWords'}); 
+									}
+								%>
+								<a href="<%= url%>" target="_blank"><%= data.word_name%></a>
+							<%});%>
+							<div class="clear_f"></div>
+					</div>
+				<%}%>
+				<% if(this.attr_match && this.attr_match.length > 0){%>
+					<h2><%= this.attr_title_keywords.word_name%>的推荐搭配</h2>
+						<div class="category last">
+							<% this.attr_match && this.attr_match.map(function(data){%>
+								<% 
+									if(data.isBrand){
+										var url = '/guang/brand/' + data.word_name + getLink({'frm' : 'section4_dapei'});   
+									}else{
+										var url = '/guang/attr/' + data.word_id + getLink({'frm' : 'section4_dapei'});    
+									}
+								%>
+								<a target="_blank" href="<%= url%>"><%= data.word_name%></a>
+							<%});%>
+							<div class="clear_f"></div> 
+						</div>
+				<%}%>
+			</div>
+		<%};%>
+		<% if(this.attr_group && this.attr_group.length > 0){%>
+			<%if(!this.isShow){%>
+				<h2 class="mt14_f f14_f">推荐杂志</h2>
+			<%}else{%>
+				<h2 class="mt14_f f14_f">喜欢<span class="red_f"><%= this.attr_title_keywords.word_name%></span>的MM喜欢的杂志</h2>
+			<%}%>
+				<% var magItemRenderFn = requireFn('group/magitem.html'); %>
+				<% this.attr_group.map(function(data, index){
+					data.frm = '?frm=guang'+(index+1);
+				%>
+						<%= magItemRenderFn(data , 0);%>
+				<%}); %>
+		<%};%>
+		<%if(this.attr_brand && this.attr_brand.length > 0){%>
+			<div class="attr_box">
+				<h2 class="f14_f"><span class="red_f"><%= this.attr_title_keywords.word_name%></span>的推荐品牌</h2>
+				<div class="brand">
+					<% this.attr_brand.map(function(data){%>
+						<a class="<%if(data.isred == 1){%> red_f <%}%>" href="/guang/brand/<%= data.word_name%>" target="_blank"><%= data.word_name%></a>
+					<%});%>
+				</div>
+			</div>
+		<%}%>
+		<% if(this.attr_shop && this.attr_shop.length > 0){%>
+			<div class="attr_box">
+				<h2 class="f14_f">看<span class="red_f"><%= this.attr_title_keywords.word_name%></span>的爱美丽在逛的店</h2>
+				<ul class="list">
+					<% this.attr_shop && this.attr_shop.map(function(data){%>
+					<li>
+						<a href="/shop/show/<%= data.shop_id%>" target="_blank"><img src="<%= data.pic_url%>" /></a>
+						<span><a href="/shop/show/<%= data.shop_id%>" target="_blank"><%= data.shop_title%></a></span>  
+					</li>
+					<%});%>
+				</ul>
+			</div>
+		<%};%>
+		<% if(this.attr_baike && this.attr_baike.msg){%>
+			<div class="attr_box">
+				<h2 class="f14_f"><span class="red_f"><%= this.attr_title_keywords.word_name%></span>的小百科</h2>
+				<p class="baike">
+					<%= this.attr_baike.msg%>
+				</p>
+			</div>
+		<%};%>
+	</div>
+	</div>
+	<div class="goods_banner"><a href="/welcome" target="_blank"></a></div>
+	<div class="spinner botSpinner none_f"></div>
+	<div class="clear_f"></div>
+	<div class="paging_panel c_f none_f">
+	<%#paging.html%>
+	</div>
+	<%# commerce/ads_bot_banner.html%>
+</div>
+<%# poster.html%>
+<script>
+fml.vars._guang_word_name = "<%= this.attrName%>";
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+		fml.use('page/guang');
+		fml.use('abtest/page/poster');
+_use:", this._JSstack , this._JSmods ); %>
+<%if(this.attrName == 'new'){%><div class="h_update none_f"><a><span id="msgSize">0</span>个新分享</a></div><%}%>
+<% if (this.qixiLogin) {
+	var ico_c = this.qixiLogin == 'qixi_qq' ? 'big_qq' : 'big_sina';
+	var href_c = this.qixiLogin == 'qixi_qq' ? '/connect/auth/qzone?frm=tk_qq1' : '/connect/auth/weibo?frm=tk_sina1';
+%>
+<script type="text/html" id="loginQixi">
+<div class="pop_login qixi_login" style="text-align:center;padding:12px;">
+	<img src="<%= this.PICTURE_URL%>images/medal/icons/lewu.png"/>
+	<p class="mt10_f">你获得了"七夕"勋章哟！亲！点击下方按钮登录就能领取啦，</p>
+	<p>珂兰钻石超精美礼品在等着你</p>
+	<div class="l_ico mt14_f">
+		<a class="<%=ico_c%>" href="<%=href_c%>"></a>
+	</div>
+	<div class="mt14_f c_f">已有帐号，直接<a class="red_f" href="/user/login?frm=tk_denglu1">登录</a></div>
+</div>
+</script>
+<% } %>
+<%# foot.html%>

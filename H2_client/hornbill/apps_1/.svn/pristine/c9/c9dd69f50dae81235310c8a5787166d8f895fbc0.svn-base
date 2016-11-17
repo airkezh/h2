@@ -1,0 +1,55 @@
+@import "wx.less";
+body{.bgc(#f0edee);}
+.pullUp{
+	.pullUpDown > .common;.pullUpDown > .loading;
+	&:before{
+		.nowrap;
+		.ml(-35px);
+	}
+	&[status="tap"]{
+		background:0 none;	
+	}
+	&[status="stop"]{
+		background:0 none;
+		.h(2px);
+		&:before{.i_block;
+			content:"没有更多内容了...";
+		}
+	}
+}
+
+.frame{
+	.pr;
+}
+.goTop();
+#goTop{bottom: 10px;}
+.new_goods{
+	.mt(3%);.ml(3%);.mr(3%);
+	.clearfix;
+	.goods_li{
+		.pa;
+		.w(50%);
+		.hidden;
+		.li_border{
+			.ml(10*@w);
+			.mr(10*@w);
+		}
+	}
+	.li_border {
+		.pr;.border-1(#d9d9d9);.mb(20*@w); .bgwhite;
+		.list_img {.block;background-size:100%;.hidden;
+		}
+		.list_title {.f(24*@px);.fc(#000); .l(32*@px);.hidden;}
+	}
+	.img_bt { border-bottom: 1px solid #ddd;}
+	.list_info { .pt(20*@px); .pl(20*@px); .pb(20*@px); .pr(20*@px);}
+	.list_cost {.pt(20*@px); .pb(10*@px);}
+	.money_now {.f(30*@px); .pr(10*@px);}
+	.money_normal {.f(22*@px); .t-through;}
+	.goods_type{.pa; top: -4*@px;; left: 10*@px;.l(34*@px); .white; .c; .border-r(0 0 6*@px 6*@px);
+		img{.i_block;}
+	}
+	// .two_type { left: 90*@px;}
+	// .new {.bgc(#ff96b9);}
+	// .hot {.bgc(	#ff6f80);}
+}

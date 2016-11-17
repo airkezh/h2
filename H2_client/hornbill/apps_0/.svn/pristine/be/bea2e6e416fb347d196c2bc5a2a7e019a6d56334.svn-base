@@ -1,0 +1,118 @@
+<!--
+/**
+ * @fileoverview 首页 － 签到领优惠券
+ * @requires zepto
+ * @author kehuang@meilishuo.com
+ * @date 2015-05-08
+ */
+-->
+
+<%#head.html%>
+<%
+	var couponsData = this.couponsInfo.data || {},
+		headPic = this.mobUserInfo.data.avatar_b || this.PICTURE_URL + 'images/wap/activity/sign_mall/default_head.jpg';
+%>
+
+<div class="main">
+	<div class="body_wrap">
+		<div class="head_wrap">
+			<!-- <a href="javascript:;" class="head">
+				<img src="<%= headPic %>">
+			</a>
+			<div class="award">
+				<div id="j_total_award" class="num"><%= couponsData.coin || 0 %></div>
+			</div> -->
+
+			<div id="j_total_award" class="total_award">&nbsp;&nbsp;&nbsp;<%= couponsData.coin || 0 %></div>
+		</div>
+
+		<div class="coupon_wrap"></div>
+	</div>
+</div>
+
+<script type="text/html" id="j_coupon_tpl">
+	<?
+		var coupons = this.threshold || [];
+
+		if (coupons.length > 0) {
+			var serverDate = new Date(this.serverDate),
+				serverDay = serverDate.getDate(),
+				serverTime = serverDate.getTime(),
+				serverHours = serverDate.getHours(),
+				activityStartTime = new Date(2015,5,8,23,59,59).getTime(),
+				activityEndTime = new Date(2015,5,19,00,00,00).getTime();
+	?>
+	<ul class="coupon_wall">
+	<?
+			$.each(coupons, function(index, coupon){
+				var status = 0,
+					curClassName = '',
+					iconClassName = '',
+					statClassName = '',
+					left = coupon.left || 0,
+					credit = coupon.credit || 0,
+					dcredit = coupon.display_credit || 0,
+					threshold = coupon.threshold || 0,
+					starttime = coupon.expiration.start || '',
+					endtime = coupon.expiration.end || '',
+					tempHours = 12;
+
+				if ((serverTime > activityStartTime) && (serverTime <= activityEndTime)) {
+					if (serverHours < tempHours) {
+						status = (tempHours == 12) ? 0 : 1;
+						statClassName = ' robbed';
+					} else {
+						if (left < 1) {
+							if (serverDay < 18) {
+								status = 3;
+							} else {
+								status = 4;
+							}
+
+							statClassName = ' robbed';
+						} else {
+							status = 2;
+							statClassName = '';
+						}
+					}
+				} else {
+					status = (tempHours == 12) ? 0 : 1;
+					statClassName = ' robbed';
+				}
+
+				if (status == 2) {
+					iconClassName = 'convert_' + dcredit + '_' + status + '_icon';
+				} else {
+					iconClassName = 'convert_' + status + '_icon';
+				}
+
+				curClassName = 'full_' + dcredit + '_coupon' + statClassName;
+	?>
+		<li>
+			<div class="coupon <?= curClassName ?>" data-price="<?= dcredit ?>" data-type="2">
+				<div class="<?= iconClassName ?>"></div>
+			</div>
+		</li>
+	<?
+			});
+	?>
+	</ul>
+	<?
+		}
+	?>
+
+	<a href="http://m-promotion.meilishuo.com/promotion/coin_venue_1505/index/?cid=9875&aid=2240&pid=2518&mid=103&nid=5&r=">
+		<div class="btn_box"></div>
+	</a>
+</script>
+
+<script>
+	fml.vars.isLogin = <%= this.isLogin %>;
+	fml.vars.coupons_data = <%= JSON.stringify(couponsData) %>;
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use("wap/page/activity/sign_coupon4");
+_use:", this._JSstack, this._JSmods); %>
+
+<%#foot_simple.html%>

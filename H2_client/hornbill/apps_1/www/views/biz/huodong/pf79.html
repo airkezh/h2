@@ -1,0 +1,107 @@
+<%#head.html%>
+<div class="main">
+	<div class="pf-bg1"></div>
+	<div class="pf-bg2"></div>
+	<div class="pf-bg3">
+		<div class="main-cont">
+			<div class="upload-box">
+				<%= requireFn('biz/huodong/upload_photo.html')({
+					'upload_style' : 'obolaiUpWapper'
+				}); %>
+				<button class="next none_f"></button>
+			</div>
+			<div class="choice-item">
+				<span class="s1" data-status="f3"></span>
+				<span class="s2" data-status="f4"></span>
+				<span class="s3" data-status="f1"></span>
+				<span class="s4" data-status="f2"></span>
+			</div>
+		</div>
+
+
+	</div>
+	<div class="pf-bg4">
+		<div class="main-cont">
+			<div class="switch-bar">
+				<a href="?sort=rank#switch" <% if(this.sort == 'rank'){ %>class="yellow"<%}%> >按最热</a>
+				<a href="?sort=newest#switch" <% if(this.sort == 'newest'){ %>class="yellow"<%}%> >按最新</a>
+				<div id="switch"></div>
+			</div>
+			<div class="hb_box">
+				<div class="content_fluid">
+					<div class="goods_wall auto_f" style="width:987px;">
+					<% if(this.isLogin == 1 && this.my_poster && this.my_poster.data){ %>
+						<div class="corner_notic">
+							<div class="vote_box">
+								<a href="/share/<%= this.my_poster.data.twitter_id%>" target="_blank" class="pic_load">
+									<img class="goods_pic" src="<%= this.my_poster.data.show_pic%>" pid="<%= this.my_poster.data.pid%>" width="228" height="<%= this.my_poster.data.pic_height%>" />
+								</a>
+								<div class="info">
+									<div class="userInfo" uid="<%= this.my_poster.data.uinfo.user_id%>">
+										<div class="person">
+											<a href="/person/u/<%= this.my_poster.data.uinfo.user_id%>" target="_blank" class="face"><img src="<%= this.my_poster.data.uinfo.avatar_c%>" width="34" height="34" /></a>
+								            <span class="name"><%= this.my_poster.data.uinfo.nickname%></span>
+									    </div>
+										<ul class="txt_info">
+											<li>票数：<span class="red_f"><%= this.my_poster.data.score%></span></li>
+								            <li>排名：<span class="red_f"><%= this.my_poster.data.rank%></span></li>
+									    </ul>
+									</div>
+									<p class="btnBox auto_f" id="vote_share">拉投票</p>
+								</div>
+				            </div>
+					    </div>
+					<%}%>
+					</div>
+					<%#biz/huodong/vote/vote_poster.html%>
+					<div class="spinner botSpinner none_f"></div>
+					<div class="clear_f"></div>
+					<div class="paging_panel c_f"><%#paging.html%></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="pf-bg5">
+		<div class="main-cont">
+			<a id="share_sina" href="javascript:;"></a>
+			<a id="share_qzone" href="javascript:;"></a>
+			<a id="share_qqwb" href="javascript:;"></a>
+		</div>
+
+	</div>
+	<div class="pf-bg6">
+		<div class="main-cont">
+			<a href="http://www.meilishuo.com/share/item/2242041999
+" target="_blank"></a>
+		</div>
+	</div>
+	<div class="pf-bg7">
+		<div class="main-cont">
+			<a href="http://www.meilishuo.com/share/item/2245677537
+" target="_blank"></a>
+		</div>
+	</div>
+
+	<script type="text/html" id="succeed">
+		<div class="succeed">
+			<a href="" class="close_btn"></a>
+			<img src="<?= tpic?>" style="margin-left:30px;margin-top:46px;"/>
+			<img src="<?= lpic?>" style="margin-left:25px;margin-bottom:95px;"/>
+			</a>
+		</div>
+	</script>
+
+
+<script>
+fml.vars.notFluid = true;
+<%= this.poster0? 'Meilishuo.config.poster0 = '+JSON.stringify(this.poster0)+';':'' ;%>
+<%= this.my_poster? 'Meilishuo.config.my_poster = '+JSON.stringify(this.my_poster)+';':'' ;%>
+</script>
+
+</div>
+
+<% $_ENGINE_SELF.callFn("useModule")("fml.use('page/poster0');", this._JSstack , this._JSmodsFast ); %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/huodong/pf79');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

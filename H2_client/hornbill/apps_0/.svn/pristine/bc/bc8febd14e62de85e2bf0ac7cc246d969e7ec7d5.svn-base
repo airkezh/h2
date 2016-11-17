@@ -1,0 +1,30 @@
+<%# wx_new/header.html%>
+<header class="search">
+	<form action="" id="form_search" method="post">
+		<input class="ipt" type="search" autocomplete="off" placeholder="搜你想要的商品">
+		<span class="btn_cancel">取消</span>
+	</form>
+</header>
+<div class="posterWall wrap scroller" id='warpCon'>
+	<ul class="new_goods goods_wall">
+	</ul>
+	<div class="pullUp" status="loading"></div>
+</div>
+<%# wx_new/posterWX.html%>
+<script>
+fml.vars.poster = {
+	'totalColNum':2,
+	'pageName' : '<%= this.pageName%>',
+	'cate_id' : '<%= this.cate_id%>'
+};
+fml.vars.key = '<%= this.key%>';
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/wx_new/search');
+_use:", this._JSstack , this._JSmods ); %>
+<%# wx_new/side.html%>
+<%# wx_new/footer.html%>
+
+
+

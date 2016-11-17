@@ -1,0 +1,241 @@
+<%# head_simple.html%>
+</head>
+<body>
+<div id="tplWrap">
+<script type="text/html" id="defaultHeaderTpl">
+	<header class="luck-header" id="defaultHeader">
+		<h1>美丽说双十一红包</h1>
+		<div class="luck-box">
+			<img src="http://i.meilishuo.net/css/images/wap/weixinLuck/img-red.png" alt="">
+		</div>
+		<div class="tips">
+			<img src="<?= this.avatar_c ?>" alt="">
+			<div>
+				<p><?= this.message ?></p>
+			</div>
+		</div>
+		<p class="time-box">还剩: <span class="time" data-time="<?= this.lefttime ?>"></span></p>
+	</header>
+</script>
+
+<script type="text/html" id="getHeaderTpl">
+	<header class="luck-header" id="getHeader">
+		<h1>美丽说双十一红包</h1>
+		<div class="luck-box">
+			<img src="http://i.meilishuo.net/css/images/wap/weixinLuck/img-get44.png" alt="" style="width:40%">
+			<span><b>￥</b><?= this.credit ?></span>
+		</div>
+		<div class="tips">
+			<img src="<?= this.avatar_c ?>" alt="">
+			<div>
+				<p><?= this.message ?></p>
+			</div>
+		</div>
+		<p class="time-box">还剩: <span class="time" data-time="<?= this.lefttime ?>"></span></p>
+	</header>
+</script>
+
+<script type="text/html" id="emptyHeaderTpl">
+	<header class="luck-header" id="emptyHeader">
+		<h1>美丽说双十一红包</h1>
+		<div class="luck-box" style="bottom: 4%;">
+			<?if(this.credit){?>
+				<img src="http://i.meilishuo.net/css/images/wap/weixinLuck/img-get44.png" alt="">
+				<span><b>￥</b><?= this.credit ?></span>
+			<?}else{?>
+				<img src="http://i.meilishuo.net/css/images/wap/weixinLuck/img-empty2.png" alt="">
+			<?}?>
+		</div>
+		<div class="tips">
+			<img src="<?= this.avatar_c ?>" alt="">
+			<div>
+				<p><?= this.message ?></p>
+			</div>
+		</div>
+	</header>
+	<?if(this.credit){?>
+		<div class="tips wx_wrap">
+			<img src="http://i.meilishuo.net/css/images/wap/weixinLuck/wx_text.png"  style="padding-left: 15%;"/>
+		</div>
+		<div class="btn-box giveone" style="margin-left: 13%;">
+			<a href="javascript:;" class="btn">查看双十一红包</a>
+		</div>
+		<div class="add_bg giveone" style="margin-left: 13%;">
+			<a href="javascript:;" class="btn1">
+				<p style="line-height:36px;">给我的小婊砸发红包</p>
+				<p style="color: #8d593a;font-size:12px;line-height:7px;">发完再领15元</p>
+			</a>
+		</div>
+	<?}else{?>
+		<div class="btn-box2 giveone">
+			<a href="javascript:;" class="btn1 mb10">不开心，我要自己发红包</a>
+		</div>
+	<?}?>
+</script>
+
+<script type="text/html" id="pastHeaderTpl">
+	<header class="luck-header" id="pastHeader">
+		<h1>美丽说双十一红包</h1>
+		<div class="luck-box">
+			<?if(this.credit){?>
+				<img src="http://i.meilishuo.net/css/images/wap/weixinLuck/img-get44.png" alt="">
+				<span><b>￥</b><?= this.credit ?></span>
+			<?}else{?>
+				<img src="http://i.meilishuo.net/css/images/wap/weixinLuck/img-past1.png" alt="">
+			<?}?>
+		</div>
+		<div class="tips">
+			<img src="<?= this.avatar_c ?>" alt="">
+			<div>
+				<p><?= this.message ?></p>
+			</div>
+		</div>
+	</header>
+	<?if(this.credit){?>
+		<div class="tips wx_wrap">
+			<img src="http://i.meilishuo.net/css/images/wap/weixinLuck/wx_text.png" style="padding-left: 15%;"/>
+		</div>
+		<div class="btn-box giveone" style="margin-left: 13%;">
+			<a href="javascript:;" class="btn">查看双十一红包</a>
+		</div>
+		<div class="add_bg giveone" style="margin-left: 13%;">
+			<a href="javascript:;" class="btn1">
+				<p style="line-height:36px;">给我的小婊砸发红包</p>
+				<p style="color: #8d593a;font-size:12px;line-height:7px;">发完再领15元</p>
+			</a>
+		</div>
+	<?}else{?>
+	<div class="btn-box3 giveone">
+		<a href="javascript:;" class="btn1">去死吧，我去发个新红包</a>
+	</div>
+	<?}?>
+</script>
+
+
+<script type="text/html" id="getContentTpl">
+	<section class="luck-content luck-content2" id="getContent">
+		<div class="tips wx_wrap">
+			<img src="http://i.meilishuo.net/css/images/wap/weixinLuck/wx_text.png"  style="padding-left: 2%;"/>
+		</div>
+		<div class="btn-box giveone">
+			<a href="javascript:;" class="btn">查看双十一红包</a>
+		</div>
+		<div class="add_bg giveone">
+			<a href="javascript:;" class="btn1">
+				<p style="line-height:36px;">给我的小婊砸发红包</p>
+				<p style="color: #8d593a;font-size:12px;line-height:7px;">发完再领15元</p>
+			</a>
+		</div>
+	</section>
+</script>
+
+<script type="text/html" id="emptyContentTpl" style="disply:none;">
+	<section class="luck-content" id="emptyContent">
+		<p class="remain"><?= this.message ?></p>
+	</section>
+</script>
+
+<script type="text/html" id="pastContentTpl">
+	<section class="luck-content" id="pastContent">
+		<p class="remain mb10"><?= this.message ?></p>
+	</section>
+</script>
+
+<script type="text/html" id="luckListContentTpl">
+	<section class="luck-list" id="luckListContent">
+		<div class="title">
+			<span>已有<b class="red"><?= this.count ?></b>人示爱</span>
+			<span class="fr">我领到<b class="red">￥<?= this.credit ?></b></span>
+		</div>
+		<div class="content">
+			<ul class="luck-ul">
+				<? this.info && this.info.forEach(function(user,i){ ?>
+					<li class="list_<?=i?>">
+						<?if(user.uinfo.avatar_c){?>
+							<img src="<?= user.uinfo.avatar_c ?>">
+						<?}else{?>
+							<img src="http://i.meilishuo.net/css/images/wap/weixinLuck/icon1.jpg">
+						<?}?>
+						<div style="width: 53%;font-size:11px;">
+							<p>
+								<?if(user.uinfo.nickname){?>
+									<b class="pink nickname fnor"><?= user.uinfo.nickname ?>：</b>
+								<?}else{?>
+									<b class="pink nickname fnor">神秘粉丝：</b>
+								<?}?>
+							</p>
+							<p>
+								<?var num = user.credit; if(  num== 20) {?>
+									就知道我是<i class="red fnor">真爱</i>
+								<?}else if(num == 10){?>
+									原来我是<i class="red fnor">备胎</i>
+								<?}else if(num == 3){?>  
+									终于，我做了你的<i class="red fnor">小三</i>
+								<?}else if(num == 6){?>
+									卧槽，<i class="red fnor">炮友</i>，约吗？
+								<?}else{?>
+										我是你的<i class="red fnor">挖掘机</i>，活儿好~
+								<?}?>
+							</p>
+						</div>
+						<div class="mon_tim">
+							<p class="red text_r"><?= user.credit ?>元</p>
+							<p class="date" style="font-size:10px;margin-top:3px;"><?= user.create_time ?></p>
+						</div>
+					</li>
+				<? }); ?>
+			</ul>
+		</div>
+	</section>
+</script>
+
+<script type="text/html" id="modifyBoxTpl">
+	<section class="modify-phone" id="modifyBox">
+		<header class="luck-header" id="getHeader">
+			<h1>美丽说双十一红包</h1>
+			<div class="luck-box">
+				<img src="http://i.meilishuo.net/css/images/wap/weixinLuck/img-get44.png" alt="" style="width:40%">
+			</div>
+			<div class="tips">
+				<img src="<?= this.avatar_c ?>" alt="">
+				<div>
+					<p><?= this.message ?></p>
+				</div>
+			</div>
+			<p class="time-box">还剩: <span class="time" data-time="<?= this.lefttime ?>"></span></p> 
+		</header>
+		<div style="height:50px;background: #ffe5cb;"></div>
+	</section>
+</script>
+
+
+<div id="wrap"></div>
+
+
+<script>
+	var isEmptyData=<%= JSON.stringify(this.isEmptyData) %>;
+	var isPastData=<%= JSON.stringify(this.isPastData) %>;
+	var isSameData=<%= JSON.stringify(this.isSameData) %>;
+	var isGetData= <%= JSON.stringify(this.isGetData) %>;
+	var batchId= "<%=this.batchId%>";
+</script>
+
+<script>
+	    var batchId= "<%=this.batchId%>";
+		var Uid = "<%=this.Uid%>";
+		var imgUrl = 'http://d01.res.meilishuo.net/img/_o/0e/6b/a95c0492a8833984f4e3f12d09ca_200_200.cg.jpg';
+		var lineLink = 'http://m.meilishuo.com/activity/weixinLuck/index/?frm=wxlucky&uid='+Uid +'&bid=' +batchId;
+		var descContent = '美丽说11.11，买新款冬装、囤洗护用品姨妈巾能省钱！';
+		var shareTitle = '小婊砸，本宫发红包啦！美丽说双11，买冬装更超值~';
+		var shareTimelineText = '小婊砸，本宫发红包啦！美丽说双11，买冬装更超值~';
+	    var customAppId = 'wxd00a5f16e02bed58';
+</script>
+
+<script src="<%= this.JCSTATIC_BASE  %>/js/open/shareCollect.js?<%= this.SVERSION%>"></script>
+
+
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use("wap/page/activity/weixinLuck");
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html%>

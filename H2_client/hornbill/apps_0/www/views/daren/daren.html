@@ -1,0 +1,163 @@
+<%#head.html%>
+<div style="margin:0 auto;width: 960px;">
+<%if(this.adm5 && this.adm5.ad){%>
+	<%
+	this.adm5.admId = 'adm_top';
+	this.adm5._JSstack = this._JSstack;
+	this.adm5._JSmods = this._JSmods;
+	%>
+	<%= requireFn('commerce/adm_banner.html')(this.adm5);%>
+<%}%>
+</div>
+<div class="wapper_d">
+	<!--达人大事件-->
+	<div class="daren_tag"></div>
+	<div class="star">
+		<div class="daren_bnr"> 
+			<div class="boxImg" style="width:640px;height:240px; position:relative; ">
+				<% var top_banner = this.top_banner.length; %>
+				<ul class="_img" style="position:absolute;left:0;width:<%= (top_banner+1)*640 %>px;display:inline-block;">
+					<% this.top_banner && this.top_banner.map(function(data, index){ %>
+					<li class="left_f"><a target="_blank" href="<%= data.links %>"><img width="640" height="240" src="<%= data.img_url %>"></a></li>
+					<% }); %>
+				</ul>
+			</div>
+			<div class="_num adType1 <% if(top_banner == 1) { %>none_f<% } %>">
+				<% for (var i=1; i<=top_banner; i++) { %>
+				<% var current = i==1 ? 'current' : ''; %>
+				<a class="<%= current %>"><span class="none_f"><%= i %></span></a>
+				<% } %>
+			</div>
+		</div>
+		<div class="ranking">
+			<h2 class="f14_f clearfix_f"><span class="left_f">达人专属</span><a href="http://www.meilishuo.com/person/u/26981793" target="_blank" class="more">更多>></a></h2>
+			<ul class="items_pop">
+				<% this.headerList && this.headerList.map(function(data , index){  %>
+					<% if (index % 2 == 0) {%>
+						<li class="odd_num">
+					<%}else{%>
+						<li>
+					<%}%>
+							<a href="<%=data.imgurl%>" target="_blank"><span class="num1"><%=data.type_name %></span><%=data.msg%></a>
+						</li>
+				<% });%>
+			</ul>
+			<div class="apply">
+				<p><strong class="f14_f">什么是达人？</strong>“美丽说达人”是时尚领域的偶像团体，汇集了时尚领袖、专家、模特等拥有时尚主张的人气先锋。</p>
+			</div>
+		</div>
+		<div class="clear_f"></div>
+	</div>
+
+
+	<div class="goods_wall clearfix_f" style="width:960px;">
+		<!--达人tab-->
+		<div class="daren_nav left_f">
+			<div class="daren_tab">
+			<ul>
+				<% function setLink(tab) {
+					if (this.tab_param === tab) return 'class="red_f"';
+					return '';
+				}%>
+				<li class="first">
+					<a href="/daren/" <%=setLink('all')%>>综合推荐</a>
+				</li>
+				<li>
+					<a href="/daren/?tab=prof" <%=setLink('prof')%>>专家达人</a>
+				</li>	
+				<li>
+					<a href="/daren/?tab=fashion" <%=setLink('fashion')%>>时尚编辑</a>
+				</li>	
+				<li>
+					<a href="/daren/?tab=jiepai" <%=setLink('jiepai')%>>搭配街拍</a>
+				</li>	
+				<li>
+					<a href="/daren/?tab=cosmetic" <%=setLink('cosmetic')%>>美肤彩妆</a>
+				</li>	
+				<li class="last">
+					<a href="/daren/?tab=editor" <%=setLink('editor')%>>超级主编</a>
+				</li>	
+			</ul>
+			</div>
+		</div>
+		<!--右侧边栏-->
+		<div class="siderbar">
+			<div class="bar">
+				<h2 class="daren_t">每周达人分享之星&nbsp;<span class="mls_hv">&nbsp;</span></h2>
+				<ul class="heartlist clearfix_f">
+					<%this.shareListV && this.shareListV.map(function(data, index){%>
+						<%if(index == 4) {%>
+							<li class="clearfix_f" style="border-bottom:1px solid #ccc;">
+						<%} else {%>
+							<li class="clearfix_f">
+						<%}%>
+								<%if (data.top_three) {%>
+									<span class="charts_red left_f"><%=data.key%></span>
+								<%} else {%>
+									<span class="charts_gray left_f"><%=data.key%></span>
+								<%}%>
+									<a target="_blank" href="/person/u/<%=data.user_id%>" class="avatar64_f userInfoTips" user_id="<%=data.user_id %>"><img src="<%=data.avatar_b%>"  /></a>
+									<div class="left_f">
+										<p class="red_f pb5 cut"><a href="/person/u/<%=data.user_id%>" target="_blank"><%=data.nickname%></a></p>
+										<p><a class="red_f" href="/person/u/<%=data.user_id%>" target="_blank"><%=data.share_number%></a>个分享</p>
+										<%if(data.self == 1) {%>
+											<p class="sidefollow"><span class="followed">我自己</span></p>
+										<%} else if(data.followbyme == 0){%>
+											<p class="sidefollow"><span class="btn addFollow" fuid='<%=data.user_id%>' followed="<%=data.followbyme%>">+加关注</span></p>
+										<%} else if(data.followbyme == 1){%>
+											<p class="sidefollow"><span class="followed removeFollow" fuid='<%=data.user_id%>'>已关注</span></p>
+										<%} else if(data.followbyme == 2){%>
+											<p class="sidefollow"><span class="followed removeFollow" fuid='<%=data.user_id%>' followed="<%=data.followbyme%>">互相关注</span></p>
+										<%}%>
+									</div>
+							</li>
+					<%});%>
+				</ul>
+				<h2 class="daren_t mt10_f">每周主编分享之星&nbsp;<span class="mls_editor">&nbsp;</span></h2>
+				<ul class="heartlist clearfix_f">
+					<%this.shareListS && this.shareListS.map(function(data, index){%>
+						<%if(index == 4) {%>
+							<li class="clearfix_f" style="border-bottom:none;">
+						<%} else {%>
+							<li class="clearfix_f">
+						<%}%>
+								<%if (data.top_three) {%>
+									<span class="charts_red left_f"><%=data.key%></span>
+								<%} else {%>
+									<span class="charts_gray left_f"><%=data.key%></span>
+								<%}%>
+									<a target="_blank" href="/person/u/<%=data.user_id%>" class="avatar64_f userInfoTips" user_id="<%=data.user_id %>"><img src="<%=data.avatar_b%>"  /></a>
+									<div class="left_f">
+										<p class="red_f pb5 cut"><a href="/person/u/<%=data.user_id%>" target="_blank"><%=data.nickname%></a></p>
+										<p><a class="red_f" href="/person/u/<%=data.user_id%>" target="_blank"><%=data.share_number%></a>个分享</p>
+										<%if(data.self == 1) {%>
+											<p class="sidefollow"><span class="followed">我自己</span></p>
+										<%} else if(data.followbyme == 0){%>
+											<p class="sidefollow"><span class="btn addFollow" fuid='<%=data.user_id%>' followed="<%=data.followbyme%>">+加关注</span></p>
+										<%} else if(data.followbyme == 1){%>
+											<p class="sidefollow"><span class="followed removeFollow" fuid='<%=data.user_id%>'>已关注</span></p>
+										<%} else if(data.followbyme == 2){%>
+											<p class="sidefollow"><span class="followed removeFollow" fuid='<%=data.user_id%>' followed="<%=data.followbyme%>">互相关注</span></p>
+										<%}%>
+									</div>
+							</li>
+					<%});%>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="ads_banner ads_bottom none_f"></div>
+</div>
+<%#daren/dr_poster.html%>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/daren');
+_use:", this._JSstack , this._JSmods ); %>
+<div class="spinner botSpinner none_f"></div>
+<div class="clear_f"></div>
+<div class="paging_panel c_f none_f">
+<%#paging.html%>
+</div>
+<%#foot.html%>
+
+
+

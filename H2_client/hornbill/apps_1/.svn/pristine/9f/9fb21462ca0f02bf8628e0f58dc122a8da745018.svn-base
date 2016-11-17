@@ -1,0 +1,22 @@
+<div class="mp_coupon">
+	<%this.coupons && this.coupons.length && this.coupons.map(function(data,i){%>
+	<%
+	var text = "立即领取";
+	if(data.can_use == 2) text = "已领取";
+	if(data.can_use == 1) text = "已领光";
+	var can_get = data.can_use != 2 && data.can_use != 1;
+	%>
+	<div class="coupon <%if(i%2){%>odd<%}%>">
+		<a href="javascript:;" data-type="<%=data.type%>" data-code="<%=data.coupon_apply_code%>" class="coupon_btn <%if(can_get){%>get_coupon<%}%> "><%=text%></a>
+		<span class="text">还剩<%=data.left_amount%>张</span>
+	</div>
+	<%});%>
+	<div class="coupon odd">
+		<a class="full_link" href="/biz/huodong/phoneCoupon/" target="_blank"></a>
+	</div>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use('app/huodong/520coupon',function(){
+	this.coupon();
+});
+_use:", this._JSstack , this._JSmods ); %>

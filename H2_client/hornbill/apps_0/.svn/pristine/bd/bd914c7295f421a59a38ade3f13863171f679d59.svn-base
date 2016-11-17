@@ -1,0 +1,23 @@
+<%# wx_new/header.html%>
+<%
+var list = this.list.data;
+%>
+<div class="content">
+	<div class="title">
+		<div class="txt">
+			<p class="chinese"><%= list.info.tag %></p>
+			<p class="english"><%= list.info.tag_english %></p>
+		</div>
+		<p class="line"></p>
+	</div>	
+	<ul class="goods_wall">
+	<% list.users.forEach(function(con,index){%>
+		<a href="/wx/user_c/<%= con.daren_uid%>"><img asrc="<%= con.avatar%>" <%if(index < 8){%>src="<%= con.avatar%>"<%}%> alt="" class="lazyload"><span class="class-title"><%= con.daren_nickname.length < 7 ? con.daren_nickname : con.daren_nickname.slice(0,6)%></span></img></a>
+	<%});%>
+	</ul>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/wx_new/classify_m');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# wx_new/footer.html%>

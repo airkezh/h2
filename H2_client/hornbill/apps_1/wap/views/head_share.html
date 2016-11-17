@@ -1,0 +1,34 @@
+<%
+var query = this._Request_query;
+%>
+<header class="header" id="header">
+	<div class="nav_ban">
+		<h1>
+		<%if(this.headName == 'order'){%>
+			<fieldset>
+				<form id="orderListForm" method="get" action="">
+					<legend>订单列表表单</legend>
+					<div>
+						<select id="orderStatus" name="status">
+							<option value="0">交易状态</option>
+							<option value="1"<%if(query.status == '1'){%> selected<%}%>>等待付款</option>
+							<option value="2"<%if(query.status == '2'){%> selected<%}%>>等待发货</option>
+							<option value="3"<%if(query.status == '3'){%> selected<%}%>>等待确认收货</option>
+							<option value="4"<%if(query.status == '4'){%> selected<%}%>>交易成功</option>
+							<option value="5"<%if(query.status == '5'){%> selected<%}%>>交易关闭</option>
+						</select>
+					</div>
+				</form>
+			</fieldset>
+		<%}else if(this.headName){%>
+		<%= this.headName %>
+		<%}%>
+		</h1>
+		<span class="icon-back" id="backBtn"></span>
+		<%if(this.headNameRight){%>
+		<%= this.headNameRight %>
+		<%}else if(!this.noHomeBtn){%>
+		<a xr="<%= this.xr.r || ''%>" class="icon-home eventnone" href="/welcome"></a>
+		<%}%>
+	</div>
+</header>

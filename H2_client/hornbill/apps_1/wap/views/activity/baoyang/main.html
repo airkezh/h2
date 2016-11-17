@@ -1,0 +1,46 @@
+<%# head.html%>
+<%
+	var pageData = this.pageData || {}
+		, pageImg = pageData.baoyang_img 
+		, activityInfo = pageData.user_info 
+		, baoyangList = pageData.baoyang_list
+		, userInfo = this.userInfo 
+%>
+	<div class="bnr">
+		<% pageData && pageData.banner && pageData.banner.map(function(data){ %>
+			<img src="<%= data%>"/>
+		<%}); %>
+	</div>
+	<section class="contract_wrap ">
+		<div>
+			<img src="<%= pageImg.baoyang_title %>" />
+		</div>
+		<div class="intro">
+			<img src="<%= pageImg.main_info%>" />
+		</div>
+		<ul class="select_wrap" id="serviceStore">
+			
+		</ul>
+		<div class='getMoney'>
+			<b></b>
+			<p>最多可得到<span class="totalMoney">200</span>元打赏钱</p>
+		</div>
+		<div class='btn startBtn'>
+			<img src="<%= pageImg.now_btn%>" />
+		</div>
+	</section>
+	<%# activity/baoyang/rule.html%>
+	<%# activity/baoyang/share.html%>
+<script>
+	fml.vars.isLogin = <%= this.userInfo.user_id%>;
+	fml.vars.title = '<%= this.pageData.title%>';
+	fml.vars.serviceArr = <%= JSON.stringify(this.pageData.baoyang_list)%>;
+	fml.vars.shareTitle = '<%= this.pageData.share.title%>';
+	fml.vars.shareText = '<%= this.pageData.share.text%>';
+	fml.vars.sharePic = '<%= this.pageData.share.pic%>';
+	fml.vars.shareUrl = '<%= this.pageData.share.url%>';
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/baoyang');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

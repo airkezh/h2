@@ -1,0 +1,44 @@
+<%#head_simple.html%>
+<div class="wrapper">
+	<div class="logo"></div>
+	<div class="bound-box">
+		<h3 class="tip-title">请完成安全验证</h3>
+		<div class="mask">
+			<p class="title">为了您的账号安全，请尽快绑定手机<br />美丽说不会在任何地方泄露您的手机号</p>
+		</div>
+
+		<form class="form-data" id="registerForm" onsubmit="return false" >
+			<div class="phone">
+				<span class="icon"></span>
+				<input id="mobile" type="text" name="mobile" placeholder="手机号" autocomplete="off"/>
+				<p class="reminder"></p>
+			</div>
+			
+			<div class="pic-code">
+				<span class="icon"></span>
+				<input type="text" id="picCode" name="picCode" placeholder="图片验证码" autocomplete="off">
+				<span class="checkImage">
+					<img width="90" height="36" isblank="true" src="<%= this.PICTURE_URL %>images/register/blank.jpg">
+					<span class="exchange">换一张</span>
+				</span>
+				<p class="reminder"></p>	
+			</div>
+
+			<div class="verify">
+				<span class="icon"></span>
+				<input type="text" id="code" placeholder="短信验证码" maxlength="6"/>
+				<p class="time" data-remain="59">发送验证码</p>
+				<p class="reminder"></p>
+			</div>
+
+			<button type="button" class="submit">立即绑定</button>
+			<p class="reminder success"></p>
+		</form>
+		
+	</div>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/interconnect');
+_use:", this._JSstack , this._JSmods); %>
+
+<%#foot_simple.html%>

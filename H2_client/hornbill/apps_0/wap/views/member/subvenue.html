@@ -1,0 +1,201 @@
+<%
+	/**
+ 	 * @fileoverview 大促分会场－会员
+     * @requires zepto
+     * @author kehuang@meilishuo.com
+     * @date 2015-11-25
+     */
+%>
+
+<%#head.html%>
+<%
+	var curUserIsLogin = this.isLogin;
+	var curServerDate = this.serverDate;
+	var curPageData = this.pageData;
+	var curSignData = this.signData;
+	var curGoodsAid = this.aid || 2678;
+	var curServerTime = curServerDate.getTime();
+	var curIsNormalGetData = this.isNormalGetData;
+	var curTopBannerData = curPageData.top_banner || {};
+	var curActivityDate = curPageData.activity_date || {};
+	var curUserSignData = (curSignData && curSignData.data) ? curSignData.data : {};
+	var curUserLevel = curUserSignData.level || 0;
+	var curActivityBeginTime = new Date(curActivityDate.begin_time || '').getTime() || 0;
+	var curActivityEndTime = new Date(curActivityDate.end_time || '').getTime() || 0;
+	var curActivityStatus = ((curServerTime >= curActivityBeginTime) && (curServerTime <= curActivityEndTime)) ? true : false;
+%>
+
+<div class="main">
+	<%
+		var banner_img = curTopBannerData.img_src || '';
+
+		if (banner_img != '') {
+			var banner_title = curTopBannerData.img_title || '',
+				banner_link = curTopBannerData.img_link || 'javascript:;';
+	%>
+	<a href="<%= banner_link %>">
+		<img src="<%= banner_img %>" alt="<%= banner_title %>">
+	</a>
+	<%
+		}
+	%>
+
+	<section id="container" class="container">
+		<ul class="even goods_wall"></ul>
+		<div class="pullUp" status="loading"></div>
+    </section>
+
+	<!-- <div class="gotop_wrap">
+		<a class="gotop">
+			<img src="http://d03.res.meilishuo.net/pic/_o/d0/68/f89d059f09d440f4ee7a37669383_80_80.cg.png" alt="">
+		</a>
+	</div> -->
+</div>
+
+<script type="text/html" id="posterWall">
+	<?
+		var is_login = this.isLogin,
+			cur_user_level = this.userLevel,
+			goods_list = (this.data && this.data.data && this.data.data.goods_list) ? this.data.data.goods_list : [];
+
+		$.each(goods_list, function(index, data){
+	    	var pos = data.pos || 0,
+	    		now_price = data.now_price || {},
+	    		pev_price = data.pev_price || {},
+	    		mark_pic = data.mark_pic || '',
+	    		goods_name = data.goods_name || '',
+	    		goods_image = data.goods_image || '',
+	    		twitter_id = data.twitter_id || 0,
+	    		origin_price = data.origin_price || '0.00',
+	    		off_price = data.off_price || origin_price,
+	    		href = data.url || 'javascript:void(0);',
+	    		flag = (pev_price && pev_price.price) ? 1 : 0,
+	    		cur_level_desc = 'V' + cur_user_level,
+	    		cur_level_price = (now_price && now_price.price) ? now_price.price : off_price;
+	?>
+	<li data-tid="<?= twitter_id ?>" data-pos="<?= pos ?>" data-href="<?= href ?>">
+		<figure>
+			<?
+		    	if (fml.vars.is_lazyload_poster) {
+		    		if (index < 2) {
+		    ?>
+		    <span class="df_show_img detail" style="opacity: 1;background-image: url(<?= goods_image ?>);"></span>
+		    <?
+		    		} else {
+		    ?>
+		    <span class="bs_load_img detail" asrc="<?= goods_image ?>"></span>
+		    <?
+		    		}
+				} else {
+			?>
+		    <img class="detail" src="<?= goods_image ?>" alt="">
+		    <?
+				}
+
+		    	if (mark_pic != '') {
+		    ?>
+		    <div class="mark detail"><img src="<?= mark_pic ?>" alt=""></div>
+		    <?
+		    	}
+		    ?>
+		</figure>
+
+		<figcaption>
+			<div class="proTitle detail"><?= goods_name ?></div>
+			<%
+				if (curActivityStatus) {
+			%>
+			<?
+				if (is_login) {
+			?>
+			<div class="proNowPrice detail">
+				<span class="word"><?= cur_level_desc ?>专享价:</span><i>￥</i><?= cur_level_price ?>
+			</div>
+			<div class="proSaleInfo detail">
+				<?
+					if (flag) {
+						var prev_level_desc = pev_price.desc || 'V0',
+							prev_level_price = pev_price.price || origin_price;
+				?>
+				<div class="text_box">
+					<p><?= prev_level_desc ?></p>
+					<p>市场价</p>
+				</div>
+				<div class="outer_bar"><div class="inner_bar"></div></div>
+				<div class="price_box">
+					<p><i>￥</i><?= prev_level_price ?></p>
+					<p><i>￥</i><?= origin_price ?></p>
+				</div>
+				<?
+					} else {
+				?>
+				<div class="single_text">市场价</div>
+				<div class="single_bar"></div>
+				<div class="single_text"><i>￥</i><?= origin_price ?></div>
+				<?
+					}
+				?>
+			</div>
+			<div class="buy_btn detail">立即抢购</div>
+			<?
+				} else {
+			?>
+			<div class="proSaleInfo loginSaleInfo detail">
+				<div class="single_text">市场价</div>
+				<div class="single_bar"></div>
+				<div class="single_text"><i>￥</i><?= origin_price ?></div>
+			</div>
+			<div class="proLogin j_login_box">登录后查看会员价</div>
+			<?
+				}
+			?>
+			<%
+				} else {
+			%>
+			<div class="proNowPrice detail"><span class="word">现价:</span><i>￥</i><?= off_price ?></div>
+			<?
+				if (is_login) {
+			?>
+			<div class="proPrice detail">
+				<span class="word"><?= cur_level_desc ?>专享价:</span><i>￥</i><?= cur_level_price ?>
+			</div>
+			<div class="buy_btn detail">加购物车</div>
+			<?
+				} else {
+			?>
+			<div class="proPrice detail">
+				<span class="word">市场价:</span><i>￥</i><?= origin_price ?>
+			</div>
+			<div class="proLogin j_login_box">登录后查看会员价</div>
+			<?
+				}
+			?>
+			<%
+				}
+			%>
+		</figcaption>
+	</li>
+	<?
+		});
+	?>
+</script>
+
+<script>
+	fml.vars.r = '<%= this.xr.r || '' %>';
+	fml.vars.aid = <%= curGoodsAid %>;
+	fml.vars.mid = <%= this.mid %>;
+	fml.vars.nid = <%= this.nid %>;
+	fml.vars.isLogin = <%= curUserIsLogin %>;
+	fml.vars.userLevel = <%= curUserLevel %>;
+	fml.vars.serverTime = <%= curServerTime %>;
+	fml.vars.isNormalGetData = <%= curIsNormalGetData %>;
+	fml.vars.is_lazyload_poster = true;
+</script>
+
+<!-- <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script> -->
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/member/subvenue');
+_use:", this._JSstack, this._JSmods); %>
+
+<%#foot_simple.html%>

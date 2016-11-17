@@ -1,0 +1,137 @@
+<%
+	/**
+ 	 * @fileoverview 我的奖品－会员中心
+     * @requires zepto
+     * @author kehuang@meilishuo.com
+     * @date 2015-06-24
+     */
+%>
+
+<%#head.html%>
+
+<div class="main">
+	<section class="prize_wrap">
+		<ul class="goods_wall"></ul>
+		<div class="pullUp" status="loading"></div>
+	</section>
+
+	<div class="gotop_wrap">
+		<a class="gotop">
+			<img src="http://d03.res.meilishuo.net/pic/_o/d0/68/f89d059f09d440f4ee7a37669383_80_80.cg.png" alt="">
+		</a>
+	</div>
+</div>
+
+<script type="text/html" id="posterWall">
+	<?
+		var jsonData = this.data || [],
+			listLen = jsonData.length || 0;
+
+		if (listLen > 0) {
+			for (var i = 0; i < listLen; i++) {
+				var btnHtml = '',
+					stateHtml = '',
+					obj = jsonData[i],
+					recordId = obj.id || 0,
+				    prizeName = obj.name || 0,
+				    prizeType = obj.type || 0,
+				    prizeStatus = obj.status || 0,
+				    prizePic = obj.list_pic || '',
+				    prizeDate = obj.win_time || '';
+
+				switch (prizeType) {
+					case 1:
+						switch (prizeStatus) {
+							case 0:
+								btnHtml = '<li class="j_add_address btn" data-recoid="' + recordId + '">填写地址</li>';
+								stateHtml = '<li class="j_user_address state">未填写收货地址</li>';
+
+								break;
+							case 1:
+								btnHtml = '';
+								stateHtml = '<li class="state">商品准备中</li>';
+
+								break;
+							case 2:
+								btnHtml = '';
+								stateHtml = '<li class="state">已发货</li>';
+
+								break;
+						}
+
+						break;
+					case 2:
+						if (prizeStatus == 0) {
+							btnHtml = '';
+							stateHtml = '<li class="state">未到账</li>';
+						} else if (prizeStatus == 1) {
+							btnHtml = '<li class="btn j_coupons_btn">立即使用</li>';
+							stateHtml = '<li class="state">已到账</li>';
+						}
+
+						break;
+					case 3:
+						if (prizeStatus == 0) {
+							btnHtml = '';
+							stateHtml = '<li class="state">未到账</li>';
+						} else if (prizeStatus == 1) {
+							btnHtml = '<li class="btn j_beans_btn">花美美豆</li>';
+							stateHtml = '<li class="state">已到账</li>';
+						}
+
+						break;
+				}
+	?>
+	<li class="prize_item">
+		<figure>
+			<?
+		    	if (fml.vars.is_lazyload_poster) {
+		    		if (i < 2) {
+		    ?>
+		    <span class="df_show_img" style="opacity: 1;background-image: url(<?= prizePic ?>);"></span>
+		    <?
+		    		} else {
+		    ?>
+		    <span class="bs_load_img" asrc="<?= prizePic ?>"></span>
+		    <?
+		    		}
+				} else {
+			?>
+		    <img src="<?= prizePic ?>" alt="<?= prizeName ?>">
+		    <?
+				}
+		    ?>
+		</figure>
+
+		<ul class="desc">
+			<li class="title"><?= prizeName ?></li>
+			<li class="date"><?= prizeDate ?> 获得</li>
+			<?= stateHtml ?>
+			<?= btnHtml ?>
+		</ul>
+	</li>
+	<?
+			}
+		} else {
+	?>
+	<div class="prize_no"><img src="http://d01.res.meilishuo.net/pic/_o/51/56/5aa1042fe70d7928db95f959fd6f_600_600.cg.png">
+	</div>
+	<?
+		}
+    ?>
+</script>
+
+<script>
+	fml.vars.is_lazyload_poster = true;
+	fml.vars.r = '<%= this.r %>';
+	fml.vars.isLogin = <%= this.isLogin %>;
+	fml.vars.isNewest = <%= this.isNewest %>;
+	fml.vars.isAndroid = <%= this.isAndroid %>;
+</script>
+
+<!-- <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script> -->
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/member/turntable_prize');
+_use:", this._JSstack, this._JSmods); %>
+<%#foot_simple.html%>

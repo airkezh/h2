@@ -1,0 +1,22 @@
+function member(){
+	return this;
+}
+
+var controlFns = {
+	interfaces : function(params){
+		var php = {
+			'draw' : 'vip::/wheel/draw',
+            'getCoupon' : 'vip::/coupon/venue',
+            'applyCoupon' : 'vip::/coupon/apply',
+            'receiveGift' : 'vip::/gift/receiveGift',
+            'getGiftList' : 'vip::/gift/getGiftList',
+            'getEventGoods' : 'vip::/vip/getEventGoods',
+			'saveContactInfo' : 'vip::/wheel/saveContactInfo',
+			'getMyAwards' : 'vip::/wheel/getMyAwards'
+        };
+
+		this.ajaxTo(php[params]);
+	}
+}
+
+exports.__create = controller.__create(member, controlFns);

@@ -1,0 +1,52 @@
+<%# head.html%>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script src="<%= this.M_JCSTATIC_BASE %>js/Touch.js"></script>
+
+<% var who = ['立即成为型男' , '立即胸围大增' , '开始变身土豪' , '开始变白瘦美' , '立即牵手男神' , '启动泡妞模式' , '启动赌神模式' , '开始环游世界'] %>
+<img width="100%" class="step2" src="http://d01.res.meilishuo.net/pic/_o/9a/4d/1881baf0c6622cc1f661f652035a_640_203.ch.jpg" />
+<img width="100%" class="step3 none_f" src="http://d02.res.meilishuo.net/pic/_o/85/2c/1eae931f31183f597489e0301358_640_204.ch.jpg" />
+<div class="model-box">
+	<div class="pa-box">
+		<img id="origin-img" src="" />
+	</div>
+	<div class="pa-box flex-img<%= this.param%>" id="model-img" >
+	</div>
+	<div class="btn-box btn-box1">
+		<span class="btn btn1" aa="<%= this.ifor%>">
+			<% if(this.ifor == 'ta'){ %>
+			献上TA低调一笑
+			<%}else{%>
+			献上我低调一笑
+			<%}%>
+		</span>
+	</div>
+	<div class="btn-box btn-box2 none_f">
+		<span class="btn btn2 ">更换照片</span>
+		<span class="btn btn3 "><%= who[this.param]%></span>
+	</div>
+	<div class="btn-box btn-box3">
+		<input type="file" class="fileElem btn4"  accept="image/*" />
+	</div>
+	<div class="photo"><input type="file" class="fileElem"  accept="image/*" /></div>
+</div>
+<div class="like-this<%= this.param%>"></div>
+<!--img src="" id="ca" / -->
+	<div class="loading-box">
+		<img src="<%= this.PICTURE_URL%>images/wap/activity/wx_cuthead/loading.gif" />
+		<ul class="load-text play">
+			<li>手机电源充足.....已完成</li>
+			<li>感知握住手机的掌心温度....已完成</li>
+			<li>头像检测中......已完成</li>
+			<li>检测报告传输中......已完成</li>
+			<li class="tobig">变身成功！</li>
+		</ul>
+	</div>
+
+
+<script>
+	fml.vars.param = <%= this.param%>;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+     fml.use('wap/page/wx/upImage');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

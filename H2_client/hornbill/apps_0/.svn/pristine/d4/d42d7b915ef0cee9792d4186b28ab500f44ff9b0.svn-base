@@ -1,0 +1,64 @@
+<%# head_simple.html%>
+<%
+var query = this._Request_query;
+var getLink = _extFn.getLink;
+var mSubstr = _extFn.mSubstr;
+%>
+</head>
+<body>
+<nav id="mac_nav">
+	<ul class="nav">
+		<li><a class="fen<%if(query.top == 'pink'){%> active<%}%>" href="?top=pink">蜜桃粉</a></li>
+		<li><a class="lv<%if(query.top == 'green'){%> active<%}%>" href="?top=green">薄荷绿</a></li>
+		<li><a class="huang<%if(query.top == 'yellow'){%> active<%}%>" href="?top=yellow">柠檬黄</a></li>
+		<li><a class="zi<%if(query.top == 'purple'){%> active<%}%>" href="?top=purple">香芋紫</a></li>
+		<li><a class="lan<%if(query.top == 'blue'){%> active<%}%>" href="?top=blue">天空蓝</a></li>
+	</ul>
+</nav>
+<div style="height:38px;"></div>
+<% var color = ['pink','green', 'yellow', 'purple', 'blue'];%>
+<% color.map(function(v, c){%>
+	<%if(query.top == v){%>
+	<div class="<%= v %>">
+		<p><img src="<%= this.PICTURE_URL%>images/wap/activity/macaron/<%= v %>.jpg" /></p>
+		<ul class="goods">
+			<% this.macaronInfo[v] && this.macaronInfo[v].tInfo.map(function(data, k) {
+				if(k != 18){%>
+			<li>
+				<a class="pic" href="<%=data.mobile_url%>"><img alt="<%= data.ginfo.goods_desc%>" src="<%=data.show_wap_pic%>" /></a>
+				<div class="detail">
+					<h3 class="tle"><a href="<%=data.mobile_url%>"><%= mSubstr(data.ginfo.goods_desc , 15 , '...')%></a></h3>
+					<p class="pirce"><%=data.ginfo.goods_price%></p>
+					<p class="source">来自：<a href="<%=data.taobao_wap_url%>"><%= mSubstr(data.shop_intro.shop_nick, 8 , '...')%></a></p>
+				</div>
+			</li>
+			<%}%>
+			<% }); %>
+		</ul>
+	</div>
+	<%}%>
+<% }); %>
+<% color.map(function(v, c){%>
+	<%if(query.top != v){%>
+	<div class="<%= v %>">
+		<p><img src="<%= this.PICTURE_URL%>images/wap/activity/macaron/<%= v %>.jpg" /></p>
+		<ul class="goods">
+			<% this.macaronInfo[v] && this.macaronInfo[v].tInfo.map(function(data, k) {
+				if(k != 18){%>
+			<li>
+				<a class="pic" href="<%=data.mobile_url%>"><img alt="<%= data.ginfo.goods_desc%>" src="<%=data.show_wap_pic%>" /></a>
+				<div class="detail">
+					<h3 class="tle"><a href="<%=data.mobile_url%>"><%= mSubstr(data.ginfo.goods_desc , 15 , '...')%></a></h3>
+					<p class="price"><%=data.ginfo.goods_price%></p>
+					<p class="source">来自：<a href="<%=data.taobao_wap_url%>"><%= mSubstr(data.shop_intro.shop_nick, 8 , '...')%></a></p>
+				</div>
+			</li>
+			<%}%>
+			<% }); %>
+		</ul>
+	</div>
+	<%}%>
+<% }); %>
+
+
+<%# foot_simple.html%>

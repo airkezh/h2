@@ -1,0 +1,198 @@
+<%# sq/header.html%>
+
+<div class="wrap">
+</div>
+
+<script type="text/html" id="tmpAll">
+	<div class="receiver">
+		<div class="receiver_line"></div>
+		<div class="receiver_info">
+			<span class="i_address"><img src="http://d05.res.meilishuo.net/pic/_o/97/93/b9746dcebed8f99b225b5c9fa0fb_26_32.cf.png" alt=""></span>
+			<p>
+				<span class = "use_name">收件人：<?= address.nickname ?></span>
+				<span>电话：<?= address.phone ?></span>
+			</p>
+			<p>收货地址：<?= address.address ?></p>
+		</div>
+		<div class="receiver_line"></div>
+	</div>
+
+	<? if(express_company || express_id){ ?>
+	<div class="place">
+		<p>
+			<img src="http://d04.res.meilishuo.net/pic/_o/bb/20/a875954357f70289680ff364150d_34_24.cg.png" class="site_icon" />
+			<span>物流：<?= express_company ?></span>&nbsp;&nbsp;&nbsp;&nbsp;
+			运货单号：<span class="ellipsis_f eventnone"><?= express_id ?></span>
+		</p>
+		<? if(express && express.length){ ?>
+		<div class="way">
+			<a href="/sq/expressInfo/?order_id=<?=order.order_id?>&express_id=<?=order.express_id?>&express_company=<?= order.express_company?>">
+				<p class="ml_color way_now">
+					<span class="way_icon">
+						<img src="<%=this.PICTURE_URL%>/images/wap/web/wx/way_icon.png" />
+					</span>
+					<?= express[0].time?>
+				</p>
+				<img src="<%=this.PICTURE_URL%>/images/wap/web/wx/next.png" class="next" />
+				<p class="order_time">
+					<span><?= express[0].text?></span>
+				</p>
+			</a>
+		</div>
+		<?}?>
+	</div>
+	<?}?>
+	<div class="order_info">
+		<div class="payment">
+			<img src="http://d01.res.meilishuo.net/pic/_o/b2/c6/47808bac9ccd72d3a6147575009b_28_28.cg.png" class="payment_icon" />
+			支付方式：<span class="ml_color"><?= order.pay_name ?></span>
+		</div>
+		<div class="status">
+			<!-- <span class="status_line"></span> -->
+			<span class="status_info">
+				<img src="http://d02.res.meilishuo.net/pic/_o/3b/34/a3bf34a2ec37e3f82953538c4ca2_25_33.cg.png" alt="" class="status_icon">
+				订单状态：<span class="ml_color"><?= order.status_text ?></span>
+			</span>
+				<p class = "order_num">订单号：<?= order.order_id?></p>
+			<!-- <span class="status_line line_right"></span> -->
+		</div>
+		<div class="goods">
+		<div class = "goods_shop_name">
+		<?var shop_name = order.shop_name.length > 10 ? order.shop_name.slice(0,10)+'...' : order.shop_name;?>
+				<img  class = "shop_img" src="http://d01.res.meilishuo.net/pic/_o/9c/49/5d7bc695b32dca1d4b89116f61f2_30_25.cg.png">
+				商家：<span class = "name_txt"><?= shop_name?></span>
+				<a class = "connect_customer_service" href="http://im.meilishuo.com/wap/chat/?chat=1&shop_id=<?=order.shop_id?>&source=wap&type=2&button_stat_area=order_service">联系客服</a>
+			</div>
+			<? goods && $.each(goods, function(i, goods){ 
+				var url = order.is_sq ? '/sq/detail/?twitter_id=' + goods.twitter_id + '&page_name=' + this.pageName : 'javascript:void(0)';
+				var gLink = "/sq/detail/?twitter_id=" + goods.twitter_id + "&d_r=1_-8-1-1";
+			?>
+			
+			<div class="goods_wrap" mid="<?= goods.mid ?>">
+				<a href="<?= url ?>" <?if(!order.is_weixin){?> class="eventnone"<?}?>>
+					<div class="goods_info_wrap goods_info_btm padding_b_20 <?if(i == order_info.goods.length - 1){?>goods_info_bno<?}?>" style="border-bottom:none">
+					<a href="<?= gLink ?>">
+						<img src="<?= goods.b_pic_url?>" class="goods_img <?if(!order.is_weixin){?>no_weixin_goods<?}?>" />
+					</a>
+						<? if(goods.refund_button_text != ''){?>
+						<p class="refund">
+							<? if(goods.refund_id){?>
+								<a class="re_btn word_border" href="/app/refund/detail/?refund_id=<?=goods.refund_id?>">
+							<? } else {?>
+							<a class="re_btn word_border" href="/app/refund/apply/?order_id=<?=order.order_id?>&mid=<?=goods.mid?>">
+							<? }?>
+								<?= goods.refund_button_text ?></a>
+							<span><?= goods.refund_status_text ?></span>
+						</p>
+						<?}?>
+						<div class="goods_info">
+							<a href="<?= gLink ?>">
+							<p class="goods_title <?if(!order.is_weixin){?>gray no_weixin_goods<?}?>"><?= goods.goods_title?></p>
+							</a>
+							<p class="goods_size">
+							<?goods.prop && goods.prop.map(function(data, i){?>
+							<?if(data.is_show){?>
+								<span><?= data.name?>：<?= data.value?></span>
+							<?}?>
+							<?});?>
+							</p>
+							<p class="goods_price">
+								<span>价格：<?= goods.price?></span>
+								<span>数量：<?= goods.amount?></span>
+							</p>
+						</div>
+					</div>
+				</a>
+			</div>
+			<?});?>
+			<div class="total">
+				<div class = "order_coupon1">
+					运费：<span class="ml_color"><?if(order.express_price){?>¥<?= order.express_price?><?}else{?>免运费<?}?></span>
+					<span class="total_money">
+						合计：<span class="ml_color">¥<?= order.total_price ?></span>
+					</span>
+					
+				</div>
+				<div class="order_coupon">
+				本店优惠：<span class="ml_color1"><?= order.shop_coupon_msg ? order.shop_coupon_msg : "未使用优惠劵"?></span>
+				</div>
+				<?if(order.coin_price){?>
+				<div class="order_coupon">
+				金币抵扣：<span class="ml_color">-￥<?= order.coin_price?></span>
+				</div>
+				<?}?>
+				<div class="order_coupon">
+				美丽说优惠：<span class="ml_color1"><?= order.plat_coupon_msg ? order.plat_coupon_msg : "未使用优惠劵" ?></span>
+				</div>
+				<?if(order.weixin_card_coupon_msg){?>
+				<div class="order_coupon">
+					<!-- <img src="<%=this.PICTURE_URL%>/images/wap/web/wx_new/wx_card.png" class="coupon_icon"> -->
+				微信卡券优惠：<span class="ml_color"><?= order.weixin_card_coupon_msg ?></span>
+				</div>
+				<?}?>
+			</div>
+			<?if(order.comment){?>
+			<div class="user_msg">
+				购买留言： <?= order.comment ?>
+			</div>
+			<?}?>
+		</div>
+		<div class="order_bt"></div>
+	</div>
+	<div class="safety">
+			<p>美丽说无忧购服务保障</p>
+			<div class="safe_img">
+				<span class="safe_img_l">
+					<img src="http://d05.res.meilishuo.net/pic/_o/29/e3/8d09616f072d374e48e32a1919bc_100_95.ch.png"></span>
+				<span class="safe_img_c">
+					<img src="http://d02.res.meilishuo.net/pic/_o/06/0e/1897325e0aa4c3ee7ee69086deaf_100_95.ch.png">
+				</span>
+				<span class="safe_img_r">
+					<img src="http://d04.res.meilishuo.net/pic/_o/a1/e1/c01869034cfc32c7c61d07194579_100_95.ch.png">
+				</span>	
+			</div>
+			客服电话：<a class="ml_color server_tel"href="tel:4000800577">400-080-0577</a>
+		<div class="indent_info">
+			<?if(order.ctime){?><p>下单时间：<span><?= order.ctime ?></span></p><?}?>
+			<?if(order.pay_time){?><p>成功支付时间：<span><?= order.pay_time ?></span></p><?}?>
+			<?if(order.send_time){?><p>卖家发货时间：<span><?= order.send_time?></span></p><?}?>
+			<?if(order.receive_time){?><p>确认收货时间：<span><?= order.receive_time?></span></p><?}?>
+			<?if(order.receive_time_out){?><p>确认收货时间：<span><?= order.receive_time_out?></span></p><?}?>
+			<?if(order.last_status_time){?><p>订单关闭时间：<span><?= order.last_status_time?></span></p><?}?>			
+			<?if(order.auto_close_time){?><p>未付款订单关闭时间：<span><?= order.auto_close_time?></span></p><?}?>
+			<?if(0){?>
+			<p>您成功支付的三天后如果商家仍未发货，系统会自动为您退款至您的付款账户内。</p>
+			<?}?>
+		</div>
+		<?if(false){?>
+		<p class="refund">
+			如果您想要退款或遇到了其他困难，也可以
+			<a class="re_btn word_border" href="/refund?order_id=<?= order.order_id?>">申请退款</a>
+		</p>
+		<?}?>
+	</div>
+	<?if(order.show_pay_and_close || order.show_receive_button){?>
+	<div class="blank"></div>
+	<div class="verify">
+		<!-- <span class="ml_color">&ensp;</span> -->
+		<?if(order.show_pay_and_close){?>
+		<p>
+			<a href="javascript:;" id="pay_now" order_id="<?= order.order_id ?>" total_price="<?= order.total_price ?>" >QQ钱包支付</a>
+			<a id="cancel_order" order_id="<?= order.order_id ?>" href="javascript:;">取消订单</a>
+		</p>
+		<?}?>
+		<?if(order.show_receive_button == '1'){?>
+		<span>
+			<a href="javascript:void(0)" class="recvOrder" order_id="<?= order.order_id ?>">确认收货</a>
+		</span>
+		<?}?>
+	</div>
+	<?}?>
+</script>
+<script>
+	fml.vars.order_id = "<%= this.order_id%>";
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/sq/orderDetail');
+_use:", this._JSstack , this._JSmods ); %>
+<%# sq/footer.html%>

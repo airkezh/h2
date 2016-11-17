@@ -1,0 +1,31 @@
+<nav class="top_nav">
+	<ul class="top_nav_box">
+	<% for(var i=0; i<this.navInfo.length; i++){%>
+		<li <% if(this.pageName == this.navInfo[i].en){%> class="active"<%}%>>
+			<%  
+				var url = '/wx/mall/' + this.navInfo[i].en
+				if(this.navInfo[i].defaultcate_id)
+					url += '?cate_id=' + this.navInfo[i].defaultcate_id
+				%>
+				<a href="<%=url%>" >
+					<%= this.navInfo[i].page_title %>
+				</a>
+			
+		</li>
+	<%}%>
+	</ul>
+	<span class="top_nav_img"></span>
+	<div class="user_box">
+		<span class="bg_triangle"><img src="<%=this.PICTURE_URL%>/images/wap/web/wx_new/gray_triangle.png" alt=""></span>
+		<a href="/wx/user/order_list" class="a_user a_line">
+			<span class="i_img"><img src="<%=this.PICTURE_URL%>/images/wap/web/wx_new/white_user.png" alt=""></span>
+			<p>个人中心</p>
+		</a>
+		<a href="/wx/cart/" class="a_line"><span class="i_img"><img src="<%=this.PICTURE_URL%>/images/wap/web/wx_new/white_cart.png" alt=""></span>
+			<p>购物车</p>
+		</a>
+	</div>
+</nav>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/wx_new/top_nav');
+_use:", this._JSstack , this._JSmods ); %>

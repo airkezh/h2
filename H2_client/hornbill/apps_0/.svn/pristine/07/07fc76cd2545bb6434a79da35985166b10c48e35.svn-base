@@ -1,0 +1,97 @@
+<%#head.html%>
+<%
+    var getTimeRemain = function(time){
+        if(time && time > this.cur_time){
+            return time - this.cur_time;
+        }else{
+            return ''; 
+        }
+    }
+%>
+<div class="zd-bd">
+	<div class="top1"></div>
+	<div class="top2"></div>
+	<div class="flayer"></div>
+	<div class="bd-inner">
+		<div class="big-bg">
+		<div class="zd-item zd-item1">
+			<div class="countdown">
+				<% if(this.status == 'nostart'){ %>
+		            距离热卖&nbsp;还有<span class="time" remain="<%= getTimeRemain(this.start_time)%>">-天--时--分</span>
+		        <%}else if(this.status == 'saling'){%>
+		            距离结束&nbsp;还有<span class="time" remain="<%= getTimeRemain(this.end_time)%>">-天--时--分</span>
+		        <%}else{%>
+		            活动已结束
+		        <%}%>
+			</div>
+		</div>
+		<div class="zd-item zd-item2">
+				<div class="coupon" tid="<%=this.biduke.data.tInfo[0].twitter_id%>"></div>
+
+			<a href="http://www.meilishuo.com/share/item/2738890155?frm=biduke123" target="_blank" class="tobuy"></a>
+			<div class="buy-status">
+			<%if(this.biduke.data.tInfo[0].is_like == 1){%>
+				<a href="javascript:void(0);"  tid="<%=this.biduke.data.tInfo[0].twitter_id%>">
+					<b class="likes_status"><i>&nbsp;</i>已喜欢</b>
+					<i class="red_f poster_like_num"><%=this.biduke.data.tInfo[0].like_num%></i>
+				</a>
+				<%}else{%>
+				<a href="javascript:void(0);" class="poster_likes" tid="<%=this.biduke.data.tInfo[0].twitter_id%>">
+					<b class="likes_status" ><i class="lm_love2">&nbsp;</i>喜欢</b>
+					<i class="red_f poster_like_num"><%=this.biduke.data.tInfo[0].like_num%></i>
+				</a>
+			<%}%>
+				<span>已抢购<strong><%=this.biduke.data.tInfo[0].sale_num%></strong>份<em>,</em>还剩<strong><%=this.biduke.data.tInfo[0].repertory%></strong>份</span>
+			</div>
+		</div>
+		<div class="zd-item zd-item3">
+			<div class="coupon" tid="<%=this.biduke.data.tInfo[1].twitter_id%>"></div>
+			<a href="http://www.meilishuo.com/share/item/2738944295?frm=biduke124" class="tobuy" target="_blank"></a>
+			<div class="buy-status">
+			<%if(this.biduke.data.tInfo[1].is_like == 1){%>
+			<a href="javascript:void(0);"  tid="<%=this.biduke.data.tInfo[1].twitter_id%>">
+				<b class="likes_status"><i>&nbsp;</i>已喜欢</b>
+				<i class="red_f poster_like_num"><%=this.biduke.data.tInfo[1].like_num%></i>
+			</a>
+			<%}else{%>
+			<a href="javascript:void(0);" class="poster_likes" tid="<%=this.biduke.data.tInfo[1].twitter_id%>">
+				<b class="likes_status" ><i class="lm_love2">&nbsp;</i>喜欢</b>
+				<i class="red_f poster_like_num"><%=this.biduke.data.tInfo[1].like_num%></i>
+			</a>
+			<%}%>
+				<span>已抢购<strong><%=this.biduke.data.tInfo[1].sale_num%></strong>份<em>,</em>还剩<strong><%=this.biduke.data.tInfo[1].repertory%></strong>份</span>
+			</div>
+		</div>
+		<div class="zd-item zd-item4">
+			<a id="share_sina" href="javascript:;"></a>
+		</div>
+		<div class="zd-item zd-item5">
+			<a href="http://www.meilishuo.com/share/item/2738890155?frm=biduke125" target="_blank"></a>
+		</div>
+		<div class="zd-item zd-item6"></div>
+		<div class="zd-item zd-item7">
+			<a href="http://www.meilishuo.com/share/item/2738944295?frm=biduke126" target="_blank"></a>
+		</div>
+		<div class="zd-item zd-item8"></div>
+
+	</div>
+</div>
+</div>
+
+<script type="text/html" id="Huodong_biduke_lj" >
+<%*活动biduke弹层%>
+<div class="dialog_member can_not">
+	<p class="meb_content">
+		<b class="member_icon fail"></b>
+		<?= data?>！
+	</p>
+	<p class="tab_sure">
+		<a class="btn sure mem_btn close_dailog">确定</a>
+	</p>
+</div>
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+     fml.use('page/huodong/biduke');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot.html%>

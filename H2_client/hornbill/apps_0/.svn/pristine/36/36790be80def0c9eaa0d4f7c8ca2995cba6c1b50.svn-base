@@ -1,0 +1,218 @@
+<%
+   var com_order = this.comment.data.order
+      , tInfos = this.tags && this.tags.tInfos;
+%>
+<%# head.html%>
+<div class="comment_title">
+	<div class="comment_icon"></div>
+</div>
+<div class="comment_nav">
+	<a href="<%=this.DOMAIN.www%>/">美丽说</a>
+	&nbsp;&gt;&nbsp;
+	<a href="<%= this.DOMAIN.order%>/order/list/">我的美丽说订单</a>
+	&nbsp;&gt;&nbsp;
+	<a href="#">
+		<span class="red_f">购买评价</span>
+	</a>
+</div>
+<div class="comment-main">
+   <%this.comment.data.goods && this.comment.data.goods.forEach(function(v,i){%>
+   <div class="goods-list">
+      <div class="goods-info" <%if(this.comment.data.goods && this.comment.data.goods.length == 1){%>style="border-right:1px solid #ececec;"<%}%>>
+         <a target="_blank" href="<%=this.DOMAIN.www%>/share/item/<%= v.twitter_id%>" class="item-detail">
+            <img class="pic" src="<%= v.goods_img%>" />
+            <p class="title"><%= v.goods_title%></p>
+            <p class="prop">
+               <span>价格：<em><%= v.price%></em></span>
+               <span>数量：<em><%= v.amount%></em></span>
+            </p>
+            <p class="prop mt8_f">
+               <span><%= v.prop[0].name%>：<em><%= v.prop[0].value%></em></span>
+               <span><%= v.prop[1].name%>：<em><%= v.prop[1].value%></em></span>
+            </p>
+         </a>
+         <%if(this.comment.data.goods && this.comment.data.goods.length == 1){%>
+         <p class="order-info order-id" data="<%= com_order.order_id%>">订单编号：<em><%= com_order.order_id%></em></p>
+         <p class="order-info mt14_f">成交时间：<em><%= com_order.ctime %></em></p>
+         <form class="j-form-service">
+         <div class="shop-info">
+            <p class="shop-name">
+               <span><%if(com_order.is_haitao){%><%}else{%>商家：<%}%><%= com_order.shop_name%></span>
+               <a class="goqq knilmi" href="<%= this.ViewTools.callIM(this._serviceIM) %>"><em class="qqico">&nbsp;</em>联系客服</a>
+            </p>
+            <div class="starItem">
+               <span>描述一致：</span>
+               <ul>
+                  <li class="gray_star j-gray" info="差的太离谱了，宝贝毫无优点可言"></li>
+                  <li class="gray_star j-gray" info="宝贝有瑕疵，没有描述的那么好"></li>
+                  <li class="gray_star j-gray" info="还可以，与商家所描述基本一致"></li>
+                  <li class="gray_star j-gray" info=" 宝贝不错，商家的服务态度也很好，整体满意"></li>
+                  <li class="gray_star j-gray" info=" 非常满意，商品和服务态度都超出了预期"></li>
+               </ul>
+               <input type="hidden" name="accord" value="0" />
+               <span class="point"><em></em><em></em></span>
+            </div>
+            <div class="starItem">
+               <span>质量满意：</span>
+               <ul>
+                  <li class="gray_star j-gray" info="差的太离谱了，宝贝毫无优点可言"></li>
+                  <li class="gray_star j-gray" info="宝贝有瑕疵，没有描述的那么好"></li>
+                  <li class="gray_star j-gray" info="还可以，与商家所描述基本一致"></li>
+                  <li class="gray_star j-gray" info="宝贝不错，商家的服务态度也很好，整体满意"></li>
+                  <li class="gray_star j-gray" info="非常满意，商品和服务态度都超出了预期"></li>
+               </ul>
+               <input type="hidden" name="quality" value="0" />
+               <span class="point"><em></em><em></em></span>
+            </div>
+            <div class="starItem">
+               <span>服务态度：</span>
+               <ul>
+                  <li class="gray_star j-gray" info="商家服务态度差，说脏话、还骂人，简直不把客户当回事"></li>
+                  <li class="gray_star j-gray" info="商家有点儿不耐烦，承诺的服务也兑现不了"></li>
+                  <li class="gray_star j-gray" info="商家回答问题很慢，态度一般，谈不上沟通顺畅"></li>
+                  <li class="gray_star j-gray" info="商家服务态度挺好的，沟通顺畅，整体满意"></li>
+                  <li class="gray_star j-gray" info="商家服务太棒了，考虑周全，完全超出预期"></li>
+               </ul>
+               <input type="hidden" name="attitude" value="0" />
+               <span class="point"><em></em><em></em></span>
+            </div>
+            <div class="starItem">
+               <span>发货速度：</span>
+               <ul>
+                  <li class="gray_star j-gray" info="发货速度非常慢，反复催了几次才发货"></li>
+                  <li class="gray_star j-gray" info="发货速度比较慢，提醒了才发货"></li>
+                  <li class="gray_star j-gray" info="发货速度可以接受，算不上快"></li>
+                  <li class="gray_star j-gray" info="发货速度还算及时"></li>
+                  <li class="gray_star j-gray" info="发货速度超级快，赞卖家"></li>
+               </ul>
+               <input type="hidden" name="fast" value="0" />
+               <span class="point"><em></em><em></em></span>
+            </div>
+         </div>
+         </form>
+         <%}%>
+      </div>
+      <form class="j-form">
+      <div class="comment-cont" <%if(this.comment.data.goods && this.comment.data.goods.length > 1){%>style="border-left:1px solid #ececec;"<%}%>>
+         <div class="com-item">
+            <span>综合评分：</span>
+            <div class="com-item-list">
+               <a class="flower h-flower active" score="5" href="javascript:void(0)"><i></i>好评</a>
+               <a class="flower n-flower" score="3" href="javascript:void(0)"><i></i>中评</a>
+               <a class="flower c-flower" score="1" href="javascript:void(0)"><i></i>差评</a>
+               <input type="hidden" name="level" value="5"/>
+            </div>
+         </div>
+         <div class="com-item mt18_f">
+            <%if(tInfos && tInfos[i] && tInfos[i].tags && tInfos[i].tags.length > 0){%>
+            <span>宝贝特点：</span>
+            <div class="com-item-list feature" goods="<%= v.goods_id%>">
+               <a class="rate-tag active none_f" tag="0" href="javascript:void(0)"></a>
+               <% tInfos[i].tags.forEach(function(item){ %>
+               <a class="rate-tag" tag="<%= item.tag_id%>" href="javascript:void(0)"><%= item.content%></a>
+               <%});%>
+               <div class="clear_f"></div>
+               <input type="hidden" name="tag_ids" value=""/>
+            </div>
+            <%}%>
+            <div class="com-item-list">
+               <div class="txtarea">
+                     <label class="placeholder">买到好东西了！马上写点评价得瑟一下（≧≦）</label>
+                     <textarea></textarea>
+                     <div class="clear_f"></div>
+               </div>
+               <div class="comment_notice"><i class="wrong_tip"></i><b>评论文字过长，请修改后重新提交</b></div>
+            </div>
+         </div>
+      </div>
+      <input type="hidden" name="mid" value="<%= v.mid%>"/>
+      <input type="hidden" name="content" value=""/>
+      </form>
+   </div>
+   <%if(i < this.comment.data.goods.length - 1){%>
+      <div class="dash_border"></div>
+   <%}%>
+   <%});%>
+   <%if(this.comment.data.goods && this.comment.data.goods.length > 1){%>
+      <div class="dash_border"></div>
+      <div class="shop_wrap">
+         <p class="order-info order-id" data="<%= com_order.order_id%>">订单编号：<em><%= com_order.order_id%></em></p>
+         <p class="order-info mt14_f">成交时间：<em><%= com_order.ctime %></em></p>
+         <form class="j-form-service">
+         <div class="shop-info">
+            <p class="shop-name">
+               <span><%if(com_order.is_haitao){%><%}else{%>商家：<%}%><%= com_order.shop_name%></span>
+               <a class="goqq knilmi" href="<%= this.ViewTools.callIM(this._serviceIM) %>"><em class="qqico">&nbsp;</em>联系客服</a>
+            </p>
+            <div class="starItem">
+               <span>描述一致：</span>
+               <ul>
+                  <li class="gray_star j-gray" info="差的太离谱了，宝贝毫无优点可言"></li>
+                  <li class="gray_star j-gray" info="宝贝有瑕疵，没有描述的那么好"></li>
+                  <li class="gray_star j-gray" info="还可以，与商家所描述基本一致"></li>
+                  <li class="gray_star j-gray" info=" 宝贝不错，商家的服务态度也很好，整体满意"></li>
+                  <li class="gray_star j-gray" info=" 非常满意，商品和服务态度都超出了预期"></li>
+               </ul>
+               <input type="hidden" name="accord" value="0" />
+               <span class="point"><em></em><em></em></span>
+            </div>
+            <div class="starItem">
+               <span>质量满意：</span>
+               <ul>
+                  <li class="gray_star j-gray" info="差的太离谱，与商家描述的不一致，刚穿一两天就坏了"></li>
+                  <li class="gray_star j-gray" info="宝贝有瑕疵，没有描述的那么好"></li>
+                  <li class="gray_star j-gray" info="还可以，与商家所描述基本一致"></li>
+                  <li class="gray_star j-gray" info="宝贝不错，商家的服务态度也很好，整体满意"></li>
+                  <li class="gray_star j-gray" info="非常满意，商品和服务态度都超出了预期"></li>
+               </ul>
+               <input type="hidden" name="quality" value="0" />
+               <span class="point"><em></em><em></em></span>
+            </div>
+            <div class="starItem">
+               <span>服务态度：</span>
+               <ul>
+                  <li class="gray_star j-gray" info="商家服务态度差，说脏话、还骂人，简直不把客户当回事"></li>
+                  <li class="gray_star j-gray" info="商家有点儿不耐烦，承诺的服务也兑现不了"></li>
+                  <li class="gray_star j-gray" info="商家回答问题很慢，态度一般，谈不上沟通顺畅"></li>
+                  <li class="gray_star j-gray" info="商家服务态度挺好的，沟通顺畅，整体满意"></li>
+                  <li class="gray_star j-gray" info="商家服务太棒了，考虑周全，完全超出预期"></li>
+               </ul>
+               <input type="hidden" name="attitude" value="0" />
+               <span class="point"><em></em><em></em></span>
+            </div>
+            <div class="starItem">
+               <span>发货速度：</span>
+               <ul>
+                  <li class="gray_star j-gray" info="发货速度非常慢，反复催了几次才发货"></li>
+                  <li class="gray_star j-gray" info="发货速度比较慢，提醒了才发货"></li>
+                  <li class="gray_star j-gray" info="发货速度可以接受，算不上快"></li>
+                  <li class="gray_star j-gray" info="发货速度还算及时"></li>
+                  <li class="gray_star j-gray" info="发货速度超级快，赞卖家"></li>
+               </ul>
+               <input type="hidden" name="fast" value="0" />
+               <span class="point"><em></em><em></em></span>
+            </div>
+         </div>
+         </form>
+      </div>
+   <%}%>
+   <div class="submit_btn">
+      <input type="button" class="com_btn" value="发表评论" title="发表评论" />
+      <input type="checkbox" class="check_box" id="anonymous" />
+      <label for="anonymous">匿名评价</label>
+   </div>
+   <div class="tipbubble">
+        <div class="tipcontent">
+            <span>1分&nbsp;很不满意</span>
+            <p>差的太离谱了，宝贝毫无优点可言</p>
+        </div>
+        <s><i></i></s>
+    </div>
+</div>
+<script type="text/javascript">
+fml.vars.oid = <%= this.comment.data.order.order_id%>;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+  fml.use('order_pc/shop/shop_comment_change');
+_use:", this._JSstack , this._JSmods); %>
+<%# foot.html%>

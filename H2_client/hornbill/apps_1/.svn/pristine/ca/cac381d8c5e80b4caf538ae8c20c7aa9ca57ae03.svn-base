@@ -1,0 +1,148 @@
+<!--
+/**
+ * @fileoverview 首页 － 签到领优惠券
+ * @requires zepto
+ * @author kehuang@meilishuo.com
+ * @date 2014-12-18
+ */
+-->
+
+<%#head.html%>
+<%
+	var couponsData = this.couponsInfo.data || {},
+		headPic = this.mobUserInfo.data.avatar_b || this.PICTURE_URL + 'images/wap/activity/sign_mall/default_head.jpg';
+%>
+
+<div class="main">
+	<div class="banner">
+		<%
+			var banner_bg = this.PICTURE_URL + 'images/wap/activity/sign_coupon/sign_coupon_banner.jpg';
+		%>
+		<img src="<%= banner_bg %>">
+	</div>
+
+	<div class="body_wrap">
+		<div class="head_wrap">
+			<a href="javascript:;" class="head">
+				<img src="<%= headPic %>">
+			</a>
+			<span class="award">我的奖金：<span id="j_total_award" class="num"><%= couponsData.total || 0 %></span>元</span>
+		</div>
+
+		<div class="coupon_wrap"></div>
+	</div>
+</div>
+
+<script type="text/html" id="j_coupon_layer">
+	<div class="layer_shade"></div>
+	<div class="layer_main">
+		<div class="coupon_info">
+			<span><?=this.coupon_price?></span>元现金券
+		</div>
+		<div class="view_coupon_btn"></div>
+		<div class="close_coupon_btn"></div>
+	</div>
+</script>
+
+<script type="text/html" id="j_coupon_tpl">
+	<?
+		var directCoupons = this.non_threshold || [];
+
+		if (directCoupons.length > 0) {
+	?>
+	<div class="coupon_desc1"></div>
+
+	<div class="coupon_box1">
+		<ul class="direct_coupon_wall">
+	<?
+			var couponHtml = '',
+				curServerHours = this.curServerHours;
+
+			$.each(directCoupons, function(index, coupon){
+				var src = '',
+					status = 0,
+					curClassName = '',
+					left = coupon.left || 0,
+					price = coupon.price || 0;
+
+				if (curServerHours < 12) {
+					status = 2;
+					curClassName = ' robbed';
+				} else {
+					if (left < 1) {
+						status = 1;
+						curClassName = ' robbed';
+					} else {
+						status = 3;
+						curClassName = '';
+					}
+				}
+
+				src = 'images/wap/activity/sign_coupon/' + price + '_direct_coupon_' + status + '.png';
+
+				if (index < 3) {
+	?>
+			<li class="coupon<?= curClassName ?>" data-price="<?= price ?>" data-type="1">
+				<img src="<%= this.PICTURE_URL %><?= src ?>">
+			</li>
+	<?
+				} else {
+					couponHtml += '<li class="coupon' + curClassName + '" data-price="' + price + '" data-type="1"><img src="<%= this.PICTURE_URL %>' + src + '"></li>';
+				}
+			});
+	?>
+		</ul>
+	</div>
+
+	<div class="coupon_box2">
+		<ul class="direct_coupon_wall"><?= couponHtml ?></ul>
+	</div>
+	<?
+		}
+	?>
+
+	<?
+		var fullCoupons = this.threshold || [];
+
+		if (fullCoupons.length > 0) {
+	?>
+	<div class="dividing_line"></div>
+	<div class="coupon_desc2"></div>
+	<ul class="full_coupon_wall">
+	<?
+			$.each(fullCoupons, function(index, coupon){
+				var status = coupon.status || 0,
+					credit = coupon.credit || 0,
+					threshold = coupon.threshold || 0,
+					starttime = coupon.expiration.start || '',
+					endtime = coupon.expiration.end || '',
+					curClassName = 'full_' + credit + '_' + status + '_coupon';
+
+				if (status == 0) {
+					curClassName += ' robbed';
+				}				
+	?>
+		<li>
+			<div class="coupon <?= curClassName ?>" data-price="<?= credit ?>" data-type="2">
+				<p class="title">满<?= threshold ?>使用</p>
+				<p class="desc">有效期：<?= starttime ?>~<?= endtime ?></p>
+			</div>
+		</li>
+	<?
+			});
+	?>
+	</ul>
+	<?
+		}
+	?>
+</script>
+
+<script>
+	fml.vars.coupons_data = <%= JSON.stringify(couponsData) %>;
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use("wap/page/activity/sign_coupon");
+_use:", this._JSstack, this._JSmods); %>
+
+<%#foot_simple.html%>

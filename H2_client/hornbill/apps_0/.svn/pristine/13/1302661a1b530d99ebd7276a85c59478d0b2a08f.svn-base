@@ -1,0 +1,217 @@
+
+<%# sq/header.html%>
+<%
+	var goodsInfo = this.goods_info || {}
+		, goods = this.goods || {}
+
+	var cur_time  = (new Date).getTime() / 1000
+	var globalKey = this._Request_cookies.MEILISHUO_GLOBAL_KEY;
+
+	function getTimeRemain(end_time){
+		if (end_time && end_time > cur_time) return end_time - cur_time
+		else return end_time
+	}
+
+%>
+<%if(this.goods_info){%>
+<div class="wrap">
+	<!-- <h2 class="wx_title">商品详情</h2> -->
+	<figure class="piciture goodsArea" goods_id="<%= goodsInfo.goods_id %>" twitter_id="<%= goodsInfo.twitter_id%>" pid="<%= goodsInfo.pid || 0%>">
+		<span class="pic_wrap">
+			<img src="<%= goodsInfo.image && goodsInfo.image.image[0]%>"/>
+		</span>
+		<div class="name">
+			<h2 class="goods_name"><%= goodsInfo.goods_title%></h2>
+			<div class="price">
+				<span class="ml_color now now_price">￥<%= goodsInfo.price%>
+					<%}%></span>
+				<span class="normal"><% if (goodsInfo.original_price != ''){%>￥<%= goodsInfo.original_price%>
+
+			</div>
+		</div>
+		<%if(this.banner_show){%>
+		<a href="http://m-qiang.meilishuo.com/sq/coupon_zone?type=noqq">
+			<img src="http://i.meilishuo.net/css//images/wap/web/sq/detail_banner916.jpg" alt="">
+		</a>
+		<%}%>
+	</figure>
+	<div class="sale">
+	<%
+		var promptRemain = getTimeRemain(goodsInfo.end_time)
+	%>
+	<div class="time" <%if(goodsInfo.show_clock == 0){%> style="display:none" <%}%> >
+		<span class="status_line detail_line"></span>
+		<p class="countdown" remain="<%= promptRemain%>">
+			<img src="<%=this.PICTURE_URL%>/images/wap/web/wx/detail_time.png" class="detail_time"/>
+			<span class="time_v">
+				<%	if(promptRemain){ %>
+					仅剩&nbsp;<span>-天--小时--分--秒</span>
+				<%  } else {%>
+					活动结束
+				<%  } %>
+			</span>
+		</p>
+		<span class="status_line line_right detail_line"></span>
+	</div>
+		
+		<ul class="sale_info">
+			<li class="baoyou">
+				运费<span class="ml_color"><%= goodsInfo.freight ? goodsInfo.freight : '包邮'%></span>
+			</li>
+			<li>
+				销量<span class="ml_color"><%= goodsInfo.sales%>件</span>
+			</li>
+			<li>
+				好评率<span class="ml_color">（<%if(goodsInfo.satisfy_rate){%><%=goodsInfo.satisfy_rate%><%}else{%>--<%}%>）</span>
+			</li>
+			<li>
+				库存<span class="ml_color"><%= goodsInfo.repertory%>件</span>
+			</li>
+		</ul>
+	</div>
+	<div class="layer_wrap" id="propNotice"></div>
+	<div class="goods_info" id="goods_attr">
+
+		<% if (goodsInfo.prop && goodsInfo.prop.color && goodsInfo.prop.color.is_show) { %>
+		<dl class="prop info_list">
+			<dt class="type"><%= goodsInfo.prop.color.name%>：</dt>
+			<dd class="info">
+				<ul id="colorList">
+					<% goodsInfo.prop.color.value.forEach(function(item , key){ %>
+						<li><span <%if(goodsInfo.prop.color.image && !goodsInfo.is_cosmetic){%>imgurl="<%= goodsInfo.prop.color.image[key] %>"<%}%>><%= goodsInfo.prop.color.value[key] %></span></li>
+					<%});%>
+				</ul>
+				<div class="colorShow"></div>
+			</dd>
+		</dl>
+		<%}%>
+
+		<% if (goodsInfo.prop && goodsInfo.prop.size && goodsInfo.prop.size.is_show) { %>
+		<dl class="prop info_list pdtop sizes">
+			<dt class="type"><%= goodsInfo.prop.size.name%>：</dt>
+			<dd class="info">
+				<ul id="sizeList">
+					<% goodsInfo.prop.size.value.forEach(function(item , key){%>
+						<li><span><%= item%></span></li>
+					<%});%>
+				</ul>
+			</dd>
+		</dl>
+		<%}%>
+
+		<dl class="amount pdtop">
+			<dt class="type">数 量：</dt>
+			<dd class="info">
+				<div class="numBox">
+					<%if(!goodsInfo.in_seckill){%>
+						<span class="minus">-</span>
+					<%}%>
+					<span class="buy_num">1</span>
+					<input class="nums" title="请输入购买数量" type="text" value="1" <%if(goodsInfo.in_seckill){%>readonly="readonly" <%}%> />
+
+					<%if(!goodsInfo.in_seckill){%>
+					<span class="plus">+</span>
+					<%}%>
+				</div>
+				<span class="stock now_num">(库存<span>-</span>件)<%if(goodsInfo.in_seckill){%><b class="num_only">限购1件</b><%}%> </span>
+			</dd>
+		</dl>
+		<div class="msg_box">
+				<p class="msg_limit"><span class="msg_ico"></span>对不起！每人最多限购100件！</p>
+				<p class="msg_zero"><span class="msg_ico"></span>对不起，这件宝贝已经卖光啦！</p>
+				<p class="msg_over"><span class="msg_ico"></span>您所填写的宝贝数量超过库存！</p>
+		</div>
+	</div>
+	<!-- 买手推荐
+	 <div class="goods_buyer">							
+		<dl>								
+			<dt>
+				<img src="http://d03.res.meilishuo.net/pic/_o/a3/07/db087bdfe77cf9b86fb3c50716bc_441_518.c8.jpg_a4c2c9fa_s5_q0_150_5_0_120_120.jpg">
+			</dt>								
+			<dd class="preslae_brand">									
+				<p><b class="f_red">美丽说时尚买手 萌萌萌</b><span class="g_like"><i><img src="<%=this.PICTURE_URL%>/images/wap/web/sq/icon-like.png" alt=""></i><em class="f_red">1235</em>人喜欢</span></p>
+				<p><b>08月19日 17:30</b></p>										
+			</dd>								
+			<dd>
+				<div class="intro">
+					斗篷式的连衣裙设计，外层在背后有开衩，婉约飘逸，又不会妨碍手部的活动；内里有白色的内衬，不会走光；特别选用清透的浅蓝色，像大海蔓延到沙滩上的那最后一点的蓝。
+				</div>
+			</dd>	
+		</dl>						
+	</div> -->
+	<section class="honor">
+		<h2>店铺分数</h2>
+		<div class="shop-info">
+			<p><span class="shop-info-logo"><img src="<%= goods.shop.shop_face_img %>" alt="shop logo"></span><%= goods.shop.shop_nick %></p>
+		</div>
+		<%if(goods.points){ %>
+		<ul class="honor-indicators">
+			<% goods.points.forEach(function (v, k){%>
+			<li><span class="honor-indicators-item icon<%= ++v.mark %>"><%= v.text + " " + v.avg %></span></li>
+			<%});%>
+		</ul>
+		<%}%>
+	</section>
+	<section class="promise">
+		<h2>服务保障</h2>
+		<ul>
+			<li class="p1">极速发货</li>
+			<li class="p2">7填退货</li>
+			<li class="p3">先行先赔</li>
+			<li class="p4">退货补贴</li>
+		</ul>
+	</section>
+	<%# sq/goods_detail.html %>
+
+	<!-- , buy_style = ['non_buy', 'buy_btn', 'non_buy','non_buy','non_buy','non_buy'] -->
+	<%
+		var buy_text = ['不能购买', '立即购买', '原价购买','商品已下架','暂未开始','已抢光']
+			, buy_style = 'non_buy'
+			, cart_style = 'non_cart'
+
+		if(goodsInfo.buy_button_status == 1){
+			buy_style = 'buy_btn';
+			cart_style = 'cart_btn';
+		}
+	%>
+
+	<div class="btn_box buy">
+		<!-- <div class="hint"><span class="hint_txt">您还有优惠劵未使用哦</span><span class="close">×</span></div> -->
+		
+		<a href="/sq/mall/daily">
+			<span class="r_btn"><em class="icon_img"><img src="<%=this.PICTURE_URL%>/images/wap/web/sq/home.png" alt=""></em><p>首页</p></span>
+		</a>
+		<span class="<%= cart_style %>">加入购物车</span>
+		<span class="<%= buy_style %>  go_buy"><%= buy_text[goodsInfo.buy_button_status] %></span>
+		<a href="/sq/cart/">
+			<span class="r_btn">
+				<i class="cart_img"><span class="cart_num"></span></i>
+				<em class="icon_img"><img src="<%=this.PICTURE_URL%>/images/wap/web/sq/cart.png" alt=""></em>
+				<p>购物车	</p>
+			</span>
+		</a>
+
+		<!-- 回到顶部 -->
+		<!--  <span class="r_btn" id="go_top"><em><img src="<%=this.PICTURE_URL%>/images/wap/web/sq/icon-top.png" alt=""></em><p>顶部</p>	</span> -->
+		
+	</div>
+</div>
+<ul id="goTop">
+	<li class="none_f" id="go_top"><span class="icon-gotop"></span></li>
+</ul>
+<script>
+fml.vars.count_discuss = "<%= (goodsInfo.twitter_stat && goodsInfo.twitter_stat.discuss_num) || 0%>";
+fml.vars.goods = {"id" : "<%=goodsInfo.goods_id %>" , "twitter_id": "<%= goodsInfo.twitter_id%>" ,"pid" :"<%= goodsInfo.pid || 0%>","price" : "<%= goodsInfo.price || 0 %>" , "price_max" : "<%= goodsInfo.price_max || 0%>", "original_price" : "<%= goodsInfo.original_price || 0 %>","original_price_max" : "<%= goodsInfo.original_price_max || 0 %>"};
+fml.vars.goods_stock = <%= JSON.stringify(goodsInfo.stock)%>;
+fml.vars.goods_prop = <%= JSON.stringify(goodsInfo.prop)%>;
+fml.vars.globalKey = '<%= globalKey %>';
+fml.vars.shareInfo = {"title" : "<%= goodsInfo.goods_title%>","price" : "售价：￥<%= goodsInfo.price%>","img_url" : "<%= goodsInfo.image && goodsInfo.image.small_image[0]%>", "url" : window.location.href};
+fml.vars.skuInfo = <%= JSON.stringify(goodsInfo.stock_info)%>;
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/sq/sale');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# sq/footer.html%>
+<%}%>

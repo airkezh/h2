@@ -1,0 +1,79 @@
+<%# wx_new/header.html %>
+
+<%
+	var data = this.orderDetail.info;
+	var sec1D = data.goods || [];
+	var order = data.order;
+%>
+
+<div class="section_wrap">
+	<section class="sec1">
+	<% sec1D.forEach(function (item, index){ %>
+		<div class="sec1-part goods" data-index="<%= index %>" data-mid="<%= item.mid %>">
+			<div class="sec1-part-ctn1">
+				<span class="goods_img" style="background-image: url(<%= item.goods_img %>);"></span>
+				<p class="title"><%= _extFn.mSubstr(item.goods_title, 14, ' ...') %></p>
+				<ul class="parameter_list">
+					<li>价格：<%= item.price %></li>
+					<%
+						var prop = item.prop || [];
+						prop.forEach(function (item){
+							if(item.is_show == "1"){ 
+								var text = item.name + "：" + item.value
+								if( text.replace(/[^\x00-\xff]/g,"**").length / 2 < 9 ){
+					%>
+					<li><%= text %></li>
+					<% }}}); %>
+					<li>数量：<%= item.amount %></li>
+				</ul>
+			</div>
+			<ul class="sec1-part-ctn2 comprehensive_comment_list">
+				<li class="title">综合评分</li>
+				<li class="comprehensive selected" data-action="comprehensiveComment">好评</li>
+				<li class="comprehensive" data-action="comprehensiveComment">中评</li>
+				<li class="comprehensive" data-action="comprehensiveComment">差评</li>
+			</ul>
+			<textarea class="sec1-part-ctn3 text_area" type="area" placeholder="马上写下你的购物心得和大家分享吧（限140字）" maxlength="140"></textarea>
+		</div>
+	<% }); %>
+	</section>
+	<section class="sec2">
+		<p class="sec2-part1">商家：<span class="sec2-part1-ctn"><%= order.shop_name %></span></p>
+		<ul class="sec2-part2">
+		<% 
+			var sec2D = [
+				{name: "accord", desc: "描述一致"},
+				{name: "attitude", desc: "服务态度"},
+				{name: "fast", desc: "发货速度"},
+				{name: "quality", desc: "商品质量"}
+			];
+			sec2D.forEach(function (item, index){ 
+		%>
+			<li class="sec2-part2-ctn">
+				<ul id="<%= item.name %>" class="star_list" data-index="<%= index %>">
+					<li class="title"><%= item.desc %></li>
+					<li class="star selected" data-action="giveMeStar"></li>
+					<li class="star selected" data-action="giveMeStar"></li>
+					<li class="star selected" data-action="giveMeStar"></li>
+					<li class="star selected" data-action="giveMeStar"></li>
+					<li class="star selected" data-action="giveMeStar"></li>
+				</ul>
+			</li>
+		<% }); %>
+		</ul>
+		<div class="sec2-part3"></div>
+	</section>
+	<section class="sec3">
+		<i data-action="submitComment">发 表 评 价</i>
+	</section>
+</div>
+
+<%! 
+	$_ENGINE_SELF.callFn("useModule")(
+		"<<<_use:fml.use('wap/page/wx_new/comment');_use:", 
+		this._JSstack, 
+		this._JSmods 
+	); 
+%>
+
+<%# wx_new/footer.html %>

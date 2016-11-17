@@ -1,0 +1,155 @@
+<%# head.html %>
+
+<%
+    var nav = [{type : 'hot', name : '最热单品'}, {type : 'promote', name : '推荐圈子'}, {type : 'join', name : '我的'}],
+        paramR = decodeURIComponent( this.r || '' );
+%>
+
+<div class="nav_wrap">
+    <div class="nav">
+        <div class="nav_in">
+            <% nav.forEach(function(data){ %>
+                <div <%= this.page_type == data.type.split(' ')[0] ? 'class="active"' : '' %> data-tab="<%= data.type %>"><%= data.name %></div>
+            <% }); %>
+        </div>
+    </div>
+</div>
+
+<% if(this.bannar && this.bannar.length){ %>
+<div class="banner_wrap">
+    <div class="imageSlide" id="imageSlide">
+        <ul>
+            <% this.bannar.forEach(function(bannar, index){ %>
+                <li>
+                    <a class="top_bannar swipe" href="<%= bannar.url %>"><img src="<%= bannar.image_url %>"></a>
+                </li>
+            <% }); %>
+        </ul>
+        <div class="num"></div>
+    </div>
+</div>
+<% } %>
+
+<div class="content js_content">
+    <div class="circle_wall js_circle_wall"></div>
+    <div class="pullUp" status="tap"></div>
+</div>
+
+<div class="gotop_wrap">
+    <a class="gotop">
+        <img src="http://i.meilishuo.net/css/images/wap/tuan/gotop.png" />
+    </a>
+</div>
+
+<script type="text/html" id="promoteCircles">
+    <div class="promote-circles">
+        <div class="hd">
+            <h3><?= this.name ?></h3>
+            <a href="meilishuo://openURL.meilishuo?json_params=<?= encodeURIComponent( JSON.stringify({
+                url: 'http://' + location.host + '/circle/circle_more?type=' +  this.type + '&cid=' + this.cid + '&title=' + encodeURIComponent( this.name )
+            })) ?>
+            " class="more">查看更多</a>
+        </div>
+        <ul class="bd">
+            <?
+             var len = this.len,
+                circles = this.circles,
+                circle;
+
+            function getAppLink(tid) {
+                return 'meilishuo://circle.meilishuo?json_params='+encodeURIComponent(JSON.stringify({"circle_id" : tid,"r": "<%= paramR %>"}));
+            }
+
+            for ( var i = 0; i < len; i++ ) {
+                circle = circles[ i ];
+            ?>
+                <li class="circle">
+                    <div class="info">
+                        <a href="<?= getAppLink( circle.id ) ?>">
+                        <div class="circle-icon" style="background-image: url(<?= circle.img ?>);"></div>
+                        <? if(+circle.unread_message){ ?><div class="msg_num"><div>N</div></div><? } ?>
+                        </a>
+                    </div>
+                    <p class="circle-name"><?= circle.name ?></p>
+                    <p class="circle-member">成员数:<?= circle.member_num ?></p>
+                </li>
+            <?}?>
+        </ul>
+    </div>
+</script>
+<script type="text/html" id="circlePosterWall">
+    <?
+        function getAppLink(tid){
+            return 'meilishuo://circle.meilishuo?json_params='+encodeURIComponent(JSON.stringify({"circle_id" : tid,"r": "<%= paramR %>"}));
+        }
+        this.circle.forEach(function(circle) {
+    ?>
+        <a href="<?= getAppLink(circle.id) ?>" class="circle">
+            <div class="info">
+                <div class="circle-icon" style="background-image: url(<?= circle.img ?>);"></div>
+                <? if(+circle.unread_message){ ?><div class="msg_num"><div>N</div></div><? } ?>
+                <div class="circle_queen">
+                    <div class="img_wrap"><img src="<?= circle.admin.avatar_a ?>"></div>
+                </div>
+            </div>
+            <p class="title"><?= circle.name ?></p>
+            <p class="number"><?= circle.member_num ?>/<?= circle.member_max ?></p>
+            <p class="desc"><?= circle.description ?></p>
+        </a>
+    <? }); ?>
+</script>
+<script type="text/html" id="itemPosterWall">
+	<?
+	var isInApp = Meilishuo.config.os.mlsApp,
+	    pt, getItemLink;
+
+	function getAppLink(tid) {
+        return 'meilishuo://circle.meilishuo?json_params='+encodeURIComponent(JSON.stringify({"circle_id" : tid,"r": "<%= paramR %>"}));
+    }
+
+    if ( isInApp ) {
+        getItemLink = function( tid, isDoota ) {
+            return 'meilishuo://twitter_single.meilishuo?json_params='+ encodeURIComponent(JSON.stringify( {
+                twitter_info: {
+                    twitter_id: '' + tid,
+                    is_doota: '' + isDoota
+                },
+                r: "<%= paramR %>"
+            }));
+        }
+    } else {
+        getItemLink = function( tid ) {
+            return '//m.meilishuo.com/share/item/' + tid + '?r=' + encodeURIComponent('<%= paramR %>')
+        }
+    }
+
+    this.items.forEach(function( item ) {
+        pt = 100 * item.pic_height / item.pic_width;
+	?>
+	<div class="item js-tile">
+		<div class="li_border">
+            <a style="background-image:url('<?=item.pic_url?>');padding-top:<?= pt ?>%;" class="item-img" href="<?= getItemLink(item.twitter_id, item.is_doota) ?>"></a>
+			<div class="list_info">
+                <p class="list_title"><?= item.title ?></p>
+				<p class="list_cost"><?= item.price ?></p>
+			</div>
+            <a class="shop-info" href="<?=getAppLink(item.circle.circle_id)?>">
+                <span class="img_wrap circle-icon" style="background-image: url(<?= item.uinfo.avatar_c ?>);"></span>
+                <span class="shop-name"><?= item.circle.name ?></span>
+            </a>
+		</div>
+	</div>
+    <?});?>
+</script>
+
+<script>
+    fml.vars.isLogin = <%= this.isLogin %>;
+    fml.vars.r = '<%= paramR %>';
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+    fml.use('circle/page/list');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot_simple.html %>
+

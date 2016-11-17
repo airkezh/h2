@@ -1,0 +1,134 @@
+<%#head.html%>
+<%
+	var shopinfo = this.shopinfo && this.shopinfo.data && this.shopinfo.data.data
+		, coupon = shopinfo && shopinfo.coupon;
+%>
+<section class="banner">
+	<%if(shopinfo && shopinfo.bg_img){%>
+	<a class="shop_banner"><img src="<%= shopinfo && shopinfo.bg_img %>"></a>
+	<%}%>
+	<%if(coupon && coupon.length > 0){%>
+	<ul class="coupon">
+		<% coupon.forEach(function(item){
+			var class_status = '';
+			
+			switch(item.can_apply_status){
+				case 0:
+					class_status = "can";
+					break;
+				case 1:
+					class_status = "out";
+					break;
+				case 2:
+					class_status = "get";
+					break;
+				case 3:
+					class_status = "can"
+					break;
+			}
+		%>
+		<li class="<%= class_status %>" data-coupon="<%= item.coupon_apply_code%>">
+			<p class="credit">¥&nbsp;<span><%= item.credit %></span></p>
+			<p class="threshold">
+				<%if(parseInt(item.threshold) == 0){%>
+					无门槛使用
+				<%}else{%>
+					消费满&nbsp;<%= item.threshold %>&nbsp;使用
+				<%}%>
+			</p>
+		</li>
+		<%});%>
+	</ul>
+	<%}%>
+	<div class="shop_txt">
+		<p class="right_f">共<span class="d_red"><%= this.shopinfo && this.shopinfo.data && this.shopinfo.data.page.count %></span>款清仓中</p>
+		<div class="time_box js_timeStamp" data-flag="<%= shopinfo.time_flag%>" stime="<%= shopinfo.start_time%>" etime="<%= shopinfo.end_time %>">
+			<%if(shopinfo.time_flag == 1){%>
+				离活动结束还剩
+				<span class="time">
+					<i class="t_day">00</i> 天 <i class="t_hour">00</i> 时 <i class="t_minute">00</i> 分
+				</span>	
+			<%}else if(shopinfo.time_flag == 0){%>
+				离活动开始还剩
+				<span class="time">
+					<i class="t_day">00</i> 天 <i class="t_hour">00</i> 时 <i class="t_minute">00</i> 分
+				</span>
+			<%}%>
+		</div>	
+	</div>
+</section>
+<%if(this.tabs && this.tabs.data && this.tabs.data.length > 0){%>
+<section class="nav_wrap" id="nav_wrap">
+	<div class="sec_nav">
+		<ul>
+			<%this.tabs.data.forEach(function(item, i){%>
+			<li status="<%= item.tab%>" class="tab_item <%= i == 0 ? 'active' : '' %>" <%= i == 2 || i == 3 ? 'sort="1"' : '' %> data-r="<%== item.r%>" ><%= item.name%></li>
+			<%});%>
+		</ul>
+	</div>
+</section>
+<%}%>
+<section id="posterWrap" class="posterWrap">
+	<%if(shopinfo && shopinfo.goods && shopinfo.goods.length > 0){%>
+		<div class="goods">
+			<% shopinfo.goods.forEach(function(item, index){%>
+			<a class="gooditem <%= index%2 ? '' : 'odd' %>" href="<%= item.link%>">
+				<figure>
+					<span class="bs_load_img" asrc="<%= item.ginfo && item.ginfo.goods_pic_url%>"></span>
+					<div class="mark"></div>
+				</figure>
+				<figcaption>
+					<div class="title"><%= item.ginfo.goods_title %></div>
+					<div class="price">
+						<span class="now_price d_red"><%= item.ginfo.goods_price%></span>
+						<del class="origin_price"><%= item.ginfo.origin_price%></del>
+						<%if(item.ginfo.gold_discount != 0){%>
+							<span class="meid"><i></i>抵<%= item.ginfo.gold_discount%></span>
+						<%}%>
+					</div>
+					<div class="sale_num">已售<span class="d_red"><%= item.ginfo.sale_nums %></span>件</div>
+				</figcaption>
+			</a>
+			<%});%>
+		</div>
+	<%}%>
+</section>
+<div class="pullUp" <%if(this.shopinfo.data.page.total == 1 || this.shopinfo.data.page.total == 0){%>status="stop"<%}else{%>status="loading"<%}%>></div>
+<a class="gotop" style="bottom:<%if(this.isIphone){%>60<%}else{%>20<%}%>px">
+	<img src="http://i.meilishuo.net/css/images/wap/tuan/gotop.png" />
+</a>
+
+<script id="posterWall" type="text/html">
+	<?if(this.goods && this.goods.length > 0){?>
+		<?this.goods.forEach(function(item, index){
+			var flag = index%2;
+		?>
+		<a class="gooditem <?= flag ? '' : 'odd' ?>" href="<?= item.link?>">
+			<figure>
+				<span class="bs_load_img" asrc="<?= item.ginfo.goods_pic_url?>"></span>
+				<div class="mark"></div>
+			</figure>
+			<figcaption>
+				<div class="title"><?= item.ginfo.goods_title ?></div>
+				<div class="price">
+					<span class="now_price d_red"><?= item.ginfo.goods_price?></span>
+					<del class="origin_price"><?= item.ginfo.origin_price?></del>
+					<?if(item.ginfo.gold_discount != 0){?>
+						<span class="meid"><i></i>抵<?= item.ginfo.gold_discount?></span>
+					<?}?>
+				</div>
+				<div class="sale_num">已售<span class="d_red"><?= item.ginfo.sale_nums ?></span>件</div>
+			</figcaption>
+		</a>
+		<?});?>
+	<?}?>
+</script>
+<script>
+	fml.vars.isLogin = <%= this.isLogin %>;
+	fml.vars.totalPage = <%= this.shopinfo && this.shopinfo.data && this.shopinfo.data.page.total %>;
+	fml.vars.id = <%== this.id %>;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/clearance/shop');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

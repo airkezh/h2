@@ -1,0 +1,83 @@
+@import "../../block.less";
+
+body{ .bgc(#fff);.f(.24rem); }
+img{ .block;.w(100%); }
+a{ outline: none; }
+input{ border: none;-webkit-appearance: none; }
+
+.imageSlide-rem(){
+	.banner_wrap{ .pr;.h(2.4rem);.w(6.4rem);.hidden; }
+	.imageSlide{
+		.pa;top: 0;left: 0;.w(100%);.h(100%);.hidden;.f(0);
+
+		ul{
+			.pa;.w(100%);
+
+			li{ .pr;.left;.inline;.w(100%); }
+
+		}
+		.num{
+			.w(100%);.c;.pa;left:0;bottom: .08rem;z-index: 10;
+
+			b{ .i_block;.w(.1rem);.h(.1rem);margin: 0 .11rem;.bgc (#fff);.border-r(50%);vertical-align: middle; }
+			.cur{ .w(.08rem);.h(.08rem);.border-r(50%);.bgc(rgba(255, 255, 255, 0));border: .02rem solid white; }
+		}
+	}
+}
+
+.pullUpDown-rem(){
+	.common(){
+		.w(100%);.c;.h(.6rem);.l(.6rem);.f(.14rem);color:#888;.pr;
+		.auto;
+		background:url("@{pic_url}/images/webwap/pull-icon@2x.png") 0 0 no-repeat;
+		-webkit-background-size:.6rem; background-size:.6rem;
+		-webkit-transition:-webkit-transition 0.25s ease-out 0;
+		.w(.6rem);.h(.6rem);
+	}
+	.loading(){
+		&[status="loading"]{
+			background-position:0 100%;
+			.transform(rotate(0deg) translateZ(0));
+			-webkit-transition-duration:0ms;
+			-webkit-animation-name:loading;
+			-webkit-animation-duration:2s;
+			-webkit-animation-iteration-count:infinite;
+			-webkit-animation-timing-function:linear;
+		}
+		@-webkit-keyframes loading {
+			from { .transform(rotate(0deg) translateZ(0)); }
+			to { .transform(rotate(360deg) translateZ(0)); }
+		}
+		&[status="tap"], &[status="stop"]{
+			-webkit-animation-name: none;
+		}
+	}
+
+	.down(){
+		.transform(rotate(0deg) translateZ(0));
+
+		&[status="flip"]{ .transform(rotate(-180deg) translateZ(0)); }
+		&[status="stop"]{ .none;}
+	}
+
+	.up(){
+		.transform(rotate(-180deg) translateZ(0));
+
+		&[status="flip"]{ .transform(rotate(0deg) translateZ(0)); }
+		&[status="stop"]{ .transform(scale(0)); }
+	}
+}
+.fallwall-rem(){
+	.ios_simple;
+	.pullUp{
+		.pullUpDown-rem > .common;
+		.pullUpDown-rem > .loading;
+		&:before{ .nowrap;.ml(-.1rem); }
+		&[status="tap"]{ background: 0 none; }
+		&[status="stop"]{
+			background:0 none;.h(2px);
+
+			&:before{ content:"木有了...";.f(.2rem);.pr;bottom: .2rem; }
+		}
+	}
+}

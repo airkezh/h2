@@ -1,0 +1,78 @@
+<%# head.html%>
+
+<%
+var myshop = this.myshop,
+    hasShop  = !!( myshop && myshop.data && myshop.data.partner_type != 3 );
+%>
+<div class="nav-wrap">
+    <div class="nav">
+        <div data-tab="selling">在售</div>
+        <div data-tab="remove">下架</div>
+    </div>
+</div>
+
+<ul class="wall goods-selling-list">
+
+</ul>
+
+<ul class="wall goods-remove-list">
+
+</ul>
+
+<div class="pull-up js-pull-up" status="tap"></div>
+
+<a class='publish-goods' href="<%=_extFn.getAppLink('publish_post',{'source':'goods_manage'}, this.os, this.r)%>">
+    <span class="add-icon"></span>
+    <span class="note">我要上货</span>
+</a>
+<div class="empty">
+    <img src="http://d05.res.meilishuo.net/pic/_o/bd/fa/6ae16efec1f7c750d7fd57eca6aa_149_184.cg.png" alt=""/>
+    <div class="desc">
+        你还没有发布任何商品
+    </div>
+    <a class="add-goods" href="<%=_extFn.getAppLink('publish_post',{'source':'goods_manage'}, this.os, this.r)%>">立即添加新商品</a>
+</div>
+
+
+<div class="gotop-wrap js-gotop-wrap">
+    <a class="gotop">
+        <img src="http://i.meilishuo.net/css/images/wap/tuan/gotop.png" />
+    </a>
+</div>
+
+
+<script type="text/html" id="goods-tmpl">
+<? var getAppLink = this.getAppLink; ?>
+        <? this.list.forEach(function(good){?>
+        <a href="<?= getAppLink( 'goods_edit',{ 'twitter_id': good.twitter_id })?>">
+        <li class="item">
+                <div class="image" style="background-image:url(<?=good.goods_img?>)"></div>
+                <div class="item-info">
+                    <p class="title"><?=good.goods_title?></p>
+                    <p class="price"><?=good.goods_price?></p>
+                    <p class="extra">
+                        <span class="remain">库存: <?=good.repertory?></span>
+                        <span class="sel-num">销量: <?=good.sale_num?></span>
+                    </p>
+                </div>
+                <span class="go-ico"></span>
+        </li>
+        </a>
+        <?});?>
+</script>
+<script>
+    if ( <%= hasShop %> ) {
+        alert('您已开通店铺');
+        if ( Meilishuo.config.os.mlsApp ) {
+            location.href = 'meilishuo://close.meilishuo';
+        } else {
+            history.back( -1 );
+        }
+    }
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/mainapp/goods_manage');
+_use:", this._JSstack, this._JSmods); %>
+<%# foot_simple.html%>
+

@@ -1,0 +1,64 @@
+<%# head.html%>
+<%
+	var class_type = {
+		'0' : 'add'
+		, '1' : 'minus'
+	},	symbol_type = {
+		'0' : '+'
+		, '1' : '-'
+	}
+%>
+<div class="wrap">
+	<div class="user_wrap">
+		<div class="user_info">
+			<div class="more">			
+				<a href="/tuan?frm=member_more" target="_blank">
+					<b class="shop_icon"></b>
+					去购物领取更多积分 &gt;
+				</a>
+			</div>
+			<div class="user">
+				<a href="" class="user_pic">
+					<img src="<%= this.user_info.data.avatar_b%>" alt="">
+				</a>
+				<dl class="user_main">
+					<dt><%= this.user_info.data.nickname%> </dt>
+					<dd>
+						<span><%= this.user_info.data.point%></span>积分
+					</dd>
+				</dl>
+			</div>
+		</div>
+	</div>
+	<div class="center">
+		<h3 class="mem_record">
+			<span class="line line_l"></span>
+			<span class="line line_r"></span>
+			积分记录
+		</h3>
+		<form>
+			<table class="list_table" cellspacing="0" border-spacing="0">
+				<thead>
+					<tr>
+						<td width="33%">时间</td>
+						<td width="33%">行为</td>
+						<td>积分数</td>
+					</tr>
+				</thead>
+				<tbody>
+					<% this.point_list.infos.map(function(data, idx){%>
+					<tr <% if(idx % 2 == 1){%>class='even'<%}%>>
+						<td><%= data.time%></td>
+						<td><%= data.op_text%></td>
+						<td>
+							<span class="<%= class_type[data.mark]%>"><%= symbol_type[data.mark]%><%= data.point%></span>
+						</td>
+					</tr>
+					<%});%>
+				</tbody>
+			</table>
+			<%#paging.html%>
+		</form>
+	</div>
+</div>
+<%# foot.html%>

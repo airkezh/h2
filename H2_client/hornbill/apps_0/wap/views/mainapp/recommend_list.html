@@ -1,0 +1,53 @@
+<%
+var os = this.os,
+    r = this.r,
+    oldGetAppLink = _extFn.getAppLink,
+    getAppLink = function( protocol, params ) {
+        return oldGetAppLink( protocol, params, os, r );
+    }
+%>
+
+<ul class="list">
+    <%this.list && this.list.forEach(function(v, i){
+        %>
+         <li class="item" data-id="<%= v.user_id%>" >
+        <div class="item-wrap">
+            <div class="rec-person">
+                <a href="<%= getAppLink( 'person', { user_id: v.user_id} ) %>">
+                    <div class="head">
+                        <img class="head-img" src="<%= v.avatar_a %>" alt="">
+                        <% if(v.is_daren == 1) {%>
+                        <span class="icon-vip" style="background-image: url(<%= v.identity_img %>);"></span>
+                    <%}%>
+                    </div>
+                    <div class="info">
+                        <p class="name"><%= v.nickname %></p>
+                        <p class="label"><%= v.label %></p>
+                    </div>
+                </a>
+                <% if(v.followed) { %>
+                <div class="focus done js-focus" data-clicked=false  data-id="<%= v.user_id%>">取消关注</div>
+                <% }else{ %>
+                <div class="focus ready js-focus" data-clicked=false  data-id="<%= v.user_id%>">关注</div>
+                <% } %>
+            </div>
+             <% var imgList = v.circle_msg_pics; 
+                if( imgList ) { %>
+            <div class="share-img">
+            <% imgList.forEach( function( img ){
+                msg_id = img.msg_id;
+                if ( img.pic ) {
+             %>
+            <a href="<%= getAppLink( 'rich_message', { type: 'miscpic', msg_id: msg_id  } ) %>">
+                <div class="img-wrap">
+                    <span style="background-image:url('<%= img.pic %>')">
+                    </span>
+                </div>
+            </a>
+               <% } %>
+               <% }) } %>
+            </div>
+    </div>
+    </li>
+    <%});%>
+</ul>

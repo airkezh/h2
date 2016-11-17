@@ -1,0 +1,36 @@
+
+<script type="text/html" id="posterWall">
+<?
+var pt = this.pt * 100;
+if(!pt){
+	pt = (this.v.pic_height / this.v.pic_width) * 100;	
+}
+?>
+<li class="goods_li poster_grid"> 
+	<div class="li_border">
+		<a style="padding-top:<?= pt ?>%; background-repeat: no-repeat;" asrc="<?=this.v.goods_img?>" href="<?if(this.v.show_type){?> <?=this.v.direct_open_url || '' ?> <?}else{?>/wx/detail?tid=<?= this.v.twitter_id?>&d_r=<?= this.v.d_r?>&page_name=<?= this.v.page_name?>  <?};?>" class="list_img pic_load">
+		</a>
+		<span class="goods_type">
+			<? this.v.mark && this.v.mark.map(function(data, idx){?>
+				<img src="<?= data.img_url?>"/>
+			<?});?>
+		</span>
+
+		<?if(!this.v.show_type){?>
+			<div class="list_info">
+				<?if(this.v.buying_point){?>
+					<p class="sell_title"><?= this.v.buying_point?></p>
+				<?};?>
+				<p class="list_title"><?= this.v.goods_title?></p>
+				<p class="list_cost">
+					<span class="money_now"><?= this.v.discount_price?></span>
+					<span class="like-img">
+						<img src="http://d05.res.meilishuo.net/pic/_o/66/d2/642ace0797b9ca81f4f64b793c3f_22_20.cf.png" alt="">
+					</span>
+					<span class="like-num"><?=this.v.count_like || 0?></span>
+				</p>
+			</div>
+		<?};?>
+	</div> 
+</li>
+</script>

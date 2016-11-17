@@ -1,0 +1,136 @@
+!window.MLSPassport && (window.MLSPassport = {});
+window.MLSPassport.mobile = Mobile
+
+function Mobile(opts, passport){
+	var mSelf = this
+	this.opts = opts || {}
+    this.passport = passport || new Passport(opts)
+
+	this.mobile = this.opts.mobile || '0'
+
+	this.passport.setName.call(this, 'mobile')
+
+	this.opts.parents && (this.parents = this.opts.parents)
+
+	this.opts.watch && this.addWatch(this.opts.watch)
+
+    this.dom = {}
+
+	this.initDom()
+
+	this.doMobile()
+	this.setValidate(function(){mSelf.doMobile()});
+}
+
+Mobile.prototype.initDom = function(){
+	var mSelf = this
+	var passport = this.passport
+	var tpl = require('mobile.html')
+
+	var ui = {
+		mobilePlaceholder:'手机号'
+		,name:mSelf.name
+		,mobile:mSelf.mobile
+	}
+
+	if(this.parents){
+		ui.simple = 1	
+		this.ui = $.extend({},ui,this.parents.ui)
+	}else{
+		this.ui = ui	
+	}
+
+	var html = this.passport.shareTmp(tpl, this.ui)
+	this.dom.outer = $(this.opts.outer || '#mobileBox')
+	this.opts.append ? this.dom.outer.append(html) : this.dom.outer.html(html)
+
+	this.dom.inner = this.dom.outer.find('.passport-form-inner')
+	this.dom.sendSMSArea = this.dom.outer.find('.sendSMSArea')
+	this.dom.mobileBtn = this.dom.sendSMSArea.find('.mobileBtn')
+	this.dom.waitBox = this.dom.sendSMSArea.find('.waitBox')
+	this.dom.waitNum = this.dom.waitBox.find('b')
+
+	if(this.parents){
+		this.dom.msgArea = this.parents.dom.msgArea
+	}else{
+		this.dom.msgArea = this.opts.append ? this.dom.inner.find('.passport-form-message') : this.dom.outer.find('.passport-form-message')
+	}
+
+}
+
+//表单操作
+Mobile.prototype.setValidate = function(cbk){
+	var validateRules = {}
+
+	if(this.mobile && this.mobile !== '0'){
+		
+	}else{
+		validateRules = {
+			'mobile' : {}
+		}
+		validateRules.mobile['req=' + this.ui.mobilePlaceholder] = '请输入手机号'
+		validateRules.mobile['mobile'] = '手机号格式有误'
+	}
+
+	var formName = 'mobileForm'
+	var showStyle = {
+		'showmsgbyline=msg_error' : '',
+		'showmsgforsubmit=mobileBtn':cbk
+	}
+	var opts = {
+		'success' : 'span=msg_ok',
+		'error': 'span=msg_err'
+	}
+
+	this.validate = new Validate().validate(formName, validateRules, showStyle, opts)
+}
+
+Mobile.prototype.doMobile = function (){
+	var mSelf = this
+	var passport = this.passport
+
+	var data = {
+		smstype:'active_sm_captcha'
+	};
+
+	if(this.dom.sendSMSArea.is('.waiting'))
+		return;
+
+	passport.bridge.ajax('/sendsms', data , function(res){
+		mSelf.dom.msgArea.html(res.message).show()
+
+		switch(res.error_code){
+			case 0 : 
+				mSelf.wait(60)
+				break;
+
+			default:
+				break;
+		}
+
+	}, this);
+}
+
+Mobile.prototype.wait = function (time){
+	var mSelf = this
+	mSelf.dom.sendSMSArea.addClass('waiting')
+
+	time = time || 60
+
+	function down(){
+		if(time < 0){
+			mSelf.dom.sendSMSArea.removeClass('waiting')
+			return;
+		}
+
+		mSelf.dom.waitNum.text(time--)
+		setTimeout(down, 1000)
+	}
+
+	down()
+}
+
+Mobile.prototype.addWatch = function(watch){
+	this.passport.bridge.addWatch.call(this, watch)
+}
+

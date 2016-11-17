@@ -1,0 +1,158 @@
+<%#head.html%>
+
+<%
+	var pageData = this.pageData,
+		BeginDate = 16,
+		now_date = new Date(),
+		date_dis = now_date.getDate() - BeginDate,
+		seckill_goods_l = pageData.seckill.length+1,
+		poster_tab = [
+			{'title' : '焕彩面膜', 'tab_name' : 'mask'},
+			{'title' : '无暇裸妆', 'tab_name' : 'nude'},
+			{'title' : '水润保湿', 'tab_name' : 'moisturize'}
+		];
+
+		date_dis = date_dis < 0 ? 0 : date_dis;
+%>
+<div class="main">
+	<% pageData.bannar.length > 0 && pageData.bannar.forEach(function(data, index){ %>
+		<a class="top_bannar" href="<%= data.url || '###' %>"><img src="<%= data.img_src %>"></a>
+	<% }); %>
+	<% if(date_dis < 2){ %>
+	<div class="seckill_wrap">
+	<div class="tab_prev <%= date_dis == 0 ? 'none_f' : '' %>" data="<%= 3 - date_dis %>"></div>
+	<div class="tab_next <%= date_dis == 2 ? 'none_f' : '' %>" data="<%= date_dis + 1 %>"></div>
+	<div class="seckill_inner" style="width: <%= seckill_goods_l %>00%;margin-left:<%= -date_dis*100 %>%;">
+		<%
+			pageData.seckill.forEach(function(seckill_goods, index){
+				var seckill_index = -(BeginDate - now_date.getDate()),
+					goods_index = seckill_index < 0 ? 0 : seckill_index,
+					lastDate = (new Date(''+seckill_goods.time) - now_date)/1000;
+		%>
+			<div class="seckill_goods" style="width: <%= 1/seckill_goods_l*100 %>%;">
+				<img src="<%= seckill_goods.img %>">
+				<a href="<%= _extFn.getAppLink('twitter_single', {'twitter_info' : {'twitter_id' : seckill_goods.url, 'is_doota' : 1}}, this.os, this.r, '/share/item/'+seckill_goods.url) %>">
+					<% if(this.seckill_num[seckill_goods.url] === 0){ %>
+						<span class="act_over"></span>
+					<% } else { %>
+						<% if(lastDate > 0 && !isNaN(lastDate)){ %>
+						<p class="timeStamp_wrap red_f" time="<%= lastDate %>">距开抢仅剩：<span class="day">00</span>天<span class="hour">00</span>时<span class="sec">00</span>分<span class="min">00</span>秒</p>
+						<% } else { %>
+							<p class="timeStamp_wrap red_f">正在抢购中</p>
+						<% } %>
+					<% } %>
+				</a>
+			</div>
+		<% }); %>
+		<div class="clear_f"></div>
+	</div>
+	</div>
+	<% } %>
+	<div class="poster">
+		<div class="poster_tab">
+			<% poster_tab.forEach(function(data, index){ %>
+				<div <%= index == 0 ? 'class="p_tab_active"' : '' %> data_id="<%= index %>" data_name="<%= data.tab_name %>"><%= data.title %></div>
+			<% }); %>
+		</div>
+		<div class="pullUp" status="loading"></div>
+	</div>
+</div>
+
+<%= requireFn("biz/beauty_sale/gotop.html")({
+	'isIphone': this.os.ios,
+	'_JSstack': this._JSstack,
+	'_JSmods': this._JSmods
+});%>
+
+<script type="text/html" id="posterWall">
+<div class="goods_units">
+	<?
+		function getStringLengthArr(s , len){
+			var w = 0;
+			var time = 0;
+			for(length=s.length; time<length; ){
+				if(/[^\x00-\xff]/.test(s[time])){
+					w+=2;
+				}else{
+					w+=1;
+				}	
+				time ++;
+				if(w >= (len*2)){
+					break;
+				}
+			}
+			return time;
+		}
+		function mSubstr(str , len , pad){
+			if (!str || 0 == str.length) return '';
+			if (undefined == pad ) pad = '...';
+			len = getStringLengthArr(str , len);
+			return str.substr( 0 , len) + ((pad && str.length> len) ? pad : '');
+		}
+		function getAppLink(protocol,param , os , r ,wapHref ,extra){
+			if (!protocol || !param) return false;
+			if (!os) return wapHref || '###noapp';
+			if (r) param.r = r;
+
+			var link = 'meilishuo';
+			if (os && os.ipad) link = 'meilishuohd';
+			link += '://'+ protocol +'.meilishuo?json_params='+ encodeURIComponent(JSON.stringify(param));
+			if(extra) link += '&source=' + extra;
+
+			return link;
+		}
+		var r = this.r;
+		this.data && this.data.forEach(function(data){
+			if(<%= now_date.getDate() - BeginDate < 0 %>){
+				var stutas_class = 'act_prev';
+			} else if(data.is_end == 1){
+				var stutas_class = 'goods_end';
+			} else {
+				var stutas_class = '';
+			}
+			var goods_url = getAppLink('twitter_single', {'twitter_info' : {'twitter_id' : data.twitter_id, 'is_doota' : 1}}, <%= this.os && this.os.mlsApp %>, r, '/share/item/'+data.twitter_id);
+	?>
+		<div class="goods_box">
+			<a class="goods_img" href="<?= goods_url ?>">
+				<span class="bs_load_img" asrc="<?= data.image ?>"></span>
+				<? if(stutas_class){ ?>
+					<span class="goods_status <?= stutas_class ?>"></span>
+				<? } else if(data.marks && data.marks[0]){
+						var _l = 0; var style = '';
+						data.marks.forEach(function(marks_data, index){
+							if(index > 1) return;
+					?>
+							<div class="Farm" style="<?= style ?>">
+								<img class="Standard" src="<?= marks_data.img_url?>" style="width:<?= marks_data.img_width/1.3 ?>px;"/>
+							</div>
+					<?		style = 'left: ' + (parseInt(marks_data.img_width/1.3) + 6) + 'px;';
+					});
+				} ?>
+			</a>
+			<div class="desc_box">
+				<p class="desc"><a href="<?= goods_url ?>"><?= mSubstr(data.goods_title, 20, '...') ?></a></p>
+				<?
+					var discount_num = '' + Math.round(data.price/data.original_price*100)/10;
+					discount_num = discount_num > 10 ? 10 : discount_num;
+					if(discount_num.indexOf('.')<0){
+						discount_num += '.0';
+					}
+				?>
+				<p class="price"><span class="red_f now_price">¥<?= data.price ?></span><? if(data.original_price && discount_num != '10.0'){ ?><span class="sequence">￥<del><?= data.original_price ?></del></span><span><?= discount_num ?>折</span><? } ?></p>
+				<div class="like_buy"><p class="buy_num"><span class="red_f"><?= data.sell_num || 0 ?></span><%= now_date.getDate() - BeginDate < 0 ? "人已喜欢" : "人在抢购" %></p></div>
+			</div>
+		</div>
+	<? }); ?>
+</div>
+</script>
+
+<script>
+	<%= this.list ? 'fml.vars.poster0 = '+JSON.stringify(this.list)+';':''; %>
+	fml.vars.r = '<%= this.r || '' %>.mapp-biz_beauty_sale916';
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/biz/beauty_sale');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot_simple.html%>

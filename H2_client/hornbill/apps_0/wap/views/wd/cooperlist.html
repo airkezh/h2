@@ -1,0 +1,74 @@
+<%# head_simple.html%>
+</head>
+<body>
+<script>
+fml.vars.isnew = <%= this.isnew|0 %>;
+</script>
+<div class="cooper">
+	<div class="cooper_notice <%if(!this.showBanner){%>none_f<%}%>">
+		<p>创建你的微杂志，获得更多分享转发</p>
+		<p>微杂志可以用来创建商品图册，或者讲述商品故事。将微杂志分享到微信，会帮助你获得更多顾客。</p>
+	</div>
+	<div class="cooper_list">
+    <% this.list && this.list.map(function(v,k){
+        var share = JSON.parse(v.page_share) || {}
+    %>
+    <div class="cooper_grid" cooper_id="<%= v.id %>" cooper_url="<%= this.COOPER_DOMAIN %>/cooper/<%= v.id %>">
+		<div class="cooper_pic previewBtn">
+			<%
+			var imgUrl = share.imgUrl || v.page_image
+			if(imgUrl){ %>
+			<img src="<%= imgUrl %>"/>
+			<%}%>
+		</div>
+		<div class="cooper_info">
+			<div class="cooper_title previewBtn"><%= share.title || v.page_title %></div>
+			<div class="cooper_sence previewBtn"><%if(v.sence){%><span>浏览：<%= v.sence.pv|0 %></span><span>转发：<%= v.sence.share|0 %></span><%}%></div>
+			<div class="btnBox">
+				<div class="deleteBtn">删除</div>
+				<div class="editBtn" url="<%= this.COOPERCORE_DOMAIN %>/wd/back/<%= v.id %>?activity_has_gesture=1&try_back=1">编辑</div>
+				<div class="shareBtn" url="<%= this.COOPERCORE_DOMAIN %>/wd/share/<%= v.id %>">分享</div>
+			</div>
+		</div>
+    </div>
+    <%});%>
+    </div>
+</div>
+
+<aside class="settings">
+    <div class="addBtn" url="<%= this.COOPERCORE_DOMAIN %>/wd/template/new">创建微杂志</div>
+</aside>
+
+<script type="text/html" id="cooperitem_tpl">
+<? var v = this; ?>
+<div class="cooper_grid" cooper_id="<?= v.id ?>" cooper_url="<%= this.COOPER_DOMAIN %>/cooper/<?= v.id ?>">
+	<div class="cooper_pic previewBtn">
+		<?
+		var share = JSON.parse(v.page_share);
+		var imgUrl = share.imgUrl || v.page_image;
+		if(imgUrl){ ?>
+		<img src="<?= imgUrl ?>"/>
+		<?}?>
+	</div>
+	<div class="cooper_info">
+		<div class="cooper_title previewBtn"><?= share.title || v.page_title ?></div>
+		<div class="btnBox">
+			<div class="deleteBtn">删除</div>
+			<div class="editBtn" url="<%= this.COOPERCORE_DOMAIN %>/wd/back/<?= v.id ?>?activity_has_gesture=1">编辑</div>
+			<div class="shareBtn" url="<%= this.COOPERCORE_DOMAIN %>/wd/share/<?= v.id ?>">分享</div>
+		</div>
+	</div>
+</div>
+</script>
+
+<script type="text/html" id="delete_info_tpl">
+<div class="delete_info">
+    <p>删除后，已经分享的微杂志将无法访问。确定删除微杂志？</p>
+</div>
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+    fml.use('wap/page/wdcooper');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot.html%>

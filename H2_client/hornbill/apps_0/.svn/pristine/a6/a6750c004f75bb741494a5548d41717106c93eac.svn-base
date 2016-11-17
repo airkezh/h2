@@ -1,0 +1,192 @@
+!window.MLSPassport && (window.MLSPassport = {});
+window.MLSPassport.login = Login
+
+function Login(opts, passport){
+
+	//location.href = 'http://xhdev.meilishuo.com/passport/cookies/'
+
+	var mSelf = this
+	opts = opts || {};
+	this.opts = opts
+	this.passport = passport || new Passport(opts)
+
+	this.passport.setName.call(this, 'login')
+	this.risk_sms_custom = this.opts.risk_sms_custom|0
+	this.risk_reactive_custom = this.opts.risk_reactive_custom|0
+
+	this.opts.watch && this.addWatch(this.opts.watch)
+
+	this.dom = {}
+
+	this.passport.bridge.cookie.set('LOGON_FROM' ,  document.referrer);
+
+	this.loginStart = function(){
+		mSelf.initDom()
+		mSelf.initInput()
+		mSelf.setValidate(function(){mSelf.doLogin()});
+	}
+
+	this.loginDone = this.opts.loginDone || function(){
+	}
+
+	this.checkLogin()
+}
+
+Login.prototype.initDom = function(){
+	var passport = this.passport
+
+	this.ui = $.extend({},{
+			usernamePlaceholder:'邮箱/手机号/昵称'
+			,passwordPlaceholder:'密码'
+			,name:this.name
+		},this.opts.ui)
+
+	var tpl = require('login.html')
+	this.dom.outer = $(this.opts.outer || '#loginBox').html(passport.shareTmp(tpl, this.ui))
+	this.dom.inner = this.dom.outer.find('.passport-form-inner')
+	this.dom.msgArea = this.dom.outer.find('.passport-form-message')
+}
+
+Login.prototype.initInput = function(){
+	var inputList = ['username','password','remember']
+
+	for(var i = 0; i < inputList.length; i++){
+		var inputname = inputList[i]
+		this.dom[inputname] = this.dom.outer.find('#'+inputname)
+	}
+}
+
+//表单操作
+Login.prototype.setValidate = function(cbk){
+	var validateRules = {
+		'username' : {},
+		'password' : {}
+	}
+
+	validateRules.username['req=' + this.ui.usernamePlaceholder] = '请输入您的用户名或注册邮箱'
+	validateRules.password['req=' + this.ui.passwordPlaceholder] = '请输入密码'
+	validateRules.password['minlen=' + 6] = '输入密码需在6位到32位间'
+	validateRules.password['maxlen=' + 32] = '输入密码需在6位到32位间'
+
+	var formName = 'loginForm'
+	var opts = {
+		'success' : 'span=msg_ok',
+		'error': 'span=msg_err'
+	}
+	var showStyle = {
+		'showmsgbyline=msg_error' : ''
+	}
+
+	showStyle['showmsgforsubmit=passport-form-submit-' + this.name] = cbk
+
+	this.validate = new Validate().validate(formName, validateRules, showStyle, opts)
+}
+
+Login.prototype.doLogin = function (){
+	var mSelf = this
+	var passport = this.passport
+	var data = {
+		'app_id' : passport.app_id,
+		'username' : mSelf.dom.username.val(),
+		'password' : mSelf.dom.password.val(),
+		'remember' : mSelf.dom.remember[0].checked ? 1 : 0
+	};
+	console.log('doLogin')
+
+	passport.bridge.ajax('/login', data , function(res){
+
+		mSelf.dom.msgArea.html(res.message).show()
+
+		switch(res.error_code){
+			case 0 : 
+				console.log('session',res.data.session)
+				res.data.session && passport.bridge.setCookies(res.data.session)
+
+				console.log('redirect',res.data.redirect)
+				res.data.redirect && passport.bridge.redirect(res.data.redirect)
+				
+				break;
+
+			case 1004 : 
+				mSelf.ruleid = res.data.ruleid
+
+				if(!mSelf.risk_sms_custom){
+					if(res.data.mobile && res.data.mobile !== '0'){
+						if(!mSelf.mobileAndSMSRisk){
+							mSelf.mobileAndSMSRisk = passport.getMobileAndSMSRisk({
+								ruleid:mSelf.ruleid
+								,mobile:res.data.mobile
+							})
+						}
+					}
+				}
+
+				break;
+
+			case 1005 : 
+				mSelf.ruleid = res.data.ruleid
+
+				if(!mSelf.riskpic){
+
+					mSelf.riskpic = passport.getPicRisk({
+						ruleid:mSelf.ruleid
+						, parents:mSelf
+					})
+
+				}
+
+				mSelf.riskpic.updateCaptcha()
+
+				break;
+
+			case 1007 : 
+				if(!mSelf.risk_reactive_custom){
+					if(!mSelf.mobileAndReactiveRisk){
+						mSelf.mobileAndReactiveRisk = passport.getMobileAndReactiveRisk({
+							ruleid:mSelf.ruleid
+							,mobile:res.data.mobile
+						})
+					}
+				}
+
+				break;
+
+			default :
+				break;
+		}
+
+	}, this);
+}
+
+Login.prototype.checkLogin = function(callbacks){
+	var mSelf = this
+	var passport = this.passport
+	passport.bridge.ajax('/init', {app_id:passport.app_id} , function(res){
+
+		mSelf.ruleid = res.data.ruleid
+
+		if(typeof callbacks == 'function'){
+			callbacks(res)
+
+		}else{
+
+			switch(res.error_code){
+				case 0:
+					mSelf.loginDone && mSelf.loginDone(res)
+					break;
+
+				case 10001:
+					mSelf.loginStart && mSelf.loginStart(res)
+					break;
+
+				default:
+					break;
+			}
+		}
+	}, this);
+}
+
+Login.prototype.addWatch = function(watch){
+	this.passport.bridge.addWatch.call(this, watch)
+}
+

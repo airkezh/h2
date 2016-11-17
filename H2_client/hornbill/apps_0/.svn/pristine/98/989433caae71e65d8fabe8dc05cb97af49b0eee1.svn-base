@@ -1,0 +1,33 @@
+<%# head.html%>
+<div class="set_box">
+    <fieldset>
+        <h2 class="f16_f">编辑杂志：<%= this.group_header.name %></h2>
+        <form action="/magazine/updateMagazine/" method="POST">
+           <ul>
+               <li>
+                <span>杂志名称</span>
+                <input class="ipt1" id="group_name" type="text" value="<%== this.group_header.getName %>" name="name">
+				<input name="group_id" type="hidden" value="<%= this.group_header.group_id%>" />
+               </li>
+               <li>
+                <span>卷首语</span>
+                <textarea name="description" placeholder="爱美丽的杂志,大家一块来玩吧"><%= this.group_header.getDesc %></textarea>
+               </li>
+               <li>
+                <span>删除</span>
+                <a class="delete" group_id="<%= this.group_header.group_id%>" href="javascript:void(0)">删除杂志</a>
+				<div class="clear_f"></div>
+               </li>
+			   <li>
+				<span></span>
+				<input id="editSubmit" class="red_follow" type="submit" value="保存设置">
+				<em class="errorMes red_f f12_f"><%if(this.update_group && this.update_group.code){%><%= this.update_group.msg%><%}%></em>
+			   </li>
+           </ul>
+        </form>
+    </fieldset>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/edit');
+_use:", this._JSstack , this._JSmods); %>
+<%# foot.html%>

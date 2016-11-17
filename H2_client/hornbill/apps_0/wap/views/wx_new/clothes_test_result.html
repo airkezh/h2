@@ -1,0 +1,67 @@
+<%# wx_new/header.html %>
+<% var select_result = this.select_result || {}
+	   ,fir = select_result.fir || []
+	   ,sec = select_result.sec || {}
+ %>
+<div class="result_box">
+	<p class="result_title">专属你的穿衣报告</p>
+	<% fir && fir.forEach(function(data,index){%>
+	<div class="result_infos result<%=index%>">
+		<p class="ques_title"><%= data.title%><span>方案</span></p>
+		<p class="aws_title"><%= data.desc%></p>
+		<div class="match_propose">
+			<p class="match_title title_com"><em class="heart"></em>搭配建议</p>
+			<p class="match_txt"><%= data.rec%></p>
+		</div>
+		<div class="match_key">
+			<p class="key_title title_com"><em class="yes"></em>穿搭关键词</p>
+			<% data.word&& data.word.forEach(function(boxs,index){%>
+				<a href="/wx/search?channel=weixin_nb&key=<%= boxs.word%>" class="match_box">
+					<img src="<%= boxs.pic%>">
+					<p class="word_style"><%= boxs.word%></p>
+				</a>
+			<%})%>
+			
+		</div>
+		<div class="match_ban">
+			<p class="ban_title title_com"><em class="no"></em>禁区</p>
+			<% data.ban&& data.ban.forEach(function(boxs,index){%>
+				<a class="match_box">
+					<img src="<%= boxs.pic%>">
+					<p class="no_style"><%= boxs.word%></p>
+				</a>
+			<%})%>
+		</div>
+	</div>
+<%})%>
+	<div class="banner">
+		<p class="banner_title"><%= sec.title%></p>
+		<p class="banner_name"><%= sec.desc%></p><em class="banner_icon"></em>
+		<p class="banner_txt"><%= sec.rec%></p>
+		<% if( sec.word ){%>
+			<section style="-webkit-transform: translateZ(0);">
+				<%= requireFn('block/banner.html')({
+					'banner' :sec.word
+					,'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+				});%>
+			</section> 
+			<% } %>
+	</div>
+	<div class="footer_box">
+		<button class="btn_style save_it">我要保存它</button>
+		<p class="share_txt">此秘笈仅出现1次，抓住变美机会保存起来！随时随地都能测！</p>
+		<p class="foot_txt"><em></em><span>本报告由美丽说为您精心定制</span>	<em></em></p>
+	</div>
+	<div class="mask">
+		<img src="http://i.meilishuo.net/css/images/staticbed/分享浮层.png">
+	</div>
+</div>
+<script>
+ 	fml.vars.isShare = <%= this.share || false %>;
+  	fml.vars.shareData = {'title': '听说做完这个测试的人都变美了——快分享给朋友吧！','imgUrl' : 'http://d02.res.meilishuo.net/pic/_o/66/cc/8677209a088f37af5b79c3e64d7b_200_200.cf.jpg' , 'desc' : '你真的穿对了吗？一测就知道，专属你的最专业穿搭报告', 'link' :  window.location.protocol+'//'+window.location.host+'/wx/clothes_test/index/?wx_from=friend'};
+</script>	
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/wx_new/clothes_test_result');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# wx_new/footer.html %>

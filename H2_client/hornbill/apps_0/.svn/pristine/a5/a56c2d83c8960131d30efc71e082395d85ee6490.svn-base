@@ -1,0 +1,74 @@
+/*common*/
+require('wap/zepto/fastclick');
+
+var poster = require('wap/app/posterPa'),
+	onscroll = require('wap/component/windowScroll'),
+	appShare = require('wap/app/appShare'),
+	openAppLink = require('wap/app/openAppLink'),
+	posterWall = require('wap/app/posterWalls6');
+
+var wrap = $('#wrap'),
+	topBox = $('.top-box'),
+	gotopObj = topBox.find('a'),
+	limit = 10,
+	wideLimit = 10,
+	page = 0,
+	status = "done";
+
+// 客户端类型的分享（客户端右上角）
+if (fml.vars.appShare) {
+	appShare(fml.vars.params, ['weixin', 'weixin_timeline']);
+}
+
+
+//一进页面加载数据
+getWall(2, '/aj/zulily/index_style_list?&status=' + status + '&wideLimit=' + wideLimit + '&cat=' + fml.vars.cid, 'posterWall', false);
+
+//拉取瀑布流
+function getWall(colNum, url, tmp, showBtn) {
+	poster.set({
+		colNum: colNum
+	});
+	var date = {
+		url: url,
+		poster: poster,
+		tmp: tmp,
+		showBtn: showBtn,
+		posterMargin: $('#content').offset().top,
+		marginOffset: 1000
+	}
+	posterWall.scroll(date);
+};
+
+/*获取单品页链接*/
+function getDoneUrl(ele, isBtn) {
+	var style_id = parseInt(ele.data('styleId')),
+		twitter_id = parseInt(ele.data('twitter_id')),
+		Url = Meilishuo.config.os.mlsApp ? openAppLink.getAppLink({
+			'protocol': 'twitter_single',
+			'param': {
+				"twitter_info": {
+					"twitter_id": twitter_id,
+					"is_doota": 1
+				}
+			}
+		}) : '/share/item/' + twitter_id + '?trace_id=' + fml.vars.trace_id;
+	window.location.href = Url;
+}
+wrap.on('click', '.salelUrl', function() {
+	getDoneUrl($(this), false);
+})
+
+/*gotop*/
+gotopObj.on("click", function(e) {
+	document.body.scrollTop = 0
+});
+onscroll.bind(gotop, 'gotop');
+
+function gotop(pos, isDown) {
+	if (pos < 30) {
+		gotopObj.hide()
+	} else {
+		gotopObj.show()
+	}
+};

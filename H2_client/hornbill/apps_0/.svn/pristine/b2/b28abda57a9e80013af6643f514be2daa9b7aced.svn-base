@@ -1,0 +1,134 @@
+<% var userReport = this.userReport;
+var page = this.groupPg.current_page;%>
+<strong class="title">我的举报</strong>
+<div class="reportContain">
+	<div class="report">
+		<div class="reportId reportContent">举报编号</div>
+		<div class="reportType reportContent">举报类型</div>
+		<div class="reportedPer reportContent">被举报人</div>
+		<div class="reportG reportContent">被举报商品</div>
+		<div class="reportInfo reportContent reportTime">举报时间</div>
+		<div class="reportStatus reportContent">处理状态</div>
+		<div class="reportInfo reportContent detailsE"> </div>
+	</div>
+	<% if( userReport && userReport.report_info ){ %>
+	<% for(var index = 0 ; index<userReport.report_info.length ; index++ ){%>
+	<%  var data = userReport.report_info[index] %>
+	<div class="report">
+		<div class="reportId reportDetails">
+			<%= page*10+index+1 %>
+		</div>
+		<div class="reportType reportDetails">
+			<%= data.comment %>
+		</div>
+		<div class="reportedPer reportDetails">
+			&nbsp;<%= data.reported_shop_name %>
+		</div>
+		<div class="reportG reportDetails">
+			<a href="<%= data.twitter_url %>" target="_blank">&nbsp;<%= data.reported_twitter_name %></a>
+		</div>
+		<div class="reportInfo reportDetails reportTime">
+			<%= data.create_time %>
+		</div>
+		<div class="reportStatus reportDetails">
+			<%= data.audit_status %>
+		</div>
+		<div class="reportInfo viewDetails detailsE" data-id="<%= data.id %>">查看详情</div>
+	</div>
+	<% }} %>
+	<div class="paging_panel">
+		<%# paging.html%>
+	</div>
+</div>
+<div class="detailInfo"></div>
+<script type="text/html" id="details">
+	<div class="detailsContain">	
+	</div>
+	<div class="details">
+			<div class="detailsTitle">
+				<span class="titleInfomation">举报详情</span>
+				<img  class="closeIcon" src="http://d04.res.meilishuo.net/pic/_o/05/dd/c5ec1fdf481ea48011fb3a924c5b_10_10.cf.png"/>
+			</div>
+			<div class="dealProcessContain">
+				<div class="dealProcess">
+				<?if(this && this.res && this.res.report_info&& this.res.report_info.length){?>
+				<?for(var i = 0 ; i< this.res.report_info.length ; i++){?>
+				<?var data = this.res.report_info[i]; ?>
+					<div class="myReport">
+						<div class="mine">
+					 		<?if(data.role=="User"){?>
+							我的举证
+							<?}else{?>
+							回复
+							<?}?>
+						</div>
+						<div class="myReportTime"><?= data.create_time ?></div>
+					</div>
+					<div class="reportDescription">
+						<div class="buyers">
+							<?= data.desc ?>
+						</div>
+						<div>
+							<? for(var j = 0 ; j < data.pic.length ; j++){ ?>
+								<?var v = data.pic[j];?>
+							<img class="imageOfBuyers" src="<?= v ?>">
+							<?};?>
+						</div>
+					</div>
+				<? }; ?>
+				<? }; ?>
+				</div>
+				<? if(this.res.audit_status !=3 ){ ?>
+				<div class="remark">
+					<div class="remarkDescription">我的备注说明</div>
+					<textarea class="remarkText" cols="78" rows="5"/></textarea>
+				</div>
+				<form class="uploadBtn">
+					<div class="addPic_con" id="addPic_con">
+						<a href="javascript:;" id="add_pic" class="add_pic" >
+							<span>
+								<span class="addAccessory">添加附件</span>
+								<em class="cl_i_img">&nbsp;</em>
+							</span>
+							<span class="cl_i_hover"></span>
+						</a>
+					</div>
+				</form>
+				<div class="article_post"></div>
+				<div class="article_post_error"></div>
+				<br/>
+				<div class="submitContain">
+					<div class="reportSub" type="submit">提 交</div>
+					<div class="ignoreChoice"> </div>
+				</div>
+				<? }; ?>
+			</div>
+			
+		</div>
+</script>
+<script type="text/html" id="addCon">
+	<div class="item pr_f">
+		<div class="item_con">
+			<div>
+				<div class="addPic">
+					<div class="uploading">
+						<span class="pic_title"><?= data.pic_title ?></span>
+						<div class="progress_bar"><div class="upload_percentage" id="<?= data.uppic_id ?>"></div></div>
+						<div class="upload_errormsg"></div>
+					</div>
+				</div>
+				<div class="cl_i_close"></div>
+			</div>
+			<div class="clear_f"></div>
+		</div>
+	</div>
+</script>
+<script type="text/html" id="addPicCon">
+	<div class="upload">
+		<img src="<?= pic_url ?>" pid="<?= pic_id ?>">
+	</div>
+</script>
+<script>
+fml.vars.page = <%= this.page %>;
+fml.vars.report_info = <%= JSON.stringify(this.userReport.report_info) %>;
+</script>

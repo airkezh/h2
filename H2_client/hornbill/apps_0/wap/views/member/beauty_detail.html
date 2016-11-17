@@ -1,0 +1,178 @@
+<%
+	/**
+ 	 * @fileoverview 美丽值明细－会员中心
+     * @requires zepto
+     * @author kehuang@meilishuo.com
+     * @date 2015-06-25
+     */
+%>
+
+<%# head.html%>
+<%
+	var curUserInfo = this.userInfo;
+	var curPageData = this.pageData;
+	var curScoreData = this.scoreData;
+	var curBeautyList = this.beautyList;
+	var curBeautyInfo = this.beautyInfo;
+	var curLayerTitleStr = (curPageData && curPageData.layer_title) ? curPageData.layer_title : '如何提升美丽值？';
+	var curBeautyTitleStr = (curPageData && curPageData.beauty_title) ? curPageData.beauty_title : '美丽值说明';
+	var curLayerTextArr = (curPageData && curPageData.layer_text) ? curPageData.layer_text : [];
+	var curBeautyTextArr = (curPageData && curPageData.beauty_text) ? curPageData.beauty_text : [];
+	var curLayerBgPic = (curPageData && curPageData.layer_bg_pic) ? curPageData.layer_bg_pic : 'http://d05.res.meilishuo.net/pic/_o/5a/80/b1aac1a9ca2d90d720d229cd9b36_500_698.cg.png';
+	var curUserScoreData = (curScoreData && curScoreData.data) ? curScoreData.data : {};
+	var curBeautyInfoData = (curBeautyInfo && curBeautyInfo.data) ? curBeautyInfo.data : {};
+	var curUserBeautyList = (curBeautyList && curBeautyList.data) ? curBeautyList.data : [];
+	var score_tips_is_show = curUserScoreData.is_show_tips || 0;
+	var curUserName = (curUserInfo && curUserInfo.nickname) ? curUserInfo.nickname : '- -';
+	var curUserBeauty = (curBeautyInfoData && curBeautyInfoData.score) ? curBeautyInfoData.score : 0;
+	var curUserAvatar = (curUserInfo && curUserInfo.avatar_c) ? curUserInfo.avatar_c.replace('/c/', '/b/') : 'http://d06.res.meilishuo.net/ap/a/78/32/59c5fb29fb8ea04deddb2ad0ff42_256_256.cf.png';
+%>
+<div id="j_page_wrap" class="wrap">
+	<%
+		var head_bg_img = '',
+			top_head_style = '';
+
+		if (score_tips_is_show) {
+			head_bg_img = (curPageData && curPageData.big_top_pic) ? curPageData.big_top_pic : 'http://d03.res.meilishuo.net/pic/_o/d3/e0/327488d25c8e309117255038076a_640_220.cg.png';
+
+			top_head_style = 'padding-top: ' + (220*100/640) + '%;background: url(' + head_bg_img + ') no-repeat;background-size: 100%;';
+		} else {
+			head_bg_img = (curPageData && curPageData.small_top_pic) ? curPageData.small_top_pic : 'http://d05.res.meilishuo.net/pic/_o/93/55/994d9339b6abbb9d50829f4c1083_640_160.ch.png';
+
+			top_head_style = 'padding-top: ' + (160*100/640) + '%;background: url(' + head_bg_img + ') no-repeat;background-size: 100%;';
+		}
+	%>
+	<div class="user_wrap" style="<%= top_head_style %>">
+		<div class="user_box">
+			<div class="user_head">
+				<img src="<%= curUserAvatar %>" alt="<%= curUserName %>">
+			</div>
+			<div class="user_info">
+				<div class="name"><%= curUserName %></div>
+				<div class="beauty"><%= curUserBeauty %>美丽值</div>
+			</div>
+		</div>
+
+		<%
+			if (score_tips_is_show) {
+				var expireTime = curUserScoreData.expired_time || '';
+
+				if (expireTime != '') {
+		%>
+		<div class="expire_tips_wrap beauty_tips_wrap">
+			<div class="tips_content"><%= expireTime %>将对美丽值重新盘点并做小小折损~要努力提升会员等级喔 ^ω^</div>
+			<div class="arrow_top"></div>
+			<div class="arrow_inner"></div>
+		</div>
+		<%
+				}
+			}
+		%>
+
+		<div class="beauty_tips">如何提升美丽值&nbsp;<span class="mark"></span></div>
+	</div>
+
+	<%
+		var curBeautyTextArrLen = curBeautyTextArr.length || 0;
+
+		if (curBeautyTextArrLen > 0) {
+	%>
+	<div class="beauty_title">
+		<div class="pro_title"><p><%= curBeautyTitleStr %></p></div>
+	</div>
+
+	<div class="beauty_intro">
+		<%
+			var count = 0,
+				first_text_html = '',
+				second_text_html = '',
+				beauty_text_html = '';
+
+			for (var i = 0; i < curBeautyTextArrLen; i++) {
+				var text = curBeautyTextArr[i].text || '';
+
+				if (text != '') {
+					++count;
+
+					if (count < 3) {
+						first_text_html += '<p>' + text + '</p>';
+					} else {
+						second_text_html += '<p>' + text + '</p>';
+					}
+				}
+			}
+
+			if (second_text_html != '') {
+				second_text_html = [
+						'<div class="more_hidden_content">',
+							second_text_html,
+						'</div>',
+						'<div class="more_content_btn">展开<img src="http://d03.res.meilishuo.net/pic/_o/dc/62/834138f19d9b75805c34e851dea8_22_12.cf.png" alt=""></div>'
+					].join('');
+			}
+
+			beauty_text_html = first_text_html + second_text_html;
+		%>
+
+		<%= beauty_text_html %>
+	</div>
+	<%
+		}
+	%>
+
+	<div class="pay_list beauty_list">
+		<ul id="j_pay_list"></ul>
+	</div>
+
+	<div class="pullUp" status="loading"></div>
+</div>
+
+<script type="text/html" id="j_layer_tpl">
+	<div class="layer_shade j_layer_shade"></div>
+	<div class="layer_main j_layer_main">
+		<div class="m">
+			<img src="<%= curLayerBgPic %>" alt="">
+			<div class="know_btn"></div>
+		</div>
+	</div>
+</script>
+
+<script type="text/html" id="j_detail_tpl">
+	<?
+		var jsonData = this.data || [],
+			listLen = jsonData.length || 0;
+
+		if (listLen > 0) {
+			for (var i = 0; i < listLen; i++) {
+				var obj = jsonData[i],
+					text = obj.remark || '',
+					ctime = obj.ctime || '',
+					amount = obj.score || '0';
+					className = (amount.indexOf('-') != -1) ? '' : 'income';
+	?>
+	<li>
+		<span class="title"><?= text ?><br><em><?= ctime ?></em></span>
+		<span class="coin <?= className ?>"><?= amount ?></span>
+	</li>
+	<?
+			}
+		} else {
+	?>
+	<li class="no_detail">暂无明细</li>
+	<?
+		}
+    ?>
+</script>
+
+<script>
+	fml.vars.isLogin = <%= this.isLogin %>;
+
+	var curUserBeautyList = <%= JSON.stringify(curUserBeautyList) %>;
+</script>
+
+<!-- <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script> -->
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/member/beauty_detail');
+_use:", this._JSstack, this._JSmods); %>
+<%# foot_simple.html%>

@@ -1,0 +1,27 @@
+<dl>
+	<dt>
+		total time cost: <%= new Date - this._st;%>
+	</dt>
+<%
+for (var php in _data){
+	if (php.charAt(0) == '_') continue;
+%>	
+	<dd>
+		<a href=?which=<%=php%>><%= php%></a> : <%= _data[php]?'true': 'false'%>
+		<%if (!_data[php]) {%>
+		<pre>
+			api : <%= this._api[php] %>
+			: <%= _data[php]%>
+		</pre>
+		<%}else{%>
+			
+			<p style="width:700px;word-wrap:break-word;">
+			<%=  JSON.stringify(_data[php])%>
+			</p>
+		<%}%>
+	</dd>
+<%
+	}
+%>
+</dl>
+

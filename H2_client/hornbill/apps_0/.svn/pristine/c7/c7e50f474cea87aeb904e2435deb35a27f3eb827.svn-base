@@ -1,0 +1,195 @@
+<%
+var goodsInfo = this.goods_info || {}
+	, goods = this.goods || {}
+	, spec = goods.specification
+	, sizeInfo = goods.size
+	,goodsShowList = this.goods_show_list;
+%>
+<div class="goods_detail wrapBox">
+	<ul class="nav tab_tle">
+		<li id="details" class="tabArea cur"><span class="nav_">详情</span></li>
+		<%if(goods.size){%><li id="size" class="tabArea"><span class="nav_">尺码</span></li><%}%>
+		<li id="comments" class="recommend tabArea"><span class="nav_">评价<b class="num"> (<%= goodsInfo.count_comment.totalComment %>)</b></span></li>
+	</ul>
+	<div class="goods_detail_content contentArea">
+		<% if(spec && spec.length){%>
+		<div class="norms">
+			<h3>商品规格</h3>
+			<div class="norms_type">
+				<p>
+					<% spec.map(function(data, idx) { %>
+						<span><%=data[0]%>：<b><%=data[1]%> </b></span>
+					<%});%>
+				</p>
+			</div>
+		</div>
+		<%}%>
+
+		<% 
+			goods.details && goods.details.map(function(data) { 
+				if(data.title == '尺码说明' && data.content[0].type == 'table'){ return; }
+				if(data.content && data.content.length){
+		%>
+		<div class="norms details">
+			<h3><%= data.title %></h3>
+			<div class="img_wrap">
+			<% data.content.map(function(cons){ %>
+				<%if(cons.type == 'img'){%>
+					<div class="more_pic" data-img="<%=cons.value%>">
+						<span class="load_img" asrc="<%=cons.value%>"></span>
+					</div>
+				<%}else if ('gap' == cons.type){%>
+					<p class="pro_txt"></p>
+				<%}else if ('txt' == cons.type){%>
+					<p class="pro_txt"><%=cons.value%></p>
+				<%}%>
+			<%});%>
+			</div>
+		</div>
+		<%}});%>
+	</div>
+	<%if(goods.size){%>
+	<div class="size contentArea none_f">
+		<%
+			var thContent = sizeInfo.head || [];
+			var sizeImages = sizeInfo.size_img || [];
+		%>
+		<%if(sizeInfo.type == "data" && thContent.length){%>
+			<%
+				var tdContent = sizeInfo.data;
+				var tr1Content = sizeInfo.size;
+				var tdNum = tr1Content.length;
+				var tdMax = 4;
+				var styleId = tdNum + 1 > tdMax ? 5 : tdNum + 1;
+			%>
+			<h2>商品尺码</h2>
+			<table class="size_table">
+				<tbody class="td-style<%= styleId %>">
+					<tr class="tr1">
+						<th>尺码</th>
+						<%tr1Content.map(function(v, k){ if(k <= tdMax - 1){%>
+						<td><%= v %></td>
+						<%}});%>
+					</tr>
+					<% thContent.map(function(v1, k1){%> 
+					<tr>
+						<th><%= v1 %></th>
+						<% tdContent.map(function(v2, k2){ if(k2 <= tdMax - 1){%> 	
+						<td class="size-content"><%= v2[k1] %></td>
+						<%}});%>
+					</tr>
+					<%});%>
+				</tbody>
+			</table>
+			<%if(tdNum > tdMax){%>
+			<p class="table_gap"> </p>
+			<table class="size_table">
+				<tbody class="td-style<%= styleId %>">
+					<tr class="tr1">
+						<th>尺码</th>
+						<%tr1Content.map(function(v, k){ if(k > tdMax - 1 && k < 2*tdMax){%>
+						<td><%= v %></td>
+						<%}});%>
+					</tr>
+					<% thContent.map(function(v1, k1){%> 
+					<tr>
+						<th><%= v1 %></th>
+						<% tdContent.map(function(v2, k2){ if(k2 > tdMax - 1 && k2 < 2*tdMax){%> 	
+						<td class="size-content"><%= v2[k1] %></td>
+						<%}});%>
+					</tr>
+					<%});%>
+				</tbody>
+			<%}%>
+			</table>
+			<%if(tdNum > 2*tdMax){%>
+			<p class="table_gap"> </p>
+			<table class="size_table">
+				<tbody class="td-style<%= styleId %>">
+					<tr class="tr1">
+						<th>尺码</th>
+						<%tr1Content.map(function(v, k){ if(k > 2*tdMax - 1){%>
+						<td><%= v %></td>
+						<%}});%>
+					</tr>
+					<% thContent.map(function(v1, k1){%> 
+					<tr>
+						<th><%= v1 %></th>
+						<% tdContent.map(function(v2, k2){ if(k2 > 2*tdMax - 1){%> 	
+						<td class="size-content"><%= v2[k1] %></td>
+						<%}});%>
+					</tr>
+					<%});%>
+				</tbody>
+			</table>
+			<%}%>
+		<%}else if(sizeInfo.type == "img" && sizeImages.length){%>
+			<%sizeInfo.size_img.map(function (image){%>
+			<%if(image.type == "img"){%>
+				<img src="<%= image.value %>" alt="size info" >
+			<%}else if(image.type == "gap"){%>
+				<p class="pro_txt"></p>
+			<%}%>
+			<%});%>
+		<%}else{%>
+			<p class="no-size-info">暂无尺码信息</p>
+		<%}%>
+	</div>
+	<%}%>
+	<div class="comments_content contentArea none_f">
+		<% var commentsTabData = goodsInfo.count_comment; %>
+		<ul class="comment-category-tab">
+			<li class="js-category-tab-item" data-id="<%= commentsTabData.all.tabId %>" data-limit="8">全部<span>(<%= commentsTabData.all.num %>)</span></li>
+			<li class="js-category-tab-item" data-id="<%= commentsTabData.good.tabId %>" data-limit="8">好评<span>(<%= commentsTabData.good.num %>)</span></li>
+			<li class="js-category-tab-item" data-id="<%= commentsTabData.common.tabId %>" data-limit="8">中评<span>(<%= commentsTabData.common.num %>)</span></li>
+			<li class="js-category-tab-item" data-id="<%= commentsTabData.bad.tabId %>" data-limit="8">差评<span>(<%= commentsTabData.bad.num %>)</span></li>
+			<li class="js-category-tab-item" data-id="<%= commentsTabData.share.tabId %>" data-limit="4">晒单<span>(<%= commentsTabData.share.num %>)</span></li>
+		</ul>
+		<ul class="js-comment-category comment-list"></ul>
+		<p class="js-show-more show-more" data-tpl-id="twitter_comment"></p>
+	</div>
+</div>
+<div class="mask"></div>
+
+<script type="text/html" id="js-goods-comment-tpl">
+	<? 
+		var co = this.comments;
+
+		function stringHandler(str){
+
+			if(typeof str != 'string') return;
+
+			var l = str.length;
+
+			if(l > 140){
+				str = str.substr(0, 140) + '...';
+			}
+
+			return str;
+		}
+
+		co && co.forEach(function (data){
+	?>
+	<li class="comment-list-item">
+		<a class="avatar" style="background-image: url(<?= data.uInfo.avatar_c?>);"></a>
+		<div class="comment-ctn">
+			<p>
+				<? if(data.level){ ?><span class="level level<?= data.level ?>"></span><? } ?>
+				<span class="nickname"><?= data.uInfo.nickname?></span>
+			</p>
+			<p class="comment-ctn-desc"><?= stringHandler(data.content) ?></p>
+			<p class="comment-ctn-attachment">
+				<? if(data.style){ ?><span class="good-info"><?= data.style ?></span><? } ?>
+				<span class="create-time"><?= data.time ?></span>
+			</p>
+			<? if(data.images){ ?>
+			<p class="goods-img-wrapper">
+				<? data.images.forEach(function (item){ ?>
+				<span class="js-click-to-largen" data-big-one="<?= item.o_url ?>" style="background-image:url(<?= item.s_url ?>);"></span>
+				<? }); ?>
+			</p>
+			<? } ?>
+		</div>
+	</li>
+	<? }); ?>
+</script>

@@ -1,0 +1,175 @@
+<%# head.html%>
+<%
+var query = this._Request_query;
+var getLink = _extFn.getLink;
+var mSubstr = _extFn.mSubstr;
+var refund = this.refund.info;
+
+var nation = { "is_haitao":1, "tariff": 0};
+%>
+<div class="route">
+	<div class="route_bread">
+		<a href="<%= this.DOMAIN.www%>/">美丽说</a>
+		<samp>&gt;</samp>
+		<a href="<%= this.DOMAIN.order%>/order/list/">我的美丽说订单</a>
+		<samp>&gt;</samp>
+		<%if(this.type=='refund'){%>
+		<span class="red_f">退款/退货列表</span>
+		<%}%>
+		<%if(this.type=='service'){%>
+		<span class="red_f">售后列表</span>
+		<%}%>
+	</div>
+</div>
+<div class="order_area">
+	<%# common/navBar.html %>
+	<div class="order_content">
+		<form id="orderListForm" method="get" action="">
+		<div class="order_content_box">
+			<div class="search">
+				<label for="refund_id">退款编号：</label><input type="text" id="refund_id" name="refund_id" value="<%== (this.refund_id || "")%>" class="mls-input-text"/>
+				<label for="order_id">订单编号：</label><input type="text" id="order_id" name="order_id" value="<%== (this.order_id || "")%>" class="mls-input-text"/>
+				<input type="submit" value="查询" class="btn"/>
+			</div>
+			<fieldset>
+				<legend>订单列表表单</legend>
+				<table class="order_list">
+					<colgroup>
+						<col width="290">
+						<col width="100">
+						<col width="70">
+						<col width="90">
+						<col width="120">
+						<col width="130">
+					</colgroup>
+					<thead>
+						<tr>
+							<th>商品信息</th>
+							<th>交易金额（元）</th>
+							<th>退款金额</th>
+							<th>申请时间</th>
+							<th>
+								<select class="mls-select" id="orderStatus" name="refund_status">
+									<option><%=this.is_service ? "售后":"退款"%>状态</option>
+									<%var status = this.refund_status;%>
+									<%this.status.info && this.status.info.forEach(function(s){%>
+										<option value="<%=s.id%>"<%if(status == s.id){%> selected<%}%>><%=s.value%></option>
+									<%});%>
+								</select>
+							</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<%if(refund.length){%>
+					
+					<%
+						refund.map(function(r,i){
+						var goods = r.goods
+					%>
+					<tbody class="order_list">
+						<tr class="empty">
+							<td colspan="6">&nbsp;</td>
+						</tr>
+						<tr class="order_info header">
+							<td colspan="6" class="last first">
+								<span>退款编号：<%= r.refund.rid %></span>
+								<span>订单号：<%= r.refund.order_id %></span>
+								<span>
+									<%if(r.refund.is_haitao){%>
+										<a class="red_f" href="<%=this.DOMAIN.www_hk%>/shop/<%= r.shop.shop_id %>" target="_blank"><%= mSubstr(r.shop.shop_name , 20 , '...')%>
+										</a>
+
+									<%}else{%>
+										商家：<a class="red_f" href="<%=this.DOMAIN.www%>/shop/<%= r.shop.shop_id %>" target="_blank"><%= mSubstr(r.shop.shop_name , 20 , '...')%>
+										</a>
+									<%}%>
+										
+								</span>
+								<% if (r.shop.im || r.shop.qq){ %><a class="getserviceqq knilmi" href="<%= this.ViewTools.callIM(r.shop.im , r.shop.qq) %>" target="_blank">&nbsp;</a><% } %>
+							</td>
+						</tr>
+						<tr class="order_goods_list first">
+							<td class="order_goods_goods first">
+
+								<%if(r.refund.is_haitao){%>
+									<a target="_blank" href="<%=this.DOMAIN.www_hk%>/share/<%if(r.goods.is_doota == '1'){%>item/<%}%><%= r.goods.twitter_id %>">
+								<%}else{%>
+									<a target="_blank" href="<%=this.DOMAIN.www%>/share/<%if(r.goods.is_doota == '1'){%>item/<%}%><%= r.goods.twitter_id %>">
+								<%}%>
+
+									<img class="pic" src="<%= r.goods.b_pic_url%>"/>
+									<p class="title">
+										<%= r.goods.goods_title.length > 30 ? r.goods.goods_title.substr(0,30)+'...' : r.goods.goods_title %>
+									</p>
+									<p class="prop">
+										<% r.goods.prop && r.goods.prop.map(function(prop){ %>
+										<%if(prop.is_show == '1'){%>
+										<span><%= prop.name%>：<%= prop.value%></span>
+										<%}%>
+										<%});%>
+									</p>
+								</a>
+							</td>
+							<td><%= r.refund.refund_price %></td>
+							<td><%= r.refund.refund_price_success %>
+								<br/>
+								<%if( r.refund.refund_tax ){%>
+									
+									<%if(0 == r.refund.refund_tax){ %>
+										<%= 0 == r.refund.express_price ? "" 
+										: "(含" + r.refund.express_price + "元运费)" %>
+									<%}else{%>
+										<%= 0 == r.refund.express_price ? "(含" + r.refund.refund_tax + "关税)" 
+										: "(含" + r.refund.express_price + "元运费," + r.refund.refund_tax +"元关税)" %>
+									<%}%>
+
+								<%}else{%>
+
+									<%= 0 == r.refund.express_price ? "" 
+									: "(含" + r.refund.express_price + "元运费)" %>
+
+								<%}%>
+							</td>
+							<td class="br"><%= r.refund.apply_time %></td>
+							<td class="br">
+								<p><%= r.refund.refund_status_text %></p>
+								<%if(r.appeal && r.appeal.length){%>
+								<%r.appeal.map && r.appeal.map(function(a){%>
+								<p><a class="red_f" target="_blank" href="<%= this.DOMAIN.order%>/refund/?refund_id=<%=a.refund_id%>&type=<%=a.refund_type%>"><%= a.appeal_status_text %></a></p>
+								<%});%>
+								<%}%>
+							</td>
+							<td class="br last">
+								<p><a class="red_f" target="_blank" href="<%= this.DOMAIN.order%>/refund/?refund_id=<%= r.refund.rid%>">查看详情</a></p>
+							</td>
+						</tr>
+					</tbody>
+					<%});%>
+					<%}else{%>
+					<tbody>
+						<tr>
+							<td colspan="6" class="order_none">
+								<div class="order_none_info">
+									<span class="status_icon2"></span>
+									<p>您没有<%=this.is_service ? "售后中":"退款/退货"%>的商品</p>
+								</div>
+							</td>
+						
+						</tr>
+					</tbody>
+					<%}%>
+				</table>
+				
+			</fieldset>
+		</div>
+
+		<div class="paging_panel c_f">
+		<%# paging.html%>
+		</div>
+		</form>
+	</div>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+		fml.use('order_pc/order/orderList');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

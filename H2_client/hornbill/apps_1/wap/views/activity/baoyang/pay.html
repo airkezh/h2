@@ -1,0 +1,39 @@
+<%# head.html%>
+<div class="contract_wrap" id="payWrap">
+	<div class="pay_wrap">
+		<span class="top_icon"></span>
+		<dl class="userInfo_pay">
+			<dt class="user_pic">
+				<img src="<%=this.PICTURE_URL%>/images/wap/activity/baoyang/userIcon_bg2.png" />
+			</dt>
+			<dd>
+				<p>打赏给<span class="redOne nickname"></span></p>
+				<p>
+					<input type="tel" value='' class="txt"><span class="money">元</span>
+				</p>
+				<p>1元起拍，最多<span class="red maxPrice"></span>元</p>
+			</dd>
+		</dl>
+		<div class="msg">
+			<img src="<%=this.PICTURE_URL%>/images/wap/activity/baoyang/pay_bg.jpg" />
+			<p>
+				对她说...
+				<span></span>
+			</p>
+			<div class="textareaWrap"></div>
+			<a class="payBtn">
+				<img src="<%=this.PICTURE_URL%>/images/wap/activity/baoyang/pay_btn.png" />
+			</a>
+		</div>
+		<span class="left_icon"></span>
+		<span class="right_icon"></span>
+	</div>
+</div>
+<%# activity/baoyang/share.html%>
+<script>
+	fml.vars.message = <%= JSON.stringify(this.pageData.message)%>;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/baoyangPay');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

@@ -1,0 +1,177 @@
+<%#head.html%>
+<% var EfnSubstr = _extFn.mSubstr; %>
+<script>
+Meilishuo.config.nickname = '<%= this.userInfo.nickname %>';
+Meilishuo.config.qzoneuser = '<%= this.userInfo.qzone %>';
+</script>
+<div class="maya">
+	<div class="maya_bg"></div>
+	<div class="maya_con">
+		<div class="maya_logo"></div>
+		<div class="intro">
+			<p>【活动时间】</br> 2012年12月18日——2012年12月21日24:00</p>
+			<p>【参与方式】
+				<ul>
+					<li>1 本次活动分为“末日心愿”和“末日宣言”两部分，爱美丽可任选其一参与，同时参与获奖几率翻倍！</li>
+					<li>2 我要分享“末日心愿”：再不入库就晚了！点击下方“分享”按钮，把自己拥有的最好看的杂志都贴出来吧！</li>
+					<li>3 我要说出“末日宣言”：每颗心上某一个地方总有个记忆挥不散……点击下方“发布”按钮，宣言将匿名发出，不论你选择埋葬过去还是期待明天，你和你的秘密，美丽说捍卫和守护。</li>
+				</ul>
+			</p>
+			<p>【奖项说明】
+				<ul>
+					<li>1 评选规则：点击“分享”按钮，分享最满意杂志并同步至QQ空间或新浪微博，分享杂志数量越多，质量越好，获奖几率越大。
+					<li>2 奖项设置：美丽说会在所有漂亮杂志的主人中，挑选最幸运的20个，将你杂志中的某款宝贝拍下来快递到你手上。美丽说，从来都为你的美丽心愿而存在。
+				</ul>
+			</p>
+		</div>
+		<a class="maya_share" href="javascript:void(0)" gtype="<%if(this.userInfo.user_id){%><%= this.user_groups[0].group_id %><%}%>" glen="<%if(this.userInfo.user_id){%><%= this.user_groups.length %><%}%>" s_type="<%if(this.userInfo.user_id){%><%= this.userInfo.qzone %><%}else{%>0<%}%>"></a>
+		<div class="maya_maga">
+			<% this.huodongGroup && this.huodongGroup.map(function(v){%>
+			<div class="groupBox">
+				<div class="groupCon">
+					<div class="gc_bg"></div>
+					<div class="gc_title">
+						<h4><a href="/group/<%= v.group_id%>" target="_blank"><%= v.name%></a></h4>
+					</div>
+					<a href="/group/<%= v.group_id%>" target="_blank" class="imgBox">
+						<%if(v.mixpic){%>
+							<img src="<%= v.mixpic%>" class="maxpic" />
+						<%}else{%>
+							<% v.picture_url.map(function(value , i){ %>
+								<img style="<%if(++i % 3 == 0){%> margin-right:0px;<%}%>" src="<%= value%>" class="minpic" />
+							<% }); %>
+						<%};%>
+					</a>
+					<div class="infoBox c_f">
+						<% if (this.is_follower){ %>
+						<span class="removeGroupFollow pink_follow" groupid="<%= v.group_id%>">已关注</span>
+						<% } else {%>
+						<span  class="addGroupFollow red_follow" groupid="<%= v.group_id%>" >+ 加关注</span>
+						<% }%>
+						<div class="clear_f"></div>
+					</div>
+				</div>
+			</div>
+			<%});%>
+			<div class="clear_f"></div>
+		</div>
+		<div class="share_area" id="share_area">
+			<div class="area_top"></div>
+			<div class="maya_cr right_f">
+				<div class="maya_cr_bg"></div>
+				<textarea class="maxConent maya_area" placeholder="写给重生的自己..."></textarea>
+				<div class="maya_zf">
+					<span class="hackie right_f share_published">
+						同步到：
+						<span class="cursor_f" s_type="<%= this.userInfo.qzone %>" s_name="qzone">&nbsp;</span>
+					</span>
+					<div class="left_f">
+						<span class="mayasharebtn" tab="1">发布</span>
+					</div>
+				</div>
+			</div>
+			<div class="maya_cr left_f">
+				<div class="maya_cr_bg"></div>
+				<textarea class="maxConent maya_area" placeholder="写下你想要埋葬的秘密..."></textarea>
+				<div class="maya_zf">
+					<div class="left_f">
+						<span class="mayasharebtn" tab="0">匿名发布</span>
+					</div>
+				</div>
+			</div>
+			<div class="clear_f"></div>
+			<div class="twitterarea">
+				<div class="area_r" tab="1">
+				<% this.huodongTwitter && this.huodongTwitter.right.map(function(v){%>
+					<div>
+						<span><%=v.nickname%></span>
+						<p><%=v.words%></p>
+					</div>
+				<%});%>
+				</div>
+				<div class="area_l" tab="0">
+				<% this.huodongTwitter && this.huodongTwitter.left.map(function(v){%>
+					<div><%=v.words%></div>
+				<%});%>
+				</div>
+				<div class="clear_f"></div>
+			</div>
+	    </div>
+		<div class="paging_panel">
+		<%# paging.html%>
+		</div>
+	</div>
+</div>
+<script type="text/html" id="sayaShareGroupLinkTpl_old" >
+<div class="maya_add_share" id="mayaShareGroupLink">
+    <div class="shareLinks">
+	    <div id="mayalinkMessageTips">请在下面输入杂志的链接地址</div>
+	    <div class="gray_f mt10_f">
+		    <input type="text" class="maya_add_group_url" />
+		    <input id="mayaAddGroupSubmit" class="maya_add_group_btn" type="button" value="确 定" />
+	    </div>
+    </div>
+</div>
+</script>
+<script type="text/html" id="sayaShareGroupLinkTpl" >
+<div class="maya_add_share" id="mayaShareGroupLink">
+	<div class="selectPanel">
+		<div class="select" style="visibility: visible;">
+		<%if(this.userInfo.user_id){%>
+			<div class="selectText" val="<%= this.user_groups[0].group_id %>"><%= this.user_groups[0].name %></div>
+		<%}%>
+			<div class="selectBtn"></div>
+		</div>
+		<div class="options" style="display: none;">
+			<ul>
+				<% this.user_groups && this.user_groups.map(function(v){%>
+				<li role="<%= v.role %>" id="<%= v.group_id %>" value="<%= v.name %>" style="background-color: rgb(255, 255, 255); background-position: initial initial; background-repeat: initial initial;"><%= v.name %></li>
+				<% });%>
+			</ul>
+		</div>
+	</div>
+	<span id="mayaAddGroupSubmit" class="maya_add_group_btn">确认</span>
+	<div class="clear_f"></div>
+</div>
+</script>
+<script type="text/html" id="sayaShowGroupTpl" >
+<div class="groupBox">
+	<div class="groupCon">
+		<div class="gc_bg"></div>
+		<div class="gc_title">
+			<h4><a href="/group/<?= v.group_id?>" target="_blank"><?= v.name?></a></h4>
+		</div>
+		<a href="/group/<?= v.group_id?>" target="_blank" class="imgBox">
+			<?if(v.mixpic){?>
+				<img src="<?= v.mixpic?>" class="maxpic" />
+			<?}else{?>
+				<?$.each(v.picture_url , function(i , value){?>
+					<img style="<?if(++i % 3 == 0){?> margin-right:0px;<?}?>" src="<?= value?>" class="minpic" />
+				<?});?>	
+			<?};?>
+		</a>
+		<div class="infoBox c_f">
+			<? if (this.is_follower){ ?>
+			<span class="removeGroupFollow pink_follow" groupid="<?= v.group_id?>">已关注</span>
+			<? } else {?>
+			<span  class="addGroupFollow red_follow" groupid="<?= v.group_id?>" >+ 加关注</span>
+			<? }?>
+			<div class="clear_f"></div>
+		</div>
+	</div>
+</div>
+</script>
+
+<%# wins/windows.html %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use('page/common/global');
+_use:", this._JSstack , this._JSmods ); %>
+<% if(this.user_id){ %>
+	<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+			fml.use('page/common/global_login');
+	_use:", this._JSstack , this._JSmods ); %>
+<%}%>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/huodong/maya');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

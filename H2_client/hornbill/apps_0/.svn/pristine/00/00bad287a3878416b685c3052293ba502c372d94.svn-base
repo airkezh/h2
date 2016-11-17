@@ -1,0 +1,89 @@
+<script type="text/html" id="posterWall">
+<? $.each(tInfo , function(k , v){ ?>
+<?if(!v){return}?>
+<?var goods_title = v.ginfo ? v.ginfo.goods_title : "";?>
+<div class="poster_grid poster_wall" twitter_id="<?=v.twitter_id?>" twitter_author_uid="<?=v.twitter_author_uid?>" twitter_source_tid="<?= v.twitter_source_tid?>" twitter_show_type="<?=v.twitter_show_type?>" like_twitter_id="<?=v.like_twitter_id?>">
+<%*为了海报之间间距大2px，增加的层%>
+	<div class="new_poster">
+		<div class="np_pic hover_pic">
+			<?if(v.isShowPrice && v.ginfo){?>
+				<div class="price"><?if(v.isShowTime){?><?= v.twitter_create_time?>&nbsp;&nbsp;&nbsp;&nbsp;<?}?><?= v.ginfo.goods_price?></div>
+			<?}?>
+			<? var show_pic = v.show_pic ? v.show_pic : v.ginfo ? v.ginfo.goods_pic_url : ''; ?>
+			<? var goodsUrl = v.url ? v.url : '/share/' + v.like_twitter_id; ?>
+			<a class="pic_load" href="<?= goodsUrl?>" target="_blank"><img class="goods_pic" width="<?=v.poster_width?>" height="<?=v.poster_height?>" src="<?= show_pic ?>" title="<?= goods_title?>" alt="<?= goods_title?>" /></a>
+			<div class="like_merge">
+				<?if(v.isShowLike && v.is_liked && Meilishuo.config.controller === 'person_like'){?>
+					<a isShowLike="<?= v.isShowLike?>" class="right_f poster_dellike" href="javascript:void(0)">删除</a>
+				<?}?>
+				<? if(v.isShowClose){?>
+					<a class="right_f poster_del" href="javascript:void(0)">删除</a>
+				<?}?>	
+				<a class="right_f poster_forward" href="javascript:void(0)"><em class="lm_shouji">&nbsp;</em>收进杂志&nbsp;<span class="poster_forward_num line_num"><?= v.count_forward ?></span></a>
+			</div>
+		</div>
+
+		<div class="comm_box twiiter_box">
+			<p class="posterContent"><?= v.twitter_htmlcontent ?></p>
+			<p class="comm_num l22_f">
+				<a class="poster_comment pl" href="javascript:void(0)"><span>评论</span><span class="poster_comment_num f14_f"><?= v.count_reply ?></span></a>
+				<a isShowLike="<?= v.isShowLike?>" class="left_f poster_likes likes <?if(v.is_liked){?>liked<?}?>" href="javascript:void(0)">
+					<b class="likes_status">
+					<?if(v.is_liked){?>
+						已喜欢
+					<?}else{?>
+						<i class="lm_love2">&nbsp;</i>喜欢
+					<?}?>
+					</b>
+					<span class="red_f f14_f poster_like_num"><?= v.count_like?></span>
+				</a>
+				<a class="love_pro none_f">这是你自己分享的哦！</a>
+			</p>
+			<div class="clear_f"></div>
+		</div>
+		<div class="np_share comment_panel">
+			<a class="avatar32_f trans07 userInfoTips" href="/person/u/<?= v.uinfo.user_id ?>" user_id="<?= v.uinfo.user_id ?>" target="_blank"><img src="<?= v.uinfo.avatar_c ?>" /></a>
+			<p class="ml40_f commentHover">
+				<a class="fb_f" href="/person/u/<?= v.uinfo.user_id ?>" target="_blank"><?= v.uinfo.nickname ?></a><?= v.repin?>&nbsp;&nbsp;<?if(v.from_act_name != ""){?>--来自<a href="/act/<?= v.from_act_id?>">#<?= v.from_act_name?>#</a><?}?><a class="comment_reply v_hidden" href="javascript:void(0)">评论</a>
+			</p>
+			<div class="clear_f"></div>
+		</div>
+		<? if(v.comments.length > 0){?>
+		<?$.each(v.comments , function(key , data){?>
+		<div class="comm_share commentHover">
+			<a class="avatar32_f trans07 userInfoTips" user_id="<?= data.author.user_id?>" href="/person/u/<?= data.author.user_id?>" target="_blank"><img src="<?= data.author.avatar_c?>" /></a>
+			<p class="ml40_f"><a class="fb_f" href="/person/u/<?= data.author.user_id?>" target="_blank"><?= data.author.nickname?></a><span class="gray_f"><?= data.twitter_htmlcontent?></span><a class="comment_reply v_hidden" href="javascript:void(0)">回复</a></p>
+			<div class="clear_f"></div>
+		</div>
+		<?});?>
+		<?}?>
+		<? if(v.count_reply > 3 && v.comments.length > 0){?>
+		<div class="comm_share c_f">
+			<a href="/share/<?= v.like_twitter_id ?><?= v.tag ?>?o_c=1" target="_blank"> 查看全部<?= v.count_reply ?>条评论...</a>
+		</div>
+		<?}?>
+		<% if (this.user_id) { %>
+		<div class="discuss_one poster_cmt none_f">
+		<a class="avatar32_f userInfoTips" href="/person/u/<%= this.user_id%>" user_id="<%= this.user_id%>" target="_blank"><img src="<%=this.userInfo.avatar_c%>" /></a>
+			<div class="cmt_r">
+				<textarea class="poster_textarea"></textarea>
+				<div class="clear_f"></div>
+				<p class="discuss">
+					<a class="pl_btn poster_comment_btn" href="javascript:void(0);">评论</a><a class="share_smileys">&nbsp;</a>
+				</p>
+			</div>
+			<div class="clear_f"></div>
+		</div>
+		<% } %>
+	</div>
+</div>
+<? }); ?>
+</script>
+<script type="text/html" id="comment_content">
+<div class="comm_share">
+	<a class="avatar32_f userInfoTips" user_id="<%= this.user_id%>" href="/person/u/<%= this.user_id%>" target="_blank"><img src="<%= this.userInfo.avatar_c%>" /></a>
+	<p class="ml40_f"><a class="fb_f" href="/person/u/<%= this.user_id%>" target="_blank"><%=this.userInfo.nickname%></a><span class="gray_f"> <?= tContent ?></span><a class="red_f comment_reply v_hidden hw33" href="javascript:void(0)">回复</a></p>
+	<div class="clear_f"></div>
+</div>
+</script>
+<%# userInfoTip.html%>

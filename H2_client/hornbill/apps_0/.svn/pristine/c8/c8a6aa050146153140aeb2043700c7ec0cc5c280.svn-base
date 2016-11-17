@@ -1,0 +1,380 @@
+@import "common.less";
+@import "../common/dootablock.import.less";
+
+html{
+	height:100%;
+}
+html {
+	font-size : 10px;
+}
+@media only screen and (min-width: 375px){
+	html{
+		font-size: 11.718px !important;
+	}
+}
+@media only screen and (min-width: 401px){
+	html {
+		font-size: 12.5px !important;
+	}
+}
+@media only screen and (min-width: 428px){
+	html {
+		font-size: 13.37px !important;
+	}
+}
+@media only screen and (min-width: 481px){
+	html {
+		font-size: 15px !important;
+	}
+}
+@media only screen and (min-width: 569px){
+	html {
+		font-size: 17.5px !important;
+	}
+}
+@media only screen and (min-width: 641px){
+	html {
+		font-size: 20px !important;
+	}
+}
+
+
+.height-mid(){
+	top: 50%;
+	-webkit-transform: translateY(-50%);
+	transform:translateY(-50%);
+}
+
+body{
+	height: 100%;
+	background: #f5f5f5;
+}
+
+.sepline{
+	margin: 1.2rem auto;
+	height: 0.2rem;
+
+}
+.refund_container{
+	a.button{
+		display: inline-block;
+		padding: .6rem 1rem;
+		min-width: 6rem;
+		font-size: 1.2rem;
+		border-radius: .2rem;
+		color: #666666;
+		text-align: center;
+		position: relative;
+		margin: 0 .1rem;
+		.height-mid;
+		&.button-red{
+			border: .1rem solid #ff6666;
+			background: #ff6666;
+			color: #ffffff;
+		}
+		&.button-light{
+			border: .1rem solid #dddddd;
+			background: none;
+			color: #666666;
+		}
+		&.button-border{
+			border: .1rem solid #ff6666;
+			background: none;
+			color: #ff6666;
+		}
+	}
+	.refund_main{
+//		display: none;
+	}
+	.operations_wrap{
+		width:100%;
+		height: 5rem;
+		background: #ffffff;
+		text-align: center;
+		border-bottom: .1rem solid #dddddd;
+		position: fixed;
+		top: 0px;
+		left: 0px;
+		z-index: 999;
+	}
+
+	.steps-wrap{
+		position: relative;
+		margin-left: 2.1rem;
+		margin-top: 5rem;
+		border-left: .1rem solid #dddddd;
+		.clearfix;
+		.steps-item-wrap{
+			display: inline-block;
+			width: 100%;
+			position: relative;
+		}
+		.steps-dot{
+			width: .9rem;
+			height: .9rem;
+			border-radius: 50%;
+			position: absolute;
+			left: 0rem;
+			top: 3rem;
+			background: #dddddd;
+			-webkit-transform: translateX(-50%);
+			transform:translateX(-50%);
+		}
+		.steps-item-wrap.active{
+			.steps-dot{
+				width: 1.3rem;
+				height: 1.3rem;
+				background: #ff6699;
+			}
+			.steps-item .steps-item-headinfo .headinfos{
+				.step-des{
+					color: #ff6699;
+				}
+			}
+		}
+		.steps-item{
+			width: 26.5rem;
+			margin: 0 auto;
+			margin-top: 1rem;
+			background: #ffffff;
+			border-radius: .3rem;
+			border: .1rem solid #dddddd;
+			position: relative;
+
+			.steps-item-headinfo{
+				min-height: 5.8rem;
+				width: 100%;
+				position: relative;
+				border-bottom: .1rem solid #dddddd;
+				overflow: hidden;
+				.clearfix;
+				.avatar{
+					width: 3.6rem;
+					height: 3.6rem;
+					border-radius: 50%;
+					float: left;
+					position: relative;
+//					.height-mid;
+					margin-top: 1rem;
+					margin-left: .8rem;
+					
+				}
+				.headinfos{
+					float: right;
+					width: 21.1rem;
+					padding: 1rem 0;
+					position: relative;
+					.step-des{
+						font-size: 1.3rem;
+						color: #333333;
+						line-height: 2rem;
+					}
+					.step-time{
+						font-size: 1.2rem;
+						line-height: 1.7rem;
+						color: #999999;
+					}
+				}
+			}
+
+			.steps-detail-list{
+				line-height: 2.2rem;
+				font-size: 1.2rem;
+				color: #666666;
+				padding: 0.6rem 0;
+				.step-list{
+					padding-left: 2.3rem;
+					padding-right: 1rem;
+					position: relative;
+					line-height: 2.2rem;
+					word-wrap: break-word;
+					break-word: break-all;
+					i{
+						display: block;
+						width: 5px;
+						height: 5px;
+						border-radius: 50%;
+						position: absolute;
+						left: 1rem;
+						top:.95rem;
+						background: #999999;
+					}
+					.imgs-wrap{
+						width: 100%;
+						height: 4.6rem;
+						position: relative;
+						.clearfix;
+						.listimg{
+							display: block;
+							width: 4.4rem;
+							height: 4.4rem;
+							overflow: hidden;
+							border-radius: .3rem;
+							float: left;
+							margin-right: .15rem;
+							img{
+								width: 100%;
+							}
+						}
+//						margin-bottom: 1rem;
+					}
+				}
+			}
+
+			.steps-tips{
+				line-height: 2.2rem;
+				font-size: 1.2rem;
+				color: #ffffff;
+				background:#ff6699;
+				padding: .6rem 1rem;
+				border-bottom-right-radius:.3rem;
+				border-bottom-left-radius:.3rem;
+                p{
+                    padding-left: 1.3rem;
+                    position: relative;
+                    i{
+                        display: block;
+                        width: 5px;
+                        height: 5px;
+                        border-radius: 50%;
+                        background: #fff;
+                        position: absolute;
+                        left: 0rem;
+                        top: .95rem;
+                    }
+                }
+			}
+		}
+	}
+
+	.refund-infos-wrap{
+		padding: 0 1.5rem;
+		padding-top: 3.5rem;
+		.item{
+			line-height: 2rem;
+			border-top: 1px solid #dddddd;
+			font-size: 1.2rem;
+			color: #666666;
+			padding: .7rem 0;
+		}
+	}
+
+	.buyer_return{
+//		display: none;
+		width: 100%;
+		background: #f5f5f5;
+		.refund_address{
+			margin-top: 1.5rem;
+			background: #ffffff;
+			border-top: 1px solid #dddddd;
+			border-bottom: 1px solid #dddddd;
+			line-height: 2rem;
+			padding: .5rem 1.4rem;
+			p{
+				font-size: 1.2rem;
+				color: #333333;
+			}
+		}
+		.title{
+			font-size: 1.3rem;
+			color: #666666;
+			b{
+				color: #ff6699;
+
+			}
+		}
+		.refund_logistics{
+			margin-top: 1.5rem;
+			background: #ffffff;
+			border-top: 1px solid #dddddd;
+			border-bottom: 1px solid #dddddd;
+			line-height: 2rem;
+			padding: 1rem 1.4rem;
+            .tips{
+                color: #ff6699;
+                font-size: 1.1rem;
+            }
+			.logistics-item{
+				height: 4.1rem;
+				vertical-align: middle;
+				margin-top: .75rem;
+
+				.logistics-label{
+					display: inline-block;
+					vertical-align: middle;
+					font-size: 1.3rem;
+				}
+				.input-wrap{
+					display: inline-block;
+					vertical-align: middle;
+					width: 21.5rem;
+					height: 100%;
+					border: 1px solid #dddddd;
+					border-radius: .4rem;
+					position: relative;
+					&.no-border{
+						border: none;
+					}
+					input{
+						height: 3rem;
+						width: 80%;
+						outline: none;
+						border: none;
+						position: relative;
+						.height-mid;
+					}
+					.camera{
+						width: 2.6rem;
+						position: absolute;
+						right: 1rem;
+						.height-mid;
+						display: block;
+						img{
+							float: left;
+							width: 100%;
+						}
+					}
+					.mls-select{
+						height: 4.1rem;
+						border: 1px solid #dddddd;
+						border-radius: .4rem;
+						margin-top: 0px;
+						padding: 0px;
+						padding-left: 5px;
+						line-height: 4.1rem;
+					}
+				}
+			}
+		}
+
+		.refund_tips{
+            margin: 1rem 1.4rem;
+            border: 1px solid #fff8b3;
+            background: #fffef4;
+            color: #666666;
+            padding: 0.6rem 1rem;
+            line-height: 1.8rem;
+            font-size: 1.3rem;
+            border-radius: .3rem;
+            overflow: hidden;
+            a{
+                span{
+                    color: #ff6699;
+                }
+                color: #666666;
+                text-decoration: none;
+            }
+		}
+		.refund_btn{
+			text-align: center;
+			height: 4rem;
+			position: relative;
+		}
+	}
+
+
+}
+.hotline{
+	margin-top: 0px!important;
+}
+

@@ -1,0 +1,98 @@
+<%# head_simple.html%>
+<% function changeIpad(url){return this.os.ipad ? url.replace('meilishuo://','meilishuohd://'):url;} %>
+<% var info = this.info; %>
+<% var coupon = this.coupon; %>
+</head>
+<body>
+<% if (info.banner){%>
+<div class="win_top">
+	<figure class="win_top_pic">
+		<%
+			var bannerTop = false;
+			var bigPicW = +info.bannerWidth || 580;
+			var bigPicH = +180;
+			bannerTop = bigPicH/bigPicW;
+		%>
+		<span class="pic_load" <%if(bannerTop){%>style="padding-top:<%= bannerTop*100 + '%'%>"<%}%>>
+		<span class="bs_load_img" asrc="<%= info.banner %>"  ></span>
+		</span>
+	</figure>
+</div>
+<%}%>
+<div class="rule"><p><%= info.rule %></p></div>
+<div class="coupons">
+	<% coupon && coupon.forEach(function(v, k){ %>
+		<% if(v.can_apply_status==0 || v.can_apply_status==3){ %>
+			<div class="get coupon<%= k %>" id="<%= v.coupon_apply_code %>">
+				<img src="<%= this.PICTURE_URL %>images/shop/new/c_get.png" />
+				<p class="credit">￥<span><%= v.credit %></span></p>
+				<span class="threshold"><% if(v.threshold){ %>消费<%= v.threshold %>满使用<% }else{ %>无门槛使用<% } %></span>
+			</div>
+		<% }else if(v.can_apply_status==1){ %>
+			<div class="out coupon<%= k %>" id="<%= v.coupon_apply_code %>">
+				<img src="<%= this.PICTURE_URL %>images/shop/new/c_out.png" />
+				<p class="credit">￥<span><%= v.credit %></span></p>
+				<span class="threshold"><% if(v.threshold){ %>消费<%= v.threshold %>满使用<% }else{ %>无门槛使用<% } %></span>
+			</div>
+		<% }else if(v.can_apply_status==2){ %>
+			<div class="got coupon<%= k %>" id="<%= v.coupon_apply_code %>">
+				<img src="<%= this.PICTURE_URL %>images/shop/new/c_got.png" />
+				<p class="credit">￥<span><%= v.credit %></span></p>
+				<span class="threshold"><% if(v.threshold){ %>消费<%= v.threshold %>满使用<% }else{ %>无门槛使用<% } %></span>
+			</div>
+		<% } %>
+	<% }); %>
+</div>
+<div class="main">
+	<% info.categories &&  info.categories.length && info.categories.forEach(function(c){%>
+	<% if(c.title ){ %>
+	<div class="tle_bg">
+		<div class="title">
+			<div class="title_box">
+				<div class="text_tle1">
+					<h1 class="tle"><%= c.title%></h1>
+				</div>
+			</div>
+		</div>
+	</div>
+	<% } %>
+	<div class="pic_box">
+		<% c.goods && c.goods.length && c.goods.forEach(function(g){
+			if (!g) return
+			%>
+		<figure class="small_pic" style="position:relative;">
+			<a class="pic_load" href="<%= changeIpad(g.link)%>">
+				<span class="bs_load_img" asrc="<%= g.img%>"></span>
+			</a>
+	    	<%if(g.horizontal_mark.length){%>
+	        <div class="new-png" style="position:absolute;top:0;left:0;">
+	          <%var _l = 0;%>
+	          <% g.horizontal_mark.forEach(function(v1){ %>
+	            <div style="left:<%=2 + _l%>px"><img src="<%= v1.img_url%>" style="width:<%= v1.img_width/1.3 %>px;border-radius:5px 0 0 0;" /></div>
+	            <%_l += (v1.img_width + 2);%>
+	          <%});%>
+	        </div>
+	   		<%}%>
+			<p class="goods_title"><%== g.goods_title %></p>
+			<figcaption><span class="like"><em class="heart"></em><%= g.like%></span><span class="red_f">￥</span><%= g.price%></figcaption>
+		</figure>
+		<% });%>
+	</div>
+	<% }); %>
+	<div class="clear_f"></div>
+</div>
+<div class="into_shop">
+	<% var shop_url = _extFn.getAppLink('shop', {'shop_id' : this.info.shop_info.shop_id}, this.os, this.r)%>
+	<div class="text"><span class="shop_name"><%= info.shop_info.shop_name %></span>
+	</div>
+	<div class="btn"><a href="<%= shop_url%>"><span >查看本店更多活动和商品 ></span></a></div>
+</div>
+<span class="gotop" style="bottom:<%if(this.isIphone){%>60<%}else{%>20<%}%>px">
+	<img src="http://i.meilishuo.net/css/images/wap/tuan/gotop.png" />
+</span>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use('wap/app/hackWeixin');
+fml.use('wap/page/activity/fwindow');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot_simple.html%>

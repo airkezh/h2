@@ -1,0 +1,88 @@
+<%#head.html%>
+<%
+	var template = this.template.data ? this.template.data.template : null;
+	var hasMobile = this.mobile_info && this.mobile_info.data;
+	var mobileInfo = this.mobile_info.data;
+	var sharer_nickname = this.package_apply.data ? this.package_apply.data.sharer.nickname : '';
+	var receiverList = this.package_apply.data ? this.package_apply.data.list : [];
+	var applyInfo = this.package_apply.data ? this.package_apply.data.uInfo : null;
+%>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<div class="container"<%if(template){%> style="background:<%=template.bgcolor %> url('<%=template.bgimage %>') no-repeat center top;background-size:100%;"<%}%>>
+	<% if(!hasMobile){ %>
+	<div class="coupon_wrapper">
+		<p class="coupon_num">?</p>
+	</div>
+	<% } else {%>
+		<% if(applyInfo){ %>
+		<div class="coupon_wrapper">
+			<p class="coupon_num"><%=applyInfo.credit %><span class="coupon_unit">元</span></p>
+		</div>
+		<% } else { %>
+		<div class="coupon_wrapper_none"></div>
+		<% } %>
+	<% } %>
+	<div class="content">
+		<%if(!hasMobile){%>
+		<div class="mobile_input_wrapper">
+			<form id="sub_mobile_form" onsubmit="return false">
+				<input type="tel" class="mobile_input" placeholder="输入手机号，领取礼包" maxlength="11">
+				<button type="submit" id="sub_mobile_btn">请输入手机号</button>
+				<p class="error_tip"></p>
+			</form>
+		</div>
+		<%} else {%>
+		<div class="get_info_wrapper">
+			<% if(applyInfo){ %>
+			<p>您从<%=sharer_nickname %>这儿领到了<span class="get_num"><%=applyInfo ? applyInfo.credit : 0 %></span>元现金券</p>
+			<p>已放入手机账户<span class="mobile"><%=mobileInfo.mobile %></span><a href="/coupon/modify_phone/" class="modify_mobile">修改</a></p>
+			<% } else { %>
+			<p>您的手机账户<span class="mobile"><%=mobileInfo.mobile %></span><a href="/coupon/modify_phone/" class="modify_mobile">修改</a></p>
+			<% } %>
+		</div>
+		<a class="result_btn">下载美丽说，查看优惠券</a>
+		<%}%>
+		
+		<div class="tle_wrapper">
+			<img src="http://d05.res.meilishuo.net/pic/_o/d6/87/8f2a9d854b8c4958e0c80d06faac_562_28.cf.png">
+		</div>
+		<div class="received_list_wrapper">
+			
+			<%if(receiverList.length===0){%>
+			<p class="no_receiver">暂无朋友领取</p>
+			<%} else { %>
+			<ul class="received_list">
+				<% receiverList.forEach(function(item){%>
+				<li>
+					<img src="<%=item.uinfo.avatar_e %>" class="head_img">
+					<div class="receive_price">￥<%=item.credit %>元</div>
+					<p class="friend_base_p">
+						<span class="friend_name"><%=item.uinfo.nickname %></span>
+						<span class="friend_receive_time"><%=item.ctime %></span>
+					</p>
+					<p class="friend_message"><%=item.text %></p>
+				</li>
+				<%});%>
+			</ul>
+			<% } %>
+		</div>
+		<div class="tle_wrapper">
+			<img src="http://d02.res.meilishuo.net/pic/_o/a5/ce/0b84db145d95b985b450ac64eb61_562_28.cf.png">
+		</div>
+		<div class="rules_wrapper">
+			<img src="http://d02.res.meilishuo.net/pic/_o/46/6b/26df2f94ff67fb7a011243c3628a_551_144.ch.png">
+		</div>
+		<div class="download_wrapper">
+			<a id="open_app">
+				<img src="http://d04.res.meilishuo.net/pic/_o/57/14/e6aa4595d0a80ac130428b32db06_336_135.cf.png">
+			</a>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+Meilishuo.config.shareInfo = <%= JSON.stringify(this.template.data ? this.template.data.share : {}) %>;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/order_share');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

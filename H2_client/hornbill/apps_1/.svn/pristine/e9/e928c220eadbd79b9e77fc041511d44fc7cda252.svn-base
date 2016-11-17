@@ -1,0 +1,19 @@
+<%#head.html%>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<div class="gift_box">
+	<img class="g_pic1" src="http://d02.res.meilishuo.net/pic/_o/79/5c/f963e9be16596597265e173bcce2_316_708.ch.png">
+	<div class="roll1"></div>
+	<a href="/luhan/redpacket/" class="roll2" xr="<%= this.xr.r%>">
+	</a>
+</div>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use("wap/page/luhan_kiss");
+	fml.use("m/zepto" , function(){
+		setTimeout(function(){
+			$('.g_pic1 , .roll2').addClass('opa');
+		} , '10');
+		
+	});
+_use:", this._JSstack , this._JSmods); %>
+<%#foot.html%>

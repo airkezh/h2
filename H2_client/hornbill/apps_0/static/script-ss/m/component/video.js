@@ -1,0 +1,81 @@
+/*common*/
+
+var current 
+
+function fullscreen(elem) {
+	var prefix = 'webkit';
+	if ( elem[prefix + 'EnterFullScreen'] ) {
+			return prefix + 'EnterFullScreen';
+	} else if( elem[prefix + 'RequestFullScreen'] ) {
+			return prefix + 'RequestFullScreen';
+	};
+	return false;
+};
+
+
+function get(videoid){
+	var video = document.getElementById(videoid)
+	return video
+}
+
+function play(videoid, cbk){
+	var video = get(videoid)
+	var fullscreenvideo = fullscreen(video);
+	var t
+
+	if(fullscreenvideo && !(Meilishuo.config.os.ios && (/7.0|7.1/g).test(Meilishuo.config.os.version))){
+		video[fullscreenvideo]();
+
+	}else{
+		$(video).show()
+		t = setTimeout(function(){
+			$(video).hide()
+		}, 100)
+	}
+
+	video.play()
+	current = video
+	cbk && cbk(video)
+}
+
+function pause(){
+	current && current.pause() 
+}
+
+function bind(cbkplay, cbkpause){
+	$('[video]').each(function(k,v){
+		var $v = $(v)
+		if($v.attr('binded')) return;
+
+		$v.attr('binded',1)
+		var videoid = $v.attr('video')
+			, url = $v.attr('url')
+
+		var $video = $('<video controls="controls">', {id:videoid, src:url})
+										.appendTo($(v))
+
+		var video = $video[0]
+
+		video.addEventListener("webkitfullscreenchange",function(e){
+			if(!document.webkitIsFullScreen){//退出全屏暂停视频
+				this.pause();
+			};
+		}, false);
+
+		video.onplay = function(){
+			$(video).show()
+			cbkplay && cbkplay()
+		}
+
+		video.onpause = function(){
+			$(video).hide()
+			cbkpause && cbkpause()
+		}
+
+	})
+}
+
+exports.get = get
+exports.bind = bind
+exports.play = play
+exports.pause = pause

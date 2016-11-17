@@ -1,0 +1,132 @@
+<%#head.html%>
+<div style="top: 250px;" class="spinner midSpinner pa_f"></div>
+<div class="content_fluid v_hidden">
+	<% if (this.sysWarning) { %>
+	<div class="sysWarningWrap">
+		<p>亲爱的雅虎邮箱用户，8月19日雅虎将关闭中国区的雅虎邮箱服务，为了保证您的正常登录和使用，建议您<a href="/settings/setEmail">立即更换邮箱</a></p>
+	</div>
+	<% } %>
+	<% if (this.banNum) { %>
+	<div class="ads_banner rec_group ads_top">
+		<p class="mt20_f">根据你刚刚关注的杂志，你的首页更新了<span class="red_f"><%= this.banNum %></span>个分享</p>
+		<p class="twoline">你还可以继续 <span class="btn" style="cursor:auto">+ 加关注</span> ，量身订制你的首页。<a class="know" href="/ihome">知道了</a></p>
+	</div>
+	<% } else { %>
+	<%# commerce/ads_top_banner.html%>
+	<% } %>
+	<div class="clear_f"></div>
+	<div class="goods_wall">
+	<div class="corner_notic">
+		<div class="repinNotic none_f">
+			<h3 class="f14_f">最新动态</h3>
+			<ul>
+			</ul>
+			<script type="text/html" id="repin_notic">
+				<? $.each(dt_repin, function(k, v){
+					var last = k == dt_repin.length-1 ? 'last' : '';
+					if (v.type == 'register' || v.type == 'registerOther') {
+						var avatar_c = Meilishuo.config.avatar_c;
+						v.avatar_url = avatar_c.indexOf('http://') > -1 ? avatar_c : '<%= this.AVATOR_PIC %>'+avatar_c;
+					}
+					if (!v.avatar_url) v.avatar_url = '<%= this.AVATOR_PIC %>css/images/0.gif';
+				?>
+					<li class="<?= last ?>">
+						<a class="face" href="<?= v.i_url ?>" target="_blank"><img class="face" src="<?= v.avatar_url ?>"></a>
+						<p class="ml40_f">
+							<span><?= v.time_msg ?></span>
+							<? if (v.type == 'collect') {?>
+							<span>被</span>
+							<? } ?>
+							<a href="<?= v.person_url ?>" target="_blank"><?= v.nickname ?></a>
+							<?= v.notic_msg ?>
+						</p>
+					</li>
+				<? });?>
+			</script>
+		</div>
+	</div>
+	<div class="corner_stamp">
+		<%if(this.recommend && this.recommend.length){%>
+		<div class="recommend">
+			<div class="cmn_title mt14_f">
+				<p><a target="_blank" href="/shop/">更多好店<samp>&gt;&gt;</samp></a></p>
+				<h3 class="f16_f">推荐好店</h3>
+			</div>
+			<div class="groupBox_change">
+				<%# block/shop_recommend.html%>
+			</div>
+			<div class="clear_f"></div>
+		</div>
+		<%}%>
+		<div class="cmn_title mt14_f">
+			<p><a target="_blank" href="#" class="rep_maga">换一组<samp>&gt;&gt;</samp></a></p>
+			<h3 class="f16_f">推荐关注杂志</h3>
+		</div>
+		<div class="groupCon">
+			<div style="height:879px;">
+				<div class="rec_maga"></div>
+			</div>
+			<script type="text/html" id="fol_maga">
+				<? $.each(dt_maga, function(k, v){ ?>
+					<div class="gc_title">
+						<h4><a href="/group/<?= v.group_id ?>?frm=rec_indexa" target="_blank"><?= v.name ?></a></h4>
+						<p><?= v.num ?></p>
+					</div>
+					<a class="imgBox" href="/group/<?= v.group_id ?>?frm=rec_indexa" target="_blank">
+						<? if(v.mixpic){ ?>
+						<img class="maxpic" src="<?= v.mixpic ?>">
+						<? }else{ 
+							v.picture_url && $.each(v.picture_url, function(index, pic){ 	
+							var style = index % 3==2 ? 'style="margin-right:0"' : '';
+						?>
+							<img class="minpic"  src="<?= pic?>" <?= style?>  />
+						<? });} ?>
+						<div class="clear_f"></div>
+					</a>
+					<div class="infoBox c_f">
+						<span class="addGroupFollow red_follow" groupid="<?= v.group_id ?>">+ 加关注</span>
+						<div class="clear_f"></div>
+					</div>	
+				<? });?>
+			</script>
+			<p class="paper">想订制更符合你品味的首页？</p>
+			<a class="big_btn" target="_blank" href="/group?frm=rec_indexe"><em class="big_btnr"></em>去关注我喜欢的<samp>&gt;&gt;</samp></a>
+		</div>
+		<div class="cmn_title mt14_f">
+			<p><a target="_blank" href="#" class="rep_daren">换一组<samp>&gt;&gt;</samp></a></p>
+			<h3 class="f16_f">你可能感兴趣的人</h3>
+		</div>
+		<ul class="interest" style="height:184px;">
+		</ul>
+			<script type="text/html" id="fol_daren">
+				<? $.each(dt_daren, function(k, v){ ?>
+				<li>
+					<a class="avatar48_f" target="_blank" href="/person/u/<?= v.user_id ?>?frm=rec_indexb"><img src="<?= v.avatar_c ?>"></a>
+					<p><a target="_blank" href="/person/u/<?= v.user_id ?>?frm=rec_indexb"><?= v.nickname ?>&nbsp;<?= v.credit ?></a></p>
+					<p><?= v.sim ?></p>
+					<p><a class="addRec btn folbtn" href="javascript:void(0)" fuid="<?= v.user_id ?>">＋ 加关注</a></p>
+				</li>
+				<? }); ?>			
+			</script>
+	</div>
+	</div>
+<div class="spinner botSpinner none_f"></div>
+<div class="clear_f"></div>
+<div class="rec_pager pr_f">
+	想订制更符合你品味的首页？
+	<a class="small_btn" href="/group?frm=rec_indexf" target="_blank"><em class="small_btnr"></em>去关注我喜欢的&gt;&gt;</a>
+</div>
+<div class="paging_panel c_f pr_f none_f">
+<%#paging.html%>
+</div>
+<div class="ads_banner ads_bottom none_f"></div>
+</div>
+<%#poster.html%>
+<div class="clear_f"></div>
+<% $_ENGINE_SELF.callFn("useModule")("fml.use('page/poster0');", this._JSstack , this._JSmodsFast ); %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+    fml.use('page/home');
+    fml.use('page/poster_guang');
+_use:", this._JSstack , this._JSmods ); %>
+<div class="h_update none_f"><a><span id="msgSize">0</span>个新分享</a></div>
+<%# foot.html%>

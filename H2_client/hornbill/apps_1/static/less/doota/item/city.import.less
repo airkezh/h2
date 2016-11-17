@@ -1,0 +1,86 @@
+/*------------------------------------*\
+
+    全国城市弹层
+
+\*------------------------------------*/
+.cities {
+  position: absolute;
+  display: none;
+  width: 400px;
+  padding: 5px;
+  background-color: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  /*
+     优惠券的『立即领取』按钮的 z-index 是 10
+     #navbar 的 z-index 是 400
+  */
+  z-index: 100;
+
+  .hd {
+    margin: 10px 15px;
+    padding: 5px;
+    font-size: 14px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .bd {
+    padding: 0 20px 10px;
+    text-align: center;
+  }
+
+  .item, .sec-item {
+    position: relative;
+    float: left;
+    min-width: 40px;
+    height: 25px;
+    margin-right: 10px;
+    padding: 5px 10px;
+    line-height: 25px;
+    color: #666;
+    cursor: pointer;
+
+    &:hover {
+      color: #fff;
+      background-color: @pink;
+    }
+  }
+
+  .sec-items {
+    display: none;
+    position: absolute;
+    left: 15px;
+    top: 30px;
+    width: 280px;
+    padding: 10px;
+    border: 1px solid #e0e0e0;
+    background-color: #f9f9f9;
+    overflow: hidden;
+    z-index: 1000;
+  }
+}
+
+.arrow-down {
+  position: relative;
+  display: inline-block;
+  margin-top: 4px;
+  border-style: solid;
+  border-width: 6px;
+  border-color: #666 transparent transparent transparent;
+  vertical-align: middle;
+  /* IE 7 下面会继承 line-height */
+  *line-height: 0;
+
+  &::after {
+    position: absolute;
+    top: -8px;
+    left: -5px;
+    content: " ";
+    border-width: 5px;
+    border-style: solid;
+    border-color: #fff transparent transparent transparent;
+  }
+}
+
+.city-name:hover .arrow-down {
+  border-top-color: @pink;
+}

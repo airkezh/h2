@@ -1,0 +1,137 @@
+<!--
+/**
+ * @fileoverview 首页 － 每日签到
+ * @requires zepto
+ * @author kehuang@meilishuo.com
+ * @date 2015-03-27
+ */
+-->
+
+<%#head.html%>
+<%
+	var curSignUserInfo = this.signUserInfo.data;
+	var curUserConDays = curSignUserInfo.temp || 0;
+	var curUserTotalCoin = curSignUserInfo.coin || 0;
+%>
+<div class="load_shade">
+	<div class="load"></div>
+</div>
+
+<div class="top_main">
+	<div class="top_box"></div>
+
+	<div class="rule_box">
+		<a href="/activity/sign/sign_rule/" class="rule_btn"></a>
+	</div>
+
+	<div class="pic_box">
+		<img src="<%= this.PICTURE_URL %>images/wap/activity/may_sale/after_pig.gif" alt="">
+	</div>
+
+	<div class="coin"></div>
+</div>
+
+<div class="coin_box">
+	<%
+		var strSignText = '';
+
+		if (curUserConDays && ((curUserConDays % 5) == 0)) {
+			strSignText = '<span>5 </span>元大钞入手';
+		} else {
+			strSignText = '连签 <div>' + curUserConDays + '</div> 天，再签<span class="day"> ' + (5 - curUserConDays) + ' </span>天可得<span> 5 </span>金币';
+		}
+	%>
+	<div class="text" id="sign_text"><%= strSignText %></div>
+	<div class="coin">我的金币 <div class="num" id="total_coin"><%= curUserTotalCoin %></div> 枚</div>
+</div>
+
+<div class="signin_box">
+	<div class="p_signin_btn"></div>
+</div>
+
+<script type="text/html" id="signin_tips_layer">
+	<div class="shade j_layer_shade"></div>
+	<div class="win_box j_layer_main">
+		<p class="title">温馨提示</p>
+		<div class="signin_pig">
+			<img src="<%= this.PICTURE_URL %>images/wap/activity/may_sale/qd_pig.jpg" alt="">
+		</div>
+		<ul class="signin_text">
+			<li>连续签到5天，可领5元金币。</li>
+			<li>中途漏签，可以使用补签卡补签。</li>
+			<li>金币可以在签到商城抵扣现金消费。</li>
+		</ul>
+		<div class="come_on"></div>
+	</div>
+</script>
+
+<script type="text/html" id="signin_update_layer">
+	<div class="shade j_layer_shade"></div>
+	<div class="win_box win_update j_layer_main">
+		<p class="title">亲爱的主人：<br>我今天升级啦！</p>
+		<p class="section1">从2015年起，所有的签到日所得奖金，<br>减去已兑换金额，都转存成金币啦！<br>以前漏签带来的损失一笔勾销咯！</p>
+		<div class="layer_bg"></div>
+		<p class="section2">请主人将客户端升级到5.5.0版本，升级后<br>1.金币可以直接购买更多商品<br>2.金币不会被清零了</p>
+		<div class="p_update_btn"></div>
+	</div>
+</script>
+
+<script type="text/html" id="signin_notice_layer">
+	<div class="shade j_layer_shade"></div>
+	<div class="win_box win_notice j_layer_main">
+		<p class="title">恭喜你<br>9元金币入账！</p>
+		<p class="desc desc1">其中<span> 5元 </span>可以用于消费，其余<span> 4元 </span>需要明天再签到一天，凑够<span> 5元 </span>即可入账消费！</p>
+		<p class="desc desc2">明天来“发现”－“签到”看我，就能凑够<span> 5元 </span>金币啦～</p>
+		<div class="notice_bg"></div>
+		<div class="come_on p_know_btn"></div>
+	</div>
+</script>
+
+<script type="text/html" id="signin_init_layer">
+	<div class="shade j_layer_shade"></div>
+	<div class="win_box win_init j_layer_main">
+		<p class="title">你好，我是签到小猪，<br>很高兴认识你～</p>
+		<div class="pig_bg"></div>
+		<ul class="text">
+			<!--<li><div>每天领<span> 1元 </span>，凑够5元可兑换金币～</div></li>-->
+			<li><div>坚持每天签到，连续签到5天可兑换5枚金币</div></li>
+			<li><div>金币可用于购物时抵钱，直减哦！还有更多玩法敬请期待~</div></li>
+		</ul>
+		<div class="p_charge_btn"></div>
+	</div>
+</script>
+
+<script type="text/html" id="signin_stroke_layer">
+	<div class="shade j_layer_shade"></div>
+	<div class="win_box j_layer_main">
+		<p class="title">嘤嘤嘤~<br>没办法继续签到了呢....</p>
+		<p class="desc">每个账户，每个手机设备<br>只能签到一个账号。<br>详情见<a href="/activity/sign/sign_rule/">活动规则>></a></p>
+		<div class="signin_stroke">
+			<img src="<%= this.PICTURE_URL %>images/wap/activity/may_sale/sign_stroke_bg.jpg" alt="">
+		</div>
+		<div class="know_btn"></div>
+	</div>
+</script>
+
+<script>
+	/*fml.vars.isNewest = "<%=this.isNewest%>";
+
+	if(Meilishuo.config.os && Meilishuo.config.os.mlsApp){
+		fml.vars.isApp = true;
+	}*/
+	fml.vars.isLogin = <%=this.isLogin%>;
+
+	var isNewest = <%=this.isNewest%>;
+	var firstView = <%=this.firstView%>;
+	var resetMoney = <%=this.resetMoney%>;
+	var curUserConDays = <%=curUserConDays%>;
+	var curUserTotalCoin = <%=curUserTotalCoin%>;
+	var curUserUpgradeData = <%=JSON.stringify(curSignUserInfo.upgrade)%>;
+	var curFirstSignDate = '<%=curSignUserInfo.firstSignDate%>';
+	var curLastSignDate = '<%=curSignUserInfo.lastSignDate%>';
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/sign_in3');
+_use:", this._JSstack, this._JSmods); %>
+<%# foot_simple.html%>

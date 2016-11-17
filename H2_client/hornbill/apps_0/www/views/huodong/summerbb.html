@@ -1,0 +1,116 @@
+<%#head.html%>
+<%
+var wlListRenderFn = requireFn('wins/reply_box.html');
+%>
+<div class="summerbb">
+	<div class="bg_02 bg"></div>
+	<div class="bg_03 bg"></div>
+	<div class="bg_04 bg"></div>
+	<div class="bg_05 bg">
+		<div class="ga_tab1 ga_tab">
+			<div class="tab_view">
+				<div class="ga_box">
+					<div class="ga"></div>
+				</div>
+				<a class="link1" href="http://www.meilishuo.com/share/1130904809" target="_blank"></a>
+				<a class="link2" href="http://www.meilishuo.com/share/1131289119" target="_blank"></a>
+				<a class="link3" href="http://www.meilishuo.com/share/1131324195" target="_blank"></a>
+				<a class="link4" href="http://www.meilishuo.com/share/1131169885" target="_blank"></a>
+				<a class="item" href="http://maybelline.tmall.com/view_page-279614474.htm?spm=a1z10.4.w18291780601.8.gkCby6" target="_blank"></a>
+			</div>
+			<div class="tab_btn">
+				<div class="tab1" onClick="javascript:_gaq.push(['_trackPageview','meilishuo/destination/xinjiang']);" ></div>
+				<div class="tab2"  onClick="javascript:_gaq.push(['_trackPageview','meilishuo/destination/sanya']);" ></div>
+				<div class="tab3" onClick="javascript:_gaq.push(['_trackPageview','meilishuo/destination/lijiang']);" ></div>
+				<div class="tab4" onClick="javascript:_gaq.push(['_trackPageview','meilishuo/destination/changtan']);" ></div>
+			</div>
+		</div>
+	</div>
+	<div class="bg_06 bg">
+		<div class="summerbb_wall">
+			<div class="goods_wall">
+			<%
+				var showimg = 0;
+				var magItemRenderFn = requireFn('group/magitem.html');
+				this.summerbb_group && this.summerbb_group.tInfo && this.summerbb_group.tInfo.map(function(magazine){ %>
+				<%= magItemRenderFn(magazine ,0);%>
+			<% }); %>
+				<div class="clear_f"></div>
+				<div class="paging_panel c_f">
+				<%#paging.html%>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="bg_07_01 bg">
+	</div>
+	<div class="bg_07_02 bg">
+		<span>
+			<a class="item01" onClick="javascript:_gaq.push(['_trackPageview','meilishuo/buy/bb_uv']);" href="http://maybelline.tmall.com/view_page-279614474.htm?spm=a1z10.4.w18291780601.8.gkCby6" target="_blank"></a>
+			<a class="item02" onClick="javascript:_gaq.push(['_trackPageview','meilishuo/buy/bb_shuang']);" href="http://maybelline.tmall.com/view_page-279614474.htm?spm=a1z10.4.w18291780601.8.gkCby6" target="_blank"></a>
+			<a class="item03" onClick="javascript:_gaq.push(['_trackPageview','meilishuo/buy/bb_zheli']);" href="http://maybelline.tmall.com/view_page-279614474.htm?spm=a1z10.4.w18291780601.8.gkCby6" target="_blank"></a>
+		</span>
+	</div>
+	<div class="bg_07_03 bg">
+	</div>
+	<div class="bg_07_04 bg">
+		<span>
+			<a class="item04" onClick="javascript:_gaq.push(['_trackPageview','meilishuo/buy/bb_musi']);" href="http://maybelline.tmall.com/view_page-279614474.htm?spm=a1z10.4.w18291780601.8.gkCby6" target="_blank"></a>
+			<a class="item05" onClick="javascript:_gaq.push(['_trackPageview','meilishuo/buy/bb_shuang_yingrun']);" href="http://maybelline.tmall.com/view_page-279614474.htm?spm=a1z10.4.w18291780601.8.gkCby6" target="_blank"></a>
+			<a class="item06" onClick="javascript:_gaq.push(['_trackPageview','meilishuo/buy/bb_shuang_beirun']);" href="http://maybelline.tmall.com/view_page-279614474.htm?spm=a1z10.4.w18291780601.8.gkCby6" target="_blank"></a>
+		</span>
+	</div>
+	<div class="bg_07_05 bg">
+	</div>
+	<div class="bg_11 bg"></div>
+	<div class="bg_12 bg"></div>
+	<div class="bg_13 bg">
+		<div class="summerbb_talk">
+			<div class="summerbb_talk_box">
+				<div class="reply_list comments">
+					<%this.summerbb_talk && this.summerbb_talk.list.map(function(data){%>
+						<%=wlListRenderFn(data)%>
+					<%});%>
+				</div>
+			</div>
+		</div>
+	</div>
+<!-- 	<div class="share_group">
+		<p>推荐到</p>
+		<ul>
+			<li><span class="i_qzone"></span></li>
+			<li><span class="i_sina" ></span></li>
+			<li><span class="i_tx" ></span></li>
+		</ul>
+	</div> -->
+	<div class="spinner botSpinner none_f"></div>
+    <div class="clear_f"></div>
+</div>
+
+	<!--弹窗-->
+	<script type="text/html" id="success">
+	    <div class="ga_success">
+			<span class="ga_continue" id="ga_continue"></span>
+		</div>
+	</script>
+	<script type="text/html" id="huodong">
+	    <div class="gapop">
+			<div class="ga_look">
+				<div class="ga_img">
+					<div class="goods_gaimg">
+						<img src="<%= this.PICTURE_URL %>images/huodong/summerbb/summerbb_select.png" class="magaImgage" />
+					</div>
+				</div>
+				<div class="ga_select"></div>
+				<div class="clear_f"></div>
+			</div>
+			<div id="linkMessageTips"><span class="gamsg"></span></div>
+			<div class="sub"><span class="gasub" ></span></div>
+	    </div>
+	</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/huodong/summerbb');
+	fml.use('page/poster');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

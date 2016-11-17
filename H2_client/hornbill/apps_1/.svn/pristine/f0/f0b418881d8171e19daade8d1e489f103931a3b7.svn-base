@@ -1,0 +1,158 @@
+<%if(this.staticize == 1){%>
+	<%#head.html%>
+<%}else{%>
+	<%#head_simple.html%>
+	<body>
+<%}%>
+<%
+var tipClass = this.ViewTools.timeStuff({'2014/11/10 20:00:00' : 'tip1' , '2014/11/11 23:00:00' : 'tip3'} , 'tip0'  );
+%>
+<div class="t_main">
+	<%if(this.staticize == 1){%>
+		<div class="mp_top tip4">
+			
+		</div>
+		<div id="coupon_rg">
+			<div class="mp_coupon" id="coupons_main">
+				<div class="coupon_main" >
+					<div class="couponLi couponBox1">
+						<a class="btn">
+							<img src="" alt="">
+						</a>
+						<p class="text"></p>
+					</div>
+					<div class="couponLi couponBox2">
+						<a class="btn">
+							<img src="" alt="">
+						</a>
+						<p class="text"></p>
+					</div>
+					<div class="couponLi couponBox3">
+						<a class="btn">
+							<img src="" alt="">
+						</a>
+						<p class="text"></p>
+					</div>
+				</div>
+			</div>
+		</div>
+	<%} else  {%>
+		<div class="mp_top <%=tipClass%>">
+			<div class="clock_main">
+				<% if( this.tips != "end") {%>
+				<div class="clock"><%= this.countdown_text%><span class="time" time="<%= new Date(this.countdown_time).getTime()/1000 - new Date(this.new_coupons.timestamp).getTime() / 1000%>">-天-时-分-秒</span></div>
+				<%}else{%>
+					<div class="clock" style="text-align:center;"><%= this.countdown_text%></div>
+				<%}%>
+			</div>
+		</div>
+		<div id="coupon_rg">
+			<div class="mp_coupon">
+				<div class="coupon_main" >
+					<% this.coupons && this.coupons.length && this.coupons.map(function(data,i){ %>
+						<div class="couponLi <%if(i==0){%>couponBox1<%}else if(i==1){%>couponBox2<%}else if(i==2){%>couponBox3<%}%>">
+							<a class="btn <%if(data.use == "starting"){%>get_coupon<%}%>" data-name="encore_11" data-code="<%= data.coupon_code%>" data-type="<%= this.couponType%>" data-key="<%= this.new_coupons.key%>">
+								<img src="<%= this.imgs[i]%>" alt="">
+							</a>
+							<% if (data.left_amount > 0 ){%>
+								<p class="text">还剩<span><%= data.left_amount%></span>张</p>
+							<%}%>
+						</div>
+					<%});%>
+					
+				</div>
+			</div>
+		</div>
+	<%}%>
+</div>
+<div class="nav_content nav_main">
+	<% if(this.featured_area11){ %>
+	<% for(var i in this.featured_area11.data) {
+		var area = this.featured_area11.data[i].falls;
+	%>
+		
+		<div id="a_li<%= i%>_content" <%if(this.staticize == 1){%>style="position:relative; top:-40px;"<%}%>></div>
+
+		<div id='a_li<%= i%>_main'>
+			<div class="a_li_main_top<%= i%>"></div>
+			<div class="a_main<%= i%>">
+			<% area && area.map(function(data,j){ %>
+				<a href="<%= data.tar_url%>&area=a_li<%= i%>_content" class="a_li_img" target="_blank">
+					<img src="<%= data.img_url%>" alt="">
+				</a>
+			<%});%>
+			</div>
+		</div>
+	<%}%>
+	<%}%>
+	
+</div>
+<div class="nav_right">
+	<a href="#a_li1_content" class="nav_a1"></a>
+	<a href="#a_li2_content" class="nav_a2"></a>
+	<a href="#a_li3_content" class="nav_a2"></a>
+	<a href="#a_li4_content" class="nav_a2"></a>
+	<a href="#a_li5_content" class="nav_a2"></a>
+	<a href="javascript:;" class="go_top"></a>
+
+</div>
+<script type="text/html" id="coupon_wrap">
+	<div class="coupon_main" >
+		<? for (var i = 1; i <= coupons.length; i++){  var c_li = coupons[i];?>
+			<div class="couponLi couponBox<?= i ?>">
+				<a class="btn <? if( c_li.ing ){?><?= c_li.ing?><?}?>" data-code="<?= c_li.code ?>" data-key="<?= c_li.key?>" data-type="<?= c_li.couponType?>" >
+					<img src="<?= c_li.pic ?>" alt="">
+				</a>
+				<? if( c_li.left_amount > 0){?>
+					<p class="text">还剩<span><?= c_li.left_amount ?></span>张</p>
+				<?}?>
+			</div>
+		<?}?>
+	</div>
+</script>
+
+<script type="text/html" id="code_pic_main">
+	<div class="code_main_top"><span class="code_main_close"></span></div>
+	<div class="code_main">
+		<div class="code_info">
+			<div class="code_input_Text">
+				<input type="text" class="input_box" value="输入验证码">
+			</div>
+			<img src="" alt="" class="img_code">
+			<span class="code_reload">换一张</span>
+		</div>
+		<div class="code_tips"></div>
+		<a href="javascript:;" class="code_reset">取消</a><a href="javascript:;" class="code_submit">确定</a>
+	</div>
+</script>
+<script type="text/html" id="code_mob_main">
+	<div class="code_main_top"><span class="code_main_close"></span></div>
+	<div class="code_mob">
+		<p class="code_mob_text">验证码将会发到你的默认手机上，如未设置默认手机请去我的设置里填写。</p>
+		<div class="code_mob_btn">发 送</div>
+		<input type="text" class="code_mob_input" value="输入手机验证码">
+		<a href="javascript:;" class="code_mob_submit">验证</a>
+		<div class="code_mob_tips"></div>
+	</div>
+</script>
+
+<script type="text/html" id="coupon_success">
+	<div class="c_success_top"><span class="coupon_close"></span></div>
+	<div class="c_suc_box">
+		<div class="c_suc_btn">确 定</div>
+	</div>
+</script>
+
+<% this.hideGoTop = true; %>
+<% this.onlyShowGoTop = true; %>
+<%if(this.staticize == 1 ){%>
+	<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+		fml.use('page/huodong/act11');
+	_use:", this._JSstack , this._JSmods); %>
+<%}else{%>
+	<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+		fml.use('page/huodong/act11static');
+	_use:", this._JSstack , this._JSmods); %>
+<%}%>
+
+<%#foot.html%>

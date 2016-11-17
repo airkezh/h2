@@ -1,0 +1,53 @@
+<%# head.html%>
+<div class="top_bnr" style="background-image:url('<%= this.upload.pic%>');"></div>
+<section id="wrapper_main" class="wrapper">
+	<div class="scroller">
+		<span class="colFlag"></span>
+		<div class="goods_wall">
+			<div class="corner_notic">
+				<%if(this.uinfo && this.uinfo.data && this.uinfo.data.user_id){%>
+				<div class="vote_show">
+					<div class="show_bg" style="padding-top:<%= this.uinfo.data.pic_height/this.uinfo.data.pic_width *100 %>%;"><a href="<%=this.uinfo.data.share_url%>"><img src="<%=this.uinfo.data.pic_url%>" /></a></div>
+					<div class="user_info">
+					<a class="face"><img src="<%=this.uinfo.data.avatar_url%>" /></a>
+						<ul class="num_info">
+							<li><span>你的票数</span><b><%=this.uinfo.data.score%></b></li>
+							<li><span>你的排名</span><b><%=this.uinfo.data.rank%></b></li>
+						</ul>
+						<div class="clear_f"></div>
+						<p class="btnBox">
+							<%if(!this.access_token && !this.access_user){%>
+							<a class="btn" href="/act/picshow/?<%=this.tokeninfo%>&access_user=<%=this.uinfo.data.user_id%>&pic_url=<%=encodeURIComponent(this.uinfo.data.pic_url)%>">快来参加迎大奖</a>
+							<%}else{%>
+							<a class="btn" href="/act/picshow/invite?<%=this.tokeninfo%>&access_user=<%=this.uinfo.data.user_id%>&pic_url=<%=encodeURIComponent(this.uinfo.data.pic_url)%>"><%= this.upload.subject1 %></a>
+							<%}%>
+						</p>
+						<div class="clear_f"></div>
+					</div>
+				</div>
+				<%} else {%>
+				<div class="vote_show">
+					<div class="pic_bg">
+						<p><a class="btn" href="/act/picshow/?<%=this.tokeninfo%>">快来参加迎大奖</a></p>
+					</div>
+				</div>
+				<%}%>
+			</div>
+		</div>
+		<div class="pullUp" status="loading"></div>
+	</div>
+</section>
+<%# act/picshow/poster.html%>
+<script>
+fml.vars.poster = {};
+fml.vars.access_token = '<%=this.access_token%>';
+fml.vars.mac = '<%=this.mac%>';
+fml.vars.banner_id = '<%=this.banner_id%>';
+<%= this.poster0? 'Meilishuo.config.poster0 = '+JSON.stringify(this.poster0)+';':'' ;%>
+</script>
+<% $_ENGINE_SELF.callFn("useModule")("fml.use('wap/page/poster0');", this._JSstack , this._JSmodsFast ); %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/act/picshow');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot_simple.html%>

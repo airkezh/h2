@@ -1,0 +1,157 @@
+<%# head.html%>
+<div class="comment_title">
+	<div class="comment_icon"></div>
+</div>
+<div class="comment_nav">
+	<a href="/">美丽说</a>
+	&nbsp;&gt;&nbsp;
+	<a href="/order/list/">我的美丽说订单</a>
+	&nbsp;&gt;&nbsp;
+	<a href="#">
+		<span class="red_f">购买评价</span>
+	</a>
+</div>
+<div class="comment_div">
+	<div class="c_info">
+		<span class="j-order" data="<%= this.comment.data.order.order_id%>">订单号：<%= this.comment.data.order.order_id%></span>
+		<span>商家：<%= this.comment.data.order.shop_name%></span>
+		<span class="shop_online">
+			<% if(this._serviceIM){%>
+				<a class="getserviceqq knilmi" href="<%= this.ViewTools.callIM ( this._serviceIM) %>" target="_blank">&nbsp;</a>
+			<% } %>
+		</span>
+		<span>成交时间：<%= this.comment.data.order.ctime%></span>
+	</div>
+	<div class="c_head">
+		<span class="goods_info_t">商品信息</span>
+		<span class="buy_time_t">商品评价</span>
+	</div>
+	<%this.goods_num = 1;%>
+	<%if(this.comment.data.goods && this.comment.data.goods.length == 1)
+        this.goods_num = 0;
+    %>
+	<%this.comment.data.goods && this.comment.data.goods.forEach(function(v,i){%>
+    <form class="j-form">
+	    <div class="shopCartList">
+            <dl class="goodsDL">
+               <dt>
+                   <img src="<%= v.goods_img%>"/>
+               </dt>
+               <div>
+                    <dd class="goodsTit">
+                    <a href="/share/item/<%= v.twitter_id%>"><%= v.goods_title%></a>
+                    </dd>
+                    <dd class="goodsAttr">
+                        <span><%= v.prop[0].name%>：<%= v.prop[0].value%></span>
+                        <span><%= v.prop[1].name%>：<%= v.prop[1].value%></span>
+                    </dd>
+               </div>
+            </dl>
+            <dl class="commendDL">
+                <dt>
+                    <div class="starItem">
+                        <span><em>*</em>综合评分：</span>
+                        <ul mark="0">
+                            <li class="gray_star j-gray" info="差的太离谱了，宝贝毫无优点可言"></li>
+                            <li class="gray_star j-gray" info="宝贝有瑕疵，没有描述的那么好"></li>
+                            <li class="gray_star j-gray" info="还可以，与商家所描述基本一致"></li>
+                            <li class="gray_star j-gray" info=" 宝贝不错，商家的服务态度也很好，整体满意"></li>
+                            <li class="gray_star j-gray" info=" 非常满意，商品和服务态度都超出了预期"></li>
+                        </ul>
+                        <input type="hidden" name="level" value="0" />
+                        <span class="point"><em></em><em></em></span>
+                    </div>
+                    <div class="starItem">
+                        <span><em>*</em>样式流行：</span>
+                        <ul mark="0">
+                            <li class="gray_star j-gray" info="与商家描述的不一致，款式陈旧，且豪无剪裁可言"></li>
+                            <li class="gray_star j-gray" info="宝贝款式陈旧，剪裁不好，不太满意"></li>
+                            <li class="gray_star j-gray" info="宝贝算是中规中矩，算不上流行，但穿上也不难看"></li>
+                            <li class="gray_star j-gray" info="宝贝样式还不错，很流行，满意"></li>
+                            <li class="gray_star j-gray" info="宝贝非常好看，符合当前流行趋势，上身也超级好看"></li>
+                        </ul>
+                        <input type="hidden" name="fashion" value="0" />
+                        <span class="point"><em></em><em></em></span>
+                   </div>
+                   <div class="starItem">
+                        <span><em>*</em>质量满意：</span>
+                        <ul mark="0">
+                            <li class="gray_star j-gray" info="差的太离谱，与商家描述的不一致，刚穿一两天就坏了"></li>
+                            <li class="gray_star j-gray" info="宝贝部分有破损，与描述的不一致"></li>
+                            <li class="gray_star j-gray" info="宝贝质量一般，虽说没有破损，但也没有描述的那么好"></li>
+                            <li class="gray_star j-gray" info="与商家描述的一致，整体还算满意"></li>
+                            <li class="gray_star j-gray" info="宝贝质量非常好，无可挑剔，非常满意"></li>
+                        </ul>
+                        <input type="hidden" name="quality" value="0" />
+                        <span class="point"><em></em><em></em></span>
+                   </div>
+                </dt>
+                <dd>
+                    <div class="txtarea">
+                        <label class="placeholder">亲，说说你对已买到的宝贝的感受吧</label>
+                        <textarea></textarea>
+                        <div class="clear_f"></div>
+                    </div>
+                    <div class="comment_notice"><i class="wrong_tip"></i><b>评论文字过长，请修改后重新提交</b></div>
+                </dd>
+           </dl>
+           <div style="clear:both"></div>
+       </div>
+       <input type="hidden" name="mid" value="<%= v.mid%>"/>
+       <input type="hidden" name="content" value=""/>
+    </form>
+    <%if(i < this.comment.data.goods.length - 1){%>
+        <div class="dash_border"></div>
+    <%}%>
+    <%});%>
+    <form class="j-form-service">
+        <p class="service_rating">服务评分</p>
+        <div class="service_score">
+           	<div class="starItem">
+           	    <span>服务态度：</span>
+           	    <ul>
+           	        <li class="gray_star j-gray" info="商家服务态度差，说脏话、还骂人，简直不把客户当回事"></li>
+           	        <li class="gray_star j-gray" info="商家有点儿不耐烦，承诺的服务也兑现不了"></li>
+           	        <li class="gray_star j-gray" info="商家回答问题很慢，态度一般，谈不上沟通顺畅"></li>
+           	        <li class="gray_star j-gray" info="商家服务态度挺好的，沟通顺畅，整体满意"></li>
+           	        <li class="gray_star j-gray" info="商家服务太棒了，考虑周全，完全超出预期"></li>
+           	    </ul>
+                <input type="hidden" name="attitude" value="0" />
+           	    <span class="point"><em></em><em></em></span>
+           	</div>
+           	<div class="starItem">
+           	    <span>发货速度：</span>
+           	    <ul>
+           	        <li class="gray_star j-gray" info="发货速度非常慢，反复催了几次才发货"></li>
+           	        <li class="gray_star j-gray" info="发货速度比较慢，提醒了才发货"></li>
+           	        <li class="gray_star j-gray" info="发货速度可以接受，算不上快"></li> 
+           	        <li class="gray_star j-gray" info="发货速度还算及时"></li>
+           	        <li class="gray_star j-gray" info="发货速度超级快，赞卖家"></li>
+           	    </ul>
+                <input type="hidden" name="fast" value="0" />
+           	    <span class="point"><em></em><em></em></span>
+           	</div>
+           	<div class="clear"></div>
+        </div>
+        <div class="submit_btn">
+        	<input type="button" class="com_btn" value="发表评论" title="发表评论" />
+        	<input type="checkbox" class="check_box" />
+        	<span>匿名评价</span>
+        </div>
+    </form>
+    <div class="tipbubble">
+        <div class="tipcontent">
+            <span>1分&nbsp;很不满意</span>
+            <p>差的太离谱了，宝贝毫无优点可言</p>
+        </div>
+        <s><i></i></s>
+    </div>
+</div>
+<script type="text/javascript">
+fml.vars.oid = <%= this.comment.data.order.order_id%>;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+  fml.use('page/shop_comment_change');
+_use:", this._JSstack , this._JSmods); %>
+<%# foot.html%>
+ 

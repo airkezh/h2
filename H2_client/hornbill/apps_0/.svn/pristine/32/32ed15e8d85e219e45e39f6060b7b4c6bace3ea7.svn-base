@@ -1,0 +1,84 @@
+<!doctype html>
+<%# lang.conf%>
+<html <%if(this.cache){%>manifest="/cache/m.manifest"<%}%>>
+<head>
+	<meta charset="utf-8">
+    <title><%== this.pageTitle%></title>
+    <meta name="keywords" content="<%= this.keywords%>" />
+    <meta name="description" content="<%= this.meta_description%>" />
+	<% if(this.use_rem_screen) { %>
+		<meta name="viewport" content="width=device-width, target-densitydpi=device-dpi, initial-scale=1, user-scalable=no">
+	<% } else { %>
+		<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+	<% } %>
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <link rel="dns-prefetch" href="http://s.meilishuo.net/">
+    <link rel="dns-prefetch" href="http://i.meilishuo.net/">
+    <link rel="dns-prefetch" href="http://d01.res.meilishuo.net/">
+    <link rel="dns-prefetch" href="http://d02.res.meilishuo.net/">
+    <link rel="dns-prefetch" href="http://d03.res.meilishuo.net/">
+    <link rel="dns-prefetch" href="http://d04.res.meilishuo.net/">
+    <link rel="dns-prefetch" href="http://d05.res.meilishuo.net/">
+    <link rel="dns-prefetch" href="http://d06.res.meilishuo.net/">
+	<% if(!this.iosTelephoneOn){ %>
+	<meta content="telephone=no" name="format-detection" />
+	<% } %>
+    <% if(!this.noBasecss){ %>
+	<link rel="stylesheet" type="text/css" href="<%= this.M_JCSTATIC_BASE %>css/<%if(this.isM){%>m<%}else{%>wap<%}%>/base.css?<%= this.SVERSION%>" />
+    <% } %>
+	<link rel="apple-touch-icon-precomposed" href="<%= this.CSS_JS_BASE_URL%>css/images/wap/web/apple-touch-icon-114x114-precomposed-touch.png" sizes="114x114"/>
+	<link rel="apple-touch-icon-precomposed" href="<%= this.CSS_JS_BASE_URL%>css/images/wap/web/apple-touch-icon-72x72-precomposed-touch.png" sizes="72x72"/>
+	<link rel="apple-touch-icon-precomposed" href="<%= this.CSS_JS_BASE_URL%>css/images/wap/web/apple-touch-icon-60x60-precomposed-touch.png"/>
+	<% this.user_id = (this.userInfo ? this.userInfo.user_id:0) || 0;%>
+	<%= (function(link){
+		var str = '';
+		var base = this.M_JCSTATIC_BASE;
+		var sversion = this.SVERSION;
+		var path = this.isM ? 'm' : 'wap';
+		link && link.map(function(src){
+			str += '<link rel="stylesheet" type="text/css" href="'+base+'css/' + path + '/'+src+'.css?'+ sversion +'"/>';
+			});
+		return str;
+		})(this._CSSLinks)%>
+	<% if (this._CSSstack && this._CSSstack.length) { %>
+		<style>
+		<%= this._CSSstack.join("\n");%>
+		</style>
+	<% }
+	%>
+	<% if(this.use_rem_screen){ %>
+		<script> window.use_screen_base = <%= this.use_rem_screen === true ? 640 : +this.use_rem_screen %>; </script>
+		<script type="text/javascript" src="<%= this.M_JCSTATIC_BASE + this.SCRIPT_BASE %>wap/app/rem_screen.js?<%= this.SVERSION%>" ></script>
+	<% } %>
+	<script type="text/javascript" src="<%= this.M_JCSTATIC_BASE + this.SCRIPT_BASE %>fml.js?<%= this.SVERSION%>" ></script>
+	<script>
+	fml.setOptions({'sversion' : '<%= this.SVERSION %>','defer' : <%= this.JS_Defer %> ,'modulebase' : '<%= this.M_JCSTATIC_BASE + this.SCRIPT_BASE %>'});
+    var Meilishuo = {
+        'config' : {
+			nt : '<%= this.nToken%>',
+			server_url : '<%= this.SERVER_BASE %>',
+			picture_url : '<%= this.PICTURE_URL %>',
+			im_url : '<%= this.IM_ULR %>',
+			captcha_url : '<%= this.M_CAPTCHA_ULR %>',
+			cooper_url : '<%= this.COOPER_DOMAIN %>',
+			controller : '<%== this.headTag%>',
+			os : <%= JSON.stringify(this.os) || '{}'%>,
+			access_token : '<%=this.accessToken || 0 %>',
+			avatar_c : '<%= this.userInfo.avatar_c %>',
+			nickname : "<%= this.userInfo.nickname || ''%>",
+			user_id : <%= this.user_id%>,
+			r : "<%= this.r || ''%>",
+			goAppWelcome : <%= this.goAppWelcome  %>,
+			apiHost : <%= JSON.stringify(this.apiHost) %>,
+			proxyPath : '/aw/proxy/'
+		}
+    };
+	fml.vars.screen = {};
+	window.MLS = window.MLS || {};
+	</script>
+	<% if (true === this.XR) {%>
+	<script>
+	function __get_r(a,b){var c,d,f,g,h,i,j,k;if(!b)return a;if(a){if(0===a.indexOf("meilishuo://")||0===a.indexOf("meilishuohd://")){c=a.split("?json_params=");try{d=c[1]?JSON.parse(decodeURIComponent(c[1])):{},d.r=b,d=encodeURIComponent(JSON.stringify(d))}catch(e){alert(e)}return c[0]+"?json_params="+d}if(f=a.split("#"),g=f[0].split("?"),h=g[1])for(h=h.split("&"),i=h.length-1;i>=0;i--)j=h[i],"r="==j.slice(0,2)&&h.splice(i,1);else h=[];return h.push("r="+encodeURIComponent(b)),h=h.join("&"),k=g[0]+"?"+h,f[1]&&(k+="#"+f[1]),k}}document.addEventListener("click",function(a){for(var c,d,e,b=a.target;b&&"A"!=b.tagName;)if(b=b.parentNode,b===this)return;if(b){if(c=b.getAttribute("_der"),1==c)return a.preventDefault();if(2!=c&&(b.setAttribute("_der",1),d=b.getAttribute("href"),d&&0!==d.indexOf("javascript:"))){if(e=b.getAttribute("xr"),!e)return a.preventDefault(),alert("链接参数丢失"),void 0;b.setAttribute("href",__get_r(d,e)),b.setAttribute("_der",2)}}},!1);
+	</script>
+	<% }%>

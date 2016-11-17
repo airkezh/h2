@@ -1,0 +1,39 @@
+<div class="gotop_wrap" style="bottom:<%if(this.isIphone){%>60<%}else{%>20<%}%>px">
+	<% if(this.sort){ %><div class="sort"><img src="http://i.meilishuo.net/css/images/wap/biz/all/bs_sort_btn.png" /></div><% } %>
+	<a class="gotop">
+		<img src="http://i.meilishuo.net/css/images/wap/tuan/gotop.png" />
+	</a>
+</div>
+
+<%
+if(this.sort){
+	var column = [{
+		group_name : '护肤',
+		group_item : [{name : '精华液',pid : '37030'},{name : '洁面',pid : '37488'},{name : '润唇膏',pid : '37056'},{name : '护肤套装',pid : '40457'},{name : '防晒',pid : '37667'},{name : '乳液面霜',pid : '40445'},{name : '面膜',pid : '34189'},{name : '化妆水',pid : '37028'},{name : '眼部护理',pid : '40455'}]
+	},{
+		group_name : '彩妆',
+		group_item : [{name : 'BB霜',pid : '34233'},{name : '隔离',pid : '35999'},{name : '底妆',pid : '34251'},{name : '口红唇彩',pid : '36946'},{name : '卸妆',pid : '35181'},{name : '睫毛膏',pid : '34241'},{name : '香水',pid : '34268'},{name : '眼妆',pid : '40459'},{name : '眉笔眉粉',pid : '34243'}]
+	},{
+		group_name : '功效',
+		group_item : [{name : '祛痘',pid : '34228'},{name : '美白',pid : '34200'},{name : '深层清洁',pid : '36992'},{name : '个人护理',pid : '40461'},{name : '控油',pid : '34227'},{name : '细致毛孔',pid : '34231'},{name : '遮瑕',pid : '37451'},{name : '补水保湿',pid : '34204'},{name : '舒缓抗敏',pid : '34223'}]
+	}];
+%>
+	<div class="mask mask_hide">
+		<div class="sort_wrap">
+			<div class="sort_wrap_inner">
+				<% column.forEach(function(data, index){ %>
+					<div class="sort_item <%= index == 2 ? 'sort_item_last' : '' %>">
+						<span class="sort_title_<%= index %>"><%= data.group_name %></span>
+						<% data.group_item.forEach(function(sec_data){ %>
+							<a href="meilishuo://twitter_list.meilishuo?json_params=<%= encodeURIComponent(JSON.stringify({'method' : 'twitter\/attr','params':{'attr_id' : sec_data.pid },'title' : sec_data.name, 'r': this.r+'.2_mapp-biz_shareact_main'})) %>" data_name="<%= sec_data.name %>"><%= sec_data.name %></a>
+						<% }); %>
+					</div>
+				<% }); %>
+			</div>
+		</div>
+	</div>
+<% } %>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/biz/gotop');
+_use:", this._JSstack, this._JSmods ); %>

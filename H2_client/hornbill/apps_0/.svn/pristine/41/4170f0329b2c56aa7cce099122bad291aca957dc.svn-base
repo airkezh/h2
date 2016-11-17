@@ -1,0 +1,79 @@
+<%
+	/**
+ 	 * @fileoverview 分享－会员足迹
+     * @requires zepto
+     * @author kehuang@meilishuo.com
+     * @date 2015-12-01
+     */
+%>
+
+<%#head.html%>
+<%
+	var curUserIsLogin = this.isLogin;
+	var curServerDate = this.serverDate;
+	var curGiftPageData = this.giftPageData;
+	var curFootprintData = this.footprintData;
+	var curServerTime = curServerDate.getTime();
+	var curUserFootprintData = (curFootprintData && curFootprintData.data) ? curFootprintData.data : {};
+	var curUserLevel = curUserFootprintData.user_grade || 0;
+	var curUserName = curUserFootprintData.nick_name || '- -';
+	var curUserAvatar = curUserFootprintData.avatar || 'http://d06.res.meilishuo.net/ap/a/78/32/59c5fb29fb8ea04deddb2ad0ff42_256_256.cf.png';
+%>
+
+<div class="main">
+	<div class="user_box">
+		<%
+			var user_reg_days = curUserFootprintData.register_date_sub || 0,
+				interests_list = (curGiftPageData && curGiftPageData['interests_level_' + curUserLevel]) ? curGiftPageData['interests_level_' + curUserLevel] : [],
+				interests_list_len = ((interests_list.length - 1) < 0) ? 0 : (interests_list.length - 1);
+		%>
+		<div class="user_head">
+			<img src="<%= curUserAvatar %>" alt="<%= curUserName %>">
+		</div>
+		<div class="user_name"><%= curUserName %></div>
+		<div class="under_line">__</div>
+		<%
+			if (user_reg_days < 1) {
+		%>
+		<p class="user_info">欢迎加入美丽说</p>
+		<p class="user_info">累计消费 <i>计算ING…</i></p>
+		<p class="user_info">剁手 <i>计算ING…</i></p>
+		<p class="user_info">拥有特权 <i><%= interests_list_len %></i> 个</p>
+		<p class="user_info">获得美丽值 <i>积攒ING…</i></p>
+		<p class="user_info">时尚基因 <i>定位ING…</i></p>
+		<%
+			} else {
+				var user_total_spending = curUserFootprintData.gmv_total || 0,
+					user_total_orders = curUserFootprintData.order_cnt_total || 0,
+					user_total_beautys = curUserFootprintData.user_score || 0,
+					fashion_gene_arr = curUserFootprintData.fashion_gene || [],
+					user_fashion_gene = fashion_gene_arr[0] || '';
+		%>
+		<p class="user_info">在美丽说成长了 <i><%= user_reg_days %></i> 天</p>
+		<p class="user_info">累计消费 <i><%= user_total_spending %></i> 元</p>
+		<p class="user_info">剁手 <i><%= user_total_orders %></i> 次</p>
+		<p class="user_info">拥有特权 <i><%= interests_list_len %></i> 个</p>
+		<p class="user_info">获得美丽值 <i><%= user_total_beautys %></i> 分</p>
+		<p class="user_info">时尚基因 <i><%= user_fashion_gene %></i></p>
+		<%
+			}
+		%>
+		<div class="footprint_btn">我也要看我的足迹</div>
+	</div>
+</div>
+
+<script>
+	fml.vars.r = '<%= this.xr.r || '' %>';
+	fml.vars.isLogin = <%= curUserIsLogin %>;
+	fml.vars.userLevel = <%= curUserLevel %>;
+	fml.vars.serverTime = <%= curServerTime %>;
+	fml.vars.shareData = <%= JSON.stringify(this.shareData) %>;
+</script>
+
+<!-- <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script> -->
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/member/footprint_share');
+_use:", this._JSstack, this._JSmods); %>
+
+<%#foot_simple.html%>

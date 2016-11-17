@@ -1,0 +1,190 @@
+/*common*/
+
+var $ = require('wap/zepto')
+	, RAF = require('wap/core/rAF')
+	, SwipeScale = require('wap/component/swipeScale')
+	, sticky = require('wap/component/sticky')
+	, lazy = require('wap/component/lazzyLoad')
+	, scrollStop = require('wap/component/scrollStop')
+	, WaterFall = require('wap/component/circleWaterfall')
+	, optimiseFn = require('wap/component/waterfallOptimise')
+
+	, rAF = RAF.rAF
+	, cAF = RAF.cAF
+
+	, waterfallInstances = {
+		'hot' : {
+			'section' : 'hot'
+			, 'poster0' : fml.vars.poster0
+			, 'frame' : 1
+		},
+		'boom' : {
+			'section' : 'boom'
+			, 'poster0' : ''
+			, 'frame' : 0
+		},
+		'new' : {
+			'section' : 'new'
+			, 'poster0' : ''
+			, 'frame' : 0
+		}
+	}
+	, curWaterfallType = 'hot'
+	, activeWaterFallInstance = ''
+
+	, scrollToNavNum = 0
+
+var lazy_pic = lazy.init({'xpath' : '.bs_load_img'})
+lazy_pic.scroll()
+scrollStop('#tags_scroll')
+
+/**
+ * Tab瀑布流显示
+ */
+function activeWaterfall(type){
+	var wf = waterfallInstances[type]
+		, oldWf = waterfallInstances[curWaterfallType]
+
+	if(oldWf.instance){
+		oldWf.instance
+			.lock()
+			._config.el.hide()
+	}
+
+	curWaterfallType = type
+
+	if(!wf.instance){
+		waterfallInstances[ type ].instance= wf.instance = WaterFall.init({
+			el: $('.' + type + '_section')
+			, url: '/aj/search/search_tag_poster'
+			, colNum: 2
+			, colGap : 6
+			, hasSideGap: true
+			, optimiseFn : optimiseFn
+			, data: {
+				limit: 30
+				, section: wf.section
+				, frame: wf.frame
+				, tag_word : fml.vars.tag_word
+			}
+			, dataFilter : function(data){
+				return data
+			}
+			, onFetchSuccess: function(data){
+				lazy_pic.load()
+				if(data && data.length == 0){
+					$('.pullUp').attr('status', 'stop')
+					this.lock()
+				}
+			}
+		}).start(wf.poster0)
+	}
+
+	activeWaterFallInstance = wf.instance
+
+	activeWaterFallInstance
+		.unlock()
+		._config.el.show()
+}
+
+/**
+ * 搜索时，无结果瀑布流
+ */
+function nonePosterInit(){
+	var urlData = {
+		'word_name' : fml.vars.tag_word
+		, 'frame' : 1
+		, 'page' : 0
+	}
+
+	var waterFallInstance = WaterFall.init({
+		el: '.hot_section'
+		, tmpl: 'nonePosterWall'
+		, url: '/aj/wap/search/Search_without_result_recommend'
+		, data: urlData
+		, colNum: 2
+		, colGap : 6
+		, hasSideGap: true
+		, optimiseFn : optimiseFn
+		, dataFilter : function(data){
+			return data.goods.tInfo
+		}
+		, onFetchSuccess: function(data){
+			lazy_pic.load()
+			if(data.length == 0){
+				$('.pullUp').hide()
+				this.lock()
+			}
+		}
+	}).start()
+
+	activeWaterFallInstance = waterFallInstance
+}
+
+/**
+ * 页面滚动，将瀑布流展现出来
+ */
+function scrollInit(){
+	var win_w = $(window).width()
+		, main_page_top = $('.main_page').offset().top
+		, move_top = document.body.scrollTop
+		, target_top = (main_page_top - win_w/640*400)
+		, diff = (target_top - move_top)/10
+
+	if(main_page_top && target_top != move_top && Math.abs(diff) > 2){
+		function step(){
+			move_top += diff
+			document.body.scrollTop = move_top
+
+			if(Math.abs(target_top - move_top) >= 5) {
+				rAF(step)
+			} else {
+				lazy_pic.load()
+			}
+		}
+		step()
+	} else {
+		lazy_pic.load()
+	}
+}
+
+function scrollToNav(){
+	if($('body').scrollTop() > scrollToNavNum) $('body').scrollTop(scrollToNavNum)
+}
+
+function scrollToNavInit(){
+	scrollToNavNum = $('.poster_wrap').offset().top - $('.wap_head').height()
+}
+
+function bindNav(){
+	scrollToNavInit()
+
+	$('.nav_item').on('click', function(){
+		$('.poster_nav').find('.active').removeClass('active')
+		$(this).addClass('active')
+		activeWaterfall($(this).data('type'))
+		scrollToNav()
+	})
+}
+
+$(window).on('load', function(){
+	scrollInit()
+	// 错乱的数据格式，都不能统一哈
+	if(fml.vars.poster0.length){
+		activeWaterfall(curWaterfallType)
+		bindNav()
+		sticky.init('.poster_nav', {'infinity': true, 'sticky_top': $('.wap_head').height()})
+	} else {
+		nonePosterInit()
+	}
+
+	$(document).on('search_start', function(){
+		activeWaterFallInstance.lock()
+	})
+	$(document).on('search_cancel', function(){
+		scrollInit()
+		activeWaterFallInstance.unlock()
+	})
+
+	SwipeScale($('.cards_inner')[0], {speed: 500})
+})

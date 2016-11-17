@@ -1,0 +1,70 @@
+@import "../block.less";
+html,body { .bgwhite; .f(12px); }
+.topPic {
+  img { .w(100%); }
+}
+.poster;
+.poster > ._pa;
+.poster_pa;
+.goods_wall{ 
+	figure { 
+		.border-n;
+		.ml(4px)!important;
+		.mr(4px)!important;
+		border: 1px solid #fff !important;
+		.twitterImg { .w(100%); }
+	}
+	.goods-title {
+		.f(1rem);
+		.l(1.2rem);
+		.cutText;
+	}
+	figcaption{
+		.f(1rem);
+		.h(44*@px);.pt(16*@px);
+		.price{
+			.left;
+		}
+		.like{
+			.right;
+		}
+		.icon-heart{ .icon >.heart; }
+	}
+}
+.pullUp{
+	.pullUpDown > .common;
+	// .pullUpDown > .loading;
+	&:before{
+		.nowrap;
+		.ml(-10px);
+	}
+	&[status="loading"]{
+		background:0 none;	
+		&:before{
+			content:"上拉看更多..."	
+		}
+	}
+	&[status="stop"]{
+		background:0 none;	
+		&:before{
+			content:"木有了...";	
+		}
+	}
+}
+.gotop{
+	.none;
+	.pf;
+	right: 20px;
+	.w(80*@w);
+	img{
+		.w(100%);
+	}
+}
+//控制文本超过两行部分显示 ...
+.cutText(){
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}

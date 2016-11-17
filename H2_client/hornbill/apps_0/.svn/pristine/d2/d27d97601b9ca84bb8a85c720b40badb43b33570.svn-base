@@ -1,0 +1,70 @@
+<%
+var query = this._Request_query;
+var getLink = _extFn.getLink;
+%>
+<% if(this.attr_keywords.length > 0 || this.attr_match.length > 0){%>
+<div class="attr_word">
+	<div class="redline2"></div>
+	<% if(this.attr_keywords.length > 0){%>
+	<div class="attr_word_rec<%if(this.attr_match.length){%> line<%}%>">
+		<h2>喜欢<%= this.attr_title_keywords.word_name%>的MM还喜欢</h2>
+		<div class="attr_word_list">
+		<% this.attr_keywords && this.attr_keywords.map(function(data){%>
+			<%if(data.isBrand){
+				var url = '/guang/brand/' + data.word_name + getLink({'frm' : 'section4_keyWords'});    
+			}else{
+				var url = '/guang/attr/' + data.word_id + getLink({'frm' : 'section4_keyWords'}); 
+			}
+		%>              
+			<a href="<%= url%>" target="_blank"><%= data.word_name%></a>
+		<%});%>
+			<div class="clear_f"></div>
+		</div>
+	</div>
+	<%}%>
+	<% if(this.attr_match.length > 0){%>
+	<div class="attr_word_rec">
+		<h2><%= this.attr_title_keywords.word_name%>的推荐搭配</h2>
+		<div class="attr_word_list">
+		<% this.attr_match && this.attr_match.map(function(data){%>
+			<% if(data.isBrand){
+				var url = '/guang/brand/' + data.word_name + getLink({'frm' : 'section4_dapei'});   
+				}else{
+				var url = '/guang/attr/' + data.word_id + getLink({'frm' : 'section4_dapei'});    
+				}
+			%>
+			<a target="_blank" href="<%= url%>" target="_self"><%= data.word_name%></a>
+		<%});%>
+			<div class="clear_f"></div> 
+		</div>
+	</div>
+	<%}%>
+</div>
+<%};%>
+
+<%if(this.attr_brand && this.attr_brand.length > 0){%>
+<div class="attr_word">
+	<div class="redline2"></div>
+	<div class="attr_word_rec">
+		<h2><span class="red_f"><%= this.attr_title_keywords.word_name%></span>的推荐品牌</h2>
+		<div class="attr_word_list">
+			<% this.attr_brand.map(function(data){%>
+			<a class="<%if(data.isred == 1){%> red_f <%}%>" href="/guang/brand/<%= data.word_name%>" target="_blank"><%= data.word_name%></a>
+			<%});%>
+			<div class="clear_f"></div> 
+		</div>
+	</div>
+</div>
+<%}%>
+
+<% if(this.attr_baike && this.attr_baike.msg){%>
+<div class="attr_word">
+	<div class="redline2"></div>
+	<div class="attr_word_rec">
+		<h2 class="f14_f"><span class="red_f"><%= this.attr_title_keywords.word_name%></span>的小百科</h2>
+		<div class="attr_word_list">
+			<p><%= this.attr_baike.msg%></p>
+		</div>
+	</div>
+</div>
+<%};%>

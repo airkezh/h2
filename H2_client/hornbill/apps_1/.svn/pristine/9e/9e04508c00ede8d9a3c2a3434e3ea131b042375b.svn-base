@@ -1,0 +1,48 @@
+<%# head.html %>
+<%
+  var banner =  this.webCps && this.webCps.head_banner || '';
+  var navbgc = this.webCps && this.webCps.navi_background || '';
+%>
+<div class="main">
+    <div>
+        <img src="<%=banner.img%>">
+    </div>
+    <section class="nav_wap" id="nav_wap">
+      <ul class="nav" id="m_ca">
+        <% this.webCps.navi_links && this.webCps.navi_links.forEach(function(item,index){%>
+          <li>
+            <a href="javascript:;" class="active<%=index%>">
+              <img src="<%= item.ori_img%>">
+            </a>
+          </li>
+        <%});%>
+      </ul>  
+    </section>
+     <% this.webCps && this.webCps.categorys.forEach(function(item,index){%>
+      <section class="wrapper" id="active<%=index%>">
+          <div class="goods_banner">
+              <img src="<%=item.banner_img%>">
+          </div>
+          <div class="goods_wall">
+            <%item && item.items.forEach(function(data,index){%>
+              <div class="new_goods <%= index > 9 ? 'none_f' : '' %>">
+                  <a href="<%=data.link%>" target="_blank">
+                    <span class="bs_load_img" asrc="<%= data.img%>"></span>
+                  </a>
+              </div>
+            <%})%>  
+          </div>          
+          <%if(item.items.length > 10 ){%>
+            <img class="more" src="<%=item.more_img%>">
+          <%}%>
+      </section>
+     <%});%>
+    <span class="gotop" style="bottom:<%if(this.os.iphone){%>60<%}else{%>20<%}%>px">
+      <img src="<%= this.PICTURE_URL%>/images/wap/tuan/gotop.png" />
+    </span>
+</div>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+  fml.use('wap/page/biz/mlslm_list');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html %>

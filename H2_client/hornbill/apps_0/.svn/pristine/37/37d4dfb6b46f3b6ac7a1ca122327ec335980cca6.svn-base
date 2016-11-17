@@ -1,0 +1,37 @@
+<%# frame/wap/head_simple.html%>
+</head>
+<body>
+
+<ul class="msgList" id="msgList"></ul>
+
+<script id="msgItem" type="text/html" >
+    <li class="item">
+        <img class="item_icon" src="<?= avatar_b ?>"/>
+        <div class="unreadNum" style="visibility: <?= msg_num==0?'hidden':'' ?>"><?= msg_num ?></div>
+        <div class="nickName"><?= nickname ?></div>
+        <div class="status" style="background-color: <?= status==1?'#78e000':'#ccc' ?>"></div>
+        <div class="msg"><?= msg.msg ?></div>
+        <div class="time"></div>
+    </li>
+</script>
+
+
+<script>
+    fml.vars.im = {
+        fromid : <%= this.user_id %>
+        , toid : <%= this.toid || 0 %>
+        , type : "<%= this.type || 0 %>"
+        , source : 'wap'
+        , msgReceive: <%= JSON.stringify(this.msgReceive) %>
+    };
+    //<%=this.IM_URL2 || '/' %>socket.io/socket.io.js  http://im.weiwang.rdlab.meilishuo.com/socket.io/socket.io.js
+</script>
+<script src="<%=this.IM_URL2 || '/' %>socket.io/socket.io.js"></script>
+<%if(0){%>
+<script src="https://cdn.socket.io/socket.io-1.0.6.js"></script>
+<%}%>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+        fml.use('m/page/im/msgList');
+_use:", this._JSstack , this._JSmods ); %>
+<%# frame/wap/foot_simple.html%>

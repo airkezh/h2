@@ -1,0 +1,318 @@
+<%#head.html%>
+<%
+	var curUserIsLogin = this.isLogin;
+	var curPageData = this.pageData;
+	var curTurntableThxData = curPageData.awards || {};
+	var act_list = this.pageData.activities_href;
+	var curTurntableAwardsData = this.getAwardData.data || {};
+	var curUserData = this.getUserBeans.data || {};
+	var curUserTotalBeans = curUserData.beans || 0;
+	var curUserLotteryFreeTimes = parseInt(curUserData.free_times) || 0;
+	var curUserTotalFreeTimes = parseInt(curUserData.free_times_total) || 0;
+	var curNotLoginPointerImg = curPageData.pointer_1.img_src || '';
+	var curAvailablePointerImg = curPageData.pointer_2.img_src || '';
+	var curUnavailablePointerImg = curPageData.pointer_3.img_src || '';
+	var curFreePointerImg = curPageData.pointer_4.img_src || '';
+	var curTurntablePrizeData = curTurntableAwardsData.awards || [];
+	var curTurntableThreshold = parseInt(curTurntableAwardsData.threshold) || 20;
+	var prizeList = this.prizeList.data || {};
+
+	curTurntablePrizeData.unshift(curTurntableThxData);
+%>
+<div class="main">
+	<!-- 九宫格奖品图片 -->
+	<div class="none_f">
+		<%
+			var curTurntablePrizeDataLen = curTurntablePrizeData.length;
+			if (curTurntablePrizeDataLen > 0) {
+				for (var i = 0; i < curTurntablePrizeDataLen; i++) {
+					var data = curTurntablePrizeData[i],
+						id = data.id || '',
+						pic = data.pic || '',
+						name = data.name || '',
+						type = data.type || 0,
+						level = data.level || 0;
+		%>
+			<img src="<%= pic %>" id="turntable_prize_<%= id %>" data-type="<%= type %>" data-level="<%= level %>" alt="<%= name %>">
+	    <% }} %>
+	    <img src="<%= curTurntablePrizeData[0].pic%>">
+	</div>
+	<!-- 九宫格奖品图片结束 -->
+	<!-- 我的美美豆 -->
+	<div class="user_info">
+	 	<% if (curUserIsLogin) { %>
+	 		<span class="beans">我的美美豆:&nbsp;</span><span class="beans_num" id="j_total_beans"><%= curUserTotalBeans %></span>
+	 		<i id="j_add_beans" class="add_beans">+0</i>
+	 	<%} else { %>
+	 		<span class="login login_tips">登录后查看美美豆</span>
+	 	<%}%>
+	</div>
+	<!-- 美美豆结束 -->
+	<!-- 九宫格 -->
+	<table id="lottery" class="nine-lottery">
+		<tr>
+			<td class="lottery-unit lottery-unit-0">
+				<div class="td_box">
+					<img src="<%= curTurntablePrizeData[0].pic%>">
+					<p><%= curTurntablePrizeData[0].name%></p>
+				</div>
+				<div class="active"></div>	
+			</td>
+			<td class="lottery-unit lottery-unit-1">
+				<div class="td_box">
+					<img src="<%= curTurntablePrizeData[1].pic%>">
+					<p><%= curTurntablePrizeData[1].name%></p>
+				</div>
+				<div class="active"></div>
+			</td>
+			<td class="lottery-unit lottery-unit-2">
+				<div class="td_box">
+					<img src="<%= curTurntablePrizeData[2].pic%>">
+					<p><%= curTurntablePrizeData[2].name%></p>
+				</div>
+				<div class="active"></div>
+			</td>
+		</tr>
+		<tr>
+			<td class="lottery-unit lottery-unit-7">
+				<div class="td_box">
+					<img src="<%= curTurntablePrizeData[7].pic%>">
+					<p><%= curTurntablePrizeData[7].name%></p>
+				</div>
+				<div class="active"></div>
+			</td>
+			<td class="draw_btn">
+				<%
+					var pointerClass = '',
+						pointerStyle = '';
+
+	    			if (curUserIsLogin) {
+	    				if (curUserLotteryFreeTimes > 0) {
+		    				pointerStyle = curFreePointerImg;
+	    				} else {
+	    					if (curUserTotalBeans < curTurntableThreshold) {
+	    						pointerClass = 'inactive';
+		    					pointerStyle = curUnavailablePointerImg;
+	    					} else {
+		    					pointerStyle = curAvailablePointerImg;
+	    					}
+	    				}
+	    		%>
+	    			<img class="lottery-btn <%= pointerClass%>" src="<%= pointerStyle%>">
+	    		<%
+		    		} else {
+		    			pointerStyle = curNotLoginPointerImg;
+		    	%>
+		    			<div class="login"><img src="<%= pointerStyle%>"></div>
+		    	<% } %>
+				
+			</td>
+			<td class="lottery-unit lottery-unit-3">
+				<div class="td_box">
+					<img src="<%= curTurntablePrizeData[3].pic%>">
+					<p><%= curTurntablePrizeData[3].name%></p>
+				</div>
+				<div class="active"></div>
+			</td>
+		</tr>
+		<tr>
+			<td class="lottery-unit lottery-unit-6">
+				<div class="td_box">
+					<img src="<%= curTurntablePrizeData[6].pic%>">
+					<p><%= curTurntablePrizeData[6].name%></p>
+				</div>
+				<div class="active"></div>
+			</td>
+			<td class="lottery-unit lottery-unit-5">
+				<div class="td_box">
+					<img src="<%= curTurntablePrizeData[5].pic%>">
+					<p><%= curTurntablePrizeData[5].name%></p>
+				</div>
+				<div class="active"></div>
+			</td>
+			<td class="lottery-unit lottery-unit-4">
+				<div class="td_box">
+					<img src="<%= curTurntablePrizeData[4].pic%>">
+					<p><%= curTurntablePrizeData[4].name%><p>
+				</div>
+				<div class="active"></div>
+			</td>
+		</tr>
+	</table>
+	<!-- 九宫格结束 -->
+	<!-- 奖品数量 -->
+	<div class="prize_num">今日中奖名单</div>
+	<!-- 奖品数量结束 -->
+</div>
+<div class="list">
+	<!-- 中奖名单 -->
+	<div class="person_main">
+		<ul class="person_box">
+			<% prizeList && prizeList.map(function(data){ %>
+				<li>
+					<img class="top" src="<%= data.avatar%>" />
+					<div class="text">
+						<p class="t"><%= data.nickname%></p>
+						<p class="m"><%= data.period%>抢到了<span><%= data.awdname%></span></p>
+					</div>			
+				</li>
+			<% }); %>
+		</ul>
+	</div>
+	<!-- 中奖名单结束 -->
+	<!-- 活动入口 -->
+	<%if(act_list){%>
+		<div class="act_list">
+			<table width="100%">
+				<tr>
+					<% act_list.map(function(data){ %>
+						<td ahref="<%= data.link_url%>"><img src="<%= data.link_image%>"></td>
+					<%});%>
+				<tr>
+			</table>
+		</div>
+	<%}%>
+	<!-- 活动入口结束 -->
+</div>
+<!-- 吸底 -->
+<div class="bottom_banner">
+	<span ahref="/member/turntable_prize/beans_dial" class="my_prize">我的奖品</span>
+	<span ahref="/member/turntable_rule/" class="activity_rule">活动规则</span>
+</div>
+<!-- 吸底结束 -->
+
+<script type="text/html" id="j_prize_tpl">
+	<div class="layer_main j_layer_main">
+		<div class="m">
+			<?
+				var picBg = '',
+					btnHtml = '',
+					descHtml = '',
+					titleHtml = '',
+					item = this.data,
+					extra = item.extra,
+					prizeId = item.id || 0,
+		            prizePic = item.pic || '',
+		            prizeName = item.name || '',
+		            prizeType = item.type || 0,
+		            prizeLevel = item.level || 0,
+		            recordId = item.record_id || 0;
+
+                switch (prizeType) {
+                	case 0:
+                		picBg = 'http://d02.res.meilishuo.net/pic/_o/8d/78/8ee3ec4135d22dcd53c16bfc61b1_471_437.cf.png';
+						btnHtml = '<div class="pop_btn closeDialog">知道了</div>';
+						descHtml = '';
+						titleHtml = '';
+                		break;
+                    case 1:
+                    	var addrId = extra.id || 0;
+
+                    	if (addrId) {
+                    		var name = extra.name || '',
+                    			phone = extra.phone || '',
+                    			address = extra.address || '',
+                    			nameLen = name.length || 0,
+                    			name = (nameLen <= 4) ? name : name.substr(0, 4) + '...',
+                    			address = address.substr(0, 18) + '...';
+
+                    		picBg = 'http://d03.res.meilishuo.net/pic/_o/53/59/325ee5e37d190acbb3ac2ef4fcfe_471_437.cf.png';
+							btnHtml = '<div class="buttons"><div class="alter_btn">修改地址</div><div class="sure_btn" data-addrid="' + addrId + '" data-recoid="' + recordId + '">确定</div><div class="closeDialog"></div></div>';
+							descHtml = '<p class="address">商品将发往:<br>' + address + '<br>' + name + '&nbsp;&nbsp;' + phone + '</p>';
+							titleHtml = '<p class="title">抽中<span>' + prizeName + '</span></p>';
+                    	} else {
+                    		picBg = 'http://d03.res.meilishuo.net/pic/_o/53/59/325ee5e37d190acbb3ac2ef4fcfe_471_437.cf.png';
+							btnHtml = '<div class="write_btn">填写地址</div>';
+							descHtml = '<p class="info">填写收货地址，奖品君火速向你奔来！</p>';
+							titleHtml = '<p class="title">抽中<span>' + prizeName + '</span></p>';
+                    	}
+
+                        break;
+                    case 2:
+                    	var shopName = extra.name || '',
+                    		shopAvater = extra.avater || '';
+
+                        picBg = 'http://d03.res.meilishuo.net/pic/_o/53/59/325ee5e37d190acbb3ac2ef4fcfe_471_437.cf.png';
+						btnHtml = '<div class="buttons"><div class="close_btn closeDialog" data-type="2">知道了</div><span ahref="/member/turntable_prize/beans_dial" class="looks_btn">去看看</span></div>';
+						descHtml = '<p class="desc">已经duang~duang~<br>加到你的账户咯！</p>';
+
+						if (shopName != '') {
+							titleHtml = '<p class="title">抽中<span>' + prizeName + '</span></p><p class="sub_title"><span class="icon">' + shopName + '</span></p>';
+						} else {
+							titleHtml = '<p class="title">抽中<span>' + prizeName + '</span></p>';
+						}
+
+                        break;
+                    case 3:
+                    	var beans = extra.beans || 0;
+
+                        picBg = 'http://d03.res.meilishuo.net/pic/_o/53/59/325ee5e37d190acbb3ac2ef4fcfe_471_437.cf.png';
+						btnHtml = '<div class="buttons"><div class="close_btn closeDialog" data-type="3" data-beans="' + beans + '">知道了</div><span ahref="/member/turntable_prize/beans_dial" class="looks_btn">去看看</span></div>';
+						descHtml = '<p class="desc">已经duang~duang~<br>加到你的账户咯！</p>';
+						titleHtml = '<p class="title">抽中<span>' + prizeName + '</span></p>';
+
+                        break;
+                }
+			?>
+			<div class="pop_img"><img id="j_pic_bg" src="<?= picBg ?>" alt=""></div>
+			<?= titleHtml ?>
+			<div id="j_prize_desc"><?= descHtml ?></div>
+			<div id="j_prize_btn" data-recoid="<?= recordId ?>"><?= btnHtml ?></div>
+		</div>
+	</div>
+</script>
+<script type="text/html" id="img_captcha_tpl">
+	<div class="checkBox">
+		<div class="captchaImgBox j_layer_main">
+			<div class="imgTop">
+				<input class="captchaInput" name="checkcode" type="text" value="" maxlength="10" placeholder="请输入验证码">
+				<img class="captchaImg" src="<?= this.picUrl ?>" width="40%" alt="">
+				<div class="newImg"></div>
+			</div>
+			<div class="imgCenter"></div>
+			<div class="imgBottom">
+				<div class="imgCaptchaClose closeDialog"></div>
+				<div class="imgCaptchaCheck"></div>
+			</div>
+		</div>
+	</div>
+</script>
+<script type="text/html" id="sms_captcha_tpl">
+	<div class="checkBox">
+		<div class="captchaSmsBox j_layer_main">
+			<div class="smsTop">
+				<div class="getSmsCaptcha">点击发送</div>
+			</div>
+			<div class="smsCenter"></div>
+			<div class="smsBottom">
+				<input class="captchaInput" name="checkcode" type="text" value="" maxlength="10" placeholder="请输入验证码">
+				<div class="captchaCheck">验证</div>
+			</div>
+			<div class="smsClose closeDialog"></div>
+		</div>
+	</div>
+</script>
+<script type="text/html" id="rule">
+	<div class="dialog_box rule">
+		<h2 >活动规则</h2>
+		<img src="<?= this.rule_pic?>">
+		<div class="bu"></div>
+		
+	</div>
+	<div class="closeDialog iknow">我知道了</div>
+</script>
+<script>
+	fml.vars.turntableThreshold = <%= curTurntableThreshold %>;
+	fml.vars.turntablePrizeData = <%= JSON.stringify(curTurntablePrizeData) %>;
+	fml.vars.isNewest = <%= this.isNewest %>;
+	fml.vars.LotteryFreeTimes = <%= curUserLotteryFreeTimes %>;
+	fml.vars.notLoginPointerImg = '<%= curNotLoginPointerImg %>';
+	fml.vars.freePointerImg = '<%= curFreePointerImg %>';
+	fml.vars.availablePointerImg = '<%= curAvailablePointerImg %>';
+	fml.vars.unavailablePointerImg = '<%= curUnavailablePointerImg %>';
+	fml.vars.rule_pic = '<%= this.rule.src%>';
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/member/nine_lottery');
+_use:", this._JSstack, this._JSmods); %>
+<%#foot_simple.html%>

@@ -1,0 +1,223 @@
+<%#head.html%>
+<div class="t_main">
+	<div class="main">
+		<div class="activity_link"></div>
+	</div>
+</div>
+<div id="coupon_rg">
+	<div class="mp_coupon">
+		<div class="coupon_main" id="coupons_main">
+			<div class="code_btn"></div>
+			<div class="code_box" style="display:none"></div>
+		</div>
+	</div>
+</div>
+<div class="date_content">
+	<div class="main_one" id="one_area">
+		<% if( this.nav_area ){
+			for( var i in this.nav_area.data){
+				var navLi = this.nav_area.data[i].falls;
+		%>
+			<div class="menu_box">
+				<% navLi && navLi.map(function( data , j){%>
+				<div class="menu_a<%= j+1%>">
+					<a href="<%= data.tar_url%>" target="_blank">
+						<img src="<%= data.img_url%>" alt="">
+					</a>
+				</div>
+				<% });%>
+			</div>
+		<% }} %>
+		<% if(this.featured_area ){%>
+		<div class="nav_content">
+			<% for(var i=0; i< this.featured_area.length;i++){ 
+				var res = this.featured_area[i];
+			%>
+			<div class="pic_box">
+				<img src="<%= res.header.pic%>" alt="">
+			</div>
+			<div class="main nav_main<%= i%>">
+
+			</div>
+			<div class="clear_f"></div>
+			<div class="pic_box">
+				<a href="<%= res.footer.url%>" target="_blank"><img src="<%= res.footer.pic%>" alt=""></a>
+			</div>
+			<%}%>
+		</div>
+		<%}%>
+		<div class="clear_f"></div>
+	</div>
+	<div class="clear_f"></div>
+</div>
+
+<script type="text/html" id="coupon_wrap">
+		<? for (var i = 0; i < coupons.length; i++){ var c_li = coupons[i]; ?>
+			<div class="couponLi couponBox<?= (i+1) ?>">
+				<a class="btn <? if( c_li.ing ){?><?= c_li.ing?><?}?>" data-code="<?= c_li.code ?>" data-key="<?= c_li.key?>" data-type="<?= c_li.couponType?>" >
+					<img src="<?= c_li.pic ?>" alt="">
+				</a>
+				<? if( c_li.left_amount > 0){?>
+					<p class="text">还剩<span><?= c_li.left_amount ?></span>张</p>
+				<?}?>
+			</div>
+		<?}?>
+</script>
+<script type="text/html" id="posterWall">
+<?
+for(var i=0;i < info.length;i++){
+	var tInfo = info[i];
+	var vHeight;
+var mSelfId = Meilishuo.config.user_id;
+fml.vars.twitter_load = fml.vars.twitter_load || {};
+$.each(tInfo , function(k , v){ 
+	if( k == 0){
+		vHeight = v.poster_height;
+	}
+	if(!v || fml.vars.twitter_load[v.twitter_id]){return}
+	fml.vars.twitter_load[v.twitter_id] = true;
+	var goods_title = v.ginfo ? v.ginfo.goods_title : "";?>
+<div class="poster_grid retsop poster_wall" twitter_id="<?=v.twitter_id?>" twitter_author_uid="<?=v.twitter_author_uid?>" twitter_source_tid="<?= v.twitter_source_tid?>" twitter_show_type="<?=v.twitter_show_type?>" like_twitter_id="<?=v.like_twitter_id?>">
+<%*为了海报之间间距大2px，增加的层%>
+	<div class="new_poster">
+		<div class="np_pic hover_pic">
+			<?if(v.horizontal_mark && v.horizontal_mark.length){?>
+			<div class="mark">
+				<? for (var i=0,j = v.horizontal_mark.length ; i< j; i++) {
+					var data = v.horizontal_mark[i]; ?>	
+					<?data.line_height = !data.text_margin_top ? data.img_height : 14;?>
+					<?!data.text_margin_top ? data.fs = 12 : data.fs = 14;?>
+					<span class="m_ico" style="font-size:<?=data.fs?>px;<?if(data.text_font_color){?>color:<?=data.text_font_color?>;<?}?>position: relative;background:url(<?=data.img_url?>) no-repeat; height:<?=data.img_height?>px;line-height:<?= data.line_height?>px;width:<?=data.img_width?>px;"><?if(data.mark_text){?><span style="width:<?=data.img_width?>px;left: 0;position: absolute;text-align: center;top: <?= data.text_margin_top?>px;"><?=data.mark_text?></span><?}?></span>
+				<?};?>
+			</div>
+			<?}?>
+			<?if(v.isShowPrice && v.ginfo && !v.ginfo.discount){?>
+				<div class="price"><?= v.ginfo.goods_price?></div>
+			<?}?>
+			<? var show_pic = v.show_pic ? v.show_pic : v.ginfo ? v.ginfo.goods_pic_url : ''; ?>
+			<? var goodsUrl = v.url ? v.url : '/share/' + v.like_twitter_id;
+			if (v.resys){
+				goodsUrl += goodsUrl.indexOf('?')>0 ? '&':'?';
+				goodsUrl +='resys='+ v.resys ;
+			} ?>
+			<a class="pic_load" href="<?= goodsUrl?>" target="_blank" title="<?= goods_title?>"><img class="goods_pic" width="<?=v.poster_width?>" height="<?=vHeight?>" src="<?= show_pic ?>" alt="<?= goods_title?>" />
+				<? if( v.stock <= 10 ){
+					var stockNum = v.stock <= 0 ? 'none1.png' : 'last_' + v.stock + '.png';
+				?>
+				<div class="add_over">
+					<img src="<%= this.PICTURE_URL %>images/biz/promotion/sale_141212/<?= stockNum?>" >
+				</div>
+				<?}?>
+			</a>
+			<div class="like_merge">
+				<?if(v.isShowLike && v.is_liked && Meilishuo.config.controller === 'person_like'){?>
+					<a isShowLike="<?= v.isShowLike?>" class="right_f poster_dellike" href="javascript:void(0)">删除</a>
+				<?}else if(v.isShowClose){?>
+					<a class="right_f poster_del" href="javascript:void(0)">删除</a>
+		 		<?}else if (v.dm && 'pretty' == Meilishuo.config.controller){?>
+                    <a class="right_f dm_del" href="javascript:void(0)">删除</a>
+				<?} 
+				if (v.like_author_uid != mSelfId && v.isShowLike!=0){ ?>	
+				<a  class="right_f poster_likes " href="javascript:void(0)">
+					<i class="like_status <?if(v.is_liked){?>lm_liked<?}else{?>lm_like<?}?>">&nbsp;</i>
+				</a>
+				<? } ?>
+				<a class="right_f poster_forward" href="javascript:void(0)"><em class="lm_shouji">&nbsp;</em>收进杂志</a>
+			</div>
+		</div>
+		<?if(goods_title != ''){?>
+		<div class="title">
+			<p><a href="<?= goodsUrl?>" target="_blank"><?= goods_title ?></a></p>
+		</div>
+		<?}?>
+		<?if(v.ginfo && v.ginfo.discount){?>
+		<div class="promotion">
+			<span class="btn"><?= v.ginfo.discount?></span><span class="f16_f red_f add_red"><?= v.ginfo.goods_price?></span><span class="origin_price"><?= v.ginfo.origin_price?></span>
+		</div>
+		<?}?>
+		<div class="clear_f" ></div>
+		<div class="clear_f" style="height:10px;overflow:hidden;"></div>
+		
+		<? if (v.uinfo) { ?>
+		<div class="np_share comment_panel">
+			<a class="avatar32_f trans07 userInfoTips" href="/person/u/<?= v.uinfo.user_id ?>" user_id="<?= v.uinfo.user_id ?>" target="_blank"><img src="<?= v.uinfo.avatar_c ?>" /></a>
+			<p class="ml42_f"><a href="/person/u/<?= v.uinfo.user_id ?>" target="_blank"><?= v.uinfo.nickname ?></a></p>
+			<p class="commentHover t_idt">
+				<?if(v.twitter_htmlcontent){?>
+					<?= v.twitter_htmlcontent ?>
+				<?}else{?>
+					<?= v.repin?>&nbsp;&nbsp;<?if(v.from_act_name != ""){?>--来自<a href="/act/<?= v.from_act_id?>">#<?= v.from_act_name?>#</a><?}?>
+				<?}?>
+			</p>
+			<div class="clear_f"></div>
+		</div>
+		<? }?>
+		<% if (this.user_id) { %>
+		<div class="discuss_one poster_cmt none_f">
+		<a class="avatar32_f userInfoTips" href="/person/u/<%= this.user_id%>" user_id="<%= this.user_id%>" target="_blank"><img src="<%=this.userInfo.avatar_c%>" /></a>
+			<div class="cmt_r">
+				<textarea class="poster_textarea __atName"></textarea>
+				<div class="clear_f"></div>
+				<p class="discuss">
+					<a class="pl_btn poster_comment_btn" href="javascript:void(0);">评论</a><a class="share_smileys">&nbsp;</a>
+				</p>
+			</div>
+			<div class="clear_f"></div>
+		</div>
+		<% } %>
+		<? if( 0 && v.count_reply > 3 && v.comments.length > 0){?>
+		<div class="botcomm_num">
+			<a href="/share/<? if (v.is_doota) {?>item/<?}?><?= v.like_twitter_id ?><?= v.tag ?>?o_c=1" target="_blank"> 查看全部<?= v.count_reply ?>条评论...</a>
+		</div>
+		<?}?>
+
+	</div>
+</div>
+<? }); }?>
+</script>
+<script type="text/html" id="code_pic_main">
+	<div class="code_main_top"><span class="code_main_close"></span></div>
+	<div class="code_main">
+		<div class="code_info">
+			<div class="code_input_Text">
+				<input type="text" class="input_box" value="输入验证码">
+			</div>
+			<img src="" alt="" class="img_code">
+			<span class="code_reload">换一张</span>
+		</div>
+		<div class="code_tips"></div>
+		<a href="javascript:;" class="code_reset">取消</a><a href="javascript:;" class="code_submit">确定</a>
+	</div>
+</script>
+<script type="text/html" id="code_mob_main">
+	<div class="code_main_top"><span class="code_main_close"></span></div>
+	<div class="code_mob">
+		<p class="code_mob_text">验证码将会发到你的默认手机上，如未设置默认手机请去我的设置里填写。</p>
+		<div class="code_mob_btn">发 送</div>
+		<input type="text" class="code_mob_input" value="输入手机验证码">
+		<a href="javascript:;" class="code_mob_submit">验证</a>
+		<div class="code_mob_tips"></div>
+	</div>
+</script>
+<script type="text/html" id="coupon_success">
+	<div class="c_success_top"><span class="coupon_close"></span></div>
+	<div class="c_suc_box">
+		<div class="c_suc_btn">确 定</div>
+	</div>
+</script>
+<script type="text/html" id="activity_main">
+	<div class="ac_main">
+		<div class="ac_close"></div>
+	</div>
+</script>
+<script>
+	fml.vars.picHost = "<%= this.PICTURE_URL %>";
+	fml.vars.shopData = <%= JSON.stringify(this.featured_area) %>;
+</script>
+
+<% this.onlyShowGoTop = true; %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/huodong/promotion/act141220');
+_use:", this._JSstack , this._JSmods); %>
+
+<%#foot.html%>

@@ -1,0 +1,18 @@
+<%#head.html%>
+<div class="privilege">
+	<img src="<%= this.couponStatus.src%>" />
+	<%if(this.couponStatus.status == 0){%>
+		<div class="coupon-btn cnbtn">点击领取</div>
+	<%}else{%>
+		<div class="coupon-btn">已经领取</div>
+	<%}%>
+</div>
+<script>
+	Meilishuo.config.sid= '<%=this.sid%>';
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/downcou');
+_use:", this._JSstack , this._JSmods); %>
+<%# block/dialog.html %>
+<%#foot_simple.html%>

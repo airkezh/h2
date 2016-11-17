@@ -1,0 +1,19 @@
+<%#head.html%>
+<%
+var mSubstr =  _extFn.mSubstr;
+%>
+	<div class="content border-Top">
+		<%# help/search-title.html%>
+		<ul class="list">
+			<li><a href="/help/center/">帮助中心</a></li>
+			<li><a href="meilishuo://customer_service.meilishuo">联系客服</a></li>
+			<li><a href="meilishuo://feedback.meilishuo">意见反馈</a></li>
+		</ul>
+		<h3 class="title">常见问题</h3>
+		<ul class="common-list">
+			<% this.know_Index && this.know_Index.data.forEach(function(item){%>
+			<li><em></em><a href="/help/contact/?know_id=<%=item.know_id%>&channel=1"><%= mSubstr(item.title, 13, '...') || '' %></a></li>
+			<%});%>
+		</ul>
+	</div>
+<%#foot.html%>

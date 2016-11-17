@@ -1,0 +1,92 @@
+<!-- 		<*<div class="contact-mail-b">
+			<div class="mail-list list-l">
+				<dl>
+					<dt>
+						<p class="title-txt">邮件客服</p>
+						<p class="mt8_f">邮件留言 kf@meilishuo.com</p>
+					</dt>
+					<dd><a class="btn mail-btn" href="mailto:kf@meilishuo.com">发送邮件</a></dd>
+				</dl>
+			</div>
+			<div class="mail-list list-r">
+				<dl>
+					<dt>
+						<p class="title-txt">意见反馈</p>
+						<p class="mt8_f">感谢您的意见，我们会有专人处理</p>
+					</dt>
+					<dd>
+						<a class="suggest-btn btn" href="javascript:void(0)">建议</a>
+					</dd>
+				</dl>
+			</div>
+		</div> *>
+		 -->
+		<div class="contact-mail-a">
+			<dl class="mail-list">
+				<dt>在线客服</dt>
+				<dd>
+					<p>在线解答您的咨询，高效、便捷</p>
+					<a class="btn" id="consult" href="javascript:;">点此咨询</a>
+				</dd>
+			</dl>
+			<dl class="mail-list">
+				<dt>邮件客服</dt>
+				<dd>
+					<p>邮件留言 kf@meilishuo.com</p>
+					<a class="btn" href="mailto:kf@meilishuo.com">发送邮件</a>
+				</dd>
+			</dl>
+			<dl class="mail-list last">
+				<dt>意见反馈</dt>
+				<dd>
+					<p>感谢您的意见，我们会有专人处理</p>
+					<a class="btn suggest-btn" href="javascript:void(0)">意见</a>
+				</dd>
+			</dl>
+		</div>
+		
+
+<script id="adviceDialog" type="text/html">
+<div class="advice">
+	<p>请选择问题类型：
+		<select name="type" class="advice-type">
+			<% var feedName = {
+				'1' : '建议反馈',
+				'2' : '账号问题',
+				'3' : '网站bug',
+				'4' : '投诉举报',
+				'5' : '手机美丽说',
+				'6' : '我是商家',
+				'7'	: '政策问题',
+				'8'	: '流程建议',
+				'9'	: '页面优化建议',
+				'10': '网站功能建议',
+				'20': '其他'
+			};%>
+			<% for(var i in feedName){ %>
+				<option value="<%= i %>"<%if(this.feedTag == i){%> selected="true"<%}%>><%= feedName[i] %></option>
+			<%}%>
+		</select>
+	</p>
+	<div class="advice-cont-area">
+		<textarea class="advice-cont">在这里，尽情的吐槽吧...</textarea>
+		<div class="error_msg none_f"></div>
+	</div>
+	<%if ( !this.user_id ) {%>
+	<div class="advice-mail-area">
+		<p>请留下您的邮箱，我们会第一时间给您答复。</p>
+		<p class="mt8_f">
+			<input type="text" class="advice-mail" value="美丽说绝对不会泄露您的隐私">
+			<span class="error_msg none_f">您的邮箱填写有误，请重新填写。</span>
+		</p>
+	</div>
+	<% } %>
+	<div>
+		<span class="btn subAdvice-btn">确认提交</span>
+	</div>
+</div>
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/help/suggest');
+_use:", this._JSstack , this._JSmods ); %>

@@ -1,0 +1,482 @@
+/**
+ * @fileoverview 每日签到
+ * @requires zepto
+ * @author kehuang@meilishuo.com
+ * @date 2015-01-09
+ */
+
+function sign(){
+    return this;
+}
+
+var cookie = require(config.path.base + 'cookie.js');
+var controlFns = {
+    sign_out: function(user_id){
+        //this.debugSnake({target: 'lab2'});
+        var self = this,
+            php = {
+                'signUserInfo': '/sign/getUserInfo',                            // 获取用户签到信息 接口
+                'signDateInfo': '/sign/getSignedDates',                         // 获取用户签到日期信息 接口
+                'mobUserInfo': '/customactivity/CustomActivity_wap_user_info'   // 获取wap用户信息 接口
+            },
+            wapMod = base.loadModel('wap/tools.js');
+
+        self.setMDefault(php);
+        self.bridgeMuch(php);
+
+        self.listenOver(function(data){
+            data.isNewest = wapMod.isNewest(self.req, '5.5.0');
+            data.isLogin = (data.mobUserInfo.data.user_id == 0) ? 0 : 1;
+            data.serverDate = new Date();
+
+            if (!data.isLogin) {
+                var signDateInfo = {
+                        'code': 0,
+                        'message': '',
+                        'data': {
+                            'signed': [],
+                            'future': []
+                        }
+                    },
+                    signUserInfo = {
+                        'code': 0,
+                        'message': '',
+                        'data': {
+                            'status': 0,
+                            'temp': 0,
+                            'firstSignDate': '',
+                            'lastSignDate': '',
+                            'initDate': '',
+                            'coin': 0,
+                            'upgrade': {
+                                'coin': 0
+                            },
+                            'patch': {
+                                'chance': 0,
+                                'spend': 0,
+                                'gain': 0,
+                                'missing': ''
+                            }
+                        }
+                    };
+
+                data.signDateInfo = signDateInfo;
+                data.signUserInfo = signUserInfo;
+            }
+
+            data._CSSLinks = ['activity/may_sale/sign_out3'];
+            self.render('activity/may_sale/sign_out3.html', data);
+        });
+    },
+
+    sign_in: function() {
+        //this.debugSnake({target: 'lab2'});
+        /*var self = this,
+            test = self.req.__get.test,
+            resetMoney = self.req.__get.resetMoney,
+            php = {
+                'signUserInfo': '/sign/getUserInfo',                                                                    // 获取用户签到信息 接口
+                'signDateInfo': '/sign/getSignedDates',                                                                 // 获取用户签到日期信息 接口
+                'mobUserInfo': '/customactivity/CustomActivity_wap_user_info',                                          // 获取wap用户信息 接口
+                'pageData' : '/customactivity/CustomActivity_common_tool_single?id=sign_mall_recommend&cid=6011',       // 签到商城运营位数据 接口
+                'layerData' : '/customactivity/CustomActivity_common_tool_single?id=sign_calendar_recommend&cid=6015'   // 每日签到日历弹层运营位数据 接口
+            },
+            wapMod = base.loadModel('wap/tools.js'),
+            cookieHandle = cookie.getHandler(self.req, self.res);
+ 
+        self.setMDefault(php);
+        self.bridgeMuch(php);
+
+        self.listenOver(function(data){
+            data.isNewest = wapMod.isNewest(self.req, '5.5.0');
+            data.isLogin = (data.mobUserInfo.data.user_id == 0) ? 0 : 1;
+            data.resetMoney = resetMoney;
+            data.serverDate = new Date();
+
+            if (!data.isLogin) {
+                var signDateInfo = {
+                        'code': 0,
+                        'message': '',
+                        'data': {
+                            'signed': [],
+                            'future': []
+                        }
+                    },
+                    signUserInfo = {
+                        'code': 0,
+                        'message': '',
+                        'data': {
+                            'status': 0,
+                            'temp': 0,
+                            'firstSignDate': '',
+                            'lastSignDate': '',
+                            'initDate': '',
+                            'coin': 0,
+                            'upgrade': {
+                                'coin': 0
+                            },
+                            'patch': {
+                                'chance': 0,
+                                'spend': 0,
+                                'gain': 0,
+                                'missing': ''
+                            }
+                        }
+                    };
+
+                data.signDateInfo = signDateInfo;
+                data.signUserInfo = signUserInfo;
+            }
+
+            if (cookieHandle.get('firstView') || (data.signUserInfo.data.coin > 0)) {
+                data.firstView = false;
+            } else {
+                data.firstView = true;
+
+                var curDate = new Date();
+
+                curDate.setFullYear(2024);
+                cookieHandle.set('firstView', 'true', curDate);
+            }
+
+            if (!data.isLogin) {
+                data._CSSLinks = ['activity/may_sale/sign_in3'];
+                self.render('activity/may_sale/sign_in3.html', data);
+                return;
+            }
+
+            // curSignStatus: 签到状态（0：今日未签到；1：今日已签到；-1：昨天漏签猪死了）
+            var curSignStatus = data.signUserInfo.data.status || 0;
+
+            if (test || (curSignStatus == -1)) {
+                data._CSSLinks = ['activity/may_sale/sign_out3'];
+                self.render('activity/may_sale/sign_out3.html', data);
+                return;
+            }
+
+            if (curSignStatus == 0) {
+                data._CSSLinks = ['activity/may_sale/sign_in3'];
+                self.render('activity/may_sale/sign_in3.html', data);
+            } else {
+                data._CSSLinks = ['activity/may_sale/sign_mall3'];
+                self.render('activity/may_sale/sign_mall3.html', data);
+            }
+        });*/
+
+        var self = this,
+            wapMod = base.loadModel('wap/tools.js'),
+            php = {
+                'signData': 'vip::/sign/getInfo',                                                               // 获取签到用户信息 接口
+                'percentData': 'vip::/vip/getPercent',                                                          // 获取签到用户超过％数据 接口
+                'upgradeData': 'vip::/vip/getFirstUpgrade',                                                     // 获取签到用户是否升级数据 接口
+                'pageData': '/customactivity/CustomActivity_common_tool_single?id=member_center&cid=10887'      // 获取用户中心商品数据 接口
+            };
+
+        self.setMDefault(php);
+        self.bridgeMuch(php);
+
+        self.listenOver(function(data){
+            if (!data.pageData || !data.signData || !data.upgradeData || !data.percentData) {
+                return self.errorPage();
+            }
+
+            var code = data.signData.error_code;
+
+            if (code == 400402) {
+                data.pageTitle = '内测提示';
+                data._CSSLinks = ['member/niece_tips'];
+                self.render('member/niece_tips.html', data);
+            } else {
+                data.pageTitle = '会员中心';
+                data.serverDate = new Date();
+                data.isLogin = (data.userInfo.user_id == 0) ? 0 : 1;
+                data.isNewest = wapMod.isNewest(self.req, '6.6.1');
+                data.isUpgrade = (data.upgradeData.error_code == 0) ? (data.upgradeData.data.is_upgrade || 0) : 0;
+
+                data._CSSLinks = ['member/main'];
+                self.render('member/main.html', data);
+            }
+        });
+    },
+
+    sign_mall: function(cid){
+        //this.debugSnake({'target': 'lab2'});
+        var self = this,
+            php = {},
+            wapMod = base.loadModel('wap/tools.js'),
+            cid = cid || this.req.__get.cid;
+            //cid = this.readData('cid',this.req.__get, '');
+
+        if (cid) {
+            this.req.__get.cid = cid;
+
+            php = {
+                'couponInfo': '/registration/getStoreInfo?cid=' + cid,                                                  // 获取兑换优惠券信息 接口
+                'goodsInfo': '/registration/getStoreGoods?cid=' + cid,                                                  // 获取签到商城的商品信息 接口
+                'mobUserInfo': '/customactivity/CustomActivity_wap_user_info'                                           // 获取wap用户信息 接口
+            };
+        } else {
+            php = {
+                'signUserInfo': '/sign/getUserInfo',                                                                    // 获取用户签到信息 接口
+                'signDateInfo': '/sign/getSignedDates',                                                                 // 获取用户签到日期信息 接口
+                'mobUserInfo': '/customactivity/CustomActivity_wap_user_info',                                          // 获取wap用户信息 接口
+                'pageData' : '/customactivity/CustomActivity_common_tool_single?id=sign_mall_recommend&cid=6011',       // 签到商城运营位数据 接口
+                'layerData' : '/customactivity/CustomActivity_common_tool_single?id=sign_calendar_recommend&cid=6015'   // 每日签到日历弹层运营位数据 接口
+            };
+        }
+
+        self.setMDefault(php);
+        self.bridgeMuch(php);
+
+        self.listenOver(function(data) {
+            data.isNewest = wapMod.isNewest(self.req, '5.5.0');
+            data.isLogin = (data.mobUserInfo.data.user_id == 0) ? 0 : 1;
+            data.curGoodsCid = cid;
+            data.serverDate = new Date();
+            data.pageTitle = '签到商城';
+
+            if (cid) {
+                data._CSSLinks = ['activity/may_sale/sign_mall'];
+                self.render('activity/may_sale/sign_mall.html', data);
+            } else {
+                if (!data.isLogin) {
+                    var signDateInfo = {
+                            'code': 0,
+                            'message': '',
+                            'data': {
+                                'signed': [],
+                                'future': []
+                            }
+                        },
+                        signUserInfo = {
+                            'code': 0,
+                            'message': '',
+                            'data': {
+                                'status': 0,
+                                'temp': 0,
+                                'firstSignDate': '',
+                                'lastSignDate': '',
+                                'initDate': '',
+                                'coin': 0,
+                                'upgrade': {
+                                    'coin': 0
+                                },
+                                'patch': {
+                                    'chance': 0,
+                                    'spend': 0,
+                                    'gain': 0,
+                                    'missing': ''
+                                }
+                            }
+                        };
+
+                    data.signDateInfo = signDateInfo;
+                    data.signUserInfo = signUserInfo;
+                }
+
+                data.cata = this.readData('cata', this.req.__get, 0);
+                data._CSSLinks = ['activity/may_sale/sign_mall3'];
+                self.render('activity/may_sale/sign_mall3.html', data);
+            }
+        });
+    },
+
+    sign_coupon: function(){
+        //this.debugSnake({'target': 'lab2'});
+        var self = this,
+            php = {
+                'couponsInfo': '/sign/getCoupons',                                                             // 获取兑换优惠券信息 接口
+                'mobUserInfo': '/customactivity/CustomActivity_wap_user_info',                                 // 获取wap用户信息 接口
+                'pageData': '/customactivity/CustomActivity_common_tool_single?id=sign_coupon&cid=11485'       // 获取金币优惠券后台配置数据 接口
+            },
+            wapMod = base.loadModel('wap/tools.js');
+
+        self.setMDefault(php);
+        self.bridgeMuch(php);
+
+        self.listenOver(function(data) {
+            var date = new Date();
+
+            data.serverDate = date;
+            data.isNewest = wapMod.isNewest(self.req, '5.5.0');
+            data.isLogin = (data.mobUserInfo.data.user_id == 0) ? 0 : 1;
+            data.pageTitle = data.pageData.title || '金币兑换券';
+
+            if (data.couponsInfo.code) {
+                var couponsData = {
+                    'coin': 0,
+                    'non_threshold': [],
+                    'threshold': []
+                };
+
+                data.couponsInfo.data = couponsData;
+            }
+
+            data.couponsInfo.data.serverDate = date;
+
+            data._CSSLinks = ['activity/may_sale/sign_coupon4'];
+            self.render('activity/may_sale/sign_coupon4.html', data);
+        });
+    },
+
+    sign_share: function(){
+        //this.debugSnake({target : 'devlab1'});
+        var self = this,
+            rankA = self.req.__get.rankA,
+            headPic = self.req.__get.headPic,
+            percentA = self.req.__get.percentA,
+            fromShare = self.req.__get.fromShare,
+            totalMoney = self.req.__get.totalMoney,
+            continuousDay = self.req.__get.continuousDay,
+            shareUrl = 'http://mapp.meilishuo.com/activity/sign/sign_share/?fromShare=1&totalMoney=' + totalMoney + '&continuousDay=' + continuousDay + '&headPic=' + headPic + '&rankA=' + rankA + '&percentA=' + percentA,
+            php = {
+                'core': '/registration/My',
+                'mobUserInfo': '/customactivity/CustomActivity_wap_user_info',
+                'shortURL': '/url/shorturl?url=' + encodeURIComponent(shareUrl)
+            },
+            wapMod = base.loadModel('wap/tools.js'),
+            os = wapMod.uaos(self.req);
+
+        self.setMDefault(php);
+        self.bridgeMuch(php);
+
+        self.listenOver(function(data){
+            if (!data.core) {
+                var core = {};
+
+                core.code = 0;
+                core.message = '';
+                core.data = {};
+                core.data.registration = [];
+                core.data.redeem = [];
+                core.data.converted = [];
+                core.total = 0;
+                core.status = 0;
+                core.rescue = {};
+                core.user_rank = {};
+                core.award_date = {};
+                data.core = core;
+            }
+
+            if (!data.core.user_rank) {
+                data.core.user_rank = {
+                    'rank': 0,
+                    'percent': 0
+                };
+            }
+
+            if (!data.core.award_date) {
+                data.core.award_date = {
+                    'lastDays': 0,
+                    'money': 0
+                };
+            }
+
+            // 判断是否为移动端
+            data.isMobile = false;
+
+            if (os.android || os.iphone || os.ipad || os.touchpad || os.blackberry || os.webos || os.bb10 || os.rimtabletos || os.kindle) {
+                data.isMobile = true;
+            }
+
+            var share_title = '我在美丽说攒了' + totalMoney + '块钱！每天白送1块钱，你不来试试么~',
+                share_pic = 'http://i.meilishuo.net/css/images/wap/activity/may_sale/share.png',
+                share_text = '哎呀，签到也能挣钱了！每天挣1元，我已经挣了' + totalMoney + '元，你也来试试吧！',
+                params = {
+                    'title': {
+                        'weixin': share_title,
+                        'weixin_timeline': share_title,
+                        'default': share_title
+                    },
+                    'text': {
+                        'weixin': share_text,
+                        'weixin_timeline': share_text,
+                        'default': share_text
+                    },
+                    'pic': {
+                        'weixin': share_pic,
+                        'weixin_timeline': share_pic,
+                        'default': share_pic
+                    },
+                    'url': (data.shortURL && data.shortURL.url) || shareUrl
+                };
+
+            // 从分享进入的用户，头像显示分享人的
+            if (fromShare) {
+                data.mobUserInfo.data.avatar_b = headPic;
+                data.fromShare = true;
+            }
+
+            data.totalMoney = totalMoney;
+            data.continuousDay = continuousDay;
+            data.core.user_rank.percent = percentA;
+            data.core.user_rank.rank = rankA;
+            data.share = wapMod.shareTo(self.req, params);
+            data.pageTitle = '美丽说每日签到';
+            data._CSSLinks = ['activity/may_sale/sign_share'];
+            self.render('activity/may_sale/sign_share.html', data);
+        });
+    },
+
+    sign_rule: function() {
+        var self = this,
+            php = {
+                'pageData' : '/customactivity/CustomActivity_common_tool_single?id=sign_activity_rule&cid=6017'     // 每日签到活动规则数据 接口
+            };
+
+        self.setMDefault(php);
+        self.bridgeMuch(php);
+
+        self.listenOver(function(data) {
+            data.pageTitle = '签到规则';
+            data._CSSLinks = ['activity/may_sale/sign_rule'];
+            self.render('activity/may_sale/sign_rule.html', data);
+        });
+    },
+
+    sign_update: function() {
+        var self = this,
+            php = {
+
+            };
+
+        self.setMDefault(php);
+        self.bridgeMuch(php);
+
+        self.listenOver(function(data) {
+            data.pageTitle = '金币已升级为美美豆';
+            data._CSSLinks = ['activity/may_sale/sign_update'];
+            self.render('activity/may_sale/sign_update.html', data);
+        });
+    },
+
+    sign_explain: function() {
+        var self = this,
+            php = {
+
+            };
+
+        self.setMDefault(php);
+        self.bridgeMuch(php);
+
+        self.listenOver(function(data) {
+            data.pageTitle = '签到小猪和你的年末约会';
+            data._CSSLinks = ['activity/may_sale/sign_explain'];
+            self.render('activity/may_sale/sign_explain.html', data);
+        });
+    }
+}
+
+// yyyy-mm-dd
+function getDateStr(date) {
+    var y = date.getFullYear(),
+        m = date.getMonth() + 1,
+        d = date.getDate();
+
+    m = (m < 10) ? '0' + m : m;
+    d = (d < 10) ? '0' + d : d;
+
+    return y + '-' + m + '-' + d;
+}
+
+exports.__create = controller.__create(sign, controlFns);

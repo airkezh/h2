@@ -1,0 +1,31 @@
+<%# head.html%>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script>
+fml.vars.CONFIG_SHARE = <%= JSON.stringify(this.CONFIG_SHARE) || '{}' %>;
+</script>
+<div class="wrap">
+	<div class="main">
+		<div class="page" next="clock" transition="translateX" style="z-index:2;">
+			<div class="loading"></div>
+			<div class="logo"></div>
+			<img class="loadingBar" src="http://d03.res.meilishuo.net/pic/_o/77/62/f25a98baee020c69a88d4072118e_360_110.cg.gif?<%= (new Date()).valueOf()%>" />
+		</div>
+		<div class="page p1" transition="translateX" style="z-index:1;">
+			<img src="http://d02.res.meilishuo.net/pic/_o/d6/77/668c3ed97f423490df3d5da06999_640_500.ch.jpg">
+			<div class="bt">
+				<p></p>
+			</div>	
+		</div>
+		<div class="page" transition="translateX" style="z-index:1;">
+		</div>
+	</div>
+</div>
+<!-- 音乐 -->
+<audio hidden="true" preload="auto" autobuffer>
+	<source src="http://d03.res.meilishuo.net/tmp/69417a1dbeee3f6d9c201daa34bd6c6b.ch.mp3">
+</audio>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/shake/screen');
+_use:", this._JSstack , this._JSmods); %>
+<%# foot.html%>

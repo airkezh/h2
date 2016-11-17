@@ -1,0 +1,34 @@
+ <% 
+
+var historydevice=this.historydevice.data;
+
+ %>
+
+ <strong class="title">登录设备</strong>
+<fieldset>
+	<div class="login-eqm">
+		<div class="tab-con login-title">
+			<span>设备类型</span>
+			<span>访问</span>
+			<span>地区</span>
+			<span>时间</span>
+		</div>
+		<% historydevice && historydevice.map(function(items,index){%>
+
+		<div class="tab-con">
+			<%if(items.device_name=="pc"){%>
+			<span class="type-com"><%= items.device_nick%></span>
+			<%}else if(items.device_name=="android"){%>
+			<span class="type-aa"><%= items.device_nick%></span>
+
+			<%}else if(items.device_name=="iphone"){%>
+			<span class="type-iphone"><%= items.device_nick%></span>
+			<%}%>
+			<span><%= items.device_visit%></span>
+			<span><%= items.device_city%></span>
+			<span style="color:#999"><%= items.ctime%></span>
+		</div>
+		<%});%>
+	</div>
+	
+</fieldset>

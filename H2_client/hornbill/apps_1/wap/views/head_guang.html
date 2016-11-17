@@ -1,0 +1,55 @@
+<%
+var mSubstr = _extFn.mSubstr;
+var html_encode = _extFn.html_encode;
+%>
+<% var isRoute = this.route && this.route.data && this.route.data.length != 0; %>
+<nav class="nav_route" id="navRoute">
+	<ul>
+		<li><a href="/welcome" xr="<%= this.xr.r%>">首页</a></li>
+		<li><a href="/guang/selected" xr="<%= this.xr.r%>">流行</a></li>
+		<li><a href="/guang/hot" xr="<%= this.xr.r%>">最热</a></li>
+		<li><a href="/guang/new" xr="<%= this.xr.r%>">最新</a></li>
+		<li><a href="/guang/catalog/?nid=837" xr="<%= this.xr.r%>">上衣</a></li>
+		<li><a href="/guang/catalog/?nid=835" xr="<%= this.xr.r%>">裙子</a></li>
+		<li><a href="/guang/catalog/?nid=855" xr="<%= this.xr.r%>">裤子</a></li>
+		<li><a href="/guang/catalog/?nid=865" xr="<%= this.xr.r%>">鞋子</a></li>
+		<li><a href="/guang/catalog/?nid=895" xr="<%= this.xr.r%>">包包</a></li>
+		<li><a href="/guang/catalog/?nid=2725" xr="<%= this.xr.r%>">配饰</a></li>
+	</ul>
+	<div class="route_bg"></div>
+</nav>
+<header class="header" id="header" status="<%if(isRoute || this.headTag == 'goods'){%>normal<%}else{%>hide<%}%>">
+
+	<nav class="nav_ban guang_nav" id="navBan">
+		<%if(this.bread.data && this.bread.data.length && this.ptype != 'goods'){
+			var len = this.bread.data.length
+			var v = this.bread.data[len-1]	
+		%>
+		<%if(this.headTag == 'book'){%>
+		<span class="icon-back" id="backBtn" style="display:block;"></span>
+		<%}%>
+		<h1><a href="/guang/catalog/?nid=<%= v.nid%>&pnid=<%= v.pnid%>" xr="<%= this.xr.r%>"><%= v.word_name%></a></h1>
+
+		<%}else{%>
+		<h1><a class="logo" href="/welcome" xr="<%= this.xr.r%>"></a></h1>
+		<%}%>
+		<%if(this.headTag != 'book'){%>
+		<span class="icon-search" id="searchBtn"></span>
+		<span class="icon-menu" id="navRouteBtn"/></span>
+		<%}else{%>
+			<a class="icon-home" href="/welcome" xr="<%= this.xr.r%>"></a>
+		<%}%>
+	</nav>
+<%if(this.headTag != 'book'){%>
+	<div class="search" id="search">
+		<form action="/search" method="get" >
+			<p class="input">
+				<span class="icon-search-input"></span>
+				<input name="keyword" type="search" autocomplete="off" placeholder="搜索宝贝" />
+			</p>
+			<!-- <span class="btn_cancel" id="cancelBtn">取消</span> -->
+			<input type="submit" class="btn_submit" value="搜索" />
+		</form>
+	</div>
+<%}%>
+

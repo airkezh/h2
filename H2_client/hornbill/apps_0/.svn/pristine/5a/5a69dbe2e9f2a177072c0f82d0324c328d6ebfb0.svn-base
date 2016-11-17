@@ -1,0 +1,58 @@
+fml.define( 'wap/app/doota/shopping_carts', [ 'component/iStorage' ], function( require, exports ) {
+    var iStorage           = require( 'component/iStorage' ),
+        goodsCountCacheKey = 'numInCart'
+
+    function addCartsCbk( res ) {
+        var errMsg
+
+        if ( !res ) {
+            errMsg = 'opps,有点错误,一会儿再试试吧'
+        } else if ( res.code ) {
+            errMsg = res.info.msg
+        }
+
+        if ( errMsg ) {
+            return alert( errMsg )
+        }
+
+        return true
+    }
+
+    exports.addToCarts = function( goodsInfo, addedCbck ) {
+        $.post( '/aw/doota/addToCarts', goodsInfo, function( res ) {
+            if ( addCartsCbk( res ) ) {
+                alert( '加入购物车成功' )
+            }
+        }, 'json' )
+        addedCbck && addedCbck()
+    }
+
+    function upShoppintCartsNum( num, innerCacll ) {
+        //兼容
+    }
+
+    exports.upShoppintCartsNum = upShoppintCartsNum
+
+    exports.clearCartsNumCache = function() {
+        iStorage.removeCookie( goodsCountCacheKey )
+        return this
+    }
+
+    exports.readShopsCount = function() {
+        iStorage.getCookie( goodsCountCacheKey, function( num ) {
+            if ( parseInt( num ) >= 0 ) {
+                return upShoppintCartsNum( num, true )
+            }
+
+            $.get( '/aj/doota/cart_number', function( res ) {
+                if ( res && res.info && res.info.count ) {
+                    num = res.info.count
+                    num && upShoppintCartsNum( num )
+                    iStorage.setCookie( goodsCountCacheKey, num )
+                }
+            }, 'json' )
+        } )
+        return this
+    }
+
+} )

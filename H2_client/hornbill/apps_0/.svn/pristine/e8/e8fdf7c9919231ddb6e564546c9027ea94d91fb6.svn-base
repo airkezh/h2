@@ -1,0 +1,73 @@
+<%# head.html%>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<div class="wrap">
+	<div class="main">
+		<div class="page p1" transition="translateY" style="z-index:9;">
+			<div style="width:1.19rem;height:0.97rem;margin-top:8.75rem;margin-left:2.78rem;background:url('http://d03.res.meilishuo.net/pic/_o/b8/a1/5b3b33c1bd1a3725dd8b0a260370_149_112.ch.png') no-repeat;background-size:100%;"></div>
+		</div>
+		<div class="page p2" transition="translateY" style="z-index:8;">
+			<div style="width:1.19rem;height:0.97rem;margin-top:8.75rem;margin-left:2.78rem;background:url('http://d03.res.meilishuo.net/pic/_o/b8/a1/5b3b33c1bd1a3725dd8b0a260370_149_112.ch.png') no-repeat;background-size:100%;"></div>
+		</div>
+
+		<div class="page p3" transition="translateY" style="z-index:7;">
+			<p class="support_btn"></p>
+			<p class="numwrap"><span class="support-num"><%= this.likenum%></span>人已赞</p>
+			<div style="width:1.19rem;height:0.97rem;margin-top:0rem;margin-left:2.78rem;background:url('http://d03.res.meilishuo.net/pic/_o/b8/a1/5b3b33c1bd1a3725dd8b0a260370_149_112.ch.png') no-repeat;background-size:100%;"></div>
+		</div>
+
+		<div class="page p4" transition="translateY" style="z-index:6;">
+			<div style="width:1.19rem;height:0.97rem;margin-top:8.75rem;margin-left:2.78rem;background:url('http://d03.res.meilishuo.net/pic/_o/b8/a1/5b3b33c1bd1a3725dd8b0a260370_149_112.ch.png') no-repeat;background-size:100%;"></div>
+		</div>
+
+		<div class="page p5" transition="translateY" style="z-index:5;">
+			<p><img src="http://d05.res.meilishuo.net/pic/_o/73/84/be2120d3eed22e7ed8a0ea640a06_530_390.ch.gif"/></p>
+			<div style="width:1.19rem;height:0.97rem;margin-top:1rem;margin-left:2.78rem;background:url('http://d03.res.meilishuo.net/pic/_o/b8/a1/5b3b33c1bd1a3725dd8b0a260370_149_112.ch.png') no-repeat;background-size:100%;"></div>
+		</div>
+
+		<div class="page p6" transition="translateY" style="z-index:4;">
+		</div>
+	</div>	
+</div>
+<script type="text/html" id="olaybox">
+<div class="olaybox">
+	<? if(this.prize_code == 0){ ?>
+		<div class="nosucbox"> 
+			<img src="http://d04.res.meilishuo.net/pic/_o/e8/b0/9df898e9b3f475e83b7929872761_632_699.cf.png"/>
+			<a class="olay-btn3 closeDialog"></a>
+		</div>
+	<?}else{?>
+		<div class="sucbox">
+			<img src="http://d02.res.meilishuo.net/pic/_o/c0/70/b2c91de0c1ece9c33de9d4579389_632_699.ch.png"/>
+			<div class="address" id="address">
+				<p>商品将发往：</p>
+				<p><?= this.name?>&nbsp;<?= this.address?>&nbsp;<?= this.phone?></p>
+			</div>
+			<a class="olay-btn1"></a>
+			<a class="olay-btn2"></a>
+
+		</div>
+	<?}?>
+</div>
+</script>
+
+
+<% if(!this.appShare){ %>
+    <%= requireFn('wapShare.html')({
+        'share' : this.share 
+        , 'shareTitle' : '选择分享到'
+        , '_JSstack' : this._JSstack
+        , '_JSmods' : this._JSmods
+    }); %>
+<% } %>
+
+<script>  
+	fml.vars.appShare = <%= this.appShare%>;
+	fml.vars.shareparams = <%= JSON.stringify(this.shareparams || {})%>;
+
+</script>
+
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use("wap/page/olay");
+_use:", this._JSstack , this._JSmods); %>
+<%#foot_simple.html%>

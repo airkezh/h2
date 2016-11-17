@@ -1,0 +1,109 @@
+<%
+	/**
+ 	 * @fileoverview 美丽值收支明细－会员中心
+     * @requires zepto
+     * @author kehuang@meilishuo.com
+     * @date 2015-06-25
+     */
+%>
+
+<%# head.html%>
+<%
+	var curUserInfo = this.userInfo;
+	var curScoreData = this.scoreData;
+	var curBeautyList = this.beautyList;
+	var curBeautyInfo = this.beautyInfo;
+	var curUserScoreData = (curScoreData && curScoreData.data) ? curScoreData.data : {};
+	var curBeautyInfoData = (curBeautyInfo && curBeautyInfo.data) ? curBeautyInfo.data : {};
+	var curUserBeautyList = (curBeautyList && curBeautyList.data) ? curBeautyList.data : [];
+	var score_tips_is_show = curUserScoreData.is_show_tips || 0;
+	var curUserName = (curUserInfo && curUserInfo.nickname) ? curUserInfo.nickname : '- -';
+	var curUserBeauty = (curBeautyInfoData && curBeautyInfoData.score) ? curBeautyInfoData.score : 0;
+	var curUserAvatar = (curUserInfo && curUserInfo.avatar_c) ? curUserInfo.avatar_c.replace('/c/', '/b/') : 'http://d04.res.meilishuo.net/pic/_o/dd/be/6abcb45c3b38d9d1acf4a1d86938_128_128.ch.jpg';
+%>
+<div id="j_page_wrap" class="wrap">
+	<%
+		var top_head_style = '';
+
+		if (score_tips_is_show) {
+			var head_bg_img = 'http://d02.res.meilishuo.net/pic/_o/bd/04/920de3a76536004aaf8bb87917b2_640_221.cf.png';
+
+			top_head_style = 'padding-top: ' + (221*100/640) + '%;background: url(' + head_bg_img + ') no-repeat;background-size: 100%;';
+		}
+	%>
+	<div class="user_wrap" style="<%= top_head_style %>">
+		<div class="user_box">
+			<div class="user_head">
+				<img src="<%= curUserAvatar %>" alt="<%= curUserName %>">
+			</div>
+			<div class="user_info">
+				<div>我的美丽值</div>
+				<div class="beauty"><%= curUserBeauty %></div>
+			</div>
+		</div>
+
+		<%
+			if (score_tips_is_show) {
+				var expireTime = curUserScoreData.expired_time || '';
+
+				if (expireTime != '') {
+		%>
+		<div class="expire_tips_wrap beauty_tips_wrap">
+			<div class="tips_content"><%= expireTime %>将对美丽值重新盘点并做小小折损~要努力提升会员等级喔 ^ω^</div>
+			<div class="arrow_top"></div>
+			<div class="arrow_inner"></div>
+		</div>
+		<%
+				}
+			}
+		%>
+	</div>
+
+	<div class="detail_title">美丽值收支明细</div>
+
+	<div class="pay_list mb0">
+		<ul id="j_pay_list"></ul>
+	</div>
+
+	<div class="pullUp" status="loading"></div>
+</div>
+
+<script type="text/html" id="j_detail_tpl">
+	<?
+		var jsonData = this.data || [],
+			listLen = jsonData.length || 0;
+
+		if (listLen > 0) {
+			for (var i = 0; i < listLen; i++) {
+				var obj = jsonData[i],
+					text = obj.remark || '',
+					ctime = obj.ctime || '',
+					amount = obj.score || '0';
+					className = (amount.indexOf('-') != -1) ? '' : 'income';
+	?>
+	<li>
+		<span class="title"><?= text ?><br><em><?= ctime ?></em></span>
+		<span class="coin <?= className ?>"><?= amount ?></span>
+	</li>
+	<?
+			}
+		} else {
+	?>
+	<li class="no_detail">暂无明细</li>
+	<?
+		}
+    ?>
+</script>
+
+<script>
+	fml.vars.isLogin = <%= this.isLogin %>;
+
+	var curUserBeautyList = <%= JSON.stringify(curUserBeautyList) %>;
+</script>
+
+<!-- <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script> -->
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/member/beauty_detail');
+_use:", this._JSstack, this._JSmods); %>
+<%# foot_simple.html%>

@@ -1,0 +1,92 @@
+<%
+	var runnerHeadInfo = {
+		runner1:'http://d02.res.meilishuo.net/pic/_o/83/3b/148ce7776b18f4cc5d5dbeb986f3_66_66.cg.png',
+		runner2:'http://d03.res.meilishuo.net/pic/_o/3d/8a/f5ee652fc7fcefaeeda7fe43d626_66_66.cg.png',
+		runner3:'http://d03.res.meilishuo.net/pic/_o/94/8d/3ba76de18fab5c2926ea351a8498_66_66.cg.png',
+		runner4:'http://d02.res.meilishuo.net/pic/_o/2e/15/a3778f23beb11dbc95938ea53619_66_66.cg.png',
+		runner5:'http://d03.res.meilishuo.net/pic/_o/f7/4d/6792ad61af60801aea1ab0b0d0d8_66_66.cf.png',
+		runner6:'http://d04.res.meilishuo.net/pic/_o/12/ad/afd0c2bd6ab30fcf863b6c5e6c60_66_66.cg.png',
+		runner7:'http://d03.res.meilishuo.net/pic/_o/9b/04/c7c11ff81a92f900b385b2096999_66_66.cg.png',
+		runner8:'http://d02.res.meilishuo.net/pic/_o/c6/ac/9b5f19ce0f2570061b813fb09e68_66_66.ch.png',
+		runner9:'http://d01.res.meilishuo.net/pic/_o/13/86/ed84ec244d5d79c836f9b404501b_66_66.cg.png',
+		runner10:'http://d02.res.meilishuo.net/pic/_o/97/cd/4cea01584b96e74d23b5f5c63870_66_66.ch.png',
+		runner11:'http://d03.res.meilishuo.net/pic/_o/82/93/5f0a5f966ae015ddf17d90b24688_66_66.ch.png'
+	};
+%>
+<%#head.html%>
+<div class="container">
+	<div class="bg1"></div>	
+	<div class="bg2"></div>	
+	<div class="bg3"></div>	
+	<div class="bg4"></div>	
+	<div class="bg5"></div>	
+	<div class="bg6"></div>	
+	<div class="bg7"></div>
+	<div class="btn_wrap">
+		<a class="vote_btn runner1" data-id="runner1"></a>
+		<a class="vote_btn runner2" data-id="runner2"></a>
+		<a class="vote_btn runner3" data-id="runner3"></a>
+		<a class="vote_btn runner4" data-id="runner4"></a>
+		<a class="vote_btn runner5" data-id="runner5"></a>
+		<a class="vote_btn runner6" data-id="runner6"></a>
+		<a class="vote_btn runner7" data-id="runner7"></a>
+		<a class="vote_btn runner8" data-id="runner8"></a>
+		<a class="vote_btn runner9" data-id="runner9"></a>
+		<a class="vote_btn runner10" data-id="runner10"></a>
+		<a class="vote_btn runner11" data-id="runner11"></a>
+	</div>
+</div>
+<div class="pop_win none_f">
+	<div class="win_content">
+		<h3>当前预测最多的最强者</h3>
+		<table class="rank_table">
+			<% 
+				this.runner_shake_init.rank = this.runner_shake_init.rank || [
+					{
+					vote: 1,
+					name: "Angelababy",
+					voteId: "runner2"
+					},
+					{
+					vote: 1,
+					name: "邓超",
+					voteId: "runner4"
+					},
+					{
+					vote: 1,
+					name: "鹿晗",
+					voteId: "runner1"
+					}
+				];
+			%>
+			<% this.runner_shake_init.rank.forEach(function(item,index){%>
+			<% if(index>2) return; %>
+			<tr>
+				<td><%=index+1 %></td>
+				<td><img class="head_icon" src="<%=runnerHeadInfo[item.voteId] %>"></td>
+				<td><%=item.name %></td>
+			</tr>
+			<%});%>
+		</table>
+		<!-- <label class="focus_label">
+			<span class="i_block_f">关注美丽说公众号 关注</span>
+			<input type="checkbox" name="is_focus" checked>
+		</label> -->
+		<div class="btn_wrapper">
+			<a href="/running_man/shake_vote_red_packet/" class="go_to_get">去抽奖</a>
+		</div>
+		<div class="close_btn">
+			<img src="http://d01.res.meilishuo.net/pic/_o/21/a5/8812d0bddd9023d6c0704ae7c7e4_56_56.ch.png">
+		</div>
+	</div>
+</div>
+<% if(this.os.weixinBrowser){ %>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<% } %>
+<script type="text/javascript">
+	fml.vars.isvote = "<%=this.runner_shake_init.isvote || '' %>";
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/running_man/shake_vote');
+_use:", this._JSstack, this._JSmods); %>
+<%#foot_frame.html%>

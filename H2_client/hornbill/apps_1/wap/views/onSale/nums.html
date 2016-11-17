@@ -1,0 +1,68 @@
+<%#onSale/shareJs.html%>
+<%
+	var remain=this.remain;
+	var info=this.info.info || [];
+%>
+<div class="wrap">
+	<section class="header">
+		<div class="box">
+			<% if(!remain){ %>
+				<% if(remain==0){ %>
+					<h3>等待开启T恤礼包</h3>
+					<p>老用户需要召集3位姐妹<br>才能领取T恤礼包哦！</p>
+				<% }else{ %>
+					<h3>分享成功</h3>
+					<p>3位姐妹参与即可开启T恤礼包</p>
+				<% } %>
+			<% }else{ %>
+				<h3>等待开启T恤礼包</h3>
+				<p>还差<span><%= remain %></span>位姐妹参与即可开启T恤礼包</p>
+			<% } %>
+		</div>
+		<img src="http://d05.res.meilishuo.net/img/_o/bf/83/ef5d436943e68706ba2bb299b8ef_640_560.cf.png" alt="">
+	</section>
+	<ul class="list">
+		<% info && info.map(function(item){ %>
+			<li>
+				<img src="<%=item.headimgurl%>" alt="">
+				<p><%=item.nickname%></p>
+			</li>
+		<% }); %>
+		<% for(var i=0,len=info.length;i<3-len;i++){ %>
+			<li><img src="http://d06.res.meilishuo.net/img/_o/db/c3/23f14c2db179653b08bf15f9ef46_100_100.ch.png" alt=""></li>
+		<% } %>
+	</ul>
+	<section class="tips">
+		<% if(!remain){ %>
+			<% if(remain==0){ %>
+				<p>你已经是美丽说的用户啦</p>
+				<p>邀请3个新用户即可领取T恤礼包</p>
+			<% }else{ %>
+				<p>目前还没有姐妹领取你送的福利，</p>
+				<p>再次出击，分享给更多的姐妹吧！ </p>
+			<% } %>
+		<% }else if(remain==3){ %>
+			<p>目前还没有姐妹领取你送的福利，</p>
+			<p>快快去喊姐妹们来领吧！ </p>
+		<% }else if(remain==2){ %>
+			<p>已经有1位姐妹领取你送的福利，</p>
+			<p>再次出击，把福利分享给更多的姐妹吧！ </p>
+		<% }else if(remain==1){ %>
+			<p>已经有2位姐妹领取你送的福利，离成功只有一小步啦！</p>
+			<p>把福利分享更多的姐妹吧！ </p>
+		<% } %>
+		<div class="line"></div>
+		<div class="circle"></div>
+	</section>
+	<a href="javascript:;" class="btn" id="btn">召唤更多姐妹帮我领T恤</a>
+	<div class="share-img" id="shareImg"></div>
+	<div class="onsale-dialog" id="onsaleDialog"></div>
+	<%#onSale/rules.html%>
+</div>
+<script>
+	fml.vars.useid = <%= this.user_id %>;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/onSale/nums');
+_use:", this._JSstack, this._JSmods); %>
+<%# foot.html%>

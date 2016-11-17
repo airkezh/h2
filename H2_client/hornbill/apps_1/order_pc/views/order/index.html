@@ -1,0 +1,427 @@
+<%# head.html%>
+<%
+var query = this._Request_query;
+var getLink = _extFn.getLink;
+var mSubstr = _extFn.mSubstr;
+var shopping_show = this.order_list.shopping_show;
+var success_pay = this.success_pay;
+
+%>
+<div class="route well">
+	花小美教你谨防诈骗不上当：不点陌生链接，不向陌生账户汇款。<a class="red_f" target="_blank" href="<%= this.DOMAIN.www %>/biz/huodong/fuide/?cid=5697">点击查看防骗指南&gt;&gt;</a>
+	<span class="close js-close-tip-btn">&times</span>
+</div>
+<div class="route">
+	<div class="route_bread">
+		<a href="<%=this.DOMAIN.www%>/">美丽说</a>
+		<samp>&gt;</samp>
+		<a href="<%= this.DOMAIN.order%>/order/list/">我的美丽说订单</a>
+		<samp>&gt;</samp>
+		<span class="red_f">订单列表</span>
+	</div>
+</div>
+<div class="order_area">
+	<%# common/navBar.html %>
+	<div class="order_content">
+		<div class="order_content_box">
+			<fieldset>
+				<form id="orderListForm" method="get" action="">
+					<legend>订单列表表单</legend>
+					<table class="order_list">
+						<colgroup>
+							<col width="240">
+							<col width="100">
+							<col width="70">
+							<col width="80">
+							<col width="90">
+							<col width="120">
+							<col width="130">
+						</colgroup>
+						<thead>
+							<% var order_colspan = 8; %>
+							<tr>
+								<th>商品信息</th>
+								<th>单价（元）</th>
+								<th>数量</th>
+								<th></th>
+								<th>售后</th>
+								<th>合计（元）</th>
+								<th>
+									<select class="mls-select" id="orderStatus" name="status">
+										<option value="0">交易状态</option>
+										<option value="1"<%if(query.status == '1'){%> selected<%}%>>等待付款</option>
+										<option value="2"<%if(query.status == '2'){%> selected<%}%>>等待发货</option>
+										<option value="3"<%if(query.status == '3'){%> selected<%}%>>等待确认收货</option>
+										<option value="4"<%if(query.status == '4'){%> selected<%}%>>交易成功</option>
+										<option value="5"<%if(query.status == '5'){%> selected<%}%>>交易关闭</option>
+									</select>
+								</th>
+								<th width="80">操作</th>
+							</tr>
+						</thead>
+						<%if(this.order_list && this.order_list.info) {
+                            var orderListInfos = this.order_list.info;
+                            if(orderListInfos.length != 0) {
+
+                                // 上一个合并的订单列表
+                                var prevMergedOrders = [];
+
+                                // 判断当前订单是否是合并支付的， 返回值：
+                                // 0：不是合并支付的订单
+                                // 1：是和上一个订单进行合并支付的订单
+                                // 2：是一个新的合并支付订单
+                                var detectMerge = (function(mergedInfo){
+                                    return function(orderId,override){
+                                        for(var mi in mergedInfo) {
+                                            for(var oi in mergedInfo[mi]) {
+                                                // 在大列表里，则是合并支付的订单
+                                                if(mergedInfo[mi][oi] == orderId) {
+                                                    // 进一步判断是否是和上一个订单进行合并
+                                                    for(var pi in prevMergedOrders) {
+                                                        if(prevMergedOrders[pi] == orderId) {
+                                                            return 1;   // 1：是和上一个订单进行合并支付的订单
+                                                        }
+                                                    }
+                                                    if(override) {
+                                                        prevMergedOrders = mergedInfo[mi];
+                                                    }
+                                                    return 2;   // 2：是一个新的合并支付订单
+                                                }
+                                            }
+                                        }
+                                        return 0;   // 0：不是合并支付的订单
+                                    };
+                                })(this.order_list.merge_info || []);
+
+                                // 总价格
+                                var totalPrice = 0;
+
+                                orderListInfos.map(function(data,infoIndex){
+                                    var order = data.order , goods = data.goods;
+                                    var len = goods.length;
+
+                                    // 判断当前订单是否是合并支付的，获得0，1，2三种值
+                                    var mergeType = detectMerge(order.order_id,true);
+
+                                    // 判断当前订单是不是合并列表中最后一个订单，如果是，则需要显示一个合并行
+                                    var isLastMergeItem = (function(info){
+                                        return !info ? true : (detectMerge(info.order.order_id) != 1);
+                                    })(orderListInfos[infoIndex + 1]);
+
+                                    if(mergeType == 1) {
+                                        totalPrice += +order.total_price || 0;
+                                    }else{
+                                        totalPrice = +order.total_price || 0;
+                                    }
+						%>
+						<tbody class="order_list">
+                            <%if(mergeType != 1){ /* 只要不是第一条合并支付的单子，都不显示空白行 */ %>
+                                <tr class="empty">
+                                    <td colspan="<%= order_colspan %>">&nbsp;</td>
+                                </tr>
+                            <%}%>
+							<tr class="order_info header">
+								<td colspan="<%= order_colspan %>">
+									<span>订单号：<%= order.order_id %></span>
+									<span>
+                                        <%if( 1 != order.is_haitao){%>
+
+                                            商家：<a class="red_f" href="<%=this.DOMAIN.www%>/shop/<%= order.shop_id %>" target="_blank"><%= mSubstr(order.shop_name , 20 , '...')%></a>
+
+                                        <%}else{%>
+
+                                            <a class="red_f" href="<%=this.DOMAIN.www_hk%>/shop/<%= order.shop_id %>" target="_blank"><%= mSubstr(order.shop_name , 20 , '...')%></a>
+                                        <%}%>
+
+                                    </span>
+									<% if(order.im || order.qq){ %><a class="getserviceqq knilmi" href="<%= this.ViewTools.callIM(order.im , order.qq) %>" target="_blank">&nbsp;</a><% } %>
+									<span>成交时间：<%= order.ctime%></span>
+								</td>
+							</tr>
+                            <%
+                                var _array_goods = []
+                                    , goodsList;
+                                if(goods && goods.length > 0){
+                                    goods.forEach(function(item){
+                                        _array_goods.push(item.goods_id);
+                                    })
+                                    goodsList = _array_goods.join(',');
+                                }else{
+                                    goodsList = ''
+                                }
+                            %>
+							<% goods && goods.map && goods.map(function(goods, i){ %>
+							    <tr class="order_goods_list<%if(i == 0){%> first<%}%><%if(i == len -1){%> last<%}%>" data-mid="<%= goods.mid %>">
+								<td class="order_goods_goods<%if(i != 0){%> bb<%}%>" <% if(order.pre_sale && order.pre_sale.type==2){ %> style="padding-bottom:30px" <% } %> >
+                    <a class="goods_detail <%if(order.pre_sale && order.pre_sale.type==2){%>goods_detail_presale<%}%>" target="_blank" href="<%= 1 != order.is_haitao ? this.DOMAIN.www : this.DOMAIN.www_hk %>/share/<%if(goods.is_doota == '1'){%>item/<%}%><%= goods.twitter_id %>">
+											<img class="pic" src="<%= goods.b_pic_url%>"/>
+										  <%if(order.pre_sale && order.pre_sale.type==2){%><span class="presale presale-btn"><%= order.pre_sale.label_text%></span><%}%>
+										</a>
+										<p class="title">
+											<a class="goods_detail <%if(order.pre_sale && order.pre_sale.type==2){%>goods_detail_presale<%}%>" target="_blank" href="<%= 1 != order.is_haitao ? this.DOMAIN.www : this.DOMAIN.www_hk %>/share/<%if(goods.is_doota == '1'){%>item/<%}%><%= goods.twitter_id %>">
+											<%= goods.goods_title.length > 12 ? goods.goods_title.substr(0,12)+'...' : goods.goods_title %></a>
+											<% if(goods.has_snapshot == '1'){ %><span class="snap-wrapper">【<a class="snap-link" href="<%=this.DOMAIN.www%>/share/snapshot/<%= goods.mid %>" target="_blank">交易快照</a>】</span><% } %>
+										</p>
+										<p class="prop">
+											<% goods.prop && goods.prop.map(function(prop){
+                                                if(prop.is_show == '1'){%>
+                                                    <span><%= prop.name || "" %>：<%= prop.value || ""%></span>
+                                                <%}
+                                            });%>
+										</p>
+									</a>
+								</td>
+								<td class="<%if(i != 0){%> bb<%}%>"><%= goods.price || ""%></td>
+								<td class="<%if(i != 0){%> bb<%}%>"><%= goods.amount || ""%></td>
+								<td class="<%if(i != 0){%> bb<%}%>">
+									<% if(goods.article_id){ %>
+										<a class="red_f" href="<%=this.DOMAIN.www%>/club/single/<%= goods.article_id %>" target="_blank">查看晒单</a>
+									<% } else if(order.is_shoppingshow && goods.is_doota){ %>
+										<a class="red_f" href="<%=this.DOMAIN.www%>/club/newShoppingTopic?tid=<%= goods.twitter_id %>&order_id=<%= order.order_id %>" target="_blank">晒单</a><br/>
+										<% if(shopping_show){%>
+										<a class="red_f" href="<%= shopping_show.url %>" target="_blank"><%= shopping_show.button %></a>
+										<%}%>
+									<% } %>
+								</td>
+								<td class="<%if(i != 0){%> bb<%}%>">
+									<%if(goods.refund_enter == 1 && 0 != order.goods_price){%><a class="red_f" href="<%= this.DOMAIN.order%>/refund/service/?order_id=<%=order.order_id%>&mid=<%=goods.mid%>">退款</a><%}%>
+									<%if(goods.refund_enter == 2 && 0 != order.goods_price){%>
+									<p><a class="red_f" href="<%= this.DOMAIN.order%>/refund/service/?order_id=<%=order.order_id%>&mid=<%=goods.mid%>">退款/退货</a></p>
+									<%}%>
+									<%if(goods.refund_id){%><p><a class="red_f" href="<%= this.DOMAIN.order%>/refund/?refund_id=<%=goods.refund_id%>"><%= goods.refund_status_text %></a></p><%}%>
+									<%goods.appeal && goods.appeal.map && goods.appeal.map(function(a){%>
+									<p><a class="red_f" href="<%= this.DOMAIN.order%>/refund/?refund_id=<%=goods.refund_id%>&type=<%=a.refund_type%>"><%= a.appeal_status_text %></a></p>
+									<%});%>
+									<%if(goods.service_allow){%><p><a class="red_f" href="<%= this.DOMAIN.order%>/refund/service/?mid=<%=goods.mid%>&order_id=<%=order.order_id%>">申请售后<a></p><%}%>
+								</td>
+								<%if(i == 0){%>
+                                    <td class="br" rowspan="<%= len%>">
+                                    	<%= order.total_price || ""%>
+                                    	<br/>
+
+                                        <% if( 0 != order.tax && order.tax){%>
+                                            <%= order.express_price == 0 ? "(含" + order.tax + "元税金)"
+                                            : ( "(含"+ order.express_price +"元运费," + order.tax + "元税金)") %>
+                                        <%}else{%>
+
+                                    	   <%= order.express_price == 0 ? "免运费" : ( "(含"+ order.express_price +"元运费)") %>
+
+                                        <%}%>
+                                    </td>
+                                    <td class="br" rowspan="<%= len%>">
+                                        <p><%= order.status_text %></p>
+                                        <p><a class="red_f" target="_blank" href="<%= this.DOMAIN.order%>/order/detail/?order_id=<%= order.order_id%><%if(mergeType != 0){%>&merged=1<%}%>">订单详情</a></p>
+                                        <% if(order.express_id){ %>
+                                            <p><a class="red_f" target="_blank"
+                                                href="<%= this.DOMAIN.order%>/order/detail/?order_id=<%= order.order_id%>#express">
+                                                查看物流
+                                            </a></p>
+                                        <% } %>
+										<%if(order.pre_sale && order.pre_sale.type==2){%><p class="presale presale-time red_f"><%= order.pre_sale.text%></p><%}%>
+                                    </td>
+                                    <td class="br" width="80" <% if(order.has_commented == 0 || order.append_commented == 0) {%> rowspan="<%= len%>" <%}%>>
+                                    <%if(mergeType == 0){ /* 不是合并支付的订单，才显示这一对按钮 */ %>
+                                        <%if(order.status == 0){%>
+
+                                            <%if( 1 == order.is_haitao){%>
+                                                <a href="<%=this.DOMAIN.order_hk%>/order/alter_pay_haitao/?order_id=<%=order.order_id%>&total_price=<%=order.total_price%>&frm=pay_button" target="_blank" class="button">付款</a>
+                                            <%}else if(order.total_id){%>
+                                            	<a href="<%= this.DOMAIN.zhifu%>/wallet/index/?totalId=<%=order.total_id%>" target="_blank" class="button">付款</a>
+                                            <%}else{%>
+                                                <a href="<%= this.DOMAIN.zhifu%>/wallet/index/?orderId=<%=order.order_id%>" target="_blank" class="button">付款</a>
+                                            <%}%>
+
+
+                                            <br/>
+                                            <a class="red_f" href="<%= this.DOMAIN.order%>/order/detail/?order_id=<%= order.order_id%>">取消订单</a><br/>
+                                        <%}%>
+                                        <%order.opt && order.opt.map(function(o){%>
+																					  <%if(o.type==2){%> <p><a class="red_f button" data-orderid="<%= order.order_id %>" href="<%= this.DOMAIN.order%>/order/confirm_receive/?order_id=<%= order.order_id %>">确认收货</a></p><%}%>
+                                            <%if(o.type==3){%><p><a class="red_f" href="<%= this.DOMAIN.order%>/shop/comment/?order_id=<%=order.order_id%>&goods_id=<%= goodsList%>">评论</a></p><%}%>
+                                        <%});%>
+                                        <% if(goods.has_commented == 1 && goods.append_commented == 1){ %>
+                                        <p><a class="red_f" href="<%= this.DOMAIN.order%>/shop/comment/append?order_id=<%= order.order_id%>&mid=<%= goods.mid %>">追加评论</a></p>
+                                        <%}%>
+																				<% if(order.show_extend_recv_button){ %>
+																					<p><a class="red_f extend_receive_btn" href="javascript:void(0)" data-orderid="<%= order.order_id %>">延长收货</a></p>
+																				<% } %>
+																				<p>
+																					<%if(!order.has_feedback){%>
+																						<a order_id="<%=order.order_id%>" class="red_f opinion" href="javascript:;">我要投诉</a>
+																					<%}else{%>
+																							<a class="red_f" target="_blank" href="<%= this.DOMAIN.order%>/complain/?bat_order_id=<%=order.order_id%>">投诉详情</a>
+																					<%}%>
+																				</p>
+                                    <%}%>
+									</td>
+								<%} else { %>
+									<%if(len > 1 && order.has_commented == 1 && order.append_commented == 1){ %>
+									<td class="bts">
+										<% if(goods.has_commented == 1 && goods.append_commented == 1){ %>
+										<p><a class="red_f" href="<%= this.DOMAIN.order%>/shop/comment/append?order_id=<%= order.order_id%>&mid=<%= goods.mid %>">追加评论</a></p>
+										<%}%>
+										<p>
+											<%if(!order.has_feedback){%>
+												<a order_id="<%=order.order_id%>" class="red_f opinion" href="javascript:;">我要投诉</a>
+											<%}else{%>
+													<a class="red_f" target="_blank" href="<%= this.DOMAIN.order%>/complain/?bat_order_id=<%=order.order_id%>">投诉详情</a>
+											<%}%>
+										</p>
+									</td>
+									<% } %>
+								<% } %>
+							</tr>
+							<%});%>
+                            <%if(mergeType != 0 && isLastMergeItem){ /* 是合并的订单，并且是最后一条 */ %>
+                            <tr class="order_info header">
+                                <td colspan="8" class="x-merged-bar">
+                                    <span class="tips">订单保留24小时，24小时后订单自动关闭，</span>
+                                    <a class="red_f merged_order_cancel" href="#" data-totalid="<%=order.total_id%>">取消订单</a>
+                                    <span class="right">
+                                        <span>总计：</span><span class="x-totalprice">￥<%=totalPrice.toFixed(2)%></span>
+
+                                        <%if( 1 == order.is_haitao){%>
+
+                                            <a href="<%=this.DOMAIN.order_hk%>/order/alter_pay_haitao/?total_id=<%=order.total_id%>&total_price=<%=totalPrice.toFixed(2)%>&frm=pay_button" target="_blank" class="button">付款</a>
+
+                                        <%}else{%>
+                                            <a href="<%= this.DOMAIN.zhifu%>/wallet/index/?totalId=<%=order.total_id%>" target="_blank" class="button">付款</a>
+                                        <%}%>
+
+
+                                    </span>
+                                </td>
+                            </tr>
+                            <%}%>
+						</tbody>
+						    <%});
+                        }else{%>
+						    <tbody>
+                                <tr>
+                                    <%if(this.order_list.order_num != '0'){%>
+                                        <td colspan="6" class="order_none">
+                                            <div class="order_none_info">
+                                                <span class="status_icon2"></span>
+                                                <p>很抱歉，没有找到相关的订单！</p>
+                                                <a href="<%= this.DOMAIN.order%>/order/">查看全部订单</a>
+                                            </div>
+                                        </td>
+                                    <%}else{%>
+                                        <td colspan="6" class="order_none">
+                                            <div class="order_none_info">
+                                                <span class="status_icon4"></span>
+                                                <p>您还没有在美丽说下过订单呢</p>
+                                                <p>美物这么多，快去看看吧～</p>
+                                                <a class="btn" target="_blank" href="<%=this.DOMAIN.www%>/biz/shareact/list/">去逛逛</a>
+                                            </div>
+                                        </td>
+                                    <%}%>
+                                </tr>
+                            </tbody>
+                        <%}%>
+                    <%}%>
+					</table>
+				</form>
+			</fieldset>
+		</div>
+
+		<div class="paging_panel c_f">
+		<%# paging.html%>
+		</div>
+
+	</div>
+</div>
+
+<!--script type="text/html" id="shaidan_alert" >
+<div class="pop_window">
+	<div class="tex_info l20_f f14_f gray_f">
+		<p>
+			<span class="bgray_f">已经支付成功</span></br>扫描二维码下载美丽说客户端，</br>随时随地无忧购买，</br>查询物流信息更方便。
+		</p>
+		<p class="block_f mt8_f">
+			<input id="no_tips" type="checkbox"/>
+			<label for="no_tips">不再提示</label>
+		</p>
+	</div>
+	<div class="img_info">
+		<img src="http://i.meilishuo.net/css/images/AndroidShare/qrcode131128.png"/>
+	</div>
+</div>
+</script-->
+
+<script id="complain_dialog" type="text/html">
+<div class="complain_cont">
+	<div>
+		<p class="left_f"><em class="red_f mr4_f">*</em>投诉类型：</p>
+		<p class="complain_list">
+			<span>
+				<input must="1" class="mls-input-radio" id="value1" type="radio" name="feed_type" value="1" checked="checked" />
+				<label class="mls-input-label mls-input-radio-label" for="value1">商品质量问题</label>
+			</span>
+			<span>
+				<input class="mls-input-radio" id="value2" type="radio" name="feed_type" value="2">
+				<label class="mls-input-label mls-input-radio-label" for="value2">发货以及配送问题</label>
+			</span>
+			<span>
+				<input class="mls-input-radio" id="value3" type="radio" name="feed_type" value="3">
+				<label class="mls-input-label mls-input-radio-label" for="value3">退款/退货问题</label>
+			</span>
+			<span>
+				<input class="mls-input-radio" must="1" id="value4" type="radio" name="feed_type" value="4">
+				<label class="mls-input-label mls-input-radio-label" for="value4">商家服务态度问题</label>
+			</span>
+			<span>
+				<input class="mls-input-radio" must="1" must="1" id="value5" type="radio" name="feed_type" value="5">
+				<label class="mls-input-label mls-input-radio-label" for="value5">美丽说客服态度问题</label>
+			</span>
+			<span>
+				<input class="mls-input-radio" id="value6" type="radio" name="feed_type" value="6">
+				<label class="mls-input-label mls-input-radio-label" for="value6">其它</label>
+			</span>
+		</p>
+	</div>
+	<div class="complain_txt">
+		<p><em class="red_f mr4_f">*</em>投诉内容：</p>
+		<textarea id="complain_info" placeholder="很抱歉，让你遇到不愉快的购物体验，请将要投诉的内容告诉我们，我们会尽快为你处理。"></textarea>
+		<p class="text_num"><span>0</span>/500</p>
+	</div>
+	<div class="complain_pic mb14_f">
+		<p class="left_f"><em class="red_f mr4_f optional">*</em>投诉凭证：</p>
+		<span id="uploadImg" class="upload_btn">上传凭证图片</span>&nbsp;&nbsp;&nbsp;&nbsp;最多4张，每张不超过5M，支持GIF,JPEG,JPG,PNG,BMP格式
+		<div class="clear_f"></div>
+		<div class="evidence img_wrapper no-mt">
+		</div>
+	</div>
+	<div class="clear_f"></div>
+</div>
+<div class="c_f">
+	<input type="button" class="com_submit" value="确定" />
+	<input type="button" class="com_cancel" value="取消" />
+</div>
+</script>
+
+<script type="text/html" id="imgTmp">
+	<div class="imgUpload">
+		<span class="close"></span>
+		<a href="<?=o_pic_url ?>" target="_blank">
+			<img src="<?=H_pic_url ?>" alt="" data-src="<?=o_pic_url?>"/>
+		</a>
+	</div>
+</script>
+
+<script id="complain_suc" type="text/html">
+<div class="sub_suc">
+	<p class="suc_tit"><b class="suc_icon"></b>提交成功</p>
+	<p class="suc_info"><?=TipText?></p>
+	<p class="c_f"><input type="button" class="suc_close btn" value="关闭" /></p>
+</div>
+</script>
+
+<script>
+var success_pay = "<%= success_pay.info && success_pay.info.is_show %>";
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+		fml.use('order_pc/order/orderList');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

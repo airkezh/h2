@@ -1,0 +1,22 @@
+<div class="doota_nav">
+	<ul>
+		<li><a href="<%= this.DOMAIN.order%>/order/list/">已买到的商品</a></li>
+		<li><a href="<%= this.DOMAIN.order%>/cart">我的购物车</a></li>
+		<li><a href="<%= this.DOMAIN.order%>/address/">我的收货地址</a></li>
+		<li><a href="<%= this.DOMAIN.order%>/coupon/">我的优惠券</a></li>
+		<li><a href="<%= this.DOMAIN.order%>/refund/list/">退款/退货</a></li>
+		<li><a href="<%= this.DOMAIN.order%>/refund/service_list/">售后</a></li>
+		<li><a href="<%= this.DOMAIN.order%>/complain/list/">我的投诉</a></li>
+	</ul>
+</div>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use(['jquery'],function(){
+		var pathname = window.location.pathname,
+			origin = window.location.protocol+'//'+window.location.hostname;
+		if(pathname=='/order/' || pathname=='/order'){
+			pathname='/order/list/';
+		}
+		$('a[href^="'+origin+pathname+'"]').parents('li:first').addClass('selected');
+	});
+_use:", this._JSstack , this._JSmods ); %>

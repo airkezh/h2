@@ -1,0 +1,90 @@
+/*common*/
+
+var $ = require( 'jquery' );
+var CheckLogin  = require( 'app/checkLogin' );
+var dialogUI = require('ui/dialog');
+var shareTmp = require('component/shareTmp');   
+
+// var tpl = shareTmp('getAward');
+//                         var pop = new dialogUI({
+//                             'content' : tpl,
+//                             'width' : '410px'
+                         
+//                         })
+$('.vote_btn').on('click' , function(){
+    //登录
+    if ( !CheckLogin() ) {
+            return
+    }
+
+    var self = $(this);
+    var v_num_box = self.parent('.vote_box').find('.vote_num');
+    var v_num = parseInt(self.parent('.vote_box').find('.vote_num').html());
+
+    $.ajax({
+        type : 'post',
+        url : '/aw/designer/vote',
+        data : {
+            'project_id' : 3,
+            'season_id' : 3,
+            'item_id' : self.attr('did')
+        },
+        success : function(data){
+            res = JSON.parse(data);
+
+            if(res.error_code == 0){
+
+                $.ajax({
+                    type : 'post',
+                    dataType: 'json',
+                    url : '/aw/designer/award',
+                    data: {
+                        'act_code': self.attr('lottery')
+                    },
+                    dataType: 'json',
+                    success : function(item){
+                        code = item.data
+
+                        self.find('img').attr('src' , 'http://d05.res.meilishuo.net/pic/_o/b8/7f/a507d953132c62d134c3d81c2d96_90_90.cg.png');
+                        v_num_box.html(v_num + 1);  
+
+                        var tpl = shareTmp('getAward');
+                        var pop = new dialogUI({
+                            'content' : tpl,
+                            'width' : '410px'                 
+                        })
+                        // $.fn.dialog({dialogContent : tpl , dialogTitle : ''});
+
+                        // $('#maskLayer,.closeIcon').on('click' , function(){
+                        //     $('.closeDialog').trigger('tap');
+                        // });
+
+                        if(code.type == 2) {
+                            text = '恭喜您获得' + code.name
+                        } else {
+                            text = '今日优惠券已发完~'
+                        }
+
+                        $('.result').html(text)
+                        
+                    },
+                    error:  function () {
+                        alert('额，稍后再试！');
+                    }
+
+                });
+
+            } else if(res.error_code == -2){
+                alert('亲，已经投过票了!');
+            } else{
+                alert('没能成功投票！');
+            }
+        },
+        error:  function () {
+            alert('额，稍后再试！');
+        }
+    });
+    $.get('/aj/doota/shop_save' , {'shop_id' : $(this).attr('sid')} , function(data){
+    } , 'json');    
+    
+});

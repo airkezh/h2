@@ -1,0 +1,142 @@
+<%# sq/header.html%>
+<%
+	var getLink = _extFn.getLink
+		,query = this._Request_query
+		,typeName = {"hot" : "热卖","new" : "新品"}
+		,navTop = this.nav_top ? this.nav_top : [{'page_title':'616特惠'},{'page_title':'今日团购'},{'page_title':'美妆特卖'}]
+		,pageNameArr = this.pageNameArr
+		,seckillBtn = ["整点开抢", "立即购买", "抢光了", "还有机会"]
+		,typeTop = this.type_top ? this.type_top : []
+		,lists = this.banner_list;
+
+	var globalKey = this._Request_cookies.MEILISHUO_GLOBAL_KEY;
+%>
+
+<div class="posterWall wrap scroller">
+	<div class="end-box">
+		<div class="end">
+			<a href="/sq/tuan_buy/1065?goods_type=2">
+			<div class="end-time" style="background-image:url('<%= this.tuan_back_img.
+					show_pic%>');">
+					<div class="s-content">
+						<p class="s-title">惊喜秒杀</p>
+						<p class="s-txt">距离本场结束还有</p>
+						 <dl class="s-ltime" stime="<%= this.tuan_enter.data.unix_time%>">
+			            	<dd id="hour"></dd><strong>:</strong>
+			            	<dd id="minu"></dd><strong>:</strong>
+			            	<dd id="sec" class="last"></dd>
+			            </dl> 				
+					</div>
+			
+			</div>
+			</a>
+			<div class="end-show">
+			<a href="<%= this.tuan_enter_img.data.banner.url%>">
+				<img src="<%= this.tuan_enter_img.data.banner.img%>">
+			</a>
+			</div>
+		</div>
+	</div>
+
+<!-- 			轮播banner				 -->
+	<% if(this.banner.head = 0){%>
+	<section style="-webkit-transform: translateZ(0);">
+		<%= requireFn('block/banner.html')({
+			'banner' :this.banner.head 
+			,'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+		});%>
+	</section>
+	<% }%>
+	<%if(0 &&lists){%>
+	<ul class="square">
+	<% lists.forEach(function(list,index){%>
+	<li class="sq-list">
+	<a href="<%= list.link%>"><img src="<%= list.imgurl%>" alt=""></a>
+	</li>
+	<%})%>
+	</ul>
+	<%}%>
+
+	<%if(this.mask_show){%>
+	<div id="mask">
+		<!-- <a href="http://m-qiang.meilishuo.com/sq/coupon_zone?type=noqq"><img src="<%=this.PICTURE_URL%>/images/wap/web/sq/mark916_top.png" alt=""></a> -->
+		<span class="redirect"><img src="<%=this.PICTURE_URL%>/images/wap/web/sq/mark916_top.png" alt=""></span>
+		<span class="mask_close"><img src="<%=this.PICTURE_URL%>/images/wap/web/sq/mark916_s.png" alt=""></span>	
+	</div>
+	<%}%>
+	<!-- 横条展示位 -->
+	<%if(0 && this.egg_able && this.egg_able.ret == -4){%>
+	<a href="/sq/egg_act?from=eggBreak&coupon_id=<%= this.egg_able.coupon_id;%>&uid=<%= this.userInfo.user_id%>">
+		<img src="<%=this.PICTURE_URL%>/images/wap/sq/box-banner.jpg" width="100%" style="width:100%;"/>
+	</a>
+	<%}%>
+	<!-- 砸蛋 -->
+	<% if(this.egg_able && this.egg_able.ret == 0){%>
+	<div id="egg">
+		<img src="<%=this.PICTURE_URL%>/images/wap/sq/box-1.png" class="egg"/>
+		<img src="<%=this.PICTURE_URL%>/images/wap/sq/box-2.png" class="egg-open"/>
+	</div>
+	<%}%>
+
+	<%if(this.tuanInfo && this.tuanInfo.tInfo && this.tuanInfo.tInfo.length != 0){%>
+
+	<!-- typeTop -->
+	<div class="typeTop-new">
+		<p>
+	<% typeTop.map(function(data, index){%>
+		<%var url =  "/sq/mall/" + this.pageName + getLink({'cate_id' : data.id})%>
+		<a href=<%=url %> typeId='<%= data.id%>' class='cosmetictap  <%= (this.cate_id == data.id) ? 'type_select' : '' %>'><span class="<%= (this.cate_id == data.id) ? 'type_select' : '' %>"><%= data.name%></span></a>
+	<%})%>
+		</p>
+	</div>
+	
+	<p class="p-title"><span class="tuan-icon">全场包邮 每日10点上新</span></p>
+
+
+	<ul class="tuan_goods goods_wall">
+	</ul>
+	<div class="pullUp" status="loading"></div>
+	<%}%>
+	<% if(this.banner.bottom){%>
+	<section class="content_daily">
+		<% this.banner.bottom.map(function(data, idx){%>
+		<a href="<%==data.url%>"><img class="mb10" src="<%= data.image_url%>" /></a>
+		<% });%>
+	</section>
+	<% }%>
+</div>
+<%# sq/tuanPosterSQ.html%>
+
+<ul id="goTop">
+	<li class="none_f" id="go_top"><span class="icon-gotop"></span></li>
+</ul>
+
+
+<script type="text/html" id="time_over">
+	明天再来&nbsp;<span class="time_num"><b>00</b>:<b>00</b>:<b>00</b></span>
+</script>
+
+<!-- 
+	time_space: banner轮播时间
+	redirect: 兼容手Q重新打开新的webview
+
+	fml.vars.r = '<%= this.r %>';
+-->
+
+<script>
+fml.vars.time_space = 3000;
+fml.vars.poster = {
+	'totalColNum':2,
+	'pageName' : '<%= this.pageName%>',
+	'cate_id' : '<%= this.cate_id%>'
+};
+fml.vars.globalKey = '<%= globalKey %>';
+fml.vars.is_tuan = 1;
+fml.vars.pid = '<%= this.pid %>';
+</script>
+<script src="http://pub.idqqimg.com/qqmobile/qqapi.js?_bid=152"></script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/sq/mall');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# sq/footer.html%>

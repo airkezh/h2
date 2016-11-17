@@ -1,0 +1,111 @@
+<%
+var shop_in = this.shop_in;
+var followerNum = this.followerNum;
+var isFollowing = this.isFollowing;
+%>
+<%if(shop_in && shop_in.points_trend){%>
+<div class="shop_contit">
+    <div class="shop_title clearfix_f">
+        <div class="shop_info_rate js-shop-rate">
+            <h2 class="shop_name">
+                <a href="/shop/<%=shop_in.shop_id%>?pos=guangNick" target="_blank"><%=shop_in.shop_nick%></a>
+            </h2>
+            <p class="rate_info"><span class="f16_f mr6_f gray_f">[</span>
+                <%
+                var trend = shop_in.points_trend,
+                    tmp;
+                ['accord','quality','attitude','fast'].forEach(function(attr){
+                    var item = trend[attr];
+                    if ( !item ) return;
+                %>
+                    <span class="mr4_f"><%=item.text.split('')[0] + item.text.split('')[1]%>
+                        <b class="<%if(item.mark==1 || item.mark==0){%>fRed<%}else if(item.mark==-1){%>fGreen<%}%>"><%= ( tmp = parseFloat(item.avg)) ? tmp.toFixed(1) : '--'%></b>
+                    </span>
+                <%});%>
+                <span class="f16_f ml2_f gray_f">]</span>
+            </p>
+            <div class="shop_arrows"></div>
+        </div>
+        <div class="shop_con clearfix_f js-shop-rate-panel">
+            <div class="clearfix_f">
+                <ul class="shop_con_l left_f">
+                    <li>店铺评分</li>
+                    <li>描述一致：
+                        <span><%= ( tmp = trend.accord && parseFloat(trend.accord.avg)) ? tmp.toFixed(1) : '--' %></span>
+                    </li>
+                    <li>质量满意：
+                        <span><%= ( tmp = trend.accord && parseFloat(trend.quality.avg)) ? tmp.toFixed(1) : '--' %></span>
+                    </li>
+                    <li>服务态度：
+                        <span><%= ( tmp = trend.accord && parseFloat(trend.attitude.avg)) ? tmp.toFixed(1) : '--' %></span>
+                    </li>
+                    <li>发货速度：
+                        <span><%= ( tmp = trend.accord && parseFloat(trend.fast.avg)) ? tmp.toFixed(1) : '--' %></span>
+                    </li>
+                </ul>
+                <ul class="shop_con_m left_f">
+                    <li>比同行平均</li>
+                    <%
+                    var trend = shop_in.points_trend;
+                    ['accord','quality','attitude','fast'].forEach(function(attr){
+                        var item = trend[attr];
+                        if ( !item ) return;
+                    %>
+                    <li>
+                        <%if(item.mark==1){%>
+                        <span class="redlevbtn">高</span>
+                        <%}else if(item.mark==0){%>
+                        <span class="redlevbtn">平</span>
+                        <%}else if(item.mark== -1){%>
+                        <span class="grenlevbtn">低</span>
+                        <%}%>
+                        <%=item.ratio%>
+                    </li>
+                    <%});%>
+                </ul>
+                <ul class="shop_con_r left_f">
+                    <li>商家信息</li>
+                    <li>所在地区：
+                        <span><%=shop_in.location%></span>
+                    </li>
+                    <li>商品数量：
+                        <span><%=shop_in.goods_count%></span>
+                    </li>
+                    <li>销售数量：
+                        <span><%=shop_in.goods_sales%></span>
+                    </li>
+                    <li>创建时间：
+                        <span><%=shop_in.shop_ctime%></span>
+                    </li>
+                    <li>店铺资质：
+                        <span>
+                            <i class="icon-money<%=shop_in.shop_margin%>" title="已缴纳<%=shop_in.shop_margin%>元保证金"></i>
+                            <% if( shop_in.license != ''){%>
+                                <a target="_blank" href="/license/index/?shop_id=<%=shop_in.shop_id%>"><i class="icon-aptitude">
+                                </i>
+                                </a>
+                            <%}%>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <div class="clearfix_f">
+                <a href="/shop/rating/?shop_id=<%=shop_in.shop_id%>&frm=rate_to_rateall" class="btnforDetail red_f ml40_f left_f" target="_blank">评分详情</a>
+                <a href="/shop/<%=shop_in.shop_id%>?frm=rate_to_shop" class="btnforShop white_f left_f" target="_blank">进入本店</a>
+            </div>
+        </div>
+        <div class="top_fans mt12 shop_follow">
+            <div class="j_fans">
+                <%= followerNum %>粉丝
+            </div>
+            <a class="attention <%if(isFollowing){%>att<%}else{%>no_att<%}%>">
+                <%if(isFollowing){%>已关注<%}else{%><span>+</span>关注本店<%}%>
+            </a>
+            <% if(this._serviceIM){%>
+            <a class="goqq knilmi" href="<%= this._serviceIM %>" target="_blank"><em class="qqico">&nbsp;</em>联系客服</a>
+            <% } %>
+            <div class="clear_f"></div>
+        </div>
+    </div>
+</div>
+<%}%>

@@ -1,0 +1,46 @@
+<%#head.html%>
+<div class="main">
+	<div class="wrap-left wrap">
+		<div class="up shadow">
+			<div class="inner">
+				<div class="redline2"></div>
+				<div class="user">
+					<a target="_blank" href="/person/u/<%= this.msg&&this.msg.userId%>"><img class="left" src="<%= this.msg&&this.msg.user_info.avatar_url%>" width="50" height="50" /></a>
+					<div class="left title">
+						<a target="_blank" href="/person/u/<%= this.msg&&this.msg.userId%>" class="name"><%= this.msg&&this.msg.user_info.nickname%></a>
+						<h2><%= this.msg&&this.msg.title1%><span><%= this.msg&&this.msg.title2%></span></h2>
+					</div>
+					<div class="clear_f"></div>
+				</div>
+				<div class="greyline"></div>
+				<div>
+					<%= this.msg&&this.msg.desc%>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="wrap-right wrap shadow">
+		<div class="inner" style="padding-bottom: 0px;">
+			<div class="redline2"></div>
+		</div>
+		<div class="inner">
+			<div class="list">
+				<p class="last">
+					往期公告
+				</p>
+				<ul>
+					<%if(this.msg){%>
+						<%for(var i = 0; i < this.msg.history_info.length - 1; i++){%>
+							<li class="libom"><span>［已结束］</span><a target="_blank" href="/biz/huodong/meili99sed/?banner_id=<%= this.msg.history_info[i].code%>"><%= this.msg.history_info[i].page_name%></a></li>
+						<%}%>
+						<li><span>［已结束］</span><a target="_blank" href="/biz/huodong/meili99sed/?banner_id=<%= this.msg.history_info[i].code%>"><%= this.msg.history_info[this.msg.history_info.length - 1].page_name%></a></li>
+					<%}%>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/huodong/meili99sed');
+_use:", this._JSstack , this._JSmods);%>
+<%#foot.html%>

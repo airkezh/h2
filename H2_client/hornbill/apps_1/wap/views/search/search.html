@@ -1,0 +1,33 @@
+<%#head_frame.html%>
+<%#head_guang.html%>
+<%
+var getLink = _extFn.getLink;
+var query = this._Request_query;
+var isOpen = 0;
+%>
+	<nav class="nav_top catalog" id="navTop" status="closed">
+		<ul>
+			<%if(this.headTag == 'search'){%>
+			<%}else{%>
+			<li <%if(query.nid == query.pnid){%>class="active"<%}%>><a href="<%=getLink({'nid': query.pnid ,'frame' : '0'} , query)%>">全部</a></li>
+			<%}%>
+			<%this.route && this.route.map(function(v,k){
+				if(query.nid == v.nid)
+					isOpen = 1;	
+			%>
+			<li <%if(query.nid == v.nid){%>class="active"<%}%>><a href="<%=getLink({'nid': v.nid ,'frame' : '0'} , query)%>"><%= v.word_name %></a></li>
+			<%});%>
+		</ul>
+		<span class="openClosed" status="<%if(isOpen == 1){%>open<%}else{%>closed<%}%>">
+	</nav>
+<%# guang/poster.html%>
+
+<script>
+<%= this.poster0? 'Meilishuo.config.poster0 = '+JSON.stringify(this.poster0)+';':'' ;%>
+</script>
+<% $_ENGINE_SELF.callFn("useModule")("fml.use('wap/page/poster0');", this._JSstack , this._JSmodsFast ); %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/guang6');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot_frame.html%>

@@ -1,0 +1,69 @@
+<%#head.html%>
+	<div class="wrapper">
+		<div class="topBanner">
+			<a href="meilishuo://twitter_single.meilishuo?json_params=%7B%22twitter_info%22%3A%7B%22twitter_id%22%3A%223833814221%22%2C%22is_doota%22%3A%221%22%7D%7D" class="buyLink"></a>
+		</div>
+		<!--<img src="<%= this.PICTURE_URL%>images/wap/biz/oppo_mob/oppo_mob_bg_01.jpg" />-->
+		<img src="<%= this.PICTURE_URL%>images/wap/biz/oppo_mob/oppo_mob_bg_02.jpg" />
+		<img src="<%= this.PICTURE_URL%>images/wap/biz/oppo_mob/oppo_mob_bg_03.jpg" />
+		<!--<img src="<%= this.PICTURE_URL%>images/wap/biz/oppo_mob/oppo_mob_bg_04.jpg" />-->
+		<div class="main_con">
+			<a href="meilishuo://twitter_single.meilishuo?json_params=%7B%22twitter_info%22%3A%7B%22twitter_id%22%3A%223833814221%22%2C%22is_doota%22%3A%221%22%7D%7D" class="buyLink"></a>
+			<a href="javascript:;" class="activityRule" id="activityRuleBtn"></a>
+			<div class="cj_box" id="cj_box">
+				<div class="cj_area" id="cj_area"></div>
+			</div>
+		</div>
+		<img src="<%= this.PICTURE_URL%>images/wap/biz/oppo_mob/oppo_mob_bg_06.jpg" />
+		<img src="<%= this.PICTURE_URL%>images/wap/biz/oppo_mob/oppo_mob_bg_07.jpg" />
+		<img src="<%= this.PICTURE_URL%>images/wap/biz/oppo_mob/oppo_mob_bg_08.jpg" />
+		<!--<img src="<%= this.PICTURE_URL%>images/wap/biz/oppo_mob/oppo_mob_bg_09.jpg" />-->
+	</div>
+	<script type="text/html" id="dialogTips">
+		<div class="dialog_box">
+			<div class="dialog_con dia_style1">
+				<div class="step1 steps">
+					<p class="game_result">请先购买oppo自拍杆，才有资格抽奖！</p>
+					<div class="btnWrap">
+						<a class="shareBtn" id="closeDialog">取消</a>
+						<a href="meilishuo://twitter_single.meilishuo?json_params=%7B%22twitter_info%22%3A%7B%22twitter_id%22%3A%223833814221%22%2C%22is_doota%22%3A%221%22%7D%7D" class="luckyBtn" id="luckyBtn">去购买</a>
+					</div>
+				</div>
+				<div class="step2 steps" style="display: block;">
+					<div class="step2_con">
+						<p class="jpTips">抽中：<b id="jpCon">oppo自拍杆</b></p>
+						<p id="user_address" class="no_addres"></p>
+					</div>
+					<div class="address_btn">
+						<a href="javascript:;" id="add_address" class="btn_style btn_style1">填写地址</a>
+						<a href="javascript:;" id="upt_address" class="btn_style btn_style2">修改地址</a>
+						<a href="javascript:;" id="ok_address" class="btn_style btn_style2">确定</a>
+					</div>
+				</div>
+				<div class="step3 steps">
+					<div class="step2_con">
+						<p class="jpTips">抽中：<b id="jpCon">oppo自拍杆</b></p>
+						<p id="user_address" class="no_addres"></p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<span id="addr_id" data_id="0"></span>
+		<span id="record_id" data_id="0"></span>
+	</script>
+	<script type="text/html" id="activityRuleTips">
+		<div class="dialog_box">
+			<div class="dialog_con dia_ruleStyle">
+				<a href="javascript:;" class="closeBtn" id="closeBtn"></a>
+			</div>
+		</div>
+	</script>
+	<script>
+		fml.vars.isLogin = "<%= this.userInfo.user_id%>";
+		fml.vars.isNewest = <%= this.isNewest %> ;
+		fml.vars.isAndroid = <%= this.isAndroid %> ;
+	</script>
+	<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/oppo_mob');
+_use:", this._JSstack , this._JSmods ); %>
+		<%#foot_simple.html%>

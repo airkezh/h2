@@ -1,0 +1,55 @@
+<div class="goods_units">
+<%
+	var mSubstr = _extFn.mSubstr;
+	this.goods && this.goods.forEach(function(data){
+		var salenum_text = '人在抢购';
+		if(data.not_start == 1){
+			var stutas_class = 'act_prev';
+			salenum_text = '人已喜欢'
+		} else if(data.is_end == 1){
+			var stutas_class = 'act_over';
+		} else if(data.sell_status == 1 || data.sell_status == 2){
+			var stutas_class = 'goods_end';
+		} else {
+			var stutas_class = '';
+		}
+%>
+	<div class="goods_box">
+		<a class="goods_img" href="<%= _extFn.getAppLink('twitter_single', {'twitter_info' : {'twitter_id' : data.twitter_id, 'is_doota' : 1}}, this.os, this.r, '/share/item/'+data.twitter_id); %>">
+			<% if(!stutas_class && data.marks && data.marks[0]){
+				var _l = 0; var style = '';
+				data.marks.forEach(function(marks_data, index){
+					if(index > 1) return;
+			%>
+					<div class="Farm" style="<%= style %>">
+						<img class="Standard" src="<%= marks_data.img_url%>" style="width:<%= marks_data.img_width/1.3 %>px;"/>
+					</div>
+			<%		style = 'left: ' + (parseInt(marks_data.img_width/1.3) + 6) + 'px;';
+				});
+			} %>
+			<% if(this.is_lazyload){ %>
+				<span class="bs_load_img" asrc="<%= data.pic_pathe %>"></span>
+			<% } else { %>
+				<img src="<%= data.pic_pathe %>" alt="<%= data.buyer_desc %>">
+			<% } %>
+			<% if(stutas_class){ %><span class="goods_status <%= stutas_class %>"></span><% } %>
+		</a>
+		<div class="desc_box">
+			<p class="desc"><a href="<%= _extFn.getAppLink('twitter_single', {'twitter_info' : {'twitter_id' : data.twitter_id, 'is_doota' : 1}}, this.os, this.r, '/share/item/'+data.twitter_id); %>"><%= mSubstr(data.pc_title, 20, '...') %></a></p>
+			<%
+				var discount_num = Math.round(data.goods_price/data.cost*100)/10;
+				if(discount_num > 10 || data.cost > 1000){
+					discount_num = '';
+				} else {
+					if(discount_num.toString().indexOf('.')<0){
+						discount_num += '.0';
+					}
+					discount_num += '折';
+				}
+			%>
+			<p class="price"><span class="red_f now_price">¥<%= data.goods_price %></span><% if(data.cost){ %><span class="sequence">￥<del><%= data.cost %></del></span><span><%= discount_num %></span><% } %></p>
+			<div class="like_buy"><p class="buy_num"><span class="red_f"><%= data.sell_num || 0 %></span><%= salenum_text %></p></div>
+		</div>
+	</div>
+<% }); %>
+</div>

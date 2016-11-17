@@ -1,0 +1,126 @@
+@import "block.less";
+@icon_bg: 'http://d03.res.meilishuo.net/img/_o/91/4c/7e7b92cde0c6eb57af6776129ef8_89_1110.ch.png';
+@cate: 'http://d03.res.meilishuo.net/img/_o/bb/12/1fb0a885744ff045c03a6c8f153b_60_760.ch.png';
+@rec_words: 'http://d01.res.meilishuo.net/pic/_o/6b/5e/26bfb8d06348f474dc689ba505a7_54_62.ch.png';
+
+body{ .f(.24rem);.bgc(#f4f4f4);.pr; }
+
+.mask{ .pa;top: 1rem;left: 0;z-index: 99;.w(100%);.h(100%);.bgc(rgba(0,0,0,.5));-webkit-transtion: opacity .5s; }
+.mask[status='hide']{ opacity: 0; }
+.mask[status='show']{ opacity: 1; }
+
+.head_img{
+	.pf;top: 0;left: 0;.w(6.4rem);.h(1.69rem);.hidden;
+
+	.mls_desc{ .block;.w(6.4rem); }
+}
+.main_page{ .pr;z-index: 10;.mt(1.69rem);.bgc(#f4f4f4); }
+
+.goods_wrap{
+	padding: .2rem;.mt(.2rem);.bgc(#fff);
+
+	.user_info{
+		.hidden;
+
+		a{ .left;.hidden;.f(.28rem);.l(.7rem);.fc(#666); }
+		.avatar{ .left;.w(.7rem);.h(.7rem);.border-r(50%);.mr(.16rem);background-size: cover; }
+		.like{ .right;.pl(.42rem);.l(.7rem);.f(.26rem);.fc(#FF7A9A);background: url(@icon_bg) no-repeat 0 105.5%;background-size: .45rem; }
+	}
+	.pic{
+		.mt(.2rem);.block;
+
+		img{ .block;.w(3.6rem);.auto; }
+	}
+	.title{ .block;.f(.26rem);.fc(#666);.mt(.18rem);.l(.3rem);.mb(.06rem);.c; }
+	.rec_words{
+		.pl(.44rem);.w(5.76rem);.hidden;.pr;.mb(-.1rem);.mt(.36rem);
+
+		.icon{ .pa;left: 0;top: 0;background: url(@rec_words) no-repeat center;background-size: contain;.w(.31rem);.h(.27rem); }
+		a{ .i_block;padding: 0 .17rem;.mr(.2rem);.mb(.1rem);.f(.22rem);.fc(#FF7A9A);.l(.3rem);border: 1px solid #FF7A9A;border-radius: .9rem;
+}
+	}
+}
+
+.goods_rec{
+	.bgc(#fff);.mt(.2rem);.pt(.2rem);.w(6.4rem);.hidden;
+
+	.title{
+		.pr;.f(.26rem);.fc(#666);padding: .2rem;.hidden;
+
+		&:before{ content: '';.pa;left: 50%;top: 50%;.w(1.8rem);.ml(-.96rem);.h(1px);.bgc(#333);opacity: .2; }
+		a{ .pa;right: 0;top: 50%;.f(.22rem);.fc(#999);.l(.34rem);.pr(.4rem);.mt(-.17rem);background: url(@icon_bg) no-repeat right 62%;background-size: .45rem;}
+		.slide_num{
+			.f(.22rem);.fc(#999);.bgc(#fff);.pr;.auto;.w(.8rem);.c;.l(.34rem);z-index: 10;
+		}
+	}
+	/* 组图 */
+	.swipe{
+		.pr;
+		.hidden;
+	}
+
+	.swipe_wrap{
+		.pr;
+		.hidden;
+		-webkit-backface-visibility:hidden;
+		-moz-backface-visibility:hidden;
+		-ms-backface-visibility:hidden;
+		-o-backface-visibility:hidden;
+		backface-visibility:hidden;
+		z-index:1;
+	}
+	.goods_slide{ .w(6.4rem);.h(3.4rem);.pr; }
+	.slide_item{ .w(6.4rem);.h(3.4rem);.pr;.left; }
+	.goods_item{
+		.left;.ml(.1rem);.w(2rem);.c;.f(.2rem);
+
+		.g_img{ .w(100%);.h(2.8rem);background: no-repeat center;background-size: cover;opacity: 0; }
+		.g_title{ .w(90%);.ellipsis;.fc(#666);.mt(.13rem);.mb(.06rem); }
+		.g_price{ .f(.2rem);.fc(#FF6799); }
+	}
+}
+
+.goods_same{
+	.bgc(#fff);.mt(.2rem);
+
+	.title{ .f(.26rem);.fc(#666);padding: .2rem;.c; }
+	.goods_wall{ .pr; }
+	.poster_grid{ .pa;.c;.pb(.25rem); }
+	.pic_load{ .w(3.05rem); }
+	.bs_load_img{ .block;.w(100%);.pt(3.95rem);background: no-repeat;background-size: cover;opacity: 0; }
+	.clothesTitle{ .w(90%);.auto;.mt(.1rem);.mb(.14rem);.f(.22rem);.fc(#666);.ellipsis; }
+	.price{ .f(.26rem);.fc(#FF7A9A);.pr(.18rem); }
+	.like{ .pl(.3rem);.f(.26rem);.fc(#999);background: url(@icon_bg) no-repeat -.1rem 81.8%;background-size: .45rem; }
+}
+
+.more_rec{ .none;.c;.f(.22rem);.fc(#666);.l(.4rem); }
+
+.pullUp{
+	.pullUpDown > .common;.pullUpDown > .loading;
+	&:before{
+		.nowrap;
+		.ml(-10px);
+	}
+	&[status="tap"]{
+		background:0 none;
+		&:before{
+			content:"上拉看更多..."
+		}
+	}
+	&[status="stop"]{
+		background:0 none;
+		&:before{
+			content:"木有了...";
+		}
+	}
+}
+.goTop;
+
+.wap_head;
+
+// hack
+.ios{
+	.main_page,
+	#goTop{ -webkit-transform:translateZ(1px);transform:translateZ(1px); }
+}
+

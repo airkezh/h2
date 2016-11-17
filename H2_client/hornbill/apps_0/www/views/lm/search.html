@@ -1,0 +1,48 @@
+<%# lm/head.html%>
+<div class="spinner midSpinner pa_f" style="top:450px;"></div>
+<div class="content_fluid v_hidden">
+	<div class="s_p_tabs">
+		<div class="tabs_con">
+			<div class="ser_c">
+				<form class="searchBox" action="/lmsearch" method="get" >
+					<span class="ipt1">
+						<input class="searchKey" name="searchKey" type="text" autocomplete="off" value="<%=this.searchKey%>"/>
+					</span>					
+					<span class="ipt2"><input type="submit" class="fm_hd_btm_shbx_bttn" value=""/></span>
+				</form>
+			</div>
+			<ul class="list">
+				<li class="red_f">搜索结果: <%=this.search_poster.totalNum%>宝贝</li>
+			</ul>
+			<div class="clear_f"></div>
+		</div>
+	</div>
+
+	<div class="goods_wall" style="height:1000px;">
+		<div class="corner_stamp">
+			<div class="cata_brands"></div>
+			<div class="poster_p4p"></div>
+		</div>
+	</div>
+	
+	<div class="paging_panel c_f none_f">
+		<%#paging.html%>
+	</div>
+	<div class="spinner botSpinner none_f"></div>
+	<div class="clear_f"></div>
+</div>
+<%# lm/poster.html %>
+
+
+<script>
+<%= this.search_poster? 'Meilishuo.config.poster0 = '+JSON.stringify(this.search_poster)+';':'' ;%>
+</script>
+
+
+
+<% $_ENGINE_SELF.callFn("useModule")("fml.use('page/poster0');", this._JSstack , this._JSmodsFast ); %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/lm/lmsearch');
+	fml.use('page/poster0');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

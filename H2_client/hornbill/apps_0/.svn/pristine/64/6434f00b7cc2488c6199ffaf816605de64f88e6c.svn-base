@@ -1,0 +1,39 @@
+<%# sq/header.html %>
+
+<div class="wrapper js-wrapper">
+	<div class="js-goods-container goods-container"></div>
+	<div class="js-pull-up pull-up" data-status="loading"></div>
+</div>
+
+<script>
+	fml.vars.main = <%= JSON.stringify(this.main) %>;
+</script>
+
+<script type="text/html" id="js-goods-tpl">
+<? 
+	var g = this.v; 
+	var gLink = '/sq/detail?twitter_id=' + g.twitter_id + '&d_r=' + g.d_r;
+?>
+	<figure class="goods">
+		<a class="goods-img js-goods-image" href="<?= gLink ?>" style="padding-top:<?= 130 ?>%;background-image:url(<?= g.goods_img ?>);"></a>
+		<figcaption class="goods-info">
+			<p class="goods-desc"><?= g.goods_title ?></p>
+			<p class="other">
+				<span class="goods-price">¥ <?= g.discount_price ?></span>
+				<span class="the-num-of-like-it"><?= g.count_like ?></span>
+			</p>
+			<a class="similar" href="<?= g.similarLink ?>">找相似</a>
+		</figcaption>
+	</figure>
+</script>
+
+<%# sq/default.html %>
+<%! 
+	$_ENGINE_SELF.callFn("useModule")(
+		"<<<_use:fml.use('wap/page/sq/history');_use:", 
+		this._JSstack, 
+		this._JSmods 
+	); 
+%>
+
+<%# sq/footer.html %>

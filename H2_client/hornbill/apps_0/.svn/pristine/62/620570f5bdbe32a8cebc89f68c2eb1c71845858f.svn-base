@@ -1,0 +1,109 @@
+/*common*/
+require('wap/zepto/fastclick');
+var $ = require('wap/zepto')
+	,Alert = require('wap/ui/alert')
+	,tracking = require('wap/app/tracking')
+	,WaterFall = require( 'circle/component/waterfall' )
+	,lazy = require( 'm/component/lazyLoad' )
+
+var lazyLoad = lazy.init({xpath:'.pic_load'})
+
+var waterFallInstance = WaterFall.init({
+	el: '.goods_wall',
+	url: '/aj/sq/jx_goods?page_name=clothes',
+	dataName: 'tInfo', //默认
+	colNum: 2,
+	colGap : 0,
+	onFetchSuccess: function(data){
+		lazyLoad.scroll()
+		if(data.length === 0){
+			$('.pullUp').attr('status','stop');
+			this.lock();
+		}
+	},
+	onFetchFinished: function(data){
+		lazyLoad.load()
+	}
+})
+
+var colInfo = waterFallInstance.getColsInfo()
+colInfo[ 0 ].max = 60;
+
+waterFallInstance
+.setColsInfo(colInfo)
+.start()
+
+var alertDiv = function(msg){
+	var a = new Alert({
+		content : msg
+	});
+}
+
+
+
+
+//砸蛋start
+var $egg = $('#egg')
+,mark = true;
+if ($egg.length) {
+	tracking.cr(' sq/statistics_action', {'action' : 'eggShow', 'value' : 'null'});
+}
+$egg.find('.egg').click(function(event) {
+	tracking.cr(' sq/statistics_action', {'action' : 'eggBreak', 'value' : 'null'});
+	if(mark){
+		mark = false;
+		$.post('/aj/sq/hit_gift', function(data){
+		if (data && data.ret == 0) {
+			$egg.find('.egg').hide();
+			$egg.find('.egg-open').show();
+			var suid = data.user_id;
+			setTimeout(function(){
+				//砸蛋新页面end
+				alertDiv('恭喜您获得1张20元优惠劵，您可在6月16日-6月18日使用该优惠劵。记得要来哦！');
+				$egg.find('.egg-open').hide();
+			},500);
+		}else{
+			alertDiv(data.msg);
+		}
+		mark = true
+	}, 'json');
+}
+});
+//砸蛋end
+
+/* 埋点 */
+$('a[href="/sq/user/order_list"]').on('click', function(){
+	tracking.cr('sq/statistics_action', {'action': 'goUserCenter', 'value' : 'userCenterPop'})
+	return true;	
+})
+$('a[href="/sq/cart/"]').on('click', function(){
+	tracking.cr('sq/statistics_action', {'action': 'goCart', 'value' : 'userCenterPop'})
+	return true;	
+});
+
+$('body').on('click','.li_border a,.tuan a',function(e){
+		var _this = $(this),
+			_a =  "http://"+window.location.host + _this.attr('href') + '&_wv=5123';
+			
+		$('title').html('返回');
+		mqq.ui.refreshTitle();
+		mqq.ui.openUrl({
+			url:_a,
+			target:1,
+			style:0
+		});
+		setTimeout(function(){
+			$('title').html('美丽说');
+		},0);
+		if(e && e.preventDefault) {  
+        　　//阻止默认浏览器动作(W3C)  
+        　　e.preventDefault();  
+        } else {  
+        　　//IE中阻止函数器默认动作的方式   
+        　　window.event.returnValue = false;   
+        }  
+        return false;
+	});
+
+	
+

@@ -1,0 +1,32 @@
+function sq(){ return this }
+
+var controlFns = {
+	interfaces : function (params){
+		//this.debugSnake({target: 'wenkaizheng.rdlab'})
+		var php = {
+			'address_info' : '/shouq/ShouQ_user_qq_addr',
+			'tuan' : '/shouq/ShouQ_mall_tuan',
+			'tuan_buy' : '/shouq/ShouQ_mall_spike',
+			'coupon_list' : '/shouq/ShouQ_mall_coupon',
+			'sq_coupon' : '/shouq/ShouQ_coupon_apply',
+			'search' : '/shouq/Search_tag_poster',
+			'jx_goods' : '/shouq/ShouQ_mall_choice_list',
+			'activity_get_coupon' : '/shouq/ShouQ_universalGetCoupon',
+			'shop_coupon' : '/shouq/ShouQ_getShopCoupon',
+			'shop_waterfall' : '/shouq/ShouQ_shop_goods',
+			'sign_coupon' : '/shouq/ShouQ_exchangeSignCoupon',
+			'collect' : '/shouq/ShouQ_user_like_tids',
+			'collect_or_not' : '/shouq/ShouQ_like_tid_action',
+			'show_list' : '/shouq/shouQ_goods_show_list',
+			'associated_word': '/shouq/ShouQ_search_associative_word',
+			'comment_submit' : '/shouq/ShouQ_comments',
+			'goods_recommend' : '/shouq/ShouQ_mall_cart_recommend',
+			'shop_follow' : '/shop/shop_follow',
+			'shop_unfollow' : '/shop/shop_unfollow'
+		}
+
+		this.ajaxTo(php[params])
+	}
+}
+
+exports.__create = controller.__create(sq , controlFns);

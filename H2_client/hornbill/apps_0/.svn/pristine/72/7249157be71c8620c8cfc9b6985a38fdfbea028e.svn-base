@@ -1,0 +1,55 @@
+<%*{ %>
+	引用页面:
+		1 : wap/views/share/share.html
+	less:
+		.wap_head;
+	依赖：
+		rem_screen.js
+		请在controller里面加入：data.use_rem_screen = '640';
+<%*} %>
+
+<%
+	var first = this.first || {
+		tag: 'a',
+		text: '首页',
+		href: '/welcome'
+	};
+	var cat_banner = this.cat_banner || {};
+%>
+
+<div class="wap_head">
+	<div class="wap_nav">
+		<<%= first.tag %> class="home_page" href="<%= first.href %>" xr="<%= this.xr.r %>"><%= first.text %></<%= first.tag %> >
+		<form class="search_wrap js_search_form" action="/search" method="get">
+			<input name="keyword" type="search" autocomplete="off" class="js_input">
+			<div class="word_hack js_input_decorate"><span data-placeholder="<%== this.search_words || '搜索宝贝' %>" data-url="<%= this.search_url || '' %>"><%== this.search_words || '搜索宝贝' %></span></div>
+		</form>
+		<div class="cate js_cate">分类</div>
+	</div>
+	<nav class="nav_route none_f" id="navRoute">
+		<% if( cat_banner.banner_img ){%>
+			<% var url = cat_banner.banner_link || 'javascript:;' %>
+			<div class="cat_banner">
+				<a href="<%= url %>">
+					<img src="<%= cat_banner.banner_img%>" alt="">
+				</a>
+			</div>
+		<%}%>
+		<ul class="main">
+			<li><a href="/guang/selected" xr="<%= this.xr.r%>">流行</a></li>
+			<li><a href="/guang/hot" xr="<%= this.xr.r%>">最热</a></li>
+			<li><a href="/guang/new" xr="<%= this.xr.r%>">最新</a></li>
+		</ul>
+		<ul class="sub">
+			<% this.default_navigate && this.default_navigate.forEach(function(item, index){ %>
+				<% if(index > 5) return ''; %>
+				<li><a href="/guang/catalog_new/?nid=<%= item.nid %>&tag_word=<%= encodeURIComponent(item.tag_word) %>" xr="<%= this.xr.r %>"><%= item.word_name %></a></li>
+			<% }); %>
+		</ul>
+	</nav>
+</div>
+<div class="wap_head_mask none_f" status="hide"></div>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/block/wap_head');
+_use:", this._JSstack , this._JSmods ); %>

@@ -1,0 +1,139 @@
+<%#head.html%>
+
+	<section id="wrapper_main" class="wrapper main">
+		<div id="bannerBox">
+			<%if(this.wlf_header.goods_pics.length){ var w_banner=this.wlf_header.goods_pics; %>
+				<!--轮播-->
+				<div class="imageSlide" id="imageSlide">
+					<ul>
+						<% w_banner.forEach(function(data){ %>
+							<li>
+								<a href="javascript:void(0)"><img src="<%= data.id %>"/></a>
+							</li>
+							<% }); %>
+					</ul>
+					<% var nowTime=Date.parse(new Date)/1000; var status=0,sTime=0,desc="" ; var status=this.wlf_header.status; if(status==3){%>
+						<%if(w_banner.length>1){%>
+							<div class="num" style="bottom: 10px;"></div>
+							<%}%>
+								<p class="timeOver" style="height: 0;">已经结束</p>
+								<%}else{ switch(status){ case 0: desc="距离活动开始仅剩" ; sTime=this.wlf_header.begin_time-nowTime; break; case 1: desc="距离活动结束仅剩" ; sTime=this.wlf_header.end_time-nowTime; break; case 2: desc="距离名单公布仅剩" ; sTime=this.wlf_header.announce_time-nowTime; break;
+								} %>
+									<div class="num" style="bottom: 40px;"></div>
+									<p class="time timeOver" stime="<%=sTime%>" style="height: 30px;">
+										<%=desc%>：
+											<span id="day"></span><strong>天</strong>
+											<span id="hour"></span><strong>小时</strong>
+											<span id="minu"></span><strong>分</strong>
+											<span id="sec" class="last"></span><strong>秒</strong>
+									</p>
+									<%}%>
+				</div>
+				<%}%>
+		</div>
+		<div class="wlf_wrapBox">
+			<h2 class="title"><%=this.wlf_header.title%></h2>
+			<p class="wlf_price">¥
+				<%=this.wlf_header.products_price%>
+			</p>
+			<p class="wlf_applyNo"><span>免费<%=this.wlf_header.trynumber%>份</span><span>已有<%=this.wlf_header.participate_num%>人申请</span>
+			</p>
+			<p class="wlf_desc">
+				<%=this.wlf_header.products_introduction%>
+			</p>
+			<%if(this.wlf_header.products_id!="0"){%>
+			<a href="javascript:void(0)" class="wlf_linkDesc btn_wlf_detail" id＝"btn_wlf_detail" data-url="<%=this.wlf_header.activity_url%>" data_id="<%=this.wlf_header.products_id%>">商品详情 &gt;</a>
+			<%}%>
+		</div>
+		<div class="wlf_wrapBox">
+			<h3 class="wlf_title">试用流程<span></span></h3>
+			<p class="wlf_process">
+				<img src="<%= this.PICTURE_URL%>images/m_welfare/wlf_process.jpg" alt="" />
+			</p>
+		</div>
+		<%if(this.wlf_header.status&&this.wlf_header.status==3&&this.wlf_lucky.list.length){%>
+			<div class="wlf_wrapBox">
+				<h3 class="wlf_title">中奖名单<span></span></h3>
+				<ul class="userList">
+					<% var totalLen=this.wlf_lucky.totalNum>10?10:this.wlf_lucky.totalNum; for(var i=0;i
+						<totalLen;i++){ var name=this.wlf_lucky.list[i].nickname.substr(0,1)+ "**"+this.wlf_lucky.list[i].nickname.substr(-1); %>
+							<li>
+								<a href="javascript:void(0)">
+										<span class="userImg" style="background: url(<%=this.wlf_lucky.list[i].avatar_c%>); background-size: cover;"></span>
+										<p class="userName">
+											<%=name%>
+										</p>
+									</a>
+							</li>
+							<%}%>
+				</ul>
+				<a href="/m_welfare/lucky/<%=this.wlf_header.activity_id%>" class="wlf_linkDesc" style="width:105px;">查看更多名单</a>
+			</div>
+			<%}%>
+				<div class="wlf_wrapBox">
+					<%if(this.wlf_header.recommend_type==0){%>
+						<h3 class="wlf_title">产品介绍<span></span></h3>
+						<div class="content">
+							<div class="morepic">
+								<%this.wlf_header.products_pics.forEach(function(data){%>
+									<img src="<%=data.id%>" class="item_detail" />
+									<%});%>
+							</div>
+						</div>
+						<%}else if(this.wlf_header.recommend_type==1){%>
+							<h3 class="wlf_title">专题活动<span></span></h3>
+							<div class="wlf_special" data-url="<%=this.wlf_header.special_url%>" id="btnSpecial">
+								<img src="<%=this.wlf_header.special_pic%>"  alt="专题活动" title="专题活动"/>
+							</div>
+							<%}else if(this.wlf_header.recommend_type==2){%>
+								<h3 class="wlf_title">本店推荐<span></span></h3>
+								<div class="content">
+									<div class="goods_wall" id="productList">
+										<% this.wlf_header.single_pics.forEach(function(item){%>
+											<div class="productBox">
+												<a class="link_box" href="javascript:void(0)" data-url="<%=item.url%>" data-twitter='<%=item.twitter_id%>'>
+													<figure>
+														<span class="bs_load_img" style="opacity: 1; background-image: url(<%=item.image.image[0]%>);"></span>
+													</figure>
+													<figcaption>
+														<div class="proTitle">
+															<%=item.title%>
+														</div>
+														<div class="proPrice">
+															<span class="price"><strong>¥&nbsp;</strong><%=item.price%></span>
+															<span class="collect"><%=item.like%></span>
+														</div>
+													</figcaption>
+												</a>
+											</div>
+											<%});%>
+									</div>
+								</div>
+								<%}%>
+				</div>
+				<% if(this.share){ %>
+					<%=requireFn( 'wapShare.html')({ 'share' : this.share , 'shareTitle' : '选择分享到' , '_JSstack' : this._JSstack , '_JSmods' : this._JSmods }); %>
+						<%}%>
+	</section>
+	<div class="wlf_apply">
+		<a class="apply_btn" href="javascript:void(0)" id="applyBtn"></a>
+	</div>
+	<script type="text/html" id="dialogTips">
+		<div class="dialog_box">
+			<div class="dialog_con">
+				<p>兑换成功</p>
+			</div>
+		</div>
+	</script>
+	<script>
+		fml.vars.status = "<%=this.wlf_header.status%>";
+		fml.vars.user_status = "<%=this.wlf_header.final_status%>";
+		fml.vars.activity_id = "<%=this.wlf_header.activity_id%>";
+		fml.vars.shopId = "<%=this.wlf_header.circle_id%>";
+		fml.vars.isLogin = "<%= this.userInfo.user_id%>";
+		fml.vars.hasReport='<%=this.wlf_header.hasReport%>';
+	</script>
+	<%! $_ENGINE_SELF.callFn( "useModule")( "<<<_use:
+	fml.use('wap/page/welfare_new/wlf_item');
+_use:", this._JSstack , this._JSmods ); %>
+		<%#foot.html%>

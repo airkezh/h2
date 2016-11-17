@@ -1,0 +1,50 @@
+<%# head_simple.html%>
+<%
+	var data = this.svrveyGet.data;
+%>
+	<div class="main">
+		<h3 class="red_f"><%= data.page_name%></h3>
+		<div class="sur_title">
+			<h4>亲爱的爱美丽：</h4>      
+			<p><%= data.page_comment%></p>
+		</div>
+		<div class="box" id="box">
+			<% data && data.page_detail.forEach(function(item,index){%>
+			<div class="list">
+				<%item && item.datasource.forEach(function(data){%>
+					<% var xxx=data.datasource_type %>
+					<strong class="red_f">*<%= data.datasource_type%></strong>
+					<h4><%=index+1%>、<%= data.datasource_question%></h4>
+					<% data && data.dataitem.forEach(function(i){%>
+						<span>
+							<%if(data.datasource_type == '1'){%>
+								<input type="radio" class="mls-input-radio" id="<%=i.pk_dataitem_id%>" name="item_<%=item.pk_module_id%>_<%=data.pk_datasource_id%>_<%=data.datasource_type%>" value="<%=i.pk_dataitem_id%>"/>
+								<label class="mls-input-label mls-input-radio-label" for="<%=i.pk_dataitem_id%>" ><%=i.option_name%></label>
+								<%if(i.edit_type == 1){%>
+									<input class="Ipt_text" name="other_<%=item.pk_module_id%>_<%=data.pk_datasource_id%>_<%=data.datasource_type%>_<%=i.pk_dataitem_id%>" type="text"/>
+								<%}%>
+							<%}else if(data.datasource_type == '2'){%>
+								<input type="checkbox" class="mls-input-checkbox" name="other_<%=item.pk_module_id%>_<%=data.pk_datasource_id%>_<%=data.datasource_type%>_<%=i.pk_dataitem_id%>" value="<%=i%>" id="<%=i.pk_dataitem_id%>">
+								<label for="<%=i.pk_dataitem_id%>" class="mls-input-label mls-input-checkbox-label red-check"><%=i.option_name%></label>
+								<%if(i.edit_type == 1){%>
+									<input class="Ipt_text" name="other_<%=item.pk_module_id%>_<%=data.pk_datasource_id%>_<%=data.datasource_type%>_<%=i.pk_dataitem_id%>" type="text"/>
+								<%}%>
+							<%= data.datasource_type %>
+							<%} else if(data.datasource_type == '0'){%>
+								<textarea class="textArea"></textarea>
+							<%}%>
+						</span>
+					<%});%>	
+				<%});%>
+			</div>
+			<%});%>		
+		</div>
+		<div class="submit">
+			<a class="s_btn" id="btn" href="javascript:;">提&emsp;交</a>
+		</div>
+	</div>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/help/survey');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

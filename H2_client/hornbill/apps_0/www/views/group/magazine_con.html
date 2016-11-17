@@ -1,0 +1,41 @@
+<%#head.html%>
+<%#group/maghead.html%>
+<div class="spinner midSpinner"></div>
+<div class="content_fluid v_hidden">
+	<div class="goods_wall">
+	</div>
+	<div class="paging_panel c_f none_f">
+	<%#paging.html%>
+	</div>
+	<div class="spinner botSpinner none_f"></div>
+	<div class="clear_f"></div>
+	<% if(this.isLastPage){%>
+	<div class="lookmore"><a class="big_btn" href="/group?frm=one_page" target="_blank"><em class="big_btnr"></em>查看更多&gt;&gt;</a></div>
+	<%}%>
+	<div class="ads_banner ads_bottom none_f"></div>
+</div>
+<input type="hidden" value="<%= this.magid%>" id="magazne_id" />
+<%#poster.html%>
+
+<% if (this.isMagFavor_mag) {%>
+<div class="mag_favor none_f" style="width:216px; padding:8px; height:70px; border:1px solid #dddddd; border-right:0 none; border-radius:0 4px 4px 0; background-color:#fff4fa; text-align:center; left:0; top:260px; position:fixed;float:left;">
+	<p style="height:30px; line-height:30px;font-size:14px;font-weight:bold;">
+		<span class="close_fav" style="background:url('<%= this.PICTURE_URL%>images/person/close.gif') no-repeat right center; cursor:pointer; float:right; width:10px; height:10px; margin:7px;"></span>
+		#<span class="mag_fav_name"><%=this.group_header.group_info.name%></span># 每天更新
+	</p>
+	<a class='add_fav' style="margin-top:4px; width:52px; height:32px; line-height:32px; text-aligh:center; color:#ffffff; font-weight:bold; font-size:14px; padding-left:6px; cursor:pointer; background:url('<%= this.PICTURE_URL%>images/header/btn_pic.png') no-repeat 0 -43px; display:inline-block; *display:inline; *zoom:1; position:relative;">
+		<em style=" background:url('<%= this.PICTURE_URL%>images/header/btn_pic.png') no-repeat -194px -43px; height:32px; position:absolute; right:-6px; top:0; width:6px;"></em>
+		收藏
+	</a>
+</div>
+<% } %>
+<script>
+<%= this.poster0? 'Meilishuo.config.poster0 = '+JSON.stringify(this.poster0)+';':'' ;%>
+</script>
+<% $_ENGINE_SELF.callFn("useModule")("fml.use('page/poster0');", this._JSstack , this._JSmodsFast ); %>
+<%#group/magfoot.html%>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/magazine_con');
+	fml.use('page/poster_guang');
+_use:", this._JSstack , this._JSmods);%>
+<%#foot.html%>

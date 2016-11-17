@@ -1,0 +1,36 @@
+<script type="text/html" id="posterWall">
+<? $.each(tInfo , function(k , v){ ?>
+<?if(!v){return}?>
+<?var goods_title = v.ginfo ? v.ginfo.goods_title : "";?>
+
+<div class="poster_grid poster_wall">
+	<div class="new_poster">
+		<div class="np_pic hover_pic">
+			<? var show_pic = v.show_pic ? v.show_pic : v.ginfo ? v.ginfo.goods_pic_url : ''; ?>
+			<? var goodsUrl = v.url ? v.url : '/share/' + v.like_twitter_id; ?>
+			<div class="price"><?= v.ginfo.goods_price?></div>
+			<a class="pic_load" href="/share/<?= v.twitter_id?>" target="_blank"><img class="goods_pic" width="<?=v.poster_width?>" height="<?=v.poster_height?>" src="<?= v.show_pic ?>" title="<?= goods_title?>" alt="<?= goods_title?>" /></a>
+		</div>
+		<div class="comm_box twiiter_box">
+			<p class="posterContent"><?= v.twitter_htmlcontent ?></p>
+			<p class="comm_num l22_f">
+				<a class="mls_ico" href="/" target="_blank"></a>
+				<a class="left_f poster_likes likes">
+					<b class="likes_status"><i class="lm_love2">&nbsp;</i>喜欢</b>
+					<span class="red_f f14_f poster_like_num"><?=v.count_like?></span>
+				</a>
+			</p>
+			<div class="clear_f"></div>
+		</div>
+		<div class="np_share">
+			<a class="avatar32_f trans07" href="/person/u/<?= v.uinfo.user_id?>"><img src="<?=v.uinfo.avatar_c?>" /></a>
+			<p class="ml40_f commentHover">
+				<a class="fb_f" href="/person/u/<?= v.uinfo.user_id?>" target="_blank"><?=v.uinfo.nickname?></a> <?=v.repin?>&nbsp;&nbsp;<?if(v.from_act_name != ""){    ?>--来自<a href="/act/<?= v.from_act_id?>">#<?= v.from_act_name?>#</a><?}?>
+			</p>
+			<div class="clear_f"></div>
+		</div>
+	</div>
+</div>
+<? }); ?>
+</script>
+

@@ -1,0 +1,37 @@
+<%#head.html%>
+<%
+	var my_shop = this.m_myShop;
+%>
+<div class="main">
+	<div class="top">
+		<% my_shop.top.length > 0 && my_shop.top.map(function(data){ %>
+			<img src="<%= data.top_bg %>">
+		<% }); %>
+	</div>
+	<%
+		var pic_data = my_shop.rec_item_pic;
+		var _buyers_bg = pic_data.buyers_bg;
+		var _shops_bg = pic_data.shops_bg;
+		var _pic_type = pic_data.pic_type;
+		my_shop.rec_item.length > 0 && my_shop.rec_item.map(function(data, index){
+			var buyers_bg = _buyers_bg + index + '.' + _pic_type;
+			var shops_bg = _shops_bg + index + '.' + _pic_type;
+	%>
+		<div class="<%= index%2 == 0 ? 'odd_buyer' : 'buyer' %>"><a href="<%= data.buyers_link %>"></a><img src="<%= buyers_bg %>" alt=""></div>
+		<div class="shop"><a href="<%= data.shops_link %>"><img src="<%= shops_bg %>" alt=""></a></div>
+	<% }); %>
+	<% my_shop.ad.length > 0 && my_shop.ad.map(function(data){ %>
+		<a href="<%= data.link %>" class="shop_ad"><img src="<%= data.src %>"></a>
+	<% }); %>
+</div>
+<% if(this.share){ %>
+	<%= requireFn('wapShare.html')({
+		'share' : this.share
+		, 'shareTitle' : '点击分享:'
+		, 'shareID' : this.shareID
+		, '_JSstack' : this._JSstack
+		, '_JSmods' : this._JSmods
+	}); %>
+<%}%>
+
+<%#foot_simple.html%>

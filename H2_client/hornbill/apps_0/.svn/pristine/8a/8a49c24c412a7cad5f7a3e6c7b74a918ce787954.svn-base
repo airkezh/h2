@@ -1,0 +1,16 @@
+/*common*/
+
+var $ = require('wap/zepto')
+	, carts = require('wap/app/doota/shopping_carts')
+	, lazy = require('wap/component/lazzyLoad')
+	, scrollStop = require('wap/component/scrollStop')
+
+
+/*
+ * 购物车
+*/
+carts.readShopsCount()
+
+var lazy_pic = lazy.init({'xpath' : '.bs_load_img'})
+lazy_pic.scroll()
+scrollStop('#tags_scroll')

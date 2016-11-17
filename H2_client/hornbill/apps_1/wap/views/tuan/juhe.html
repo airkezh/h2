@@ -1,0 +1,32 @@
+<%#head.html%>
+<div class="main">
+    <section id="container" class="container" style="padding-top:10px; min-height:700px;">
+		<div class="content">
+			<div class="goods_wall">
+			</div>
+			<div class="pullUp" status="loading"></div>
+		</div>
+    </section>
+</div> 
+<a class="gotop" style="bottom:<%if(this.isIphone){%>60<%}else{%>20<%}%>px">
+	<img src="<%= this.PICTURE_URL%>/images/wap/tuan/gotop.png" />
+</a>
+<script>
+	fml.vars.poster = {
+
+	};
+	<%= this.list? 'Meilishuo.config.poster0 = '+JSON.stringify(this.list)+';':'' ;%>
+	fml.vars.geturl='<%=this.geturl%>';
+	fml.vars.hostname='<%=this.hostnm%>';
+	fml.vars.is_lazyload_poster=true;
+</script>
+<%= requireFn('tuan/tuan_list_new.html')({
+	'os' : this.os
+	, 'apk' : ''
+	,'_JSstack' : this._JSstack
+	,'_JSmods' : this._JSmods
+});%>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/tuan/tuan_new');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html%>

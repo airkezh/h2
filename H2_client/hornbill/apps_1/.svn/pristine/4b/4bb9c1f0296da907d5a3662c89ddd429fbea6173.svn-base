@@ -1,0 +1,197 @@
+<%
+	var refund_info = this.refund
+		, show_refund_goods = refund_info.header.show_refund_goods
+		, contacts_info = refund_info.contacts_info
+		, refund_type = refund_info.header.type;
+
+	var main_text = refund_info.header.main_text;
+	var button = refund_info.header.button;
+	var displayText = '';
+	if(refund_info.header.notice_text && refund_info.header.notice_text.msg){
+		displayText = refund_info.header.notice_text.msg;
+	}
+	if(displayText){
+		var _redmsg = refund_info.header.notice_text.redmsg;
+		for(var i = 0;i<_redmsg.length;i++){
+			displayText = displayText.replace('%s','<span class="red_f">'+_redmsg[i]+'</span>');
+		}
+	}
+	var refund_buyer_info = refund_info.refund_buyer_info;
+	var company_list = this.company_list.info || [];
+	var order_detail = refund_info.order_detail;
+	var refund_seller_info = refund_info.refund_seller_info;
+	var isNewest = this.isNewest;
+%>
+<%
+function getOriImgUrl(url, isNew, w, h){
+	if(isNew){
+		var param = '{"url":"'+url+'", "img_width":'+w+', "img_height" : '+h+' }';
+		var result = 'meilishuo://open_img.meilishuo?json_params=' + encodeURIComponent(param);
+		return result;
+	} 
+	return url;
+}
+%>
+<%#head.html%>
+<section class="container">
+	<div class="status">
+		<h3><%=main_text %></h3>
+		<% if(refund_seller_info && refund_seller_info.deny_reason){ %>
+		<p>商家拒绝原因：<%=refund_seller_info.deny_reason %></p>
+		<% } %>
+		<p><%=displayText %></p>
+		<% if(!show_refund_goods || this.is_send!=1){ %>
+		<% if(button){ %>
+		<div class="big_btn">
+			<%if(button.refund_money && button.refund_goods == 0 ){%>
+				<a class="btn" href="/app/refund/apply/?order_id=<%=order_detail.order_id %>&mid=<%= order_detail.mid%> ">申请退款</a>
+			<%}%>
+			<%if(button.refund_goods && button.refund_money == 0){%>
+				<a class="btn" href="/app/refund/apply/?order_id=<%=order_detail.order_id %>&mid=<%= order_detail.mid%>">申请退款</a>
+			<%}%>
+			<%if(button.refund_goods && button.refund_money){%>
+				<a class="btn" href="/app/refund/apply/?order_id=<%=order_detail.order_id %>&mid=<%= order_detail.mid%>">申请退款</a>
+			<%}%>
+			<%if(button.refund_edit){%>
+				<a class="btn" href="/app/refund/apply/?order_id=<%=order_detail.order_id %>&mid=<%= order_detail.mid%>&refund_id=<%= this.refund_id%>">修改退款申请</a>
+			<%}%>
+			<%if(button.refund_cancel && !refund_info.header.refuse){%>
+				<a id="refund_cancel" class="gray">取消退款申请</a>
+			<%}%>
+			<%if(button.refund_reapply){%>
+				<a id="refund_reapply" class="btn">恢复退款申请</a>
+			<%}%>
+			<%if(button.fill_in_refund){%>
+				<a class="btn" href="/app/refund/detail/?refund_id=<%=this.refund_id %>&is_send=1" class="red">填写退货信息</a>
+			<%}%>
+			<%if(button.check_arbitration){%>
+				<a class="btn" href="/app/appeal/item/?refund_id=<%=this.refund_id%>&type=<%=button.check_arbitration %>" class="red">查看美丽说仲裁结果</a>
+			<%}%>
+			<%if(button.apply_arbitrate && !refund_info.header.refuse){%>
+				<a class="btn" href="/app/appeal/item/?refund_id=<%=this.refund_id%>&type=<%=button.apply_arbitrate %>" class="red">要求美丽说介入</a>
+			<%}%>
+			<%if(button.apply_refund_goods){%>
+				<a class="btn" href="/app/refund/apply/?order_id=<%=order_detail.order_id %>&mid=<%=order_detail.mid %>" class="red">申请退货</a>
+			<%}%>
+		</div>
+		<% } %>
+		<%if(refund_info.header.refuse && refund_info.header.button && refund_info.header.button.refund_cancel && refund_info.header.button.apply_arbitrate){%>
+		<div class="refund_deny">
+			您还可以：
+			<%if(refund_info.header.button.refund_cancel){%>
+				<%if(refund_info.header.type=='goods'){%>
+				<a class="red_f" href="javascript:;" id="refund_cancel">取消退货申请</a>
+				<%}else{%>
+				<a class="red_f" href="javascript:;" id="refund_cancel">取消退款申请</a>
+				<%}%>
+			<%}%>
+			<span class="distance">|</span>
+			<%if(refund_info.header.button.apply_arbitrate){%>
+			<a class="red_f" href="/app/appeal/item/?refund_id=<%=this.refund_id%>&type=<%=button.apply_arbitrate %>">要求美丽说介入</a>
+			<%}%>
+		</div>
+		<%}%>
+		<% } %>
+	</div>
+	<% if(show_refund_goods && this.is_send==1){ %>
+	<div class="buyer_return">
+		<ul>
+			<li>
+				<label>退货地址：</label>
+				<textarea readonly placeholder="请填写退货地址"><%=contacts_info.seller_nickname|| ''%>  <%=contacts_info.seller_phone|| ''%>  <%=contacts_info.seller_addr?contacts_info.seller_addr: ''%>  <%=contacts_info.seller_zipcode || ''%></textarea>
+			</li>
+			<li>
+				<label>物流公司：</label>
+				<select id="express_company">
+					<option value="">请选择</option>
+					<%
+						company_list.forEach(function(item){
+					%>
+					<option value="<%=item.value %>"><%=item.value %></option>
+					<%
+						});
+					%>
+					<option value="-1">其他</option>
+				</select>
+				<input type="text" class="none_f" id="express_company_other" placeholder="请填写物流公司"></textarea>
+			</li>
+			<li>
+				<label>运货单号（此项必填）</label>
+				<input type="text" id="express_id">
+				<div class="coupon_tip"><a href="/agreement/wuyougou/#d_3" class="red_f">订单首次发货时，退货邮费补贴会以优惠券的形式发放到您的账户</a></div>
+			</li>
+			<div class="clear_f"></div>
+		</ul>
+		<div class="big_btn">
+			<span type="button" class="btn" id="send_goods">发 货</span>
+		</div>
+	</div>
+	<% } else { %>
+	<div class="seller_contact">
+		<ul>
+			<li>
+				<label>商家：</label><%= _extFn.mSubstr(contacts_info.seller_shopname, 15, '...') %>
+			</li>
+			<li>
+				<label>商家QQ：</label>
+				<span><a href="javascript:;" class="qq"><%= contacts_info.seller_qq || '' %></a></span>
+			</li>
+			<li>
+				<label>手机号：</label><span><a href="tel:<%= contacts_info.seller_phone || '' %>"><%= contacts_info.seller_phone || '' %></a></span>
+			</li>
+		</ul>
+	</div>
+	<div class="refund_content">
+		<table>
+			<tbody>
+				<tr>
+					<th>退款状态：</th>
+					<td><%= refund_info.header.status_text %></td>
+				</tr>
+				<tr>
+					<th>退款金额：</th>
+					<td><%= refund_buyer_info.refund_price %>元</td>
+				</tr>
+				<tr>
+					<th>退款原因：</th>
+					<td><%= refund_buyer_info.select_reason %></td>
+				</tr>
+				<tr>
+					<th>退款说明：</th>
+					<td><%= refund_buyer_info.reason %></td>
+				</tr>
+				<%if(refund_buyer_info.refund_evidence && refund_buyer_info.refund_evidence.length){%>
+				<tr>
+					<th>退款凭证：</th>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<div class="proof_list">
+							<% refund_buyer_info.refund_evidence.forEach(function(e){ %>
+							<a href="<%=getOriImgUrl(e.orig,isNewest,e.img_width,e.img_height) %>" class="img_item"><img src="<%=e.thumb%>"></a>
+							<%});%>
+							<div class="clear_f"></div>
+						</div>
+					</td>
+				</tr>
+				<%}%>
+				<tr>
+					<th>退款编号：</th>
+					<td><%= this.refund_id %></td>
+				</tr>
+				<tr>
+					<th>申请时间：</th>
+					<td><%= refund_buyer_info.apply_time %></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<% } %>
+</section>
+<input type="text" class="none_f" id="refund_id" value="<%=this.refund_id %>">
+<input type="text" class="none_f" id="order_id" value="<%=order_detail.order_id %>">
+<%#app/mls_hotline.html%>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use('wap/client/page/refund_detail');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

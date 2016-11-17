@@ -1,0 +1,84 @@
+<%#head.html%>
+
+<%
+	var now = parseInt(Date.parse(new Date())/1000);
+	var now1 = parseInt(Date.parse(new Date())/1000);
+%>
+
+<div class="exo_banner"></div>
+<div class="exo_banner1"></div>
+<div class="exo_banner2">
+	<div class="btn_box">
+		<%if(this.status == 'nostart' || this.status == 'end'){%>
+			<a href="javascript:;"  class="btn no_sub1"></a>
+		<%}else if(this.status == 'saling'){%>
+			<a href="/activity/exo/ticket/"  class="btn no_sub1 go_sub1"></a>
+		<%}%>
+	</div>
+	<div class="time_main">
+		<div class="countTime" >
+			<% if(this.status != 'end'){ %>
+			<p><%= this.countdown_text%></p>
+				<dl class="timeStamp" end-date="<%= this.countdown_time %>" now="<%= now %>">
+					<dd><span class="day0">-</span></dd>
+					<dd><span class="day1">-</span></dd>
+					<dt>天</dt>
+					<dd><span class="hour0">-</span></dd>
+					<dd><span class="hour1">-</span></dd>
+					<dt class="bigmao">时</dt>
+					<dd><span class="minute0">-</span></dd>
+					<dd><span class="minute1">-</span></dd>
+					<dt class="bigmao">分</dt>
+					<dd><span id="seconds0" style='display:none'>-</span></dd>
+					<dd><span id="seconds1" style='display:none'>-</span></dd>
+					<dt class="bigmao" style="display:none">秒</dt>
+				</dl>
+			<% } %>
+		</div>
+	</div>
+</div>
+</div>
+<div class="exo_banner3">
+	<div class="btn_box">
+		<%if(this.status1 == 'nostart1' || this.status1 == 'end1'){%>
+			<a href="javascript:;"  class="btn no_sub2 "></a>
+		<%}else if(this.status1 == 'saling1'){%>
+			<a href="/activity/fwindow/index/?cid=1845&hdtrc=fuide1845_homeTopBanner"  class="btn no_sub2 go_sub2"></a>
+		<%}%>
+	</div>
+	<div class="time_main">
+		<div class="countTime time_pt" >
+			<% if(this.status1 != 'end1'){ %>
+				<p><%= this.countdown_text1%></p>
+				<dl class="timeStamp1" end-date="<%= this.countdown_time1 %>" now="<%= now1 %>">
+					<dd><span class="day0">-</span></dd>
+					<dd><span class="day1">-</span></dd>
+					<dt>天</dt>
+					<dd><span class="hour0">-</span></dd>
+					<dd><span class="hour1">-</span></dd>
+					<dt class="bigmao">时</dt>
+					<dd><span class="minute0">-</span></dd>
+					<dd><span class="minute1">-</span></dd>
+					<dt class="bigmao">分</dt>
+					<dd><span id="seconds0" style='display:none'>-</span></dd>
+					<dd><span id="seconds1" style='display:none'>-</span></dd>
+					<dt class="bigmao" style="display:none">秒</dt>
+				</dl>
+			<% } %>
+		</div>
+	</div>
+</div>
+
+<div class="exo_foot"></div>
+
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/app/countdown2' , function(){
+			this();  
+	});
+	fml.use('wap/page/activity/exoconcert', function(){
+			this(); 
+	});
+_use:", this._JSstack , this._JSmods); %>
+
+<%#foot_simple.html%>

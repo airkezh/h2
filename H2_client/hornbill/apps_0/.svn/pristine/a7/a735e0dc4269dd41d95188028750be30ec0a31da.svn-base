@@ -1,0 +1,16 @@
+<div class="goods_lists">
+	<ul class="new_goods">
+	</ul>
+</div>
+<div class="pullUp" status="loading"></div>
+<%# wx_new/goods_signle.html%>
+<script>
+fml.vars.poster = {
+	//'typeName' : <%= this.typeName%>
+};
+<%= this.goods? 'Meilishuo.config.poster0 = '+JSON.stringify(this.goods)+';':'' ;%>
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/wx_match');
+	fml.use('wap/page/wx_guang');
+_use:", this._JSstack , this._JSmods);%>

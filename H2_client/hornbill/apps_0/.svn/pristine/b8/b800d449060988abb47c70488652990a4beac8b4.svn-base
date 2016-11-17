@@ -1,0 +1,25 @@
+<% var category = this.category; %>
+<div class="mask"></div>
+<div class="maskWrap">
+	<div class="InputWrap">
+		<div class="inputDiv"> 
+			<i></i>
+			<form action="/hiGoods/result/" method="get" id="searchForm">
+				<% var val = this.search || category.data.search_default_word %>
+				<input type="search" value="  <%= val %>" placeholder="<%= category.data.search_default_word %>"/>
+			</form>
+			<span class="close"></span>
+		</div>
+	</div>
+	<div class="recomend">推荐分类</div>
+	<div class="classifyWrap">
+		<% category && category.data && category.data.data && category.data.data.forEach(function(data){ %>
+		<a href="/hiGoods/classify/?keyword=<%= data.category %>&category=<%= data.category %>&banner=1" data-xr="<%= data.r %>" class="classify">
+			<%= data.category %>
+		</a>
+		<% }) %>
+	</div>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+    fml.use('wap/page/hiGoods/search');
+_use:", this._JSstack , this._JSmods); %>

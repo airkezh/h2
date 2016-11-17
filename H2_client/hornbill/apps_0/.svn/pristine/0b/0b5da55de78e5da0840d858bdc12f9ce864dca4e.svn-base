@@ -1,0 +1,64 @@
+<%# head.html%>
+<% this.headName = '宝贝详情'; %>
+<%
+var attrItemRenderFn = requireFn('guang/attrItem.html');
+%>
+<% var goodsInfo = this.goods_info;
+	var scale = goodsInfo.pic_height ? 250 / goodsInfo.pic_height : 0;
+%>
+
+<%= requireFn('slider.html')({
+	'os' : this.os
+	, 'apk' : ''
+	 ,'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+	, 'twitter_id' : goodsInfo.twitter_id	
+	, 'is_doota' : goodsInfo.is_doota || 0
+	, 'frm' : this.frm
+	, 'showDaoLiu' : this.showDaoLiu
+	, 'showZhiDing' : this.showZhiDing
+	, 'leadApp' : this.leadApp
+	, 'appUrl' : this.appUrl
+});%>
+<%# head_share.html%>
+<figure twitter_id="<%= goodsInfo.twitter_id%>" twitter_author_uid="<%= goodsInfo.uInfo.user_id%>">
+	<a class="pic" style="<%if(scale){%>width:<%= goodsInfo.pic_width * scale %>px<%}%>" href="<%= goodsInfo.gInfo.url%>">
+		<img src="<%= goodsInfo.pic_url%>" alt="<%= goodsInfo.gInfo.title%>">
+	</a>		
+	<figcaption>
+		<%if(goodsInfo.gInfo.title){%>
+		<h2><a class="title" href="<%= goodsInfo.gInfo.url%>"><%= goodsInfo.gInfo.title%></a></h2>
+		<%}%>
+		<% if (goodsInfo.uInfo){ %>
+		<span class="user" <%if(1==0){%>href="/person/u/<%= goodsInfo.uInfo.user_id%>"<%}%>>
+			<span style="background-image:url('<%= goodsInfo.uInfo.avatar %>');"></span>
+			<span><%= goodsInfo.uInfo.nickname %></span>
+		</span>
+		<% }%>
+		<span class="like icon-heart"><%= goodsInfo.count_like%>人喜欢</span>
+	</figcaption>
+</figure>
+<%if(goodsInfo.gInfo.url){
+	%>
+<a class="price_go" href="/goto/count/?p=<%= encodeURIComponent(goodsInfo.gInfo.url)%>&tid=<%=goodsInfo.twitter_id%>&frm=taobao">
+	<span><%= goodsInfo.gInfo.price%></span>
+	<span>去购买</span>
+</a>
+<%}%>
+<section class="share_recommend">
+	<%if(this.goods_like && this.goods_like.length){%>
+		<h3>猜你喜欢</h3>
+		<%this.goods_like.map(function(attrs){%>
+			<%= attrItemRenderFn(attrs);%>
+		<%});%>
+	<%}%>
+</section>
+
+<%# poster.html%>
+<%# block/foot.html%>
+<script>
+fml.vars.frm = '<%= this.frm %>';
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/share');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

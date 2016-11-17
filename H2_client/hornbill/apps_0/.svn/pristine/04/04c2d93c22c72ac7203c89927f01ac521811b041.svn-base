@@ -1,0 +1,24 @@
+/*common*/
+var $          = require( 'jquery' );
+var pcMobWrapper = $( '.pc_to_mob' );
+
+
+pcMobWrapper.on( 'click', '.min_logo', function(){
+    $('.min_logo').hide();
+    $('.extend_bg').show();
+})
+
+pcMobWrapper.on( 'click', '.close_btn', function(){
+    $('.min_logo').show();
+    $('.extend_bg').hide();
+})
+
+
+// 将原来的左下角图标上移
+    if ( $( '.activity_ad11' ).length == 0 ) {
+        $( document ).on( 'ad11_ok', function() {
+            $( '.activity_ad11' ).css( 'bottom', '152px' );
+        } );
+    } else {
+        $( '.activity_ad11' ).css( 'bottom', '152px' );
+    }

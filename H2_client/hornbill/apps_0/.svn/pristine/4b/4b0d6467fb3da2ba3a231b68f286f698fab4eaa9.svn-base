@@ -1,0 +1,1077 @@
+/*common*/
+var $                = require( 'jquery' ),
+    page             = require( 'app/page' ),
+    shareTmp         = require( 'component/shareTmp' ),
+    tab              = require( 'app/doota/tab' ),
+    checkLogin       = require( 'app/checkLogin' ),
+    callApi          = require( 'component/callApi' ),
+    Paging           = require( 'app/paging' ),
+    DropDown         = require( 'component/dropdown' ),
+    WindowScroll     = require( 'component/windowScroll' ),
+    FocusBanner      = require( 'app/focus_banner' ),
+    Tracking         = require( 'app/tracking' ),
+
+    $win             = $( window ),
+    $doc             = $( document ),
+    $body            = $( document.body ),
+    isHaiTao         = !!$( '.js-haitao' ).length,
+    wrapBox          = $( '.wrap' ),
+
+    shopCommentsNull = $( '#shop_comments_null' ),
+    evaComments      = $( '#eva_comments' ),
+    shopDealNull     = $( '#shop_deal_null' ),
+    dealComments     = $( '#j-deal-comments' ),
+    shsComments      = $( '#shoppingshow_comments' ),
+    shsCommentsNull  = $( '.shoppingshow_null' ),
+    $pageNav         = $( '#shopPagingNav' ),
+
+    SHOP_ID          = fml.vars.shop_id,
+    TWITTER_ID       = fml.vars.goods.twitter_id,
+
+    shopComment      = {
+        'totalNum':    fml.vars.count_dis,
+        'url':         '/aj/getComment/shop',
+        'tid':         TWITTER_ID,
+        'tmpId':       'twitter_comment_shop',
+        'commentPnl':  evaComments,
+        'pageNav':     $pageNav,
+        'pageSize':    8,
+        'processData': function( res ) {
+            if ( res && res.cInfos && res.cInfos.length ) {
+                evaComments.show()
+                shopCommentsNull.hide()
+                $pageNav.show()
+                return {
+                    'item': res.cInfos
+                }
+            } else {
+                evaComments.hide()
+                shopCommentsNull.show()
+                $pageNav.hide()
+            }
+        },
+        'cbk':         function( data ) {
+            rollCommentPnl()
+            /**
+             * 当只看有内容的评论时，只有在接口返回数据后，才能知道真实的评论数目
+             */
+            if ( isTotalNumChange ) {
+                isTotalNumChange = false
+                /**
+                 * 每次翻页的时候不会进入该方法
+                 * 需要设置 shop_comment.totalNum 来影响翻页操作
+                 */
+                var num          = shopComment.totalNum = data.pages.totalNum,
+                    pageLen = Math.ceil( num / 8 )
+
+                $pageNav.html( pageLen <= 1 ? '' : shareTmp( 'pagingNav', {
+                    pageLen: pageLen,
+                    page:    0
+                } ) )
+            }
+        },
+        'param':       {
+            'filter':       1,
+            'filter_point': 0
+        }
+    },
+    /**
+     * 当数据总数变化时，修改该值。
+     */
+    isTotalNumChange = true
+
+require( 'app/clubAction' )
+require( 'app/page' )
+require( 'page/nav' )
+
+function rollCommentPnl() {
+    var top
+
+    if ( !wrapBox.length ) {
+        return
+    }
+
+    top = wrapBox.offset().top
+
+    if ( top > $doc.scrollTop() ) {
+        return
+    }
+
+    wrapBox[ 0 ].scrollIntoView()
+}
+
+$( '#short_show' ).find( '.all_rate_btn' ).click( function() {
+    $( '.shpcmt .all_rate_btn' ).prop( 'checked', this.checked ).trigger( 'change' )
+    return false
+} )
+
+function updateShpcmtTotal() {
+    var filter           = $( '.shpcmt .all_rate_btn' ).prop( 'checked' )
+    shopComment.totalNum = fml.vars.count_dis[ filter ? 'meaning' : 'all' ]
+}
+
+function requestComment( config ) {
+    $.ajax( {
+        url:      config.url,
+        type:     'get',
+        data:     {
+            tid:  TWITTER_ID,
+            page: config.page || 0
+        },
+        dataType: 'json'
+    } ).done( config.callback )
+}
+
+$( '.eva' ).one( 'click', function() {
+    page( shopComment )
+} )
+
+$( '.deal' ).one( 'click', function() {
+    var isInit = false,
+
+        config = {
+            url:      '/aj/getComment/deal',
+            callback: function( res ) {
+                if ( res && res.cInfos && res.cInfos.length ) {
+                    dealComments.show()
+                    shopDealNull.hide()
+
+                    dealComments.html( shareTmp( 'twitter_comment_deal', {
+                        'item': res.cInfos
+                    } ) )
+
+                    rollCommentPnl()
+
+                    if ( !isInit ) {
+                        isInit = true
+                        paging.setTotalPage( res.pages.totalNum )
+                    }
+                } else {
+                    dealComments.hide()
+                    shopDealNull.show()
+                }
+            }
+        },
+
+        paging = Paging( {
+            el:       '#dealPagingNav',
+            tmpl:     'pagingNav',
+            pageSize: 15,
+            onChange: function( el, pageNum ) {
+                config.page = pageNum
+                requestComment( config )
+            }
+        } )
+
+    requestComment( config )
+} )
+
+$( '.shopping' ).one( 'click', function() {
+    page( {
+        'totalNum':    fml.vars.count_shs,
+        'url':         '/aj/getComment/shopping',
+        'tid':         TWITTER_ID,
+        'tmpId':       'shoppingshow_tmp',
+        'commentPnl':  shsComments,
+        'pageNav':     $( '#shsPagingNav' ),
+        'pageSize':    8,
+        'processData': function( res ) {
+            if ( res && res.aInfo && res.aInfo.length ) {
+                shsComments.show()
+                shsCommentsNull.hide()
+                return {
+                    'item': res.aInfo
+                }
+            } else {
+                shsComments.hide()
+                shsCommentsNull.show()
+            }
+        },
+        'cbk':         rollCommentPnl,
+        'param':       {
+            'num': 8
+        }
+    } );
+} )
+
+/*
+ 获取评论分类的数量
+
+ added by sunzhidong
+ 2014-6-26
+ */
+$.get( '/aj/getComment/filter', {
+    'tid':  TWITTER_ID,
+    'page': 0
+}, function( data ) {
+    if ( !data || !data.length ) {
+        return
+    }
+    //如果评论数为 0，则不显示分类。data[0] 表示“全部评价”
+    if ( !data[ 0 ].total ) {
+        return
+    }
+
+    $( '.eva_comments_filter_tab' ).html( shareTmp( 'twitter_comment_count', {
+        'item': data
+    } ) )
+
+    /*
+     设置评价分类 tab
+     */
+    var cur = 0
+
+    //这个按钮现在是动态生成了，因此得放到这个回调方法内
+    $( '.shpcmt .all_rate_btn' ).on( 'change', function() {
+        shopComment.param.filter = this.checked ? 1 : 0
+        updateShpcmtTotal()
+        isTotalNumChange         = true
+        page( shopComment, true )
+        $( '.eva' ).trigger( 'click' )
+    } )
+
+    tab.bind( {
+        'tagPnl':         '.comments',
+        'tabTag':         '.eva_comments_filter_tab .item',
+        'activeTagClass': 'cur',
+        'contents':       '.eva_comments',
+        onShowed:         function( _, _, index ) {
+            if ( cur != index ) {
+                cur                            = index;
+                shopComment.param.filter_point = cur;
+                if ( data[ index ].total == 0 ) {
+                    shopComment.totalNum = 0;
+                }
+                isTotalNumChange = true;
+                page( shopComment );
+            }
+        }
+    } );
+}, 'json' )
+
+/*
+ 晒单商品标记，点击时自动跳到下方晒单区域
+ */
+$( '#js-shopping-show' ).on( 'click', function( e ) {
+    $( '.tabArea.shopping' ).click();
+    e.preventDefault();
+} )
+
+$( '#js-comment' ).on( 'click', function( e ) {
+    $( '.tabArea.eva' ).click();
+    e.preventDefault();
+} )
+
+    /*
+     * @name: scrollHighLight 滚动高亮
+     * @desc: 滚动页面时，商品详情下拉菜单中的菜单项会根据当前位置进行高亮
+     *
+     * $sentry 是用来标记高亮区域的截止位置
+     */
+;
+(function() {
+    var prev, len, pos, $anchors,
+        $parent      = $( '.tab_tle' ),
+        $sentry      = $( '#anchor-boundry-sentry' ),
+        /* 该高度需要计算在内 */
+        parentHeight = $parent.height(),
+
+        /* 小于该值就高亮 */
+        minOffset    = 100,
+        rhash        = /#.+$/g,
+        CUR_CLASS    = 'cur'
+
+    function initPos() {
+        pos      = []
+        $anchors = $parent.find( '.js-anchor-btn' )
+
+        $anchors.each( function( i, el ) {
+            var match = el.href.match( rhash ),
+                $el
+
+            if ( match ) {
+                $el = $( match[ 0 ] )
+                $el.length && pos.push( $el.offset().top )
+            }
+        } )
+
+        pos.push( $sentry.offset().top )
+
+        len = pos.length
+    }
+
+    /**
+     *  layout.is.changed 『精选好评』与『查看更多详情』触发
+     */
+    $body.on( 'layout.is.changed', function() {
+        setTimeout( initPos, 0 )
+    } )
+
+    initPos()
+
+    if ( len = pos.length ) {
+        $win.on( 'scroll', function() {
+            /*
+             用了延时就不能及时高亮~所以妥协一下
+             */
+            checkPos()
+        } )
+        /* 默认先执行一次 */
+        checkPos()
+    }
+
+    function checkPos() {
+        var offset = $win.scrollTop() + parentHeight,
+            i      = 0,
+            dis
+
+        for ( ; i < len; i++ ) {
+            dis = pos[ i ] - offset
+
+            if ( dis >= 0 ) {
+                /* 防止滚动到上面的时候第一个 tab 始终高亮 */
+                if ( dis > minOffset ) {
+                    if ( i == 0 ) {
+                        break
+                    } else {
+                        i -= 1
+                    }
+                }
+
+                return highLight( $anchors.eq( i ) )
+            }
+        }
+
+        unHighLight()
+    }
+
+    function highLight( anchor ) {
+        /*
+         减少不必要的操作
+         */
+        if ( !prev || ( prev && prev[ 0 ] != anchor[ 0 ] ) ) {
+            prev && prev.removeClass( CUR_CLASS );
+            ( prev = anchor ).addClass( CUR_CLASS )
+        }
+    }
+
+    /*
+     使用 prev 保存上一个高亮元素，因此这里不需要传值。
+     */
+    function unHighLight() {
+        prev && prev.removeClass( CUR_CLASS )
+        prev = null
+    }
+}())
+
+/**
+ * 显示全国城市
+ */
+;
+(function() {
+    var city,
+        $cities       = $( '#js-cities' ),
+        $destCity     = $( '#js-dest-city' ),
+        $destCityName = $destCity.find( '.js-city-name' ),
+        $freightText  = $( '#js-freight-text' ),
+        $label        = $( '.js-label' ).filter( '[data-text=免运费]' ),
+        isInit        = false,
+
+        /* 防止网络延迟导致数据设置错误 */
+        gid           = 0;
+
+    city = DropDown.init( {
+        el:    $destCity,
+        panel: $cities,
+
+        events: {
+            beforeShow: function() {
+                var pos, timeoutId
+
+                if ( !isInit ) {
+                    $.get( '/aj/getAllCities/', function( data ) {
+                        isInit = true;
+                        /**
+                         * 不要在外面获取高度，因为页面可能会动态显示
+                         * 一些内容，造成高度的偏差。
+                         */
+                        pos    = $destCity.offset()
+                        $cities.html( shareTmp( 'tmplCities', {
+                            data: data
+                        } ) )
+                            .css( {
+                                left: pos.left,
+                                top:  pos.top + $destCity.height()
+                            } );
+
+                        city.show();
+                    }, 'json' )
+
+                    $win.on( 'resize', function() {
+                        clearTimeout( timeoutId );
+
+                        timeoutId = setTimeout( function() {
+                            $cities.css( 'left', $destCity.offset().left );
+                        }, 100 );
+                    } )
+
+                    return false
+                }
+            }
+        }
+    } );
+
+    $cities.on( 'mouseenter', '.js-city', function( e ) {
+        $( this ).find( 'ul' ).show();
+    } ).on( 'mouseleave', '.js-city', function() {
+        $( this ).find( 'ul' ).hide();
+    } ).on( 'click', '.js-cities-sec', function( e ) {
+        var $el = $( this ),
+            id  = ++gid;
+        $destCityName.text( $el.text() );
+        /* 隐藏城市面板 */
+        city.hide();
+
+        $.get( '/aj/getFreight/', {
+            'cid':      $el.data( 'id' ),
+            'goods_id': fml.vars.goods.id
+        }, function( data ) {
+            if ( data && data.content && data.content.data && id == gid ) {
+                data = data.content.data;
+                if ( data.charge_free ) {
+                    $freightText.text( '全场免运费' );
+                    $label.show();
+                } else if ( data.charge ) {
+                    var str = '运费: ' + data.charge + '元';
+                    if ( data.quota ) {
+                        str += ' (满' + data.quota + '元包邮)'
+                    }
+                    $freightText.text( str );
+                    $label.hide();
+                } else {
+                    $freightText.text( '免运费' );
+                    $label.show();
+                }
+            }
+        }, 'json' )
+    } )
+}())
+
+/**
+ * 手机专享价
+ */
+DropDown.init( {
+    el:    '.js-mob-exclusive-btn',
+    panel: '.js-mob-exclusive-panel'
+} )
+
+/**
+ * @name: 活动价
+ * @date: 2014-09-16
+ */
+;
+(function() {
+    var time,
+        $el = $( '.js-promotion-desc' )
+
+    if ( $el.length ) {
+        /**
+         * 后端传的是秒
+         */
+        time = new Date( +$el.data( 'time' ) * 1000 )
+
+        $el.html( '将在' + ( time.getMonth() + 1 ) + '月' +
+            time.getDate() + '日' +
+            time.getHours() + '点' +
+            time.getMinutes() + '分降价' )
+    }
+}())
+
+/**
+ * 每次活动的时候，都可能在『商品详情』下显示一个额外的 banner
+ */
+$.getJSON( '/aj/bigPromoteBanner/', { key: 'share', tid: TWITTER_ID } )
+    .done( function( data ) {
+        var tmpl = '<div class="recom-banner"><a href="${url}" target="_blank"><img src="${image_url}" title="${title}" width="${image_width}" height="${image_height}"></a></div>';
+
+        if ( $.isArray( data ) ) {
+            if ( !data.length ) {
+                return
+            }
+
+            data = data[ 0 ]
+        }
+
+        $( '<div>' ).html( tmpl.replace( /\${([^}]+)}/g, function( _, m ) {
+            return data[ m ]
+        } ) ).children()
+            .insertBefore( $( '.contentArea' )
+                .eq( 0 )
+                .children( ':first-child' ) )
+    } )
+
+/**
+ * 商品人气提示
+ */
+;
+(function() {
+    var $popTip = $( '.js-pop-tip' ),
+        isShow  = false,
+        TIMEOUT = 5000
+
+    if ( isHaiTao || !$popTip.length ) {
+        return
+    }
+
+    WindowScroll.yIn( $popTip.offset().top - $( window ).height(), function() {
+        if ( isShow ) {
+            return
+        }
+        isShow = true
+
+        $popTip.css( 'bottom', 13 )
+        setTimeout( function() {
+            $popTip.css( 'opacity', 0 )
+        }, TIMEOUT )
+    } )
+}())
+
+/**
+ * 分享到围脖/空间
+ */
+;
+(function() {
+    var $el    = $( '.js-item-share-btn' ),
+        $panel = $( '.js-item-share-panel' ),
+        offset,
+        timeoutID
+
+    $el.on( 'mouseenter', function() {
+        clearTimeout( timeoutID )
+        offset = $el.offset()
+
+        $panel.css( {
+            top:  offset.top + $el.height() + 10,
+            left: offset.left
+        } ).show()
+    } ).on( 'mouseleave', function() {
+        timeoutID = setTimeout( function() {
+            $panel.hide()
+        }, 300 )
+    } )
+
+    $panel.on( 'mouseenter', function() {
+        clearTimeout( timeoutID )
+    } ).on( 'mouseleave', function() {
+        $panel.hide()
+    } )
+}())
+
+/**
+ * 导航条吸顶
+ */
+;
+(function() {
+    var $shopHd          = $( '#shop-hd' ),
+        $shopNav         = $( '#shop-nav' ),
+
+        FIXED_CLASS      = 'shop-nav-fixed',
+        FIXED_ANIM_CLASS = 'shop-nav-fixed-anim'
+
+    /**
+     * 特卖商品没有导航栏
+     */
+    if ( !$shopNav.length ) {
+        return
+    }
+
+    $shopHd.css( 'height', $shopHd.height() )
+
+    WindowScroll.yIn( $shopNav.offset().top, function() {
+        $shopNav.addClass( FIXED_CLASS )
+    }, function() {
+        $shopNav.removeClass( FIXED_CLASS )
+    } )
+
+    WindowScroll.yIn( $( '.js-ceiling-tab' ).offset().top, function() {
+        $shopNav.removeClass( FIXED_CLASS ).addClass( FIXED_ANIM_CLASS )
+    }, function() {
+        $shopNav.removeClass( FIXED_ANIM_CLASS ).addClass( FIXED_CLASS )
+    } )
+}())
+
+/**
+ * 『查看更多详情』
+ *  注意：滚动高亮那里也会监听这里触发的事件
+ */
+;
+(function() {
+    var $expandBtn     = $( '#item-check-more' ),
+        $anchors       = $( '.js-anchor-btn' ),
+
+        CLICK          = 'click.seemore',
+        COLLAPSE_CLASS = 'js-item-collapse',
+        EXPAND_EVENT   = 'expand-item'
+
+    $body.one( EXPAND_EVENT, function() {
+        $expandBtn.prev( '.' + COLLAPSE_CLASS ).show()
+            .end().hide()
+
+        $body.triggerHandler( 'layout.is.changed' )
+    } )
+
+    $anchors.on( CLICK, function() {
+        var $anchor = $( $( this ).attr( 'href' ) )
+        if ( $anchor.parent().hasClass( COLLAPSE_CLASS ) ) {
+            $body.triggerHandler( EXPAND_EVENT )
+            /**
+             * 折叠内容展开之前会影响锚点定位
+             */
+            setTimeout( function() {
+                window.scrollTo( 0, $anchor.offset().top - $( '.js-tab-wrap' ).height() )
+            }, 0 )
+            $anchors.off( CLICK )
+        }
+    } )
+
+    $expandBtn.one( CLICK, function() {
+        Tracking.cr( 'share_item', {
+            name:   'more_detail',
+            area:   'product_desc',
+            action: 'click'
+        } )
+        $body.triggerHandler( EXPAND_EVENT )
+        return false
+    } )
+}())
+
+/**
+ * 『精选好评』
+ */
+;
+(function() {
+    var $handPickComment = $( '#handpick-comments' ),
+        $goodsStar       = $( '#goods-star' ),
+        MAX_CHARACTERS   = 50
+
+    /**
+     * 有好评，且有满意度评分，才显示『精选好评』
+     */
+    function initHandpickComments( data ) {
+        var comment, content, uInfo, time, clen,
+            $commentArea = $( '.tabArea.eva' ),
+            i            = 0,
+            len          = data.length,
+            comments     = [],
+            rdate        = /年|月|日/g
+
+        for ( ; i < len; i++ ) {
+            comment = data[ i ]
+            uInfo   = comment.uInfo
+            content = comment.content
+            time    = comment.time.replace( rdate, '.' )
+            clen    = content.length
+
+            if ( clen > MAX_CHARACTERS ) {
+                content = content.substring( 0, MAX_CHARACTERS ) + '...'
+                clen    = MAX_CHARACTERS
+            }
+
+            comments.push( {
+                avatar:   uInfo.avatar_a,
+                content:  content,
+                fontSize: 14 + 6 * ( 1 - clen / MAX_CHARACTERS ),
+                link:     '/person/u/' + uInfo.user_id,
+                nickname: uInfo.nickname,
+                time:     time.substring( 0, time.length - 1 )
+            } )
+        }
+
+        $handPickComment
+            .show()
+            .find( '.js-comments-list' )
+            .html( shareTmp( 'tmpl_handpick_comment', {
+                item: comments
+            } ) )
+            .on( 'click', function( e ) {
+                Tracking.cr( 'share_item', {
+                    name:   'more_comment',
+                    area:   'good_comment',
+                    action: 'click'
+                } )
+                $commentArea.click()
+                e.preventDefault()
+            } )
+
+        FocusBanner.bind( {
+            'unit':       '.handpick-comments-list li',
+            'btn':        '.handpic-comments-handle li',
+            'transition': 'fade',
+            'setting':    {
+                'stay':  3000,
+                'speed': 500
+            }
+        } )
+
+        /**
+         * 添加锚点
+         */
+        $( '.js-anchor-btn' ).first().before(
+            '<a href="#anchor-handpick-comments" class="js-anchor-btn">精选好评</a>'
+        )
+
+        /**
+         * 好评是动态添加的，会影响『商品详情』标签下的锚点定位
+         */
+        $body.trigger( 'layout.is.changed' )
+
+        /**
+         * 显示『精选好评』
+         */
+        Tracking.cr( 'share_item', {
+            area:   'good_comment',
+            action: 'show'
+        } )
+    }
+
+    function updateGoodsTag( hasSatisfyRatio, data ) {
+        var item, tmp, $featureList, i, len, v,
+            max   = 0,
+            infos = data.tInfos,
+            $tags = $( '.js-goods-tags' )
+
+        if ( hasSatisfyRatio ) {
+            item = infos.tags_info
+
+            for ( i = 0, len = item.length; i < len; i++ ) {
+                v = +item[ i ].tag_count
+                if ( max < v ) {
+                    max = v
+                }
+            }
+
+            /**
+             * 让数值大的进度条更长~
+             */
+            if ( max < 50 ) {
+                max *= 2
+            } else if ( max < 100 ) {
+                max = 100
+            } else if ( max < 200 ) {
+                max = 200
+            }
+
+            item.totalTags = max
+
+            tmp = shareTmp( 'tmpl_goods_tag', {
+                item: item
+            } )
+
+            $tags.html( tmp )
+
+            tmp = shareTmp( 'tmpl_handpick_comment_tag', {
+                item: item
+            } )
+
+            $featureList = $handPickComment.find( '.js-feature-list' )
+            $featureList.html( tmp )
+            if ( item.length > 4 ) {
+                $featureList.addClass( 'item-features-more' )
+            }
+
+            $body.trigger( 'layout.is.changed' )
+        } else {
+            //没有评分，『购买评价』处的样式会有改变
+            if ( !$goodsStar.find( '.js-star-title' ).length ) {
+                $( '.js-star-right' ).css( 'float', 'left' )
+            }
+        }
+    }
+
+    /**
+     * 显示晒单
+     */
+    function initShoppingShow() {
+        if ( fml.vars.hasShoppingShow ) {
+            $.ajax( '/aj/getComment/shopping', {
+                dataType: 'json',
+                data:     {
+                    num: 4, //最多显示四条
+                    tid: TWITTER_ID
+                }
+            } ).done( function( data ) {
+                var detail, $el, $shoppingArea
+
+                if ( data.aInfo && data.aInfo.length ) {
+                    detail = 'twitter_id:' + TWITTER_ID + '.shop_id:' + SHOP_ID
+                    //alert(detail)
+                    Tracking.cr( 'buyer_share', {
+                        detail: detail,
+                        action: 'show'
+                    } )
+
+                    $el           = $handPickComment.find( '.js-item-shoppingshow' )
+                    $shoppingArea = $( '.tabArea.shopping' )
+
+                    $el.css( 'display', 'block' )
+                        .find( 'ul' )
+                        .html( shareTmp( 'tmpl_handpick_comment_shopping', {
+                            item: data.aInfo
+                        } ) )
+                        .on( 'click', function( e ) {
+                            Tracking.cr( 'buyer_share', {
+                                detail: detail,
+                                action: 'click'
+                            } )
+
+                            $shoppingArea.click()
+                            e.preventDefault()
+                        } )
+
+                    $body.trigger( 'layout.is.changed' )
+                }
+            } )
+        }
+    }
+
+    $.when(
+        /**
+         * 『精选好评』
+         */
+        $.getJSON( '/aj/handpick_comments/', {
+            tid: TWITTER_ID
+        } ),
+        /**
+         * 商品满意度细节评分
+         */
+        $.getJSON( '/aj/item_goods_tag/', {
+            goods_id: fml.vars.goods.id
+        } ) ).done( function( v1, v2 ) {
+            var d1              = v1[ 0 ],
+                d2              = v2[ 0 ],
+                hasSatisfyRatio = d2 && d2.tInfos && d2.tInfos.total_tags
+
+            updateGoodsTag( hasSatisfyRatio, d2 )
+
+            if ( fml.vars.satisfy_rate != '--' && d1 && d1.length && hasSatisfyRatio ) {
+                initHandpickComments( d1 )
+                initShoppingShow()
+            }
+        } )
+}())
+
+/**
+ * 点击『客服』的埋点
+ */
+$( '.goserviceqq, .ico_serviceqq' ).on( 'click', function() {
+    var frm = 'sale',
+        pos = 'shareGroup9'
+
+    if ( ~this.className.indexOf( 'ico_serviceqq' ) ) {
+        frm = 'side'
+        pos = 'shareFlow'
+    }
+
+    Tracking.cr( 'dootaQQ', {
+        'frm':    frm,
+        'action': 'contact_service',
+        'pos':    pos
+    } )
+} )
+
+/**
+ * 『新品到货』的图片
+ */
+;
+(function() {
+    var isLoaded = false
+
+    WindowScroll.yIn( $( '.js-item-detail' ).offset().top - 100, function() {
+        if ( isLoaded ) {
+            return
+        }
+
+        isLoaded = true
+        $.ajax( {
+            url:      '/aj/shop_cover/',
+            type:     'get',
+            data:     {
+                shop_id: SHOP_ID
+            },
+            dataType: 'json'
+        } ).done( function( data ) {
+            var date, monthAndDay
+
+            if ( data && data.length ) {
+                data        = data[ 0 ]
+                date        = data.new_date
+                monthAndDay = date.replace( /^\d+\-(\d+)-(\d+)$/, '$1.$2' )
+
+                $( '.js-shop-cover' )
+                    .find( 'h3' )
+                    .html( monthAndDay + ' 新品到货' )
+                    .end()
+                    .find( 'a' )
+                    .attr( 'href', '/shop/' + SHOP_ID + '?current_date=' + date )
+                    .find( 'img' )
+                    .attr( 'src', data.cover_img )
+                    .end()
+                    .end()
+                    .show()
+            }
+        } )
+    } )
+}())
+
+/**
+ * 优惠券的下拉菜单
+ */
+function couponMenu() {
+    var BTN_CLASS = 'js-coupon-btn';
+
+    $( '.js-coupon' ).each( function( i, cont ) {
+        var $cont  = $( cont ),
+            $el    = $cont.find( '.js-coupon-btn' ),
+            $panel = $cont.find( '.js-coupon-panel' ),
+            $info  = $panel.find( '.js-info' ),
+            isInit = false,
+            timeoutId;
+
+        DropDown.init( {
+            el:     $el,
+            panel:  $panel,
+            events: {
+                beforeShow: function() {
+                    var that = this;
+                    if ( !isInit ) {
+                        isInit = true;
+                        return callApi.read( { 'url': '/coupon/coupon_share' }, {
+                            shop_id: SHOP_ID
+                        }, function( data ) {
+                            that.$panel.find( '.bd' ).html( shareTmp( 'tmpl_coupon', {
+                                item: data
+                            } ) );
+
+                            that.show();
+                        } )
+                    }
+                }
+            }
+        } );
+
+        /**
+         * 领取优惠券
+         */
+        $panel.on( 'click', '.' + BTN_CLASS, function() {
+            if ( !checkLogin() ) return;
+
+            var $el  = $( this ),
+                code = $el.data( 'code' );
+
+            callApi.write( {
+                url: '/coupon/coupon_apply'
+            }, {
+                coupon_apply_code: code
+            }, function( data ) {
+                if ( data.code ) {
+                    $el.removeClass( BTN_CLASS )
+                        .text( '已领完' );
+                } else {
+                    clearTimeout( timeoutId );
+                    $info.text( '领取成功' )
+                        .css( 'top', $el.offsetParent().position().top + 5 )
+                        .show()
+                        .animate( {
+                            opacity: 1
+                        }, 500 );
+                }
+
+                timeoutId = setTimeout( function() {
+                    $info.animate( {
+                        opacity: 0
+                    }, 1000, function() {
+                        $info.hide();
+                    } );
+                }, 2000 )
+            } )
+        } );
+
+    } );
+}
+
+/**
+ * 店铺优惠券
+ */
+$.ajax( {
+    url:      '/aj/shop_coupons/',
+    dataType: 'json',
+    data:     {
+        twitter_id: TWITTER_ID
+    },
+    success:  function( data ) {
+        if ( !data || !data.length ) {
+            return
+        }
+
+        var tmpl       = shareTmp( 'tmpl_shop_coupons', {
+                coupons: data
+            } ),
+            $container = $( '.js-shop-promote' ),
+            $items     = $container.find( '.js-promote-item' )
+
+        /**
+         * 确保优惠券放在『店铺优惠』的上面
+         */
+        if ( $items.length ) {
+            if($items.length >= 1){
+                $items.eq( $items.length - 2 ).after( tmpl )
+            }else{
+                $items.eq( $items.length - 2 ).before( tmpl )
+            }
+        } else {
+            $( tmpl ).prependTo( $container )
+        }
+
+        couponMenu()
+    }
+} )
+
+/**
+ * 店铺优惠
+ */
+$.ajax( {
+    url:      '/aj/shop_promote/',
+    dataType: 'json',
+    data:     {
+        twitter_id: TWITTER_ID
+    },
+    success:  function( data ) {
+        if ( !data || !data.length ) {
+            return
+        }
+
+        var tmpl = shareTmp( 'tmpl_shop_promote', {
+            datas: data
+        } )
+
+        $( '.js-shop-promote' ).append( tmpl )
+
+        /**
+         * 营销工具的下拉层
+         */
+        DropDown.init( {
+            el:    '.js-promote-mail-btn',
+            panel: '.js-promote-mail-panel'
+        } )
+
+        DropDown.init( {
+            el:    '.js-promote-discount-btn',
+            panel: '.js-promote-discount-panel'
+        } )
+
+        DropDown.init( {
+            el:    '.js-promote-reduce-btn',
+            panel: '.js-promote-reduce-panel'
+        } )
+    }
+} )

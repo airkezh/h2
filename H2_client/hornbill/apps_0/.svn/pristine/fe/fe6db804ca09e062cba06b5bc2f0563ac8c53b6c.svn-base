@@ -1,0 +1,172 @@
+<%#head.html%>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<%
+	var userInfo = this.userInfo||{};
+	var style = this.style.data||{};
+	var founder_publicity=style.founder_publicity||[];
+	var founder=style.founder||{};
+	var recomment=style.recomment||[];
+	var picData=this.picData||{};
+	var picDataImg=picData.data||[];
+	var info = this.info || {};
+	var infoData = info.data || {};
+%>
+<div class="main">
+	<header>
+		<img src="<%= infoData.photo %>" alt="" class="pic">
+		<strong><%= infoData.nick_name %></strong>
+		<span class="ctime"><%= infoData.new_time %></span>
+	</header>
+	<div class="goods">
+		<p class="goodsTitle"><%= infoData.main_title %></p>
+		<div class="goods-img-box"><img src="<%= infoData.main_img %>" /></div>
+		<div class="danmu"></div>
+			<div class="send">
+			<form onsubmit="return false;">
+				<input id="comment" type="text" class="txt" maxlength="25" placeholder="说点什么，biubiu～不能超过25个字哦！" />
+				<span id="send" class="cancel">发射</span>
+			</form>
+			</div>
+	</div>
+	<% if(infoData.twitter_id != ''){ %>
+		<div class="jizan jizan-fixed">
+			<p class="goods_name">同款这里有卖哦!</p>
+			<div class="box saleBtn" data-xr="<%= this.info_XR %>" data-twitter_id="<%= infoData.twitter_id %>">
+				<img src="<%= infoData.goods_img %>" alt="">
+				<div class="right-box">
+					<p><%= infoData.goods_title %></p>
+					<span>¥<%= infoData.goods_price %></span>
+					<a href="javascript:;">购买</a>
+				</div>
+			</div>
+		</div>
+	<% }%>
+	<% if(infoData.twitter_id != ''){ %>
+		<div class="wrap">
+			<div class="support">
+				<div class="want">
+					<span class="heart <%= style.is_mywant ? 'heartRed' : '' %>" data-xr="<%= this.style_XR %>"></span>
+					<p class="buy">有 <span class="num"><%= parseInt(style.want_base)+parseInt(style.want_num) %></span> 位美人想买TA，赶紧下手吧</p>
+				</div>
+				<div class="dl-box">
+					<dl class="supportList">
+						<% if(picDataImg){ %>
+							<% var len = picDataImg.length; picDataImg.forEach(function (data,i){ %>
+								<dd <% if(i === 7){ %>class="last"<% } %>>
+									<img src="<%= data.avatar_a %>" />
+								</dd>
+							<% }); %>
+						<% } %>
+					</dl>
+				</div>
+			</div>
+			<div class="guess-like">
+				<div class="box-title">
+					<div class="line"></div>
+					<h3>
+						<p>猜你喜欢</p>
+					</h3>
+				</div>
+				<div class="posterWall wall" id="content">
+					<ul class="goods_wall goods"></ul>
+					<div class="pullUp" status="loading"></div>
+				</div>
+			</div>
+		</div>
+	<% }else{ %>
+		<p class="notid-buy"><%= infoData.status_detail %></p>
+	<% }%>
+</div>
+<div class="top-box" style="bottom:<%if(this.isIphone){%>170<%}else{%>155<%}%>px">
+	<a class="gotop" href="javascript:;">
+		<img src="http://d02.res.meilishuo.net/img/_o/41/62/c1d9e0f159bfb506b27dea648ccb_80_80.cg.png" />
+	</a>
+</div>
+<% if(!this.appShare){ %>
+	<%= requireFn('wapShare.html')({
+		'share' : this.share 
+	    , 'shareTitle' : '选择分享到'
+	    , '_JSstack' : this._JSstack
+		, '_JSmods' : this._JSmods
+	}); %>
+<% } %>
+<script type="text/html" id="posterWall">
+	<li class="most_wrap salelUrl" data-styleId="<?= this.v.id ?>" data-twitter_id="<?= this.v.twitter_id ?>" data-status="<?= this.v.status ?>">
+		<? var imgBoxHeight=parseInt($(window).width()/2-10)* 400 / 320 +'px'; ?>
+		<div class="goods_info">
+			<div class="most">
+				<div class="lazy_pic img-box" asrc="<?= this.v.poster_small_img ?>" style="height:<?= imgBoxHeight ?>;padding-top:0">
+				</div>
+				<div class="tips-box">
+					<span class="tips">
+						<b><?= parseInt(this.v.count_like) ?>人想买
+						</b>
+					</span>
+				</div>
+			</div>
+			<p class="most_intro sale-title"><?= this.v.title ?></p>
+			<p class="price">
+				<span><?= this.v.sale_price ?></span>
+				<del><?= this.v.price ?></del>
+			</p>
+		</div>
+	</li>
+</script>
+<script>
+	var imgUrl = 'http://d06.res.meilishuo.net/img/_o/7a/ea/d25fee3f7f1c1d3106d9d14f811d_200_200.ch.jpg';
+	var lineLink = 'http://mapp.meilishuo.com/zulily/detail/?style_id=' + <%= this.styleId%>;
+	var descContent = '潮衣高级定制！一起来定制潮流！';
+	var shareTitle = '潮衣高级定制！一起来定制潮流！';
+	var shareTimelineText = '潮衣高级定制！一起来定制潮流！';
+    var customAppId = 'wxd00a5f16e02bed58';
+</script>
+<script>
+	fml.vars.isLogin = <%= this.userInfo.user_id %>; 
+	fml.vars.danmu = <%= JSON.stringify(this.danmu.data) %>;
+	fml.vars.styleId=<%= this.styleId %>; 
+	fml.vars.twitter_id=<%= this.twitter_id %>; 
+	fml.vars.sharePic='<%= style.share_img %>'; 
+	fml.vars.shareTitle="<%= this.ViewTools.addSlashes(style.title) %>";
+	fml.vars.trace_id = '<%= this.desireTraceId %>';
+	fml.vars.circle_id = <%= parseInt(style.circle_id) %>;
+	fml.vars.appShare = <%= this.appShare %>; 
+	fml.vars.params = <%= JSON.stringify(this.params) %>; 
+</script>
+
+<script src="<%= this.JCSTATIC_BASE  %>/js/open/shareCollect.js?<%= this.SVERSION%>"></script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+
+	fml.use('wap/page/zulily/detail2',function(){
+		if(Meilishuo.config.os.weixinBrowser){
+			$.ajax({
+				url: '/aj/wx/sign'
+				, data: {
+					url:window.location.href
+				}   
+				, dataType: 'json'
+				, type: 'post'
+				, success : function(data){
+					wx.config({
+						debug:false
+						//debug:false 
+						, appId: data.info.appId
+						, timestamp: data.info.timestamp
+						, nonceStr: data.info.nonceStr
+						, signature: data.info.signature
+						, jsApiList: [
+							'checkJsApi',
+							'onMenuShareTimeline',
+							'onMenuShareAppMessage',
+							'onMenuShareQQ',
+							'onMenuShareWeibo'
+						]   
+					}); 
+				},
+				error: function(err){
+				}
+			})
+		}
+	});
+_use:", this._JSstack, this._JSmods); %>
+
+<%# foot.html%>

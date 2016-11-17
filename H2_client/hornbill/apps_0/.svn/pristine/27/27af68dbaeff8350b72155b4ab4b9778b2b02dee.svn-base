@@ -1,0 +1,75 @@
+/*common*/
+require( 'wap/zepto' );
+require('wap/zepto/scroll');
+var poster = require( 'wap/page/shop/poster' ),
+    scroll = require('wap/component/windowScroll');
+var defaultOrder = 'goods_time',
+    params = ['goods_time', 'goods_on_shelf', 'sale_num'],
+    $goodsWall = $('#goods_wall'),
+    $order = $('.order', $('nav')),
+    $orderIcon = $('#price_order'),
+    $goTop = $('#gotop'),
+    UP    = 'price-up',
+    DOWN  = 'price-down';
+var data = {
+    'url'     : '/aj/shop/shop',
+    'params'  : {
+        'shop_id' : fml.vars.shopId,
+        '_orderby' : defaultOrder,
+        'limit': 20,
+        'frame': 0
+    },
+    'layout'  : {
+        'offsetY': 60,
+        'offsetX': 9
+    }
+};
+
+poster.initData(data);
+poster.addPoster0();
+poster.lazyLoad();
+poster.scrollPoster();
+
+$order.on('tap', function (){
+    $order.removeClass('current');
+    $(this).addClass('current');
+    var $self = $(this),
+        index = $order.index($self);
+    if(index == 3){
+        if( $orderIcon.hasClass(UP) ){
+            $orderIcon.removeClass(UP);
+            $orderIcon.addClass(DOWN);
+            data.params._orderby = 'price_high';
+        }else if( $orderIcon.hasClass(DOWN) ){
+            $orderIcon.removeClass(DOWN);
+            $orderIcon.addClass(UP);  
+            data.params._orderby = 'price_lower';      
+        }else{
+            $orderIcon.addClass(DOWN);
+            data.params._orderby = 'price_high';
+        }
+    }else{
+        $orderIcon.hasClass(UP) && $orderIcon.removeClass(UP);
+        $orderIcon.hasClass(DOWN) && $orderIcon.removeClass(DOWN);
+        data.params._orderby = params[index];
+    }
+    $goodsWall.empty();
+    poster.initData(data);
+    poster.ajaxPoster(poster.lazyLoad);
+});
+
+//回到顶部
+$goTop.on('tap', function (){
+    $.scrollTo({
+        endY: 0,
+        duration: 300
+    });
+});
+function goTop (pos, isDown){
+    if(!isDown && pos > 100){
+        $goTop.show();
+    }else{
+        $goTop.hide();
+    }
+}
+scroll.bind(goTop,'gotop');

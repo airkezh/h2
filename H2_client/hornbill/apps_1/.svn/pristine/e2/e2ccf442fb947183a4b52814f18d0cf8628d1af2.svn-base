@@ -1,0 +1,78 @@
+@import "wx.less";
+html{.f(10*@f);}
+body{.bgc(#fff);}
+.pullUp{
+	.pullUpDown > .common;.pullUpDown > .loading;
+	&:before{
+		.nowrap;
+		.ml(-35px);
+	}
+	&[status="tap"]{
+		background:0 none;	
+		/*
+		&:before{
+			content:"上拉看更多..."	
+		}
+		*/
+	}
+	&[status="stop"]{
+		background:0 none;	
+		.h(2px);
+		&:before{.i_block;
+			content:"没有更多内容了...";
+		}
+	}
+}
+.goTop();
+
+.top_head{ .h(3.8rem); .l(5rem); .border-bd9(#dadada); .tr;.pf;top:0;left:0;.w(100%);z-index: 2;.bgwhite;
+	a{.h(100%);.i_block;}
+	.cycle{.pa;left: 0; }
+	.i_user,.i_cart,.i_cycle{.i_block;.w(5.4rem);.h(1.8rem); .c;background: url("http://d04.res.meilishuo.net/pic/_o/39/cf/75f1b301bfd11a7e8f100df1e3f5_39_150.cf.png") no-repeat; background-size: 38%; 
+	}
+	.i_cycle{.bp(50%,68%);}
+	.i_user{.border-rd9(#c1c1c1);.bp(50%,0); .pr;
+		.idot{.bgred;.i_block;.w(0.35rem);.h(0.35em);.border-r(50%);.pa; left:70%; top: 0;}
+	}
+	.i_cart{.bp(50%,34%);}
+}
+.mspace{.h(3.9rem);}
+
+.new_goods{
+	.clearfix;.pr;
+	.frame{
+		.pr;
+	}
+	.goods_li{.pa;.w(50%);.hidden;
+		.li_border{.ml(10*@w);.mr(10*@w);}
+	}
+	.li_border {
+		.pr;.mb(20*@w); .bgwhite;
+		.list_img {.block;background-size:100%;.hidden;
+		}
+		.goods_info{.pa; bottom: 0;left: 0;.h(2.5rem);.l(2.8rem);.w(90%); color:#fff;.pl(5%);.pr(5%); .hidden; 
+			background-image: -webkit-linear-gradient(top, rgba(200, 200, 200, 0.1) 0%, rgba(0, 0, 0, 0.1) 30%, rgba(0, 0, 0, 0.2) 60%,rgba(0, 0, 0, 0.25) 80%,  rgba(0, 0, 0, 0.32) 100%); 
+			background-image: -o-linear-gradient(top, rgba(200, 200, 200, 0.1) 0%, rgba(0, 0, 0, 0.1) 30%, rgba(0, 0, 0, 0.2) 60%,rgba(0, 0, 0, 0.25) 80%,  rgba(0, 0, 0, 0.32) 100%);
+			background-image: -moz-linear-gradient(top, rgba(200, 200, 200, 0.1) 0%, rgba(0, 0, 0, 0.1) 30%, rgba(0, 0, 0, 0.2) 60%,rgba(0, 0, 0, 0.25) 80%,  rgba(0, 0, 0, 0.32) 100%);
+			// background-image: -ms-linear-gradient(top, rgba(200, 200, 200, 0.1) 0%, rgba(0, 0, 0, 0.1) 30%, rgba(0, 0, 0, 0.2) 60%,rgba(0, 0, 0, 0.25) 80%,  rgba(0, 0, 0, 0.32) 100%);
+		}
+		.num,.price{.i_block; .w(48%);.f(1.2rem)}
+		.num{.pr; text-indent: 1.6rem;
+			.num_img{.i_block;.w(2rem);.h(2rem);background: url("http://d01.res.meilishuo.net/pic/_o/1f/0f/42abc7208d98b844914412c70642_39_150.cg.png") no-repeat; .bp(0%,102%); background-size: 100%; /*vertical-align: -10%;*/ .pa; left: 0;}
+		}
+		.price{.tr();}
+		// .list_title {.f(24*@px);.fc(#666); .l(32*@px);.hidden;}
+	}
+
+}
+
+.happy{
+	.bgc(#fff);.border-bd9(#d6d6d6);
+	.hidden;.pb(1%);/*.pr(4%);.pl(4%);.pt(3%);*/
+	span{.left;.w(49%);.i_block;.mb(1.5%);
+		&:nth-of-type(2n){
+			.ml(2%);
+		}
+	}
+	div.list_img{.pb(2%);}
+}

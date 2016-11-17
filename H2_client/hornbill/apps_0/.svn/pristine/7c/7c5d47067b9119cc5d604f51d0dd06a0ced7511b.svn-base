@@ -1,0 +1,113 @@
+@import "../block.less";
+@lazyLoad_bg: 'http://d03.res.meilishuo.net/pic/_o/99/35/40c6aaf5fc823010eff6496ee06e_300_300.cf.jpg';
+@icon: 'http://d03.res.meilishuo.net/pic/_o/1a/7d/2f744dc521780df195a5d2ee8eca_450_240.cj.png';
+@shop_head: 'http://d04.res.meilishuo.net/pic/_o/fd/4f/b9228aff62af5d0141ccd78c9a3c_640_222.cj.png';
+
+.icon_self(@x:0, @y:0){
+	background: url(@icon) no-repeat;background-size: 2.25rem;background-position: @x @y;
+}
+
+body{ .f(.24rem);.fc(#666);.bgc(#FFF); }
+
+// 页面组件
+.goTopRem;
+.pullUpRem;
+
+// 公用class
+.lazy_pic_bg{ background: url(@lazyLoad_bg) no-repeat center;background-size: 2rem; }
+
+// 头部
+.page_head{
+	.pf;top: 0;left: 0;z-index: 110;.h(.88rem);.w(6.4rem);.c;.bgc(#fff);.l(.88rem);
+
+	.back_icon{
+		.pr;z-index: 5;.left;.w(2em);padding: 0 .3rem;.h(.88rem);
+
+		i{ .block;.w(.3rem);.h(.3rem);.mt(.29rem);.icon_self(0, 0); }
+	}
+	.right_btn{
+		.pr;z-index: 5;.right;padding: 0 .1rem;.h(.88rem);
+
+		i{ .left;.w(.34rem);.h(.3rem);.mt(.29rem);.mr(.07rem);.icon_self(26%, 0); }
+	}
+	.title{ .w(6.4rem);.f(.32rem);.h(.88rem);.pa;left: 0;z-index: 1; }
+	.cate_wrap{
+		.pa;top: .95rem;right: .1rem;z-index: 10;.w(1.4rem);border: 1px solid #E9E9E9;
+
+		&:before{ content: '';.pa;top: -.05rem;left: .65rem;.w(.1rem);.h(.1rem);.border-r(.02rem);border: 1px solid #E9E9E9;.bgc(#fff);-webkit-transform: rotate(315deg);transform: rotate(315deg); }
+		.cate_inner{ .pr;z-index: 10;.w(1.4rem);.bgc(#fff);.c;.hidden; }
+		a{ .block;.w(1.2rem);.auto;padding: .17rem 0;border-bottom: 1px solid #E9E9E9;.f(.22rem);.l(.22rem);.mb(-2px); }
+	}
+}
+
+.space_bg{ .h(.2rem);.bgc(#F8F8F8); }
+
+section{ .mt(.88rem); }
+.shop_head{
+	.c;.bgc(#FFF);
+
+	.shop_info{ .pr;.block;.w(6.4rem);.h(2.2rem);background: url(@shop_head) center;background-size: cover;.hidden; }
+	.shop_logo{ .w(1.16rem);.h(1.16rem);.ml(2.62rem);.mt(.42rem);.border-r(50%);background: center;background-size: cover; }
+	.shop_nick{ .mt(.2rem);.f(.28rem);.fc(#fff); }
+	.show_detail{ .pa;top: 50%;right: .3rem;.mt(-.15rem);.w(.2rem);.h(.2rem);border: 2px solid #fff;border-left: none;border-bottom: none;-webkit-transform: rotate(45deg); }
+
+	.shop_main{ .hidden; }
+	.nums{
+		margin: .24rem 0;.f(.28rem);
+
+		span{ .fc(#FF5252); }
+		span:first-child{ .i_block;.pr(.35rem);.mr(.35rem);border-right: 1px solid #E2E2E2;}
+	}
+	.shop_desc{ .ellipsis;.w(90%);.auto;.f(.22rem); }
+	.follow{
+		margin: .4rem 0;.hidden;.pl(1.06rem);
+
+		div{ .left;.w(1.74rem);.l(.6rem);margin: 0 .2rem;border: 2px solid #666;.border-r(.14rem);.f(.26rem);text-align: left; }
+		i{ .left;.w(.3rem);.h(.3rem);.mt(.16rem);.ml(.19rem); }
+		.follow_btn i{ .icon_self(24%, 100%);.mt(.1rem); }
+		.follow_btn[data-follow="1"] i{ .icon_self(0, 97%);.ml(.32rem); }
+		.customer_service i{ .icon_self(61%, 53%); }
+	}
+}
+
+nav {
+	.pr;.h(.6rem);.pr(.14rem);.f(.24rem);border-bottom: 1px solid #e6e6e6;.bgc(rgba(255,255,255,.95));.clearfix;
+
+	li {
+		.left;.w(25%);.l(.6rem);.c;
+
+		strong { .fn;.i_block;padding: 0 .1rem; }
+	}
+	.on_price strong { .pr; }
+
+	#price_order{
+		.pa;right: 0;top: 0;
+
+		&:before{ .pa;right: -.1rem;top: .2rem;content: '';.w(.18rem);.h(.1rem);.icon_self(72%, 90%);-webkit-transform: rotate(180deg);transform: rotate(180deg); }
+		&:after{ .pa;right: -.1rem;top: .3rem;content: '';.w(.18rem);.h(.1rem);.icon_self(72%, 90%); }
+	}
+	.current {
+		.red;
+
+		strong { border-bottom: 2px solid @red; }
+		#price_order {
+			&.price-up:before { .icon_self(91.4%, 91%);-webkit-transform: rotate(0);transform: rotate(0); }
+			&.price-down:after { .icon_self(91.4%, 91%);-webkit-transform: rotate(180deg);transform: rotate(180deg); }
+		}
+	}
+}
+
+// 瀑布流
+.goods_wrap{ .w(6.4rem);min-height: 10rem;.hidden; }
+#goods_wall{
+	.w(6.3rem);.ml(.05rem);.bgc(#fff);
+
+	.goods_wall{ .pr;.w(6.3rem);.ml(.05rem); }
+	.poster_grid{ .pa;.c;padding: .25rem .05rem 0;box-sizing: border-box; }
+	.pic_load{ .hidden;.w(3.05rem);background: #FFF url(@lazyLoad_bg) center center no-repeat;background-size: 2rem; }
+	.bs_load_img{ .block;.w(100%);.h(3.95rem);background: no-repeat;background-size: cover;opacity: 0;-webkit-transition: opacity .5s ease; }
+	.clothesTitle{ .w(90%);.auto;.mt(.1rem);.mb(.14rem);.f(.22rem);.fc(#666);.ellipsis; }
+	.price{ .f(.26rem);.fc(#FF7A9A);.pr(.18rem); }
+	.like{ .pl(.3rem);.f(.26rem);.fc(#999);background: url(@icon_bg) no-repeat -.1rem 81.8%;background-size: .45rem; }
+	.h_mark{ .left;.ml(.08rem);.mt(-1px);background: no-repeat;background-size: cover;opacity: 0; }
+}

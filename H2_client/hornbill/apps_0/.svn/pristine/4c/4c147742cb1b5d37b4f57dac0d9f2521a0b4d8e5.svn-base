@@ -1,0 +1,365 @@
+/*common*/
+require('wap/zepto')
+var shareTmp = require('component/shareTmp');
+
+var $msgForm = $( '#msgForm' );
+var $addrContainer = $( '.address_mask' );
+var $addrForm = $( '#addrForm' );
+var $addrCancel = $addrContainer.find( '.addr_cancel' );
+var $addrSure = $addrContainer.find( '.addr_sure' );
+var $detailAddr = $addrForm.find('.detail_addr textarea');
+var $shopPidBox = $addrForm.find( '.addr_pid' );
+var $shopCidBox = $addrForm.find( '.addr_cid' );
+var $shopDidBox = $addrForm.find( '.addr_did' );
+var $shippingAddrBox = $msgForm.find( '[name=shipping_address]' );
+var r_year = $msgForm.find( '[name=register_year]' );
+var r_month = $msgForm.find( '[name=register_month]' );
+var $year_box = $( '.year_box' );
+var $month_box = $( '.month_box' );
+var login_pid = $msgForm.find( '[name=addressPid]' );
+var login_cid = $msgForm.find( '[name=addressCid]');
+var $pid_box = $( '.pid_box' );
+var $cid_box = $( '.cid_box' );
+var shop_pid = $addrContainer.find( '[name=shop_pid]' );
+var shop_cid = $addrContainer.find( '[name=shop_cid]' );
+var shop_did = $addrContainer.find( '[name=shop_did]' );
+var $addrError = $addrContainer.find( '.addr_error' );
+var $errorMsg = $('.ErrorMessage');
+var sendShopAddr = '';
+var ajaxIsComplete = true;
+
+// 保存常用地址弹出框中的内容,因为取消的时候要恢复到原来的状态
+var content = '';
+
+var $realName = $( '[name=realname]' );
+var $idCard = $( '[name=id_card]' );
+
+$shippingAddrBox.on( 'focus', function(){
+	$addrContainer.show();
+	content = $addrForm.html();
+	$( this ).blur();
+});
+
+$addrCancel.on( 'click', function(){
+	$addrContainer.hide();
+	$addrForm.html( content );
+	$detailAddr = $addrForm.find('.detail_addr textarea');
+	$shopPidBox = $addrForm.find( '.addr_pid' );
+	$shopCidBox = $addrForm.find( '.addr_cid' );
+	$shopDidBox = $addrForm.find( '.addr_did' );
+	shop_pid = $addrForm.find( '[name=shop_pid]' );
+	shop_cid = $addrForm.find( '[name=shop_cid]' );
+	shop_did = $addrForm.find( '[name=shop_did]' );
+	$addrError.html('').hide();
+});
+
+//选择常用地址，每个项都必填
+$addrSure.on( 'click', function(){
+	var provice = $shopPidBox.html();
+	var city = $shopCidBox.html();
+	var area = $shopDidBox.html();
+	var shopPid = shop_pid.val();
+	var shopCid = shop_cid.val();
+	var shopDid = shop_did.val();
+	var shopAddrDetail = $detailAddr.val().trim();
+	$detailAddr.text( shopAddrDetail );
+	$addrError.html('').hide();
+
+	if( shopPid == 0 ){
+		$addrError.html('请选择省份').show();
+		return;
+	}
+	if( shopCid == 0 ){
+		$addrError.html('请选择城市').show();
+		return;
+	}
+
+	if( shopDid == 0 ){
+		$addrError.html('请选择区域').show();
+		return;
+	}
+
+	if( shopAddrDetail == '' ){
+		$addrError.html('请填写详细地址').show();
+		return;
+	}
+
+	$addrContainer.hide();
+	sendShopAddr = provice + '-' + city + '-' + area + '-' + shopAddrDetail;
+	$shippingAddrBox.val( sendShopAddr );
+})
+
+r_year.on( 'change', function(){
+	$month_box.html( '月份' );
+	var select_year = r_year.val();
+	if( select_year == 0 ){
+		$year_box.html( '年份' );
+	}else{
+		$year_box.html( select_year );	
+	}
+	$.ajax({
+		url: '/aj/change_bind/apply/monthList',
+		type: 'GET',
+		dataType: 'json',
+		data: { 'year': select_year },
+		success: function( res ){
+			r_month.html(shareTmp('select_month',{ monthList: res.list }))
+		},
+		error: function(){
+			alert('系统繁忙，请稍后再试');
+		}
+	})
+	
+})
+
+r_month.on( 'change', function(){
+	var select_month = r_month.val();
+	if( select_month == 0 ){
+		$month_box.html( '月份' );
+	}else{
+		$month_box.html( select_month );	
+	}
+})
+
+login_pid.on( 'change', function(){
+	$cid_box.html( '城市' );
+	var select_login_pid = login_pid.val();
+	var $this = $( this );
+	var selected_item = changeSelect( $this );
+	var selected_pname = selected_item.text();
+	if( select_login_pid == 0 ){
+		$pid_box.html( '省份' );
+	}else{
+		$pid_box.html( selected_pname );	
+	}
+	$.ajax({
+		url: '/aj/change_bind/apply/addrList',
+		type: 'GET',
+		dataType: 'json',
+		data: { 'pid': select_login_pid },
+		success: function( res ){
+			var cityList = res.data.city;
+			login_cid.html(shareTmp('select_login_city',{ cityList: cityList }))
+		},
+		error: function(){
+			alert('系统繁忙，请稍后再试');
+		}
+	})
+})
+
+login_cid.on( 'change', function(){
+	var select_login_cid = login_cid.val();
+	var $this = $( this );
+	var selected_item = changeSelect( $this );
+	var selected_cname = selected_item.text();
+	if( select_login_cid == 0 ){
+		$cid_box.html( '城市' );
+	}else{
+		$cid_box.html( selected_cname );
+	}
+
+})
+
+$addrForm.delegate( '[name=shop_pid]', 'change', function(){
+	var $this = $( this );
+	var select_common_pid = $this.val();
+	var selected_item = changeSelect( $this );
+	var select_shop_addr = selected_item.text();
+	$shopPidBox.html( select_shop_addr );
+	$shopCidBox.html('请选择');
+	$shopDidBox.html('请选择');
+	var addr_data = { 'pid': select_common_pid };
+	var successFunc = function( res ){
+		var cityList = res.data.city;
+		shop_cid.html(shareTmp('shop_city',{ cityList: cityList }))
+		shop_did.html('');
+	}
+	getAddrList( addr_data, successFunc)
+})
+
+$addrForm.delegate( '[name=shop_cid]', 'change', function(){
+	var $this = $( this );
+	var select_common_pid = shop_pid.val();
+	var select_common_cid = $this.val();
+	var selected_item = changeSelect( $(this) );
+	var select_shop_addr = selected_item.text();
+	$shopCidBox.html( select_shop_addr );
+	$shopDidBox.html('请选择');
+	var addr_data = { 'pid': select_common_pid,'cid': select_common_cid };
+	var successFunc = function( res ){
+		var didList = res.data.district;
+		shop_did.html( shareTmp('shop_district',{ didList: didList }) );
+	}
+	getAddrList( addr_data, successFunc);
+})
+
+$addrForm.delegate( '[name=shop_did]', 'change', function(){
+	var selected_item = changeSelect( $(this) );
+	var select_shop_addr = selected_item.text();
+	$shopDidBox.html( select_shop_addr );
+
+})
+
+$( '.apply_submit' ).on( 'click', function(){
+	var realname = $realName.val().trim();
+	var id_card = $idCard.val().trim();
+	var register_year = r_year.val();
+	var register_month = r_month.val();
+	var common_login_pid = login_pid.val();
+	var common_login_cid = login_cid.val();
+	var common_login_provice = login_pid.find( 'option' ).not(function(){ return !this.selected }).text();
+	var common_login_city = login_cid.find( 'option' ).not(function(){ return !this.selected }).text();
+	var common_login_address = common_login_provice + '-' +  common_login_city;
+	var shipping_name = $('[name=shipping_name]').val().trim();
+	var shipping_phone = $('[name=shipping_phone]').val().trim();
+	var shipping_pid = shop_pid.val();
+	var shipping_cid = shop_cid.val();
+	var shipping_did = shop_did.val();
+	var shipping_address = $shippingAddrBox.val() ;
+	var comment = $('[name=comment]').val().trim();
+	var change_mobile = $( '[name=change_mobile]' ).val().trim();
+	var oName = /[\u4e00-\u9fa5\ ]{2,5}$/;
+	var oIdCard = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+	var mobileRe = /^\d{11}$/;
+
+	$errorMsg.html('').hide();
+	if( realname == '' ){
+		$errorMsg.html('请填写姓名~').show();
+		return;
+	}
+
+	if( !oName.test( realname ) ){
+		$errorMsg.html('姓名格式有误，请重新填写~').show();
+		return;
+	}
+
+	if( id_card == '' ){
+		$errorMsg.html('请填写身份证号~').show();
+		return;
+	}
+
+	if( !oIdCard.test(id_card) ){
+		$errorMsg.html( '身份证号格式有误，请重新填写' ).show();
+		return;
+	}
+
+	if( r_year.val() == 0 ){
+		$errorMsg.html('请选择注册年份~').show();
+		return;
+	}
+	if( r_month.val() == 0 ){
+		$errorMsg.html('请选择注册月份~').show();
+		return;
+	}
+	if( login_pid.val() == 0 ){
+		$errorMsg.html('请选择常登陆地区省份~').show();
+		return;
+	}
+	if( login_cid.val() == 0 ){
+		$errorMsg.html('请选择常登陆城市~').show();
+		return;
+	}
+	if( shipping_name == '' ){
+		$errorMsg.html('请填写常用收货人姓名~').show();
+		return;
+	}
+
+	if( !oName.test( shipping_name ) ){
+		$errorMsg.html('常用收货人姓名格式有误，请重新填写~').show();
+		return;
+	}
+
+	if( shipping_phone == '' ){
+		$errorMsg.html('请填写常用收货人电话~').show();
+		return;
+	}
+	
+	if( !mobileRe.test( shipping_phone )){
+		$errorMsg.html('常用收货人电话格式有误，请重新填写~').show();
+		return;
+	}
+
+	if( shipping_address == '' ){
+		$errorMsg.html('请填写常用收货地址~').show();
+		return;
+	}
+
+	//月份需要特殊处理，一位的月份，前面加0， 后端要求格式 yyyy-mm
+	if( register_month.length == 1 ){
+		register_month = '0' + register_month;
+	}
+	var register_time = register_year + '-' + register_month;
+
+	var data = {
+		'realname' : realname,
+		'id_card' : id_card,
+		'register_time' : register_time,
+		'register_year' : register_year,
+		'register_month' : register_month,
+		'common_login_address' : common_login_address,
+		'common_login_address_pid' : common_login_pid,
+		'common_login_address_cid' : common_login_cid,
+		'shipping_name' : shipping_name,
+		'shipping_phone' : shipping_phone,
+		'shipping_address' : shipping_address,
+		'shipping_address_pid' : shipping_pid,
+		'shipping_address_cid' : shipping_cid,
+		'shipping_address_did' : shipping_did,
+		'comment' : comment,
+		'change_mobile' : change_mobile,
+		'type' : 'save'
+	};
+
+	if ( ajaxIsComplete == true ){
+		ajaxIsComplete = false;
+		$.ajax({
+			url: '/aj/change_bind/apply/saveAudit',
+			type: 'GET',
+			dataType: 'json',
+			data:  data,
+			success: function( res ){
+				ajaxIsComplete = true;
+				if( res.ret != 0){
+					$errorMsg.html(res.msg).show();
+				}else{
+					var timeStap = new Date().getTime();
+					window.location.href = '/user/audit/?t_stap='+ timeStap;	
+				}
+			},
+			error: function(){
+				ajaxIsComplete = true;
+				alert('系统繁忙，请稍后再试');
+			}
+		})
+	}
+	
+})	
+
+
+function getAddrList( data,callback ){
+
+	$.ajax({
+		url: '/aj/change_bind/apply/addrList',
+		type: 'GET',
+		dataType: 'json',
+		data: data,
+		success: function( res ){
+			callback( res );
+		},
+		error: function(){
+			alert('系统繁忙，请稍后再试');
+		}
+	})
+}
+
+function changeSelect( $this ){
+	var selected_item = $this.find( 'option' ).not(function(){ return !this.selected });
+	var options = $this.find( 'option' );
+	options.removeAttr( 'selected' );
+	selected_item.attr( 'selected', 'selected' );
+	return selected_item;
+}
+
+
+
+

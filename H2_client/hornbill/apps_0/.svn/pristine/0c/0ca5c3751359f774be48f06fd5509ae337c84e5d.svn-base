@@ -1,0 +1,28 @@
+<%#head.html%>
+
+<div class="nav_wrap">
+	<div class="nav n_nav">
+		<div class="active bannar_nav" data-cr="pinpai">品牌街</div>
+		<div class="efficacy_nav" data-cr="gongxiao">功效区</div>
+	</div>
+</div>
+<div class="nav fixed_nav none_f">
+	<div class="active bannar_nav" data-cr="pinpai_fixed">品牌街</div>
+	<div class="efficacy_nav" data-cr="gongxiao_fixed">功效区</div>
+</div>
+
+<div class="tab_content"></div>
+<div class="pullUp" status="loading"></div>
+
+<%# biz/beauty_sale/act_bannar.html %>
+<%# biz/beauty_sale/efficacy.html %>
+
+<script>
+	fml.vars.r = '<%== this.params_r %>';
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/biz/new_brand');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot_simple.html%>

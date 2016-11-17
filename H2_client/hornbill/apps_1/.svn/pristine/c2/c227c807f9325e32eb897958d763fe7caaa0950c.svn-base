@@ -1,0 +1,316 @@
+<%# win/win_header.html%>
+<%
+	var orders = (this.recent_order.data && this.recent_order.data.datas) ? this.recent_order.data.datas : []
+		,allOrderUrl = this.recent_order.data ? this.recent_order.data.url : ''
+		,goodsData = this.goods.data || 0
+		,shopInfo = this.shop_info.data
+		,openVipInfo = this.open_vip_info || null
+		,toInfo = this.to_info.data || {};
+%>
+<div class="introBox">
+	<ul class="intro_tab">
+		<% if(toInfo.utype=='official'){%>
+		<li class="tab_goods"><span>商家运营</span></li>
+		<%} else {%>
+		<li class="tab_goods"><span>预览</span></li>
+		<li class="tab_order"><span>订单</span></li>
+		<li class="tab_shop"><span>会员</span></li>
+		<%}%>
+	</ul>
+	<div class="intro_list">
+		<% if(toInfo.utype=='official'){%>
+		<div class="list_operation">
+			<div class="ope_head">
+				<img src="<%=toInfo.avatar_a %>" alt="">
+				<p class="ope_title"><%=toInfo.title %></p>
+				<p class="ope_name"><%=toInfo.show_nick %></p>
+			</div>
+			<div class="ope_info">
+				<h4>联系商家客服</h4>
+				<table>
+					<tr>
+						<td>电话：</td>
+						<td><%=toInfo.tel || '' %></td>
+					</tr>
+					<tr>
+						<td>Q Q：</td>
+						<td><%=toInfo.qq || '' %></td>
+					</tr>
+					<tr>
+						<td>邮箱：</td>
+						<td><%=toInfo.email || '' %></td>
+					</tr>
+				</table>
+				<h4>在线时间</h4>
+				<p><%=toInfo.service_time || '' %></p>
+			</div>
+		</div>
+		<% } %>
+		<div class="list_goods">
+			<%if(goodsData){%>
+			<div class="goods_box">
+				<a class="goods_img" target="_blank" href="<%=this.MAIN_SITE_DOMAIN %>share/item/<%=goodsData.twitter_id %>">
+					<img src="<%=goodsData.goods_img %>">
+				</a>
+				<p class="title">
+					<a target="_blank" href="<%=this.MAIN_SITE_DOMAIN %>share/item/<%=goodsData.twitter_id %>"><%=goodsData.goods_title %></a>
+				</p>
+				<div class="clear_f">
+				</div>
+				<p class="price">¥<%=goodsData.goods_price %></p>
+			</div>
+			<%} else {%>
+			<div class="no_goods_box">
+				<img src="<%= this.PICTURE_URL %>images/wap/web/im/no_goods_icon.png">
+				<p>暂无商品预览</p>
+			</div>
+			<%}%>
+			<div class="list_user">
+				<ul class="user_tab">
+					<li class="tab_mark act">用户标签<!-- <i class="help_mark" data-help="您可以通过标签定义用户的属性，基于标签，对用户进行多维度管理。同时，在以后的推广中，您可以定向向某一类用户推送您的产品，获取更高的转化。">&nbsp;</i> --></li>
+				</ul>
+				<div class="list_user_list">
+
+				</div>
+			</div>
+		</div>
+		<div class="list_order">
+			<div class="select_wrapper">历史订单：
+				<select name="order_select">
+					<% this.order_status_list && this.order_status_list.data && this.order_status_list.data.forEach(function(item){%>
+					<option value="<%=item.id %>"><%=item.value %></option>
+					<%}); %>
+				</select>
+			</div>
+			<ul class="order_ul_wrapper">
+
+			</ul>
+
+			<div class="order_box">
+				<p class="order_all">
+					<a href="<%=allOrderUrl %>" target="_blank" class="red_f">查看买家所有订单<samp>&gt;</samp></a>
+				</p>
+			</div>
+		</div>
+		<div class="list_shop">
+			<!--div class="shop_box">
+				<p class="shop_name">
+					<a href="<%=this.MAIN_SITE_DOMAIN %>shop/<%=shopInfo.shop_id %>" target="_blank"><%=shopInfo.shop_nick %></a>
+				</p>
+				<div class="shop_con">
+				<ul class="shop_con_l">
+					<li >商家评分</li>
+					<% ['fashion','quality','attitude','fast'].forEach(function(attr){
+						var item = shopInfo.points_trend[attr];
+						if (item) {
+
+					%>
+					<li><%=item.text %>：
+						 <span><%= item.avg || '' %></span>
+					</li>
+					<%}});%>
+				</ul>
+				<ul class="shop_con_m">
+					<li >比同行平均</li>
+					<% ['fast','quality','attitude','fast'].forEach(function(attr){
+						var item = shopInfo.points_trend[attr];
+						if (item) {
+					%>
+					<li>
+					  <%if(item.mark==1){%>
+					  <span class="redlevbtn">高</span>
+					  <%}else if(item.mark==0){%>
+					  <span class="redlevbtn">平</span>
+					  <%}else if(item.mark== -1){%>
+					  <span class="grenlevbtn">低</span>
+					  <%}%>
+					  <%=item.ratio%>
+					</li>
+					<%}}); %>
+				</ul>
+				<div class="clear_f"></div>
+					<ul class="shop_con_r">
+					   <li >商家信息</li>
+					   <li>所在地区：
+						   <span><%=shopInfo.location%></span>
+					   </li>
+					   <li>商品数量：
+						   <span><%=shopInfo.goods_count%></span>
+					   </li>
+					   <li>销售数量：
+						   <span><%=shopInfo.goods_sales%></span>
+					   </li>
+					   <li>创建时间：
+						   <span><%=shopInfo.shop_ctime%></span>
+					   </li>
+					</ul>
+				</div>
+			</div-->
+
+			<div class="shop_con">
+				<%if(openVipInfo.data.nickname){%>
+				<ul class="shop_con_menber">
+					<li >昵称：
+						<span><%=openVipInfo.data.nickname%>
+							<%if(openVipInfo.data.level_id == 0){%>
+								<img src="http://d01.res.meilishuo.net/pic/_o/04/84/06e34cb3802ec17b8804834f8cc3_14_14.cf.png" />
+							<%} else if(openVipInfo.data.level_id == 1){%>
+								<img src="http://d01.res.meilishuo.net/pic/_o/a2/c5/a7d41dd9f15a310a9a9aa1a3adf1_14_14.cg.png" />
+							<%} else if(openVipInfo.data.level_id == 2){%>
+								<img src="http://d01.res.meilishuo.net/pic/_o/e6/59/2899626c8d06de417504e81dc2cc_14_14.cg.png" />
+							<%} else if(openVipInfo.data.level_id == 3){%>
+								<img src="http://d04.res.meilishuo.net/pic/_o/ce/e5/daa3dabb07613e873f059f3fa019_14_14.cg.png" />
+							<%} else {%>
+								<img src="http://d03.res.meilishuo.net/pic/_o/8f/09/1de1c18767fc554c34f1c40a2f5f_14_14.cf.png" />
+							<%}%>
+						</span>
+					</li>
+					<li>所在地区：
+						<span><%=openVipInfo.data.province%></span>
+					</li>
+					<li>总交易金额：
+						<span><%=openVipInfo.data.order_total_fee%></span>
+					</li>
+					<li>平均客单价：
+						<span><%=openVipInfo.data.average_fee%></span>
+					</li>
+					<li>退款次数：
+						<span><%=openVipInfo.data.refund_times%></span>
+					</li>
+				</ul>
+				<%} else {%>
+				<div class="no_member_box">
+					<img src="http://d01.res.meilishuo.net/pic/_o/29/8b/a462265ff7870c98bccf019a9b57_106_80.cf.png">
+					<p>该用户暂不是会员</p>
+				</div>
+				<%}%>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/html" id="tmp_remark">
+	<li style="background-color: <?=labelColor?>"><span><?=txt ?></span><img src="<?=Meilishuo.config.picture_url?>/images/im/win/label_close.png"  class="del_btn" data-id="<?=id ?>" /></li>
+</script>
+<script>
+fml.vars.orderList = <%=JSON.stringify(orders) %>;
+</script>
+<script type="text/html" id="tmp_order_list">
+	<? if(orders.length){ ?>
+	<? orders.forEach(function(order,index){?>
+	<? var isShow = !index;?>
+	<li class="order_li <?=isShow?'show_detail':''?>" data-orderid="<?=order.id ?>">
+		<div class="order_header">
+			<span class="arrow">></span>
+			<span class="left_f"><?=order.date ?></span>
+			<span class="right_f" style="margin-right: 5px;"><?=order.status ?></span>
+			<div class="clear_f"></div>
+		</div>
+		<div class="order_wrapper">
+			<? order.goods.forEach(function(goods){?>
+			<div class="order_content">
+				<div class="o_img_wrapper">
+					<a href="<?=order.url ?>" target="_blank">
+						<img class="goods_img" src="<?=goods.thumb ?>">
+					</a>
+				</div>
+				<div class="o_txt_wrapper">
+					<div class="goods_title">
+						<a href="<?=order.url ?>" target="_blank"><?=goods.title ?></a>
+					</div>
+					<? goods.attr.forEach(function(attr){?>
+						<?if(attr.is_show==1){?>
+							<div class="goods_sku"><?=attr.name ?>：<?=attr.value ?></div>
+						<?}?>
+					<?}); ?>
+				</div>
+			</div>
+			<?});?>
+			<div class="order_footer">
+				<p>邮费：<?=order.charge==0?'免邮费':'￥'+order.charge ?></p>
+				<? order.coupons=order.coupons||{}; ?>
+				<p>店铺优惠：<?=order.coupons.shop || '无' ?> </p>
+				<p>网站优惠：<?=order.coupons.plat || '无' ?></p>
+				<p>实收：<span class="pay_price">￥<?=order.income ?></span></p>
+				<!--<p>订单号码：<a href="<?=order.url ?>" target="_blank" class="order_num"><?=order.id ?></a></p> -->
+				<p>订单号码：<?=order.id ?></p>
+				<?if(order.pay_time){?><p>付款时间：<?=order.pay_time ?></p><?}?>
+			</div>
+			<div class="order_btn_wrapper">
+				<span class="seller_remark">备注</span>
+				<span class="buyer_remark">买家留言</span>
+				<span class="order_address">地址</span>
+				<div class="pop_wrapper">
+					<div class="seller_remark_pop">
+						<div class="remark_arrow_out">
+							<div class="remark_arrow_in"></div>
+						</div>
+						<ul>
+							<? order.service && order.service.forEach(function(item){?>
+							<li title="<?=item.comment ?>"><?=item.comment ?></li>
+							<?}); ?>
+						</ul>
+						<input type="text" placeholder="添加备注信息" class="seller_remark_input">
+						<input type="button" value="确定" class="add_seller_remark">
+					</div>
+					<div class="buyer_remark_pop">
+						<div class="remark_arrow_out">
+							<div class="remark_arrow_in"></div>
+						</div>
+						<p><?=order.comment || '无' ?></p>
+					</div>
+					<div class="order_address_pop">
+						<div class="remark_arrow_out">
+							<div class="remark_arrow_in"></div>
+						</div>
+						<ul>
+							<li>收货人：<?=order.address.nickname ?></li>
+							<li>地址：<?=order.address.address ?></li>
+							<li>邮编：<?=order.address.postcode || '' ?></li>
+							<!--<li>电话：<?=order.address.phone ?></li> -->
+						</ul>
+						<? if(window.c_sendmsg){ ?>
+						<input type="button" value="发送地址" class="send_address">
+						<? } ?>
+					</div>
+				</div>
+			</div>
+		</div>
+	</li>
+	<?});?>
+	<? } else { ?>
+	<li><div class="has_no_order">没有符合条件的订单</div></li>
+	<? } ?>
+</script>
+
+<script type="text/html" id="user_remark_tpl">
+	<div class="user_marks">
+		<ul class="marks_wrapper">
+			<? data && data.forEach(function(item){?>
+			<li style="background-color: <?=item.labelColor?>"><span><?=item.label ?></span><img src="<?=Meilishuo.config.picture_url?>/images/im/win/label_close.png"  class="del_btn" data-id="<?=item.label_id ?>" /></li>
+			<?}); ?>
+		</ul>
+		<div class="marks_error_tip"></div>
+		<div class="marks_add_wrapper">
+			<input type="text" placeholder="添加新标签">
+			<div class="marks_add_btn">添加</div>
+		</div>
+	</div>
+</script>
+
+<script type="text/html" id="select_component_tpl">
+	<div class="sel-com order-sel">
+		<div class="selected">哈哈1</div>
+		<ul class="sel-option">
+			<li>哈哈1</li>
+			<li>哈哈</li>
+		</ul>
+	</div>
+</script>
+
+<script>
+	fml.vars.userLabelData = <%=JSON.stringify(this.ulabel_get.data)%>;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('im_win/info');
+_use:", this._JSstack , this._JSmods); %>
+<%# win/win_footer.html%>

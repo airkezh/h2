@@ -1,0 +1,184 @@
+<script type="text/html" id="im_transfer_item">
+<ul class="all_status transferBox">
+<? $.each(transfer , function(k , v){ ?> 
+	<li uid="<?= v.uid ?>"><a href="javascript:void(0)"><?= v.nickname ?></a></li>
+<? });?>
+</ul>
+</script>
+
+<script type="text/html" id="im_transHistory_item">
+	<div class="trans_history">
+		<div class="history_intro"><span>来自客服&nbsp;<?=transfrom?>&nbsp;的转接记录开始</span></div>
+		<? $.each(history,function (k,v){?>
+			<div class="messages">
+				<p><span class="<?=(fml.vars.im.toid==v.chatfrom)?'to':'from'?>"><?= v.chatfrom_nick ?></span><span class="t"><?= v.ctime ?></span></p>
+				<p><?if(v.type=='text'){?><?= v.msg ?><?}else if(v.type=='img'){?><?for(var i=0; i<v.picInfo.length; i++){?><img src="<?= v.picInfo[i].pic_url ?>" /><br/><?}}?></p>
+			</div>
+		<? }); ?>
+		<div class="history_intro"><span>来自客服&nbsp;<?=transfrom?>&nbsp;的转接记录结束</span></div>
+	</div>
+</script>
+
+<script type="text/html" id="im_intro_tab_item">
+	<li class="tab_<?= tag?>"><span><?= title ?></span></li>
+</script>
+<script type="text/html" id="im_intro_list_item">
+	<div class="list_<?= tag?>" intro_id="<?= intro_id ?>"><?= tpl ?></div>
+</script>
+
+<script type="text/html" id="im_inputbox_picbox_item">
+	<li pic_url="<?= pic_url?>" pic_id="<?= pic_id?>">
+		<a target="_blank" href="<?= o_pic_url?>"></a>
+		<span class="cleanPicBtn">×</span>
+	</li>
+</script>
+
+<script type="text/html" id="im_main_item">
+<div class="im_mainitem rightHide <?if(v.utype == 'public'){?>public<?}?>" uid="<?= v.uid ?>" <?if(v.utype == 'public'){?>utype="public"<?}?>>
+	<div class="im_top">
+		<div class="user_info <?if(status == 1){?>online<?}else if(status == 2){?>leave<?}else{?>offline<?}?>" uid="<?= v.uid ?>">
+			<span class="user_img"><img src="<?= v.avatar_b ?>"/></span>
+			<div class="user_name" uid="<?= v.uid ?>">
+				<span class="left_f"><?= v.nickname ?></span>
+				<div class="im_user_tools" uid="<?= v.uid ?>">
+					<span class="shap"></span>
+					<ul class="all_status">
+						<li class="im_black"><a href="javascript:void(0)"><span class="i_black">&nbsp;</span>添加黑名单</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="clear_f"></div>
+			<p class="user_status"><span class="sl_offline">&nbsp;</span>TA离线</p>
+		</div>
+
+		<div class="im_transfer" id="im_transfer">转接客服<span class="shap"></span></div>
+
+	</div>
+	<div class="im_right">
+		<div class="introBox">
+			<ul class="intro_tab">
+				<li class="tab_order act"><span>订单</span></li>
+			</ul>
+			<div class="intro_list">
+				<div class="list_order">
+					<div class="order_box">
+						<p class="order_all"><a href="https://shop.meilishuo.com/order/?buyer_nickname=<?= v.nickname ?>" target="_blank" class="red_f">查看买家所有订单<samp>&gt;</samp></a></p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="feedback">
+			<h4>客服工具使用帮助</h4>
+			<p>1. 建议一直开启此聊天窗口，保证用户咨询信息及声音提醒的及时性</p>
+			<p>2. 使用ctrl＋上下键切换聊天</p>
+			<p>3. 使用esc，关闭当前会话</p>
+			<a class="download" target="_blank" href="http://i.meilishuo.net/css/images/im/im1.5_0610.rar">下载美丽说客服客户端</a>
+		</div>
+
+	</div>
+	<div class="im_mainbox">
+		<div class="im_dialogbox">
+			<div class="im_dialog" uid="<?= v.uid ?>">
+				<div class="history hide">
+					<div toid="<?= v.uid?>" class="historyBtn">查看历史聊天记录</div>
+					<div class="history_intro"><span>以上是聊天记录</span></div>
+				</div>
+			</div>
+		</div>
+		<div class="im_inputbox">
+			<div class="im_inputbox_tools">
+				<span class="smile"><em class="i_smile">&nbsp;</em>表情</span>
+				<span class="uploadImg"><em class="i_upload">&nbsp;</em>图片</span>
+				<?if(fml.vars.im.isHigo){?>
+					<span class="goodsBtn"><em class="i_screen">&nbsp;</em>商品</span>
+					<span class="couponBtn"><em class="i_screen">&nbsp;</em>优惠券</span>
+				<?}?>
+				<?if(fml.vars.im.imClient){?>
+				<span class="screenShot"><em class="i_screen">&nbsp;</em>截屏</span>
+				<?}?>
+				<div class="fastReply">
+					快捷回复<span><em class="shap"></em></span>
+				</div>
+			</div>
+			<form method="post" onsubmit="return false" action uid="<?= v.uid ?>">
+				<div class="im_inputbox_input" contenteditable="true"></div>
+				<ul class="im_inputbox_picbox"></ul>
+				<p class="button">
+					<input class="btn sentBtn" type="submit" value="发送 →" />
+				</p>
+			</form>
+		</div>
+	</div>
+</div>
+</script>
+
+<script type="text/html" id="im_userlist_item">
+<div class="user_info <?if(v.msg_num){?>newMsg<?}?> <?if(v.utype == 'public'){?>public<?}?>" uid="<?= v.uid ?>" <?if(v.utype == 'public'){?>utype="public"<?}?>>
+	<span class="user_img"><img src="<?= v.avatar_b ?>"/></span>
+	<p class="user_name"><span><?= v.nickname ?></span>
+		<? v.icons && v.icons.length && v.icons.forEach(function(item){ ?>
+		<img src="<?=item.img_url ?>" width="<?=item.img_width ?>" height="<?=item.img_height ?>">
+		<? });?>
+	</p>
+	<span class="closeBtn">×</span>
+	<span class="num"><?if(v.msg_num){?><?= v.msg_num?><?}?></span>
+	<span class="read"></span>
+</div>
+</script>
+
+<script type="text/html" id="im_dialog_item">
+<div class="<?if(msgStyle == 'sys'){?>d_a <?}?><?= who?> d_<?= type?>">
+	<? if(ctime){?>
+	<div class="ctime"><?= ctime ?></div>
+	<?}?>
+	<div class="con">
+		<div class="bubble<?if(send){?> wait<?}?>" id="mid_<?= messageId?>">
+			<p><?if(type == 'img'){?><a class="imgUpload" href="<?= content.o_pic_url ?>" target="_blank"><img src="<?= content.pic_url ?>" /></a><?} else {?><?= content ?><?}?></p>
+			<span class="shap"></span><span class="shapb"></span>
+		</div>
+		<div class="clear_f"></div>
+	</div>
+	<div class="clear_f"></div>
+</div>
+</script>
+
+<script type="text/html" id="im_order_item">
+<?if(list.length){?>
+<h4>买家近期订单</h4>
+<ul class="order_ul_wrapper">
+<?
+for(var i=0;i<list.length;i++){
+	var item = list[i],goods = item.goods[0];
+?>
+<li>
+	<div class="order_header">
+		订单号：<a href="<?=item.url ?>" target="_blank" class="order_num" ><?=item.id ?></a>
+	</div>
+	<div class="order_content">
+		<div class="o_img_wrapper">
+			<a href="<?=item.url ?>" target="_blank">
+				<img class="goods_img" src="<?=goods.thumb ?>">
+			</a>
+		</div>
+		<div class="o_txt_wrapper">
+			<div class="goods_title"><a href="<?=item.url ?>" target="_blank"><?=goods.title ?></a></div>
+			<? for(var j=0;j<goods.attr.length;j++){
+				var attr = goods.attr[j];
+			?>
+			<?if(attr.is_show==1){?><div class="goods_sku"><?=attr.name ?>：<?=attr.value ?></div><?}?>
+			<? } ?>
+		</div>
+	</div>
+	<div class="order_footer">
+		<p>下单日期：<?=item.date ?></p>
+		<p>订单状态：<?=item.status ?></p>
+	</div>
+</li>
+<? } ?>
+</ul>
+<? } else { ?>
+<div class="has_no_order">该买家暂无成交记录</div>
+<? } ?>
+</script>
+

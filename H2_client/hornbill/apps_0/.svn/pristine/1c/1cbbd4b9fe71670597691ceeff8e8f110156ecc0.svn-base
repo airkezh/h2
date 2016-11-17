@@ -1,0 +1,80 @@
+<%# head.html %>
+<%
+var myCircles  = this.mycircles,
+    services = this.services,
+    hasCircles = myCircles && myCircles.length,
+    isService  = !!( services.data && services.data.is_service > 0 ),
+    hasShop    = !!( this.myshop.data && this.myshop.data.partner_type != 3 );
+%>
+
+<div class="circle-form ">
+    <form>
+        <div class="inputs-wrap">
+            <div class="item">
+                <label for="name" class="required">圈子名称</label>
+                <input id="name" class="js-ipt js-required" placeholder="KK的东京寻鞋记" maxlength="10">
+            </div>
+            <div class="item">
+                <label for="desc" class="required">圈子简介</label>
+                <input id="desc" class="js-ipt js-required" placeholder="KK踏遍东京南北，掘地三尺为你买美鞋">
+            </div>
+            <div class="item">
+                <label for="background" class="required">背景设置</label>
+                <input id="background" class="js-ipt js-required" placeholder="图片最佳尺寸620*460" readonly>
+                <img class="arrow" src="http://d02.res.meilishuo.net/pic/_o/1c/d8/7accf34cdcf5611bdfd5b657402c_14_25.cg.png">
+                <a class="upload-btn js-upload-btn" href="###"></a>
+            </div>
+        </div>
+
+        <h3>个人信息</h3>
+        <div class="inputs-wrap">
+            <div class="item">
+                <label for="contact" class="required">联系方式</label>
+                <input id="contact" class="js-ipt js-required" placeholder="推荐手机号(方便接受短信通知）">
+            </div>
+            <div class="item">
+                <label for="self_intro">自我介绍</label>
+                <input id="self_intro" class="js-ipt" placeholder="你有哪方面时尚超能力，让编辑妹子推你">
+            </div>
+            <div class="item">
+                <label for="weibo">微博地址</label>
+                <input id="weibo" class="js-ipt" placeholder="我要偷窥你的YY，看你是否有潜力">
+            </div>
+            <div class="item">
+                <label for="shop_addr">店铺地址</label>
+                <input id="shop_addr" class="js-ipt" placeholder="有经验的掌柜，双手抱抱">
+            </div>
+        </div>
+
+        <% if ( hasCircles ) {%>
+        <a id="submit" href="###" class="created disabled">您已开通圈子</a>
+        <% } else if ( hasShop || isService ) { %>
+        <a id="submit" href="###" class="created disabled">请用一个新账号创建群圈</a>
+        <% } else { %>
+        <a id="submit" href="###">开通群圈，进入下一步</a>
+        <% } %>
+
+    </form>
+</div>
+<script>
+    (function() {
+       var isLogin = fml.vars.isLogin = !! <%= this.userInfo.user_id %>;
+        if ( !isLogin ) {
+            location.href = 'meilishuo://login.meilishuo/'
+        }
+
+        if ( <%= hasShop %> ) {
+            alert( '您是美丽说商家，请用一个新账号创建群圈' )
+        } else if ( <%= isService %> ) {
+            alert( '您是美丽说商家客服，请用一个新账号创建群圈' )
+        }
+
+        window.MLS.didLogin = function() {
+            location.reload()
+        }
+    }());
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+    fml.use('circle/page/create');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html %>

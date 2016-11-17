@@ -1,0 +1,100 @@
+/*common*/
+require('wap/zepto/fastclick');
+
+var lazyLoad = require('wap/component/lazzyLoad'),
+	onscroll = require('wap/component/windowScroll'),
+	Alert = require("wap/ui/alert"),
+	appShare = require('wap/app/appShare'),
+	openApp = require('wap/app/openApp'),
+	openAppLink = require('wap/app/openAppLink');
+
+var weixinBrowser = navigator.userAgent.indexOf('MicroMessenger'),
+	wrap = $('#wrap'),
+	postwall = $('#postwall'),
+	btnCoupons = $('#coupon').find('li'),
+	gotopObj = $('.top-box').find('a');
+var a = function(msg, callback) {
+	return new Alert({
+		content: msg
+	});
+};
+
+if (weixinBrowser != -1) {
+	openApp('http://mapp.meilishuo.com/self');
+}
+
+// 客户端类型的分享（客户端右上角）
+if (fml.vars.appShare) {
+	appShare(fml.vars.params, ['weixin', 'weixin_timeline']);
+}
+
+/*登陆成功后的回掉函数*/
+window.MLS = {
+	didLogin: function() {
+		// 成功登录，跳转到下一步
+		window.location.reload();
+	}
+};
+
+/*gotop*/
+gotopObj.on("click", function(e) {
+	document.body.scrollTop = 0
+});
+onscroll.bind(gotop, 'gotop');
+
+function gotop(pos, isDown) {
+	if (pos < 30) {
+		gotopObj.hide()
+	} else {
+		gotopObj.show()
+	}
+};
+
+/* lazyLoad load setting, 采用全屏扫点方式加载 */
+var lazy_pic = lazyLoad.init({
+	'xpath': '.lazy_pic_big'
+});
+lazy_pic.scroll();
+lazy_pic.load();
+
+/*优惠券领取部分*/
+btnCoupons.on('click', function() {
+	if (fml.vars.isLogin == 0) {
+		window.location.href = "meilishuo://login.meilishuo/";
+		return;
+	}
+	var self = $(this),
+		btn = self.find('.btn'),
+		coupon_apply_code = self.data('apply_code');
+	if (btn.hasClass('btn-done')) {
+		return false;
+	}
+	$.get('/aj/self/index/coupon', {
+		'coupon_apply_code': coupon_apply_code
+	}, function(res) {
+		if (res.code == 0) {
+			btn.addClass('btn-done').html('已经领取');
+		}
+		a(res.message);
+	}, 'json');
+});
+
+/*获取单品页链接*/
+function getDoneUrl(ele, index) {
+	var twitter_id = parseInt(ele.data('twitter_id')),
+		Url = Meilishuo.config.os.mlsApp ? openAppLink.getAppLink({
+			'protocol': 'twitter_single',
+			'param': {
+				"twitter_info": {
+					"twitter_id": twitter_id,
+					"is_doota": 1
+				}
+			}
+		}) : '/share/item/' + twitter_id;
+	window.location.href = window.__get_r(Url, postwall.data('xr') + ':_page_area=waterfall:_pos_id=' + index + ':_ext_tid=' + twitter_id);
+}
+postwall.on('click', '.sale', function() {
+	var self = $(this),
+		index = self.parent('li').index() + 1;
+	getDoneUrl(self, index);
+})

@@ -1,0 +1,18 @@
+<%# head.html %>
+<%
+	function link(tag_word,xr){
+		return 'meilishuo://search_goods_result.meilishuo?json_params='+encodeURIComponent(JSON.stringify({"tag_word":tag_word, "search_source":1, "r": xr}));
+	}
+%>
+<% this.effect && this.effect.forEach(function(list,i){ %>
+<div class="model" id="<%= list.info.word_name %>" name="<%= list.info.word_name %>">
+	<div class="title"><%= list.info.word_name %></div>
+	<div class="classify">
+		<% list.children.forEach(function(data,index){ %>
+			<div class="effect"><a href="<% if(data.org_url){ %><%= data.org_url %><% }else{ %><%= link(data.word_name,this.xr.r) %><% } %>" data-xr="<%= this.xr.r %>"><div class="img" style="background:url('<%= data.pic %>');background-size:100% 100%;"></div><p><%= data.word_name %></p></a></div>
+		<% }); %>
+	</div>
+</div>
+<% }); %>
+
+<%# foot.html %>

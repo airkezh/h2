@@ -1,0 +1,21 @@
+<script type="text/html" id="posterWall">
+<?
+var pt = (this.v.pic_height / this.v.pic_width) * 100;	
+?>
+<div class="poster_grid poster_wall" twitter_id="<?= this.v.twitter_id?>">
+	<figure>
+		<a class="pic_load" style="padding-top:<?= pt?>%;" href="/share/<?if(this.v.is_doota == '1'){?>item/<?}?><?= this.v.twitter_id?><?if(this.v.url_query){?>?<?= this.v.url_query?><?}?>">
+			<img src="<?= this.v.pic_url ?>" alt="<?= this.v.title ?>" title="<?= this.v.title ?>"/>
+		</a>
+		<? if(this.v.title){?>
+			<p class="clothesTitle"><?=this.v.title?></p>
+		<?}?>
+		<figcaption>
+			<? if(this.v.price){?>
+			<span class="price"><?= this.v.price?></span>
+			<? }?>
+			<span class="like icon-heart"><?= this.v.count_like?></span>
+		</figcaption>
+	</figure>
+</div>
+</script>

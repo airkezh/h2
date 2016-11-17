@@ -1,0 +1,49 @@
+<form class="login-form" id="loginForm" method="post" onsubmit="return false" action="">
+	<?if(this.formTitleShow !== 0){?>
+	<h3><?= this.formTitleText || '登录美丽说' ?></h3>
+	<?}?>
+	<div class="login-form-list">
+		<p class="login-form-item">
+			<input class="login-form-input" id="username" name="username" type="text" placeholder="<?= this.usernamePlaceholder ?>" />
+			<span></span>
+			<span class="icon-user"></span>
+		</p>
+	</div>
+	<div class="login-form-list">
+		<p class="login-form-item">
+			<input class="login-form-input" id="password" name="password" type="password" placeholder="<?= this.passwordPlaceholder ?>" />
+			<span></span>
+			<span class="icon-pwd"></span>
+		</p>
+	</div>
+	<div class="login-form-list checkcodeArea <?if(this.checkcodeAreaShow !== 1){?>none_f<?}?>">
+		<div class="login-form-item">
+			<input class="login-form-input" id="checkcode" name="checkcode" type="text" placeholder="<?= this.checkcodePlaceholder ?>" maxlength="4" />
+			<span></span>
+			<span class="icon-code"></span>
+			<div class="checkImage" onselectstart="return false;">
+				<img width="90" height="36" src="http://i.meilishuo.net/css/images/register/blank.jpg"><span class="icon-refresh"></span>
+			</div>
+		</div>
+	</div>
+	<div class="login-form-message"></div>
+	<div class="login-form-submit">
+		<input type="submit" value="<?= this.submitBtnText || '立即登录' ?>"/>
+	</div>
+	<?if(this.rememberBtnShow !== 0){?>
+	<div class="btn-remember">
+		<input type="checkbox" name="savestate" id="savestate" checked="checked" />
+		<label for="savestate"><?= this.rememberBtnText || '记住我' ?></label>
+	</div>
+	<?}?>
+	<?if(this.findBtnShow !== 0){?>
+	<div class="btn-find">
+		<a href="/user/findPwd" target="_blank"><?= this.findBtnText || '忘记密码？'?></a>
+	</div>
+	<?}?>
+	<?if(this.registerBtnShow !== 0){?>
+	<div class="btn-register">
+		<a href="/user/register"><?= this.registerBtnText || '注册' ?></a>
+	</div>
+	<?}?>
+</form>

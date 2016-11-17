@@ -1,0 +1,75 @@
+<?if(this.item.length){?>
+  <ul>
+  <?for(var v=0;v<this.item.length;v++){
+  data=this.item[v];
+  var _url="javascript:void(0);",
+  detail_url=fml.vars.joinurl('twitter_single', {'twitter_info' : {'twitter_id' : data.twitter_id , 'is_doota' : 1}}, fml.vars._os, fml.vars._r, '/share/item/'+data.twitter_id);
+  if(fml.vars.isexit(fml.vars.tids,data.twitter_id)){
+      var btn_content="<i class='clock'></i>已设提醒",
+      btn_class="reminded_btn";
+    }else{
+      if(fml.vars.timeunix<=600){
+        var btn_content="<i class='clock'></i>即将开抢",
+            btn_class="reminded_btn";
+      }else{
+        var btn_content="<i class='clock'></i>开抢提醒",
+        btn_class="remind_btn";
+    }
+  }
+   switch(data.status){
+    case 1:       
+      btn_content="<a href='"+detail_url+"'>￥立即购买</a>";
+      btn_class="buy_btn";
+      tipbg="silvertip";
+      _url=detail_url;
+      break;
+    case 2:
+      btn_content="已结束";
+      detail_url=_url;
+      tipbg="silvertip";
+      btn_class="over_btn";
+      break;
+    case 3:
+      btn_content="已抢光";
+      detail_url=_url;
+      tipbg="silvertip";
+      btn_class="empty_btn";
+      break;
+  } ?>
+  <li class="zhengdian good_box" twid="<?=data.twitter_id?>" shopid="<?=data.shop_id?>" stime="<?=data.start_time?>">
+    <figure>            
+      <a class="<?= btn_class=='remind_btn' ? '': btn_class?>" href="<?=detail_url?>">
+        <img src="<?=data.goods_image?>" />         
+      </a>
+    </figure>
+    <ul class="desc">
+      <li class="f_14"><a <?= btn_class=='remind_btn' ? '': 'class=' + btn_class?> href="<?=detail_url?>"><?=data.goods_name?></a></li>
+      <li>
+        <span class="f_25 red_f1 now_price">￥<?=data.off_price?>
+        </span>
+        <span class="gcata">
+            <?if(data.type==0){?>
+              <i class="ref_bg">秒杀</i>
+            <?}else{?>
+              <i class="yel_bg">超值</i>
+            <?}?>
+            <s class="old_price">￥<?=data.origin_price?></s>
+        </span>
+      </li>
+      <li class="saleinfo">
+        <?if(data.status==0){?>
+            <p><span class="red_f1"><?= data.joiner_num?></span>人准备抢</p>
+        <?}else{?>
+            <p class="scale">已售出<?=data.sales?>/<?=data.total_limit?>件</p>
+            <span class="progress" style="width:<?=data.sales/data.total_limit*100?>%"></span>
+        <?}?>
+      </li>
+      <li class="<?= btn_class?> status_btn" strtype="<?=data.type?>"><?= btn_content?></li>      
+    </ul>
+    <?if(data.type==0){?>
+          <span class="mark"></span>
+    <?}?>  
+  </li>             
+<?}?>           
+  </ul> 
+<?}?>

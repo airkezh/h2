@@ -1,0 +1,14 @@
+<%#head.html%>
+<%
+var imgObject = this.imgArray || {};
+var imgArr = imgObject.imgArr || [];
+%>
+<div class="wrap">
+	<% imgArr.forEach(function(item, index){ %>
+		<img src="<%= item.src %>" alt="">
+	<% }); %>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/desire/introduce');
+_use:", this._JSstack, this._JSmods); %>
+<%# foot.html%>

@@ -1,0 +1,112 @@
+<%# head.html%>
+<div class="cart_header">
+	<div class="icon"></div>
+	<div class="status">
+		<div class="chart">
+			<span class="ball first"></span>
+			<span class="empty"></span>
+		</div>
+		<div class="text">
+			<span class="first current">选择支付方式</span>
+			<span>付款，完成购买</span>
+		</div>
+	</div>
+</div>
+
+<div class="container">
+	<p class="label">选择支付方式</p>
+	<div class="bank">
+		<!--div class="credit">
+			<div class="t-cancel-click"><span>使用信用卡支付</span></div>
+			<div class="list" style="display:none">
+				<% this.bank.data.credit.length && this.bank.data.credit.forEach(function(d){ %>
+				<div class="b short-b">
+					<div class="input">
+						<input type="radio" name="pay_id" data-name="<%= d.bankName %>" value="<%= d.bankCode %>__<%= d.pmCode %>" id=""/>
+					</div>
+					<div class="image">
+						<img src="<%= d.picUrl %>" width="130px" height="40px"/>
+					</div>
+				</div>
+				<% }); %>
+				<div class="clear"></div>
+			</div>
+		</div--><!--credit end-->
+
+		<div class="platform">
+			<% if(this.bank.data.platform.length){ %>
+			<!--div class="t"><span>其它支付方式</span><span class="ico"></span></div-->
+			<div class="list">
+				<% this.bank.data.platform.forEach(function(p,i){ %>
+				<div class="b <%if(p.show_words){%>weixin_b<%}%>" >
+					<div class="input">
+						<input type="radio" name="pay_id" data-name="<%= p.bankName %>" <%= i===0 ? 'checked' : '' %> value="<%= p.bankCode %>__<%= p.pmCode %>"/>
+					</div>
+					<div class="image">
+						<img src="<%= p.picUrl %>" width="161px" height="40px"/>
+						<% if (p.help_link){ %>
+						<p>
+						<a href="<%= p.help_link %>" target="_blank">使用帮助</a>
+						</p>
+						<% } %>
+					</div>
+                    <%if(p.show_words){%>
+                    <div class="weixin_pay_info">
+                        <table><tr><td><%=p.show_words %></td></tr></table>
+                    </div>
+                    <%}%>
+				</div>
+				<% }); %>
+				<div class="clear"></div>
+			</div>
+			<% } %>
+		</div><!--platform end-->
+		<!--div class="debit">
+			<div class="t"><span>使用储蓄卡支付</span><span class="ico"></span></div>
+			<div class="list" style="display:none">
+				<% this.bank.data.debit.length && this.bank.data.debit.forEach(function(d){ %>
+				<div class="b short-b">
+					<div class="input">
+						<input type="radio" name="pay_id" data-name="<%= d.bankName %>" value="<%= d.bankCode %>__<%= d.pmCode %>" id=""/>
+					</div>
+					<div class="image">
+						<img src="<%= d.picUrl %>" width="130px" height="40px"/>
+					</div>
+				</div>
+				<% }); %>
+				<div class="clear"></div>
+			</div>
+		</div-->
+		
+	</div>
+	<div class="order">
+		<table cellpadding="0" cellspacing="0">
+			<tfoot>
+				<tr>
+					<td class="first">&nbsp;</td>
+					<td colspan="5" class="last">
+						
+						<span class="right">
+							<span>商品总价：</span>
+							<span class="price">￥<span id="total_price"><%= this.total_price %></span></span>
+							<a href="javascript:;" class="go_charge" id="charge"></a>
+						</span>
+					</td>
+				</tr>
+			</tfoot>
+		</table>
+	</div>
+</div>
+
+<form action="/order/pay/" method="post" target="_blank" style="display:none" id="confirm_form"></form>
+
+<script>
+fml.vars.total_id = "<%=this.total_id%>";
+fml.vars.order_id = "<%= this.order_id %>";
+fml.vars.total_price = "<%= this.total_price %>";
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('order_pc/order/alter_pay_haitao');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

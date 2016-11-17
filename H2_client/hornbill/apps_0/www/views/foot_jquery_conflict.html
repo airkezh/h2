@@ -1,0 +1,14 @@
+<% if (this.jQueryConflict) { %>
+;(function(){
+	var t = window.setInterval(function(){
+		if (window.jQuery && window.$ !==  window.jQuery) {
+			window.$ = window.jQuery.noConflict();
+			console.log('set $ to jQuery');
+			window.clearInterval(t);
+		}
+	}, 30);
+	window.setTimeout(function(){
+		window.clearInterval(t);
+	} , 4000);
+})();
+<%}%>

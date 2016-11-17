@@ -1,0 +1,123 @@
+<%# head.html %>
+<div style="margin:0 auto;width: 960px;">
+<%if(this.adm5 && this.adm5.ad){%>
+	<%
+	this.adm5.admId = 'adm_top';
+	this.adm5._JSstack = this._JSstack;
+	this.adm5._JSmods = this._JSmods;
+	%>
+	<%= requireFn('commerce/adm_banner.html')(this.adm5);%>
+<%}%>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/magazine');
+_use:", this._JSstack , this._JSmods ); %>
+<div>
+	<div class="group_tab">
+		<% 
+	var EfnSubstr = _extFn.mSubstr;
+		var tabs = [
+			['rj' , 0 , '推荐'],
+			['om' , 10 , '欧美'],
+			['tm' , 12 , '甜美'],
+			['fg' , 13 , '复古'],
+			['gx' , 14 , '个性'],
+			['rx' , 11 , '日系'],
+			['qt' , 88 , '其他'],
+		];
+		tabs.map(function(tab){
+		var style = "mt_"+tab[0] ;
+		if ( tab[1] == this.tabNow ) style += 'd'; 
+		%>
+
+
+		<a class="<%= style%>" href="?tab=<%= tab[1]%>&frm=tab<%= tab[1]%>"><%= tab[2]%></a>
+		<% });%>
+		<a class="mt_zzs" style="width: 145px; margin-right: 0;" href="/person/u/<%= this.user_id%>?type=editor&frm=group_fp" target="_blank">我的杂志</a>
+	</div>
+</div>
+<% 
+var isMainList = this.tabNow == 0;
+if (!isMainList){
+	this.groupPg = this.group.page_info;
+	this.group = [this.group.group_info];	
+	}
+var showimg = 0;
+var magItemRenderFn = requireFn('group/magitem.html');
+this.group && this.group.map(function(group){ %>
+<div class="goodsTJ">
+	<% if (isMainList) { %>
+	<div class="title"><h2><%= group.class_name%></h2><p class="gray_f"><a href="?tab=<%= group.link%>" >查看更多&gt;&gt;</a></p></div>
+	<% 
+	}
+	var group_info  = isMainList ?  group.group_info : group;	
+	group_info && group_info.map(function(magazine){
+		%>
+		<%= magItemRenderFn(magazine ,showimg++);%>
+		<%
+	}); 
+	%>
+	<div class="clear_f"></div>
+</div>
+<% });%>
+<div class="clear_f"></div>
+<% if (isMainList) { %>
+<div class="goodsTJ">
+	<div class="newgroup">
+		<div class="title"><h2>新晋杂志</h2></div>
+		<%  this.newcoming && this.newcoming.map(function(newcoming){ %>
+		<%= magItemRenderFn(newcoming ,showimg++);%>
+		<% });%>
+	</div>
+	<div class="top">
+		<h2>TOP10</h2>
+		<ul>
+			 <% 
+			 var i = 0;
+			 this.top10 && this.top10.map(function(top10){
+				 var style = ++i > 3 ? 'icon1': '';
+				 %>
+				 
+			<% if (i != 10) {%>
+			<li>
+			<% } else { %>
+			<li style="border-bottom: none;">
+			<% } %>				
+				<div class="order <%= style%>"><%= i %></div>
+				<div class="avatar48_f"><a href="/group/<%= top10.group_id%>" target="_blank"><img src="http://imgtest.meiliworks.com/<%= top10.logo_path%>" /></a></div>
+				<div class="top_r">
+					<p class="red_f"><a href="/group/<%= top10.group_id%>" title="<%=top10.name%>" target="_blank"><%= EfnSubstr(top10.name,7) %>
+                    </a></p>
+					<p>主编: <a href="/person/u/<%= top10.admin_uid%>" target="_blank"><%= EfnSubstr(top10.admin_nickname, 5)%></a></p>
+					<p>粉丝: <%= top10.count_member%></p>
+				</div>
+			</li>
+			<% });%>
+		</ul>
+	</div>
+</div>
+<% } %>
+<div class="clear_f"></div>
+<%*<div class="face_pop">
+	<div class="fp_con">
+		<div class="fp_info">
+			<a class="avatar64_f" href="#" target="_blank"><img src="http://imgtest.meiliworks.com/ap/b/26/52/93655c49813d4a70066ee9823a2a_180_180.jpg" /></a>
+			<ul>
+				<li></li>
+				<li>北京</li>
+				<li>粉丝<span class="red_f">234</span>美丽说<span class="red_f">234</span></li>
+			</ul>
+		</div>
+	</div>
+</div>%>
+<% if (!isMainList) {
+	this.PGStyle_Flower = false;
+	%>
+<div class="c_f"><%# paging.html %></div>
+<% } %>
+<div class="clear_f"></div>
+<div class="goodsTJ">
+	<div class="ads_banner ads_bottom none_f"></div>
+</div>
+<%# foot.html %>
+

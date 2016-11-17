@@ -1,0 +1,19 @@
+function Passport(){
+}
+
+Passport.prototype.init = function(opts){
+	this.opts = opts
+	this.api = {
+		protocol : (("https:" == document.location.protocol) ? " https://" : " http://")
+		,jcstatic: this.opts.jcstatic || 's.meilishuo.net'
+		,checkcode: this.opts.checkcodeApi || ('/Register/Captcha?token=asde39ad9&session=')	
+
+	}
+	this.watch = this.opts.watch || function(res){console.log(res)}
+}
+/*
+Passport.prototype.watch = function(watch){
+}
+*/
+
+

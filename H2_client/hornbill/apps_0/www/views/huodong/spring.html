@@ -1,0 +1,246 @@
+<%#head_simple.html%>
+<div class="sp_top">
+	<div class="spring_top">
+		<div class="act_rules">
+			<div class="rules_l">
+				<p class="ft">我的福袋活动规则,1.逛美丽说就可以找到福袋，凭福袋内的幸运号码可参加抽奖。2.活动奖品：200份惊喜礼品（美妆正品，精美首饰），2月18日统一开奖3.活动期间每天最多可以找到一个福袋，福袋越多中奖几率越大。通过微博/Qzone分享,可获得额外的福袋</p>
+				<a class="find" style="cursor:auto;">活动已结束</a>
+				<a class="look" href="javascript:void(0);"><%=this.is_join.total%>个</a>
+			</div>
+			<div class="rules_r c_list">
+				<h2 class="tle">已有<%=this.hb_clist.total%>人拣到福袋</h2>
+				<div class="boxLi">
+				<ul class="_img pa_f">
+					<% this.hb_clist && this.hb_clist.tInfo && this.hb_clist.tInfo.map(function(data){ %>
+					<li><span class="right_f"><%=data.time_gap%></span><a href="/person/u/<%=data.user_id%>" target="_blank" class="nick"><%=data.nickname%></a><span class="t_con">在<a href="/guang/attr/<%=data.attr_ids%>" target="_blank"><%=data.get_from%></a>拣到了一枚幸运福袋</span></li>
+					<%});%>
+				</ul>
+				</div>
+			</div>
+			<div class="clear_f"></div>
+			<%if(this.luck_girls){%>
+			<div class="win_title">获奖用户名单</div>
+			<div class="winners">
+				<p>在所有的福袋中我们随机抽取了200个幸运号码,</p>
+				<p>持有这些号码的用户将获得美丽说送出的精美大礼。请各位幸运用户等待我们的奖品快递吧！</p>
+				<div class="win_list clearfix_f">
+					<%for(var i=0;i<5;i++){%>
+					<div class="item">幸运号码<span>获奖用户</span></div>
+					<%}%>
+					<%var luck_len = this.luck_girls.length, index_tmp;%>
+					<%this.luck_girls && this.luck_girls.map(function(data, index){%>
+					<%if(index%10 === 0){
+						index_tmp = index;
+					%>
+					<ul>
+					<%}%>
+						<li><%=data.luck_num%><a href="/person/u/<%=data.user_id%>" target="_blank"><%=data.nickname%></a></li>
+					<%if(index-index_tmp === 9 || index === luck_len){%>
+					</ul>
+					<%}%>
+					<%});%>
+				</div>
+			</div>
+			<%}%>
+			<div class="clear_f"></div>
+			<div class="tle_bg">
+				<div class="corner"></div>
+				<h3><span class="font1">逛吉祥：蛇年开运最当红</span></h3>
+			</div>
+			<div class="sp_bg1 h360">
+				<a class="w370 h360 first" href="/guang/attr/34125" target="_blank"></a>
+				<a class="w564 h173" href="/guang/attr/34143" target="_blank"></a>
+				<a class="w564 h173 mt13" href="/guang/attr/36325" target="_blank"></a>
+			</div>
+			<div class="sp_bg2 h360">
+				<span class="w564 left_f">
+					<a class="w564 h173 first" href="/guang/attr/38713" target="_blank"></a>
+					<a class="w564 h173 first mt13" href="/guang/attr/38427" target="_blank"></a>
+				</span>
+				<a class="w370 h360" href="/guang/attr/38529" target="_blank"></a>
+			</div>
+			<div class="sp_bg3 h360">
+				<a class="w180 h360 first" href="/guang/attr/34123" target="_blank"></a>
+				<a class="w180 h360" href="/guang/attr/38725" target="_blank"></a>
+				<a class="w370 h360" href="/guang/attr/34112" target="_blank"></a>
+				<a class="w180 h360" href="/guang/attr/34115" target="_blank"></a>
+			</div>
+			<div class="tle_bg">
+				<div class="corner"></div>
+				<h3><span class="font2">逛闪耀：新年时尚出席指南</span></h3>
+			</div>
+			<div class="sp_bg4 h298">
+				<a class="w149 h298 first" href="/guang/attr/37019" target="_blank"></a>
+				<a class="w307 h298" href="/guang/attr/34466" target="_blank"></a>
+				<span class="w480 left_f">
+					<a class="w145 h143" href="/guang/attr/38705" target="_blank"></a>
+					<a class="w310 h143" href="/guang/attr/36946" target="_blank"></a>
+				</span>	
+				<a class="w310 h143 mt13" href="/guang/attr/34444" target="_blank"></a>
+				<a class="w145 h143 mt13" href="/guang/attr/34242" target="_blank"></a>
+			</div>
+			<div class="tle_bg">
+				<div class="corner"></div>
+				<h3><span class="font3">逛新品：开春欲望清单</span></h3>
+			</div>
+			<div class="sp_bg5 h298">
+				<span class="w310 left_f">
+					<a class="w149 h143 first" href="/guang/attr/34327" target="_blank"></a>
+					<a class="w149 h143" href="/guang/attr/34295" target="_blank"></a>
+					<a class="w310 h143 first mt13" href="/guang/attr/34369" target="_blank"></a>
+				</span>	
+				<span class="w318 left_f">
+					<a class="w307 h143" href="/guang/attr/34329" target="_blank"></a>
+					<a class="w307 h143 mt13" href="/guang/attr/35483" target="_blank"></a>
+				</span>
+				<a class="w307 h298" href="/guang/attr/38244" target="_blank"></a>
+			</div>
+			<div class="tle_bg">
+				<div class="corner"></div>
+				<h3><span class="font4">逛情谊：人气礼品全攻略</span></h3>
+			</div>
+			<div class="sp_bg6 h298">
+				<span class="w310 left_f">
+					<a class="w149 h143 first" href="/guang/attr/38180" target="_blank"></a>
+					<a class="w149 h143" href="/guang/attr/38689" target="_blank"></a>
+					<a class="w310 h143 first mt13" href="/guang/attr/34268" target="_blank"></a>
+				</span>	
+				<a class="w307 h298" href="/guang/attr/38697" target="_blank"></a>
+				<a class="w307 h143" href="/guang/attr/35555" target="_blank"></a>
+				<a class="w148 h143 mt13" href="/guang/attr/34572" target="_blank"></a>
+				<a class="w148 h143 mt13" style="margin-left: 11px;" href="/guang/attr/34457" target="_blank"></a>
+			</div>
+			<div class="tle_bg">
+				<div class="corner"></div>
+				<h3><span class="font5">逛美貌：焕然一新美起来</span></h3>
+			</div>
+			<div class="sp_bg7 h298">
+				<a class="w148 h298 first" href="/guang/attr/34241" target="_blank"></a>
+				<span class="w480 left_f">
+					<a class="w468 h143" href="/guang/attr/34240" target="_blank"></a>
+					<a class="w468 h143 mt13" href="/guang/attr/37343" target="_blank"></a>
+				</span>
+				<a class="w307 h298" href="/guang/attr/34245" target="_blank"></a>
+			</div>
+			<div class="tle_bg">
+				<div class="corner"></div>
+				<h3><span class="font6">逛温馨：新年家新意</span></h3>
+			</div>
+			<div class="sp_bg8 h298">
+				<a class="w307 h298 first" href="/guang/attr/36266" target="_blank"></a>
+				<span class="w480 left_f">
+					<a class="w468 h143" href="/guang/attr/35033" target="_blank"></a>
+					<a class="w468 h143 mt13" href="/guang/attr/35054" target="_blank"></a>
+				</span>
+				<a class="w148 h298" href="/guang/attr/37753" target="_blank"></a>
+			</div>
+			<div class="tle_bg">
+				<div class="corner"></div>
+				<h3><span class="font7">逛浪漫：完美情人节</span></h3>
+			</div>
+			<div class="sp_bg9 h298">
+				<a class="w148 h298 first" href="/guang/attr/35473" target="_blank"></a>
+				<span class="w480 left_f">
+					<a class="w468 h143" href="/guang/attr/38703" target="_blank"></a>
+					<a class="w468 h143 mt13" href="/guang/attr/38693" target="_blank"></a>
+				</span>
+				<a class="w307 h298" href="/guang/attr/38701" target="_blank"></a>
+			</div>
+		</div>	
+	</div>
+</div>
+<%if(this.hb_list && this.hb_list.status != 0){%>
+<script type="text/html" id="lookAllBagTpl">
+<div class="lookAllBag clearfix_f">
+	<div class="close_z" style="margin-top:0;"></div>
+	<div style="margin-left:100px;" class="clearfix_f">
+	<div class="fd_ico left_f"></div><h3>全部福袋(<%=this.is_join.total%>)</h3>
+	</div>
+	<div class="clear_f"></div>
+	<%if(this.is_join.total != 0) {%>
+	<div class="allBag">
+		<table>
+			<tr><td>福袋</td><td>幸运号码</td><td>领取日期</td></tr>
+			<%this.hb_list && this.hb_list.map(function(data, index){%>
+			<tr><td><%=index+1%></td><td><%=data.luck_num%></td><td><%=data.date%></td></tr>
+			<%});%>
+		</table>
+	</div>
+	<%} else {%>
+	<div class="noBag">
+		<p>你还没有福袋哦，快去美丽说找福袋吧！</p>
+	</div>
+	<%}%>
+	<div class="c_f">
+	<span class="sure btn">确&nbsp;定</span>
+	</div>
+</div>
+</script>
+<%}%>
+<%if (!this.user_id){%>
+<script type="text/html" id="loginTpl" >
+<%*登录弹窗%>
+<div class="pop_login">
+	<div class="l_ico">
+		<a class="small_qq" href="/connect/auth/qzone?frm=tk_qq1" ></a>
+		<a class="small_sina ml10_f" href="/connect/auth/weibo?frm=tk_sina1"></a>
+	</div>
+	<h4><%= this.lang.window.login%></h4>
+		<fieldset>
+			<form id="loginForm" method="post" onsubmit="return false" action="">
+			<legend>美丽说登录表单</legend>
+			<p><input class="l_ipt" id="mlsUser" type="text" name="mlsUser" value="" placeholder="邮箱/手机号/昵称"/></p>
+			<p>
+				<input class="l_ipt" id="vmPass" type="text" value="密码" />
+				<input class="l_ipt none_f" id="mlsPass" name="password"  type="password" value="" />
+			</p>
+			<div class="checkBox" id="checkBox">
+				<input class="l_ipt" id="checkcode" name="checkcode" type="text" value="" placeholder="验证码" maxlength="4" />
+				<div class="checkImage">
+					<span id="checkcodeImage">
+						<img width="90" height="36" isblank="true" src="<%= this.PICTURE_URL %>images/register/blank.jpg">
+					</span>
+					<span class="red_f">换一张</span>
+				</div>
+			</div>
+			<div class="loginErrorMessage red_f"></div>
+			<div class="submitBox"><input class="loginBtn button left_f" type="submit" value="登录"/><a class="left_f red_f" href="/user/register" target="_BLANK" >注册</a></div>
+			</form>
+		</fieldset>
+</div>
+</script>
+<script type="text/html" id="loginSina" >
+<div class="pop_login">
+	<div class="l_ico">
+		<a class="big_sina" href="/connect/auth/weibo?frm=tk_sina1"></a>
+	</div>
+	<h4><%=this.lang.window.login_sina%></h4>
+	<div class="mt30_f c_f">已有帐号，直接<a class="red_f" href="/user/login?frm=tk_denglu2">登录</a></div>
+</div>
+</script>
+<script type="text/html" id="loginQQ" >
+<div class="pop_login">
+	<div class="l_ico">
+		<a class="big_qq" href="/connect/auth/qzone?frm=tk_qq1"></a>
+	</div>
+	<h4><%=this.lang.window.login_qq%></h4>
+	<div class="mt30_f c_f">已有帐号，直接<a class="red_f" href="/user/login?frm=tk_denglu1">登录</a></div>
+</div>
+</script>
+<script type="text/html" id="loginRenren" >
+<div class="pop_login">
+	<div class="l_ico">
+		<a class="big_ren" href="/connect/auth/renren?frm=tk_rr"></a>
+	</div>
+	<h4><%=this.lang.window.login_renren%></h4>
+	<div class="mt30_f c_f">已有帐号，直接<a class="red_f" href="/user/login?frm=tk_dengl3">登录</a></div>
+</div>
+</script>
+<%}%>
+<script>
+Meilishuo.config.nt = '<%= this.nToken%>';
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/huodong/chunjie');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

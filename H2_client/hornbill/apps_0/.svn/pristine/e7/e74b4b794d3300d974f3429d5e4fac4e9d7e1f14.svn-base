@@ -1,0 +1,43 @@
+function shake(){
+	return this;
+}
+
+var controlFns = {}
+var configs = {
+	'runningmanTV' : {
+		'test' : {
+			'info' : '/weixin/weixin_running_assort_activity'
+		}
+		, 'result' : {
+			'info' : '/weixin/weixin_running_gifts'
+		}
+//		,'css':'default'
+	}
+}
+
+for(var name in configs){
+	var config = configs[name]
+
+	controlFns[name] = function(args){
+		var php = {}
+			, mSelf = this;
+
+		php = config[args] || {};
+
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			console.log(data.info)
+
+			data.name = name 
+			data.state = args || 'test' 
+
+			data._CSSLinks = ['shake/'+(config.css || name)];
+			data.pageTitle = '看电视,玩微信摇电视';
+			this.render('shake/' + data.state + '.html',data);
+		});
+
+	}
+}
+
+exports.__create = controller.__create(shake , controlFns);

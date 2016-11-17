@@ -1,0 +1,58 @@
+<%#head_simple.html%>
+	<script type="text/javascript" >
+        (function (doc, win) {
+            var resizeEvt = "onorientationchange" in win ? "orientationchange" : "resize",
+                base_size = 750,
+                docE = doc.documentElement,
+                ua = navigator.userAgent,
+                recalc = function () {
+                    var triggerRepaints = docE.clientWidth;
+                    var clientWidth = win.innerWidth;
+                    var _fontSize = 100 * (clientWidth / base_size);
+                    if(ua.indexOf("iphone") == -1 && ua.indexOf("android") == -1 && ua.indexOf("Windows Phone")){
+                        _fontSize > 125 && ( _fontSize = 125 )
+                    }
+                    docE.style.fontSize = _fontSize + "px";
+                };
+            recalc();
+            win.addEventListener( resizeEvt , recalc, false );
+        })(document, window);
+    </script>
+</head>
+<body>
+<div class="game">
+	<div class="game-box">
+		<canvas id="cvs" ></canvas>
+	</div>
+	<div class="game-select ">
+		<a class="game-but1" href="javascript:;"></a>
+		<a class="game-but2" href="javascript:;"></a>
+	</div>
+	<h1 class="game-title">选择你喜欢的风格，测试你的时尚基因</h1>
+	<div class="game-answer">
+		<span class="answer-show"></span>
+		<span class="answer-show"></span>
+		<span class="answer-show"></span>
+		<span class="answer-show"></span>
+		<span class="answer-show"></span>
+		<span class="answer-show"></span>
+		<span class="answer-show"></span>
+		<span class="answer-show"></span>
+		<span class="answer-show"></span>
+		<span class="answer-show"></span>
+		<span class="answer-show"></span>
+		<span class="answer-show"></span>
+		<span class="answer-show"></span>
+	</div>
+</div>
+<div class="result">
+	
+</div>
+<img style="display: none;" id="bg" src="http://d03.res.meilishuo.net/pic/_o/c7/97/a2b7a39fdf28f6baba038d9fcf75_601_770.cj.png">
+<img style="display: none;" id="img0" src="http://d01.res.meilishuo.net/pic/_o/04/70/399692cf33e9ab613a531d1615ae_583_752.cj.jpg">
+
+	
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/fashion_gene_game');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

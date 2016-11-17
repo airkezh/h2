@@ -1,0 +1,38 @@
+<%#head.html%>
+<% var j = 0;%>
+<div class="kc">
+	<div class="kc-head">
+		<img src="http://i.meilishuo.net/css/images/huodong/kisscat/all/head.jpg" />
+	</div>
+	<div class="kc-inner">
+		<%for(var i = 1; i < 11; i++){%>
+		<div class="list list<%= i%>">
+			<%for(var o = 0; o < 3; o++){%>
+			<div class="left list-inner">
+				<img width="238" height="320" src="<%= this.kc.data[j].show_pic%>" />
+				<p><%= this.kc.data[j].title%></p>
+				<a isshowlike="1" s_uid="<%= this.kc.data[j].twitter_id%>" class="left_f poster_likes likes" href="javascript:void(0)">
+				    <b class="likes_status">
+				    	<%if(!this.kc.data[j].is_liked){%>
+				    	<i class="lm_love2">&nbsp;</i>
+				    	喜欢
+				    	<%}else{%>
+				    	已喜欢
+				    	<%}%>
+				    </b>
+					<span class="red_f f14_f poster_like_num"><%= this.kc.data[j].count_like%></span>
+				</a>
+				<a class="right_f buy" href="<%= this.kc.data[j].buy_url%>" target="_blank">
+					去购买
+				</a>
+				<%j++;%>
+			</div>
+			<%}%>
+		</div>
+		<%}%>
+	</div>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/huodong/kc_act');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

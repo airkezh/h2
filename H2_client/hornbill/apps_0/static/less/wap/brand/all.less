@@ -1,0 +1,104 @@
+@import "../block.less";
+
+body{
+	.bgc(#eee); .pt(.05rem);
+}
+.key{
+	.f(.28rem); .pl(.2rem); .pt(.15rem); .pb(.15rem);
+}
+.list{
+	.pl(.2rem); .bgc(#fff);
+	a{.block;}
+	a:last-child .item {
+		border-bottom: 0;
+	}
+	.item{
+		.pt(.2rem); .pb(.2rem); .hidden; .h(.7rem); .l(.7rem);
+		border-bottom: 1px solid #f2f2f2;
+		.img{
+			.left; .w(.7rem); .h(.7rem); border-radius: 50%;
+			border: 1px solid #eee;
+		}
+		.name{
+			.f(.3rem); .ml(.98rem);
+			label{ .left; max-width: 3.8rem; .ellipsis; .mr(.3rem);}
+			span{
+				.i_block; .w(.6rem); .h(.36rem); .ml(.1rem); vertical-align: middle;
+
+			}
+			span.m-hot{
+				background: url('http://d02.res.meilishuo.net/pic/_o/23/f4/1fb19f7751fe41c94755094534e8_60_36.cj.png');
+				background-size: cover;
+			}
+			span.m-sale{
+				background: url('http://d01.res.meilishuo.net/pic/_o/05/a8/6de59bd82fad15d9f0f1b43fcc4c_60_36.cj.png');
+				background-size: cover;
+			}
+			span.m-new{
+				background: url('http://d03.res.meilishuo.net/pic/_o/7d/5f/a75b4e0b8760aaa9d6eeb4b1be96_60_36.cj.png');
+				background-size: cover;
+			}
+		}
+	}
+}
+.all-keys{
+	position: fixed; top: .54rem; right: .18rem; opacity: 0;
+	.w(.66rem); .f(.24rem); .fc(#fff); font-weight: bold; .bgc(rgba(0,0,0,.3)); .c;
+	 border-radius: .4rem;
+	box-shadow: 0 0 8px silver; z-index: 10;
+	ul{
+		.pt(.25rem); .pb(.25rem);
+	}
+	li{
+		.h(.36rem); .l(.36rem); 
+	}
+}
+.sign{
+	font-family: "Lantinghei SC", "HY-XiZYJ", "-apple-system";
+	position:fixed; top: -999px; left: 0; .f(2rem); .fc(#c0c0c0); .c; .w(100%);
+	opacity: 0;
+	-webkit-animation-duration: 1s;
+	-moz-animation-duration: 1s;
+	-o-animation-duration: 1s;
+	animation-duration: 1s;
+	-webkit-animation-fill-mode: both;
+	-moz-animation-fill-mode: both;
+	-o-animation-fill-mode: both;
+	animation-fill-mode: both;
+}
+
+.puffOut{
+	-webkit-animation-name: puffOut;
+	animation-name: puffOut;
+}
+
+@-webkit-keyframes puffOut{
+	0%{
+		opacity:1;
+		-webkit-transform-origin:50% 50%;
+		-webkit-transform:scale(1,1);
+		-webkit-filter:blur(0px);
+	}
+	100%{
+		opacity:0;-webkit-transform-origin:50% 50%;
+		-webkit-transform:scale(2,2);
+		-webkit-filter:blur(2px);
+	}
+}
+@keyframes puffOut{
+	0%{
+		opacity:1;
+		transform-origin:50% 50%;
+		transform:scale(1,1);
+		-webkit-filter:blur(0px);
+	}
+	100%{
+		opacity:0;
+		transform-origin:50% 50%;
+		transform:scale(2,2);
+		-webkit-filter:blur(2px);
+	}
+}
+
+
+

@@ -1,0 +1,43 @@
+<%
+var query = this._Request_query;
+var getLink = _extFn.getLink;
+var mSubstr = _extFn.mSubstr;
+%>
+<div class="catalog_nav">
+	<div class="redline2"></div>
+	<div class="catalog_nav_title">
+		<p><a href="<%= this.navigate_catalog.root_url %>">共<span><%= this.navigate_catalog.goods_num %></span>件<samp>>></samp></a></p>
+		<h1><a href="<%= this.navigate_catalog.root_url %>"><%= this.navigate_catalog.root_name %></a></h1>
+		<div class="clear_f"></div>
+	</div>
+	<ul class="catalog_nav_list">
+		<% var showTitle = !!(this.navigate_catalog.info.parent_node_words.length > 1);
+		this.navigate_catalog.info.parent_node_words.map(function(parent_node, index){ %>
+		<li>
+			<%if(showTitle){%>
+			<%if(parent_node.url){%>
+				<a class="redline3<%if(this.navigate_catalog.red_child == parent_node.id){%> active<%}%>" href="<%=parent_node.url%>"><%=parent_node.name%></a>
+			<%}else{%>
+				<span class="redline3<%if(this.navigate_catalog.red_child == parent_node.id){%> active<%}%>"><%=parent_node.name%></span>
+			<%}%>
+			<%}%>
+			<p>
+			<%if(parent_node.url){%>
+				<a href="<%=parent_node.url%>" <%if(query.nid == parent_node.id){%>class="active"<%}%>>所有
+			<%}%>
+			<% this.navigate_catalog.info.child_node_words[parent_node.name].map(function(child_node, index){ %>
+				<a class="<%if(query.nid == child_node.id){%>active<%}%>" href="<%=child_node.url%>"><%= child_node.name %><%if(child_node.isred == 1){%><span class="isred"></span><%}%>
+			<%});%>
+				</a>
+			</p>
+		</li>
+		<%});%>
+	</ul>
+	<div class="cate_ser">
+		<form action="/search" method="get">
+			<span class="text"><input class="searchKeyCatalog" type="text" name="searchKey" value="" placeholder="去其他关键词"></span>
+			<span class="btn"><input type="submit" value="搜索"></span>
+			<input class="filter" type="hidden" value="goods" name="filter"/>
+		</form>
+	</div>
+</div>

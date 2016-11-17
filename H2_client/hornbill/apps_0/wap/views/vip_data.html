@@ -1,0 +1,69 @@
+<%#head.html%>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<div class="mask" ></div>
+
+<div class="wrap">
+	<div class="main" xr="<%= this.xr.r%>">
+		<%
+			var w , txt;
+			if(this.os.weixinBrowser){
+				w = this.weixinUserInfo;
+			}else{
+				w = this.appUserInfo;
+			}
+			if(w.data.status == 1){
+				txt = '你已经许过愿了，分享让愿望加速实现';
+			}else{
+				txt = '2015你满意么？2016年，你想要什么？';
+			}
+
+		%>
+		<textarea placeholder="<%= txt%>"></textarea>
+		<div class="sub_btn"></div>
+		<div class="dream_box">
+			<ul class="dream">
+				<% var w; %>
+				<% if(this.os.weixinBrowser){ %>
+					<% w = this.weixinUserInfo; %>
+				<%}else{%>
+					<% w = this.appUserInfo; %>
+				<%}%>
+				<% w && w.data && w.data.list && w.data.list.map(function(data){  %>
+					<li class="info_box" >
+						<img src="<%= data.avatar%>">
+						<div class="talk">
+							<p class="nick"><%= data.nickname%></p>
+							<p class="cont"><%= data.content%></p>
+						</div>
+					</li>
+				<%});%>
+			</ul>
+		</div>
+		<div class="tShareBtn"></div>
+	</div>
+</div>
+<!-- app分享模块 弹窗展示 -->
+<script type="text/html" id="wapShare">
+	<div class="starBox">
+		<div class="share_ico" id="share_ico">
+			<p class="icons_box">
+				<? this.share && this.share.map(function(data) { ?>
+					<?	var plat_name = {'weixin_timeline':'朋友圈' , 'weixin':'微信' , 'qzone':'Qzone' , 'weibo':'新浪微博' , 'txweibo':'腾讯微博'}; 
+						plat_name = plat_name[data.type] || '';
+					?>
+					<a class="<?= data.type?><?if(data.isDefault){?> active<?}?>" share_url="<?= data.share_url?>" ><?= plat_name?></a>
+				<? }); ?>
+			</p>
+			<div class="clear_f"></div>
+			<div class="btncontain"><span class="btn shareToBtn" id="shareBtn">分享</span></div>
+			<div class="clear_f"></div>
+		</div>
+	</div>	
+</script>
+<script>
+	fml.vars.share = '<%= JSON.stringify(this.share)%>';
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/vip_data');
+_use:", this._JSstack, this._JSmods); %>
+<%#foot.html%>

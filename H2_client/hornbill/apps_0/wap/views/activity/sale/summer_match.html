@@ -1,0 +1,87 @@
+<% this.summer_goods && this.summer_goods.map(function(data){ %>
+<% if(data.sell_status == 0){ %>
+	<% 
+		var buy_link = this.reLink(data.url);
+		if(data.link_to == 2){
+			buy_link = "/goto/count/?p="+encodeURIComponent(buy_link)+"&access_token="+this.access_token+"&twitter_id="+data.twitter_id+"&r="+data.r+"&goods_id="+data.goods_id+"&frm=temai"	
+		}
+	%>
+	<% if(data.picture){ %>
+		<div class="summer_tit"><img src="<%=data.picture%>" /></div>
+	<% } %>
+	<div class="single_goods">
+		<a href="<%= buy_link%>" class="radiusTop"><span asrc="<%= data.pic_pathe%>"></span></a>
+		<div class="desc_box">
+			<p><a href="<%= buy_link%>"><%= data.description%></a></p>
+			<div class="prize">
+				<a href="<%= buy_link%>"><% if(this.ac_id != 83 ){ %><span class="red_f bigfont">¥<%= data.goods_price%></span><%}%><span class=""><del><% if(data.cost){ %>¥<%= data.cost%><% } %></del></span></a>
+				<div class="buy">
+					<a href="<%= buy_link%>">
+						<% if(this.download == 1){ %>
+							<img src="<%= this.PICTURE_URL%>images/wap/activity/summer_match/godownbtn.png" />
+						<%}else{%>
+							<img src="<%= this.PICTURE_URL%>images/wap/activity/summer_match/buy2.png" />
+						<%}%>
+					</a>
+				</div>
+			</div>
+			<% if(data.sell_num > 0 || data.endtime > 0){ %>
+			<hr />
+			<div class="bottom_info">
+				<% if(data.sell_num > 0){ %>
+				<div class="left_f"><a href="<%= buy_link%>">已销售<span class="red_f"><%= data.sell_num%></span>件</a></div>
+				<% } %>
+				<% if(data.endtime > 0) {%>
+				<div class="right_f timeStamp time" end-date="<%= data.endtime%>">
+					<a href="<%= buy_link%>" class="right_f">
+						剩余<span class="0day"><strong id="day" class="day"></strong>天</span><span class="0hour"><strong id="hour" class="hour"></strong>小时</span><span><strong id="minute" class="minute"></strong>分</span>
+					</a>
+					<img class="time_ico" src="<%= this.PICTURE_URL%>images/wap/activity/summer_match/time1.png" />
+				</div>
+				<%}%>
+			</div>
+			<% } %>
+		</div>
+	</div>
+<%}else{%>
+	<% if(data.picture){ %>
+		<div class="summer_tit"><img src="<%=data.picture%>" /></div>
+	<% } %>
+	<div class="single_goods">
+		<div class="radiusTop"><span asrc="<%= data.pic_pathe%>"></span></div>
+		<% if(data.sell_status != -1){ %>
+			<img class="zeroflag" src="<%= this.PICTURE_URL%>images/wap/activity/summer_match/over3.png" />
+		<%}%>
+		<div class="desc_box">
+			<p><%= data.description%></p>
+			<div class="prize">
+				<span class="red_f bigfont">¥<%= data.goods_price%></span><span class=""><del><% if(data.cost){ %>¥<%= data.cost%><% } %></del></span>
+				<div class="buy">
+					<% if(data.sell_status == -1){ %>
+						<img src="<%= this.PICTURE_URL%>images/wap/activity/summer_match/before.png" /></div>
+					<%}else{%>
+						<img src="<%= this.PICTURE_URL%>images/wap/activity/summer_match/zero2.png" /></div>
+					<%}%>
+				</div>
+			<% if(data.sell_num > 0 || data.endtime > 0){ %>
+			<hr />
+			<div class="bottom_info">
+				<% if(data.sell_num > 0){ %>
+				<div class="left_f">已销售<span class="red_f"><%= data.sell_num%></span>件</div>
+				<% } %>
+			</div>
+			<% } %>
+		</div>
+	</div>
+
+<%}%>
+	<span class="sm_tid none_f"><%=data.twitter_id%></span><span class="sm_r none_f"><%=data.r%></span><span class="sm_gid none_f"><%=data.goods_id%></span>
+<% }); %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/app/countdown' , function(){
+		this();  
+	});
+	fml.use('component/lazyLoad' , function(){
+		this.load('.radiusTop span' , 'asrc');	
+	});
+_use:", this._JSstack , this._JSmods);%>

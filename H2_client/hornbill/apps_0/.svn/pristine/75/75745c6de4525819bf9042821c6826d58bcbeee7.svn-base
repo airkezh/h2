@@ -1,0 +1,108 @@
+<%# head.html%>
+<div class="season" style="background: url('<%= this.audio.banner_url %>') no-repeat; background-size: 100%;">
+	<%if(this.audio.audio.audio_url && this.audio.audio.audio_duration != ''){%>
+	<div class="audio_box">
+		<%= requireFn('block/audio.html')({
+            'audio': {
+            		'audio' :{
+            				'audio_url':this.audio.audio.audio_url
+            				,'audio_duration':this.audio.audio.audio_duration
+							,'avatar_url':this.audio.audio.avatar_url
+							,'nickname':this.audio.audio.nickname
+							,'title':this.audio.audio.title
+            		}
+            	}
+            , 'id' : 'top0'
+		});%>
+	</div>
+	<%}%>
+	<div class="time_box">
+		<div class="time_bg">
+			<hgroup>
+				<h1>2013秋冬换季月</h1>
+			</hgroup>
+			<p class="time"><%= this.audio.period%></p>
+		</div>
+		<div><img src="<%= this.PICTURE_URL%>images/wap/activity/season/sharp.png" /></div>
+	</div>
+</div>
+<div class="main">
+	<article class="detail"><%= this.audio.description%></article>
+	<h1 class="title1">美丽说大闺蜜陪你说时尚</h1>
+	<div class="frend">
+		<% this.frend && this.frend.map(function(data) { %>
+		<figure>
+			<span class="f_pic"><img src="<%= data.image_url%>" /></span>
+			<figcaption><span class="ico"></span><%= data.description%></figcaption>
+		</figure>
+		<% }); %>
+	</div>
+	<h1 class="title2">姐妹淘小伙伴帮你淘流行</h1>
+	<p class="attr_tle">从T台秀场吸取时尚灵感，美丽说贴心推荐本季必备流行款，平价时尚同样穿出大牌范儿。</p>
+	<div class="attr">
+		<% this.attr && this.attr.map(function(data) { %>
+			~<span><%= data.attr_name%></span>
+		<% }); %>
+	</div>
+	<h1 class="title3">热门单品推荐</h1>
+	<div class="goods_wall">
+		<% this.goods && this.goods.map(function(data) { %>
+		<div class="poster_grid poster_wall">
+			<figure>
+				<a class="pic_load" href="<%= data.pic_link%>">
+					<%if(data.is_sale==1){%><span class="issaled"></span><%}%>
+					<img src="<%= data.pic_url%>" />
+				</a>
+				<figcaption>
+					<p class="con"><%= data.content%></p>
+					<span class="price"><%= data.sale_price%></span><span class="l_price"><%= data.price%></span>
+				</figcaption>
+			</figure>
+		</div>
+		<% }); %>
+	</div>
+	<div class="clear_f"></div>
+</div>
+<div class="bot_box">
+	<%
+	if (this.notice){
+	if(this.notice.preview_img){%>
+	<h2 class="tle2">下期预告</h2>
+	<p class="pic_box">
+		<a><img src="<%= this.notice.preview_img%>" /></a>
+	</p>
+	<% } %>
+	<%if(this.notice.review_img ){%>
+	<h2 class="tle2">往期回顾</h2>
+	<p class="pic_box">
+		<a href="<%= this.notice.review_url%>"><img src="<%= this.notice.review_img%>" /></a>
+	</p>
+	<%}
+	}%>
+	<h2 class="tle2">随便看看</h2>
+	<div class="keywords">
+		<% this.keywords && this.keywords.map(function(data) { %>
+			<a href="<%= data.url%>"><%= data.title%></a>
+		<% }); %>
+	</div>
+</div>
+<div class="clear_f"></div>
+<%= requireFn('wapShare.html')({
+	'share' : this.share 
+	, 'shareTitle' : '选择分享到'
+	, '_JSstack' : this._JSstack
+	, '_JSmods' : this._JSmods
+}); %>
+
+<div class="clear_f"></div>
+<div class="shop_logo">
+	<h2 class="tle2">权威合作媒体</h2>
+	<% this.logo && this.logo.map(function(data) { %>
+		<a href="<%=data.shop_url%>"><img title="<%=data.shop_name%>" src="<%=data.img_url%>" /></a>
+	<% }); %>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/season');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot_simple.html%>

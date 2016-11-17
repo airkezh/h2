@@ -1,0 +1,80 @@
+@import "storeAtom.less";
+@import "../block.less";
+@bds: 1px solid #e6e6e6;
+/*part share style*/
+.o_sep{.h(14px);}
+.blank_row, .blank_row_1{.w(20px);}
+/* end */
+.order_table{
+	.w(100%);.bgc(#fff);border-spacing: 0;border-collapse: collapse;.c;
+	tbody{border: @bds;}
+	tfoot{border: none;}
+	th,td{.border-1(#e6e6e6);}
+	th{.l(14px);padding: 17px 0;}
+
+	thead th{border-left: none;border-right: none;}
+		.th_first{border-left: @bds;}
+		.th_last{border-right: @bds;}
+    .sredro{
+    th,td{.l(16px);padding: 15px 15px;}
+    .latot_o{padding: 4px 0;}
+    }
+    .nco_o{.f(14px); .tr; .red;}
+    .wor-blank{.w(40px);}
+    .csed_o{.w(130px);}
+    .ecirp_o{.w(260px);}
+    .latot_o{.l(10px);}
+	.o_title{
+		.h(50px);.bgc(#f2f0f0);text-align: left;
+		td{.pl(20px);.pr(20px);}
+		span{.mr(35px);}
+	}
+	.o_con{
+		.l(20px);
+		.blank_row{border-bottom: none;border-top: none;}
+	}
+	.o_desc, .o_price, .o_num, .o_aftermarket, .goods_code, .o_is_refund{border-top-style: dashed;border-bottom-style: dashed;border-left: none;border-right: none;}
+	.o_desc{.w(294px);border-left: none;}
+		.o_items{.pt(20px);.pb(20px);.hidden;}
+		.img_wrap{
+			.w(62px);.h(62px);.bgc(#f6edf0);border: @bds;.left;.hidden;
+			img{.w(100%);}
+		}
+		.o_items_desc{
+			margin: 0 40px 0 84px;.w(170px);text-align: left;
+			.goods_name{.h(40px);.hidden;}
+		}
+		.o_items_desc .goods_desc{
+			.l(12px);.pt(12px);.fc(#999);.h(auto);
+			.o_style{.pr(10px);}
+		}
+	.o_price, .o_num, .o_total{.fb;}
+	.o_total{.w(70px);}
+	.o_remark{
+		td{text-align: left;.l(26px);}
+		// span{.block;.mt(-26px);.ml(60px);}
+		.blank_row{}
+		.mark{padding: 20px;.pl(0);border-left: none;}
+	}
+
+	tfoot{
+		td{border: none;}
+	}
+	.blank_row{border-right: none;}
+	.blank_row_1{border: none;}
+
+	.order_title{
+		.h(50px);.bgc(#f2f0f0);
+	}
+	.add_remark_input { .border-1; .h(26px); .l(26px); .p05; .w(630px); }
+	.remarkBox { .w(100%); .hidden;
+		.remark { .pl(60px); .l(20px); .pt(3px); }
+	}
+	.mb10_f{ .mb(10px);}
+}
+.send_goods_btn,.add_remark_btn {.common_button; .common_button > .redBtn; .i_block; .f(16px); .h(30px); .l(30px);
+	.pl(30px); .pr(30px); .ml(10px); .pr; top: 2px; 
+}
+.send_goods_btn.gray{
+	background:@gray;
+}

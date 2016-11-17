@@ -1,0 +1,92 @@
+/*common*/
+var banner = require('app/focus_banner'),
+	scroll = require('component/windowScroll'),
+	timedown = require('app/doota/timedown');
+
+//倒计时
+$('.time').each(function(index) {
+	var self = $(this);
+	timedown.down(self, self.attr('time'), '0d-0h-0i-0s', ['<b>%v</b>天', '<b>%v</b>时', '<b>%v</b>分', '<b>%v</b>秒'])
+		.onTimeOver(function() { 
+			// window.location.reload();
+			$('.clock_center').html('活动结束');
+		})
+		.onAction(function() {
+			var t = arguments[2];
+			day = t.d && t.d != 0 ? (t.d < 10 ? "0" + t.d : t.d) : "00";
+			hour = t.h ? (t.h < 10 ? "0" + t.h : t.h) : "00";
+			min = t.i ? (t.i < 10 ? "0" + t.i : t.i) : "00";
+			sec = t.s ? (t.s < 10 ? "0" + t.s : t.s) : "00";
+			// ms = t.e;
+			self.html("<b>" + day + "</b>天<b>" + hour + "</b>时<b>" + min + "</b>分<b>" + sec + "</b>秒");
+		}).setHeartHum(1000);
+});
+
+//轮播图
+// banner.bind({
+// 	'unit': '.banner li',
+// 	'btn': '.focus a',
+// 	'transition': 'fade'
+// });
+//posterWalls
+fml.use(['jquery', 'app/posterWalls', 'component/shareTmp', 'component/urlHandle'], function() {
+	var shareTmp = this.shareTmp
+	var query = this.urlHandle.getParams(window.location.href.toString());
+	var urlData = {
+		'frame': query.frame || 0,
+		'page': query.page || 0,
+		'page_type': 'list',
+		'tab': query.tab || 0
+	};
+	var opts = this.jquery.extend({}, urlData, query);
+	this.posterWalls(opts, '/aj/desire_push/index/waterFall');
+});
+fml.use('component/lazyLoad', function() {
+	this.load('.ad_pic span.h270', 'asrc');
+});
+// like
+// fml.use('app/like', function() {
+// 	this.posterLike('.goods_wall', '.poster_likes');
+// });
+
+//menu
+function fixFun() {
+	var navbar = $('#navbar'),
+		topnav = navbar.find('.topnav'),
+		clockBox = $('#clockBox'),
+		tabNew = $('#tabNew'),
+		clockBoxInner = clockBox.find('.time_down'),
+		tabNewInner = tabNew.find('.menu-inner'),
+		topnavHeight = topnav.height(),
+		y1 = clockBoxInner.offset().top - topnavHeight,
+		y2 = tabNew.offset().top - topnavHeight - tabNewInner.height() - clockBox.height(),
+		borderVal = navbar.css('border-bottom');
+	if (!navbar.find('#clockWrap').length) {
+		navbar.append($("<div id='clockWrap'></div>"));
+	}
+	if (!navbar.find('#tabWrap').length) {
+		navbar.append($("<div id='tabWrap'></div>"));
+	}
+	scroll.yIn(y1, function() {
+		$('#clockWrap').append($('.time_down'));
+		topnav.stop().animate({
+			'margin-top': -topnavHeight
+		})
+	}, function() {
+		clockBox.prepend(clockBoxInner);
+		topnav.stop().animate({
+			'margin-top': 0
+		})
+	});
+	scroll.yIn(y2, function() {
+		$('#tabWrap').append($('.menu-inner'));
+		navbar.css('border-bottom', 'none');
+		topnav.stop().animate({
+			'margin-top': -topnavHeight
+		})
+	}, function() {
+		tabNew.prepend(tabNewInner);
+		navbar.css('border-bottom', borderVal);
+	})
+}
+fixFun();

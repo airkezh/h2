@@ -1,0 +1,123 @@
+<%
+	/**
+ 	 * @fileoverview 美美豆收支明细－会员中心
+     * @requires zepto
+     * @author kehuang@meilishuo.com
+     * @date 2015-06-25
+     */
+%>
+
+<%# head.html%>
+<%
+	var curUserInfo = this.userInfo;
+	var curPageTotal = this.pageTotal;
+	var curBeansData = this.beansData;
+	var curBeansList = this.beansList;
+	var curAmountData = this.userAmount;
+	var curUserAmountData = (curAmountData && curAmountData.data) ? curAmountData.data : {};
+	var curExpireBeansData = (curBeansData && curBeansData.data) ? curBeansData.data : {};
+	var curUserBeansData = (curBeansList && curBeansList.data) ? curBeansList.data : {};
+	var curUserBeansList = (curUserBeansData && curUserBeansData.list) ? curUserBeansData.list : [];
+	var curBeansListLen = curUserBeansList.length || 0;
+	var beans_tips_is_show = curExpireBeansData.is_show || 0;
+	var curUserName = (curUserInfo && curUserInfo.nickname) ? curUserInfo.nickname : '- -';
+	var curUserAmount = (curUserAmountData && curUserAmountData.amount_available) ? curUserAmountData.amount_available : 0;
+	var curUserAvatar = (curUserInfo && curUserInfo.avatar_c) ? curUserInfo.avatar_c.replace('/c/', '/b/') : 'http://d06.res.meilishuo.net/ap/a/78/32/59c5fb29fb8ea04deddb2ad0ff42_256_256.cf.png';
+%>
+<div id="j_page_wrap" class="wrap">
+	<div class="user_wrap">
+		<div class="user_box">
+			<div class="user_head">
+				<img src="<%= curUserAvatar %>" alt="<%= curUserName %>">
+			</div>
+			<div class="user_info">
+				<div class="name">我的美美豆</div>
+				<div class="bean"><%= curUserAmount %></div>
+			</div>
+		</div>
+
+		<%
+			if (beans_tips_is_show) {
+				var expireBeans = curExpireBeansData.beans_to_expire || 0,
+					expireTime = curExpireBeansData.expire_time || '';
+
+				if (expireBeans != 0) {
+		%>
+		<div class="expire_tips_wrap">
+			<div class="tips_content tips_beans"><%= expireBeans %>美美豆于<%= expireTime %>过期</div>
+			<div class="arrow_top"></div>
+			<div class="arrow_inner"></div>
+		</div>
+		<%
+				}
+			}
+		%>
+
+		<div class="beans_caption movelr">
+			<img src="http://d01.res.meilishuo.net/pic/_o/69/16/2349ab1f0c3848a879472bcd997a_116_40.ch.png" alt="美美豆说明">
+		</div>
+	</div>
+
+	<div class="detail_title">美美豆收支明细</div>
+
+	<div class="pay_list <%= (curBeansListLen < 1) ? 'bb0' : ''%>">
+		<ul id="j_pay_list"></ul>
+	</div>
+
+	<div class="pullUp" status="loading"></div>
+
+	<%
+		if (curPageTotal > 1) {
+	%>
+	<div class="load_more_btn">加载更多...</div>
+	<%
+		}
+	%>
+</div>
+
+<script type="text/html" id="j_detail_tpl">
+	<?
+		var list = this.data || [],
+			listLen = list.length || 0;
+
+		if (listLen > 0) {
+			for (var i = 0; i < listLen; i++) {
+				var link = '',
+					hrefHtml = '',
+					className = '',
+					obj = list[i],
+					text = obj.text || '',
+					ctime = obj.ctime || '',
+					amount = obj.amount || '0',
+					orderId = obj.order_id || '';
+
+				className = (amount.indexOf('-') != -1) ? '' : 'income';
+
+				if (orderId != '') {
+					link = 'meilishuo://order_detail.meilishuo?json_params=' + encodeURIComponent(JSON.stringify({'order_id': orderId}));
+					hrefHtml = '<a href="' + link + '">' + orderId + '</a>';
+				}
+	?>
+	<li>
+		<span class="title"><?= text ?><?= hrefHtml ?><br><em><?= ctime ?></em></span>
+		<span class="coin <?= className ?>"><?= amount ?><em>&nbsp;&nbsp;&nbsp;&nbsp;</em></span>
+	</li>
+	<?
+			}
+		}
+	?>
+</script>
+
+<script>
+	fml.vars.isLogin = <%= this.isLogin %>;
+
+	var curPageTotal = <%= curPageTotal %>;
+	var curUserBeansList = <%= JSON.stringify(curUserBeansList) %>;
+</script>
+
+<!-- <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script> -->
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/member/beans_detail');
+_use:", this._JSstack, this._JSmods); %>
+<%# foot_simple.html%>

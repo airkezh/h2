@@ -1,0 +1,28 @@
+<%# head.html%>
+<% this.headName = '收货地址'; 
+%>
+<%# head_share.html%>
+
+<section id="wrapper_main" class="wrapper">
+
+<div class="addr_list">
+	<ul class="addrShow">
+		<% this.addr && this.addr.addrInfo && this.addr.addrInfo.map(function(a){%>
+		<li class="unit adrl_list" addr_id="<%= a.addr_id %>" is_default="<%= a.is_default%>">
+			<p><span><%= a.nickname%></span><span class="adrl_phone"><%= a.phone%></span></p>	
+			<p><span><%== a.address %></span></p>
+		</li>
+		<%});%>
+		<li class="unit adrl_new">
+			<p><a href="/address/new">添加地址</a></p>
+		</li>
+	</ul>
+</div>
+
+</section>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/doota/address_default');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot_simple.html%>

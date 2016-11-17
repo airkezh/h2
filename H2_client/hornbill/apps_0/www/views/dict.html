@@ -1,0 +1,128 @@
+<%# head.html%>
+
+<%
+var query = this._Request_query;
+var getLink = _extFn.getLink;
+%>
+<div class="content_fluid">
+	<%# block/top100.html%>
+	<% if (this.discussPg){%>
+		<div><a class="f14_f" href="/book/<%= this.bookId%>"><%= this.keywords%></a></div>
+	<%}%>
+	<div class="cata_title">
+		<h1 class="f24_f">
+		<%if (this.discussPg){
+			if (this.keywords.length > 30) {
+			%>
+			<%= this.keywords%>点评
+			<% } else {%>
+			全面点评<%= this.keywords%>怎么样
+		<%} 
+		} else {
+		%>
+		<%= this.keywords%>
+		<% }%>
+		</h1>
+
+		<% if (this.pricePg){  %>
+			<span class="left_f f14_f"></span>
+			<ul class="category left_f" id="priceSec">
+				<li><a class="<%if(query.price == 'all' || !query.price){%>active<%}%> first" rel="nofollow" link="/book/price/<%= this.bookId%>">全部</a></li>
+				<li><a <%if(query.price == '0~100'){%>class="active"<%}%> rel="nofollow" link="<%=getLink({'price' : '0~100'  , 'page' : '0' ,} , query)%>">0~100</a></li>
+				<li><a <%if(query.price == '101~200'){%>class="active"<%}%> rel="nofollow" link="<%=getLink({'price' : '101~200' , 'page' : '0' ,} , query)%>">101~200</a></li>
+				<li><a <%if(query.price == '201~500'){%>class="active"<%}%> rel="nofollow" link="<%=getLink({'price' : '201~500'  , 'page' : '0' ,} , query)%>">201~500</a></li>
+				<li><a class="<%if(query.price == '501~10000'){%>active<%}%> last" rel="nofollow" link="<%=getLink({'price' : '501~10000'  , 'page' : '0' ,} , query)%>">500元以上</a></li>
+			</ul>
+			  <div style=margin-right:260px;>
+            <span class="right_f f14_f"><a href="/book/<%= this.bookId%>">全部</a>
+            &nbsp;
+            <a href="/book/discuss/<%= this.bookId%>">点评</a></span>
+            </div>
+		<%} else if (this.discussPg){ %>
+			    <div style=margin-right:260px;>
+            <span class="right_f f14_f"><a href="/book/<%= this.bookId%>">全部</a>
+            &nbsp;
+            </div>
+			
+		<% } %>
+	</div>
+	<div class="goods_wall">
+		<div class="corner_notic">
+			<div class="rec_nav red_tb">
+				<div class="catacon">
+				<% this.attr_hot_keywords.sub && this.attr_hot_keywords.sub.group_map.map(function(group_name, index){ %>
+					<% var group_icon = this.attr_hot_keywords.sub.group_info[group_name].ico_sortno - 1,
+							group_iconX = -((group_icon % 6) * 38),
+							group_iconY = -((Math.floor(group_icon / 6)) * 32);
+					%>
+					<h2><span style="background-position:<%= group_iconX %>px <%= group_iconY %>px;"></span><%=group_name%></h2>
+					<div class="category">
+						<%for(var data in this.attr_hot_keywords.sub.group_keywords[group_name]){%>
+							<% var group_info = this.attr_hot_keywords.sub.group_keywords[group_name][data]; %>
+							<a class="<%if(this.currentWord == group_info.word_name){%>active<%}else{%><%= group_info.isred == 1?'ishot':''%><%}%>" href="/guang/<%= encodeURIComponent(group_info.word_name)%>" ><%= group_info.word_name %></a>
+						<%}%>
+						<div class="clear_f"></div>
+					</div>
+				<%});%>
+					<div class="cate_ser">
+						<form action="/search" method="get">
+							<span class="text"><input class="searchKeyCatalog" type="text" name="searchKey" value="" placeholder="去其他关键词"></span>
+							<span class="btn"><input type="submit" value="搜索"></span>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="corner_stamp">
+			<% if(this.recommend && this.recommend.length > 0){%>
+					<h2 class="mt14_f f14_f">推荐杂志</h2>
+					<% var magItemRenderFn = requireFn('group/magitem.html'); %>
+					<% this.recommend.map(function(data, index){
+						if (this.isMagFavor) {
+							data.frm = '?frm=book'+(index+1);
+							data.isMagFavor = true;
+						}
+					%>
+							<%= magItemRenderFn(data , 8);%>
+					<%}); %>
+			<%};%>
+		</div>
+		<% if (this.pricePg){  %>
+		<%# book/price_node.html%>
+		<%} else if (this.discussPg){%>
+		<%# book/discuss_node.html%>
+		<%} else {%>
+		<%# book/poster_node.html%>
+		<% } %>
+	</div>
+</div>
+<div class="spinner botSpinner none_f"></div>
+<div class="lookmore">
+	<a class="big_btn" target="_blank" href="/guang/hot"><em class="big_btnr"></em>查看更多>></a>
+</div>
+<div class="clear_f"></div>
+<%# block/attr_word.html%>
+<div class="clear_f"></div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use(['jquery', 'component/waterfall'] , function(){
+		var $ = this.jquery;
+		$('#priceSec>li>a').attr('href' ,function(){return $(this).attr('link');});
+		var pin = this.waterfall;
+        pin.init({
+            containerId : '.goods_wall',
+            pinMark : 'poster_grid',
+            preLayout : {
+            '.corner_notic' : 0,
+            '.corner_stamp' : -1
+            }
+        });
+        pin.reload();
+	});
+	fml.use('component/lazyLoad' , function(){
+	    var ll = this;
+	    window.setTimeout(function(){
+			ll.load('.imgBox>span' ,'asrc');
+		},600)
+	});
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

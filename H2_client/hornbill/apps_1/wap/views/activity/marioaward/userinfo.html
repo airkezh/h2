@@ -1,0 +1,21 @@
+<%# head_simple.html%>
+</head>
+<body>
+<div class="app_mac"><%=this.app_mac%></div>
+<div class="top_bnr"><img src="<%= this.PICTURE_URL%>images/wap/activity/mario/award_2.jpg" /></div>
+<div class="inner">
+	<form action="" method="get" id="user_form">
+		<input type="text" placeholder="微信昵称" id="marionick" name="marionick" />
+		<input type="text" placeholder="姓名" id="name" name="name" />
+		<input type="text" placeholder="手机号" id="tel" name="tel" />
+		<input type="text" placeholder="收货地址" id="address" name="address" />
+		<a class="submit">
+			<img src="<%= this.PICTURE_URL%>images/wap/activity/mario/sub.gif" />
+		</a>
+	</form>
+</div>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/marioaward');
+_use:", this._JSstack , this._JSmods);%>
+<%# foot_simple.html%>

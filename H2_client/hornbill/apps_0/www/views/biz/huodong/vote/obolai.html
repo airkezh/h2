@@ -1,0 +1,88 @@
+<%#head.html%>
+<div class="top">
+	<div class="inner">
+		<div class="sec_box">
+			<ul class="step1">
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+			</ul>
+			<div class="step2 none_f">
+				<%= requireFn('biz/huodong/upload_photo.html')({
+					'upload_style' : 'obolaiUpWapper',
+					'reload_style' : 'obolai_reup'
+				}); %>
+				<p class="btn1 pre">上一步</p>
+				<button class="next none_f"></button>
+				<div class="lip_pic none_f"></div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="rule"></div>
+<!--海报部分-->
+<div class="hb_box">
+	<div class="content_fluid">
+		<div class="goods_wall auto_f" style="width:960px;">
+		<% if(this.isLogin == 1 && this.my_poster && this.my_poster.data){ %>
+			<div class="corner_notic">
+				<div class="vote_box">
+					<a href="/share/<%= this.my_poster.data.twitter_id%>" target="_blank" class="pic_load">
+						<img class="goods_pic" src="<%= this.my_poster.data.show_pic%>" pid="<%= this.my_poster.data.pid%>" width="228" height="<%= this.my_poster.data.pic_height%>" />
+					</a>
+					<div class="info">
+						<div class="userInfo" uid="<%= this.my_poster.data.uinfo.user_id%>">
+							<div class="person">
+								<a href="/person/u/<%= this.my_poster.data.uinfo.user_id%>" target="_blank" class="face"><img src="<%= this.my_poster.data.uinfo.avatar_c%>" width="48" height="48" /></a>
+					            <span class="name"><%= this.my_poster.data.uinfo.nickname%></span>
+						    </div>
+							<ul class="txt_info">
+								<li>票数：<span class="red_f"><%= this.my_poster.data.score%></span></li>
+					            <li>排名：<span class="red_f"><%= this.my_poster.data.rank%></span></li>
+						    </ul>
+						</div>
+						<p class="btnBox auto_f" id="vote_share">拉投票</p>
+					</div>
+	            </div>
+		    </div>
+		<%}%>
+		</div>
+		<%#biz/huodong/vote/vote_poster.html%>
+		<div class="spinner botSpinner none_f"></div>
+		<div class="clear_f"></div>
+		<div class="paging_panel c_f none_f"><%#paging.html%></div>
+	</div>
+</div>
+<script type="text/html" id="succeed">
+	<div class="succeed">
+		<a href="" class="close_btn"></a>
+		<a href="" class="sure"></a>
+	</div>
+</script>
+<script type="text/html" id="share">
+	<div class="share_pop">
+		<span href="" class="close_btn" id="close"></span>
+		<img src="<?= data.show_pic?>" width="114" height="266" />
+		<p><?= data.uinfo.nickname?>参加了欧珀莱#珠光宝气过圣诞#活动</br>
+		目前票数：<span class="red_f"><?= data.score?></span></br>
+		还差<span class="red_f"><?= data.nextScore?></span>票，排名就能上升一位了。</p>
+		<h3>选择分享到：</h3>
+		<ul>
+			<li class="sina"></li>
+			<li class="qzone"></li>
+			<li class="tx"></li>
+		</ul>
+		<span class="share_btn"></span>
+	</div>
+</script>
+<script>
+<%= this.poster0? 'Meilishuo.config.poster0 = '+JSON.stringify(this.poster0)+';':'' ;%>
+<%= this.my_poster? 'Meilishuo.config.my_poster = '+JSON.stringify(this.my_poster)+';':'' ;%>
+</script>
+</div>
+<% $_ENGINE_SELF.callFn("useModule")("fml.use('page/poster0');", this._JSstack , this._JSmodsFast ); %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/huodong/obolai');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

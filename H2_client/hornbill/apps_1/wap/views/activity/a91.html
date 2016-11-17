@@ -1,0 +1,21 @@
+<%#head.html%>
+<div class="section-top">
+	<img src="<%= this.PICTURE_URL%>images/huodong/a91/top.jpg" />
+</div>
+<div class="section-center">
+	<img src="<%= this.PICTURE_URL%>images/huodong/a91/seccenter.png" />
+	<%if(this.couponStatus.status == 0){%>
+		<div class="coupon-btn cnbtn">点击领取</div>
+	<%}else{%>
+		<div class="coupon-btn">已经领取</div>
+	<%}%>
+</div>
+<div class="section-bottom">
+	<img src="<%= this.PICTURE_URL%>images/huodong/a91/secbottom.jpg" />
+</div>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/a91');
+_use:", this._JSstack , this._JSmods); %>
+<%# block/dialog.html %>
+<%#foot_simple.html%>

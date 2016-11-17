@@ -1,0 +1,17 @@
+<%# frame/wap/head_simple.html%>
+<div class="layout">
+	<p><%= this.text %></p>
+</div>
+<script>
+if (getQueryString('first') != 1) {
+			var goUrl = 'http://m.meilishuo.com/wx/connectCircle?goback=' + encodeURIComponent(window.location.href + '&first=1');
+			location.href = goUrl;
+		} 
+function getQueryString(name) {
+	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+	var r = window.location.search.substr(1).match(reg);
+	if (r != null) return unescape(r[2]);
+	return null;
+}
+</script>
+<%# frame/wap/foot_simple.html%>

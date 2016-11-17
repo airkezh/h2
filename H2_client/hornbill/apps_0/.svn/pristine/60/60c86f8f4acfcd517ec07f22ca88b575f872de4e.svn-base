@@ -1,0 +1,329 @@
+<%
+   var goodsInfo = this.goods_info || {}
+    ,goods_comments = this.goods_comments.cInfos || []
+	, goods_koubei = this.goods_koubei.infos || []
+	, show_koubei_or_comments = !goodsInfo.is_cosmetic && goodsInfo.comment.totalUser || goodsInfo.is_cosmetic && goods_koubei.length
+	, dianping = goodsInfo.goods_comment
+	, sizeDetail = this.details || {}
+	, speciSize = sizeDetail.specifications_size || {}
+	, specifications = speciSize.specifications || []
+	, sizeInfo = speciSize.size || []
+	, sizeTable = sizeInfo[0] || []
+
+	if (this.details && this.details.detail) this.details = this.details.detail
+%>
+<div class="wrapBox wrapBoxNew goods_detail">
+		<ul class="nav tab_tle<%if(goodsInfo.is_cosmetic){%> beauty<%}%>">
+			<li id="details" class="tabArea cur <%= goodsInfo.is_cosmetic ? 'beauty beauty_br' : ''%>">详情</li>
+			<li id="goods_size" class="tabArea">尺码</li>
+			<li id="comments" class="recommend tabArea">评价<span>(<%= this.goods_comments.levelsNum[0] %>)</span></li>
+		</ul>
+		<div class="goods_detail_content contentArea">
+			<%if(dianping){%>
+				<div class="recommend">
+					<h2 class="title"><span><% if(dianping.is_daren) {%>美丽说时尚买手<% } else {%>买手推荐<%}%></span></h2>
+					<div class="rmd_info">
+						<span class="rmd_icon">
+							<img src="<%= dianping.avatar%>">
+						</span>
+						<span class="rmd_user">
+							<span class="ml_color"><% if(dianping.is_daren) {%>美丽说时尚买手<% } else {%>买手推荐<%}%></span></span> </span>
+						<span class="rmd_time"></span>
+					</div>
+					<p class="rmd_word"><%= dianping.description%></p>
+				</div>
+			<%}%>
+			<%if(this.format != ''){%>
+				<h2 class="title"><span>商品规格</span></h2>
+				<ul class="format">
+					<% this.format && this.format.map(function(data) { %>
+						<li><%=data[0]||''%>：<%= data[1]||''%></li>
+					<%});%>
+				</ul>
+			<%}%>
+			<%if(this.details){%>
+			<div class="details hide">
+			<%if(1 == this.details.is_taobao){%>
+				<% this.details.data && this.details.data.map(function(imgs) { %>
+				<div class="more_pic" style="padding-top:<%=imgs.height / imgs.width * 100 %>%">
+					<span asrc="<%=imgs.image%>"></span>
+				</div>
+				<%});%>
+			<%}else{%>
+				<% this.details && this.details.map(function(data) { %>
+					<!-- Hack for 新版店铺介绍部分数据结构不为数组的情况  -->
+					<% if ( !Array.isArray(data.content) ){ return; }  %>
+					<h2 class="title"><span><%=data.title%></span></h2>
+					<% data.content && data.content.map(function(cons){ %>
+						<%if(cons.type == 'img'){%>
+							<div class="more_pic" style="padding-top:<%=cons.height / cons.width * 100 %>%">
+								<span asrc="<%=cons.value%>"></span>
+							</div>
+						<%}else if ('gap' == cons.type){%>
+							<p class="pro_txt"></p>
+						<%}%>
+					<%});%>
+				<%});%>
+			<%}%>
+				<div class="moreDetailBtn">
+					<span class="hide">查看全部详情 &gt;</span>
+					<span class="show">收起全部详情 &gt;</span>
+				</div>
+			</div>
+			<%}%>
+			
+			<% if(show_koubei_or_comments) {%>
+				<div class="norms">
+					<h3>购买评价</h3>
+					<ul class="evaluate">
+						<% if(goodsInfo.is_cosmetic){%>
+							<% goods_koubei && goods_koubei.map(function(data, idx){ if(idx < 3){%>
+							<li>
+								<a href="" class="user_picture">
+									<img src="<%= data.uInfo.avatar_c%>">
+								</a>
+								<div class="public_info">
+									<p>
+										<span class="pub_right">综合评分</span>
+										<span class="ml_color"><%= data.uInfo.nickname%></span>
+									</p>
+									<p class="wx_grey">
+										<span class="pub_right">
+											<span class="star">
+												<% for(i = 0; i < data.point; i++){%>
+													<b class="open"></b>
+												<%};%>
+												<% for(i = 0; i < 5 - data.point; i++){%>
+													<b class="shut"></b>
+												<%};%>
+											</span>
+											<span><%= data.point%>分</span>
+										</span>
+										<span><%= data.skin%>&nbsp;<%= data.age%></span>
+									</p>
+									<p class="beacuse"><%= data.content%></p>
+								</div>
+							</li>
+							<%}});%>
+						<%} else {%>
+							<% goods_comments && goods_comments.map(function(data, idx){ if(idx < 3){%>
+							<li>
+								<a href="" class="user_picture">
+									<img src="<%= data.uInfo.avatar_c%>">
+								</a>
+								<div class="public_info">
+									<p>
+										<span class="pub_right">
+											<span class="star">
+												<% for(i = 0; i < data.level; i++){%>
+													<b class="open"></b>
+												<%};%>
+												<% for(i = 0; i < 5 - data.level; i++){%>
+													<b class="shut"></b>
+												<%};%>
+											</span>
+										</span>
+										<span class="ml_color"><%= data.uInfo.nickname%></span>
+									</p>
+									<p class="content"><%= data.content%></p>
+									<p class="good_info">
+										<span><%= data.style %></span>
+									</p>
+									<p class="comment_time"><%= data.time %></p>
+								</div>
+							</li>	
+							<%}});%>
+						<%}%>
+					</ul>
+					<a class="more ml_color eva_more comm_more">
+						查看更多购买评价 &gt;
+						<!--span class="xiala_icon">
+							<img src="<%=this.PICTURE_URL%>/images/wap/web/wx/xiala.png">
+						</span-->
+					</a>
+				</div>
+			<% }%>
+		</div>
+
+		<div class="size_content contentArea none_f">
+			<div class="norms">
+				<h3>产品尺码</h3>
+			</div>
+			<%if(sizeInfo != '' && sizeInfo[0].type == 'table'){%>
+				<table class="size_table">
+					<%
+						var headLength = sizeTable.value.head.length
+					%>
+					<thead>
+						<tr>
+							<% sizeInfo && sizeTable.value && sizeTable.value.head && sizeTable.value.head.map(function(data, idx){ if(idx <= 4){%> 
+								<td style="<%if(headLength >= 4){%>width: 19%<%}else if(headLength == 2){%>width:40%; text-align: left;<%}else if(headLength == 3){%>width:30%;<%}%>"><%= data %></td>
+							<%}});%>
+						</tr>
+					</thead>
+					<tbody>
+						<% sizeInfo && sizeTable.value && sizeTable.value.body && sizeTable.value.body.map(function(data, idx){%> 	
+							<tr>
+								<% data.map(function(item, idx){ if(idx <= 4){%>
+									<td style="<%if(headLength == 2){%>text-align: left;<%}%>"><%= item%></td>
+								<%}})%>
+							</tr>
+						<%});%>
+					</tbody>
+				</table>
+			<%} else {%>
+				<ul class="size_format">
+					<%speciSize && specifications && specifications.map(function(data,idx){%>
+						<li>
+							<label><%= data[0]%></label> ：<%= data[1]%>
+						</li>
+					<%})%>
+				</ul>
+			<%}%>
+			
+		</div>
+		
+		<div class="comments_content contentArea none_f">
+			<div class="norms">
+				<%if( this.goods_comments.levelsNum[0] == 0){%>
+					<p class="no_cmt">暂无评论</p>
+				<%}%>
+				<%if(goodsInfo.satisfy_rate){%>
+					<h2>商品好评率：<span class="rate"><%= !goodsInfo.satisfy_rate ? '暂无评分哦~' : goodsInfo.satisfy_rate %></span></h2>
+				<%}%>
+				<div class="cmt_evaluate" id="cmt_evaluate">
+				</div>
+				<div class="cmt_nav">
+					<div class="tab cmt_tab" id="cmt_tab">
+						
+					</div>
+					<div class="cmt_list evaluateArea">
+						<ul class="evaluate">
+						</ul>
+						<%if( this.goods_comments.levelsNum[0] != 0){%>
+							<p class="more eva_more">
+								查看更多购买评价 &gt;
+							</p>
+						<%}%>
+					</div>
+					<div class="cmt_list evaluateArea none_f">
+						<ul class="evaluate">
+						</ul>
+						<%if( this.goods_comments.levelsNum[0] != 0){%>
+							<p class="more eva_more">
+								查看更多购买评价 &gt;
+							</p>
+						<%}%>
+					</div>
+					<div class="cmt_list evaluateArea none_f">
+						<ul class="evaluate">
+						</ul>
+						<%if( this.goods_comments.levelsNum[0] != 0){%>
+							<p class="more eva_more">
+								查看更多购买评价 &gt;
+							</p>
+						<%}%>
+					</div>
+					<div class="cmt_list evaluateArea none_f">
+						<ul class="evaluate">
+						</ul>
+						<%if( this.goods_comments.levelsNum[0] != 0){%>
+							<p class="more eva_more">
+								查看更多购买评价 &gt;
+							</p>
+						<%}%>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+<script type="text/html" id="twitter_cosmetic">
+<? item && $.each(item , function(key , data){
+	data.start_gray = 5 - data.point;?>
+	<li>
+		<a href="" class="user_picture">
+			<img src="<?= data.uInfo.avatar_c?>">
+		</a>
+		<div class="public_info">
+			<p>
+				<span class="ml_color"><?= data.uInfo.nickname?></span>
+			</p>
+			<p>
+				<span class="pub_right">综合评分</span>
+			</p>
+			<p class="wx_grey">
+				<span class="pub_right">
+					<span class="star">
+						<? for(i = 0; i < data.point; i++){?>
+							<b class="open"></b>
+						<?};?>
+						<? for(i = 0; i < data.start_gray; i++){?>
+							<b class="shut"></b>
+						<?};?>
+					</span>
+					<span><?= data.point?>分</span>
+				</span>
+				<span><?= data.skin?>&nbsp;<?= data.age?></span>
+			</p>
+			<p class="beacuse"><?= data.content?></p>
+		</div>
+	</li>
+<?});?>
+</script>
+
+<script type="text/html" id="twitter_comment">
+<? item && $.each(item , function(key , data){
+	data.start_gray = 5 - data.level;?>
+	<li>
+		<a href="" class="user_picture">
+			<img src="<?= data.uInfo.avatar_c?>">
+		</a>
+		<div class="public_info">
+			<p class="nickname">
+				<span class="pub_right"><?= data.time ?></span>
+				<span class="ml_color"><?= data.uInfo.nickname?></span>
+			</p>
+			<p>
+				<span>
+					<span class="star">
+						<? for(i = 0; i < data.level; i++){?>
+							<b class="open"></b>
+						<?};?>
+						<? for(i = 0; i < data.start_gray; i++){?>
+							<b class="shut"></b>
+						<?};?>
+					</span>
+				</span>
+			</p>
+			<p class="content"><?= data.content?></p>
+			<p class="good_info">
+				<span><?= data.style ?></span>
+			</p>
+			<p class="comment_time"></p>
+		</div>
+	</li>
+<?});?>
+</script>
+
+<script type="text/html" id="cmt_evaluateTpl">
+<? 
+	var totalTags = this.totalTags;
+?>
+<? this.item && $.each(this.item, function(i, v ) {?>
+	<p>
+		<label><?= v.content ?></label>
+		<span style="width:<?= v.tag_count/totalTags * 150 ?>px;"></span>
+		<?= v.tag_count ?>
+	</p>
+<?});?>
+</script>
+
+<script type="text/html" id="cmt_tabTpl">
+<? this.item && $.each(this.item, function(key, data ) {?>
+	<?if(key <= 3){?>
+		<span class="tab_list <?if(key == 0){?>cur<?}?>"><?if(key == 0){?>全部<?}else{?><?= data.name ?> <span>(<?= parseInt(data.total) > 99 ? '99+' : data.total ?>)</span><?}?></span>
+	<?}?>
+<?});?>
+</script>

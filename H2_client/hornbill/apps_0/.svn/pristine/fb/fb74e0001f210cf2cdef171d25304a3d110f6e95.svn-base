@@ -1,0 +1,64 @@
+function hiGoods(){
+	return this;
+}
+
+var controlFns = {
+	'index': function() {
+		// this.debugSnake({'target': 'maoanli.rdlab'});
+
+		var self = this;
+		var php = {
+			'shop' : '/street/Shop_hi_shop_pc'
+			,'floor' : '/street/Shop_hi_goods_floor_pc'
+			,'banner' : '/street/Shop_hi_banner_pc'
+		};
+		self.setMDefault(php);
+		self.bridgeMuch(php);
+		self.listenOver(function(data){
+			data.pageTitle = 'Hi范儿';
+			data._CSSLinks = ['hiGoods'];
+			this.render('hiFan/hiGoods.html', data);
+		})
+	},
+	'classify': function() {
+		// this.debugSnake({'target': 'maoanli.rdlab'});
+		var self = this;
+		var page = this.readData('page',this.req.__get, 0)|0;
+		var category = this.readData('category',this.req.__get, 0)|0;
+		var style = this.readData('style',this.req.__get, 0)|0;
+		var order = this.readData('order',this.req.__get, 0);
+		var max = this.readData('max_price',this.req.__get, 0)|0;
+		var min = this.readData('min_price',this.req.__get, 0)|0;
+		var php = {
+			'poster0' : '/street/Shop_hi_goods_pc?limit=10&offset=0'
+		};
+		self.setMDefault(php);
+		self.bridgeMuch(php);
+		self.listenOver(function(data){
+			if(data.poster0.error_code!=0 || category>7 || category<0 || style <0 || style>5){
+				return this.errorPage();
+			}
+			data.groupPg = {}; 
+			//data.groupPg.total_num = data.totalNum.totalNum;
+			data.groupPg.total_num = data.poster0.data.totalNum;
+			data.groupPg.current_page = page;
+			data.category = category;
+			data.style = style;
+			data.order = order;
+			data.max = max;
+			data.min = min;
+			data.pageTitle = 'Hi范儿';
+			data._CSSLinks = ['hiGoodsWater'];
+			this.render('hiFan/hiGoodsWater.html', data);
+		})
+	},
+	'aj': function(params){
+		// this.debugSnake({'target': 'maoanli.rdlab'});
+		var php = {
+			'poster' : '/street/Shop_hi_goods_pc'
+		};
+		this.ajaxTo(php[params]);
+	}
+};
+
+exports.__create = controller.__create(hiGoods, controlFns);

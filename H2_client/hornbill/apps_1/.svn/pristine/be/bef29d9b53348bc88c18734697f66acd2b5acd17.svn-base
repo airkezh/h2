@@ -1,0 +1,79 @@
+<%#head.html%>
+<a name="welcome" style="margin-top:-30px;display:inline-block"></a>
+<div class="fixed_wrap">
+	<a href="/biz/huodong/togobuy/?nid=11" target="_blank"></a>
+	<a href="/biz/huodong/togobuy/?nid=13" target="_blank"></a>
+	<a href="/biz/huodong/togobuy/?nid=15" target="_blank"></a>
+</div>
+<div class="years">
+	<div class="topbg">
+		<div class="top_bnr"></div>
+		<a class="markup_main" name="main_content"></a>
+		<div class="tab_tle tlebg1">
+			<a href="/biz/fouryears/zero/#main_content" class="first_tab">零元暖心购</a>
+			<a href="/biz/fouryears/ranking/#main_content">款姐排行榜</a>
+		</div>
+	</div>
+	<% if(!this.userInfo.nickname){ %>
+		<div class="promptBox zero">
+			<span class="txt">您要登录并购买无忧购商品，才能参加0元换购，付款之后记得回来哦！</span>
+		</div>
+	<% } else if(this.list.user_info.status == 1){ %>
+		<div class="promptBox zero">
+			<span class="txt">您要购买无忧购商品，才能参加0元换购，付款之后记得回来哦！</span>
+		</div>
+	<% } else if(this.list.user_info.status == 2){ %>
+		<div class="promptBox zero">
+			<span class="txt">您今天换购机会已经用完，请明天再来！</span>
+		</div>
+	<% } %>
+	<div class="detail"><a href="http://www.meilishuo.com/biz/huodong/meili99sed/?banner_id=5f6854ac6eb31028ca1d0fb6d1a33a10" target="_blank"></a></div>
+	<div class="main">
+		<ul class="list">
+			<% this.list.list && this.list.list.map(function(data){ %>
+			<li class="poster">
+				<div class="top">
+					<a class="pic goods_img" href="javascript:void(0)"><img src="<%= data.pic_url%>" /></a>
+					<p class="tle"><span ahref="http://www.meilishuo.com/share/item/<%= data.twitter_id %>"><%=data.goods_title%></span></p>
+				</div>
+				<%
+					var bot_class='';
+					if(this.list.user_info.status == 2 || (this.list.user_info.status == 0 && data.num == 0)) {
+						bot_class = 'yd_bot';
+					} else if(this.list.user_info.status == 0) {
+						bot_class = 'bot';
+					} else {
+						bot_class = 'no_bot';
+					}
+				%>
+				<div class="<%= bot_class %>">
+					<ul class="bot_l">
+						<li class="nums">仅剩：<%=data.num%>件</li>
+						<li class="price">原价：<%=data.goods_price%></li>
+					</ul>
+					<a class="huangou" data_twitter_id="<%= data.twitter_id %>"></a>
+				</div>
+			</li>
+			<% }); %>
+		</ul>
+	</div>
+	<%this.list1 = 1;%>
+	<%# biz/fouryears/list.html%>
+	<div class="foot_link">
+		<a href="/biz/huodong/togobuy/?nid=11" target="_blank"></a>
+		<a href="/biz/huodong/togobuy/?nid=13" target="_blank"></a>
+		<a href="/biz/huodong/togobuy/?nid=15" target="_blank"></a>
+	</div>
+</div>
+<script type="text/html" id="getGoodsAlert">
+	<div class="make_sure">
+		<span class="alert_title">换购成功</span>
+		<p>在您收到无忧购商品并确认收货7天后，即寄出您的0元换购奖品。</p>
+		<p><span>地址：</span><?= addr ?></p>
+		<p><span>电话：</span><?= phone ?></p>
+	</div>
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/huodong/fouryears_zero');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

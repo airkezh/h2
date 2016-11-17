@@ -1,0 +1,188 @@
+<%#head.html%>
+<%
+	var core = this.core;
+	var serverDate = this.serverDate;
+	var sTime = serverDate.getTime();
+	var sYear = serverDate.getFullYear();
+	var sMonth = serverDate.getMonth() + 1;
+	sMonth = (sMonth < 10) ? '0' + sMonth : sMonth;
+	var sDate = serverDate.getDate();
+	sDate = (sDate < 10) ? '0' + sDate : sDate;
+	var serverDateStr = sYear + '-' + sMonth + '-' + sDate;
+	var actEndTime = new Date(2014,11,31,23,59,59).getTime();
+%>
+<div class="top_box leak_top">
+	<div class="money signout in_down">
+		<div class="total"><%=core.total%>元</div>
+	</div>
+</div>
+<div class="pig_text">
+	<div class="t">狠心的主人，你好久没来，我快饿死了！损失了<%=this.core.total%>元的金币，累觉不爱，元气大伤，我需要你的抢救~~</div>
+</div>
+<div class="pig_signout"></div>
+<div class="money_box up_down">
+	<a href="javascript:;" class="save"></a>
+	<a href="javascript:;" class="other"></a>
+</div>
+<div class="gz_box">
+	<a href="javascript:;" class="gz_btn"></a>
+</div> 
+<div class="date_top"></div>
+
+<div class="date_box">
+	<%
+		var calPrevYear = 2015,
+			calNextYear = 2015,
+			calPrevMonth = 1,
+			calNextMonth = 1,
+			calCurYear = serverDate.getFullYear(),
+			calCurMonth = serverDate.getMonth() + 1;
+
+		if (calCurMonth == 1) {
+			calPrevYear = calCurYear - 1;
+			calNextYear = calCurYear;
+			calPrevMonth = 12;
+			calNextMonth = calCurMonth + 1;
+		} else if (calCurMonth == 12) {
+			calPrevYear = calCurYear;
+			calNextYear = calCurYear + 1;
+			calPrevMonth = calCurMonth - 1;
+			calNextMonth = 1;
+		} else {
+			calPrevYear = calCurYear;
+			calNextYear = calCurYear;
+			calPrevMonth = calCurMonth - 1;
+			calNextMonth = calCurMonth + 1;
+		}
+
+		calPrevMonth = (calPrevMonth < 10) ? '0' + calPrevMonth : calPrevMonth;
+		calNextMonth = (calNextMonth < 10) ? '0' + calNextMonth : calNextMonth;
+	%>
+	<div class="prev_btn j_calander_btn" data-flag="prev" data-year="<%= calPrevYear %>" data-month="<%= calPrevMonth %>"></div>
+	<div class="icon_cal"></div>
+	<div class="month"><%= serverDateStr %></div>
+	<div class="totals">连续第<span class="num" id="j_sign_days">-</span>天签到</div>
+	<div class="next_btn j_calander_btn" data-flag="next" data-year="<%= calNextYear %>" data-month="<%= calNextMonth %>"></div>
+</div>
+
+<div class="calanderWrap">
+	<div class="cTop"></div>
+	<div class="calander"></div>
+	<div class="cBottom"></div>
+</div>
+
+<div class="remind_box">
+	<div class="remind">
+		<a href="javascript:;" class="cont open"></a>
+	</div>
+</div>
+
+<script type="text/html" id="life">
+	<div class="shade"></div>
+	<div class="win_box">
+		<p class="title">主人，你只要在24小时内，在美丽说购买大于等于<%=this.core.total%>元的宝贝，就能复活<%=this.core.total%>元签到奖金。否则小猪我只有自生自灭了...555</p>
+		<div class="life_pic"><img src="<%= this.PICTURE_URL%>images/wap/activity/may_sale/life_pig.png" alt=""></div>
+		<a href="javascript:;" class="enough_btn buy_btn">
+			<div class="countTime life_time">
+				<p>还剩：</p>
+					<dl id="timeStamp" class="timeStamp" end-date="<%= (new Date().getTime()/1000+400)%>" now="<%= (new Date().getTime()/1000)%>">
+						<dd><span class="day0" style='display:none'>-</span></dd>
+						<dd><span class="day1" style='display:none'>-</span></dd>
+						<dt style="display:none">天</dt>
+						<dd><span class="hour0">-</span></dd>
+						<dd><span class="hour1">-</span></dd>
+						<dt class="bigmao">时</dt>
+						<dd><span class="minute0">-</span></dd>
+						<dd><span class="minute1">-</span></dd>
+						<dt class="bigmao">分</dt>
+						<dd><span id="seconds0">-</span></dd>
+						<dd><span id="seconds1">-</span></dd>
+						<dt class="bigmao">秒</dt>
+					</dl>
+			</div>
+		</a>
+		<a href="javascript:;" class="enough_no_btn"></a>
+	</div>
+</script>
+
+<script type="text/html" id="resuce_suc">
+	<div class="shade"></div>
+	<div class="win_box">
+		<p class="title">我就知道你最爱我了！<br>我们攒的钱都回来了~~<br><%=this.core.total%>元拿好<br>记得把我再养肥点，么么哒~~</p>
+		<div class="pig_resuce_suc"><img src="<%= this.PICTURE_URL%>images/wap/activity/may_sale/save_pig.jpg" alt=""></div>
+		<a href="javascript:;" class="fat_btn"></a>
+	</div>
+</script>
+
+<script type="text/html" id="again">
+	<div class="shade"></div>
+	<div class="win_box">
+		<p class="title">主人，已经过了抢救期<br>我知道你已经尽力了....<br>不如，我们重新来过~</p>
+		<div class="pig_again"><img src="<%= this.PICTURE_URL%>images/wap/activity/may_sale/again_pig.jpg" alt=""></div>
+		<a href="javascript:;" class="again_btn"></a>
+	</div>
+</script>
+
+<script type="text/html" id="rule1">
+	<div class="shade"></div>
+	<div class="main layer">
+		<div class="t"></div>
+		<div class="m">
+			<p class="t1">活动规则</p>
+			<%
+				if (sTime > actEndTime) {
+			%>
+			<p>1、坚持每天签到，每天都能领1元。如果中途漏签，奖金清零。漏签后可以使用补签卡恢复，补签卡每天限用1张。</p>
+			<p>2、签到奖金可以在签到商城兑换店铺优惠券消费，店铺优惠券可以在店铺内使用。</p>
+			<p>3、平台优惠券兑换每天中午12点会限量发出，先到先得。如果没有兑换，奖金会继续累加。每张订单只能使用1张平台优惠券。</p>
+			<p>4、小猪容量等于5元免费容量加上累计支付金额，超出容量的奖金无法兑换。购买商品可以提高容量，奖金总额会根据签到记录自动补齐。</p>
+			<p>5、每个用户，每个手机设备只能签到一个账号。对任何通过不正当手段参与活动者，美丽说有权撤销优惠券和订单，取消签到资格。</p>
+			<p>6、在法律允许的范围内，美丽说对本次活动拥有最终解释权。如遇不可抗力因素，美丽说有权取消本次活动。</p>
+			<%
+				} else {
+			%>
+			<p>1、坚持每天签到，每天都能领1元。如果中途漏签，奖金清零。漏签后可以使用补签卡恢复，补签卡每天限用1张。</p>
+			<p>2、每累积5元，可以兑换一次奖金，截止到当天晚上24点。兑换奖金必须在美丽说累计支付过相等的金额。</p>
+			<p>3、优惠券每天中午12点开始兑换，限量发放，先到先得。兑换时可以在5元，10元，20元，50元，100元中选择优惠券组合，有效期24小时，累计金额不得超过奖金总额。如果没有兑换，奖金会继续累加。</p>
+			<p>4、小猪容量等于5元免费容量加上累计支付金额，超出容量的奖金无法兑换。购买商品可以提高容量，奖金总额会根据签到记录自动补齐。</p>
+			<p>5、对任何通过不正当手段参与活动者，美丽说有权撤销优惠券和订单，取消签到资格。</p>
+			<p>6、在法律允许的范围内，美丽说对本次活动拥有最终解释权。如遇不可抗力因素，美丽说有权取消本次活动。</p>
+			<%
+				}
+			%>
+			<a href="javascript:;" class="new_know"></a>
+		</div>
+		<div class="f"></div>
+	</div>
+</script>
+
+<script>
+	/*fml.vars.isNewest = "<%=this.isNewest%>";
+
+	 if(Meilishuo.config.os && Meilishuo.config.os.mlsApp){
+	 fml.vars.isApp = true;
+	 }*/
+	fml.vars.isLogin = <%=this.isLogin%>;
+
+	var sTime = "<%=sTime%>";
+	var sYear = "<%=sYear%>";
+	var sMonth = "<%=sMonth%>";
+	var sMonthNum = +sMonth - 1;
+	var sDate = "<%=sDate%>";
+	var sLastDate = "<%=sDate - 1%>";
+	var serverDateStr = "<%=serverDateStr%>";
+	var signData = <%=JSON.stringify(core.data)%>;
+	var regDateArr = signData.registration;
+	var redeemArr = signData.redeem;
+	var convertedArr = signData.converted;
+	var totalMoney = "<%=core.total%>";
+	var status = <%=core.status%>;
+	var rescueSTime = <%=core.rescue.start%>;
+	var rescueETime = <%=core.rescue.end%>;
+	//alert("状态码：" + <%=core.status%> +" 签到记录：" + JSON.stringify(regDateArr) + " 兑换日：" + JSON.stringify(redeemArr) + " 已兑换：" + JSON.stringify(convertedArr) + "  总金额：" + totalMoney);
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/sign_out');
+_use:", this._JSstack , this._JSmods); %>
+<%# foot_simple.html%>

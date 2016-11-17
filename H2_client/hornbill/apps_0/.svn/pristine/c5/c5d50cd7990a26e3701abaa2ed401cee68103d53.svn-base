@@ -1,0 +1,20 @@
+<%# head.html %>
+
+<%= requireFn('block/page_head.html')({
+	'pageTitle' : '宝贝详情'
+	, 'right_type' : 'item_detail'
+	, 'xr' : this.xr
+	, '_JSstack' : this._JSstack
+	, '_JSmods' :  this._JSmods
+}); %>
+
+<section id="wrapper_main" class="wrapper">
+	<%# share/goods_detail_new.html %>
+	<%# share/item_foot.html %>
+</section>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/share/item_detail');
+_use:", this._JSstack, this._JSmods ); %>
+
+<%# foot.html %>

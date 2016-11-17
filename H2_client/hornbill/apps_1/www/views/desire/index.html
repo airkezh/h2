@@ -1,0 +1,43 @@
+<%# head.html%>
+<%
+	var banner=this.banner || {};
+	var bannerData=banner.data || {};
+	var bannerArr=bannerData.banner || [];
+%>
+<div class="wrap">
+	<% if(bannerArr.length){ %>
+		<div class="spinner midSpinner pa_f" style="margin-top:450px"></div>
+		<div class="banner">
+			<ul>
+				<% bannerArr.forEach(function(data , index){ %>
+					<li>
+						<a href="<%= data.url || 'javascript:;' %>" data-img ="<%= data.src %>" style="background: repeat center top;"></a>
+					</li>
+				<% }); %>
+			</ul>
+			<% if(bannerArr.length>=2){ %>
+				<div class="focus">
+					<% bannerArr.forEach(function(data){ %>
+						<a></a>
+					<% }); %>
+				</div>
+			<% } %>
+		</div>
+	<% }else{ %>
+		<div class="spinner midSpinner pa_f" style="margin-top:50px"></div>
+	<% } %>
+	<div class="goods_wall_box">
+		<div class="goods_wall"></div>
+	</div>
+	<div class="paging_panel c_f none_f">
+		<!-- <%#paging.html%> -->
+	</div>
+	<div class="spinner botSpinner none_f"></div>
+	<div class="clear_f"></div>
+	<%#desire/poster.html%>
+</div>
+<% $_ENGINE_SELF.callFn("useModule")("fml.use('page/poster0');", this._JSstack , this._JSmodsFast ); %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use("page/desire/index");
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

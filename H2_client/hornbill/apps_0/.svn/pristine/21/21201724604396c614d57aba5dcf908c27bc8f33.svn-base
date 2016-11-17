@@ -1,0 +1,36 @@
+<script type="text/html" id="posterWall">
+<? $.each(tInfo , function(k , data){ ?>
+<div class="poster_grid poster_wall">
+	<div class="dr_poster">
+		<a href="/person/u/<?= data.data_id?>" target="_blank" class="drPoster_pic">
+			<img src="<?=data.imgurl?>" title="<?=data.nickname?>" alt="<?=data.nickname?>" height="<?=data.img_height?>" />
+		</a>
+		<h4>
+			<a target="_blank" href="/person/u/<?=data.data_id?>" class="left_f f14_f cut"><?=data.nickname?></a>
+			<? if(data.self == 1) {?>
+				<div class="dr_follow"><span class="followed">我自己</span></div>
+			<?} else if(data.followbyme == 0){?>
+				<div class="dr_follow"><span class="btn addFollow" fuid='<?=data.data_id?>' followed="<?=data.followbyme?>">+加关注</span></div>
+			<?} else if(data.followbyme == 1){?>
+				<div class="dr_follow"><span class="followed removeFollow" fuid='<?=data.data_id?>'>已关注</span></div>
+			<?} else if(data.followbyme == 2){?>
+				<div class="dr_follow"><span class="followed removeFollow" fuid='<?=data.data_id?>' followed="<?=data.followbyme?>">互相关注</span></div>
+			<?}?>
+		</h4>
+		<? if(!data.identity.description){data.identity.description = {}} ?>
+		<? var tab_param = '<%== this.tab_param%>';?>
+		<? if(data.identity.pinkV && tab_param != 'editor') { ?>
+		<h5 class="identity_big_style"><a href="/act/33" target="_blank" class="mls_special" title="<?= data.identity.pinkV?>">&nbsp;</a><?= data.identity.pinkV?>：</h5>
+		<p><?= data.identity.description.pinkV || ''?></p>
+		<? } else if (data.identity.blueV && tab_param != 'editor') {?>
+		<h5 class="identity_big_style"><em class="mls_lv" title="<?= data.identity.blueV?>">&nbsp;</em><?=data.identity.blueV?>：</h5>
+		<p><?=data.identity.description.blueV || ''?></p>
+		<? } else if (data.identity.editorV) {?>
+		<h5 class="identity_big_style"><a href="/super_editor" target="_blank" class="mls_editor" title="<?= data.identity.editorV?>">&nbsp;</a><?= data.identity.editorV?>：</h5>
+		<p><?=data.identity.description.editorV || ''?></p>
+		<? } ?>
+	</div>
+</div>
+<? });?>
+</script>
+<%# userInfoTip.html%>

@@ -1,0 +1,82 @@
+<%*{ %>
+	引用页面:
+		1 : wap/views/share/share.html
+	less:
+		.wap_head;
+	依赖：
+		rem_screen.js
+		请在controller里面加入：data.use_rem_screen = '640';
+<%*} %>
+
+<%
+	var first = this.first || {
+		tag: 'a',
+		text: '首页',
+		href: '/welcome'
+	};
+	var cat_banner = this.cat_banner || {};
+%>
+
+<div class="wap_head">
+	<div class="wap_nav">
+		<a href="/welcome" class="home_btn" xr="<%= this.xr.r %>"></a>
+		<form class="search_wrap js_search_form" action="/search" method="get">
+			<input name="keyword" type="search" autocomplete="off" class="js_input" placeholder="<%== this.search_default_word || this.search_words || '搜索宝贝' %>" data-url="<%= this.search_url || '' %>" data-placeholder="<%== this.search_default_word || this.search_words || '搜索宝贝' %>" data-keywords="<%= this.search_words || '搜索宝贝' %>">
+			<div class="search_icon"></div>
+			<div class="delect_icon js_word_delete none_f"><span></span></div>
+		</form>
+		<div class="cate js_cate_btn">取消</div>
+		<a class="im_enter js_im_btn" xr="<%= this.xr.r %>" href="http://im.meilishuo.com/wap/msgList/?button_stat_area=wap_personal_message"><div class="im_icon"></div></a>
+	</div>
+</div>
+
+<script type="text/html" id="hotSearch">
+	<div class="hot_box">
+		<h3 class="title"><span class="icon"></span>热门搜索</h3>
+		<div class="list">
+			<? this.forEach(function(item){
+				var words = item.words
+					, url = '/search/?keyword=' + encodeURIComponent(words);
+				?>
+				<a href="<?= url ?>" class="js_search_item <?= item.is_red==1 ? 'red_words' : '' ?>" xr="<%= this.xr.r %>"><?= words ?></a>
+			<?});?>
+		</div>
+	</div>
+</script>
+<script type="text/html" id="hisSearch">
+	<div class="his_box">
+		<h3 class="title"><span class="icon"></span>历史搜索</h3>
+		<div class="list">
+			<? this.forEach(function(item){
+				var words = item.words
+					, url = '/search/?keyword=' + encodeURIComponent(words);
+				?>
+				<a href="<?= url ?>" class="js_search_item" xr="<%= this.xr.r %>"><?= words ?></a>
+			<?});?>
+		</div>
+		<div class="clear_his"><span class="icon"></span>清除搜索历史</div>
+	</div>
+</script>
+<script type="text/html" id="wordsList">
+	<div class="sea_box">
+		<ul>
+			<? this.forEach(function (item){ ?>
+				<li>
+					<a href="<?= '/search/?keyword=' + encodeURIComponent(item.title) ?>" class="left js_search_item" xr="<%= this.xr.r %>"><?= item.title ?></a>
+					<p class="right">
+						<? item.tags.forEach(function(tag){ ?>
+							<a href="<?= '/search/?keyword=' + encodeURIComponent(tag) ?>" class="js_search_item" xr="<%= this.xr.r %>"><?= tag ?></a>
+						<? }); ?>
+					</p>
+				</li>
+			<? }); ?>
+		</ul>
+	</div>
+</script>
+<script>
+	<%= 'fml.vars.hide_sticky = ' + (this.hide_sticky === true ? true : false) + ';' %>
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/block/wap_head');
+_use:", this._JSstack , this._JSmods ); %>

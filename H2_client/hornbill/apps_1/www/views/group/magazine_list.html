@@ -1,0 +1,112 @@
+<%#head.html%>
+<%
+	var magItemRenderFn = requireFn('group/magitem.html');
+	var wlListRenderFn = requireFn('wins/reply_box.html');
+	var mSubstr = _extFn.mSubstr;
+%>
+<%#group/maghead.html%>
+<div class="group_main">
+	<div class="group_l">
+		<%if(this.group_topics && this.group_topics.length>0){%>
+		<div class="g_topic">
+			<h3>杂志话题</h3>
+			<ul>
+				<%this.group_topics && this.group_topics.map(function(data){%>
+				<li>
+					<span class="gt_j">#</span><a target="_blank" href="/group/<%=data.group_id%>?topic_id=<%=data.topic_id%>"><%=mSubstr(data.topic_title, 14, '...')%><span class="red_f">(<%=data.twitter_number%>)</span></a>
+				</li>
+				<%});%>
+			</ul>
+			<div class="clear_f"></div>
+		</div>
+		<%}%>
+		<%# wins/publishor.html%>
+		<div class="mt14_f">
+			<div class="t_elite">
+				<label class="cursor_f"><input type="checkbox" name="elite" <%if(this.elite==1){%>checked<%}%>>只看精华</label>
+			</div>
+			<div class="clear_f"></div>
+		</div>
+		<div id="group_twitter_list" class="comments reply_list">
+			<%this.group_list && this.group_list.tInfo.map(function(data){%>
+				<%data.isAdmin = this.isAdmin;%>
+				<%data.isEditor = this.is_admin.is_editor && this.userInfo.user_id == data.uinfo.user_id;%>
+				<%data.headTag = this.headTag;%>
+				<%data.isList = true;%>
+				<%=wlListRenderFn(data);%>
+			<%});%>
+		</div>
+		<div class="paging_panel c_f">
+			<%#paging.html%>
+		</div>	
+	</div>
+	<div class="group_r">
+		<%if (this.group_editors && this.group_editors.users) {%>
+		<div class="sen_editors clearfix_f">
+			<a class="right_f gray_f" href="/group/<%=this.group_header.group_info.group_id%>/members" targe="_blank">更多&gt;&gt;</a>
+			<h3>资深编辑</h3>
+			<div class="edi_lists mt10_f">
+				<%this.group_editors && this.group_editors.users.map(function(data){%>
+				<a href="/person/u/<%=data.user_id%>" class="avatar32_f" target="_blank"><img src="<%=data.avatar_c%>" alt="<%=data.nickname%>"></a>
+				<%});%>
+				<div class="clear_f"></div>
+			</div> 
+		</div>
+		<%}%>
+		<%if (this.group_others && this.group_others.length>0){%>
+		<h3 class="mt14_f">她们的其他杂志</h3>
+		<%this.group_others && this.group_others.map(function(data){%>
+		<%= magItemRenderFn(data , 0);%>
+		<%});%>
+		<%}%>
+		<%if (this.group_rec && this.group_rec.length > 0) {%>
+		<div class="rec_mag">
+			<h3>推荐杂志</h3>
+			<ul>
+				<%var img_rec = 'http://imgtest.meiliworks.com/glogo/a/24/3a/029fd92ab2a12e07e04a57460a69_180_180.jpg';%>
+				<%var g_rec_len = this.group_rec.length;%>
+				<%this.group_rec && this.group_rec.map(function(data, index){%>
+				<li <%if(index==g_rec_len-1){%>style="border-bottom:none;"<%}%>>
+					<a href="/group/<%=data.group_id%>" target="_blank"><img class="left_f" src="<%=img_rec%>"><span class="left_f g_rc_name"><%=data.name%></span><span class="g_more right_f "></span></a>
+				</li>
+				<%});%>
+			</ul>
+		</div>
+		<%}%>
+		<div class="mt14_f create_mag">
+			<p>可以创建属于自己的杂志啦</p>
+			<p class="btn sure mt14_f new_mag">创建杂志</p>
+		</div>
+	</div>
+</div>
+<script type="text/html" id="twitter_comment">
+<? item && $.each(item.reverse() , function(key , data){?>
+	<li>
+		<a class="avatar32_f userInfoTips" user_id="<?= data.uinfo.user_id?>" href="/person/u/<?= data.uinfo.user_id?>" target="_blank"><img src="<?= data.uinfo.avatar_c?>" /></a>
+		<p>
+			<span class="date"><?= data.twitter_create_time?></span>
+			<a class="red_f twitter_comment_name" target="_blank" href="/person/u/<?= data.uinfo.user_id?>"><?= data.uinfo.nickname?></a>
+		</p>
+		<p><?= data.twitter_content?><a class="reply twitter_comment_reply">回复</a></p>
+	</li>
+<?});?>
+</script>
+<script type="text/html" id="twitter_comment_item">
+	<li>
+		<a class="avatar32_f"  href="/person/u/<%= this.userInfo.user_id%>" target="_blank"><img src="<%= this.userInfo.avatar_c%>" /></a>
+		<p>
+			<span class="date">1分钟</span>
+			<a class="red_f twitter_comment_name" target="_blank" href="/person/u/<%= this.userInfo.user_id%>"><%= this.userInfo.nickname%></a>
+		</p>
+		<p><?= tContent?><a class="reply twitter_comment_reply">回复</a></p>
+	</li>
+</script>
+<script>
+Meilishuo.config.mag_id = '<%=this.group_header.group_info.group_id%>';
+Meilishuo.config.is_editor = <%=this.is_admin.is_admin || this.is_admin.is_editor%>;
+</script>
+<%#group/magfoot.html%>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/magazine_list');
+_use:", this._JSstack , this._JSmods);%>
+<%#foot.html%>

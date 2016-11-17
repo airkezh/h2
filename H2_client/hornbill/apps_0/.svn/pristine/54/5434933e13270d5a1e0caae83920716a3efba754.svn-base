@@ -1,0 +1,41 @@
+<%# head_simple.html%>
+</head>
+<body>
+<div class="upload_bg">
+	<div class="text_box">
+		<div class="text">
+			<p class="f1">
+				晒出你与闺蜜的合照，投票PK赢大奖。<br/>只要你的闺蜜照获得的投票越多，<br/>就越有机会获得大奖,每人只能传一张哦！
+			</p>
+			<div class="f2">
+				<p><a href="meilishuo://person.meilishuo?json_params=%7B%22user_id%22%3A%2237407016%22%7D"><span>一等奖：</span>佐卡伊钻饰<br/>价值7819元 10名</a></p>
+				<p><a href="meilishuo://twitter_single.meilishuo?json_params=%7B%22twitter_info%22%3A%7B%22twitter_id%22%3A%221641822547%22%7D%7D"><span>二等奖：</span>美图秀秀手机“MeituKiss”<br/>价值2199元 10台</a></p>
+				<p><a href="meilishuo://person.meilishuo?json_params=%7B%22user_id%22%3A%2211297125%22%7D"><span>三等奖：</span>亿觅萨摩移动电源<br/>价值198元 100个</a></p>
+				<p><span>活动时间：</span>2013年8月14-8月21日</p>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="starBox">
+	<a class="btn mtb" id="upload" href="meilishuo://editor.meilishuo?json_params=%7B%22default_text%22%3A%22%23%E6%88%91%E7%9A%84%E9%97%BA%E8%9C%9C%E7%85%A7%23%22%2C%22take_a_picture%22%3A%221%22%2C%22need_a_picture%22%3A%221%22%7D">上传闺蜜照</a>
+	<a class="btn mtb lookupVote" go_href="/activity/girlfriends/upload/show?<%=this.tokeninfo%>">查看参赛榜单</a>
+ </div>
+ <script>
+	fml.vars.access_token = '<%=this.access_token%>';
+ </script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/zepto/touch', function(){
+		$('.lookupVote').on('tap', function(){
+			var url = $(this).attr('go_href');
+			$.get('/aj/activity/girls_add', {'access_token': fml.vars.access_token}, function(res){
+				location.href = url;
+			}, 'json').error(function(){
+				location.href = url;
+			});
+			setTimeout(function(){
+				location.href = url;
+			}, 500);
+		});
+	});
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html%>

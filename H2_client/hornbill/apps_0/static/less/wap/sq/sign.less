@@ -1,0 +1,271 @@
+@import "sq.less";
+
+@gray: #efefef;
+@gray_dark: #c4c4c4;
+@purple: #9842FF;
+
+html, body { .bgwhite; }
+
+.sec1 {
+	box-shadow: 0 1px 5px @gray;
+	background: white url(http://d03.res.meilishuo.net/pic/_o/d6/69/b2723d7211e6c3e1bba9f21d4fd3_640_192.cf.png) center top no-repeat;
+	background-size: 100% auto;
+	.clearfix;
+}
+
+.sec2, .sec3 {
+	.mt(.2rem);
+}
+
+.sec2 {
+	.ml(.1rem);
+	.mr(.1rem);
+	.clearfix;
+	.coupon {
+		&:nth-child(odd) { .left; }
+		&:nth-child(even) { .right; }
+	}
+}
+
+.sec3 { 
+	.ml(.1rem);
+	.mr(.1rem);
+	.mb(.2rem);
+	img { .w(100%); }
+	box-shadow: -1px 1px 5px @gray;
+}
+
+.sec1-l, .sec1-c, .sec1-r {
+	.left; 
+	.h(1.1rem); 
+	.mt(.45rem);
+	.mb(.45rem);
+}
+
+.sec1-l {
+	.ml(.3rem);
+	.mr(.2rem);
+	.border-r(50%);
+	border: 2px solid white;
+	.hidden;
+	span { 
+		.i_block;
+		.w(1.1rem); 
+		.h(1.1rem);
+		background-repeat: no-repeat;
+		background-position: center center;
+		background-size: cover;
+	}
+}
+
+.sec1-c {
+	max-width: 2.7rem;
+	.pl(.2rem);
+	.nowrap;
+	border-left: 1px dashed #d9d9d9;
+	.white;
+	.hidden;
+	.sec1-c-t {
+		.f(.3rem);
+	}
+	.sec1-c-m {
+		.mt(.12rem);
+		.f(.2rem);
+	}
+	.progress {
+		.mt(.15rem);
+	}
+	.progress-bar {
+		.pr;
+		.i_block;
+		.w(1.92rem);
+		.h(.1rem);
+		.ml(.18rem);
+		.border-r(.1rem);
+		background-color: @gray;
+		.progress-bar-num {
+			.pa;
+			top: -.07rem;
+			left: -.18rem;
+			.w(.24rem);
+			.l(.24rem);
+			.f(.16rem);
+			.c;
+			.white;
+			font-style: normal;
+			.border-r(50%);
+		}
+		.full { background-color: @purple; }
+		.empty { background-color: @gray; }
+		.progress-bar-value {
+			.pa;
+			top: 0;
+			left: 0;
+			.i_block;
+			.h(100%);
+			.border-r(.1rem);
+			background-color: @purple;
+		}
+	} 
+	.progress-num {
+		.i_block;
+		.ml(.06rem);
+		.f(.18rem);
+	}
+}
+
+.sec1-r {
+	.right;
+	.w(1.5rem);
+	.pl(.2rem);
+	border-left: 1px dashed #d9d9d9;
+	#sign {
+		.i_block;
+		.w(1.3rem);
+		.l(.52rem);
+		.mt(.3rem);
+		.f(.3rem);
+		.white;
+		.c;
+		.border-r(.5rem);
+	}
+	.sign {
+		background-color: @purple;
+		&::before { 
+			content: "签到"; 
+			.pl(.3rem);
+			background: url(http://d04.res.meilishuo.net/pic/_o/5a/44/3a3013b4a07fbf3b127cfc0d1136_24_24.ch.png) left center no-repeat;
+			background-size: .24rem .24rem;
+		}
+	}
+	.signed {
+		background-color: #c4c4c4;
+		&::before { content: "已签到"; }
+	}
+}
+
+.coupon {
+	.w(2.8rem);
+	.mb(.18rem);
+	padding: .1rem .1rem .25rem;
+	.c;
+	box-shadow: -1px 1px 5px @gray;
+}
+
+.coupon-content {
+	.white;
+	border-width: .12rem;
+	.credit, .tips { .l(200%); }
+	.credit {
+		.f(.4rem);
+	}
+	.tips {
+		.f(.18rem);
+		border-top: 1px dashed #d9d9d9;
+
+	}
+}
+
+.coupon-action {
+	.i_block;
+	.w(1.2rem);
+	.l(.5rem);
+	.mt(.3rem);
+	.f(.26rem);
+
+}
+
+.get {
+	.coupon-content {
+		background-color: #ff5252;
+		border-image: url("http://d03.res.meilishuo.net/pic/_o/47/54/7f666b3be018dae7744d373b61c5_280_137.cf.png") 6 repeat;
+	}
+	.coupon-action {
+		.red;
+		border: 1px solid @red;
+		.border-r(.5rem);
+		&::before {
+			content: "领 取";
+		}
+	}
+}
+
+.got, .out {
+	.coupon-content {
+		background-color: @gray_dark;
+		border-image: url("http://d05.res.meilishuo.net/pic/_o/eb/ab/293524f57de7cd5cd4926d81f544_280_137.cf.png") 6 repeat;
+	}
+	.coupon-action {
+		.white;
+		border: 1px solid @gray_dark;
+		.border-r(.5rem);
+		background-color: @gray_dark;
+	}
+}
+
+.got {
+	.coupon-action {
+		&::before {
+			content: "已领取";
+		} 
+	}
+}
+
+.out {
+	.coupon-action {
+		&::before {
+			content: "已抢光";
+		} 
+	}
+}
+
+.reject {
+	.coupon-content {
+		background-color: #ff5252;
+		border-image: url("http://d03.res.meilishuo.net/pic/_o/47/54/7f666b3be018dae7744d373b61c5_280_137.cf.png") 6 repeat;
+	}
+	.coupon-action {
+		.white;
+		border: 1px solid @gray_dark;
+		.border-r(.5rem);
+		background-color: @gray_dark;
+		&::before {
+			content: "未达标";
+		}
+	}
+}
+
+.windowDrive{
+	.dialog{ 
+		.pr;
+		.i_block;
+		.w(5.4rem);
+		.f(.24rem);
+		.bgwhite;
+		.border-r(.16rem);
+		z-index:100;
+		&-con{ 
+			padding:.4rem;
+		}
+		&-btn{
+			.l(.9rem);
+		}
+		.dialog-btn{ .border-n; }
+	}
+	#alert { .dialog-btn{ border-top: 1px solid #d9d9d9; } }
+	.tag{ .mt(.1rem); }
+	.url-box{ 
+		.mt(.3rem);
+		.alink{ 
+			.i_block;
+			.mr(.1rem); 
+			.ml(.1rem);
+			.w(42%); 
+			.l(.6rem);   
+			.fc(#fff); 
+			.border-r(.1rem); 
+			.bgc(#f69);  
+		}
+	}
+	
+}

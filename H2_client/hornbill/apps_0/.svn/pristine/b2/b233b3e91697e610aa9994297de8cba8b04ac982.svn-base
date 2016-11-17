@@ -1,0 +1,51 @@
+<%* 给弹窗加上时间限制 %>
+<%
+	var endTime = '2014/06/17 00:00:00'
+		,startTime = '2014/06/12 00:00:00'
+		,today = new Date();
+	endTime = new Date(Date.parse(endTime));
+	startTime = new Date(startTime);
+	if(endTime < today || startTime > today){
+		return ;
+	}
+%>
+<script type="text/html" id="apparel_alert">
+	<div class="fs_alert_320">
+		<a class="check_act" target="_blank" href="<%=this.DOMAIN.www%>/biz/huodong/act618/?frm=m618_meilishuo_tanchuang_PC_main&hdtrc=m618main_wholePopWindow">查看</a>
+		<a class="closeButton" href="javascript:;">关闭</a>
+	</div>
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use(['jquery', 'ui/dialog', 'component/shareTmp'], function(){
+		var dialog = this['dialog'];
+		var shareTmp = this['shareTmp'];
+		var tpl = shareTmp('apparel_alert');
+		var href = window.location.href;
+		var popRule = new dialog({
+			'content':tpl ,
+			'width': '550px',
+			'onStart': function(){
+				$('#overlay').css({
+					'background-color':'black',
+					'filter': 'alpha(opacity=40)',
+					'opacity': 0.4
+				});
+			},
+			'onChange': function(){
+				$('#dialogTitle').hide();
+				$('#dialogLayer').css({'background':'none' , 'filter':''});
+				$('#dialogContent').css({'background':'none'});
+			}
+		});
+		$('.closeButton, .check_act').on('click', function(){
+			popRule.drive.destroyModel();
+			var data = {
+				'act_name' : 'sale_618',
+				'time_type' : 1,
+				'type' : 'add'
+			};
+			$.get('/aj/huodong/user_mark', data, function(){}, 'json');
+		});
+	});
+_use:",  this._JSstack , this._JSmods ); %>

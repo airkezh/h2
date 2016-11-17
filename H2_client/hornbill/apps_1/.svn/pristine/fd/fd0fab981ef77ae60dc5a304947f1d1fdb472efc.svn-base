@@ -1,0 +1,84 @@
+<%#head.html%>
+<div class="garnier">
+	<div class="ga_topbg">
+		<div class="ga_intro"></div>
+		<a class="ga_detail" href="http://garnier.showone.com.cn/?utm_source=Meilishuo&utm_medium=beauty&utm_term=DisplayBanner&utm_content=Meilishuo06&utm_campaign=GSN_AquaDefense" target="_blank"></a>
+		<div class="ga">
+			<img src="<%= this.PICTURE_URL %>images/huodong/garnier/garnier3.gif" width="179" height="183"/>
+		</div>
+	</div>
+	<div class="garnier_wall">
+	<%
+		var showimg = 0;
+		var magItemRenderFn = requireFn('group/magitem.html');
+		this.garnier_group && this.garnier_group.tInfo && this.garnier_group.tInfo.map(function(magazine){ %>
+		<%= magItemRenderFn(magazine ,showimg++);%>
+	<% }); %>
+	</div>
+<!-- 	<div class="share_group">
+		<p>推荐到</p>
+		<ul>
+			<li><span class="i_qzone"></span></li>
+			<li><span class="i_sina"></span></li>
+			<li><span class="i_tx"></span></li>
+		</ul>
+	</div> -->
+	<div class="spinner botSpinner none_f"></div>
+    <div class="clear_f"></div>
+	<div class="paging_panel c_f">
+	<%#paging.html%>
+	</div>
+</div>
+
+	<!--弹窗-->
+	<script type="text/html" id="jifen">
+	    <div class="ga_jifen">
+			<p class="jifen_title">宝贝分享成功，恭喜你获得了1个积分！当前你的积分是：<?= marks?>分</p>
+			<p>每分享1个宝贝获得1个积分，每获得1个红心数获得2个积分。</br>获得积分最多的前20人可获得AQUA保湿精华正品1份！赶快行动吧！</p>
+			<span class="ga_continue" id="ga_continue"></span>
+		</div>
+	</script>
+	<script type="text/html" id="huodong">
+	    <div class="gapop">
+			<div class="ga_title">你分享的宝贝将保存到默认生成的“卡尼尔保鲜盒”杂志中</div>
+			<div class="goods_gaimg">
+				<img src="<%= this.PICTURE_URL %>images/huodong/garnier/ga_bg.jpg" class="magaImgage" />
+			</div>
+			<dl class="ga_look">
+				<dt>1、挑选宝贝</dt>
+				<dd class="ga_select">
+					<p>
+						<span gohref="http://detail.tmall.com/item.htm?spm=a1z10.3.17-17826599386.33.dimUbz&id=6191592123&">
+							<img src="<%= this.PICTURE_URL %>images/huodong/garnier/ga_green2.jpg" height="88" width="88"/>
+						</span>
+						<input name="garnier" id="ga1" type="radio" value="">
+						<label for="ga1">选这个</label>
+					</p>
+					<p>
+						<span gohref="http://detail.tmall.com/item.htm?spm=a220m.1000862.1000725.16.0VTru1&id=6330720751&is_b=1&cat_id=2&q=">
+							<img src="<%= this.PICTURE_URL %>images/huodong/garnier/ga_pink.jpg" height="88" width="88"/>
+						</span>
+						<input name="garnier" id="ga2" type="radio" value="">
+						<label for="ga2">选这个</label>
+					</p>
+					<p>
+						<a href="http://garnier.tmall.com/" target="_blank" class="ga_link"></a>
+					</p>
+				</dd>
+				<dt>2、粘贴链接</dt>
+				<dd class="lg">请在下面输入卡尼尔Tmall宝贝的链接地址：</dd>
+				<dd class="preview">
+					<input type="text" class="gaurl" />
+					<span class="gasure"></span>
+				</dd>
+				<dd id="linkMessageTips"><span class="gamsg"></span></dd>
+				<dd class="sub"><span class="gamsg"></span>&nbsp;<input class="gasub" disabled="true" type="button" value="提&nbsp;交" /></dd>
+			</dl>
+	    </div>
+	</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/huodong/garnier');
+	fml.use('page/poster');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

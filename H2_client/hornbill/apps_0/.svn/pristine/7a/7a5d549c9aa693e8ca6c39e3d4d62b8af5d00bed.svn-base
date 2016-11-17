@@ -1,0 +1,78 @@
+@import "../../block.less";
+body{.bgc(#fafafa);.hidden;}
+.container{.w(678px);.h(500px);.auto;.hidden;}
+.first_nav{.hidden;.bgc(#fcf8f9);border-bottom: 1px solid #e6e6e6;
+	li{.left;.l(45px);.w(100px);.pl(10px);.cursor;
+		i{padding: 2px 8px;background: url("@{pic_url}/images/im/win/setting_icon.png") no-repeat;.mr(6px);}
+		&.basic_setting{
+			i{.bp(0,-20px);}
+			&.act{.red;
+				i{.bp(-20px,-20px);}
+			}
+		}
+		&.message_setting{
+			i{.bp(0,0);}
+			&.act{.red;
+				i{.bp(-20px,0);}
+			}
+		}
+	}
+}
+
+textarea:hover{
+	cursor: default;
+}
+
+.second_nav{.hidden;.left;.w(140px);.h(454px);.bgc(#f3eeed);.l(32px);
+	a{.block;.pl(20px);
+		&.act{.bgc(#d4d1d0);}
+	}
+	.second_nav_wrapper{.w(200%);
+		.basic_setting_nav,.message_setting_nav{.left;.w(140px);}
+        a:hover {color: #5a5557}
+	}
+}
+.setting_main{.hidden;.left;.w(538px);.h(454px);
+	.main_wrapper{.w(200%);}
+}
+.basic_setting_main,.message_setting_main{.left;.w(538px);.h(454px);overflow-y: scroll;
+	h3{.l(32px);padding: 20px 15px 0 15px;}
+	.wrapper{.pl(15px);.pr(15px);.l(24px);}
+}
+#login_setting,#panel_setting{}
+#audio_setting,#shortcuts_setting{
+	label{.mr(3px);}
+	.listen{.bgred;.white;border: none;.cursor;.border-r(3px);.h(20px);}
+}
+#shortcuts_setting{
+	input[type=text]{.w(36px);border: 1px solid #e6e6e6;.c;}
+	.tle{.w(100px);}
+}
+.TextAreaCommon(){.w(100%);border: 1px solid #e6e6e6;.h(42px);padding: 5px;}
+.ButtonCommon(){.bgred;.white;border: none;.h(24px);.w(84px);.border-r(2px);.cursor;}
+#quickreply_setting{word-break:break-all;
+	table{.w(100%);border-collapse: collapse;.mb(10px);
+		tr:hover{.red;}
+		td{border-top:1px solid #e6e6e6;border-bottom:1px solid #e6e6e6;}
+		td:nth-child(1){.w(80%);padding: 10px 0;
+			div{padding:0 5px;border: 1px solid #fff;}
+			div[contenteditable=true]{border-color: #e6e6e6;}
+		}
+		td:nth-child(2){.w(20%);text-align: right;
+			i{padding:3px 8px;.mr(10px);.cursor;background:url("@{pic_url}/images/im/win/msg_setting_icon1.png") no-repeat;}
+			.ok{.bp(-40px,0);.none;}
+			.edit{.bp(0,0);}
+			.del{.bp(-20px,0);}
+		}
+	}
+	.add_input{.TextAreaCommon();}
+	.save_add{.ButtonCommon();}
+}
+#welcome_setting{
+	.welcome_input{.TextAreaCommon();}
+	.save_welcome{.ButtonCommon();}
+}
+#autoreply_setting{
+	.autoreply_input{.TextAreaCommon();}
+	.save_autoreply{.ButtonCommon();}
+}

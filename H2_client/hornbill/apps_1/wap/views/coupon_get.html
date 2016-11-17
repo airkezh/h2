@@ -1,0 +1,53 @@
+<%
+var coupon_data = this.coupon_get.data || {};
+var coupon_get_code = 0;
+%>
+<%#head.html%>
+<div class="container">
+	<% if(this.userInfo && this.userInfo.user_id){ %>
+		<% if(this.coupon_get.code == 0){ 
+			coupon_get_code = 0;
+		%>
+		<p>
+			<span class="success_tle">您领取了”<%=coupon_data.remark %>“面值为<span class="red_f"><%=coupon_data.credit %></span>元的优惠券</span>
+			<br>使用条件：<%=coupon_data.condition %>
+			<br>有效期：<%=coupon_data.start_time %>至<%=coupon_data.expire_time %>
+			<% if(this.os && this.os.mlsApp){ %>
+				<br><span class="red_f enter_btn js_go_back">返回活动</span>
+			<% } else { %>
+				<br><a href="/welcome" class="red_f enter_btn">进入美丽说</a>
+			<% } %>
+		</p>
+		<% } else { 
+			coupon_get_code = 1;
+		%>
+		<p>
+			领取优惠券失败
+			<br><%=this.coupon_get.message || '' %>
+			<% if(this.os && this.os.mlsApp){ %>
+				<br><span class="red_f enter_btn js_go_back">返回活动</span>
+			<% } else { %>
+				<br><a href="/welcome" class="red_f enter_btn">进入美丽说</a>
+			<% } %>
+		</p>
+		<% } %>
+	<% } else { 
+		coupon_get_code = 2;
+	%>
+	<p>
+		<span class="success_tle">您尚未登录，请先登录~</span>
+	</p>
+	<% } %>
+	<input type="hidden" id="success" data-url="<%=coupon_data.url %>" value="<%=coupon_get_code %>">
+</div>
+
+<% if(this.os){ %>
+	<script>
+		<%= 'fml.vars.inApp = ' + this.os.mlsApp + ';' %>
+	</script>
+<% } %>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/coupon_get');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

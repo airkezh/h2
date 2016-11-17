@@ -1,0 +1,30 @@
+<script type="text/html" id="posterWall">
+<?
+$.each(this.data.tInfo , function(k , v){ 
+?>
+<div class="productBox">
+	<a class="link_box" href="<?= v.url_mob?>">
+		<figure>
+			<?if(v.soldout){?>
+				<img class="zeroflag" src="http://i.meilishuo.net/css/images/wap/activity/all/bs_over.png" width="40" />
+			<?}?>
+			<?if(v.op_type == 10 || v.op_type == 11){?>
+				<span class="ico_png <?= v.op_type == 10 ? 'new_png' : 'hot_png'?>"></span>
+			<?}?>
+			<span class="bs_load_img" asrc="<?= v.show_pic_mob?>"></span>
+			<p class="proTitle"><?= v.ginfo.goods_title?></p>
+		</figure>
+		<figcaption>
+			<p class="proPrice">
+				<span class="now_price">￥<?= (v.ginfo.discount_goods_price + '').replace(/\.[0]*$/,'').replace(/[.]$/,'')?></span>
+				<?if(v.ginfo.discount){?>
+					<span class="discount"><?= v.ginfo.discount?></span>
+				<?}?>
+			</p>
+			<p class="countdown time" time="<?=v.time_unix?>">
+			</p>
+		</figcaption>
+	</a>
+</div>
+<?});?>
+</script>

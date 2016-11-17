@@ -1,0 +1,74 @@
+<%
+	var www = this.os.tablet ? 'meilishuohd://' : 'meilishuo://';
+	var red_url= this.os.ios ? www : www + 'open.meilishuo';
+	var locationUrl = {"url":"http://" + this.locationUrl,"inApp":"1"};
+
+	if(this.attr_id || this.nid){
+		if(this.frm) {
+			red_url = this.getAppLinkUrl + '&source=' + this.source + '-' + this.frm;
+		} else {
+			red_url = this.getAppLinkUrl + '&source=' + this.source;
+		}
+ 
+	}else if(this.twitter_id){
+		this.os.mlsApp = true;
+		red_url = _extFn.getAppLink('twitter_single', {'twitter_info' : {'twitter_id' : this.twitter_id, 'is_doota' : this.is_doota}, 'r' : 'wap-slideOpen'}, this.os, this.r,null,this.source);
+	}else if(this.bookid) {
+		red_url = 'meilishuo://open.meilishuo?source=wapBookApp'
+
+	}else if (this.template) {
+		//活动模板
+		red_url = 'meilishuo://openURL.meilishuo?json_params=' + encodeURIComponent(JSON.stringify(locationUrl))
+	}else if(this.club_article) {
+		//爱美丽club
+		red_url = 'meilishuo://club_article.meilishuo/?json_params='+encodeURIComponent('{\"article_id\":\"'+ this.article_id +'\"}')
+	}else if(this.shopId) {
+		this.os.mlsApp = true;
+		red_url = _extFn.getAppLink('shop' , {'shop_id': this.shopId} , this.os, this.r,null,this.source);
+	}else{
+		red_url = 'meilishuo://open.meilishuo?source=wapWelcomeApp'
+	}
+		
+	
+%>
+
+<% if(!this.mlsApp){%>
+	<%if(this.showZhiDing){%>
+		<div class="headApp" red_url="<%= this.appUrl%>" href="<%= red_url%>">
+			<img src="<%= this.leadApp.headApp%>"/>
+		</div>
+	<%}%>
+	
+	<%if(this.leadApp && this.leadApp.foot_banner){%>
+		<div class="daoliuBanner" <%if(this.isIqiyiApp && this.os.iphone){%>style="margin-bottom:20px;"<%} if(this.isIqiyiApp && this.os.ipad){%>style="margin-bottom:20px;"<%}%>>
+			<div class="track">
+				<span class="closeIcon"></span>
+				<span class="slider" red_url="<%= this.appUrl%>?frm=<%if(this.twitter_id){%>danbao_<%}%>wapbar" href="<%= red_url%>">
+					<% if (this.twitter_id) {%><!--<img src="<%= this.leadApp.foot_banner.foot_share_bar%>"/>--><%} else {%><img src="<%= this.leadApp.foot_banner.foot_bar%>"/><%}%>
+				</span>
+			</div>	
+		</div>
+	<%}%>
+	<!-- id = openApp的作用：只唤起客户端 -->
+	<div id="openApp" red_url="<%= this.appUrl%>" href="<%= red_url%>"></div>
+	<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+    
+	fml.use(['wap/app/landUrl','wap/zepto','component/iStorage'],function(){	
+		var storage = this.iStorage
+			, channel = storage.getCookie('channel_mark')
+		if(channel && channel == '40106') return
+		if( navigator.userAgent.indexOf('MicroMessenger') != -1 ){
+			var daoliuBanner = $('.daoliuBanner');
+			daoliuBanner.show();
+		}	
+	});
+	fml.use('wap/app/slideOpen' , function(){
+		//供活动模板用
+		this.tapSlider();
+
+		//只唤起客户端
+		//this.tapDefault();
+ 		//$('#openApp').click()
+	});
+_use:", this._JSstack , this._JSmods ); %>
+<%}%>

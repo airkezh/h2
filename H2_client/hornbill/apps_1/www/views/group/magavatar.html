@@ -1,0 +1,45 @@
+<%#head.html%>
+<div class="group_main">
+	<div class="bg_w set_ava">
+		<p class="red_f">选一张您喜欢的照片做杂志背景吧(建议图片尺寸948*250)。</p>
+		<p class="gray_f">支持Jpeg和Gif格式，大小不超过2M。</p>
+		<div class="mt10_f upload_pic">
+			<form id="upload_ava" action="/imageupload/group_avatar_save" target="upload_file" enctype="multipart/form-data" method="post">
+				<div class="upload_ava ava">选择上传图片</div>
+				<input type="file" name="attach" class="attach" size="4" />
+				<input type="hidden" name="group_id" value="<%=this.magid%>" />
+				<input type="hidden" name="mode" value="3" />
+				<input type="hidden" name="x1" id="x1" />
+				<input type="hidden" name="y1" id="y1" />
+				<input type="hidden" name="w" id="w" />
+				<input type="hidden" name="h" id="h" />
+			</form>
+			<a href="javascript:" class="del_header">删除背景</a>
+			<a href="/group/<%=this.magid%>">返回杂志&gt;&gt;</a>
+			<iframe id="get_upload_file" name="upload_file" class="none_f" frameborder="0"></iframe>
+		</div>
+		<div class="clear_f"></div>
+		<%if(this.group_header.group_info && this.group_header.group_info.header_path){%>
+		<img class="header_pic original" width="922" height="243" src="<%=this.group_header.group_info.header_path%>">
+		<%} else {%>
+		<img class="header_pic original none_f">
+		<%}%>
+		<div class="preview_pic none_f">	
+			<p>拖动下方方块，调整背景大小</p>
+			<img id="thumbn" >
+			<div class="crop">
+				<img class="preview" >
+			</div>
+
+			<div class="save_ava ava mt14_f">保存背景</div>
+		</div>
+		<div class="clear_f"></div>
+	</div>
+</div>
+<script>
+	Meilishuo.config.group_id = '<%=this.magid%>';
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/group/set_avatar');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

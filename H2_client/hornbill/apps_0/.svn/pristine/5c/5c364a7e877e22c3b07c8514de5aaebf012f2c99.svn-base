@@ -1,0 +1,141 @@
+<%# frame/www/head_simple.html%>
+</head>
+<%
+	var orders = (this.recent_order.data && this.recent_order.data.datas) ? this.recent_order.data.datas : []
+		,allOrderUrl = this.recent_order.data ? this.recent_order.data.url : ''
+		,goodsData = this.goods.data
+		,shopInfo = this.shop_info.data;
+%>
+<div class="im_right">
+	<div class="introBox">
+		<ul class="intro_tab">
+			<%if(goodsData){%><li class="tab_goods act"><span>商品</span></li><%}%>
+			<li class="tab_order <%if(!goodsData){%>act<%}%>"><span>订单</span></li>
+			<li class="tab_shop"><span>店铺</span></li>
+		</ul>
+		<div class="intro_list" style="margin-left: 0%;">
+			<%if(goodsData){%>
+			<div class="list_goods">
+				<div class="goods_box">  
+					<a class="goods_img" target="_blank" href="<%=this.MAIN_SITE_DOMAIN %>share/item/<%=goodsData.twitter_id %>">
+						<img src="<%=goodsData.goods_img %>">
+					</a>  
+					<p class="title">
+						<a target="_blank" href="<%=this.MAIN_SITE_DOMAIN %>share/item/<%=goodsData.twitter_id %>"><%=goodsData.goods_title %></a>
+					</p>  
+					<div class="clear_f">
+					</div>  
+					<p class="price">¥<%=goodsData.goods_price %></p> 
+				</div> 
+			</div>
+			<%}%>  
+			<div class="list_order">
+				<% if(orders.length){ %>
+				<h4>买家近期订单</h4>
+				<ul class="order_ul_wrapper">
+					<% orders.forEach(function(order){%>
+					<li>
+						<div class="order_header">
+							订单号：<a href="<%=order.url %>" target="_blank" class="order_num"><%=order.id %></a>
+						</div>
+						<% order.goods.forEach(function(goods){%>
+						<div class="order_content">
+							<div class="o_img_wrapper">
+								<a href="<%=order.url %>" target="_blank">
+									<img class="goods_img" src="<%=goods.thumb %>">
+								</a>
+							</div>
+							<div class="o_txt_wrapper">
+								<div class="goods_title">
+									<a href="<%=order.url %>" target="_blank"><%=goods.title %></a>
+								</div>
+								<% goods.attr.forEach(function(attr){%>
+									<%if(attr.is_show==1){%>
+										<div class="goods_sku"><%=attr.name %>：<%=attr.value %></div>
+									<%}%>
+								<%}); %>
+							</div>
+						</div>
+						<%});%>
+						<div class="order_footer">
+							<p>下单日期：<%=order.date %></p>
+							<p>订单状态：<%=order.status %></p>
+						</div>
+					</li>
+					<%});%>
+				</ul>
+				<% } else { %>
+				<div class="has_no_order">该买家暂无成交记录</div>
+				<% } %>
+				<div class="order_box">
+					<p class="order_all">
+						<a href="<%=allOrderUrl %>" target="_blank" class="red_f">查看买家所有订单<samp>&gt;</samp></a>
+					</p>      
+				</div>
+			</div>
+			<div class="list_shop"> 
+				<div class="shop_box">  
+					<p class="shop_name">
+						<a href="<%=this.MAIN_SITE_DOMAIN %>shop/<%=shopInfo.shop_id %>" target="_blank"><%=shopInfo.shop_nick %></a>
+					</p>  
+					<div class="shop_con">   
+					<ul class="shop_con_l">    
+						<li class="fb_f">商家评分</li>    
+						<li>款式流行：
+							 <span><%= shopInfo.points_trend.fashion.avg%></span>
+						</li>
+						<li>质量满意：
+							<span><%= shopInfo.points_trend.quality.avg%></span>
+						</li>
+						<li>服务态度：
+							<span><%= shopInfo.points_trend.attitude.avg%></span>
+						</li>
+						<li>发货速度：
+							<span><%= shopInfo.points_trend.fast.avg%></span>
+						</li>
+					</ul>
+					<ul class="shop_con_m">
+						<li class="fb_f">比同行平均</li>
+						<% ['fashion','quality','attitude','fast'].forEach(function(attr){
+							var item = shopInfo.points_trend[attr];
+						%>
+						<li>
+						  <%if(item.mark==1){%>
+						  <span class="redlevbtn">高</span>
+						  <%}else if(item.mark==0){%>
+						  <span class="redlevbtn">平</span>
+						  <%}else if(item.mark== -1){%>
+						  <span class="grenlevbtn">低</span>
+						  <%}%>
+						  <%=item.ratio%>
+						</li>
+						<%}); %>
+					</ul>
+					<div class="clear_f"></div>
+						<ul class="shop_con_r">
+						   <li class="fb_f">商家信息</li>
+						   <li>所在地区：
+							   <span><%=shopInfo.location%></span>
+						   </li>
+						   <li>商品数量：
+							   <span><%=shopInfo.goods_count%></span>
+						   </li>
+						   <li>销售数量：
+							   <span><%=shopInfo.goods_sales%></span>
+						   </li>
+						   <li>创建时间：
+							   <span><%=shopInfo.shop_ctime%></span>
+						   </li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/im/windows_tab');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# frame/www/foot_simple.html%>

@@ -1,0 +1,19 @@
+<%#head.html%>
+<div class="wrapper_bg">
+	<div class="inner">
+		<img src="<%= this.my_poster.show_pic%>" pid="<%= this.my_poster.pid%>" />
+		<p uid="<%= this.my_poster.uinfo.user_id%>" uname="<%= this.my_poster.uinfo.nickname%>"><%= this.my_poster.uinfo.nickname%>参加了欧珀莱#珠光宝气过圣诞#活动<br />
+		目前票数：<strong class="vote_num red_f"><%= this.my_poster.score%></strong><br />
+		还差<strong class="red_f"><%= this.my_poster.nextScore%></strong>票，排名就能上升一位了。</p>
+		<% if(this.my_poster.is_vote == 0){ %>
+			<span class="btnBox act_vote">投票</span>
+		<%}else{%>
+			<span class="btnBox voted">已投票</span>
+		<%}%>
+		<a href="http://www.meilishuo.com/biz/vote_poster_act/obolai/" target="_blank"></a>
+	</div>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/huodong/obolai_share');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

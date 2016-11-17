@@ -1,0 +1,333 @@
+<%# head_simple.html%>
+</head>
+<body <%if(this.os.ios){%>class="ios"<%}%>>
+<% this.headName = '宝贝详情'; %>
+<%
+var goodsInfo = this.goods_info.data || {}
+	, shopId = goodsInfo.shop_id;
+var cur_time  = (new Date).getTime() / 1000
+var promptRemain = getTimeRemain(goodsInfo.end_time)
+var globalKey = this._Request_cookies.MEILISHUO_GLOBAL_KEY;
+var shop_in = this.shop_in.data || '';
+var single_promotion = this.single_promotion.data
+
+
+function getTimeRemain(end_time){
+	if (end_time && end_time > cur_time) return end_time - cur_time
+	else return ''
+	}
+%>
+<%= requireFn('slider.html')({
+	'os' : this.os
+	, 'attr_id' : this.ptype == 'attr' ? this.pid : ''
+	, 'twitter_id': goodsInfo.twitter_id
+	, 'is_doota' : goodsInfo.is_doota
+	, 'apk' : ''
+	, 'footBanner' : true
+	,'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+	, 'title' : this.currentWord
+	, 'source' : this.source
+	, 'showDaoLiu' : this.showDaoLiu
+	, 'showZhiDing' : this.showZhiDing
+	, 'leadApp' : this.leadApp
+	, 'appUrl' : this.appUrl
+	, 'frm' : this.frm
+});%>
+<!-- <%# head_share.html%> -->
+
+<%
+var query = this._Request_query;
+%>
+<input type="hidden" name="order_init_r" value="<%=this.xr.r %>" />
+<header class="header" id="header">
+	<span class="icon-back" id="backBtn"></span>
+	<%if(this.headNameRight){%>
+	<%= this.headNameRight %>
+	<%}else if(!this.noHomeBtn){%>
+		<a class="icon-home eventnone" href="/welcome" xr="<%= this.xr.r%>"></a>
+	<%}%>
+</header>
+<section id="wrapper_main" class="wrapper">
+	<div class="picture">
+		<span style="background-image:url('<%= goodsInfo.image.image[0]%>');"></span>
+	</div>
+	<div class="sku_meta">
+		<h2 class="title"><%= goodsInfo.goods_title%></h2>
+		<ul>
+			<li class="priceInfo">
+				<span class="downBtn" id="downBtn"></span>
+				<span class="price red_f">￥<%= goodsInfo.price%>
+					<%if(goodsInfo.price_max && (goodsInfo.price != goodsInfo.price_max)){%>
+						~ <%= goodsInfo.price_max%> </span>
+				<%if(1 == goodsInfo.in_activity ){%>
+				<!-- <span class="del org_price">
+					<% if (goodsInfo.original_price != ''){%>￥<%= goodsInfo.original_price%>
+						<%if(goodsInfo.original_price_max && (goodsInfo.original_price != goodsInfo.original_price_max)){%>~ <%= goodsInfo.original_price_max%> <%}%>
+					<%}%></span> -->
+				<%}}%>
+				<!-- <p class="label">
+				<% goodsInfo.label.forEach(function(label){%>
+					<span><%= label.text %></span>
+				<%});%>
+				</p>
+				<span class="sort">运费：<%= goodsInfo.freight%>元</span> -->
+			</li>
+			<% if (promptRemain && 1 == goodsInfo.shelf ){%>
+				<li>
+
+					<div class="timeBox">
+						<span class="l_line time_line"></span>
+						<p class="countdown" remain="<%= promptRemain%>">仅剩<span >-天--小时--分--秒</span></p>
+						<span class="r_line time_line"></span>
+					</div>
+				</li>
+			<%}%>
+			<li class="goodsCmt">
+				<span class="cmtList">
+					销量 <span class="red_f"><%= goodsInfo.sales%>件</span>
+				</span>
+				<b class="split">|</b>
+				<span class="cmtList cmtWith">
+					评价 <span class="red_f"><%= goodsInfo.comment.totalUser %>人</span>
+				</span>
+				<b class="split">|</b>
+				<span class="cmtList">
+					喜欢 <span class="red_f"><%= goodsInfo.twitter_stat.count_like ? goodsInfo.twitter_stat.count_like : '0' %>人</span>
+				</span>
+			</li>
+			<%if(1==0 && goodsInfo.activity_desc.words != ''){%>
+			<li class="activeNews red_f">
+				活动：<a <%if(goodsInfo.activity_desc.link != ''){%>href="<%= goodsInfo.activity_desc.link%>"<%}%> xr="<%= this.goods_info.r%>"><%= goodsInfo.activity_desc.words%></a>
+			</li>
+			<%}%>
+		</ul>
+	</div>
+	<div class="sku_main">
+		<div class="sku_tab skuInfoNew">
+			<h2 class="sku_size" id="skuSize">
+				<span class="normal_title">选择颜色尺码</span>
+				<span class="choice_size"></span>
+				<span class="hide_msg" msgStatu="0"></span>
+			</h2>
+			<div class="sku_info_new" id="sku_info_new">
+				<div class="skin">
+					<%if(1 == goodsInfo.shelf ){%>
+					<p class="notice none_f">请选择<span>尺寸/颜色分类</span></p>
+					<ul class="selected none_f">
+						<li class="colorInfo">颜色：<span></span></li>
+						<li class="sizeInfo">尺寸：<span></span></li>
+					</ul>
+					<% if (goodsInfo.prop && goodsInfo.prop.color && goodsInfo.prop.color.is_show) { %>
+					<dl class="prop">
+						<dt><%= goodsInfo.prop.color.name%>：</dt>
+						<dd>
+							<ul id="colorList">
+								<%
+                                var _propColor = goodsInfo.prop.color
+                                _propColor.value.forEach(function(item, index ){
+									if (_propColor.color_image && _propColor.color_image[index]) {%>
+									<li class="img_list"><span data-id="<%= _propColor.meta_id[index] %>"><img src="<%= _propColor.color_image[index] %>" bsrc="<%= _propColor.image[index] %>"  title="<%= item %>" alt="<%= item%>" /></span></li>
+									<% }else{%>
+									<li><span data-id="<%= _propColor.meta_id[index] %>"><%= item %></span></li>
+									<%}%>
+								<%});%>
+							</ul>
+						</dd>
+					</dl>
+					<%}%>
+					<% if (goodsInfo.prop && goodsInfo.prop.size && goodsInfo.prop.size.is_show) { %>
+					<dl class="prop">
+						<dt><%= goodsInfo.prop.size.name%>：</dt>
+						<dd>
+							<ul id="sizeList">
+								<% var _propSize = goodsInfo.prop.size;
+                                _propSize.value.forEach(function(item, index ){%>
+									<li><span data-id="<%= _propSize.meta_id[index] %>"><%= item %></span></li>
+								<%});%>
+							</ul>
+						</dd>
+					</dl>
+					<%}%>
+					<dl class="amount">
+						<dt>数量：</dt>
+						<dd>
+							<div class="numBox">
+								<span class="minus">-</span>
+								<input class="nums" title="请输入购买数量" type="text" value="1">
+								<span class="plus">+</span>
+							</div>
+							<span class="stock">(库存<span>-</span>件)</span>
+						</dd>
+					</dl>
+					<div class="msg_box">
+						<p class="msg_limit"><span class="msg_ico"></span>对不起！每人最多限购100件！</p>
+						<p class="msg_zero"><span class="msg_ico"></span>对不起，这件宝贝已经卖光啦！</p>
+						<p class="msg_over"><span class="msg_ico"></span>您所填写的宝贝数量超过库存！</p>
+					</div>
+					<%}%>
+					<%
+					var promptRemain = getTimeRemain(goodsInfo.end_time)
+					if (goodsInfo.end_time && !promptRemain) goodsInfo.shelf = 0
+					%>
+					<% if (goodsInfo && 1 == goodsInfo.shelf ) { %>
+					<!-- <div class="btn_box">
+						<span href="javascript:void(0)" class="sure_btn">确定</span>
+						<span href="javascript:void(0)" class="add_cart">加入购物车</span>
+						<span href="javascript:void(0)" class="buy_btn">立即购买</span>
+					</div> -->
+					<%}else{%>
+					<% if(!this.goods_info.data.is_zero){ %>
+					<span class="msg_shelf">宝贝已下架!</span>
+					<% } else { %>
+					<span class="msg_shelf">请回活动换购</span>
+					<% }%>
+					<%}%>
+				</div>
+			</div>
+		</div>
+		<%
+        var _promotions = single_promotion && single_promotion[0],
+            _coupons    = _promotions && _promotions.coupon_applys
+
+        if( _coupons && _coupons.length > 1){%>
+			<div class="sku_tab sku_coupon">
+				<span class="hide_msg" msgstatu="0"></span>
+				<p class="cpnTitle">
+					店铺优惠：<span class="icon">券</span>
+					<% _coupons.map(function(data, index){if(index < 3){%>
+						<span><%= data.threshold%>减<%= data.credit %>;</span>
+					<%}}); %>
+				</p>
+				<div class="cpn_list">
+					<ul class="cpnInfo" id="couponList">
+
+					</ul>
+					<p class="tips">领取成功</p>
+					<a href="/coupon/list/" xr="<%= this.single_promotion.r%>" class="myCoupon">查看我的券</a>
+				</div>
+			</div>
+		<%}%>
+		<%if(shop_in.shop_id != ''){%>
+			<a href="/shop/<%= shop_in.shop_id%>" xr="<%= this.shop_in.r%>" class="sku_tab sku_shop">
+				<div class="shop_info">
+					<span class="guang">进店逛逛</span>
+					<dl>
+						<dt>
+							<img src="<%= shop_in.shop_face_img %>" />
+						</dt>
+						<dd>
+							<p class="title"><%= shop_in.shop_nick %></p>
+							<p class="info">宝贝数<%= shop_in.shop_goods_num %>  总销量<%= shop_in.goods_sales %></p>
+						</dd>
+					</dl>
+				</div>
+				<ul class="shop_eva">
+					<%
+						var points_trend = shop_in.points_trend
+							, hasProp = false
+					%>
+					<%if(typeof points_trend === "object" && !(points_trend instanceof Array)){
+						for (var prop in points_trend){
+					        hasProp = true;
+					        break;
+					    }
+					    if(hasProp){%>
+					    	<li>
+								描述:<span><%= points_trend.quality.avg %></span>
+							</li>
+							<li>
+								质量:<span><%= points_trend.quality.avg %></span>
+							</li>
+							<li>
+								服务:<span><%= points_trend.attitude.avg %></span>
+							</li>
+							<li>
+								发货:<span><%= points_trend.fast.avg %></span>
+							</li>
+					<%}}%>
+				</ul>
+			</a>
+		<%}%>
+	</div>
+
+	<%	var count_like = goodsInfo.twitter_stat && goodsInfo.twitter_stat.count_like
+			,beauty_me = goodsInfo.beauty_me
+		%>
+
+	<%# share/goods_detail.html %>
+	<div class="service">
+		<h3>服务保障</h3>
+		<a href="/help/return/" xr="<%= this.service.r%>">
+			<ul class="promise">
+				<% this.service.data && this.service.data.map(function(data){ %>
+					<li>
+						<span class="pro_ico"><img src="<%=data.icon_pc%>" /></span>
+						<p><%=data.text%></p>
+					</li>
+				<% }); %>
+			</ul>
+		</a>
+	</div>
+
+	<%# share/shop_hot.html %>
+
+	<div class="buyBox btn_box none_f">
+		<a href="javascript:void(0)" xr="<%= this.xr.r%>" class="cnt_seller">
+			<img src="<%=this.PICTURE_URL%>/images/wap/web/mls_icon.png" />
+			联系卖家
+		</a>
+		<span href="javascript:void(0)" class="add_cart">加入购物车</span>
+		<span href="javascript:void(0)" class="buy_btn">立即购买</span>
+	</div>
+</section>
+
+<script type="text/html" id="twitter_comment">
+<? item && $.each(item , function(key , data){?>
+	<li>
+		<img class="avatar" src="<?= data.uinfo.avatar_b?>" />
+		<p class="twitter_comment_name"><?= data.uinfo.nickname?></p>
+		<p class="l_con"><?= data.twitter_content?></p>
+		<p class="date"><?= data.twitter_create_time?></p>
+	</li>
+<?});?>
+</script>
+
+<script type="text/html" id="shopCoupon">
+	<? this.item && $.each(this.item, function(i, v) { ?>
+		<li>
+			<span class="money"><?= v.credit ?>元</span>
+			<?= v.tips ?>
+			<span class="cpnBtn js-cpn-btn" data-code="<?= v.coupon_apply_code ?>">领取</span>
+		</li>
+	<?});?>
+</script>
+
+<script type="text/html" id="downloadApp">
+	<div class="dialog_box">
+		<p class="intro">您尚未安装美丽说APP</br>立即下载美丽说访问更多内容</p>
+		<p class="downloadBtn btn">立即下载</p>
+		<p class="noDownload btn">忽略</p>
+	</div>
+</script>
+<script>
+fml.vars.count_discuss = "<%= goodsInfo.twitter_stat.discuss_num%>";
+fml.vars.goods = {"id" : "<%=goodsInfo.goods_id %>" , "twitter_id": "<%= goodsInfo.twitter_id%>" ,"pid" :"<%= goodsInfo.pid || 0%>","price" : "<%= goodsInfo.price || 0 %>" , "price_max" : "<%= goodsInfo.price_max || 0%>", "original_price" : "<%= goodsInfo.original_price || 0 %>","original_price_max" : "<%= goodsInfo.original_price_max || 0 %>"};
+fml.vars.goods_stock = <%= JSON.stringify(goodsInfo.stock)%>;
+fml.vars.goods_prop = <%= JSON.stringify(goodsInfo.prop)%>;
+fml.vars.goods_sku = <%= JSON.stringify(goodsInfo.sku)%>;
+fml.vars.globalKey = '<%= globalKey %>';
+fml.vars.frm = '<%= this.frm %>';
+fml.vars.shop_id = <%= shopId%>;
+fml.vars.goodsId = <%= goodsInfo.goods_id%>;
+fml.vars.common_r = '<%= this.xr.r%>';
+fml.vars.twitter_id = '<%= goodsInfo.twitter_id%>';
+<%= 'Meilishuo.config.poster0 = '+JSON.stringify(this.poster0)+';' %>;
+</script>
+
+<%# block/gotop.html%>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('m/page/global');
+	fml.use('wap/page/share/item');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html%>

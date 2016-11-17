@@ -1,0 +1,228 @@
+<%# head.html%>
+<% var rushinfo = this.rush.data.tuan_event_info
+	,rightnav = rushinfo.right_nav
+	,timesegment = ''
+	,currentdate = ''
+	,currenthour = ''
+	,currentp = 0;
+%>
+<%if(rushinfo.right_nav){%>
+    <div id="pgtop"></div>
+<%}%>
+
+<div class="main" style="background-color:<%=rushinfo.bg_color != '' ? rushinfo.bg_color : '#fff'%>;">
+
+	<%if(rushinfo.banner_pc){%>
+	<div class="head_bg" style="background:url('<%=rushinfo.banner_pc%>') center center; height:430px">
+	</div>
+	<%}%>
+			<%if(rushinfo.right_nav){
+			if(rushinfo.is_top_nav_tab){%>
+				<div class="f_container">
+					<div class="nav_tabs">
+						<ul style=" width: 1160px">
+							<% rightnav.slice(0,rightnav.length-1).forEach(function(data,i){ %>
+							<li <%= i==0 ? "class='curr'" : ""%>>
+								<a href="<%= data.link %>">
+									<%= decodeURI(data.name)%>
+								</a>
+							</li>
+							<%})%>
+						</ul>
+					</div>
+				</div>
+			<%}else{%>					
+				<div class="fix_nav" style="background-image:url('<%= rushinfo.right_nav_bg %>');">
+					<ul>
+						<% rightnav.forEach(function(data){ %>
+						<li>
+							<a href="<%= data.link %>"
+								<%= data.height ? 'style="height:' + data.height + 'px;"' : '' %>
+								<%= data.is_target ? 'target="_blank"' : '' %>>
+								<%= decodeURI(data.name)%></a>
+						</li>
+						<% }); %>
+					</ul>
+				</div>
+			<%}%>
+		<%}%>
+	<div class="content">
+<!-- 		<div class="countdown">
+			
+			<%if(rushinfo.time_val!=0){%>
+				<%= rushinfo.time_tip%>
+				<label class="t_time" time="<%=rushinfo.time_val%>"> 
+					<%if(parseInt(rushinfo.time_val) > 86400){%>
+				  		<b id="d1">0</b>
+						<b id="d2">0</b> 天
+					<%}%>
+					<b id="h1">0</b>
+					<b id="h2">0</b> <strong>:</strong>
+					<b id="i1">0</b>
+					<b id="i2">0</b> <strong>:</strong>
+					<b id="s1">0</b>
+					<b id="s2">0</b>
+				</label>
+			<%}else{%>
+				活动已结束
+			<%}%>
+		</div> -->
+
+	<%if(rushinfo.zhengdian_info && rushinfo.zhengdian_info.length>0){
+		var today = new Date()
+		,tmonth=today.getMonth()+1
+		,tday=today.getDate()
+		,todaystr=today.getFullYear() + "-"+(tmonth<10?"0"+tmonth:tmonth)+"-"+(tday<10?"0"+tday:tday);
+	%>
+	    <div class="tit" id="zd_1">
+			<label class="bigf">整点抢</label>
+			<label class="smallf">
+				<%if(rushinfo.subtypes && rushinfo.subtypes.length > 0) {rushinfo.subtypes.forEach(function(k1,v1){
+		                timesegment += k1.time + '、';
+					})}%>
+					<%=timesegment.substring(0,timesegment.length -1 )%>点准时开始抢购
+			</label>
+		 </div>
+		 <%if(rushinfo.subtypes && rushinfo.subtypes.length == 1){
+		 	var nowDate = new Date();
+		    var year = nowDate.getFullYear();
+	        var month = nowDate.getMonth() + 1 < 10 ? "0" + (nowDate.getMonth() + 1): nowDate.getMonth() + 1;
+	        var day = nowDate.getDate() < 10 ? "0" + nowDate.getDate() : nowDate.getDate();
+	        var dateStr = year + "-" + month + "-" + day; 
+	        var zhengdian_date = rushinfo.zhengdian_info[0].day;
+	        currentdate = (new Date(zhengdian_date) - new Date(dateStr) > 0)? zhengdian_date : dateStr;
+		    currenthour = rushinfo.subtypes[0].time;%>
+		    <div class="rushbuy_box"></div>
+		 <%}else{%>
+			 	<div class="oclockbuy">
+				<div class="timeline_scroll"> 
+					<i class="scroll_l"></i>
+					<div class="s_container">
+						<ul class="s_roll">
+		                <%rushinfo.zhengdian_info.forEach(function(k,v){
+		                	var time = new Date(k.day),
+		                	daystr = (time.getMonth() + 1) + '月' + (time.getDate()) + '日';
+		                	if(k.day == todaystr){
+		                		currentp = v;currentdate =todaystr;
+		                	}
+		                	
+	                	%>
+		     				<li>
+								<span class="t_day"><%=daystr%></span>
+								<span class="t_shaft"> 
+									<%if(rushinfo.subtypes && rushinfo.subtypes.length > 0){ rushinfo.subtypes.forEach(function(k1,v1){ 
+										var btn = "",
+							            hour = k1.time;
+										if(k.red_spot_time == hour){
+											btn = "t_redbtn";
+											if(k.day == todaystr)currenthour = hour;
+										}
+										%>		
+		                                <i class="t_btn t_whibtn <%=btn%> <%= !((v1+1) % 3) ? 'last' :'' %>" date="<%=k.day%>" hour="<%=hour%>"><%=hour%>:00
+										<s><%= decodeURI(k1.timenote)%></s></i>
+									<%})}%>
+								</span>
+							</li>
+			            <%})%>
+		            
+						</ul>
+					</div>
+				<i class="scroll_r"></i>
+			</div>
+			<div class="rushbuy_box"></div>
+		</div>
+		 <%}%>
+		<%}%>
+	<input type="hidden" id="hid" currentdate="<%=currentdate%>" currenthour="<%=currenthour%>" currentp="<%=currentp%>" />
+	<%if(rushinfo.goods_list_detail && rushinfo.goods_list_detail.length > 0){
+		rushinfo.goods_list_detail.forEach(function(data){%>
+		<div id="<%=data.anchor_tags%>" class="list_box">
+			<%if(data.list_banner && data.list_banner.pic){%>
+			<div class="img_tit" style="background:url(<%=data.list_banner.pic%>) center center; height:106px">
+				<%if(data.list_banner.link){%>
+					<a class="more" href="<%=data.list_banner.link%>" target="_blank"></a>
+				<%}%>
+			</div>
+			<%}%>
+
+			<%= requireFn("tuan/oclock_buy.html")({
+	    	  'goods': data.goods,	
+	          '_JSstack': this._JSstack,
+	          '_JSmods': this._JSmods,
+	          'is_lazyload' : true,
+			  'is_pc': true
+	        });%>
+	    </div>
+		<%})
+	}%>
+	<% if(rushinfo.key_words && rushinfo.key_words.length){ %>
+	<div class="keyword">
+		<div class="tit">
+				<span class="bigf">搭配关键词</span>
+		</div>
+		<div class="item">
+			<ul class="word">
+				<% rushinfo.key_words.map(function(data){ %>
+				<li>
+					<a href="<%= data.link%>
+						" target="_blank">
+						<%= decodeURI(data.word)%></a>
+				</li>
+				<%});%>
+			</ul>
+		</div>
+	</div>
+	<%}%>
+	</div>
+</div>
+<script type="text/html" id="rushinfo">
+<ul class="rushbuy">
+<? for(var v = 0;v < item.length;v++){var data = item[v];
+	var link = '/share/item/' + data.twitter_id+'?gr_id='+data.groupon_id;
+	if(data.item_status== 2){
+    var stutas_class = 'goods_end';
+    } else {
+    var stutas_class = '';
+    };?>
+     <li <?= !((v+1) % 4) ? 'class=\'last\'':'' ?>>
+     	<div class="s_picBox">
+     		<a class="s_pic" href="<?=link?>" target="_blank" title="">
+     			<img src="<?=data.goods_img?>" />
+     				<? if(stutas_class){ ?>
+	                <span class="goods_status <?= stutas_class?>"></span>
+	                <? } ?>
+     		</a>
+     	</div>
+     	<p class="txt">
+     		<a href="<?=link?>" target="_blank">
+     			<?=data.goods_name?></a>
+     	</p>
+     	<p class="info-goods">
+     		<span class="f-18">¥</span>
+     		<span class="f-14"><?=data.off_price?></span>
+     		<s class="pold">
+     			原价：¥<?=data.origin_price?>
+ 			</s>
+     	</p>
+     	 <?if(data.item_status==0){?>
+   		<p>剩余 <i class="time" time="<?=data.sec_to_begin?>">-天-小时-分</i></p>  
+        <?}else{?>
+   	 	<p class="buy_num">剩余<?= data.repertory || 0 ?>件</p>
+        <?}?>
+     </li><?}?>
+</ul>
+</script>
+<script type="text/javascript">
+fml.vars.event_id = <%=this.event_id%>;
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/huodong/tg512');
+_use:", this._JSstack , this._JSmods); %>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('component/lazyLoad' , function(){
+		this.load('.bs_load_img' , 'asrc');	
+	});
+_use:", this._JSstack , this._JSmods);%>
+<%# foot.html%>

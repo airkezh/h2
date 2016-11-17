@@ -1,0 +1,242 @@
+<%# head.html %>
+<% 
+	var editFlag = this.editFlag || '';
+	var yearList = this.selectYear.list || [];
+	var pidList = this.addrSelect.data.province || [];
+	var historyMsg = this.historyMsg || {};
+	var historyData = historyMsg.data || {};
+	var changeMobile = this.changeMobile || historyData.change_mobile || '';
+	var hisMonthList = historyData.register_month_list || [];
+	var loginCityData = historyData.common_login_address_cid_list || {};
+	var loginCityList = loginCityData.city || [];
+	var shopInfo = historyData.common_shipping_info || {};
+	var shopCityData = shopInfo.shipping_address_cid_list || {};
+	var shopCityList = shopCityData.city || [];
+	var shopDidData = shopInfo.shipping_address_did_list || {};
+	var shopDisList = shopDidData.district || [];
+%>
+
+<div class="outer_main">
+	<div class="title">
+		美丽说账号安全验证
+	</div>
+	<form id="msgForm" method="post" onsubmit="return false" action="">
+		<div class="form_wrap">
+			<input class="changeMobile" name="change_mobile" type="hidden" value="<%= changeMobile %>">
+			<p class="form-list">
+				<label for="realname">真实姓名</label>
+				<input class="lipt l_ipt lipt_length" autocomplete="off" id="realname" name="realname" type="text"  placeholder="" value="<%= editFlag ? historyData.realname : '' %>"/>
+			</p>
+			<p class="form-list">
+				<label for="id_card">身份证号</label>
+				<input class="lipt l_ipt" autocomplete="off" id="id_card" name="id_card" type="tel" value="<%= editFlag ? historyData.id_card : '' %>" placeholder=""/>
+			</p>
+			<div class="form-list register_time">
+				<label for="register_time">注册时间</label>
+				<div class="time_inner">
+					<p class="year_wrap select_wrap">
+						<span class="year_box select_box"><%= editFlag ? historyData.register_year : '年份' %></span>
+						<select name="register_year" id="register_year">
+							<option value="0">年份</option>
+							<% yearList.forEach( function( item,index ){ 
+								if( item == historyData.register_year ){
+									var selectAttr = 'selected="selected"';
+								}else{
+									selectAttr = ''
+								}
+							%>
+							<option value="<%= item %>" <%= selectAttr %>><%= item %></option>
+							<% }) %>
+						</select>
+					</p>
+					<span class="before_unit">-</span>
+					<p class="month_wrap select_wrap">
+						<span class="month_box select_box"><%= editFlag ? historyData.register_month : '月份' %></span>
+						<select name="register_month" id="register_month">
+							<option value="0">月份</option>
+							<% hisMonthList && hisMonthList.forEach( function( item,index ){ 
+								if( item == historyData.register_month ){
+									var selectAttr = 'selected="selected"';
+								}else{
+									selectAttr = ''
+								}
+							%>
+							<option value ="<%= item %>" <%= selectAttr %>><%= item %></option>
+							<% }) %>
+						</select>
+					</p>
+				</div>
+			</div>
+			<div class="form-list">
+				<label for="common_login_address">常登陆地区</label>
+				<div class="time_inner">
+					<p class="pid_wrap select_wrap">
+					<span class="pid_box select_box"><%= editFlag ? historyData.common_login_address_province : '省份' %></span>
+					<select name="addressPid" id="">
+						<option value="0">省份</option>
+						<% pidList.forEach( function( item, index ){ 
+						if( item.pid == historyData.common_login_address_pid ){
+								var selectAttr = 'selected="selected"';
+							}else{
+								selectAttr = ''
+							}
+						%>
+						<option value="<%= item.pid %>" <%= selectAttr %>><%= item.province %></option>
+						<% }) %>
+					</select>
+					</p>
+					<span class="before_unit">-</span>
+					<p class="cid_wrap select_wrap">
+					<span class="cid_box select_box"><%= editFlag ? historyData.common_login_address_city : '城市' %></span>
+					<select name="addressCid" id="">
+						<option value="0">城市</option>
+						<% loginCityList && loginCityList.forEach( function( item,index ){ 
+							if( item.cid == historyData.common_login_address_cid ){
+								var selectAttr = 'selected';
+							}else{
+								selectAttr = ''
+							}
+						%>
+						<option value="<%= item.cid %>" <%= selectAttr %>><%= item.city %></option>
+						<% }) %>
+					</select>
+				</div>
+			</div>
+			<p class="form-list">
+				<label for="id_card">常用收货人姓名</label>
+				<input class="lipt l_ipt" autocomplete="off" id="shipping_name" name="shipping_name" type="text" value="<%= editFlag ? shopInfo.shipping_name : '' %>" placeholder=""/>
+			</p>
+			<p class="form-list">
+				<label for="id_card">常用收货人电话</label>
+				<input class="lipt l_ipt" autocomplete="off" id="shipping_phone" name="shipping_phone" type="text" value="<%= editFlag ? shopInfo.shipping_phone : '' %>" placeholder=""/>
+			</p>
+			<p class="form-list">
+				<label for="shipping_address">常用收货地址</label>
+				<input class="lipt l_ipt receive_addr" autocomplete="off" id="shipping_address" name="shipping_address" type="text" value="<%= editFlag ? shopInfo.shipping_address : '' %>" placeholder=""/>
+			</p>
+			<p class="form-list">
+				<label for="id_card">备注</label>
+				<input class="lipt l_ipt" autocomplete="off" id="comment" name="comment" type="text" value="<%= editFlag ? historyData.comment : '' %>" placeholder=""/>
+			</p>
+		</div>
+	</form>
+
+	<div class="submitBox">
+		<span class="ErrorMessage" style="display:none">错误信息</span>
+		<input class="apply_submit" type="submit" value="提交申请"/>
+	</div>
+</div>
+
+<div class="address_mask" style="display:none">
+	<div class="addr_select_wrap">
+		<p class="addr_title"><span class="desc">常用地址</span><span class="addr_ico"></span></p>
+		<form id="addrForm" method="post" onsubmit="return false" action="">
+			<div class="addr_unit">
+				<label for="pid">省份：</label>
+				<div class="addr_box">
+					<span class="choose_item addr_pid"><%= editFlag? shopInfo.shipping_address_provice : '请选择'%></span>
+					<select name="shop_pid" id="shop_pid">
+						<option value="0">请选择</option>
+					<% pidList.forEach( function( item, index ){
+						if( item.pid == shopInfo.shipping_address_pid ){
+								var selectClass = 'selected="selected"';
+							}else{
+								selectClass = ''
+							}
+					%>
+						<option value="<%= item.pid %>" <%= selectClass %>><%= item.province %></option>
+					<% }) %>
+					</select>
+					<span class="drop_ico"></span>
+				</div>
+			</div>
+			<div class="addr_unit">
+				<label for="cid">城市：</label>
+				<div class="addr_box">
+					<span class="choose_item addr_cid"><%= editFlag? shopInfo.shipping_address_city : '请选择'%></span>
+					<select name="shop_cid" id="shop_cid">
+					<option value="0">请选择</option>
+					<% shopCityList && shopCityList.forEach( function( item,index ){ 
+						if( item.cid == shopInfo.shipping_address_cid ){
+							var selectClass = 'selected="selected"';
+						}else{
+							selectClass = ''
+						}
+					%>
+					<option value="<%= item.cid %>" <%= selectClass %>><%= item.city %></option>
+					<% }) %>
+					</select>
+					<span class="drop_ico"></span>
+				</div>
+			</div>
+			<div class="addr_unit">
+				<label for="pid">区域：</label>
+				<div class="addr_box">
+					<span class="choose_item addr_did"><%= editFlag? shopInfo.shipping_address_district : '请选择'%></span>
+					<select name="shop_did" id="shop_did">
+					<option value="0">请选择</option>
+					<% shopDisList && shopDisList.forEach( function( item,index ){ 
+						if( item.did == shopInfo.shipping_address_did ){
+							var selectClass = 'selected="selected"';
+						}else{
+							selectClass = ''
+						}
+					%>
+					<option value="<%= item.did %>" <%= selectClass %>><%= item.district %></option>
+					<% }) %>
+					</select>
+					<span class="drop_ico"></span>
+				</div>
+			</div>
+			<div class="detail_addr addr_unit">
+				<textarea rows="2" placeholder="详细地址"><%= editFlag? shopInfo.shipping_address_detail : ''%></textarea>
+			</div>
+		</form>
+		<div class="btn_wrap">
+			<p class="addr_error" style="display:none">错误信息</p>
+			<button class="addr_cancel">取消</button>
+			<button class="addr_sure">确认</button>
+		</div>
+	</div>
+</div>
+
+<script type="text/html" id="select_month">
+<option value="0">月份</option>
+<? for( var i = 0; i < monthList.length; i++ ){ ?> 
+	<option value="<?= monthList[i] ?>"><?= monthList[i] ?></option>
+<? }; ?>
+</script>
+
+<script type="text/html" id="select_login_city">
+<option value="0">城市</option>
+<? for( var i = 0; i < cityList.length; i++ ){ ?> 
+	<option value="<?= cityList[i].cid ?>"><?= cityList[i].city ?></option>
+<? }; ?>
+</script>
+
+<script type="text/html" id="common_use_city">
+<option value="0">城市</option>
+<? for( var i = 0; i < cityList.length; i++ ){ ?> 
+	<option value="<?= cityList[i].cid ?>"><?= cityList[i].city ?></option>
+<? }; ?>
+</script>
+
+<script type="text/html" id="shop_city">
+<option value="0">请选择</option>
+<? for( var i = 0; i < cityList.length; i++ ){ ?> 
+	<option value="<?= cityList[i].cid ?>"><?= cityList[i].city ?></option>
+<? }; ?>
+</script>
+
+<script type="text/html" id="shop_district">
+<option value="0">请选择</option>
+<? for( var i = 0; i < didList.length; i++ ){ ?> 
+	<option value="<?= didList[i].did ?>"><?= didList[i].district ?></option>
+<? }; ?>
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/apply');
+_use:", this._JSstack , this._JSmods); %>
+
+<%# foot_simple.html%>

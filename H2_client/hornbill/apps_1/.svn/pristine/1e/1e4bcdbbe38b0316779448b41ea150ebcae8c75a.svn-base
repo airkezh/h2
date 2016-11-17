@@ -1,0 +1,23 @@
+<div class="ads_sider adm">
+	<div class="sider">
+		<% var wid = this.width;%>
+		<div class="boxImg">
+			<% var seclen = this.ad.length; %>
+			<ul class="_img" style="position:absolute;left:0;width:<%= (seclen+1)*wid %>px;display:inline-block;">
+				<% this.ad.map(function(data){ %>
+				<li class="left_f">
+					<a class="adm_mon" href="/api/adm/?spm=<%=data.ad_clickspm%>" target="_blank" monitor="<%=data.ad_click_monitor%>" show_mon="<%=data.ad_view_monitor%>">
+						<img src="<%=data.ad_filedata%>" width="<%=wid%>">
+					</a>
+				</li>
+				<% }); %>
+			</ul>
+		</div>
+		<div class="_num adType1 <% if(seclen == 1) { %>none_f<% } %>">
+			<% for (var i=1; i<=seclen; i++) { %>
+			<% var current = i==1 ? 'current' : ''; %>
+			<a class="<%= current %>"><span class="none_f"><%= i %></span></a>
+			<% } %>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,67 @@
+<%# head_simple.html%>
+<%
+	var coupons = this.couponInfo.coupon;
+%>
+</head>
+<body>
+
+<div class="top">
+
+<div class="banner_top"><span><%=this.remainText%><span id="remainDay" style="color: #ff0000"><%=this.remainDay%></span><%if(this.remainDay != '') {%>天<%}%></span></div>
+</div>
+
+
+<div class="coupon_wrap">
+
+	<img class="fb"  src="http://i.meilishuo.net/css/images/wap/activity/august_act/820_mob/fb_1.png"/>
+	<% var cc = coupons[1]%>
+	<div  class="coupon coupon100" style="background: url('<%=cc.bgPic%>') no-repeat top center; background-size: 100%">
+		<span class="coupon_btn">
+			<img src="<%=cc.btnPic%>" alt="" width="60%"  code="<%=cc.coupon_code%>" type="<%=cc.coupon_type%>"/>
+			<% if (cc.left_amount && cc.left_amount > 0) {%><p style="padding-top: 2%">本时段还剩<span class="leftAmount"><%=cc.left_amount%></span>张</p> <%}%>
+		</span>
+		<div class="detail100">
+			<a href="http://m.meilishuo.com/activity/four_years/prepare/?cid=2403 " ></a>
+		</div>
+	</div>
+
+	<img class="fb"  src="http://i.meilishuo.net/css/images/wap/activity/august_act/820_mob/fb_2.png"/>
+	<% for (var i in coupons) { var cc = coupons[i]%>
+	<% if (i == 1) {%>
+	<%} else {%>
+	<div  class="coupon" style="background: url('<%=cc.bgPic%>') no-repeat top center; background-size: 100%">
+		<span class="coupon_btn">
+			<img src="<%=cc.btnPic%>" alt="" width="60%"  code="<%=cc.coupon_code%>" type="<%=cc.coupon_type%>"/>
+			<% if (cc.left_amount && cc.left_amount > 0) {%><p style="padding-top: 2%">本时段还剩<span class="leftAmount"><%=cc.left_amount%></span>张</p> <%}%>
+		</span>
+	</div>
+	<%}%>
+	<%}%>
+
+
+
+</div>
+
+
+<div class="sub_wrap">
+
+	<a href="http://mapp.meilishuo.com/activity/sign/sign_in/?frm=820dacu" class="sub"><img src="http://i.meilishuo.net/css/images/wap/activity/august_act/820_mob/sub1_1.png" alt=""></a>
+
+</div>
+
+<div class="bottom">
+
+</div>
+
+<script>
+	var isLogin = <%=this.isLogin%>;
+	var sTime = <%=this.sTime%>;
+	//alert(JSON.stringify(<%=JSON.stringify(coupons)%>));
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+
+fml.use('wap/page/activity/main820');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot_simple.html%>

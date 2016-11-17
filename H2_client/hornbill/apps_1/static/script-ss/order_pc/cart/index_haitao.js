@@ -1,0 +1,1 @@
+fml.define('order_pc/cart/index_haitao',['order_pc/cart/cart'],function(require){})

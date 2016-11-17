@@ -1,0 +1,88 @@
+<%
+	var rucang = this.rucang && this.rucang.data
+		, goodsList = rucang && rucang.goods_list;
+	var banner = this.banner && this.banner.data;
+
+	function getURL(url,title){
+		return _extFn.getAppLink("openURL", {"url": url, "title": title, "inApp" : "1"}, this.os, null, url);
+	}
+%>
+<%#head.html%>
+<section class="banner" style="background-image:url(<%= banner && banner.mob_rucang_top_banner && banner.mob_rucang_top_banner[0].show_pic %>);">
+	<a href="<%= getURL('http://'+this.host+'/activity/tuan/qualityControl/', '官方质检')%>" class="rules"></a>
+</section>
+<%if(goodsList && goodsList.length > 0){%>
+<section class="main">
+	<%goodsList.forEach(function(item){%>
+	<a href="<%= item.url%>" class="goods_box">
+		<div class="goods">
+			<figure><img src="<%= item.goods_image_mob %>"></figure>
+			<div class="details">
+				<%if(item.goods_detail && item.goods_detail.length > 0){
+					var detail = item.goods_detail;
+				%>
+				<div class="imgbox">
+					<%if(detail[0]){%>
+						<%if( detail[0].image ){%>
+							<span class="img fir_img"><img src="<%= detail[0].image%>"></span>
+						<%}%>
+						<%if(detail[1] && detail[1].text ){%>
+							<i class="fir_arrow"></i>
+							<span class="text fir_txt"><%= detail[0].text %></span>
+						<%}%>
+					<%}%>
+					<%if(detail[1]){%>
+						<%if(detail[1].image){%>
+							<span class="img sec_img"><img src="<%= detail[1].image%>"></span>
+						<%}%>
+						<%if(detail[1] && detail[1].text ){%>
+							<i class="sec_arrow"></i>
+							<span class="text sec_txt"><%= detail[1].text %></span>
+						<%}%>
+					<%}%>
+				</div>
+				<%}%>
+				<%if(item.text_tags && item.text_tags.length > 0){%>
+					<div class="promotion">
+						<%item.text_tags.forEach(function(t){%>
+						<span><%= t %></span>
+						<%});%>
+					</div>
+				<%}%>
+				<%if(item.goods_text_detail && item.goods_text_detail.length > 0){%>
+				<ul>
+					<% item.goods_text_detail.forEach(function(s){%>
+					<li><i>.</i><%= s %></li>
+					<%});%>
+				</ul>
+				<%}%>
+			</div>
+		</div>
+		<div class="biz_info">
+			<p>
+				<span>销量：<%= item.sale_num || ''%></span>
+				<span class="stock">库存：<%= item.repertory %></span>
+			</p>
+			<p>
+				<span class="btn_buy">
+					团购价：¥ <i class="price"><%= item.off_price %></i>
+				</span>
+			</p>
+		</div>
+	</a>
+	<%});%>
+</section>
+<%}%>
+<span class="gotop" style="bottom:<%if(this.isIphone){%>60<%}else{%>20<%}%>px">
+	<img src="http://i.meilishuo.net/css/images/wap/tuan/gotop.png" />
+</span>
+<script type="text/html" id="rulesDialog">
+	<div class="rule_txt">
+		<p>质检说明：<span class="btn_close">X</span></p>
+		<p><%= rucang && rucang.notice_info %></p>
+	</div>
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use('wap/page/tuan/activity/highQuality');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html%>

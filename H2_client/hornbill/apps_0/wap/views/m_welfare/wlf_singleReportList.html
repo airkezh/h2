@@ -1,0 +1,62 @@
+<%#head.html%>
+	<section id="wrapper_main" class="wrapper">
+		<h2 id="reportNo">试用报告&nbsp;&nbsp;&nbsp;&nbsp;(<%=this.reportList.num%>份)</h2>
+		<div class="reportWrap">
+			<%if(this.reportList.list&&this.reportList.list.length){%>
+				<div class="reportList">
+
+				</div>
+				<div class="pullUp" status="loading"></div>
+				<%}else{ %>
+					<h2 class="noReport">暂时还没有报告，请等一等吧～～</h2>
+					<% }%>
+		</div>
+	</section>
+	<a class="gotop" style="bottom:<%if(this.isIphone){%>60<%}else{%>20<%}%>px">
+
+		<img src="<%= this.PICTURE_URL%>/images/wap/tuan/gotop.png" />
+
+	</a>
+	<script type="text/html" id="posterWall">
+		<?this.list.forEach(function(item){ ?>
+			<div class="reportItems">
+				<a class="reprotLink" href="javascript:void(0)" data_id="<?=item.id?>">
+					<div class="userInfo">
+						<img src="<?=item.user.avatar_c?>" class="userImg" /><span class="userName"><?=item.user.nickname?><br></span><span class="pulishTime">发表于：<?=item.ctime?></span>
+					</div>
+					<div class="imgs">
+						<? var picsLen=3; if(item.trial_pics.length<3){ picsLen=item.trial_pics.length; } for(var i=0;i<picsLen;i++){ if(i==0) {?>
+
+							<img src='<?=item.trial_pics[i]?>' alt="pic" title="pic" style="margin-left: 0;" class="reprotImg" />
+							<?}else{?>
+								<img src='<?=item.trial_pics[i]?>' alt="pic" title="pic" class="reprotImg" />
+								<?}}?>
+					</div>
+					<?if(item.order_by=="0"){?>
+						<h3 class="report_title"><?=item.trial_title?></h3>
+						<?}else{?>
+							<h3 class="report_title isPerfect">
+						<img src="<%=this.PICTURE_URL%>images/m_welfare/wlf_perfectReprot.jpg" alt="精彩报告" title="精彩报告" />
+						<?=item.trial_title?></h3>
+							<?}?>
+								<p class="report_con">
+									<?=item.trial_content?>
+								</p>
+								<div class="reportData clearfix">
+									<span class="commentNo"><i></i><b><?=item.commentNum?></b>条评论</span>
+									<span class="reprot_like"><i></i><b class="like_num"><?=item.likeNum?></b>人喜欢</span>
+								</div>
+				</a>
+			</div>
+
+			<? });?>
+	</script>
+	<script>
+		fml.vars.activity_id = '<%=this.activity_id%>';
+		fml.vars.isWx='<%=this.isWx%>';
+	</script>
+	<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+	<%! $_ENGINE_SELF.callFn( "useModule")( "<<<_use:
+	fml.use('wap/page/welfare_new/wlf_singleReportList');
+	_use:", this._JSstack , this._JSmods ); %>
+		<%#foot.html%>

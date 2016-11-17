@@ -1,0 +1,111 @@
+<%#head.html%>
+<%
+	var pageData = this.pageData;
+
+%>
+<style>
+	body{background-color: <%= pageData.pageControl.main_bg || '#fff' %>;}
+</style>
+<% if (!this.mlsApp) {%>
+<%= requireFn('slider.html')({
+  'os' : this.os
+  , 'footBanner' : true
+  ,'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+  , 'showZhiDing' : this.showZhiDing
+  , 'leadApp' : this.leadApp
+  , 'mlsApp' : this.mlsApp
+  , 'appUrl' : this.appUrl
+  , 'locationUrl' : this.locationUrl
+  , 'template' : 'template'
+});%>
+<%}%>
+
+<%if (pageData.pageControl.head_src) {%>
+<a href="<%=pageData.pageControl.head_link%>" class="headline">
+	<img src="<%=pageData.pageControl.head_src%>" alt=""/>
+</a>
+<%}%>
+<% pageData.header && pageData.header.forEach(function(data){ %>
+	<a class="bannar" href="<%= data.link || 'javascript:;' %>" >
+		<% if (this.pt && this.nowTime && this.endTime) {%>
+		<div class="countTime" style="padding-top:<%=this.pt+'%'%>">
+			<p><%= this.bannerText %></p>
+
+			<dl class="timeStamp" end-date="<%= this.endTime %>" now="<%= this.nowTime %>">
+				<dd id="day0"><span >-</span></dd>
+				<dd id="day1"><span >-</span></dd>
+				<dt class="text_day">天</dt>
+				<dd id="hour0"><span >-</span></dd>
+				<dd id="hour1"><span >-</span></dd>
+				<dt class="text_hour">小时</dt>
+				<dd id="minute0"><span >-</span></dd>
+				<dd id="minute1"><span >-</span></dd>
+				<dt class="text_min">分</dt>
+				<dd id="seconds0"><span >-</span></dd>
+				<dd id="seconds1"><span >-</span></dd>
+				<dt class="text_sec">秒</dt>
+			</dl>
+
+		</div>
+		<%} else if (this.bannerText){%>
+		<div class="countTime">
+		<p style="width: 100%; text-align: center;padding-top: 48%"><%= this.bannerText %></p>
+			</div>
+		<%}%>
+		<img src="<%= data.src %>">
+	</a>
+<% }); %>
+
+<% if(pageData.banner_word.length){ %>
+	<div class="banner_word" id="bannerWord">
+		<div class="bannar_wrap">
+			<div class="banner_inner">
+				<% pageData.banner_word.forEach(function(data, index){ %>
+					<div class="<%= index == pageData.bannar_s.num ? 'active' : '' %>" style="width: <%= data.width %>;">
+						<a class="text" href="<%= data.link %>#bannerWord"><span><%= data.word %></span><%= data.num ? '('+data.num+')' : '' %></a>
+					</div>
+				<% }); %>
+			</div>
+		</div>
+	</div>
+	<% if(pageData.bannar_s.bottom){ %>
+		<img src="<%= pageData.bannar_s.bottom %>" alt="">
+	<% } %>
+<% } %>
+<% if(pageData.shops && pageData.shops.length > 0) {%>
+<div class="shops">
+<% pageData.shops.forEach(function(s){  %>
+	<a class="shop" href="<%=s.link%>">
+		<img src="<%=s.src%>" alt=""/>
+	</a>
+<% }) %>
+</div>
+<%}%>
+<section class="container" style="padding-top:10px;">
+	<div class="content">
+		<div class="goods_wall">
+		</div>
+		<div class="pullUp" status="loading"></div>
+	</div>
+</section>
+<a class="gotop" style="bottom:<%if(this.isIphone){%>60<%}else{%>20<%}%>px">
+	<img src="http://i.meilishuo.net/css/images/wap/tuan/gotop.png" />
+</a>
+<% pageData.footer && pageData.footer.forEach(function(data){ %>
+	<a class="bannar" href="<%= data.link || 'javascript:;' %>" style="margin-bottom: 3.125%;display:block;"><img src="<%= data.src %>"></a>
+<% }); %>
+<%= requireFn('activity/March_sale/March_apparel_sale_poster0.html')({
+	'os' : this.os
+	, 'apk' : ''
+	,'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+});%>
+<script>
+fml.vars.pid = '<%= this.pid %>';
+fml.vars.poster = {};
+<%= this.list? 'Meilishuo.config.poster0 = '+JSON.stringify(this.list)+';':'' ;%>
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/app/hackWeixin');
+	fml.use('wap/page/carnival_list');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html%>

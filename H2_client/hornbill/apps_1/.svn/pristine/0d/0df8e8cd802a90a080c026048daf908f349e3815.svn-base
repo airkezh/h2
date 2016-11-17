@@ -1,0 +1,40 @@
+<%#head_simple.html%>
+</head>
+<body>
+	<%if(this.sale_voted_haibao.totalNum == 0){%>
+		<img src="<%= this.PICTURE_URL%>images/wap/activity/sale_vote/vote8.jpg" />
+	<%}else{%>
+		<div class="nav_top textvc">你已成功为以下宝贝投票</div>
+		<section id="wrapper_main" class="wrapper">
+			<div class="scroller">
+				<span class="colFlag"></span>
+				<div class="goods_wall"></div>
+				<div class="pullUp" status="loading"></div>
+			</div>
+		</section>
+		<%# activity/sale_vote/poster.html%>
+	<%}%>
+
+	<div class="starBox">
+		<%if(this.sale_voted_haibao.totalNum !== 0){%>
+			<h2>分享给闺蜜为它们拉拉票吧：</h2>
+		<%}%>
+		<div class="share_ico" id="share_ico">
+			<% this.share && this.share.map(function(data) { %> 
+				<a class="<%= data.type%><%if(data.type=='weixin'){%> active<%}%>" share_url="<%= data.share_url%>"><span class="sure"></span></a>
+			<% }); %>
+			<div class="clear_f"></div>
+			<span class="btn" id="shareBtn">分享</span>
+			<div class="clear_f"></div>
+		</div>
+	</div>
+
+<script>
+	fml.vars.poster = {};
+	fml.vars.mac = '<%=this.mac%>';
+</script>
+<% $_ENGINE_SELF.callFn("useModule")("fml.use('wap/page/poster0');", this._JSstack , this._JSmodsFast ); %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+    fml.use('wap/page/activity/sale_vote/sale_voted');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

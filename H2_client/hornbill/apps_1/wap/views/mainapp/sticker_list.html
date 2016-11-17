@@ -1,0 +1,47 @@
+<%# head.html %>
+<%
+    var catalog = this.catalog,
+        defaultCatalog = this.defaultCatalog;
+    if ( catalog && catalog.length ) {
+%>
+<ul id="menus" class="menus">
+    <%
+    catalog.forEach( function( c ) {
+    %>
+    <li data-cata="<%= c.chartlet_id %>"><%= c.chartlet_title %></li>
+    <% }) %>
+</ul>
+<% } %>
+<div id="list" class="list">
+</div>
+<script type="text/html" id="sticker-list">
+    <?
+        var prefix = 'meilishuo://stamp_store.meilishuo?json_params=',
+            JSON = this.JSON;
+
+        this.list.forEach(function( s ) {
+            var url = prefix + encodeURIComponent(JSON.stringify({sticker:s})),
+                stickerClass = 'sticker-wrap';
+
+            if ( s.is_lock == '1' ) {
+                stickerClass += ' is-lock';
+            }
+
+            if ( s.is_new == '1' ) {
+                stickerClass += ' is-new';
+            }
+    ?>
+    <div class="sticker">
+        <a href="<?= url ?>" class="<?= stickerClass ?>" style="background-image:url(<?= s.thumbnail ?>);padding-top: 100%;"></a>
+    </div>
+    <? }); ?>
+</script>
+
+<script>
+    fml.vars.defaultCatalog = '<%= defaultCatalog %>';
+    fml.vars.searchParam    = <%= JSON.stringify(this.searchParam) %>;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/mainapp/sticker_list');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html%>

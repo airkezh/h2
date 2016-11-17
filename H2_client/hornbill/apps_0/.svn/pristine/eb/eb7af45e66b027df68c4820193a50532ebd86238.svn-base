@@ -1,0 +1,42 @@
+<%# head.html%>
+<div class="upload_bg">
+	<img src="<%= this.intro.pic%>"/>
+	<a href="<%= this.intro.url%>" class="go_meitukiss"></a>
+</div>
+<div class="starBox">
+	<%
+	var args = {
+		'default_text' : this.title.title
+		, 'take_a_picture' : '1'
+		, 'need_a_picture' : '1'
+	}
+	var timeNow = Date.parse(new Date())
+		,timeEnd = this.intro.end_time
+	if( timeEnd > timeNow){
+	%>
+	<a class="btn mtb" id="upload" href="meilishuo://editor.meilishuo?json_params=<%= encodeURIComponent(JSON.stringify(args)) %>"><%= this.intro.subject1 %></a>
+	<%}else{%>
+	<span class="btn mtb">活动已结束</span>
+	<%}%>
+	<a class="btn mtb lookupVote" go_href="/act/picshow/show?<%=this.tokeninfo%>"><%= this.intro.subject2 %></a>
+ </div>
+ <script>
+	fml.vars.access_token = '<%=this.access_token%>';
+	fml.vars.banner_id = '<%=this.banner_id%>';
+ </script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/zepto/touch', function(){
+		$('.lookupVote').on('tap', function(){
+			var url = $(this).attr('go_href');
+			$.get('/aj/act/picshow_add', {'access_token': fml.vars.access_token, 'banner_id' : fml.vars.banner_id}, function(res){
+				location.href = url;
+			}, 'json').error(function(){
+				location.href = url;
+			});
+			setTimeout(function(){
+				location.href = url;
+			}, 500);
+		});
+	});
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html%>

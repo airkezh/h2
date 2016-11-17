@@ -1,0 +1,294 @@
+<%# head.html %>
+<%
+    var circleInfo   = this.circleInfo.data,
+        highlightNew = this.highlightNew,
+        hasGoods     = circleInfo.hightlight_num != 0,
+        circleId     = this.circleId,
+        adminId      = circleInfo.admin_id,
+        userInfo     = this.userInfo,
+        memberType   = circleInfo.member_type,
+        isInCircle   = memberType > 0,
+        isLogin      = userInfo.user_id != 0,
+        notices      = [],
+        btnText      = '申请加入讨论',
+        hasNotice    = true,
+        mainClass    = 'main js-scrollwrap ',
+        buyClass     = 'icon-buy ',
+        digitLen     = String(highlightNew).length,
+        /* 用户正在被审核 */
+        isBeingVerified = memberType == -4;
+
+    if ( circleInfo.notices && circleInfo.notices.length ) {
+        circleInfo.notices.forEach(function( n ) {
+            if ( n.overdue == 0 ) {
+                notices.push( n.content );
+            }
+        })
+        if ( !notices.length ) {
+            hasNotice = false;
+        }
+    } else {
+        hasNotice = false;
+    }
+
+    if ( isBeingVerified ) {
+        btnText = '已申请,等待群主同意';
+    }
+
+    if ( !hasNotice && !hasGoods) {
+        mainClass += ' no-infos'
+    }
+
+    if ( highlightNew && highlightNew != 0 ) {
+        buyClass += ' has-new-goods';
+        /* 买图标右上角的数字应该根据内容多少来改变字体大小 */
+        if ( digitLen > 4 ) {
+            digitLen = 4;
+        }
+        buyClass += ' font-level-' + digitLen;
+    }
+%>
+
+<div class="input js-input-area <%= isLogin ? '' : 'not-login' %> <%= isInCircle ? '' : 'not-in' %>">
+    <div class="content item js-content" contenteditable></div>
+    <button class="send-btn js-send-btn">发送</button>
+    <a id="apply-btn" class="apply-btn" href="#" data-islogin="<%= +isLogin %>" data-isin="<%= +isInCircle %>"><i class="icon-rotate-circle"></i><%= btnText %></a>
+</div>
+
+<div class="<%= mainClass %>">
+    <%
+        var url;
+        if( hasGoods ) {
+            url = '/circle/circle_highlight_list?circle_id=' + circleId;
+        } else {
+            url = 'javascript:;';
+        }
+    %>
+    <a class="infos" href="<%= url %>">
+        <% if( hasNotice ) {%>
+        <span class="infos-content"><i class="icon-trumpet"></i><em class="js-info-text"><%= notices[ 0 ] %></em></span>
+        <% } %>
+        <% if( hasGoods ){%><i class="<%= buyClass %>" data-num="<%= highlightNew %>"></i><%}%>
+    </a>
+    <div class="area js-area">
+        <div class="loading-bar-wrap">
+            <div id="loading-bar" class="loading-bar" status="loading"></div>
+        </div>
+    </div>
+</div>
+
+<script type="text/html" id="message">
+<?
+    var _this = this,
+        getAppLink = _this.getAppLink,
+        escape = _this.escape,
+
+        msg   = this.msg,
+        type  = msg.msg_type,
+        uInfo = msg.uinfo,
+        className = 'message-' + type,
+        multimedia = msg[ 'multimedia_' + type ] || {},
+        msgId   = msg.msg_id,
+        msgText = escape(msg.msg_text),
+        likeStatus = msg.like_status,
+        likeClass = 'icon-like',
+        likeNum = msg.count_like,
+        goodsDescClass = 'goods-desc',
+        pic;
+
+    if ( likeStatus === '1' ) {
+        likeClass += ' is-like'
+    }
+
+    if(this.isMine) {
+        className += ' mine-message'
+    }
+
+    if(this.isAdmin) {
+        className += ' admin-message'
+    }
+
+    if(type == 'textpic' || type == 'miscpic') {
+        className += ' message-goods';
+    }
+
+    if(type == 'notice') {
+?>
+    <p class="message-notice"><?= msgText ?></p>
+<?
+    } else {
+?>
+    <div class="<?= className ?>" data-msg-id="<?= msgId ?>">
+        <div class="avatar">
+            <img src="<?= uInfo.avatar_c ?>">
+        </div>
+        <div class="bd">
+            <div class="infobar">
+                <span class="nickname"><?= uInfo.nickname?></span>
+                <i class="icon-crown"></i>
+                <span class="time js-time" data-time="<?= msg.publish_time ?>" data-unit="second"></span>
+            </div>
+            <div class="content <?= msgText ? 'has-text' : '' ?>">
+            <?
+                switch(type) {
+                    case 'text':
+            ?>
+                <?= msgText ?>
+            <?
+                        break;
+                    case 'textpic':
+            ?>
+                <?
+                    if ( multimedia && multimedia.length ) {
+                        pic = multimedia[ 0 ];
+                ?>
+                <a href="/circle/textpic/<?= msgId ?>">
+                    <div class="img-container" style="background-image: url(<?= pic.picurl ?>); padding-top: <?= 100 * pic.height / pic.width ?>%;">
+                    </div>
+                </a>
+                <? } ?>
+                <? if(msgText) {?>
+                <div class="<?= goodsDescClass ?>">
+                    <p class="title"><?= msgText ?></p>
+                </div>
+                <? } ?>
+                <div class="goods-like">
+                    <a class="js-like" data-id="<?= msgId ?>" data-type="msg" data-islike="<?= likeStatus ?>"><i class="<?= likeClass ?>" ></i> 喜欢 <span class="js-num"><?= likeNum ?></span></a>
+                </div>
+            <?
+                        break;
+                    case 'goods':
+            ?>
+                <a href="//m.meilishuo.com/share/item/<?= multimedia.twitter_id ?>">
+                    <div class="img-container" style="background-image: url(<?= multimedia.goods_img?>); padding-top: <?= 100 * multimedia.img_height / multimedia.img_width ?>%;"></div>
+                    <div class="<?= goodsDescClass ?>">
+                        <? if(multimedia.goods_title) {?>
+                        <p class="title"><?= escape( multimedia.goods_title ) ?></p>
+                        <? } ?>
+                        <p class="price"><?= escape( multimedia.goods_price ) ?></p>
+                    </div>
+                    <div class="goods-like">
+                        <a class="js-like" data-id="<?= multimedia.twitter_id ?>" data-type="item" data-islike="<?= likeStatus ?>"><i class="<?= likeClass ?>" ></i> 喜欢 <span class="js-num"><?= likeNum ?></span></a>
+                    </div>
+                </a>
+            <?
+                        break;
+                    case 'commonlink':
+            ?>
+                <a href="<?= multimedia.link ?>">
+                    <p class="title"><?= msgText ?></p>
+                    <a class="commonlink-wrap" href="<?= multimedia.link ?>">
+                        <img class="img" src="<?= multimedia.pic ?>">
+                        <p class="intro"><?= multimedia.desc ?></p>
+                    </a>
+                </a>
+            <?
+                        break;
+                    case 'miscpic':
+
+                    var audio  = msg.audio,
+                        goods  = multimedia[0],
+                        gRatio = goods.height / goods.width * 100,
+                        tags   = goods.tags,
+                        hasAudio = audio && audio.url;
+
+                    if ( hasAudio ) {
+                        goodsDescClass += ' has-audio'
+                    }
+            ?>
+                <a href="//m.meilishuo.com/mainapp/detail/<?= msgId ?>">
+                <div class="img-container" style="background-image: url(<?= goods.picurl ?>); padding-top: <?= gRatio ?>%;">
+                <? if (tags && tags.length) {?>
+                    <ul class="price-tags">
+                    <? tags.forEach( function( tag ) {
+                        var type  = tag.type,
+                            goods = tag.goods,
+                            top   = 100 * tag.y + '%',
+                            left, style, text;
+
+                        if ( type == 'tlabel' ) {
+                            text = tag.tlabel.tlabel_name;
+                        } else {
+                            text = '￥' + goods.goods_price + ' ' + goods.goods_title;
+                        }
+                    if ( tag.d == 0 ) {
+                        left = 100 * tag.x + '%';
+                        style = 'left:' + left + ';top:' + top + ';';
+                        ?>
+                        <li class="price-tag dir-left" style="<?= style ?>">
+                            <i class="icon-tag"></i>
+                            <p class="tag-text"><?= text ?></p>
+                        </li>
+                    <?} else {
+                        left = 100 * ( 1 - tag.x ) + '%';
+                        style = 'right:' + left + ';top:' + top + ';';
+                    ?>
+                        <li class="price-tag dir-right" style="<?= style ?>">
+                            <p class="tag-text"><?= text ?></p>
+                            <i class="icon-tag"></i>
+                        </li>
+                    <? } });?>
+                    </ul>
+                <?}?>
+                <? if( hasAudio ) {?>
+                <a class="post-voice js-audio" data-audioid="<?= audio.audio_id ?>" data-duration="<?= audio.duration ?>">
+                    <i class="voice-bg"></i>
+                    <div class="post-voice-wrap">
+                        <i class="icon-play"></i>
+                        <i class="icon-loading"></i>
+                        <p class="voice-icons">
+                            <i class="icon-voice-1"></i>
+                            <i class="icon-voice-2"></i>
+                            <i class="icon-voice-3"></i>
+                        </p>
+                        <p class="post-voice-length"><?= _this.parseAudioDuration(audio.duration) ?></p>
+                    </div>
+                    <audio src="<?= audio.url ?>"></audio>
+                </a>
+                <? } ?>
+                </div>
+                <div class="<?= goodsDescClass ?>">
+                    <p class="title"><?= msgText ?></p>
+                </div>
+                <div class="goods-like">
+                    <a class="js-like" data-id="<?= msgId ?>" data-type="msg" data-islike="<?= likeStatus ?>"><i class="<?= likeClass ?>" ></i> 喜欢 <span class="js-num"><?= likeNum ?></span></a>
+                </div>
+            </a>
+            <?
+                        break;
+                    }
+            ?>
+            </div>
+            <?
+                if (msg.root_uinfo) {
+                    var rootUInfo = msg.root_uinfo,
+                        rootCirCle = msg.root_circle_info;
+            ?>
+            <div class="repost-info-wrap">
+                <p class="repost-info">
+                转自<a class="repost-user" href="###"><?= rootUInfo.nickname ?></a>的<a class="repost-circle keyword" href="//circle.meilishuo.com/circle/chat?circle_id=<?= rootCirCle.id ?>"><?= rootCirCle.name ?></a>圈子
+                </p>
+            </div>
+            <?}?>
+        </div>
+    </div>
+    <? } ?>
+</script>
+<script>
+    fml.vars.userInfo = {
+        nickname: '<%= userInfo.nickname %>',
+        avatar_c: '<%= userInfo.avatar_c %>',
+        user_id: '<%= userInfo.user_id %>'
+    };
+    fml.vars.circle_id = <%= circleId %>;
+    fml.vars.circle_admin_id = <%= adminId %>;
+    fml.vars.islogin = <%= isLogin %>;
+    fml.vars.isIn = <%= isInCircle %>;
+    fml.vars.needWait = <%= isBeingVerified %>;
+    fml.vars.notices = <%= JSON.stringify( notices ) %>;
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+    fml.use('circle/page/chat/index');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html %>

@@ -1,0 +1,104 @@
+<%# head.html%>
+<div class="wrap topic_wrap" style="margin-top:0;">
+	<div class="sider_l">
+		<%# userinfo.html%>
+		<%# block/person_sidebar.html%>
+	</div>
+	<%if(this.club_total.totalNum){%>
+	<div class="wraper_l" style="margin-top:85px; margin-left:12px;">
+		<%#club/topics.html%>
+		<div class="paging_panel c_f">
+			<%# paging.html%>
+		</div>
+	</div>
+	<%}%>
+	<div class="clear_f"></div>
+	<div class="cl_nav">
+		<%# person/person_tab.html%>
+	</div>
+</div>
+<script type="text/html" id="mytabs">
+<div class="mytabs">
+	<div class="ml40_f">
+		<ul class="sel_tab">
+		<%if(this.user_label.length > 0){%>
+		</ul>
+		<%}else{%>
+		</ul>
+			<p class="defaultText">从下方选择你的标签</p>	
+		<%}%>
+	<div class="clear_f"></div>
+		<h2 class="tips labelDesc">告诉大家自己最擅长的美丽技能吧</h2>
+		<p class="explain">点击进行选择，你可以给自己贴20个标签哦！<span class="labelerror red_f"></span></p>
+	</div>
+	<div class="tab_b">
+		<div class="before none_f">&lt;</div>
+		<div class="next">&gt;</div>
+		<div class="tab_list">
+			<ul class="tab_container">
+				<li class="tab_item">
+				<% 
+					var _typei; 
+					this.all_label && this.all_label.map(function(data){%>
+					<% if(_typei && data.type != _typei){%>
+					</li>
+					<li class="tab_item">
+					<%}%>
+						<span class="addLabel active" labelId="<%= data.label_id%>"><%= data.label_name%></span>
+						<% _typei = data.type;%>
+				<%});%>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="edit_box">
+		<span>或自己写标签：</span>
+		<span><input maxlength="10" class="newLabelName ipt searchKey" type="text" placeholder="自己写一个标签" /></span>
+		<span class="btn newLabel">贴上</span><span class="add_suc addLabelSucess none_f">添加成功!</span>
+	</div>
+</div>
+</script>
+<script type="text/html" id="recommendUser">
+<div class="rec_con">
+	<div class="zero_t">
+	<div class="close_z"></div>
+	<p class="f16_f">看看关注<b>"<%= this.user_list.nickname %>"</b>的用户还关注了谁吧！</p>
+</div>
+<ul class="zero_c">
+	<? $.each(fol_user, function(k, v) { ?>
+		<li>
+		<a class="avatar64_f userUrl1" href="/person/u/<?= v.user_id ?>?frm=gz_reuser" target="_blank"><img src="<?= v.avatar_b ?>" /></a>
+		<p class="z_tle"><span class="right_f"><input class="sel_box" usrId="<?= v.user_id ?>" id="checkedbox" type="checkbox" checked></span><a class="userUrl" href="/person/u/<?= v.user_id ?>?frm=gz_reuser" target="_blank"><?= v.nickname ?></a>
+			<span class="identity_small_style">
+				<? var identity = v.identity;?>
+				<%# identity.html%>
+			</span>
+		</p>
+		<p>
+		<span class="similar gray_f">
+			<?if(v.label == ''){?>这个爱美丽真懒，什么标签都没给自己贴<?}?>
+			<? $.each(v.label, function(k, v1){?>
+				<?= v1 ?>
+			<?});?>
+		</span></p>
+		<p>粉丝<a class="fans red_f" href="/ur/fans/<?= v.user_id ?>?frm=gz_reuser" target="_blank"><?= v.follower_num ?></a> 分享<a class="share red_f" href="/person/u/<?= v.user_id ?>?type=share&frm=gz_reuser" target="_blank"><?= v.twitter_num ?></a> <a class="red_f" href="/atme/recommend/<?= v.user_id ?>?frm=gz_reuser" target="_blank"><em class="lm_love">&nbsp;</em><?= v.heart_num ?></a></p>
+		</li>
+	<? }); ?>
+</ul>
+<div class="clear"></div>
+<div class="zero_b"><span class="ienot"><input id="selectall" type="checkbox" checked="">全选</span><a id="afterFollow" class="sure btn">关注，回我的首页</a></div>
+<div>
+</script>
+<%# user/windows.html%>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('app/letter' , function(){
+		this('#sendPrivateLetter');
+	});
+	fml.use('app/personFollow' , function(){
+		this();	
+	});
+	fml.use('app/showMedal' , function(){
+		this();
+	});
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

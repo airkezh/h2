@@ -1,0 +1,131 @@
+<%#head.html%>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<%
+	var getUserInfo = this.getUserInfo || {};
+	var userInfo = this.userInfo || {};
+	code = getUserInfo.code;
+%>
+<div class="wrap" user_id="<%= userInfo.user_id %>">
+<div class="head">
+	<% if(getUserInfo.from_user_info){ %>
+		<div class="head-img"><img src="<%= getUserInfo.from_user_info.headimgurl%>"></div>
+		<p class="name"><%= getUserInfo.from_user_info.nickname%></p>
+	<% } %>
+	<%if(code != -11){%>
+		<div class="rectangle">
+			<img src="<%=this.PICTURE_URL%>/images/activity/weixinRedpaper/rectangle-top.png">
+			<% if(code == -4){ %>
+				<p>等你这么久，红包都过期了，下次早点来～</p>
+			<% }else if(code == -5){ %>
+				<p>等你这么久，红包都抢光了，下次早点来～</p>
+			<% }else{ %>
+				<p>收到我的新衣红包，爽吗？</p>
+			<% } %>
+			<img src="<%=this.PICTURE_URL%>/images/activity/weixinRedpaper/rectangle-bottom.png">
+		</div>
+	<%}%>
+	<div class="red-paper">
+		<%if(code == -11){%>
+			<!-- 新用户出验证码 -->
+			<img class="red-paper-bg" src="http://d01.res.meilishuo.net/pic/_o/86/44/c921e69029074839fb7cf6ed2c44_401_518.ch.png"/>
+			<% if(getUserInfo.rp_info){ %>
+				<div class="paper_info">
+					<p class="money"><span class="symbol">￥</span><span class="count"><%= getUserInfo.rp_info.money%></span>&nbsp;现金</p>
+					<div class="checkBox" id="checkBox">
+						<input id="checkcode" name="checkcode" type="text" value="" maxlength="4" placeholder="验证码"/>
+						<div class="checkImage">
+							<span id="checkcodeImage">
+								<img width="50" height="27" isblank="true" src="<%= this.PICTURE_URL %>images/register/blank.jpg">
+							</span>
+						</div>
+					</div>
+					<div class="describe">
+						<p class="word loginErrorMessage">输入验证码才能拿去花哦~</p>
+					</div>
+				</div>
+		<%}} else {%>
+			<img class="red-paper-bg" src="<%=this.PICTURE_URL%>/images/activity/weixinRedpaper/red-paper.png"></img>
+			<% if(code == -4){ %>
+				<!-- 红包已过期 -->
+				<div class="paper_info">
+					<img class="expression" src="<%=this.PICTURE_URL%>/images/activity/weixinRedpaper/overdue-change.png"/>
+					<div class="describe">
+						<p class="word">红包已过期</p>
+					</div>
+				</div>
+			<% } else if (code == -5){ %>
+				<!-- 抢光了 -->
+				<div class="paper_info">
+					<img class="expression" src="<%=this.PICTURE_URL%>/images/activity/weixinRedpaper/no-have-change.png"/>
+					<div class="describe">
+						<p class="word">抢光了</p>
+					</div>
+				</div>
+			<% } else { %>
+				<!-- 红包金额 -->
+				<% if(getUserInfo.rp_info){ %>
+					<div class="paper_info">
+						<p class="money"><span class="symbol">￥</span><span class="count"><%= getUserInfo.rp_info.money%></span>&nbsp;现金</p>
+						<img class="receive" src="<%=this.PICTURE_URL%>/images/activity/weixinRedpaper/receive.png">
+						<div class="describe">
+							<p><span>一分钟到账，</span><br/><span class="describe-first">以“登录-微信”方式登录查看</span></p>
+							<p class="describe-time">红包24小时内有效</p>
+						</div>
+					</div>			
+		<%}}}%>
+	</div>
+	<% if(code == -4 || code == -5){ %>
+		<p class="button goApp"><b>下载美丽说看新款</b></p>
+	<% } else if(code == -11){%>
+		<p class="get_red" id="getRed">领取红包</p>
+	<%} else{ %>
+		<p class="button goApp"><b>去买新衣服</b></p>
+		<p class="where"><span>红包在哪里？ </span>
+			以“登录-微信”方式登录，在“我的优惠券”查看。
+		</p>
+		<p class="where"><span>红包怎么花？ </span>
+			订单达到满减金额，结算时优惠券自动出现，扣减。
+		</p>
+	<% } %>
+</div>
+<div class="list">
+    <div class="list-title">
+        <div class="line line-left"></div>
+        <div class="line line-right"></div>
+        <div class="look-luck"><p>&nbsp;&nbsp;看朋友们手气如何&nbsp;&nbsp;</p></div>
+    </div>
+    <% if(getUserInfo.rp_user_info && getUserInfo.rp_user_info.length != 0){ %>
+    <ul>
+        <% getUserInfo.rp_user_info.map(function(item,o){%>
+        <li>
+            <div class="friend-picture"><img src="<%= item.user_info.headimgurl%>"></div>
+            <div class="content">
+                <p class="friend-name"><span class="friend-nickname"><b><%= item.user_info.nickname %></b></span><span class="friend-time"><%= item.up_time %></span><span class="friend-money"><%= item.money %>元</span></p>
+                <%  
+                    var random = parseInt(Math.random()*3); 
+                    if(random == 0){
+                %>
+                    <p class="friend-say">领到了小亲亲的红包，爽</p>
+                <% }else if(random == 1){ %>
+                    <p class="friend-say">终于过上了不劳而获得日子，么么嗒！</p>
+                <% }else{ %>
+                    <p class="friend-say">谢皇上包养，今天恃宠的就是我了</p>
+                <% } %>
+            </div>
+        </li>
+        <%})%>
+    </ul>
+    <% }else{ %>
+        <p class="get-redpaper">你的好友还未领取~</p>
+    <% } %>
+</div>
+</div>
+<script>
+	fml.vars.mlsHost = "<%= this.mlsHost%>";
+	fml.vars.from_id = "<%= this.from_id%>";
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/redPaper/index');
+_use:", this._JSstack, this._JSmods); %>
+
+<%# foot.html%>

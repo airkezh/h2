@@ -1,0 +1,19 @@
+function similar() {
+    return this
+}
+
+var controlFns = {
+    index: function( param ) {
+        this.debugSnake( {
+            'target': 'zhengwangluo.rdlab'
+        } )
+        var php = {
+            similar: '/recommend/recommend_similar_goods',
+            match:   '/recommend/Recommend_match_goods',
+            shop:    '/recommend/Recommend_similar_shop'
+        }
+        this.ajaxTo( php[ param ] )
+    }
+}
+
+exports.__create = controller.__create( similar, controlFns )

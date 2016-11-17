@@ -1,0 +1,27 @@
+<div class="catacon">
+	<% if (this.leftList) {
+	var list = this.leftList;
+	var icosX = {'功效':-38, '护肤':-75, '彩妆':-112, '美体':-150, '品牌':-187};
+	for (var key in list){
+		var val = list[key];
+	%>
+		<h2><span style="background-position:<%=icosX[key]%>px -192px;"></span><%=key%></h2>
+		<div class="category">
+		<% val.map(function(data){ %>
+			<% var url = '/beauty/catalog/'; 
+				if (key=='品牌' && data.has_brand_page) url = '/beauty/brand/';
+			%>
+			<a <%if(this.currentWord == data.words_name){%>class="active"<%}%> href="<%=url+data.words_id%>"><%=data.words_name%></a>	
+		<% }); %>
+		<div class="clear_f"></div>
+		</div>
+	<%} }%>
+	<!--div class="cate_ser">
+		<form action="/search" method="get">
+			<span class="text"><input class="searchKeyCatalog" type="text" name="searchKey" value="" placeholder="去其他关键词"></span>
+			<span class="btn"><input type="submit" value="搜索"></span>
+			<input class="filter" type="hidden" value="goods" name="filter"/>
+		</form>
+	</div-->
+</div>
+

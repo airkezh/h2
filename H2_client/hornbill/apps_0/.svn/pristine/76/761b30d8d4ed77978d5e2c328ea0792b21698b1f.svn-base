@@ -1,0 +1,29 @@
+<div id="com-nav">
+	<div id="def-nav">
+		<div class="inner">
+			<ul>
+				<% this.nav.forEach(function(item){ %>
+					<% if(item.tag == 'more'){ %>
+						<li class="drop">
+							<a href="<%=item.url%>" data-word="<%=item.tag%>">
+								<%=item.name%>
+								<em class="arrow"></em>
+							</a>
+
+							<ul class="down">
+								<% item.list.forEach(function(msg){ %>
+									<li><a href="<%=msg.url%>"><%=msg.name%></a></li>
+								<% }); %>
+							</ul>
+						</li>
+						<li><span class="line"></span></li>
+					<% }else{ %>
+						<li>
+							<a href="<%=item.url%>" data-word="<%=item.tag%>" <% if(item.isRed){ %>class="red"<%}%> ><%=item.name%></a>
+						</li>
+					<% } %>
+				<% }); %>
+			</ul>
+		</div>
+	</div>
+</div>

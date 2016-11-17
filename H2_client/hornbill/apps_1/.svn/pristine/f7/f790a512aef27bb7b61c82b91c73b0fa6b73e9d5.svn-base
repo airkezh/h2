@@ -1,0 +1,60 @@
+<%#head.html%>
+
+<div class="top_bnr">
+	<a class="go_520" href="/activity/sale/main520/"></a>
+	<a class="share <%= this.goods && this.goods.tInfo.exceed ? 'share_max' : '' %>" data_href="meilishuo://editor.meilishuo?json_params=%7B%22default_text%22%3A%22%23520%E7%88%B1%E7%9A%84%E5%91%8A%E7%99%BD%23%22%2C%22take_a_picture%22%3A%221%22%2C%22need_a_picture%22%3A%221%22%7D"></a>
+</div>
+<div class="detail"></div>
+<% if(this.userInfo.nickname && this.userInfo.nickname == this.goods.tInfo[0].nickname){ %>
+<a href="/activity/sale/loveshare/"><img src="<%= this.PICTURE_URL%>images/wap/activity/may_sale/share_f.png"></a>
+<% } %>
+<img src="<%= this.PICTURE_URL%>images/wap/activity/may_sale/love_bannar.jpg">
+<div class="main">
+	<%= requireFn("activity/may_sale/love_post.html")({
+		'goods': this.goods,
+		'_JSstack': this._JSstack,
+		'_JSmods': this._JSmods
+	});%>
+</div>
+<script type="text/html" id="toupdate">
+<div class="dialog_box toupdate">
+	<p>只有最新版本才可以享受优惠喔，亲快去升级吧。</p>
+	<a class="btn3zi delayclose" href="/goto/download/">去更新</a>
+</div>
+</script>
+<script type="text/html" id="next">
+<div class="dialog_box next">
+	<p>亲~你的告白分享成功了么?</p>
+	<a class="btn3zi check_coupon" data="1" href="javascript:;">分享成功</a><a class="btn3zi check_coupon" href="javascript:;">稍后再说</a>
+</div>
+</script>
+<script type="text/html" id="invite">
+<div class="dialog_box invite">
+	<p>恭喜您获得一张5元现金券！</p>
+	<p>您可以在我的优惠券中查看。</p>
+	<a class="btn3zi invite_btn" href="/activity/sale/loveshare/">告诉好友为我点赞</a>
+</div>
+</script>
+<script type="text/html" id="invite_ok">
+<div class="dialog_box invite">
+	<a class="btn3zi invite_btn" href="/activity/sale/loveshare/">告诉好友为我点赞</a>
+</div>
+</script>
+<script type="text/html" id="invite_no">
+<div class="dialog_box invite">
+	<p>今天的现金券已经领光了，明天再来吧~</p>
+	<a class="btn3zi delayclose" href="javascript:;">确定</a>
+</div>
+</script>
+<script>
+	fml.vars.isNewest = "<%=this.isNewest%>";
+	fml.vars.isLogin = <%=this.isLogin%>;
+	if(Meilishuo.config.os && Meilishuo.config.os.mlsApp){
+		fml.vars.isApp = true;
+	}
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/app/hackWeixin');
+	fml.use('wap/page/activity/love520');
+_use:", this._JSstack , this._JSmods); %>
+<%# foot_simple.html%>

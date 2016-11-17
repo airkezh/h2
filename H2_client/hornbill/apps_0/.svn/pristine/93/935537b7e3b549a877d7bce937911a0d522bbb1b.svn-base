@@ -1,0 +1,162 @@
+function Login(opts){
+	var mSelf = this
+
+	this.init(opts)
+	this.setRefer()
+
+
+	if(this.opts.defaultCSS){
+		this.loadCssFile("/css/passport.css", init)
+	}else{
+		init()	
+	}
+
+	function init(){
+		mSelf.initDom()
+		mSelf.initInput()
+
+		//表单操作
+		mSelf.setValidate(function(){mSelf.checkLoginPass()});
+		//内部判断是否需要增加验证码验证
+		mSelf.addCodeValidate(); 
+	}
+}
+
+
+Login.prototype = new Passport()
+
+Login.prototype.inputList = ['username','password','checkcode','remember']
+
+Login.prototype.initDom = function(){
+	var mSelf = this
+	this.ui = $.extend({},{
+			usernamePlaceholder:'邮箱/手机号/昵称'
+			,passwordPlaceholder:'密码'
+			, checkcodePlaceholder:'请输入验证码'
+		},this.opts.ui)
+
+	var tpl = require('form.html')
+	this.dom.outer = $(this.opts.outer || '#loginBox').html(this.shareTmp(tpl, this.ui))
+	this.dom.msgArea = this.dom.outer.find('.login-form-message')
+	this.dom.checkcodeArea = this.dom.outer.find('.checkcodeArea')
+	this.dom.codeImage = this.dom.checkcodeArea.find('img')
+
+	var isDelay;
+	this.dom.checkcodeArea.on('click', '.checkImage', function(){
+		if(isDelay) return;
+
+		mSelf.updateCheckcode();
+
+		isDelay = 1;
+		setTimeout(function(){
+			isDelay = 0;
+		},500);
+	});
+
+}
+
+Login.prototype.initInput = function(){
+	for(var i in this.inputList){
+		var inputname = this.inputList[i]
+		this.dom[inputname] = this.dom.outer.find('#'+inputname)
+	}
+}
+
+//表单操作
+Login.prototype.setValidate = function(cbk){
+	var mSelf = this
+	var formName = 'loginForm'
+
+	var validateRules = {
+		'username' : {},
+		'password' : {}
+	}
+
+	validateRules.username['req=' + this.ui.usernamePlaceholder] = '请输入您的用户名或注册邮箱'
+	validateRules.password['req=' + this.ui.passwordPlaceholder] = '请输入密码'
+	validateRules.password['minlen=' + 6] = '输入密码需在6位到32位间'
+	validateRules.password['maxlen=' + 32] = '输入密码需在6位到32位间'
+
+	var showStyle = {
+		'showmsgbyline=msg_error' : '',
+		'showmsgforsubmit=login-form-submit' : cbk
+	}
+	var opts = {
+		'success' : 'span=msg_ok',
+		'error': 'span=msg_err'/*,
+		'isExist' : {
+			'username' : function(cbk){
+				cbk('')
+			},
+			'password' : function(cbk){
+				cbk('')
+			}
+		}
+		*/
+	}
+	this.validateIns = this.validate.validate(formName, validateRules, showStyle, opts);
+}
+
+Login.prototype.addCodeValidate = function(){
+	if(!this.checkAuth() || !this.validateIns) return;
+
+	this.validateIns.addValid({
+		'checkcode' : {'req=验证码':'请输入验证码', 'minlen=4':'验证码为4位字符'}
+	});
+
+	//更新验证码
+	this.updateCheckcode();
+}
+
+Login.prototype.checkLoginPass = function (){
+	var mSelf = this
+	var url = '/aw/user/logon'; 
+	var data = {
+		'username' : mSelf.dom.username.val(),
+		'password' : mSelf.dom.password.val(),
+		'checkcode': mSelf.dom.checkcode.val(),
+		'remember' : mSelf.dom.remember[0].checked ? 1 : 0,
+		'redirect' : mSelf.getParams(location.href).redirect, 
+		'nt': Meilishuo.config.nt
+	};
+
+	var callback = function(r){
+
+		//达到输入错误上线，显示验证码
+		if(r.need_captcha == 1){
+			mSelf.showAuth()
+			mSelf.addCodeValidate();
+		}
+
+		//返回status
+		mSelf.watch(r)
+	};
+	$.post(url , data , callback ,'json');
+}
+
+Login.prototype.showErrMsg = function(msg,notChange){
+	this.dom.msgArea.html(msg).show()
+
+	if(!notChange && this.checkAuth())
+		this.updateCheckcode();
+};
+
+
+
+
+Login.prototype.updateCheckcode = function (callback){
+	this.dom.codeImage.attr('src', this.api.checkcode + Math.random());
+	callback && callback();
+}
+
+Login.prototype.setRefer = function(){
+	this.storage().setCookie('LOGON_FROM' ,  document.referrer);
+}
+
+Login.prototype.showAuth = function(){
+	this.show('checkcodeArea')
+}
+Login.prototype.checkAuth = function(){
+	return this.isShow('checkcodeArea')
+}
+

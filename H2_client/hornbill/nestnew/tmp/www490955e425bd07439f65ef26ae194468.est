@@ -1,0 +1,45 @@
+/*--/Users/MLS/Documents/H2/H2_client/hornbill/apps_0/www/views/common/foot.html--*/ 
+     var est = require(config.path.lib + 'est/est.js'); 
+     var _extFn = require('/Users/MLS/Documents/H2/H2_client/hornbill/nestnew/server/lib/est/extFn.js'); 
+     function requireFn(tpl) { return est.renderFile('/Users/MLS/Documents/H2/H2_client/hornbill/apps_0/www/views/' ,tpl , null , null ,'www' ,true); } ; 
+     function __getHtml (_data) { 
+       function jsRender(tpl , id) { return est.jsRender(requireFn(tpl)(_data), id  ); } ; 
+       var __htm ='';
+__htm += '';
+
+	var domain = _data.MAIN_SITE_DOMAIN;
+;__htm += '\n<div id="com-foot">\n	<div class="inner">\n		<div class="flist">\n			<div class="tel-ico"></div>\n			<div class="custem">\n				<div class="tel">4000-800-577</div>\n				<div>美丽说客服热线</div>\n				<div class="time">周一至周日：09:00-22:00</div>\n			</div>\n		</div>\n		<div class="flist">\n			<h4>买家帮助</h4>\n			<div><a href="';
+__htm +=domain;
+__htm += '/help/" target="_blank">新手指南</a></div>\n			<div><a href="';
+__htm +=domain;
+__htm += '/help/return/" target="_blank">服务保障</a></div>\n			<div><a href="';
+__htm +=domain;
+__htm += '/helpcenter/" target="_blank">帮助中心</a></div>\n		</div>\n		<div class="flist">\n			<h4>商家帮助</h4>\n			<div><a href="http://zhaoshang.meilishuo.com/business" target="_blank">商家入驻</a></div>\n			<div><a href="http://pro.meilishuo.com" target="_blank">商家推广</a></div>\n			<div><a href="http://zhaoshang.meilishuo.com/help#/index" target="_blank">帮助中心</a></div>\n		</div>\n		<div class="flist">\n			<h4>关于我们</h4>\n			<div><a href="';
+__htm +=domain;
+__htm += '/aboutus?sl=h3" target="_blank">关于美丽说</a></div>\n			<div><a href="';
+__htm +=domain;
+__htm += '/aboutus/contactus?sl=h3" target="_blank">联系我们</a></div>\n			<div><a href="http://www.hotjob.cn/wt/meilishuo/web/index" target="_blank">加入美丽说</a></div>\n		</div>\n		<div class="flist">\n			<h4>关注我们</h4>\n			<div>\n				<a href="http://t.sina.com.cn/meilishuo" target="_blank">\n					<span class="i-sina"></span>新浪微博\n					<div class="follow">\n						一键关注新浪微博\n						<wb:follow-button uid="1718455577" type="red_1" width="67" height="24" ></wb:follow-button>\n					</div>\n				</a>\n			</div>\n			<div><a href="http://user.qzone.qq.com/1379986183/" target="_blank"><span class="i-qzone"></span>QQ空间</a></div>\n			<div><a href="http://t.qq.com/meilishuo" target="_blank"><span class="i-tencent"></span>腾讯微博</a></div>\n		</div>\n		<div class="flist">\n			<h4>美丽说微信服务号</h4>\n			<img class="qrcode" src="';
+__htm += _data.PICTURE_URL;
+__htm += 'images/header/qrcode-new.jpg" alt="美丽说服务号二维码"/>\n		</div>\n		<div class="flist last">\n			<h4>美丽说客户端下载</h4>\n			<a class="client" href="';
+__htm +=domain;
+__htm += '/client/" target="_blank"></a>\n		</div>\n		';
+ if(_data.friendlink){ ;__htm += '\n		<div class="friendlink">\n			<span class="link">友情链接：</span>\n			<ul class="link-slide">\n				';
+ _data.friendlink.map(function(item,index){ ;__htm += '\n					';
+ if(index % 12 == 0 && index != 0){;__htm += '\n						</li>\n					';
+ };__htm += '\n					';
+ if(index % 12 == 0){;__htm += '\n						<li>\n					';
+ };__htm += '\n					<a href="';
+__htm += item.link_to;
+__htm += '" target="_blank">';
+__htm += item.link_text;
+__htm += '</a>\n				';
+ }); ;__htm += '\n			</ul>\n			<a class="more" href="';
+__htm +=domain;
+__htm += '/aboutus/links" target="_blank">更多&gt;&gt;</a>\n		</div>\n		';
+ } ;__htm += '\n		<div class="record">			\n			Copyright ©';
+__htm += new Date().getFullYear();
+__htm += ' Meilishuo.com &nbsp;<a href="http://d03.res.meilishuo.net/pic/_o/42/c6/b0fd45f6233a973e46c3f6891de5_896_629.cg.jpg" target="_blank">电信与信息服务业务经营许可证100798号</a>&nbsp;<a href="http://d03.res.meilishuo.net/pic/_o/e1/80/4f22feee45bb9d0a92e7a950f9c5_1131_1600.cg.jpg" target="_blank">经营性网站备案信息</a>&nbsp; 京ICP备11031139号&nbsp; 京公网安备110108006045&nbsp;</br>客服邮箱：kf@meilishuo.com&nbsp;&nbsp;客服电话：4000-800-577&nbsp; 文明办网文明上网举报电话：010-82615762 &nbsp;<a href="http://net.china.com.cn/index.htm" target="_blank">违法不良信息举报中心</a>&nbsp;<a href="http://www.mps.gov.cn/n16/n983040/n3967568/n4038844/n4110655/toupiao.html" target="_blank">我最喜爱的人民警察评选>></a> <a href="';
+__htm +=domain;
+__htm += '/fraud/index" target="_blank">反诈骗信息</a>	\n		</div>\n	</div>\n</div>\n';
+return __htm;} 
+ exports.html = __getHtml; 

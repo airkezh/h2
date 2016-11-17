@@ -1,0 +1,61 @@
+/*common*/
+return function(socket){
+	socket.on('connectPush', function (data) {
+		console.log('connectPush', data)
+
+		if(socket.io.connected > 1){
+			console.log('connected', socket.io.connected, 'changeUser')
+			changeUser(fml.vars.im.toid)
+
+			return;
+		}
+
+		fml.vars.im.head = data.req.data.avatar_b
+		fml.vars.im.isShop = data.req.data.isShop
+		if(!fml.vars.im.toid && fml.vars.im.recently && fml.vars.im.recently[0]) fml.vars.im.toid = fml.vars.im.recently[0].uid
+		changeUser(fml.vars.im.toid, {history:1})
+
+		socket.emit('init', {
+			toid : fml.vars.im.toid	
+		})
+	})
+
+	socket.on('kickoutPush', function (data) {
+		console.log('kickoutPush', data)
+		fml.vars.im.offLineInfo = data.msg
+		fml.vars.im.reconnect = 0
+		socket.io.disconnect()
+		$.get('/www/aj/connect', {}, function(){}, 'json')
+	})
+
+	socket.on('offlinePush', function(data){
+		console.log('offlinePush', data)
+		fml.vars.im.reconnect = 0
+		socket.io.disconnect()
+	})
+
+	socket.on('connect', function (data) {
+		console.log('连接成功')	
+	})
+	socket.on('connecting', function(){
+		console.log('正在连接')	
+	})
+	socket.on('disconnect', function (data) {
+		console.log('断开连接')	
+		if(fml.vars.im.reconnect)
+			socket.io.reconnect()
+	})
+	socket.on('connect_failed', function(){
+		console.log('连接失败')	
+	})
+	socket.on('reconnect_failed', function(){
+		console.log('重连失败')	
+	})
+	socket.on('reconnect', function(){
+		console.log('成功重连')	
+	})
+	socket.on('reconnecting', function(){
+		console.log('正在重连')	
+	})
+
+}

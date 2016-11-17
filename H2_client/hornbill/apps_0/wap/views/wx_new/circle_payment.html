@@ -1,0 +1,33 @@
+<%# wx_new/header.html%>
+<% var info = this.payment_info; %>
+<div class="wrap">
+    <a class="avatar">
+        <img src="<%= info.head_img %>" class="avatar-img">
+    </a>
+    <p class="nickname"><%= info.shop_nick %></p>
+    <p class="text-gather">向你发起收款</p>
+    <div class="payment-box">
+        <h3><%= info.content %></h3>
+        <strong class="amount">￥<%= info.price %></strong>
+    </div>
+    <button id="payment" class="btn-payment">微信支付</button>
+</div>
+
+<footer>
+    <a class="link" href="http://a.app.qq.com/o/simple.jsp?pkgname=com.meilishuo.circle&g_f=991653">我也要用微信收款，提现半天到账！<span class="label">免费</span></a>
+    <p class="text"><i class="icon-logo"></i>美丽微店提供技术支持</p>
+</footer>
+
+
+
+<script>
+    fml.vars.twitterID = '<%= info.twitter_id %>';
+    fml.vars.skuID = '<%= info.sku_id %>';
+    fml.vars.price = '<%= info.price %>';
+    fml.vars.total_price = '<%= info.price %>';
+    fml.vars.goods_id = '<%= this.goods_id %>';
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+    fml.use('wap/page/wx_new/circle_payment');
+_use:", this._JSstack , this._JSmods ); %>
+<%# wx_new/footer.html%>

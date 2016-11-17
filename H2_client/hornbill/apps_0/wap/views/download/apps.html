@@ -1,0 +1,39 @@
+<%# head_simple.html%>
+</head>
+<body style="width:100%;height:100%;">
+<% 
+if (!this.apks){ %>
+	没配置这个app下载页
+<%}else { 
+	var bg = this.apks.bg_iphone 
+		,downurl = this.apks.ios
+	if (!this.os.iphone) {
+		bg = this.apks.bg_android || bg
+		downurl = this.apks.yingyongbao || this.apks.android
+	%>
+		<iframe style="display:none;" id="ifr"></iframe>
+	<%}%>
+	<script>
+	<% if (this.os.iphone || this.apks.yingyongbao) { %>
+	function callApp(url){ 
+		window.location.href = url 
+	}
+	<% }else{ %>
+	var ifr = document.getElementById('ifr'); 
+	function callApp(url){ 
+		ifr.src = url;
+	}
+	<% } 
+	if (this.tryOpen) {
+	%>
+		callApp('<%= this.tryOpen%>');
+		window.setTimeout(function(){
+			callApp('<%= downurl%>');
+		} , 1000)
+	<% } else { %> 
+		callApp('<%= downurl%>');
+	<% } %>
+	</script>
+	<div class="main" style="background:url('<%= bg || ''%>') ;"></div>
+<%}%>
+<%# foot_simple.html%>

@@ -1,0 +1,78 @@
+@import "bs_base.less";
+
+.word{
+	padding: 30*@w;
+	.f(1.2rem);
+	.l(1.6rem);
+}
+.title{
+	.c;.pr;padding: 20*@w;.bs;
+	.line{
+		.pa;top: 0;left: 20*@w;.h(50%);.w(600*@w);
+		border-bottom: 1px solid #d9d9d9;
+	}
+	.text{
+		.pr;z-index: 2;.h(100%);.l(100%);.f(2rem);
+		.bgc(@white);
+	}
+	.text:before, .text:after{
+		content: '';
+		border-left: 1px solid #d9d9d9;-webkit-transform:rotate(16deg);.i_block;.h(2rem);
+		.pr;z-index: 5;.mb(-1%);.mr(30/600*100%);
+	}
+	.text:after{.ml(30/600*100%);.mr(0);}
+}
+
+.goods{
+	.w(600*@w);
+	margin: 0 20*@w;
+	padding: 30*@w 0;
+	.hidden;
+	border-top: 1px solid #e3e3e3;
+	&.first{border-top: none;}
+	img{.w(279/600*100%);.left;}
+	.desc{
+		.w(313/600*100%);
+		.right;
+		.f(1.4rem);
+		.fc(#666);
+		.pt(30/600*100%);
+		a{.fc(#666);}
+	}
+	.prece{
+		.fc(#ff669a);
+		.f(1.2rem);
+		.pt(1rem);
+		.pb(1rem);
+		span{.f(1.8rem);}
+		del{.fc(#9f9f9f);.pl(1rem);}
+	}
+	.buy_status{
+		.w(174/313*100%);
+		.bgc(#f66);
+		.c;
+		.f(1.4rem);
+		.l(2.4rem);
+		.border-r(6*@px);
+		a{.fc(#fff);}
+	}
+	.time{.f(1.1rem);.pt(.5rem);}
+}
+
+.goods_show;
+.fallwall;
+.goods_units{.pr;}
+.goods_wall .goods_box{.pa;}
+.goods_units{padding:0;}
+
+.pullUp[status="stop"]:before{
+	padding-bottom: 0;
+}
+
+.check_history{
+	.w(600*@w);.pt(20*@w);.pb(20*@w);.auto;.mt(2rem);
+	span{
+		.block;.w(100%);.pt(16/600*100%);.pb(16/600*100%);.bs;.border-1(rgba(0,0,0,.15));.border-r(5px);
+		.fc(@red);.c;.bgc(rgba(255,102,153,0));.f(1.4rem);
+	}
+}

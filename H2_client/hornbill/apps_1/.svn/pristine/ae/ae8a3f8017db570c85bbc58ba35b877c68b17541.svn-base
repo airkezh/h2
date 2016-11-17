@@ -1,0 +1,211 @@
+<%# wx_new/header.html%>
+<%
+	var getLink = _extFn.getLink
+		,query = this._Request_query
+		
+	var page_categories = this.navInfo.page_categories 
+	var navTwo = page_categories ? page_categories : []
+	var typeTop = navTwo
+
+	var navThreeWord = 'veryvalue' 
+
+%>
+<div class="posterWall wrap scroller">
+	<%if(0){%>
+	<%= requireFn('wx_new/top_nav.html')({
+		'pageName' : this.pageName
+		,'navInfo' : this.nav_top || []
+		,'PICTURE_URL' : this.PICTURE_URL
+		,'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+	});%>
+	<div class="m50"></div>
+	<%}%>
+	<figure class="wxShareImg none_f">
+		<img src="<%=this.PICTURE_URL%>/images/wap/web/wx/shareWXB.jpg"/>
+	</figure>
+	<% if(this.banner.head){%>
+	<section style="-webkit-transform: translateZ(0);">
+		<%= requireFn('block/banner.html')({
+			'banner' :this.banner.head
+			,'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+		});%>
+	</section>
+	<% } %>
+	<%if(this.pageName != 'daily'){%>
+	<div class="nav_top" id="navTop">
+		<nav class="nav_box">
+			<ul class="goods <%= this.pageName %>" name="seed">
+				<% navTwo && navTwo.map(function(data, index){%>
+					<li <%if(this.act == data.cate_id){
+							navThreeWord = data.chile_cate_name
+							%>class="active"
+						<%}%>>
+						<% var url =  this.url + getLink({'cate_id' : data.cate_id}) %>  
+						
+						<a href="<%= url%>"> <%=data.cate_name %></a>
+					</li>
+				<%});%>
+			</ul>
+			<span class="user_img_space"></span>
+		</nav>
+	</div>
+	<%}%>
+	
+	
+	<%if(this.pageName != 'daily' && this.navInfo.column_categories && this.navInfo.column_categories[navThreeWord]) {
+		var navThress = this.navInfo.column_categories[navThreeWord]
+		%>
+	<!-- typeTop 三级菜单 -->
+	<div class="typeTop">
+		<p>
+			<% navThress.map(function(data, index){%>
+				<%var url =  this.url + getLink({'cate_id' : data.cate_id,'act' : data.father_cate })%>
+				<a href=<%=url %> typeId='<%= data.cate_id %>' class='cosmetictap <%= navThreeWord %>  <%= (this.nowCate == data.cate_id) ? 'type_select' : '' %>'><%= data.cate_name%></a>
+			<%});%>
+		</p>
+	</div>
+	<%}%>
+
+	<%if(0){%>
+	<div class="happy">
+		<!-- 中部top广告位 -->
+		<%if(this.banner.middle_ad){ %>
+			<%= requireFn('wx_new/mall_ad.html')({
+				'list' : this.banner.middle_ad
+				,'template' : 1  
+			});%>
+		<%}%>
+
+		<!-- 中部各场馆 -->
+		<%if(this.banner.middle){ %>
+			<%= requireFn('wx_new/mall_ad.html')({
+				'list' : this.banner.middle
+				,'template' : 2
+			});%>
+		<%}%>
+
+		<!-- 中部bottom广告位 -->
+		<%if(this.banner.bottom){ %>
+			<%= requireFn('wx_new/mall_ad.html')({
+				'list' : this.banner.bottom
+				,'template' : 1
+			});%>
+		<%}%>
+
+	</div>
+	<%}%>
+	
+	<!-- 整蛊活动-入口 -->
+	<!-- <section class="trick">
+		<img src="<%=this.PICTURE_URL%>/images/wap/web/wx_new/happy/trick.png">
+	</section> -->
+	
+
+	<!-- 砸彩蛋 -->
+	<% if(0 && this.can_hit && this.can_hit.ret == 0){%>
+	<section id="egg">
+		 <img src="<%=this.PICTURE_URL%>/images/wap/sq/box-1.png" class="egg"/>
+		<img src="<%=this.PICTURE_URL%>/images/wap/sq/box-2.png" class="egg-open"/>
+	</section>
+	<%}%>
+
+	<% if (this.discount && this.discount.seckill && this.discount.seckill.length !=0){ %>
+	<section class="content_daily">
+		<% if (this.discount.seckill_disc){ %>
+		<div class="daily_title">
+			<span class="word">
+				<img class="money_icon" src="<%=this.PICTURE_URL%>/images/wap/web/wx/qiang_icon.png" />
+			</span>
+			<span class="daily_banner"><%= this.discount.seckill_disc.content%></span>
+		</div>
+		<%}%>
+		<% this.discount.seckill.map(function(data, idx){%>
+		<figure class="goodsArea <%if(idx != this.discount.seckill.length -1){%>mb10<%}%>" goods_id="<%= data.goods_id %>" twitter_id="<%= data.twitter_id%>" pid="<%= data.pid || 0%>" prop_color="<% if (data.prop && data.prop.color && data.prop.color.is_show) { %><%= data.prop.color.name%>__<%= data.prop.color.value[0]%><%}%>">
+			<a href="/wx/detail?tid=<%= data.twitter_id%>&d_r=<%= data.d_r %>" class="show_img">
+				<img src="<%=data.goods_img%>">
+			</a>
+			<div class="goods_info">
+				<p class="goods_title"><%= data.goods_title%></p>
+				<p class="goods_data">
+					<span>已有<sapn class="ml_color"><%= data.sale_num%></span>人购买<span>
+					<span>仅剩<sapn class="ml_color"><%= data.left || 0%></span>件<span>
+				</p>
+				<p class="goods_cost">
+					<span class="ml_color now_cost">¥<%= data.discount_price%></span>
+					<%if(data.original_price){%>
+						<span class="normal_cost">¥<%= data.original_price%></span>
+					<%}%>
+					<% if(data.buy_button_status == 1){%>
+					<%if(data.is_cosmetic == '1'){%>
+					<a href="javascript:void(0)" class="buy_btn goods_btn"><%= seckillBtn[data.buy_button_status]%></a>
+					<%}else{%>
+					<a href="/wx/detail?tid=<%= data.twitter_id%>&d_r=<%= data.d_r %>" class="goods_btn"><%= seckillBtn[data.buy_button_status]%></a>
+					<%}%>
+					<%}else{%>
+					<span class="goods_btn not_buy"><%= seckillBtn[data.buy_button_status]%></span>
+					<%}%>
+				</p>
+			</div>
+		</figure>
+		<%});%>
+	</section>
+	<% } %>
+	<%if(this.discount && this.discount.groupon && this.discount.groupon.length != 0 ){%>
+	<section class="content_daily">
+		<% if(this.discount.groupon) { %>
+		<div class="daily_title">
+			<span class="word">
+				<img class="money_icon" src="<%=this.PICTURE_URL%>/images/wap/web/wx/tuan_icon.png" />
+			</span>
+			<span class="daily_banner"><%= this.discount.groupon_disc.content%></span>
+		</div>
+		<%}%>
+		<% this.discount.groupon.map(function(data, idx) { %>
+		<figure <%if(idx != this.discount.groupon.length -1){%>class="mb10"<%}%>>
+			<a href="/wx/detail?tid=<%= data.twitter_id%>&d_r=<%= data.d_r %>" class="show_img">
+				<img src="<%=data.goods_img%>">
+			</a>
+			<div class="goods_info">
+				<p class="goods_title"><%= data.goods_title%></p>
+				<p class="goods_data">
+					<span>已有<sapn class="ml_color"><%= data.sale_num%></span>人购买<span>
+					<span>仅剩<sapn class="ml_color"><%= data.left%></span>件<span>
+				</p>
+				<p class="goods_cost">
+					<span class="ml_color now_cost">¥<%= data.discount_price%></span>
+					<%if(data.original_price){%>
+					<span class="normal_cost">¥<%= data.original_price%></span>
+					<%}%>
+					<a href="/wx/detail?tid=<%= data.twitter_id%>&d_r=<%= data.d_r %>" class="goods_btn">立即购买</a>
+				</p>
+			</div>
+		</figure>
+		<% });%>
+	</section>
+	<% }%>
+
+	<section class="content_daily">
+		<div class="daily_title pd6">
+			<span class="word">
+				<img class="money_icon" src="<%=this.PICTURE_URL%>/images/wap/web/wx/jing_icon.png" />
+			</span>
+			<span class="daily_banner"><%= this.goods.content || ''%></span>
+		</div>
+	</section>
+	<ul class="new_goods goods_wall">
+	</ul>
+	<div class="pullUp" status="loading"></div>
+</div>
+<%# wx_new/posterWX.html%>
+<script>
+fml.vars.poster = {
+	'totalColNum':2,
+	'pageName' : '<%= this.pageName%>'
+};
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/wx_new/mall');
+_use:", this._JSstack , this._JSmods ); %>
+<%# wx_new/side.html%>
+<%# wx_new/footer.html%>

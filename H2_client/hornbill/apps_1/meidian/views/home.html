@@ -1,0 +1,79 @@
+<%# header.html%>
+<%
+	var shopInfo = this.shopInfo.data
+		, categoryInfo = this.categoryInfo.data
+		, categoryShowArr = this.categoryShowArr
+%>
+<div class="wrap">
+	<div class="store_wrap store_cont" shop_id="<%= shopInfo.shop_id%>" account_id="<%= shopInfo.account_id%>">
+			<img src="<%= shopInfo.shop_logo%>" class="store_pic">
+		<div class="store_info">
+			<p class="store_name"><%= shopInfo.shop_name%></p>
+			<p class="goods_num">微信号：<span><%= shopInfo.shop_weixin%></span></p>
+			<p class="store_intro"><%=shopInfo.shop_desc%></p>
+			<p class="goods_num">商品数量：<span><%= shopInfo.goods_total%>件</span></p>
+		</div>
+	</div>
+	<div class="goods_wrap">
+		<div class="tab_wrap">
+			<ul class="goods_tab tab_list">
+				<% if(categoryShowArr && categoryShowArr.length >= 1){
+					categoryShowArr.map(function(category, i){ 
+				%>
+				<a href="/md/home/?shop_id=<%= shopInfo.shop_id%>&category_id=<%= category.id%>">
+					<li <%if(this.tabCur == i){%>class="tab_cur" <%}%>>
+						<%= category.name %></li>
+				</a>
+				<%});%>
+				<li class="more moreHide">
+					<b class="more_hide">
+						<img src="<%=this.PICTURE_URL%>/images/wap/wd/more_down.png">
+					</b>
+				</li>
+				<%}%>
+			</ul>
+			<div class="tab_cont">
+				<ul class="goods_tab">
+					<li class="tab_title">切换分类</li>
+					<li class="more moreShow">
+						<b class="more_show">
+							<img src="<%=this.PICTURE_URL%>/images/wap/wd/more_up.png">
+						</b>
+					</li>
+				</ul>
+				<div class="tab_list_info">
+					<div class="goods_tab_list">
+						<p>
+							<% if(categoryInfo) { categoryInfo.map(function(data, idx) {%>
+							<a href="/md/home/?shop_id=<%= data.shop_id%>&category_id=<%= data.category_id%>"><%= data.category_name%><b>|</b></a>
+							<% if((idx +1)%4 == 0){%></p><p><%}%>
+							<% });}%>
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<ul class="goods_list goods_wall">
+		</ul>
+		<div class="pullUp" status="loading"></div>
+	</div>	
+</div>
+<%# posterMd.html%>
+<script>
+fml.vars.poster = {
+	'categoryId' : '<%=this.categoryId%>'
+};
+<%= this.poster0? 'Meilishuo.config.poster0 = '+JSON.stringify(this.poster0)+';':'' ;%>
+
+	var imgUrl = '<%= shopInfo.shop_logo%>';
+	var lineLink = location.href;
+	var descContent = '<%= shopInfo.shop_desc%>';
+	var shareTitle = '美店 - <%= shopInfo.shop_name%>';
+	var shareTimelineText = '美店【<%= shopInfo.shop_name%>】<%= shopInfo.shop_desc%>';
+</script>
+<script src="<%= this.JCSTATIC_BASE  %>/js/open/shareCollect.js?<%= this.SVERSION%>"></script>
+<% $_ENGINE_SELF.callFn("useModule")("fml.use('meidian/page/poster0');", this._JSstack , this._JSmodsFast ); %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('meidian/page/home');
+_use:", this._JSstack , this._JSmods ); %>
+<%# footer.html%>

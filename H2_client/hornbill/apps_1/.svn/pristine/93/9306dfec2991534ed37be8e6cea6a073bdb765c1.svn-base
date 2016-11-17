@@ -1,0 +1,88 @@
+/*common*/
+require('wap/zepto/fastclick')
+require('wap/zepto/scroll')
+
+var $ = require('wap/zepto')
+var lazy = require('wap/component/lazzyLoad')
+var shareTmp = require('wap/component/shareTmp')
+var posterWall = require('wap/app/posterWalls3')
+var onscroll = require('wap/component/windowScroll')
+var sidebarCm = require('wap/page/biz/sidebarShareIsCoupon')
+var scroll = require('wap/component/windowScroll')
+
+// 定位导航
+var navfixed = function(){
+	var bannerWord = $(".poster_tab")
+		,isScroll = false
+		,bannerOffset = bannerWord.offset().top
+		,posterOffset = $('.poster').offset().top
+		,startY = 0
+
+	function isFade() {
+		var pageScrollTop = document.body.scrollTop
+		if(!isScroll && pageScrollTop > bannerOffset){
+			isScroll = true
+			$('.fixed_wrap').show();
+		}
+		if(isScroll && pageScrollTop <= bannerOffset){
+			$('.fixed_wrap').hide()
+			isScroll = false
+		}
+	}
+
+	onscroll.unBind(isFade)
+	onscroll.bind(isFade, 'document')
+
+	$(document).on("touchstart", function(event){
+		if (!event.touches.length) return
+		var touch = event.touches[0]
+		startY = touch.pageY
+	})
+	$(document).on("touchmove", function(){
+		if (!event.touches.length) return
+		var touch = event.touches[0]
+		if(touch.pageY -startY > 0){
+			$('.fixed_wrap').hide()
+			isScroll = false
+		}
+	})
+}
+setTimeout(function(){
+	navfixed()
+}, 0)
+
+var pullUp = $('.pullUp')
+	, $goTop = $('.gotop');
+
+initPoster();
+
+function initPoster(){
+		/* lazy load setting, 采用全屏扫点方式加载 */
+		var lazy_pic = lazy.init({'xpath' : '.bs_load_img', 'loadStyle' : 'img'})
+		lazy_pic.scroll()
+
+		posterWall.init({
+			urlData : {'frame' : 0, 'page_size':30}
+			, containerId : '.goods_wall'
+			, url : '/aj/xuanguan/middle?pstrc=' + fml.vars.pstrc + '&asid=' + fml.vars.asid + '&r=' + fml.vars._r
+			, posterAppend : function(data){
+				lazy_pic.load()
+			}
+		})
+}
+
+//回到顶部
+$goTop.on('click', function (){
+		$.scrollTo({
+	   	 	endY: 0,
+	  	 	duration: 300
+		});
+});
+function goTop (pos, isDown){
+	if(!isDown && pos > 100){
+		$goTop.show();
+	}else{
+		$goTop.hide();
+	}
+}
+scroll.bind(goTop,'gotop');

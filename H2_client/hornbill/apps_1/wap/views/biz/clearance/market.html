@@ -1,0 +1,134 @@
+<%#head.html%>
+
+<%
+	var pageData = this.pageData;
+	var slide_banner = pageData.banner.head;
+	var sub_banner = pageData.banner.sub;
+	var tab = pageData.tab;
+%>
+
+<div class="main">
+	<section id="banner">
+		<% if(slide_banner.length){ %>
+			<div class="slide_banner">
+				<div class="imageSlide" id="imageSlide">
+					<ul>
+						<%
+							var _getAppLink = function(url, r){
+								if(!url){ return 'javascript:;'}
+								if(url.indexOf('?') > 0){
+									url += '&r=' + r;
+								} else {
+									url += '?r=' + r;
+								}
+								return _extFn.getAppLink('openURL', {"url": url, "inApp":1, "require_app_info":1}, this.os, r, url);
+							};
+						%>
+						<% slide_banner.forEach(function(banner, index){ %>
+							<li>
+								<a class="top_banner swipe js_track" href="<%= _getAppLink(banner.link, this.xr.r+':stat_area=banner' + (index+1)) %>" data-tr="<%= 'banner' + (index+1) %>"><img src="<%= banner.pic %>"></a>
+							</li>
+						<% }); %>
+					</ul>
+					<div class="num"></div>
+				</div>
+			</div>
+		<% } %>
+		<% if(sub_banner.length){ %>
+			<div class="sec_banner">
+				<% sub_banner.forEach(function(banner, index){ %>
+					<a class="js_track" href="<%= _getAppLink(banner.link, this.xr.r+':stat_area=topic' + (index+1)); %>" data-tr="<%= 'topic' + (index+1) %>"><img src="<%= banner.pic %>"></a>
+				<% }); %>
+			</div>
+		<% } %>
+		<%
+			var end_time = new Date(pageData.end_time);
+			var now = new Date();
+			var time_text = '离活动结束还剩 ';
+			var time_end = end_time - now;
+
+			var time_start = 0;
+			if(pageData.start_time){
+				var start_time = new Date(pageData.start_time);
+				if(now < start_time){
+					time_text = '离活动开始还剩 ';
+				}
+				time_start = start_time - now;
+			}
+		%>
+		<div class="countdown js_timeStamp" data-times="<%= time_start/1000 %>" data-timee="<%= time_end/1000 %>"><%= time_text %><span class="hour">00</span>:<span class="sec">00</span>:<span class="min">00</span></div>
+	</section>
+	<section id="content">
+		<nav id="slide_nav" class="js_slide_nav">
+			<%
+				var tab_w = 1/tab.length*100;
+				var tab_wrap_w = tab.length*1.4;
+				tab_wrap_w = tab_wrap_w < 6.4 ? 6.4 : tab_wrap_w;
+			%>
+			<div class="slide_wrap js_slide_tab" style="width:<%= tab_wrap_w %>rem;">
+				<% tab.forEach(function(item, index){ %>
+					<div class="item js_tab_item js_track <%= index == 0 ? 'active' : '' %>" style="width:<%= tab_w %>%;" data-id="<%= item.link %>" data-index="<%= index %>" data-r="<%= this.xr.r + ':stat_area=tab' + (index+1) %>" data-tr="<%= 'tab' + (index+1) %>"><%= item.text %></div>
+				<% }); %>
+			</div>
+		</nav>
+		<div id="posterWrap"></div>
+		<div class="pullUp" status="loading"></div>
+	</section>
+	<a class="gotop" style="bottom:<%if(this.isIphone){%>60<%}else{%>20<%}%>px">
+		<img src="http://i.meilishuo.net/css/images/wap/tuan/gotop.png" />
+	</a>
+</div>
+
+<script id="posterWall" type="text/html">
+	<div class="goods_units">
+		<?
+			var goodsList = this.goodsList;
+			var r = this.r;
+		?>
+		<? this.shopList.forEach(function(shop, index){ ?>
+			<?
+				var act_href = 'http://m-promotion.meilishuo.com/promotion/sale/daily_venue/?type=mob&pid=' + shop.pid + '&all_cid=' + shop.all_cid;
+				if(!shop.show_cid){
+					act_href += '&show_cid=' + shop.all_cid;
+				} else {
+					act_href += '&show_cid=' + shop.show_cid;
+				}
+				act_href += '&r=' + r;
+				act_href = 'meilishuo://openURL.meilishuo?json_params=' + encodeURIComponent('{"url": "' + act_href + '","inApp":"1","require_app_info":1}');
+			?>
+			<div class="item" data-href="<?= act_href ?>">
+				<div class="shop">
+					<div class="shop_icon"><img src="<?= shop.shop_face_img ?>"></div>
+					<div class="name"><?= shop.shop_nick ?></div>
+					<div class="decorate"><span class="discount"><?= shop.discount_text ?></span><? if(shop.coupon_text){ ?><span class="coupon"><?= shop.coupon_text ?></span><? } ?></div>
+				</div>
+				<div class="goods_wrap">
+					<?
+						var big_goods = goodsList[index*3];
+						var small_goods_1 = goodsList[index*3 + 1];
+						var small_goods_2 = goodsList[index*3 + 2];
+					?>
+					<div class="mark"></div>
+					<div class="big_goods">
+						<span class="bs_load_img" asrc="<?= big_goods.pic_url ?>"></span>
+						<div class="price">￥<?= big_goods.price ?><span>￥<?= big_goods.original_price ?></span><div class="mmd"></div></div>
+					</div>
+					<div class="small_goods">
+						<span class="bs_load_img" asrc="<?= small_goods_1.pic_url ?>"></span>
+						<div class="price">￥<?= small_goods_1.price ?><span>￥<?= small_goods_1.original_price ?></span></div>
+					</div>
+					<div class="small_goods">
+						<span class="bs_load_img" asrc="<?= small_goods_2.pic_url ?>"></span>
+						<div class="price">￥<?= small_goods_2.price ?><span>￥<?= small_goods_2.original_price ?></span></div>
+					</div>
+				</div>
+			</div>
+		<? }); ?>
+	</div>
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/biz/clearance_market');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot_simple.html%>

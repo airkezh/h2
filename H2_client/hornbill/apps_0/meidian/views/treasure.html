@@ -1,0 +1,143 @@
+<%# header.html%>
+<%
+	var goodsInfo = this.treasure_detail.data.event_goods;
+	var treasureInfo = this.treasure_detail.data
+%>
+<div class="wrap">
+	<h2 class="wd_title">商品详情</h2>
+	<div class="layer_wrap" id="propNotice"></div>
+	<figure class="goods_wrap"  goods_id="<%= goodsInfo.goods_id || ''%>" share_id="<%= goodsInfo.share_id || ''%>" shop_id="<%= goodsInfo.shop_id%>" category_id="<%= goodsInfo.category_id || 0%>">
+		<span class="goods_img">
+			<img src="<%= goodsInfo.goods_image[0].image_middle%>" image_thumbnail="<%= goodsInfo.goods_image[0].image_thumbnail %>" image_id="<%= goodsInfo.goods_image[0].image_id %>"/>
+		</span>
+		<div class="goods_info">
+			<div class="goods_name"><%= goodsInfo.goods_desc%></div>
+		</div>
+	</figure>
+	<figure class="presale_acti_wrap">
+		<div class="pre_head">
+			<h3>预售活动</h3>	
+			<span><label class="time" time=<%= treasureInfo.event_remaining_time%>>-天-小时-分-秒</label></span>
+		</div>
+		<div class="presale_acti_price_wrap">
+
+			<% for(var i = 0 ; i < treasureInfo.event_item.length; i++){%>
+				<%if(treasureInfo.event_item[i].item_available == 0){%>
+					<dl class="presale_acti_gray">
+						<dd class="pad_tb"><p><b>￥<%= treasureInfo.event_item[i].item_price%></b></p>
+							<p>
+								<del>￥<%= treasureInfo.event_item[i].item_original_price%></del>
+								<span class="pre_act_dis"><%= treasureInfo.event_item[i].item_discount%>折</span>
+							</p>
+							<p class="floa_r">(已售<span><%= treasureInfo.event_item[i].item_sales%></span>件)</p></dd>
+						<dd class="pad"><%= treasureInfo.event_item[i].item_description%></dd>
+						<dd class="pad_b">限额<span><%= treasureInfo.event_item[i].item_quota%></span>位，剩余<span><%= treasureInfo.event_item[i].item_quota - treasureInfo.event_item[i].item_sales%></span>位</dd>
+						<dd>预计发货时间：<span><%= treasureInfo.event_item[i].item_express_delay%></span></dd>
+					</dl>
+				<%}else{%>
+						<dl class="presale_acti_pingray on" item_id="<%= treasureInfo.event_item[i].item_id %>">
+					<dd class="pad_tb"><p><b>￥<%= treasureInfo.event_item[i].item_price%></b></p>
+						<p>
+							<del>￥<%= treasureInfo.event_item[i].item_original_price%></del>
+							<span class="pre_act_dis"><%= treasureInfo.event_item[i].item_discount%>折</span>
+						</p>
+						<p class="floa_r">(已售<span><%= treasureInfo.event_item[i].item_sales%></span>件)</p></dd>
+					<dd class="pad"><%= treasureInfo.event_item[i].item_description%></dd>
+					<dd class="pad_b">限额<span><%= treasureInfo.event_item[i].item_quota%></span>位，剩余<span><%= treasureInfo.event_item[i].item_quota - treasureInfo.event_item[i].item_sales%></span>位</dd>
+					<dd>预计发货时间：<span><%= treasureInfo.event_item[i].item_express_delay%></span></dd>
+					<dd class="pre_goods_msg">
+
+						<div class="goods_msg" id="goods_msg">
+							<% if (goodsInfo && goodsInfo.goods_sku) { %>
+							<dl class="prop info_list">
+								<dt class="type">型号：</dt>
+								<dd class="info" style="margin-left:0px;">
+									<ul id="colorList">
+										<% goodsInfo.goods_sku.forEach(function(item , key){%>
+											<li><span sku_id="<%= item.sku_id%>" sku_rep="<%= item.sku_repertory%>" sku_o_price="<%= item.sku_price%>" sku_price="<%= (goodsInfo.goods_type == 1) ? item.sku_price_presale : item.sku_price %>"><%= item.sku_name%></span></li>
+										<%});%>
+									</ul>
+									<div class="colorShow"></div>
+								</dd>
+							</dl>
+							<%}%>
+							<div class="col_80">特惠品每次仅可购买一件</div>
+						</div>
+					</dd>	
+				</dl>
+				<%}%>
+			<%}%>
+		</div>
+	</figure>
+	<figure class="goods_detail">
+		<h3>商品详情</h3>	
+		<% if (goodsInfo && goodsInfo.goods_image) { %>
+		<div class="detail_cont">
+			<% goodsInfo.goods_image.forEach(function(item , key){%>
+			<span class="detail_img">
+				<img src="<%= item.image_middle%>" image_id="<%= item.image_id%>"/>
+			</span>
+			<%});%>
+		</div>	
+		<%}%>
+	</figure>
+	<figure class="store_wrap">
+			<a href="/md/home/?shop_id=<%=goodsInfo.shop_id%>" class="guang_btn">进店逛逛</a>
+			<a href="/md/home/?shop_id=<%=goodsInfo.shop_id%>" class="store_pic detail_store_pic">
+				<img src="<%= goodsInfo.goods_shop.shop_logo%>">
+			</a>
+			<div class="store_info store_cont">
+				<p class="store_name black_col"><span><%= goodsInfo.goods_shop.shop_name%></span></p>
+				<p class="goods_num">微信号：<b><%= goodsInfo.goods_shop.shop_weixin%></b></p>
+				<p class="goods_num">商品数量：<span><%= goodsInfo.goods_shop.goods_total ? goodsInfo.goods_shop.goods_total : 0%>件</span></p>
+			</div>
+	</figure>
+	<figure class="after_sale_wrap">
+		<h3>关于售后与退款：</h3>	
+		<p>本次交易款项将直接支付给BA的美店，如有售后问题或需要退款请直接通过微信与与BA联系。</p>
+		<p><b>BA微信号：<%= goodsInfo.goods_shop.shop_weixin%></b></p>
+	</figure>
+	<%if(this.is_mls){%>
+		<div class="register_wrap mag_bot"></div>
+		<div class="share_buy_wrap">
+			<div class="share_col_wrap">
+				<div onclick="shareToWeixin('weixin')">
+					<img src="<%=this.PICTURE_URL%>/images/wap/wd/wx_share@2x.png"><p>分享到微信</p>
+				</div>
+				<div onclick="shareToWeixin('weixin_timeline')">
+					<img src="<%=this.PICTURE_URL%>/images/wap/wd/friends@2x.png"><p>分享到朋友圈</p>
+				</div>
+				<div onclick="shareToWeixin('weixin_favorite')">
+					<img src="<%=this.PICTURE_URL%>/images/wap/wd/col@2x.png"><p>收藏到微信</p>
+				</div>
+			</div>
+			<div class="buy_wrap">
+				<a class="buy_btn <%if(goodsInfo.goods_status == 1){%>non_buy eventnone<%}%>"><%= goodsInfo.goods_status == 1 ?'已下架':'立即购买'%></a>
+			</div>
+		</div>
+	<%}else{%>
+		<div class="register_wrap"></div>
+		<div class="buy_wrap">
+			<a class="buy_btn <%if(goodsInfo.goods_status == 1){%>non_buy eventnone<%}%>"><%= goodsInfo.goods_status == 1 ?'已下架':'立即购买'%></a>
+		</div>
+	<%}%>
+</div>
+
+<script>
+fml.vars.goods_sku = <%= JSON.stringify(goodsInfo.goods_sku)%>;
+fml.vars.goods_total_repertory = '<%=goodsInfo.goods_total_repertory%>';
+fml.vars.goods_display_price = '<%=goodsInfo.goods_display_price%>';
+fml.vars.is_event = true;
+
+	var imgUrl = '<%= goodsInfo.goods_image[0].image_middle%>';
+	var lineLink = location.href;
+	var descContent = '<%= goodsInfo.goods_desc%>';
+	var shareTitle = '美店 - <%= goodsInfo.goods_shop.shop_name%>';
+	var shareTimelineText = '美店【<%= goodsInfo.goods_shop.shop_name%>】<%= goodsInfo.goods_desc%>';
+</script>
+<script src="<%= this.JCSTATIC_BASE  %>/js/open/shareCollect.js?<%= this.SVERSION%>"></script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('meidian/page/detail');
+_use:", this._JSstack , this._JSmods ); %>
+<%# footer.html%>

@@ -1,0 +1,104 @@
+<%# win/win_header.html%>
+<%
+
+		var toInfo = this.to_info.data || {}
+		,dataInfo = this.data_info.data || {}
+		,extension=dataInfo.extension_data ||{}
+		,level=dataInfo.level_data || {}
+		,shopInfo = this.shop_info.data ||{}
+%>
+<div class="introBox">
+
+<ul class="intro_tab">
+ <li class="tab_goods act">
+  <span>数据</span>
+ </li>
+ <li class="tab_shop">
+  <span>店铺</span>
+ </li>
+</ul>
+<div class="intro_list">
+<div class="shop-data">
+<p class="shop_name">
+<a href="<%=this.MAIN_SITE_DOMAIN %>shop/<%=shopInfo.shop_id %>" target="_blank"><%=shopInfo.shop_nick %></a>
+</p>
+<p class="shop_name">
+<span>店铺ID:<%=shopInfo.shop_id%></span>
+</p>
+<div class="data-box">
+<div class="title">推广数据：</div>
+<% dataInfo && extension && extension.forEach(function(data){%>
+<dl>
+<dt><%=data.cname%></dt>
+<dd><%=data.value%></dd>
+</dl>
+ <%})%>
+</div>
+<div class="data-box">
+<div class="title">等级数据：</div>
+<% dataInfo && level && level.forEach(function(data){%>
+<dl>
+<dt><%=data.cname%></dt>
+<dd><%=data.value%></dd>
+</dl>
+ <%})%>
+</div>
+</div>
+<div class="list_shop" style="display:none"> 
+			<div class="shop_box">  
+				<p class="shop_name">
+					<a href="<%=this.MAIN_SITE_DOMAIN %>shop/<%=shopInfo.shop_id %>" target="_blank"><%=shopInfo.shop_nick %></a>
+				</p>  
+				<div class="shop_con">   
+				<ul class="shop_con_l">    
+					<li class="fb_f">商家评分</li>
+					<% ['accord','quality','attitude','fast'].forEach(function(attr){
+						var item = shopInfo.points_trend[attr];
+					%>
+					<li><%=item.text %>：
+						 <span><%= item.avg || '' %></span>
+					</li>
+					<%});%>
+				</ul>
+				<ul class="shop_con_m">
+					<li class="fb_f">比同行平均</li>
+					<% ['accord','quality','attitude','fast'].forEach(function(attr){
+						var item = shopInfo.points_trend[attr];
+					%>
+					<li>
+					  <%if(item.mark==1){%>
+					  <span class="redlevbtn">高</span>
+					  <%}else if(item.mark==0){%>
+					  <span class="redlevbtn">平</span>
+					  <%}else if(item.mark== -1){%>
+					  <span class="grenlevbtn">低</span>
+					  <%}%>
+					  <%=item.ratio%>
+					</li>
+					<%}); %>
+				</ul>
+				<div class="clear_f"></div>
+					<ul class="shop_con_r">
+					   <li class="fb_f">商家信息</li>
+					   <li>所在地区：
+						   <span><%=shopInfo.location%></span>
+					   </li>
+					   <li>商品数量：
+						   <span><%=shopInfo.goods_count%></span>
+					   </li>
+					   <li>销售数量：
+						   <span><%=shopInfo.goods_sales%></span>
+					   </li>
+					   <li>创建时间：
+						   <span><%=shopInfo.shop_ctime%></span>
+					   </li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('im_win/info');
+	_use:", this._JSstack , this._JSmods); %>
+<%# win/win_footer.html%>

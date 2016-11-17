@@ -1,0 +1,138 @@
+<%# head.html%>
+<%
+   var mainInfo = this.main.data || {}
+     , items = mainInfo.items || []
+     , share = mainInfo.share || {}
+     , banner = mainInfo.judges || [] 
+%>
+<div class="wrap">
+    <header>
+        <div class="top_banner">
+            <img src="http://d01.res.meilishuo.net/pic/_o/a2/5f/3602433a69855680cb4dc2393d80_639_638.cg.jpg" />
+            <span class="rule" id="openRule" >活动规则</span>
+        </div>
+        <p class="about">有品好店一直在追寻 </br>不容小觑的时尚新锐力量</br> 奔跑吧！中国服装业的未来之星！</br> 再一次，和有品好店一起，</br> 让原创奔跑！</p>
+    </header>
+    <section>
+        <h1 class="title">| 大赛评委 |</h1>
+        <%= requireFn('block/banner.html')({
+            'banner' : banner
+            ,'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+        });%>
+    </section>
+    <div class="gift">
+        <h1 class="title">| 投票有礼 |</h1>
+        <p>为你中意的设计师投票</p>
+        <img src="http://d02.res.meilishuo.net/pic/_o/f7/60/63232fffbc432fce53fc0a63c5e1_640_174.cg.png" />
+    </div>
+    <section class="list">
+        <h1 class="title">| 设计师及作品展示 |</h1>
+        <h2>设计主题：印象</h2>
+        <% items.forEach(function(v,i){%>
+            <div class="designer">
+                <div class="info">
+                    <a href="<%= _extFn.getAppLink('shop' , {'shop_id': v.shop_id} , this.os, this.r, '/shop/' + v.shop_id)%>">
+                        <img src="<%= v.designer_img%>" class="photo"/>
+                        <p class="shop"><%= v.shop_name%></p>
+                     </a>
+                    <p class="voteBtn" data-did="<%= v.designer_id%>" data-lottery="<%= v.lottery%>" <%if(v.is_voted != 0){%>style="background: #999"<%}%>><%= v.is_voted == 0 ? '投票' : '已投'%></p>
+                    <p class="person">已有<span class="votes"><%= v.votes%></span>人投票</p>
+                </div>
+                <div class="intro">
+                    <img src="<%= v.designer_desc%>" />
+                </div>
+            </div>
+            <ul>
+                <li>
+                    <a href="<%= _extFn.getAppLink('twitter_single', {'twitter_info' : {'twitter_id' : v.tid1, 'is_doota' : 1}}, this.os, this.r, '/share/item/' + v.tid1)%>">
+                        <img src="<%= v.item_img1%>" />
+                    </a>
+                </li>
+                <li>
+                    <a href="<%= _extFn.getAppLink('twitter_single', {'twitter_info' : {'twitter_id' : v.tid2, 'is_doota' : 1}}, this.os, this.r, '/share/item/' + v.tid2)%>">
+                        <img src="<%= v.item_img2%>" />
+                    </a>
+                </li>
+            </ul>
+        <%})%>
+        <a href="/hdstreet/new/" class="more">更多设计师店铺</a>
+    </section>
+    <div class="recruit">
+        <h1 class="title">| 设计师大赛&平台入驻 招募 |</h1>
+        <p class="about">表达自我态度 </br>玩转原创设计 </br>    你就是未来之星！ </p>
+    </div>
+    <div class="recruit">
+        <h1 class="title">| 设计师大赛获奖者 |</h1>
+        <p class="about">
+            有在米兰时装周及《奔跑吧，兄弟》中露出的福利哦！</br>更有机会为《奔跑吧，兄弟》嘉宾提供服装！ 
+        </p>
+    </div>
+    <div class="gift">
+        <h1 class="title">| 美丽说平台 现全面开放<span style="color:#ff3333">设计师品牌</span>入驻 |</h1>
+        <img src="http://d03.res.meilishuo.net/pic/_o/3e/c5/bb13f1bd5d325474362fbb6f063e_640_160.cg.jpg" />
+        <p class="apply">参赛报名&品牌入驻请加QQ群：476440545</p>
+        <p>（验证备注：设计师报名）</p>
+    </div>
+    <div id="designer_share" class="share">
+        分享
+    </div>
+
+<%= requireFn('wapShare.html')({
+    'share' : this.share 
+    , 'shareTitle' : '选择分享到'
+    , '_JSstack' : this._JSstack
+    , '_JSmods' : this._JSmods
+});%>
+
+<script type="text/html" id="activityRule">
+    <div class="dialog_box">
+        <span class="closeIcon"></span>
+        <h2>活动规则：</h2>
+        <p>
+            1、本次原创服装设计大赛以“印象”为设计主题，2015年8月7日00:00-8月10日24:00为入围作品网络投票环节;美丽说将会对本次票数TOP3的设计师提供在米兰时装周露出的福利，更有机会为《奔跑吧，兄弟》嘉宾提供服装。
+        </p>
+        <p>
+           2、用户参与投票后即可获得不低于5元的无门槛店铺优惠券，更有亲临《奔跑吧，兄弟》录制及获得所支持设计师量身制定服装的机会；活动期间同一作品只能投1票，使用他人手机号、地址等信息注册，或以非正常手段注册、一人注册多个账号等视为违规注册，同一手机、同一IP地址、同一设备号或其他可以合理显示为同一用户的情形，均视为同一用户。违反本规则，美丽说有权利收回已领用的优惠券及对注册用户进一步处罚甚至冻结其账号的权利。
+
+        </p>
+        <p>
+            3、用户一旦选择参加本活动，即同意接受活动涉及到的所有规则，任何对活动规则或者其他相应规则有异议的，不得参加活动，否则，美丽说有权取消其参与资格。如作弊行为美丽说平台造成损失的，美丽说保留追究赔偿的权利，针对违法行为将采取法律措施。
+        </p>
+        <p>
+            4、美丽说对活动期间的各项规则保留最终解释权。
+        </p>
+    </div>
+</script>
+
+<script type="text/html" id="shareLead">
+    <div class="dialog_share">
+        <span class="share_pic"></span>
+    </div>
+</script>
+
+<script type="text/html" id="getAward">
+    <div class="dialog_award">
+        <span class="closeIcon"></span>
+        <span class="icon"></span>
+        <div class="show">
+            <h2>投票成功<h2/>
+            <h3 class="result">恭喜您获得 10元无门槛优惠券<h3/>
+        </div>
+    </div>
+</script>
+
+<script>
+    fml.vars.isLogin = <%= this.userInfo.user_id%>;
+    fml.vars.mlsHost = '<%= this.mlsHost%>';
+    fml.vars.shareTitle = '<%= share.title %>';
+    fml.vars.shareContent = '<%= share.content %>';
+    fml.vars.shareIcon = '<%= share.icon %>';
+    fml.vars.shareLink = '<%= share.link %>';
+</script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use('wap/page/activity/clothing');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot.html%>
+

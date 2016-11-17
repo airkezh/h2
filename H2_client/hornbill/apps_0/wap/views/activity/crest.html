@@ -1,0 +1,144 @@
+<%# head_simple.html%>
+<% var crestData = this.list; %>
+</head>
+<body>
+<header class="luck-box">
+	<h1>成就臻品白富美 美白神器0元起</h1>
+	<img src="http://i.meilishuo.net/css/images/wap/crest/luck-gif.gif" alt="成就臻品白富美 美白神器0元起">
+	<div class="btn-box">
+		<span class="luck-num" id="luckNum">抽奖机会:<b><%= this.num.data.left_count %></b></span>
+		<a href="javascript:;" class="btn-luck" id="btnLuck">开始抽奖</a>
+	</div>
+	<p class="btn-rules" id="btnRules">抽奖活动规则</p>
+	<div class="rules-box" id="rulesBox">
+		<strong>活动时间：</strong>
+		<p><b class="red_f mr10">8月15-20日</b>10:00-24:00</p>
+		<strong>活动规则：</strong>
+		<ol>
+			<li>1.参与者必须注册/登陆美丽说。</li>
+			<li>2.每人每天有三次抽奖机会。</li>
+			<li>3.中奖用户留下联系方式，即可收到美丽说寄出的佳洁士炫白神器1套--价值10.9元佳洁士3D炫白双效牙膏1支(120克)+价值139元佳洁士闪耀炫白牙贴1盒(7对)。</li>
+			<li>4.活动期间共送出500套佳洁士炫白神器，活动时间结束后统一寄出。</li>
+			<li>5.本活动解释权归美丽说所有。</li>
+		</ol>
+	</div>
+</header>
+<section class="pro-box">
+	<h2 class="content-one">臻品白富美の瓷白透亮无瑕肌</h2>
+	<ul>
+		<% crestData.contentOne && crestData.contentOne.forEach(function(proList){ %>
+			<li class="pro-list">
+				<a href="<%= proList.link_url %>" class="pro-img">
+					<span class="bs_load_img" asrc="<%= proList.image_url %>"></span>
+				</a>
+				<div class="pro-info">
+					<p class="pro-des">
+						<a href="<%= proList.link_url %>"><%= proList.title %></a>
+					</p>
+					<div class="pro-price">
+						<span class="rebate"><%= proList.discount %>折</span>
+						<span class="red_f price-now">¥<%= proList.price %></span>
+						<span class="price-ago">¥<del><%= proList.origin_price %></del></span>
+					</div>
+					<p class="buy-num">
+						<span class="red_f"><%= proList.sales %></span>人在抢购
+					</p>
+				</div>
+			</li>
+		<% }) %>
+	</ul>
+	<h2 class="content-two">臻品白富美の轻透裸妆晒不怕</h2>
+	<ul>
+		<% crestData.contentTwo && crestData.contentTwo.forEach(function(proList){ %>
+			<li class="pro-list">
+				<a href="<%= proList.link_url %>" class="pro-img">
+					<span class="bs_load_img" asrc="<%= proList.image_url %>"></span>
+				</a>
+				<div class="pro-info">
+					<p class="pro-des">
+						<a href="<%= proList.link_url %>"><%= proList.title %></a>
+					</p>
+					<div class="pro-price">
+						<span class="rebate"><%= proList.discount %>折</span>
+						<span class="red_f price-now">¥<%= proList.price %></span>
+						<span class="price-ago">¥<del><%= proList.origin_price %></del></span>
+					</div>
+					<p class="buy-num">
+						<span class="red_f"><%= proList.sales %></span>人在抢购
+					</p>
+				</div>
+			</li>
+		<% }) %>
+	</ul>
+	<h2 class="content-three">臻品白富美の完美细节“身”呵护</h2>
+	<ul>
+		<% crestData.contentThree && crestData.contentThree.forEach(function(proList){ %>
+			<li class="pro-list">
+				<a href="<%= proList.link_url %>" class="pro-img">
+					<span class="bs_load_img" asrc="<%= proList.image_url %>"></span>
+				</a>
+				<div class="pro-info">
+					<p class="pro-des">
+						<a href="<%= proList.link_url %>"><%= proList.title %></a>
+					</p>
+					<div class="pro-price">
+						<span class="rebate"><%= proList.discount %>折</span>
+						<span class="red_f price-now">¥<%= proList.price %></span>
+						<span class="price-ago">¥<del><%= proList.origin_price %></del></span>
+					</div>
+					<p class="buy-num">
+						<span class="red_f"><%= proList.sales %></span>人在抢购
+					</p>
+				</div>
+			</li>
+		<% }) %>
+	</ul>
+</section>
+<section class="popup" id="popup">
+	<p class="title"></p>
+	<img alt="" class="icon">
+	<p class="des">炫白神器属于坚持每天来抽奖的妹纸！</p>
+	<a href="javascript:;" class="btn"></a>
+</section>
+<section class="popup popup2" id="popup2">
+	<p class="title">恭喜你！炫白神器到手！</p>
+	<p class="sec-title">从齿炫白，才是臻品白富美！</p>
+	<p class="des">赶快留下你的联系方式，坐等神器飞到你的碗里去！</p>
+	<div>
+		<label for="">姓名：</label>
+		<input type="text" id="luckName">
+	</div>
+	<div>
+		<label for="">电话：</label>
+		<input type="text" id="luckPhone">
+	</div>
+	<div>
+		<label for="">地址：</label>
+		<input type="text" id="luckAddress">
+	</div>
+	<div>
+		<label for="">邮编：</label>
+		<input type="text" id="luckPostcode">
+	</div>
+	<a href="javascript:;" class="btn">确认提交</a>
+</section>
+<div class="cover" id="cover"></div>
+<a href="javascript:;" class="gotop" id="gotop">返回顶部</a>
+<div class="share_con">
+	<% if(this.share){ %>
+		<%= requireFn("wapShare.html")({
+			"share" : this.share,
+			"shareTitle" : "选择分享到",
+			"_JSstack" : this._JSstack,
+			"_JSmods" : this._JSmods
+		}); %>
+	<%}%>
+</div>
+<script>
+	fml.vars.isLogin = <%=this.isLogin%>;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use("wap/app/hackWeixin");
+	fml.use("wap/page/activity/crest");
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html%>

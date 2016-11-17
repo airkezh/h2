@@ -1,0 +1,34 @@
+/*common*/
+var posterWall = require('m/app/posterWall')
+	,poster = require('m/app/posterPa')
+	,lazyLoad = require('m/component/lazyLoad')
+	,urlHandle = require('wap/component/urlHandle')
+	// ,historyState = require('wap/app/historyState')
+
+var data = {
+	// url : '/aj/wx_new/search'
+	url : '/aj/wx_new/search?key_word=' + fml.vars.key
+	, poster : poster
+	, lazyLoad : lazyLoad.init({xpath:'.pic_load'})
+	, colNum : 2
+}
+var _o = urlHandle.getParams(window.location.search)['cate_id']
+if (_o) {
+	data.url += '&cate_id=' + _o;
+};
+posterWall.scroll(data);
+
+var oForm = $('#form_search');
+var oInput = oForm.children('.ipt');
+
+oForm.on('submit',function(e){
+	e.preventDefault();
+	var v = $.trim(oInput[0].value)
+	if(v){
+		window.location.assign('/wx/search?key=' + encodeURIComponent(v) ); 
+	}else{
+		new Alert({
+			content : '请输入搜索关键词'
+		})
+	}
+})

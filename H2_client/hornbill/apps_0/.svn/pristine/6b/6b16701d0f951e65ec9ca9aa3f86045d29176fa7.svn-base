@@ -1,0 +1,55 @@
+<%# header.html%>
+<%
+	var markInfo = this.bg_mark.data;
+	var remindInfo = this.bg_remind.data;
+	var userInfo = this.bg_user.data;
+%>
+<div class="wrapper bg_w">
+	<h6>给小伙伴打分</h6>
+	<div class="mar_lr">
+		<img src="<%= remindInfo.bigger_image.image_middle%>">
+	</div>
+	<div class="mark_wrap">
+		<p><b>您看给几分合适？</b>（打分后查看全部毒舌）</p>
+		<ul>
+			<% for(var i in markInfo){%>
+				<%if(i > 0){%>
+					<li value = <%= i%>> <%= i%></li>
+				<%}else{%>
+					<li value = <%= i%>>负分！滚粗！</li>
+				<%}%>
+			<%}%>
+		</ul>
+	</div>
+	<div class="mark_des_wrap">
+		<p><b>留一手</b></p>		
+			<%for(var i in markInfo){%>
+				<ul value="<%= i%>" style="display:none;">
+					<% markInfo[i].forEach(function(item,index){%>
+							<li><%= item%></li>							
+					<%})%>
+				</ul>
+			<%}%>
+	</div>
+	<div class="msg_wrap">
+		<textarea class="leamsg" placeholder="要不您也留一手"></textarea>
+	</div>
+	<div class="white_black">
+		<a href="javascript:void(0);" id="mark_sumbit">直接打分</a>
+		<a href="javascript:void(0);" id="mark_sumbit_anonymous">匿名打分</a>
+	</div>
+</div>
+
+<script type="text/javascript">
+	fml.vars.biggerId = '<%= remindInfo.bigger_id%>';
+	<% if (userInfo.nickname) {%>
+		fml.vars.currentNickname = '<%= userInfo.nickname%>';
+	<% } else { %>
+		fml.vars.currentNickname = null;
+	<% } %>
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+    fml.use('md/page/bigger');  
+_use:", this._JSstack , this._JSmods ); %>
+<%# footer.html%>

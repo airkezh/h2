@@ -1,0 +1,118 @@
+<%# header.html%>
+<%
+	var orderInfo = this.order.data 
+	, order_express = this.order.data.order_express || 0
+	, goodsInfo = this.order.data.order_goods || 0
+	, orderSku = this.order.data.order_sku || 0
+%>
+<div class="wrap">
+	<h2 class="wd_title">订单详情</h2>
+	<% if(order_express && orderInfo){%>
+	<div class="receiver">
+		<div class="receiver_info">
+			<%if(order_express.receiver_name){%>
+			<p>
+				<span><%= order_express.receiver_name%></span>
+				<span><%= order_express.receiver_mobile%></span>
+			</p>
+			<p><%= order_express.receiver_address%></p>
+			<%}else{%>
+				添加地址
+			<%}%>
+		</div>
+	</div>
+	<% }%>
+	<div class="pre_pay_wrap">
+		<div class="plat_form">
+			<%if(!this.is_mls){%>
+				<p class="pay_met">支付方式</p>
+				<dl pay_type="weixin" class="checked">
+					<dt><img src="<%=this.PICTURE_URL%>/images/md/wx1.png"></dt>
+					<dd>
+						<p>微信支付<span>(推荐使用)</span></p>
+					</dd>
+				</dl>
+				<dl pay_type="tenpay" style="display:none;">
+					<dt><img src="<%=this.PICTURE_URL%>/images/md/ten1.png"></dt>
+					<dd>
+						<p>财付通</p>
+					</dd>
+				</dl>
+			<%}else{%>
+				<dl pay_type="tenpay" class="eventnone">
+					<dt><img src="<%=this.PICTURE_URL%>/images/wap/wd/ten.png"></dt>
+					<dd>
+						<p>财付通<b>（很抱歉，暂时无法使用）</b></p>
+						<p>支持信用卡，储蓄卡快捷支付及财付通</p>
+					</dd>
+				</dl>
+			<%}%>
+		</div>
+	</div>
+	<div class="goods">
+		<% if(orderInfo && goodsInfo){%>
+		<div class="goods_wrap">
+				<div class="goods_info_wrap">
+					<img src="<%= goodsInfo.goods_image[0].image_middle%>" class="goods_img" />
+					<div class="goods_info">
+						<p class="goods_title"><%= goodsInfo.goods_desc%></p>
+						<p class="goods_size">
+							<span>颜色：<%= orderSku.sku_color%></span>
+							<span>尺码：<%= orderSku.sku_size%></span>
+						</p>
+						<p class="goods_size">
+							<span>数量：<%= orderInfo.order_amount%></span>
+							<span>价格：￥<%= orderInfo.order_total%></span>
+						</p>
+					</div>
+				</div>
+			<% if (orderInfo.order_event_item.item_description) { %>
+				<div class="goods_des"><%= orderInfo.order_event_item.item_description %></div>
+			<% } %>
+			<textarea class="leavemsg" placeholder="给卖家留言"></textarea>
+		</div>
+		<% }%>
+	</div>
+	<div class="tips">
+		<p>温馨提示：</p>
+		<p>韩国商品不支持退换货<br>韩国商品易断货，如遇缺货将第一时间通知您，并全额退款</p>
+	</div>
+	<div class="register_wrap"></div>
+	<div class="buy_wrap new_w">
+		<a href="javascript:;" class="buy_btn new_btn_w" id="charge">立即支付</a>
+	</div>
+</div>
+
+<div id="address_popup" class="popup" style="display: none;">
+	<div class="title">收货地址：</div>
+	<input id="address_name" type="text" placeholder="姓名" />
+	<input id="address_mobile" type="text" placeholder="手机" />
+	<input id="address_address" type="text" placeholder="地址" />
+	<input id="address_save_btn" type="button" value="确定" />
+	<input id="address_cancel_btn" type="button" value="取消" />
+</div>
+
+<script type="text/html" id="addressTmp">
+<?if(address){?>
+	<p>
+		<span><img src="<?= Meilishuo.config.picture_url?>/images/wap/web/wx/user_icon.png" alt="" class="order_icon user_icon">收件人：<?= address.nickname?></span>
+		<span><img src="<?= Meilishuo.config.picture_url?>/images/wap/web/wx/tel_icon.png" alt="" class="tel_icon">电话：<?= address.phone ?></span>
+	</p>
+	<p><?= address.street ?></p>
+<?}?>
+</script>
+
+<script>
+	fml.vars.orderInfo = <%= JSON.stringify(orderInfo) %>;
+	<% if (this.connect_weixin) { %>
+		fml.vars.wx = <%= JSON.stringify(this.connect_weixin.data) %>;
+	<% } else { %>
+		fml.vars.wx = false;
+	<% } %>
+</script>
+
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('md/page/confirm');
+_use:", this._JSstack , this._JSmods ); %>
+<%# footer.html%>

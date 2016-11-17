@@ -1,0 +1,104 @@
+/*common*/
+require('wap/zepto/fastclick');
+
+var onscroll = require('wap/component/windowScroll'),
+	appShare = require('wap/app/appShare'),
+	openApp = require('wap/app/openApp'),
+	openAppLink = require('wap/app/openAppLink');
+
+var weixinBrowser = navigator.userAgent.indexOf('MicroMessenger'),
+	tab = $('#tab'),
+	gotopObj = $('.top-box').find('a');
+if (weixinBrowser != -1) {
+	openApp('http://mapp.meilishuo.com/zulily');
+}
+
+// 客户端类型的分享（客户端右上角）
+if (fml.vars.appShare) {
+	appShare(fml.vars.params, ['weixin', 'weixin_timeline']);
+}
+
+tab.find('a').on('click', function() {
+	var self = $(this);
+	if (self.hasClass('cur')) {
+		return;
+	}
+	window.location.href = window.__get_r(self.data('url'), self.data('xr'));
+})
+
+/*导航跳转*/
+// function tabRedirect(ele, href) {
+// 	if (ele.hasClass('cur')) {
+// 		return;
+// 	}
+// 	var xr = ele.data('xr');
+// 	var Url = Meilishuo.config.os.mlsApp ? openAppLink.getAppLink({
+// 		'protocol': 'openURL',
+// 		'param': {
+// 			'url': href,
+// 			'inApp': '1'
+// 		}
+// 	}) : href;
+// 	window.location.href = window.__get_r(Url, xr);
+// }
+// tab.on('click', 'a', function() {
+// 	var self = $(this);
+// 	tabRedirect(self, 'http://' + window.location.host + self.data('url'));
+// })
+
+
+
+/*登陆成功后的回掉函数*/
+window.MLS = {
+	didLogin: function() {
+		// 成功登录，跳转到下一步
+		window.location.reload();
+	}
+};
+
+// 判断是否支持position：sticky
+function hasSticky() {
+	// CSS.supports('(position:-webkit-sticky) or (position:-moz-sticky) or (position:-o-sticky) or (position:-ms-sticky) or (position:sticky)');
+	var element = document.createElement('div');
+	if ('position' in element.style) {
+		element.style['position'] = '-webkit-sticky';
+		element.style['position'] = '-moz-sticky';
+		element.style['position'] = '-o-sticky';
+		element.style['position'] = '-ms-sticky';
+		element.style['position'] = 'sticky';
+		return element.style['position'] === '-webkit-sticky' || element.style['position'] === '-moz-sticky' || element.style['position'] === '-o-sticky' || element.style['position'] === '-ms-sticky' || element.style['position'] === 'sticky'
+	} else {
+		return false;
+	}
+}
+
+// tab吸顶
+if (!hasSticky()) {
+	$(window).scroll(function() {
+		var t = $(window).scrollTop();
+		if (t > 0) {
+			tab.css({
+				'position': 'fixed',
+				'left': 0,
+				"top": 0
+			});
+		} else {
+			tab.css({
+				'position': 'static'
+			});
+		}
+	});
+}
+/*gotop*/
+gotopObj.on("click", function(e) {
+	document.body.scrollTop = 0
+});
+onscroll.bind(gotop, 'gotop');
+
+function gotop(pos, isDown) {
+	if (pos < 30) {
+		gotopObj.hide()
+	} else {
+		gotopObj.show()
+	}
+};

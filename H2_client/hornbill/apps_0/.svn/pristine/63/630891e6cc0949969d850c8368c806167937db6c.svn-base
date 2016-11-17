@@ -1,0 +1,150 @@
+<%# head.html%>
+<% 
+	var user_address = this.address_detail.info || {}
+	var address_list = this.address_select.data || []
+	var address_list_city = this.addr_list_city.data || []
+	var address_list_dis = this.addr_list_dis.data || []
+	var user_id = this.addr_id || ''
+	var editFlag = this.editFlag || ''
+	var addFlag = this.addFlag || ''
+%>
+
+<section id="wrapper_main" class="wrapper">
+
+<div class="addr_new">
+	<fieldset>
+		<form id="addressForm" method="post" onsubmit="return false" action="">
+			<legend>新增/编辑收货地址表单</legend>
+			<header class="page_head">
+				<div class="back_icon" id="back_btn"></div>
+				<div class="right_btn addressBtn" id="save_address">保存</div>
+				<a class="title" xr="<%= this.xr.r %>" href="<%= this.title_url ? this.title_url : 'javascript:;' %>">收货地址</a>
+			</header>
+			
+			<div class="addressErrorMessage"></div>
+			
+			<p class="item_wrap">
+				<label for="addressUser">
+					<input type="text" placeholder="收货人" id="addressUser" name="nickname" value="<%= editFlag ? user_address.nickname :'' %>">
+				</label>
+			</p>
+			
+			<p class="item_wrap">
+			<label for="validatePhoneOrMobile">
+					<input placeholder="联系电话" id="validatePhoneOrMobile" type="tel" name="phone" value="<%= editFlag ? user_address.phone :'' %>">
+				</label>
+			</p>
+			
+			<p class="item_wrap">
+				<label for="addressPid" class="select_box">
+					<% if( addFlag ){ 
+						displayClass = 'note_show';
+					}else{
+						displayClass = 'note_hidden';
+					}%>
+					<span class="notice <%=displayClass%>">所在省份</span>
+					<select id="addressPid" name="pid">
+						<option value="0"></option>
+						<% this.address_select && this.address_select.data.province.map(function(data){%>
+						<option value="<%= data.pid%>" <%= (data.pid == this.user_pid) ? 'selected' : ''%> ><%= data.province %></option>
+						<%});%>
+					</select>
+					<span class="select_btn"><% if(addFlag){%>请选择<%}%></span>
+				</label>
+			</p>
+
+			<p class="item_wrap">
+				<label for="addressCid" class="select_box">
+					<% if( addFlag ){ 
+						displayClass = 'note_show';
+					}else{
+						displayClass = 'note_hidden';
+					}%>
+					<span class="notice <%=displayClass%>">所在城市</span>
+					<select id="addressCid" name="cid">
+						<option value="0"></option>
+						<% address_list_city.city && address_list_city.city.map(function(data){%>
+						<option value ="<%= data.cid %>" <%= (data.cid == this.user_cid) ? 'selected' : ''%>><%= data.city %></option>
+						<%})%>
+					</select>
+					<span class="select_btn"><% if(addFlag){%>请选择<%}%></span>
+				</label>
+			<p>
+
+			<p class="item_wrap">
+				<label for="addressDid" class="select_box">
+					<% if( addFlag ){ 
+						displayClass = 'note_show';
+					}else{
+						displayClass = 'note_hidden';
+					}%>
+					<span class="notice <%=displayClass%>">所在地区</span>
+					<select id="addressDid" name="did">
+						<option value="0"></option>
+						<% address_list_dis.district && address_list_dis.district.map(function(data){%>
+						<option value ="<%= data.did %>" <%= (data.did == this.user_did) ? 'selected' : ''%>><%= data.district %></option>
+						<%})%>
+					</select>
+					<span class="select_btn"><%if(addFlag){%>请选择<%}%></span>
+				</label>
+			<p>
+			
+			<p class="item_wrap">
+				<label for="addressStreet">
+					<input id="addressStreet" type="text" name="street" placeholder="详细地址" value="<%= editFlag ? user_address.street:''%>">
+				</label>
+			</p>
+			<p class="item_wrap">
+				<label for="addressPostcode">
+					<input id="addressPostcode" type="tel" name="postcode" value="<%= editFlag ? user_address.postcode:''%>" placeholder="邮政编码" />
+				</label>
+			</p>
+			<div class="item_wrap">
+				<div class="set_wrap">
+					<span>设为默认地址</span>
+					<% if( user_address.is_default == 1 ){
+						var statusClass = 'switch_check';
+						var checkedStatus = 'checked';
+					}else{
+						statusClass = 'switch_uncheck';
+						var checkedStatus = ''
+					}%>
+					<input type="checkbox" name="is_default" id="is_default" value="<%= editFlag ? user_id:''%>" <%= checkedStatus %> style="display:none">
+					<span class="switch_btn <%= statusClass %>">
+						<i class="inner_circle"></i>
+					</span>
+				</div>
+			</div>
+
+			<div class="submitBox" style="display:none"><input class="addressBtn button" type="submit" value="保存地址"/></div>
+		</form>
+	</fieldset>
+	<% if(editFlag){ %>
+	<div class="remove_addr_btn" addr_id="<%==user_id%>">
+		删除此地址
+	</div>
+	<% } %>
+</div>
+
+<script type="text/html" id="address_select_city">
+<option value="0"></option>
+<? $.each(city , function(k , v){ ?> 
+	<option value="<?= v.cid?>"><?= v.city ?></option>
+<? }); ?>
+</script>
+<script type="text/html" id="address_select_district">
+<? $.each(district , function(k , v){ ?> 
+	<option value="<?= v.did?>"><?= v.district ?></option>
+<? }); ?>
+</script>
+<script type="text/html" id="address_select">
+<option value="0"></option>
+</script>
+
+</section>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/doota/address_edit');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot_simple.html%>

@@ -1,0 +1,61 @@
+/*common*/
+require('m/zepto/touch')
+require('m/zepto/detect')
+require('m/zepto/form')
+require('m/zepto/ajax')
+require('wap/zepto')
+require('wap/zepto/fastclick')
+var openApp = require('wap/app/openApp');
+
+var uploadPic = require('m/app/im/uploadPic')
+    , shareTmp = require('component/shareTmp')
+    , init = require('app/im/init')
+    , message = require('app/im/message')
+//	, Dialog = require('wap/ui/dialog')
+
+    , $mainBox = $('#im_main')
+    , $goodsBox = $('#im_goods')
+    , urlHandle = require("wap/component/urlHandle")
+
+var items = fml.vars.im.msgReceive.data.datas || [];
+
+var $msgList = $("#msgList");
+
+$.each(items, function(i, v){
+    //if(!v.uid) return;
+    $msgList.append(shareTmp("msgItem", v));
+    $msgList.last().find(".time").html(formatDate(v.msg.timestamp));
+    (function(user, index){
+        $msgList.children().eq(index).on("tap", function(){
+            var url = "http://lyhim.fedevot.meilishuo.com/wap/dchat/?";
+            url += "toid="+user.uid;
+            url += "&chat=1";
+            location.href = url;
+        });
+    })(v, i);
+});
+
+function formatDate(msgTime){
+    var units = ["刚刚", "分钟前", "小时前", "天前", "月前"];
+    var timestamp = new Date().getTime();
+    var t = timestamp - msgTime;
+    var minutes = Number(t/1000/1000/60);
+    var time;
+    switch (true){
+        case (minutes < 1):
+            time = units[0];
+            break;
+        case (minutes < 60) :
+            time = Math.floor(minutes) + units[1];
+            break;
+        case (minutes < 60*24) :
+            time = Math.floor(minutes/60) + units[2];
+            break;
+        case (minutes < 60*24*30) :
+            time = Math.floor(minutes/60/24) + units[3];
+            break;
+        default :
+            time = Math.floor(minutes/60/24/30) + units[4];
+    }
+    return time;
+}

@@ -1,0 +1,163 @@
+<%# head.html%>
+<div class="msg_main">
+	<div class="msg_l">
+		<ul class="tabs">
+			<li <%if(this.tab == 'pmsg'){%> class="act"<%}%> ><a href="/msg/user">私信</a></li>
+			<li <%if(this.tab == 'smsg'){%> class="act"<%}%>><a href="/msg/syser">系统消息</a></li>
+		</ul>
+		<div class="msg_list">
+			<div class="m_top"><a class="sendPrivateLetter btn">发私信</a><%if(this.premsg_talk){%><a class="red_f" href="/msg/user" target="_self">&lt;&lt;回到所有消息</a><%}%></div>
+			<%if(this.sysmsg_list){%>
+			<ul class="list" id="msgList">
+				<%this.sysmsg_list.list && this.sysmsg_list.list.map(function(data){%>
+				<li msg_id="<%= data.message_id%>" type="<%= data.esp%>">
+					<div class="close none_f deleteMsg">×</div>
+					<a class="avatar64_f" href="" target="_blank"><img src="http://imgtest.meiliworks.com/css/images/msg/mlslogo.jpg" /></a>
+					<div class="msgcon">
+						<p><span class="f14_f">美丽说系统消息:</span>亲爱的<%= this.user_list.nickname%></p>
+						<p><%= data.message_content%></p>
+						<p>(<%= data.message_time%>)</p>
+					</div>
+					<div class="clear_f"></div>
+				</li>
+				<%});%>
+			</ul>
+			<%}%>
+			<%if(this.premsg_list){%>
+				<ul class="list" id="msgList">
+					<%this.premsg_list.list && this.premsg_list.list.map(function(data){%>
+						<li msg_id="<%= data.message_id%>" user_id="<%= data.show_user_id%>">
+							<div class="close none_f deleteMsg">×</div>
+							<a class="avatar64_f" href="/person/u/<%= data.show_user_id%>" target="_blank"><img src="<%= data.avatar%>" /></a>
+							<div class="msgcon">
+							<%if(data.type == 1){%>
+							<p>我发送给 <a class="red_f" href="/person/u/<%= data.show_user_id%>" target="_blank"><%= data.nickname%></a> <%= data.message_content%> (<%= data.message_time%>)</p>
+							<%}else{%>
+							<p><a class="red_f" href="/person/u/<%= data.show_user_id%>" target="_blank"><%= data.nickname%></a> <%= data.message_content%> (<%= data.message_time%>)</p>
+							<%}%>
+							</div>
+							<div class="clear_f"></div>
+							<div class="msg_rep"><a href="/msg/talk/<%= data.show_user_id%>">共<%= data.num%>条对话</a><%if(data.type != 1){%>|<a class="sendPrivateLetter" href="javascript:void(0)" name="<%= data.nickname%>">回复</a><%}%></div>
+						</li>
+					<%});%>
+				</ul>
+			<%}%>
+			<%if(this.premsg_talk){%>
+				<ul class="list" id="msgList">
+					<%this.premsg_talk.list && this.premsg_talk.list.map(function(data){%>
+						<li msg_id="<%= data.message_id%>" >
+							<div class="close none_f deleteMsg">×</div>
+							<a class="avatar64_f" href="/person/u/<%= data.show_user_id%>" target="_blank"><img src="<%= data.avatar%>" /></a>
+							<div class="msgcon">
+							<%if(data.type == 1){%>
+							<p>我发送给 <a class="red_f" href="/person/u/<%= this.to_user_id%>" target="_blank"><%= data.nickname%></a> <%= data.message_content%> (<%= data.message_time%>)</p>
+							<%}else{%>
+							<p><a class="red_f" href="/person/u/<%= this.to_user_id%>" target="_blank"><%= data.nickname%></a> <%= data.message_content%> (<%= data.message_time%>)</p>
+							<%}%>
+							</div>
+							<div class="clear_f"></div>
+							<%if(data.type != 1){%>
+							<div class="msg_rep"><a class="sendPrivateLetter" href="javascript:void(0)" name="<%= data.nickname%>">回复</a></div>
+							<%}%>
+						</li>
+					<%});%>
+				</ul>
+			<%}%>
+			<div class="clear_f"></div>
+			<div class="paging_panel c_f">
+				<%#paging.html%>
+			</div>
+		</div>
+	</div>
+	<div class="msg_r">
+		<%# userinfo.html%>
+		<%# block/person_sidebar.html%>
+	</div>
+</div>
+<script type="text/html" id="beauty">
+<div class="beauty">
+	<h3><strong class="f14_f">说一句你的美丽宣言</strong><span class="limit">（最多40字）</span></h3>
+	<textarea class="area" id="contextDecl"></textarea>
+</div>
+</script>
+<script type="text/html" id="mytabs">
+<div class="mytabs">
+	<div class="ml40_f">
+		<ul class="sel_tab">
+		<%if(this.user_label.length > 0){%>
+		</ul>
+		<%}else{%>
+		</ul>
+			<p class="defaultText">从下方选择你的标签</p>	
+		<%}%>
+	<div class="clear_f"></div>
+		<h2 class="tips labelDesc">告诉大家自己最擅长的美丽技能吧</h2>
+		<p class="explain">点击进行选择，你可以给自己贴20个标签哦！<span class="labelerror red_f"></span></p>
+	</div>
+	<div class="tab_b">
+		<div class="before none_f">&lt;</div>
+		<div class="next">&gt;</div>
+		<div class="tab_list">
+			<ul class="tab_container">
+				<li class="tab_item">
+				<% 
+					var _typei; 
+					this.all_label && this.all_label.map(function(data){%>
+					<% if(_typei && data.type != _typei){%>
+					</li>
+					<li class="tab_item">
+					<%}%>
+						<span class="addLabel active" labelId="<%= data.label_id%>"><%= data.label_name%></span>
+						<% _typei = data.type;%>
+				<%});%>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="edit_box">
+		<span>或自己写标签：</span>
+		<span><input maxlength="10" class="newLabelName ipt searchKey" type="text" placeholder="自己写一个标签" /></span>
+		<span class="btn newLabel">贴上</span><span class="add_suc addLabelSucess none_f">添加成功!</span>
+	</div>
+</div>
+</script>
+<script type="text/html" id="recommendUser">
+<div class="rec_con">
+	<div class="zero_t">
+	<div class="close_z"></div>
+	<p class="f16_f">看看关注<b>"<%= this.user_list.nickname %>"</b>的用户还关注了谁吧！</p>
+</div>
+<ul class="zero_c">
+	<? $.each(fol_user, function(k, v) { ?>
+		<li>
+		<a class="avatar64_f userUrl1" href="/person/u/<?= v.user_id ?>?frm=gz_reuser" target="_blank"><img src="<?= v.avatar ?>" /></a>
+		<p class="z_tle"><span class="right_f"><input class="sel_box" usrId="<?= v.user_id ?>" id="checkedbox" type="checkbox" checked></span><a class="userUrl <?= v.credit ?>" href="/person/u/<?= v.user_id ?>?frm=gz_reuser" target="_blank"><?= v.nickname ?></a>
+		<?if(v.credit == 1){?><em class="i_buyer" title="美丽说心级买家认证">&nbsp;</em><?}else if(v.credit == 2){?><em class="i_diamond" title="美丽说黄钻买家认证">&nbsp;</em><?}?>
+		<?if(v.verify_icons){?>
+		<?v.verify_icons && $.each(v.verify_icons , function(data , key){?>
+			<?if(key == 's'){?>
+			<em class="i_special" title="美丽说特别认证">&nbsp;</em>
+			<?}else if(key == 'e'){?>
+			<em class="i_editor" title="美丽说超级主编">&nbsp;</em>
+			<?}else if(key == 't'){?>
+			<em class="i_lv" title="资深爱美丽">&nbsp;</em>
+			<?}else if(key == 'b'){?>
+			<em class="i_zv" title="品牌认证">&nbsp;</em>
+			<?}?>
+			<?});?>
+		<?};?>
+		</p>
+		<p>
+		<span class="similar gray_f"><?= v.tag ?></span></p>
+		<p>粉丝<a class="fans red_f" href="/ur/fans/<?= v.user_id ?>?frm=gz_reuser" target="_blank"><?= v.static.fans ?></a> 分享<a class="share red_f" href="/person/u/<?= v.user_id ?>?type=share&frm=gz_reuser" target="_blank"><?= v.static.share ?></a> <a class="red_f" href="/atme/recommend/<?= v.user_id ?>?frm=gz_reuser" target="_blank"><em class="lm_love">&nbsp;</em><?= v.static.heart ?></a></p>
+		</li>
+	<? }); ?>
+</ul>
+<div class="clear"></div>
+<div class="zero_b"><span class="ienot"><input id="selectall" type="checkbox" checked="">全选</span><a id="afterFollow" class="sure btn">关注，回我的首页</a></div>
+<div>
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/msg');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

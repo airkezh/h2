@@ -1,0 +1,866 @@
+/**
+ * @fileoverview 会员特权－美丽说
+ * @requires jquery
+ * @author kehuang@meilishuo.com
+ * @date 2015-08-28
+ */
+
+@import "../block.less";
+@import "../window.less";
+
+
+.page;
+.pageNav{.page > .pageRed;}
+
+.paging_panel{
+	margin:30px auto;
+}
+
+body{
+	.bgwhite;
+}
+
+.interests_top_nav{
+	.auto;
+	.hidden;
+	.w(1200px);
+	.bgc(#fff);
+	clear:both;
+	padding:15px 0;
+
+	.logo{
+		.left;
+	}
+
+	.sub_logo{
+		.left;
+		.ml(15px);
+	}
+
+	.top_nav{
+		.right;
+		.i_block;
+
+		li{
+			.left;
+
+			a{
+				.block;
+				.f(16px);
+				.l(43px);
+				.h(43px);
+				.pl(60px);
+			}
+
+			a:hover{
+				.fc(#fe6054);
+			} 
+		}
+
+		li.active a{
+			.fc(#fe6054);
+		}
+	}
+}
+
+.wrap{
+	.mb(85px);
+}
+
+.user_info_wrap{
+	.w(100%);
+	.h(150px);
+	.bgc(#f7f7f7);
+	border-top:1px solid #e6e6e6;
+
+	.user_info_box{
+		.auto;
+		.hidden;
+		clear:both;
+    	.w(1200px);
+
+    	li{
+    		.c;
+    		.left;
+			.inline;
+			.hidden;
+			.w(25%);
+			.h(150px);
+			background:url("http://d01.res.meilishuo.net/pic/_o/64/9c/737c266fd92a2a3525e84db29234_21_150.cf.png") no-repeat;
+			background-position:right center;
+    	}
+
+    	li:nth-child(1){
+    		.w(29%);
+    	}
+
+    	li:last-child{
+    		.w(21%);
+    		background-position:right -300px;
+    	}
+	}
+
+	.user_info{
+    	.tl;
+    	.left;
+    	.w(50%);
+    	margin:51px 0;
+
+    	.name{
+    		.hidden;
+    		.f(16px);
+    		.l(28px);
+    		.fc(#333);
+    		white-space:nowrap;
+            text-overflow:ellipsis;
+    	}
+
+    	.desc{
+    		.f(12px);
+    		.l(20px);
+    		.fc(#666);
+    	}
+	}
+
+	.user_beauty,.user_percent{
+		.f(12px);
+		.fc(#666);
+    	margin:53px auto;
+
+    	.beauty,.percent,.detail,.desc{
+	    	.l(22px);
+
+	    	span{
+	    		.f(16px);
+	    		.fc(#fe6054);
+	    	}
+
+	    	a,a:hover{
+	    		.fc(#fe6054);
+	    	}
+		}
+	}
+
+	.beauty_expire{
+		.f(12px);
+		.l(20px);
+		.fc(#666);
+		margin:65px auto;
+	}
+
+	.user_level{
+    	.left;
+    	.w(100px);
+		.h(84px);
+		margin:33px 20px 33px 30px;
+	}
+
+	.level_0{
+		background:url("http://d04.res.meilishuo.net/pic/_o/14/6a/5b7b160a6f1bcd8b1eed67e10f3c_100_84.cg.png") no-repeat;
+	}
+
+	.level_1{
+		background:url("http://d01.res.meilishuo.net/pic/_o/3a/c7/401e167af0f61cd70223ae08e1e4_100_84.ch.png") no-repeat;
+	}
+
+	.level_2{
+		background:url("http://d01.res.meilishuo.net/pic/_o/20/3f/71199b48eaa5b0c51a8af0495cdb_100_84.ch.png") no-repeat;
+	}
+
+	.level_3{
+		background:url("http://d04.res.meilishuo.net/pic/_o/e6/21/31a93d4aff820ab847895c0c55a5_100_84.cf.png") no-repeat;
+	}
+
+	.level_4{
+		background:url("http://d03.res.meilishuo.net/pic/_o/8c/3e/76a5ee420014c23396ac5e6abe49_100_84.ch.png") no-repeat;
+	}
+}
+
+.user_update_wrap{
+	.auto;
+    .w(900px);
+
+    .user_update_box{
+    	.pr;
+    	.w(100%);
+    }
+
+    .user_update_box > li{
+    	.pr;
+    	margin:20px auto 30px;
+    	border-bottom:1px solid #e6e6e6;
+    }
+
+    .user_update_box > li:last-child{
+    	border:none;
+    }
+
+    .beauty_info_box{
+    	.hidden;
+		clear:both;
+
+		.beauty,.date{
+			.f(14px);
+			.l(20px);
+			.fc(#666);
+		}
+
+		.beauty{
+			.fb;
+			.left;
+		}
+
+		.date{
+			.right;
+		}
+    }
+
+    .progress_bar_box{
+    	.pr;
+    	margin:90px auto 60px;
+
+    	.outer_progress_bar{
+    		.auto;
+	    	.w(844px);
+	    	.h(4px);
+	    	.bgc(#fcdbd6);
+	    }
+
+	    .inner_progress_bar{
+	    	.w(0);
+	    	.h(100%);
+	    	.bgc(#fe6054);
+	    }
+    }
+
+    .level_update_tips{
+    	.c;
+    	.pa;
+    	left:0;
+    	top:-74px;
+    	.pt(4px);
+    	.w(140px);
+		.h(29px);
+		.f(12px);
+    	.fc(#fff);
+		background:url("http://d02.res.meilishuo.net/pic/_o/14/5f/4c6fc202b3239d36aa4b3440afb7_140_29.cf.png") no-repeat;
+    }
+
+    .level_box{
+    	.pa;
+    	.w(900px);
+    	left:0;
+    	top:-28px;
+
+    	li{
+    		.left;
+			.inline;
+			.hidden;
+			.mr(155px);
+    	}
+
+    	li:last-child{
+    		.mr(0);
+    	}
+
+    	.level_0_0{
+    		.w(56px);
+    		.h(56px);
+    		background:url("http://d04.res.meilishuo.net/pic/_o/e8/e9/31cf900d55fb4be3524701b102ce_56_56.ch.png") no-repeat;
+    	}
+
+    	.level_0_1{
+    		.w(56px);
+    		.h(56px);
+    		background:url("http://d04.res.meilishuo.net/pic/_o/e8/e9/31cf900d55fb4be3524701b102ce_56_56.ch.png") no-repeat;
+    	}
+
+    	.level_0_2{
+    		.w(80px);
+    		.h(80px);
+    		background:url("http://d02.res.meilishuo.net/pic/_o/88/97/403cf62f4e457fc6a927a48cd345_80_80.cf.png") no-repeat;
+    	}
+
+    	.level_1_0{
+    		.w(56px);
+    		.h(56px);
+    		background:url("http://d04.res.meilishuo.net/pic/_o/00/6c/ed2a59471d2a71d96da1d2bec13f_56_56.cf.png") no-repeat;
+    	}
+
+    	.level_1_1{
+    		.w(56px);
+    		.h(56px);
+    		background:url("http://d05.res.meilishuo.net/pic/_o/d2/b7/8cd88d5580889942591172176b3d_56_56.cf.png") no-repeat;
+    	}
+
+    	.level_1_2{
+    		.w(80px);
+    		.h(80px);
+    		background:url("http://d01.res.meilishuo.net/pic/_o/7a/4b/51cc30f5cb49cc461ac01349e96c_80_80.ch.png") no-repeat;
+    	}
+
+    	.level_2_0{
+    		.w(56px);
+    		.h(56px);
+    		background:url("http://d05.res.meilishuo.net/pic/_o/21/02/fd2416bdae3d4e56974dd953ef9f_56_56.cg.png") no-repeat;
+    	}
+
+    	.level_2_1{
+    		.w(56px);
+    		.h(56px);
+    		background:url("http://d05.res.meilishuo.net/pic/_o/8b/13/befbe81d5435f390bd9d98c76866_56_56.cf.png") no-repeat;
+    	}
+
+    	.level_2_2{
+    		.w(80px);
+    		.h(80px);
+    		background:url("http://d02.res.meilishuo.net/pic/_o/fa/e6/de2f95eb9f1d20e6188103541377_80_80.cf.png") no-repeat;
+    	}
+
+    	.level_3_0{
+    		.w(56px);
+    		.h(56px);
+    		background:url("http://d03.res.meilishuo.net/pic/_o/27/40/d36827fb1549cb32ff430e32fe69_56_56.cg.png") no-repeat;
+    	}
+
+    	.level_3_1{
+    		.w(56px);
+    		.h(56px);
+    		background:url("http://d02.res.meilishuo.net/pic/_o/b5/b2/955b2f3c4e1055a544bd829c7edd_56_56.cg.png") no-repeat;
+    	}
+
+    	.level_3_2{
+    		.w(80px);
+    		.h(80px);
+    		background:url("http://d01.res.meilishuo.net/pic/_o/65/98/b8cc80ed266752e747a211e50ec1_80_80.cf.png") no-repeat;
+    	}
+
+    	.level_4_0{
+    		.w(56px);
+    		.h(56px);
+    		background:url("http://d03.res.meilishuo.net/pic/_o/53/4f/5cbe90a4d2e6a7fdeb300c2150a6_56_56.cf.png") no-repeat;
+    	}
+
+    	.level_4_1{
+    		.w(56px);
+    		.h(56px);
+    		background:url("http://d01.res.meilishuo.net/pic/_o/52/82/d4e8a6133b322fc702a9da3739cf_56_56.ch.png") no-repeat;
+    	}
+
+    	.level_4_2{
+    		.w(80px);
+    		.h(80px);
+    		background:url("http://d03.res.meilishuo.net/pic/_o/0f/d7/0835d917ec48f0f94f60fb643873_80_80.cg.png") no-repeat;
+    	}
+    }
+
+    .order_0_tips{
+    	.pa;
+    	left:0;
+    	top:-70px;
+    	.w(123px);
+		.h(29px);
+		background:url("http://d04.res.meilishuo.net/pic/_o/a1/26/ef05c7a405c0606f0f86a00ce347_123_29.cf.png") no-repeat;
+    }
+
+    .order_1_tips{
+    	.pa;
+    	right:0;
+    	top:-70px;
+    	.w(86px);
+		.h(29px);
+		background:url("http://d02.res.meilishuo.net/pic/_o/6a/a6/270ee5c870883b57b9fdec39f758_86_29.cf.png") no-repeat;
+    }
+
+    .order_tips{
+    	left:12px;
+    	top:-74px;
+    }
+
+    .order_box{
+    	.pa;
+    	.w(900px);
+    	left:0;
+    	top:-28px;
+
+    	li{
+    		.left;
+			.inline;
+			.hidden;
+			.mr(788px);
+    	}
+
+    	li:last-child{
+    		.mr(0);
+    	}
+
+    	.order{
+    		.w(56px);
+    		.h(56px);
+    	}
+
+    	.order_0_0{
+    		background:url("http://d04.res.meilishuo.net/pic/_o/c4/ab/4a003b163a4c9e4c442bfce0666d_56_56.cf.png") no-repeat;
+    	}
+
+    	.order_0_1{
+    		background:url("http://d01.res.meilishuo.net/pic/_o/6d/a3/de2dc87976354e7b4bd3d63ffa6b_56_56.ch.png") no-repeat;
+    	}
+
+    	.order_1_0{
+    		background:url("http://d05.res.meilishuo.net/pic/_o/12/57/25048a6dd52d12f5007d8134fbd7_56_56.cf.png") no-repeat;
+    	}
+
+    	.order_1_1{
+    		background:url("http://d01.res.meilishuo.net/pic/_o/03/e2/e9bf6431d6f8d489ac5098bdfa80_56_56.ch.png") no-repeat;
+    	}
+    }
+}
+
+.member_interests_wrap{
+	.w(100%);
+	margin:90px auto 0;
+
+	.interests_title{
+		.c;
+		.auto;
+		.f(20px);
+		.fc(#333);
+		.w(900px);
+	}
+
+	.interests_box{
+		.auto;
+		.hidden;
+		clear:both;
+		.mt(42px);
+		.w(900px);
+
+		li{
+			.left;
+			.inline;
+			.w(25%);
+			.f(16px);
+			.fc(#ccc);
+			margin:12px auto;
+		}
+
+		.interests{
+			.l(29px);
+			.h(29px);
+			.pl(54px);
+		}
+
+		.interests.active{
+			.fc(#666);
+		}
+
+		.interests_0{
+			background:url("http://d05.res.meilishuo.net/pic/_o/68/07/3002e1643ab4fbc1dba32230a99f_32_31.cg.png") no-repeat;
+			background-size:30px 29px;
+		}
+
+		.interests_0.active{
+			background:url("http://d01.res.meilishuo.net/pic/_o/c1/2e/e27e522756233fc16358e33028da_32_31.cf.png") no-repeat;
+			background-size:30px 29px;
+		}
+
+		.interests_1{
+			background:url("http://d03.res.meilishuo.net/pic/_o/4d/41/a838365652487d8dd67e2c592de4_46_29.cg.png") no-repeat;
+			background-size:46px 29px;
+		}
+
+		.interests_1.active{
+			background:url("http://d03.res.meilishuo.net/pic/_o/70/b0/19c900ecfad21475d5e834f10350_46_29.cg.png") no-repeat;
+			background-size:46px 29px;
+		}
+
+		.interests_2{
+			background:url("http://d01.res.meilishuo.net/pic/_o/f1/99/61bb4a514479faacfb1aa0fd1e33_36_28.cf.png") no-repeat;
+			background-size:36px 29px;
+		}
+
+		.interests_2.active{
+			background:url("http://d02.res.meilishuo.net/pic/_o/3c/d9/1e3f26a37a6b2b9a57c219ff968c_36_28.ch.png") no-repeat;
+			background-size:36px 29px;
+		}
+
+		.interests_3{
+			background:url("http://d02.res.meilishuo.net/pic/_o/80/b0/859f89683398b5a09ac67e2b83dc_42_28.ch.png") no-repeat;
+			background-size:42px 29px;
+		}
+
+		.interests_3.active{
+			background:url("http://d04.res.meilishuo.net/pic/_o/a9/e7/c9b53c075ab647e40094899b4305_42_28.ch.png") no-repeat;
+			background-size:42px 29px;
+		}
+
+		.interests_4{
+			background:url("http://d04.res.meilishuo.net/pic/_o/00/d5/7d1cccf585722b2702eb035a1829_37_31.ch.png") no-repeat;
+			background-size:34px 29px;
+		}
+
+		.interests_4.active{
+			background:url("http://d05.res.meilishuo.net/pic/_o/c7/63/f6aad5f8e79d1829938949d95a46_37_31.cg.png") no-repeat;
+			background-size:34px 29px;
+		}
+
+		.interests_5{
+			background:url("http://d02.res.meilishuo.net/pic/_o/a0/a6/5c745a098899dd40c3a35a47dfe6_32_29.ch.png") no-repeat;
+			background-size:32px 29px;
+		}
+
+		.interests_5.active{
+			background:url("http://d04.res.meilishuo.net/pic/_o/14/a0/6034571caf1e940c78c5f14da3a5_32_29.cf.png") no-repeat;
+			background-size:32px 29px;
+		}
+
+		.interests_6{
+			background:url("http://d01.res.meilishuo.net/pic/_o/6a/b3/48d00c14c59244ccbf39ce75c409_30_31.ch.png") no-repeat;
+			background-size:28px 29px;
+		}
+
+		.interests_6.active{
+			background:url("http://d05.res.meilishuo.net/pic/_o/8a/c4/ff9806d7072a7877a7d7b2766e63_30_31.cf.png") no-repeat;
+			background-size:28px 29px;
+		}
+
+		.interests_7{
+			background:url("http://d03.res.meilishuo.net/pic/_o/9a/59/d26cd30226425cb4f348037f26ed_29_29.ch.png") no-repeat;
+			background-size:29px 29px;
+		}
+
+		.interests_7.active{
+			background:url("http://d04.res.meilishuo.net/pic/_o/6d/67/66fe355560c34f6fff932ce9121e_29_29.cg.png") no-repeat;
+			background-size:29px 29px;
+		}
+
+		.interests_8{
+			background:url("http://d02.res.meilishuo.net/pic/_o/c5/bc/500d6998c4b8c25c88e8acc3e5b6_41_28.ch.png") no-repeat;
+			background-size:42px 29px;
+		}
+
+		.interests_8.active{
+			background:url("http://d02.res.meilishuo.net/pic/_o/80/67/8e2193e90276900d230ec9f25dc0_41_28.ch.png") no-repeat;
+			background-size:42px 29px;
+		}
+
+		.interests_9{
+			background:url("http://d03.res.meilishuo.net/pic/_o/ba/5b/77ddcc85f33d52ae3bda3211c300_30_32.ch.png") no-repeat;
+			background-size:27px 29px;
+		}
+
+		.interests_9.active{
+			background:url("http://d02.res.meilishuo.net/pic/_o/1c/4d/6ff9511f3fdde2a7448deaed48b5_30_32.ch.png") no-repeat;
+			background-size:27px 29px;
+		}
+
+		.interests_10{
+			background:url("http://d05.res.meilishuo.net/pic/_o/b9/61/e9011b2ca7d01ee1ad6c54ad2bee_31_32.cg.png") no-repeat;
+			background-size:28px 29px;
+		}
+
+		.interests_10.active{
+			background:url("http://d05.res.meilishuo.net/pic/_o/87/95/41adfc7dfdbf3a7f7fd0c90d1116_31_32.ch.png") no-repeat;
+			background-size:28px 29px;
+		}
+
+		.interests_11{
+			background:url("http://d04.res.meilishuo.net/pic/_o/d3/78/c757b01e29dd458779787f9d888d_45_29.cf.png") no-repeat;
+			background-size:45px 29px;
+		}
+
+		.interests_11.active{
+			background:url("http://d04.res.meilishuo.net/pic/_o/03/f1/621cb34bb5cecabdbed2f323a63f_45_29.ch.png") no-repeat;
+			background-size:45px 29px;
+		}
+
+		.interests_12{
+			background:url("http://d05.res.meilishuo.net/pic/_o/d5/27/371829ead5855dc9e1e52fbbca7e_45_29.ch.png") no-repeat;
+			background-size:45px 29px;
+		}
+
+		.interests_12.active{
+			background:url("http://d03.res.meilishuo.net/pic/_o/71/9d/1b5736441c4132c5fcbdf5f5d1d6_45_29.cf.png") no-repeat;
+			background-size:45px 29px;
+		}
+	}
+}
+
+.member_beauty_wrap{
+	.w(100%);
+	margin:65px auto 0;
+
+	.beauty_desc,.beauty_title{
+		.c;
+		.auto;
+		.w(900px);
+	}
+
+	beauty_desc{
+		.f(12px);
+		.fc(#999);
+	}
+
+	.beauty_title{
+		.f(20px);
+		.fc(#333);
+	}
+
+	.beauty_box{
+		.auto;
+		.hidden;
+		clear:both;
+		.mt(30px);
+		.w(900px);
+
+		li{
+			.f(12px);
+			.fc(#666);
+			.h(98px);
+			.border-r(49px);
+			margin:0 auto 20px;
+			border:1px solid #fcdbd6;
+
+			.icon{
+				.w(12%);
+			}
+
+			.title{
+				.c;
+				.w(12%);
+				.f(14px);
+				.fc(#fe6054);
+			}
+
+			.desc{
+				.left;
+				.w(76%);
+				margin:37px 0;
+
+				p{
+					.l(24px);
+					padding:0 20px;
+				}
+			}
+
+			.desc.three{
+				margin:13px 0;
+			}
+
+			.icon,.title{
+				.left;
+				.h(98px);
+				.l(98px);
+			}
+
+			.pic{
+				.w(70px);
+				.h(70px);
+				margin:14px auto;
+			}
+
+			.icon_login{
+				background:url("http://d03.res.meilishuo.net/pic/_o/a4/c3/487966785861f5119b5d3b875083_70_70.cg.png") no-repeat;
+				background-size:100%;
+			}
+
+			.icon_shopping{
+				background:url("http://d01.res.meilishuo.net/pic/_o/b5/b3/26782a0cf3224ebb92335de370da_70_70.cf.png") no-repeat;
+				background-size:100%;
+			}
+
+			.icon_comment{
+				background:url("http://d05.res.meilishuo.net/pic/_o/19/0f/e8803d861503228c8c74faf9e006_70_70.cg.png") no-repeat;
+				background-size:100%;
+			}
+
+			.icon_sport{
+				background:url("http://d03.res.meilishuo.net/pic/_o/00/30/630c1d8d3da85f653364b2791e10_70_70.ch.png") no-repeat;
+				background-size:100%;
+			}
+		}
+	}
+}
+
+.member_table_wrap{
+	.w(100%);
+	margin:65px auto 0;
+
+	.table_title{
+		.c;
+		.auto;
+		.f(20px);
+		.fc(#333);
+		.w(900px);
+	}
+
+	.table_box{
+		.auto;
+		.hidden;
+		clear:both;
+		.mt(30px);
+		.w(900px);
+
+		li{
+			.c;
+			.w(100%);
+			.h(45px);
+			.f(12px);
+			.fc(#666);
+		}
+
+		li:nth-child(even){
+			.bgc(#fff);
+		}
+
+		li:nth-child(odd){
+			.bgc(#f7f7f7);
+		}
+
+		li.title{
+			.f(14px);
+			.bgc(#fcdbd6);
+		}
+
+		p{
+			.l(15px);
+			margin:15px 0;
+		}
+	}
+
+	.level_rule{
+		div{
+			.left;
+			.w(14%);
+		}
+
+		div:nth-child(2){
+			.w(36%);
+		}
+
+		div:nth-child(3){
+			.w(50%);
+		}
+	}
+
+	.member_interests{
+		div{
+			.left;
+			.w(15.6%);
+		}
+
+		div:nth-child(1){
+			.w(22%);
+		}
+
+		div.two{
+			p{
+				margin:5.5px 0 2px;
+			}
+
+			p:nth-child(2){
+				margin:2px 0 5.5px;
+			}
+		}
+	}
+
+	.beauty_detail{
+		li{
+			.h(90px);
+
+			p{
+				.l(15px);
+				margin:37.5px 0;
+
+				a,a:hover{
+					.fc(#fe6054);
+				}
+			}
+
+			p.icon{
+				.w(70px);
+				.h(70px);
+				margin:10px auto;
+			}
+
+			.left{
+				.tl;
+				.hidden;
+				white-space:nowrap;
+            	text-overflow:ellipsis;
+			}
+
+			.icon_1{
+				background:url("http://d05.res.meilishuo.net/pic/_o/f3/d8/5fe7d747c217695a37346a0640d5_70_70.ch.png") no-repeat;
+				background-size:100%;
+			}
+
+			.icon_2{
+				background:url("http://d03.res.meilishuo.net/pic/_o/e5/b6/3acf5960c0822fb6b002adaa89d1_70_70.cf.png") no-repeat;
+				background-size:100%;
+			}
+
+			.icon_3{
+				background:url("http://d05.res.meilishuo.net/pic/_o/10/c5/34665fa6bcdb1b96a1196105b10c_70_70.cg.png") no-repeat;
+				background-size:100%;
+			}
+
+			.icon_4{
+				background:url("http://d01.res.meilishuo.net/pic/_o/d0/ff/56242443fb5e20e7d1b261fb0367_70_70.ch.png") no-repeat;
+				background-size:100%;
+			}
+
+			.icon_5{
+				background:url("http://d05.res.meilishuo.net/pic/_o/d5/c3/bfb2cb376e75715df5b5df86fe34_70_70.ch.png") no-repeat;
+				background-size:100%;
+			}
+
+			.icon_6{
+				background:url("http://d01.res.meilishuo.net/pic/_o/a5/b3/9a8c5aa4fce52b9426a420084c0a_70_70.cf.png") no-repeat;
+				background-size:100%;
+			}
+
+			.icon_7{
+				background:url("http://d03.res.meilishuo.net/pic/_o/b9/bf/3079a79d468e6234968bda223cd1_70_70.cg.png") no-repeat;
+				background-size:100%;
+			}
+
+			.icon_8{
+				background:url("http://d01.res.meilishuo.net/pic/_o/c8/52/5f04b026ece35172444c226b6303_70_70.ch.png") no-repeat;
+				background-size:100%;
+			}
+
+			.icon_9{
+				background:url("http://d01.res.meilishuo.net/pic/_o/30/1f/c8345ca1e2a24215b5a757ef9056_70_70.cf.png") no-repeat;
+				background-size:100%;
+			}
+		}
+
+		li.title{
+			.h(45px);
+
+			p{
+				.l(15px);
+				margin:15px 0;
+			}
+		}
+
+		div{
+			.left;
+			.w(21.9%);
+		}
+
+		div:nth-child(1){
+			.w(12.4%);
+		}
+
+		div.two{
+			p{
+				margin:20px 0 0;
+			}
+		}
+	}
+}
+
+@import "../footer.less"; 

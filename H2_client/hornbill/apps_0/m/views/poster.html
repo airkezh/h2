@@ -1,0 +1,19 @@
+<script type="text/html" id="posterWall">
+<? var v = this.v;
+	var pt = this.pt * 100;
+	if(!pt){
+		pt = (v.pic_height / v.pic_width) * 100;	
+	}
+?>
+<div class="poster">
+	<figure>
+		<a <?if(this.lazyLoad){?>asrc="<?= v.pic_url ?>" style="opacity:0;<?}else{?>style="background-image:url('<?= v.pic_url ?>');<?}?>padding-top:<?= pt ?>%" class="pic_load" href="/share/<?if(v.is_doota == '1'){?>item/<?}?><?= v.twitter_id?>"></a>
+		<figcaption>
+			<? if(v.price){?>
+			<p class="title"><?= v.title ?></p>
+			<span class="price"><?= v.price ?></span>
+			<? }?>
+		</figcaption>
+	</figure>
+</div>
+</script>

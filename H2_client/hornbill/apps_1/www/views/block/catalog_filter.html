@@ -1,0 +1,58 @@
+<%
+var query = this._Request_query;
+var getLink = _extFn.getLink;
+%>
+<%
+var isOpen = 0
+	,toDefine = 1
+	,filterLen = 0
+if(this.catalog_filter)
+	filterLen = this.catalog_filter.length
+%>
+<div class="catalog_filter closed">
+	<div class="filter_box<%if(filterLen){%> box2<%}else{%> box1<%}%><%if(this.rec_poster && this.rec_poster.recommends != ''){%> last<%}%>">
+		<%if(filterLen){%>
+		<% this.catalog_filter && this.catalog_filter.map(function(filter) { %>
+		<div class="filter_list fitwidth">
+			<span><%= filter.class%>：</span>
+			<p>
+				<% var parLink = {'section' : 'hot' , 'page' : '0'} 
+					parLink[filter.param_name] = 'all'
+				%>
+				<a class="first<%if(query[filter.param_name] == 'all' || !query[filter.param_name]){%> active<%}%>" href="<%=getLink(parLink, query)%>">所有
+				<% filter.words && filter.words.map(function(words, index) {
+					parLink[filter.param_name] = words.id 
+					if(toDefine && query[filter.param_name] == words.id){
+						isOpen = 1
+						toDefine = 0
+					}
+				%>
+				<a class="<%if(query[filter.param_name] == words.id){%>active<%}%>" href="<%=getLink(parLink , query)%>"><%= words.name%>
+				<%});%>
+				</a>
+			</p>
+		</div>
+		<%});%>
+		<%}%>
+		<div class="filter_list fitwidth">
+			<span>价格：</span>
+			<p>
+				<a class="first<%if(query.price == 'all' || !query.price){%> active<%}%>" href="<%=getLink({'price' : 'all' ,'section' : 'hot' , 'page' : '0' ,} , query)%>">所有
+				<%
+					if(query.price !== 'all' && query.price){
+						isOpen = 1
+						toDefine = 0
+					}
+				%>
+				<a <%if(query.price == '0~100'){%>class="active"<%}%> href="<%=getLink({'price' : '0~100' , 'section' : 'hot' , 'page' : '0' ,} , query)%>">0-100
+				<a <%if(query.price == '101~200'){%>class="active"<%}%> href="<%=getLink({'price' : '101~200' , 'section' : 'hot' , 'page' : '0' ,} , query)%>">101-200
+				<a <%if(query.price == '201~500'){%>class="active"<%}%> href="<%=getLink({'price' : '201~500' , 'section' : 'hot' , 'page' : '0' ,} , query)%>">201-500
+				<a class="<%if(query.price == '501~10000'){%>active<%}%> last" href="<%=getLink({'price' : '501~10000' , 'section' : 'hot' , 'page' : '0' ,} , query)%>">500元以上
+				</a>
+			</p>
+		</div>
+	</div>
+	<%if(filterLen){%>
+	<div class="filter_switch" isOpen="0" autoPoster="1" autoOpen="0"><span class="info">展开</span><span class="icon"></span></div>
+	<%}%>
+</div>

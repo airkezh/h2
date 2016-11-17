@@ -1,0 +1,67 @@
+/*common*/
+
+require('m/zepto')
+require('m/app/hackWeixin')
+var setShare = require('m/app/setShare')
+
+var defs = {
+	title : document.title
+	, link : window.location.href
+	, desc : ''
+	, imgUrl : 'http://i.meilishuo.net/css/images/wap/web/apple-touch-icon-72x72-precomposed-touch.png'
+}
+
+var getUrl = function($btn){
+    var url = $btn.attr('url')
+        , type = $btn.attr('type')
+        , shareid = $btn.attr('shareid') || ''
+
+    var share_url = '/goto/count/?p=' + url + '&frm=share&type=' + type + '&shareid=' + (shareid || '')
+
+    return share_url
+
+}
+exports.getUrl = getUrl
+
+exports.bind = function(opts, cbk){
+	setShare($.extend({}, defs, opts), function(data){
+
+		cbk && cbk(data)
+	
+		$('.share_ico a').bind('tap', function(){
+			$('.share_ico a.active').removeClass('active')
+			$(this).addClass('active')
+
+		});
+
+		$('.shareToBtn').on('tap', function(){
+            var share_url = getUrl($('.share_ico .active'))
+			//opts.domain && (share_url = opts.domain + share_url)
+
+			window.location.href = share_url 
+		})
+	})
+}
+
+exports.set = function(opts, cbk){
+	setShare($.extend({}, defs, opts), function(data){
+
+		cbk && cbk(data)
+
+        $.map(data, function(v,k){
+            $('.' + v.type).attr('url', encodeURIComponent(v.share_url))
+        })
+
+	})
+}
+
+exports.reset = function(opts, cbk){
+	setShare($.extend({}, defs, opts), function(data){
+
+        $.map(data, function(v,k){
+            $('.' + v.type).attr('url', encodeURIComponent(v.share_url))
+        })
+
+		cbk && cbk(data)
+	})
+}

@@ -1,0 +1,58 @@
+<%#head.html%>
+<%
+	var head = this.head || {};
+	var headData = head.data || {};
+	var menu = headData.menu || [];
+%>
+<div class="wrap" id="wrap">
+	<a href="<%= headData.url || 'javascript:;' %>" data-xr="<%= this.head_XR %>">
+		<img src="<%= headData.image_url %>" alt="">
+	</a>
+	<nav class="tab-new" id="tabNew">
+		<div id="prevTabNew">
+			<a href="javascript:;"><%= menu[0] %></a>
+		</div>
+		<div id="nextTabNew">
+			<a href="javascript:;"><%= menu[1] %></a>
+		</div>
+		<div id="specialTabNew">
+			<a href="javascript:;"><%= menu[2] %></a>
+		</div>
+	</nav>
+	<div class="posterWall wall" id="content">
+		<ul class="goods_wall goods"></ul>
+		<div class="pullUp" status="loading"></div>
+	</div>
+</div>
+<div class="top-box" style="bottom:<%if(this.isIphone){%>60<%}else{%>20<%}%>px">
+	<a class="gotop">
+		<img src="http://d02.res.meilishuo.net/img/_o/41/62/c1d9e0f159bfb506b27dea648ccb_80_80.cg.png" />
+	</a>
+</div>
+<script type="text/html" id="posterWall">
+	<li class="most_wrap salelUrl" data-twitter_id="<?= this.v.twitter_id ?>">
+		<? var imgBoxHeight=parseInt($(window).width()/2)* 400 / 330 +'px'; ?>
+		<div class="goods_info">
+			<div class="most" style="height:<?= imgBoxHeight ?>;">
+				<div class="lazy_pic img-box" asrc="<?= this.v.poster_small_img ?>">
+				</div>
+			</div>
+			<p class="sale-title sale-tips"><?= this.v.recommend ?></p>
+			<p class="sale-title"><?= this.v.title ?></p>
+			<p class="price">
+				<span class="sale_price"><?= this.v.sale_price ?></span>
+				<del><?= this.v.price ?></del>
+				<span class="discount"><?= this.v.discount ?>折</span>
+			</p>
+		</div>
+	</li>
+</script>
+<script>
+	fml.vars.cid = <%= this.cid %>;
+	fml.vars.common_r_XR = '<%= this.common_r_XR %>';
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/zulily/newPush');
+_use:", this._JSstack, this._JSmods); %>
+
+<%# foot.html%>

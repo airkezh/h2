@@ -1,0 +1,33 @@
+<%# wx_new/header.html%>
+<%
+var contents = this.contents.data;
+%>
+<% contents.forEach(function(content,index){%>
+	<div class="content">
+		<div class="title">
+			<div class="txt">
+				<p class="chinese"><%= content.tag%></p>
+				<p class="english"><%= content.tag_english%></p>
+			</div>
+			<p class="line"></p>
+		</div>	
+		<ul>
+<% content.users.forEach(function(con,index){%>
+		<%if(index < 3){%>
+			<a href="/wx/user_c/<%= con.daren_uid%>"><img src="<%= con.avatar%>" alt="" class="class-img"><span class="class-title"><%= con.daren_nickname.length < 7 ? con.daren_nickname : con.daren_nickname.slice(0,6)%></span></img></a>
+		<%}else if(index == 3){%>
+			<a href="/wx/classify_m/<%= content.content_id%>"><div class="cover"></div><div class="cover-1">MORE</div><img src="<%= con.avatar%>" alt="" class="class-img"><span class="class-title">更多</span></img></a>
+		<%}%>
+<%});%>
+		</ul>
+	</div>
+<%});%>
+<div style="height:30px;"></div>
+<script>
+fml.vars.isShare = true;
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/wx_new/global');
+_use:", this._JSstack , this._JSmods ); %>
+<%# wx_new/footer.html%>

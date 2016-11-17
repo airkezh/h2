@@ -1,0 +1,40 @@
+<%*{ %>
+	引用页面:
+		1 : wap/views/share/share.html
+	less:
+		.wap_head;
+	依赖：
+		rem_screen.js
+		请在controller里面加入：data.use_rem_screen = '640';
+<%*} %>
+
+<div class="wap_head">
+	<div class="wap_nav">
+		<a class="home_page" href="/welcome">首页</a>
+		<form class="search_wrap js_search_form" action="/search" method="get">
+			<input name="keyword" type="search" autocomplete="off" class="js_input" required="required">
+			<div class="word_hack js_input_decorate"><span><%= this.search_words || '搜索宝贝' %></span></div>
+		</form>
+		<div class="cate js_cate">分类</div>
+	</div>
+	<nav class="nav_route none_f" id="navRoute">
+		<ul class="main">
+			<li><a href="/guang/selected" xr="<%= this.xr.r%>">流行</a></li>
+			<li><a href="/guang/hot" xr="<%= this.xr.r%>">最热</a></li>
+			<li><a href="/guang/new" xr="<%= this.xr.r%>">最新</a></li>
+		</ul>
+		<ul class="sub">
+			<li><a href="/guang/catalog/?nid=837" xr="<%= this.xr.r %>">上衣</a></li>
+			<li><a href="/guang/catalog/?nid=835" xr="<%= this.xr.r %>">裙子</a></li>
+			<li><a href="/guang/catalog/?nid=855" xr="<%= this.xr.r %>">裤子</a></li>
+			<li><a href="/guang/catalog/?nid=865" xr="<%= this.xr.r %>">鞋子</a></li>
+			<li><a href="/guang/catalog/?nid=895" xr="<%= this.xr.r %>">包包</a></li>
+			<li><a href="/guang/catalog/?nid=2725" xr="<%= this.xr.r %>">配饰</a></li>
+		</ul>
+	</nav>
+</div>
+<div class="wap_head_mask none_f" status="hide"></div>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/block/wap_head');
+_use:", this._JSstack , this._JSmods ); %>

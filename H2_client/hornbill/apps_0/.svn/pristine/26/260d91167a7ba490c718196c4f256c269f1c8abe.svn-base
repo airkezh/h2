@@ -1,0 +1,27 @@
+<%# head_simple.html%>
+</head>
+<body style="background:#fff;">
+<div >
+<%
+this.topBnr = this.topBnr || {}
+if (this.weixinBrowser){%>
+	<% if(this.android){ %>
+		<img src="<%= this.PICTURE_URL%>images/wap/weixin/anguide1.png" />
+	<% } else {%>
+		<img src="<%= this.PICTURE_URL%>images/wap/weixin/iosguide1.jpg" />
+	<% } %>
+<%}else{%>
+<a href='<%= this.appUrl%>?frm=wap_link_download'> <img src="<%= this.topBnr.top_bnr%>" />
+ <img src="<%= this.topBnr.top_btn_small || (this.PICTURE_URL + "/images/wap/web/clock_btn.png") %>" />
+</a>
+<%}%>
+</div>
+<% if (this.weixinBrowser && this.android){%>
+<iframe src='<%= this.appUrl%>?frm=wap_link_download'></iframe>
+<%}else{%>
+<script>
+window.location.href = '<%= this.appUrl%>?frm=wap_link_download'
+</script>
+<%}%>
+<%# foot_simple.html%>
+

@@ -1,0 +1,25 @@
+function cookie(){
+	return this;
+}
+
+var controlFns = {
+	'distribute' : function(cookie){
+		var g = this.req.__get,
+			c = g.c || '/welcome/';
+
+		this.render('cookie/distribute.html',{
+			c : encodeURIComponent(c),
+			is_delete: Number(!!this.req.__get.is_delete),
+			pages : config.site.COOKIE_DISTRIBUTE_URLS
+		});
+
+	},
+	'distribute_failed': function(){
+		var pages = this.req.__get.pages;
+		pages.forEach(function(p){
+			console.warn('cookie distribute timeout, url:'+p);
+		});
+	}
+};
+
+exports.__create = controller.__create(cookie, controlFns);

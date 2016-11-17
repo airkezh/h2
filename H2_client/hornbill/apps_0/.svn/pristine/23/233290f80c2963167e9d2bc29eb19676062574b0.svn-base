@@ -1,0 +1,157 @@
+/**
+ * @fileoverview 首页 － 韩国馆
+ * @requires
+ * @author kehuang@meilishuo.com
+ * @date 2014-10-13
+ */
+
+@import "../block.less";
+html{.f(10*@f);}
+body{.bgc(#fff);}
+a{.block;outline:none;}
+img{.w(100%);.block;}
+
+.banner{background:url("@{pic_url}/images/wap/korea/banner_bg3.png") no-repeat;background-size:100%;.w(100%);.pt(333*@w);border-bottom:1px solid #e8e8e8;}
+
+.pic_wrap{clear:both;}
+.pic_list_box{clear:both;.hidden;}
+.pic_list_box li {
+	.f(1.2rem);
+	-ms-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	.mb(1.5rem);
+	.bgc(#ffffff);
+}
+.pic_hd_pic {
+	.w(100%);
+	min-height: 220px;
+	background-size: cover;
+	-moz-background-size: cover;
+}
+.pic_hd_pic>img {
+	.vm;
+	border:0;
+	-ms-interpolation-mode:bicubic;
+}
+
+/*组图*/
+.swipe {.hidden;.h(220px);.pr;}
+.swipe_wrap{.hidden;.pr;
+	-webkit-backface-visibility:hidden;
+	-moz-backface-visibility:hidden;
+	-ms-backface-visibility:hidden;
+	-o-backface-visibility:hidden;
+	backface-visibility:hidden;
+	/* Fix of Webkit flickering */
+	z-index:2;
+}
+.swipe_wrap > div {.left;.w(100%);.pr;}
+.swipe_pic{.pr;.hidden;.w(100%);.h(220px);background-color:#efefef;/*background-image: url("@{pic_url}/images/wap/korea/banner_bg.png"); background-position:center center;background-size:60px auto;background-repeat:no-repeat;*/}
+.swipe_pic img{.w(100%);min-height:220px;}
+.swipe_num{.pa;right:1.2rem;bottom:0.8rem;z-index:100;
+	-webkit-backface-visibility:hidden;
+	-moz-backface-visibility:hidden;
+	-ms-backface-visibility:hidden;
+	-o-backface-visibility:hidden;
+	backface-visibility:hidden;
+}
+.swipe_num li{.left;.w(4px);.h(4px);.f(0);text-indent:999em;border:1px solid rgba(172,172,172,0.55);.border-r(4px);background:#acacac;margin:0 3px;.hidden;}
+.swipe_num li.active{.w(4px);.h(4px);border:1px solid #f69;background:#ee4f92;/*box-shadow:0 0 4px #f69;*/}
+
+.swipe_info{.pa;z-index:100;
+	-webkit-backface-visibility:hidden;
+	-moz-backface-visibility:hidden;
+	-ms-backface-visibility:hidden;
+	-o-backface-visibility:hidden;
+	backface-visibility:hidden;
+}
+.swipe_info.new{right:1.5rem;top:0rem;.w(3.8rem);.h(4.1rem);text-indent:999em;background:url("@{pic_url}/images/wap/korea/new2.png") no-repeat;background-size:3.8rem 4.1rem;}
+.swipe_info.hot{right:1.5rem;top:0rem;.w(3.8rem);.h(4.1rem);text-indent:999em;background:url("@{pic_url}/images/wap/korea/hot.png") no-repeat;background-size:3.8rem 4.1rem;}
+.swipe_info.sale{right:1.5rem;top:0rem;padding:0.5rem 0.7rem 0;.w(2.2rem);.h(3.4rem);.f(1.4rem);.fc(#fff);background:url("@{pic_url}/images/wap/korea/sale.png") no-repeat;background-size:3.6rem 3.9rem;}
+.swipe_info.price{left:0.8rem;bottom:0.8rem;.c;.f(1.7rem);.fc(#fff);.bgc(#4c464e);.opacity(60);.pt(0.4rem);.pb(0.4rem);.w(9.6rem);font-family:arial,sans-serif;}
+
+.swipe_info.soldout{.w(182*@w);.pt(180*@w);background: url("@{pic_url}/images/wap/korea/sold.png") no-repeat center;background-size: 100%;.pa;top: 50%;left: 50%;margin: -91*@w 0 0 -90*@w;}
+
+@media only screen and (min-width:321px) and (orientation:landscape){
+	.swipe_pic img{.mt(-110px);min-height:220px;}
+}
+
+.pic_info {padding: 11px 15px 9px;}
+.pic_info .title{
+	.f(1.7rem);
+	.fc(#000);
+	white-space: nowrap;
+	.hidden;
+	text-overflow: ellipsis;
+}
+.pic_info .decs {
+	.f(1.2rem);
+	.fc(#000);
+	.pt(10px);
+	.hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+	clear: both;
+}
+.pic_info .state {
+	.clearfix;
+	.pt(1.6rem);
+}
+.pic_info .state .fl{
+	.left;
+}
+.pic_info .state .fr{
+	.right;
+	.f(1.2rem);
+	.pt(0.4rem);
+	.fc(#cacaca);
+}
+.pic_info .state .price{
+	.f(1.6rem);
+	.fc(#f23d3d);
+}
+.pic_info .state .oprice{
+	.f(1.2rem);
+	.fc(#999);
+	.ml(.8rem);
+}
+.pic_info .state .fr .view {
+	.pl(2rem);
+	background: url("@{pic_url}/images/wap/korea/view.png") no-repeat;
+	background-size: auto 11px;
+}
+.pic_info .state .fr .like {
+	.pl(1.8rem);
+	background: url("@{pic_url}/images/wap/korea/like.png") no-repeat;
+	background-size: auto 12px;
+}
+
+.ios_simple;
+.pullUp{
+	.pullUpDown > .common;
+	.pullUpDown > .loading;
+	&:before{.nowrap;.ml(-10px);}
+	&[status="tap"]{background:0 none;}
+	&[status="stop"]{
+		background:0 none;.h(2px);
+		&:before{
+			content:"木有了...";.pb(2rem);
+		}
+	}
+}
+
+.gotop_wrap{
+	.none;.pf;z-index:999;right:10px;.w(80*@w);bottom:60px;
+	.sort{.mb(10px);}
+	.gotop{.block;.w(100%);}
+	img{.w(100%);}
+}
+
+/*分享*/
+.starBox{.star_box;.none;}
+
+@import "../footer.less";

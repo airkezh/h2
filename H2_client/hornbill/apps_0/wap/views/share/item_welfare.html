@@ -1,0 +1,25 @@
+<%
+	var single_promotion = this.single_promotion.data;
+	var promoteRoomInfos = this.goods_info.data.promoteRoomInfos;
+	var _coupons = single_promotion && single_promotion[0] && single_promotion[0].coupon_applys;
+	if(!(_coupons && _coupons.length) && !promoteRoomInfos){ return ''; }
+%>
+<div class="welfare">
+	<% if(_coupons && _coupons.length){ %>
+		<div class="item coupon_bannar">
+			<p>店铺优惠</p>
+			<% _coupons.map(function(data, index){ %>
+				<% if(index > 2) return '' %>
+				<span><% if(data.threshold){ %>满<%= data.threshold %>减<% } else { %>直减<% } %><%= data.credit %></span>
+			<% }); %>
+		</div>
+
+		<% this._coupons = _coupons; %>
+		<%# block/coupon.html %>
+
+	<% } %>
+
+	<% if(promoteRoomInfos){ %>
+		<a class="item promote_activity" xr="<%= this.goods_info.r %>" href="<%= promoteRoomInfos.url %>"><span><%= promoteRoomInfos.notice %></span></a>
+	<% } %>
+</div>

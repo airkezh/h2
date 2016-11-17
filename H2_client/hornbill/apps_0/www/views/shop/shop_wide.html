@@ -1,0 +1,160 @@
+<%
+	var query  = this._Request_query,
+        header = this.shop_list.banner || this.shop_list.header,
+        banner = header ? header.banner : [],
+        logo   = header ? header.logo : [];
+%>
+<%# head.html%>
+<% if(banner) {%>
+<div id="banner" class="top-banner">
+    <ul class="js-banners top-banners">
+        <% banner.forEach(function(b, i) {%>
+        <li class="item <% if(i == 0) {%>active<%}%>" style="background-image:url(<%= b.image_url %>)">
+            <a href="<%= b.image_link %>" target="_blank" ></a>
+            </li>
+        <%})%>
+    </ul>
+    <ul class="js-handlers top-banner-handlers">
+        <%
+        //margin-right: 1px;
+        var w = banner && parseInt(1200/banner.length - 1);
+        banner && banner.forEach(function(b, i) {%>
+        <li class="item <%if(i == 0) {%>active<%}%> <%if(i == banner.length - 1) {%>last<%}%>" style="width:<%= w%>px;"><a href="javascript: void 0;"><%= b.desc %></a></li>
+        <%})%>
+    </ul>
+</div>
+<%}%>
+
+<div class="shop">
+    <div class="section shop-header">
+    <%
+    if(this.shop_catalog.catalog && this.shop_catalog.style) {
+        var catalogList = this.shop_catalog.catalog;
+        var styleList   = this.shop_catalog.style;
+        var thisCatalog = query.cata ? query.cata : 0,
+        thisStyle       = query.style ? query.style : 0;
+        thisCatalog     = thisCatalog | 0
+        thisStyle       = thisStyle | 0
+    %>
+        <div id="js-shopcat" class="shop-cat">
+            <div class="item">
+                <h3 class="title">好店分类</h3>
+                <ul class="list first">
+                    <% catalogList.forEach(function(item){ %>
+                    <li><a class="js-filter <%if(thisCatalog==item.value){%>active<%}%>" href="#" data-type="cata" data-value="<%= item.value %>" ><%=item.name %></a></li>
+                    <% }); %>
+                </ul>
+            </div>
+
+            <div class="item">
+                <h3 class="title">好店风格</h3>
+                <ul class="list second">
+                    <% styleList.forEach(function(item){ %>
+                    <li><a class="js-filter <%if(thisStyle==item.value){%>active<%}%>" href="#" data-type="style" data-value="<%= item.value %>" ><%=item.name %></a></li>
+                    <% }); %>
+                </ul>
+            </div>
+
+            <div class="item">
+                <h3 class="title">编辑推荐</h3>
+                <ul class="list last">
+                    <% logo && logo.forEach(function(l, i) {%>
+                    <li>
+                        <a href="<%= l.image_link %>?frm=shop_top_logo" class="logo" target="_blank">
+                            <img src="<%= l.image_url %>" width="70" height="30">
+                        </a>
+                    </li>
+                    <%})%>
+                </ul>
+            </div>
+        </div>
+    <% } %>
+    </div>
+
+    <%
+        var queryObj = this._Request_query || {},
+            page     = queryObj.page;
+        if((!page || page <= 1) && this.shop_list) { %>
+            <%# shop/shop_suggest.html %>
+    <% } %>
+
+    <div class="section shop-all">
+        <div class="hd">
+            <div id="js-shopsort" class="sort">
+                <%
+                    query.sortby = query.sortby || '';
+                    [{
+                        text: '默认',
+                        value: ''
+                    }, {
+                        text: '最近上新',
+                        value: 'new'
+                    }, {
+                        text: '销量',
+                        value: 'boom'
+                    }].forEach(function(v, i) {
+                %>
+                <a href="#" class="js-sort <%if(i == 1) {%>middle<%}%> <% if(query.sortby == v.value) {%>active<%}%>" data-sort="<%= v.value %>"><%= v.text %></a>
+                <% }); %>
+            </div>
+            <h2 class="icon-title"></h2>
+        </div>
+        <div id="js-shop-all" class="bd goods_wall">
+        </div>
+
+        <div id="js-paging" class="paging_panel c_f">
+        </div>
+    </div>
+</div>
+
+<script type="text/html" id="paging">
+<?
+    var totalNum = totalNum || 0;
+    var show_page_num = 5;
+    var isLastPage = ((totalNum - 1) == curPageNum);
+
+    if (totalNum > 1 ) {
+?>
+    <div class="pageNav">
+        <a class="pagePrev js-page" style="<?= curPageNum > 0 ? '' : 'display:none' ?>" href="#" data-page="<?= curPageNum ?>">&lt;上一页</a>
+        <?
+        var left_num = curPageNum > show_page_num ? curPageNum - show_page_num: 0 , right_num = left_num + show_page_num*2;
+        if ( right_num > totalNum) right_num = totalNum;
+        if (left_num >= 1) {
+        ?>
+
+        <a href="#" class="js-page" data-page="1">1</a>
+        <i>...</i>
+        <?	}
+            for (var i = left_num ;i < right_num;i++ ){
+        ?>
+        <a class="js-page <? if (curPageNum == i) { ?>currentpage<? } ?>" data-page="<?= i + 1 ?>" href="#"><?= i+1 ?></a>
+        <? }
+        if (right_num < totalNum) {
+        ?>
+        <i>...</i>
+        <a href="#" class="js-page" data-page="<?= totalNum ?>"><?= totalNum ?></a>
+        <? } ?>
+        <a class="pageNext js-page" style="<?= curPageNum < totalNum - 1?'':'display:none' ?>" href="javascript: void 0;" data-page="<?= curPageNum + 2 ?>">下一页&gt;</a>
+        <a class="pageNext2 js-page" style="background: none; border: none; height: 58px; width: 55px; position: absolute; right: 0; top: 0;" href="javascript: void 0;" data-page="<?= curPageNum + 2 ?>"> </a>
+    </div>
+<? } ?>
+</script>
+
+<%# shop/shop_suggest_item.html%>
+<%# shop/shopitem_wide.html%>
+<script>
+<%= this.poster0? 'Meilishuo.config.poster0 = '+JSON.stringify(this.poster0)+';':'' ;%>
+fml.vars.notFluid = true;
+
+fml.vars.colWidth  = 407;
+fml.vars.colHeight = 400;
+fml.vars.colNumMin = 3;
+</script>
+<% $_ENGINE_SELF.callFn("useModule")("fml.use('page/poster0');", this._JSstack , this._JSmodsFast ); %>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/doota/shop_wide');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot.html%>

@@ -1,0 +1,63 @@
+/*common*/
+
+require('wap/zepto')
+
+var $case1 = $('.case1')
+var $case2 = $('.case2')
+var dataOfFirstFrame = fml.vars.dataOfFirstFrame
+
+if(dataOfFirstFrame.ret == 0 && fml.vars.dataOfFirstFrame.goodsInfo[0]){
+
+	var Waterfall   = require('circle/component/waterfall')
+	var Lazy        = require('m/component/lazyLoad')
+
+	var LazyLoad    = Lazy.init({ xpath: '.g-entrance' })
+
+	var GOODS_SHELF = '#goods_shelf'
+	var $gShelf     = $(GOODS_SHELF)
+
+	LazyLoad.scroll()
+
+	Wf = Waterfall.init({
+		el: GOODS_SHELF,
+		tmpl: 'goods_tpl',
+		url: '/aj/sq/interfaces/waterfall',
+		data: { limit: 15 },
+		dataName: 'goodsInfo',
+		colNum: 2,
+		colGap : "10 0",
+		dataFilter: wfDataFilter,
+		onFetchSuccess: wfOnFetchSuccess,
+		onFetchFinished: wfOnFetchFinished
+	})
+
+	Wf.start( dataOfFirstFrame )
+
+	function wfDataFilter(data){
+		var wfConfig = this._config
+		var gd       = wfConfig.dataName
+
+		return data[gd]
+	}
+
+	function wfOnFetchSuccess(data){
+		if(data.length == 0){
+			$('.pullUp').attr('status','stop')
+			this.destroy()
+			Wf = null
+		}
+	}
+
+	function wfOnFetchFinished(data, textStatus){
+		if(textStatus == 'timeout'){
+			myAlert('抱歉~网络不给力，数据拉不出 o(╯□╰)o')
+		}
+
+		LazyLoad.load()
+	}
+
+}else{
+	$case1.hide()
+	$case2.show()
+}
+

@@ -1,0 +1,58 @@
+<script type="text/html" id="tmpl-user">
+<? var getAppLink = this.getAppLink,
+       v    = this.v,
+       user = v.user_data;
+?>
+<div class="item-wrap">
+    <div class="rec-person">
+        <a href="<?= getAppLink( 'person', { user_id: user.user_id} ) ?>">
+            <div class="head">
+                <img class="head-img" src="<?= user.avatar_a ?>" alt="">
+                <? if(user.is_daren == 1) {?>
+                <span class="icon-vip" style="background-image: url(<?= user.identity_img ?>);"></span>
+            <?}?>
+            </div>
+            <div class="info">
+                <p class="name"><?= user.nickname ?></p>
+                <p class="label"><?= user.label ?></p>
+            </div>
+        </a>
+        <? if ( user.followed == 1 ) { ?>
+        <div class="focus done js-focus" data-clicked=false  data-id="<?= user.user_id?>">取消关注</div>
+        <? } else { ?>
+        <div class="focus ready js-focus" data-clicked=false  data-id="<?= user.user_id?>">关注</div>
+        <? } ?>
+
+    </div>
+     <? var imgList = v.msg_data;
+        if( imgList && imgList.length ) { ?>
+    <div class="share-img">
+    <? imgList.forEach( function( img ){
+        var mid  = img.msg_id,
+            tid  = img.twitter_id,
+            url;
+
+        if ( !tid ) {
+            url = getAppLink( 'rich_message', { type: 'miscpic', msg_id: mid  } )
+        } else {
+            url = getAppLink( 'twitter_single', {
+                twitter_info: {
+                    twitter_id: tid,
+                    is_doota: '1'
+                }
+            } )
+        }
+
+        if ( img.picurl ) {
+     ?>
+    <a href="<?= url ?>">
+        <div class="img-wrap">
+            <span style="background-image:url('<?= img.picurl ?>')">
+            </span>
+        </div>
+    </a>
+       <? } ?>
+       <? }) } ?>
+    </div>
+</div>
+</script>

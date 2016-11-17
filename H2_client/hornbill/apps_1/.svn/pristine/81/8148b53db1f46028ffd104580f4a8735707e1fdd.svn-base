@@ -1,0 +1,22 @@
+<%# head_simple.html%>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<div class="main" style="background:url('<%=this.dataInfo.bg%>') no-repeat;background-size:100% 100%;">
+	<div class="question" id="question">
+
+	</div>
+	<div class="per"></div>
+</div>
+<script>
+	fml.vars.serviceArr = <%= JSON.stringify(this.dataInfo.categorys)%>;
+</script>
+<%= requireFn('wapShare.html')({
+		'share' : this.share 
+	    , 'shareTitle' : '选择分享到'
+	    , '_JSstack' : this._JSstack
+		, '_JSmods' : this._JSmods
+	}); %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+  	fml.use('wap/page/activity/market');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html%>

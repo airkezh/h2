@@ -1,0 +1,49 @@
+<%#head.html%>
+<%
+	var data = this.svrveyGet && this.svrveyGet.data ;
+	var Index = 1;
+%>
+<%if(data){%>
+	<div class="main">
+		<h3 class="data_Title"><em></em><%= data.page_name%></h3>
+		<div class="box" id="box">
+			<% data && data.page_detail.forEach(function(item){%>
+				<%item && item.datasource.forEach(function(data,index){%>
+					<div class="list">							
+						<p><%=Index++%>、<%= data.datasource_question%><%if(data.datasource_type == '2'){%><strong>多选</strong><%}%></p>
+						<% data && data.dataitem.forEach(function(i){%>
+							<span>
+								<%if(data.datasource_type == '1'){%>
+									<input type="radio" class="mls-input-radio" id="<%=i.pk_dataitem_id%>" name="item_<%=item.pk_module_id%>_<%=data.pk_datasource_id%>_<%=data.datasource_type%>" value="<%=i.pk_dataitem_id%>" />
+									<label class="mls-input-label mls-input-radio-label" for="<%=i.pk_dataitem_id%>" ><%=i.option_name%></label>
+									<%if(i.edit_type == '1'){%>
+										<input class="Ipt_text" name="other_<%=item.pk_module_id%>_<%=data.pk_datasource_id%>_<%=data.datasource_type%>_<%=i.pk_dataitem_id%>" type="text" value=""/>
+									<%}%>
+								<%}else if(data.datasource_type == '2'){%>
+									<input type="checkbox" class="mls-input-checkbox" name="item_<%=item.pk_module_id%>_<%=data.pk_datasource_id%>_<%=data.datasource_type%>" value="<%=i.pk_dataitem_id%>" id="<%=i.pk_dataitem_id%>">
+									<label for="<%=i.pk_dataitem_id%>" class="mls-input-label mls-input-checkbox-label red-check"><%=i.option_name%></label>
+									<%if(i.edit_type == '1'){%>
+										<input class="Ipt_text" name="other_<%=item.pk_module_id%>_<%=data.pk_datasource_id%>_<%=data.datasource_type%>_<%=i.pk_dataitem_id%>" type="text" value=""/>
+									<%}%>
+
+								<%}%>
+							</span>
+						<%});%>
+					</div>
+				<%});%>
+			<%});%>		
+		</div>
+		<div class="submit">
+			<a class="s_btn" id="btn" href="javascript:;">提&emsp;交</a>
+			<p>(感谢好看的你参与，祝你一直美下去！)</p>
+		</div>
+	</div>
+	<input type="hidden" id="pageId" value="<%=data.page_snapshot_id%>"/>
+
+<%}else{%>
+	<div class="content">本期问卷调查已经结束,感谢参与(*^__^*)</div>
+<%}%>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/app/survey');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

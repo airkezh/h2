@@ -1,0 +1,60 @@
+@import "bs_base.less";
+
+.main{
+	.search{
+		.h(1rem);.pt(0.1rem);
+		.search_content{ 
+			.w(4.5rem);.h(0.6rem);.bgc(#F8F8F8);border: none;border-radius: 0.3rem;.ml(0.16rem);.left();
+			span{ .block;.w(0.2rem);.h(0.22rem);background: url('http://d03.res.meilishuo.net/pic/_o/29/b9/8a0de1e4ed254784fa618a2be27f_20_21.cf.png');background-size: 100%;background-repeat: no-repeat;margin: 0.21rem 0 0.2rem 0.1rem;.left; }
+			.input{ 
+				.w(3.91rem);.h(0.27rem);margin: 0.14rem 0.15rem 0.17rem 0;.left;.bgc(#F8F8F8); 
+				input{ .block;.w(100%);.h(100%);border: none;.bgc(#F8F8F8);outline: none;.f(0.22rem); }
+			}
+		}
+		.search_btn{ .w(1.28rem);.h(0.58);.right;.mr(0.16rem);border: #FF557E solid 1px;border-radius: 0.29rem;.f(0.26rem);.fc(#FF557E);.l(0.58rem);.c; }
+	}
+	.images{
+		margin: 0 auto;.hidden;
+		.content{ 
+			.w(1.5rem);.left;.ml(0.04rem);.c;
+			.image{ .w(1.5rem);.h(1.5rem);background-size: 100%;background-repeat: no-repeat; }
+			p{ .f(0.22rem);.fc(#595056);.mt(0.06rem);.mb(0.33rem); }
+		}
+		.content:nth-child(4n+1){ .ml(0.14rem); }
+	}
+	.load{
+		.good_content{
+			.mb(0.3rem);.pr;
+			.poster{ 
+				.pa; 
+				a{ .block; }
+				.goods{ .w(100%);background-size: 100%;background-repeat: no-repeat; }
+				p{ .c; }
+				.title{ .f(0.22rem);.fc(#666);.mt(0.2rem); }
+				.price{ .f(0.22rem);.fc(#999);.mt(0.1rem); }
+				.vip_price{ .fc(#ff7a9a);display: inline-block;.mr(0.26rem); }
+				img{ .w(0.22rem);.h(0.22rem);display: inline-block;.mb(-0.02rem); }
+			}
+		}
+	}
+}
+// 加载
+.pullUp{
+	.pullUpDown > .common;.pullUpDown > .loading;
+	&:before{
+		.nowrap;
+		.ml(-10px);
+	}
+	&[status="tap"]{
+		background:0 none;	
+		&:before{
+			content:"上拉看更多..."	
+		}
+	}
+	&[status="stop"]{
+		background:0 none;	
+		&:before{
+			content:"木有了...";	
+		}
+	}
+}

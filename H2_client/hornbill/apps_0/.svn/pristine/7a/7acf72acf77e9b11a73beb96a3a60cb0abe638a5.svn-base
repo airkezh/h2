@@ -1,0 +1,168 @@
+<%# head_simple.html%>
+
+<%* for ipad %>
+	<%
+		if (this.is_iPad) {
+	%>
+		<%# head_ipad.html %>
+	<%
+		} else {
+	%>
+<%* for ipad %>
+
+<%
+	var navFrm = 'frm=daeh';
+	var getLink = _extFn.getLink;
+	var mSubstr = _extFn.mSubstr;
+	var query = this._Request_query;
+	var addTrace = this.ViewTools.addTrace;
+	var proData = this.promotionData || {};
+%>
+
+</head>
+<body>
+<%
+	if (!this.noHeaderBg) {
+		var actShow = this.ViewTools.timeStuff({'2015/3/10 10:00:00': 0, '2015/3/21 00:00:00': 0}, 0);
+%>
+<div class="header_bg <% if (actShow == 1) { %>header_bg_christmas<% } %>">
+	<%
+		if (proData && proData.main && (proData.branch.length > 0)) {
+			var navStyle = proData,
+				main = proData.main,
+				branch = proData.branch;
+	%>
+	<script type="text/javascript">
+		var style = document.createElement('style'),
+			head = document.head || document.getElementsByTagName('head')[0],
+			css = '#promo_nav{overflow:hidden;background-color:<%= navStyle.navBgColor %>;<% if(navStyle.navBgImg){ %>background-image:url(<%= navStyle.navBgImg %>);background-repeat: no-repeat;background-position:center top;background-size:auto 100%;<% } %>}#promo_nav .itemswrap{width:1200px;margin-left:auto;margin-right:auto;}#promo_nav li{font-size:14px;padding-left:10px;padding-right:10px;line-height:57px;height:57px;}#promo_nav .nav-items-main:hover,#promo_nav .nav-items-branch:hover{background-color:<%= navStyle.hoverStyle %>;}#promo_nav .nav-items-main{font-size:18px;padding-right:8px;}#promo_nav .main-a{padding-left:<%= 2 + 1 * navStyle.iconLeft.width %>px;background:url(<%= navStyle.iconLeft.img %>) left center no-repeat;}#promo_nav a{display:block;}#promo_nav span{padding-right:10px;background:url(<%= navStyle.itemsIcon %>) right center no-repeat;background-size:auto 64%;color:<%= navStyle.itemsColor %>;}#promo_nav .nav-items-main,#promo_nav .nav-items-branch{float:left;}#promo_nav .nav-items-itemright{float:right;padding-right:0;}#promo_nav .nav-items:after{content:".";clear:both;display:block;height:0;visibility:hidden;}#promo_nav .nav-items-itemright a{padding-top:6px;height:45px;}#promo_nav .nav-items-itemright img{height:100%;}';
+
+		style.type = 'text/css';
+
+		if (style.styleSheet) {
+			style.styleSheet.cssText = css;
+		} else {
+			style.appendChild(document.createTextNode(css));
+		}
+
+		head.appendChild(style);
+	</script>
+
+	<div id="promo_nav">
+		<div class="itemswrap">
+			<ul class="nav-items">
+				<li class="nav-items-main"><a class="main-a" target="_blank" href="<%= main.url %>"><span class="main-icon"><%= main.name %></span></a></li>
+				<%
+					branch.forEach(function(item, index){
+				%>
+				<li class="nav-items-branch"><a target="_blank" href="<%= item.url %>"><span class="branch-icon"><%= item.name %></span></a></li>
+				<%
+					});
+				%>
+				<li class="nav-items-itemright"><a target="_blank" href="<%= navStyle.iconRight.url %>"><img src="<%= navStyle.iconRight.img %>"></a></li>
+			</ul>
+		</div>
+	</div>
+	<%
+		}
+	%>
+
+	<div id="topbar" style="height:31px;"></div>
+
+	<%
+		if (!this.hideBindTip){
+	%>
+	<div class="bind_tip_wrap">
+		<div class="bind_tip" data-isweak="<%= this.userInfo.is_weak_password %>">
+			<strong>X</strong>
+			<span>安全提醒：</span>
+			近期不法分子通过攻击其他网站获取密码薄弱的用户账号信息后，试图登陆美丽说诈骗用户信息或进行其它欺诈行为，为此我们强烈建议您立即。
+			<a href="/settings/setPassword" target="_blank">修改登录密码</a>拒不修改将存在较大风险。
+		</div>
+	</div>
+	<%
+		}
+	%>
+
+	<%
+		if (!this.hideHeaderTop){
+			if (this.topbanner && this.topbanner.length && this.top_bnr_close && this.top_bnr_close.data === 0) {
+	%>
+	<div class="header_top pr_f">
+		<ul class="head_bnr">
+			<%
+				this.topbanner.forEach(function(data , i) {
+					data.links = addTrace(data.links , 'header_banner_' + i);
+			%>
+			<li>
+				<span class="close_bnr_btn"></span>
+				<%
+					if (0 === i ) {
+				%>
+				<a class="pic" href="<%= data.links %>" target="_blank" style="background:url(<%= data.img_url %>) repeat center top;"></a>
+				<%
+					} else {
+				%>
+				<a class="pic" href="<%= data.links %>" target="_blank" data-img ="<%= data.img_url %>" style="background: repeat center top;"></a>
+				<%
+					}
+				%>
+			</li>
+			<%
+				});
+			%>
+		</ul>
+		<div class="adType1">
+			<%
+				(this.topbanner.length > 1) && this.topbanner.forEach(function(data){
+			%>
+			<a></a>
+			<%
+				});
+			%>
+		</div>
+		<div class="clear_f"></div>
+	</div>
+	<%
+			}
+		}
+	%>
+
+	<div class="clear_f"></div>
+
+	<%
+		if (!this.hideSearch){
+	%>
+		<div id="search" style="height:120px;"></div>
+	<%
+		}
+	%>
+</div>
+<%
+	}
+%>
+
+<%
+	if (!this.hideNav) {
+%>
+<div id="nav" style="height:50px;"></div>
+<%
+	}
+%>
+
+<script type="text/javascript" src="<%=this.JCSTATIC_BASE %>~common/blast?v3"></script>
+<script>
+	Blast.init({
+		topbar : '#topbar',
+		search : '#search',
+		nav : '#nav',
+		foot : '#foot',
+		domain : '<%=this.MAIN_SITE_DOMAIN%>'
+	});
+</script>
+
+<%* for ipad %>
+	<%
+		}
+	%>
+<%* for ipad %>

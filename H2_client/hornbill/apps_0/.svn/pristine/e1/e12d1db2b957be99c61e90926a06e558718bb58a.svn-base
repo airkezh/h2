@@ -1,0 +1,125 @@
+<%# head.html%>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<div class="mask" style="background-image:url('http://d05.res.meilishuo.net/img/_o/41/db/f97676b8747bd453cb538772fb84_640_1136.cg.png')"></div>
+<% var vip_url = 'http://m.meilishuo.com/goto/open/?appUrl=' + encodeURIComponent('/member/main/?frm=time_machine&r=time_machine-other') + '&bg='+ encodeURIComponent('/download/latest') %>
+<%if(this.myInfo && this.myInfo.data && this.myInfo.data.create_day){%>
+	<div class="wrap">
+		<% var myInfo = this.myInfo.data; %>
+		<div class="main">
+			<div class="page p1" transition="translateY" style="z-index:9;">
+				<p><%= myInfo.create_day%></p>
+			</div>
+			<div class="page p2" transition="translateY" style="z-index:8;">
+				<p><%= myInfo.create_time%></p>
+			</div>
+			<%if( myInfo.first_order_id ){%>
+				<div class="page p3" transition="translateY" style="z-index:7;">
+					<p><%= myInfo.first_pay_time%></p>
+					<div class="goods"><img src="<%= myInfo.first_goods_img%>" /></div>
+					<img class="star" src="http://d01.res.meilishuo.net/pic/_o/91/d0/e4d61959552254ca31a51c05d21c_46_47.cf.png" />
+					<img class="cloud" src="http://d05.res.meilishuo.net/pic/_o/9d/c1/55b671089d57a44670e6e3885d49_84_53.cf.png" />
+				</div>
+			<%}else{%>
+				<div class="page p3_1" transition="translateY" style="z-index:7;"></div>
+			<%}%>
+			<%if( myInfo.like_twitter_id ){%>
+				<div class="page p4" transition="translateY" style="z-index:6;">
+					<div class="goods"><img src="<%= myInfo.goods_img%>" /></div>
+					<img class="star" src="http://d01.res.meilishuo.net/pic/_o/91/d0/e4d61959552254ca31a51c05d21c_46_47.cf.png" />
+					<p>有 <%= myInfo.goods_sold%> 位女生与我眼光相同</p>
+				</div>
+			<%}else{%>
+				<div class="page p4_1" transition="translateY" style="z-index:6;"></div>
+			<%}%>
+			<%if( myInfo.shop_id ){%>
+				<div class="page p5" transition="translateY" style="z-index:5;">
+					<p>和 <%= myInfo.shop_collect%> 个</p>
+					<img class="goods" src="<%= myInfo.shop_img%>" />
+					<img class="shop" src="http://d02.res.meilishuo.net/pic/_o/ff/62/6a1fce27e0ef8affe1436646968a_46_36.cf.png" />
+				</div>
+			<%}else{%>
+				<div class="page p5_1" transition="translateY" style="z-index:5;"></div>
+			<%}%>
+			<%if(myInfo.gmv != 0){%>
+				<div class="page p6" transition="translateY" style="z-index:4;">
+					<p class="text">我为时尚买单</p>
+					<p class="text num1">共 <span><%= myInfo.gmv%></span> 元</p>
+					<p class="num2">超过了 <%= myInfo.pass_gmv%> 人！</p>
+				</div>
+			<%}else{%>
+				<div class="page p6_1" transition="translateY" style="z-index:4;"></div>
+			<%}%>
+			<%if( myInfo.coupon_num > 0 && myInfo.coin_amount > 0 ){%>
+				<div class="page p7" transition="translateY" style="z-index:3;">
+					<p class="line1">使用了<span> <%= myInfo.coupon_num%> </span>张优惠券、<span> <%= myInfo.coin_amount%> </span>金币</p>
+					<p class="line2">为我节省了<span> <%= myInfo.coupon_money%> </span>元</p>
+				</div>
+			<%}else{%>
+				<div class="page p7_1" transition="translateY" style="z-index:3;"></div>
+			<%}%>
+			<div class="page p8" transition="translateY" style="z-index:2;">
+				<p class="line1">我共积攒了<span> <%= myInfo.score%> </span>美丽值</p>
+				<p class="line2">会员等级<span> <%= myInfo.level%> </span></p>
+				<p class="line3">超过了<span> <%= myInfo.pass_beauty%> </span>的女神！</p>
+			</div>
+			<div class="page p9" transition="translateY" style="z-index:1;">
+				<div class="my<%= myInfo.style%>"></div>
+				<span class="level<%= myInfo.level%>"></span>
+				<p class="tShareBtn">分享瘦10斤</p>
+				<a href="<%= vip_url%>" class="signBtn">签到并查看我的专属特权</a>
+			</div>
+		</div>	
+	</div>
+<%}else{%>
+	<div class="new" >
+		<p class="tShareBtn">分享瘦10斤</p>
+		<a href="<%= vip_url%>" class="signBtn">签到并查看我的专属特权</a>
+	</div>
+<%}%>
+<!-- 音乐 -->
+<div class="music musicon"></div>
+<audio hidden="true" preload="auto" autobuffer>
+	<source src="http://i.meilishuo.net/css/images/H5/The%20Rain%2000_00_00-00_01_12.mp3">
+</audio>
+<!-- app分享模块 弹窗展示 -->
+<script type="text/html" id="wapShare">
+	<div class="starBox">
+		<div class="share_ico" id="share_ico">
+			<p class="icons_box">
+				<? this.share && this.share.map(function(data) { ?>
+					<?	var plat_name = {'weixin_timeline':'朋友圈' , 'weixin':'微信' , 'qzone':'Qzone' , 'weibo':'新浪微博' , 'txweibo':'腾讯微博'}; 
+						plat_name = plat_name[data.type] || '';
+					?>
+					<a class="<?= data.type?><?if(data.isDefault){?> active<?}?>" share_url="<?= data.share_url?>" ><?= plat_name?></a>
+				<? }); ?>
+			</p>
+			<div class="clear_f"></div>
+			<div class="btncontain"><span class="btn shareToBtn" id="shareBtn">分享</span></div>
+			<div class="clear_f"></div>
+		</div>
+	</div>	
+</script>
+<script>
+	fml.vars.share = '<%= JSON.stringify(this.share)%>';
+	fml.vars.share_title = '<%= this.share_title%>';
+	fml.vars.share_text = '<%= this.share_text%>';
+	fml.vars.share_pic = '<%= this.share_pic%>';
+	fml.vars.share_url = '<%= this.share_url%>';
+</script>
+<div class="page-slider-point" style="display:none">
+	<ul>
+		<li class="curr"></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+	</ul>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use("wap/page/timeMachine");
+_use:", this._JSstack , this._JSmods); %>
+<%# foot.html%>

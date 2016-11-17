@@ -1,0 +1,57 @@
+<%#head.html%>
+<% var hotsale = this.hotsale %>
+<%= requireFn('slider.html')({
+	'os' : this.os
+	, 'footBanner' : true
+	, 'isIqiyiApp' : this.isIqiyiApp
+	,'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+	, 'showDaoLiu' : this.showDaoLiu
+	, 'showZhiDing' : this.showZhiDing
+	, 'leadApp' : this.leadApp
+	, 'appUrl' : this.appUrl
+	, 'frm' : this.frm
+});%>
+<%#head_welcome.html%>
+<section id="wrapper_main" class="wrapper">
+
+	<%= requireFn('block/banner.html')({
+		'banner' :this.homeBanner 
+		,'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+	});%>
+
+	<% this.essential && this.essential.map(function(v,k){ %>
+	<h3 class="clothes" style="background-image:url('<%= v.logo%>');"></h3>
+	<a href="<%= v.url%>">更多</a>
+	<nav>
+		<img class="example" src="<%= v.example%>"/>
+		<ul>
+		<% v.children.map(function(v,k){ %>
+		 <% if(k<16){ %>
+			<li><a href="<%= v.url%>"><%= v.word_name%></a></li>
+		<% } %>
+		<%});%>
+		</ul>
+		<a href="<%= v.boom_url%>">热销<%= v.word_name%>></a>
+	</nav>
+	<%});%>
+	<h3><img class="hotlogo" src="<%= hotsale.book_words.logo %>"></h3>
+	<nav class="hotsale">
+		<img class="hotExample" src="<%= hotsale.book_words.example %>"/>
+		<ul>
+			<% hotsale.book_words.children && hotsale.book_words.children.map(function(v){%>				<li>
+					<a href="<%= v.url %>"><%= v.word_name %></a>
+				</li>
+			<% });%>
+		</ul>
+		<a>&nbsp;</a>
+	</nav>
+	<%#block/foot.html%>
+
+</section>
+<script>
+fml.vars.frm = '<%== this.frm %>';
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/welcome');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

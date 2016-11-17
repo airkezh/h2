@@ -1,0 +1,111 @@
+<%#head.html%>
+<%
+	var topbanner = this.topbanner && this.topbanner.data
+		, tab = topbanner && topbanner.tab
+		, end_time = topbanner && topbanner.end_time
+		, start_time = topbanner && topbanner.start_time
+		, head_img = topbanner && topbanner.banner && topbanner.banner.head_img;
+%>
+<div class="main">
+	<section class="banner">
+		<div class="banner"><img src="<%= head_img%>" /></div>
+		<%
+			var end_time = new Date(end_time);
+			var now = new Date();
+			var time_text = '距本次活动结束还剩 ';
+			var time_end = end_time - now;
+
+			var time_start = 0;
+			var start_time = new Date(start_time);
+			if(now < start_time){
+				time_text = '距本次活动开始还剩 ';
+			}
+			time_start = start_time - now;
+		%>
+		<div id="time" class="time_box js_timeStamp" data-times="<%= time_start/1000 %>" data-timee="<%= time_end/1000 %>">
+			<%= time_text%>
+			<i class="hour">00</i> : <i class="min">00</i> : <i class="sec">00</i> 
+		</div>
+		<%if(tab && tab.length>0 ){
+			var _width=0;
+			switch(tab.length){
+				case 2:
+					_width = '49%';
+					break;
+				case 3:
+					_width = '33%';
+					break;
+				case 4:
+					_width = '24%';
+					break;
+			}
+		%>
+		<div class="nav_wrap" id="nav_wrap">
+			<div class="nav_iscroll" id="nav_iscroll">
+				<ul>
+					<%tab.forEach(function(item,index){%>
+						<li <%if(tab.length < 5){%>style="width:<%= _width %>"<%}%> data-tab="<%= item.cate_id%>" <%= index == 0 ? 'class="curr"' : ''%> data-r="<%=item.r %>"><%= item.text%></li>
+					<%});%>
+				</ul>
+			</div>
+		</div>
+		<%}%>
+	</section>
+	<section id="posterWrap" class="posterWrap" style="min-height:2000px;">
+		<div class="goods_wall">
+		</div>
+		<div class="pullUp" status="loading"></div>
+	</section>
+</div>
+<script type="text/html" id="posterWall">
+<?
+	$.each(this.data.tInfo , function(k , v){ 
+?>
+		<div class="shopitem">
+			<div class="title">
+				<a class="buy_btn" href="<?= v.shop_url?>">马上抢 ></a>
+				<a class="shop_info" href="<?= v.shop_url?>">
+					<span class="logo"><img src="<?= v.shop_face_img?>" /></span>
+					<p class="name"><?= v.shop_nick?></p>
+					<?if(v.shop_label && v.shop_label.length > 0){?>
+						<p class="promotion">
+							<?v.shop_label.forEach(function(item){?>
+								<span><?= item.text ?></span>
+							<?});?>
+						</p>
+					<?}?>
+				</a>
+			</div>
+			<?if(v.goods && v.goods.length > 0){?>
+				<a class="goodswrap" href="<?= v.shop_url?>">
+					<?v.goods.forEach(function(item){?>
+						<div class="goods">
+							<span class="bs_load_img" asrc="<?= item.ginfo && item.ginfo.goods_pic_url ?>"></span>
+							<p class="pricebox">
+								<span class="price"><?= item.ginfo && item.ginfo.goods_price?></span>
+								<del class="orgin_price"><?= item.ginfo && item.ginfo.origin_price?></del>
+							</p>
+						</div>
+					<?});?>	
+				</a>
+			<?}?>
+			<div class="shop_data">
+				<span>共<i><?= v.goods_total ?></i>款宝贝清仓中</span>
+				<span class="right_f"><i><?= v.shop_sales_num ?></i>人已购买</span>
+			</div>
+		</div>
+	<?});?>
+</script>
+<script>
+	fml.vars.poster = {};
+	fml.vars.tablen = <%= this.topbanner && this.topbanner.data && this.topbanner.data.tab && this.topbanner.data.tab.length %>;
+	fml.vars.event_id = '<%= this.event_id%>';
+	fml.vars.isShow = <%= this.ViewTools.timeStuff({'2015/12/8 00:00:00' : 1, '2015/12/13 00:00:00' : 0} , 0 ) %>;
+</script>
+<!-- <a class="gotop" style="bottom:<%if(this.isIphone){%>60<%}else{%>20<%}%>px">
+	<img src="http://d03.res.meilishuo.net/pic/_o/d0/68/f89d059f09d440f4ee7a37669383_80_80.cg.png" alt="">
+</a> -->
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/clearance/market');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

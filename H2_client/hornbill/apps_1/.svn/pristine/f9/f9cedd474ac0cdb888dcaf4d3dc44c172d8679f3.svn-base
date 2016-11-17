@@ -1,0 +1,21 @@
+<% var buyer = this.refund.express_buyer_info%>
+
+<%#common/head.html%>
+
+<div class="container">
+	<% if(buyer.express && buyer.express.length){ %>
+	<div class="express-wrap">
+		<ul class="l">
+			<% buyer.express.forEach(function(e,i){ %>
+			<li<%if(!i){%> class="current"<%}%>><%== e %></li>
+			<% }); %>
+		</ul>
+		<div class="express-desc">
+			<div>物流公司：<%=buyer.express_company||''%></div>
+			<div>运货单号：<%=buyer.express_id||''%></div>
+		</div>
+	</div>
+	<% } %>
+</div>
+
+<%#common/foot_simple.html%>

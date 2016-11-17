@@ -1,0 +1,168 @@
+<%# head.html%>
+<%
+var query = this._Request_query;
+var getLink = _extFn.getLink;
+var mSubstr = _extFn.mSubstr;
+%>
+<div class="top_box">
+	<div class="top_bnr">马卡龙色强势来袭，今年的春夏秀场放眼望去，色彩浓度并没有那么的强烈，取而代之的是清新甜美的马卡龙色，蜜桃粉、柠檬黄、薄荷绿、香芋紫、天空蓝，五大色系轻松应对各种肤色，荣登本季主役。</div>
+	<div class="top_nav">
+		<img src="<%=this.PICTURE_URL%>images/activity/macaron/mac_nav.gif" border="0" usemap="#Map" />
+		<map name="Map" id="Map">
+			<area shape="poly" coords="210,17,282,17,269,57,198,55" href="#pink" alt="蜜桃粉" />
+			<area shape="poly" coords="288,16,363,16,348,57,277,55" href="#yellow" alt="柠檬黄"  />
+			<area shape="poly" coords="369,18,437,18,427,55,358,55" href="#purple" alt="香芋紫" />
+			<area shape="poly" coords="687,17,758,17,747,55,677,55" href="#blue" alt="天蓝色" />
+			<area shape="poly" coords="770,17,838,17,827,55,756,55" href="#green" alt="薄荷绿" />
+			<area shape="poly" coords="848,17,918,17,907,55,836,55" href="#purple" alt="香芋紫" />
+		</map>
+	</div>
+	<div class="notice">活动规则：6月4日购买的MM，请在备注中注明【美丽说周二疯狂购】，商家需要备注信息给亲包邮哦~ </div>
+</div>
+<div class="box_one" id="pink">
+	<div class="auto_box">
+		<div class="ico1"></div>
+		<ul>
+			<li class="first">
+				<a class="face"><img src="<%=this.PICTURE_URL%>images/activity/macaron/mac_bg1.gif" /></a>
+				<h2 class="f_tle">适合水润透白肤色</h2>
+				<p class="f_tail">清新甜蜜的粉色在穿衣搭配里可以帮你提亮肤色增添甜美气息</p>
+			</li>
+			<% this.pink.tInfo && this.pink.tInfo.map(function(data) { %>
+			<li>
+				<a class="pic" href="/share/<%=data.twitter_id%>" target="_blank"><img alt="<%= data.ginfo.goods_desc%>" src="<%=data.show_pic%>" /></a>
+				<div class="detail">
+					<h3 class="tle"><a href="/share/<%=data.twitter_id%>" target="_blank"><%= mSubstr(data.ginfo.goods_desc , 20 , '...')%></a></h3>
+					<p class="price"><%=data.ginfo.goods_price%></p>
+					<p class="source">来自店铺：<a href="/shop/<%=data.shop_intro.shop_id%>" target="_blank"><%=data.shop_intro.shop_nick%></a></p>
+				</div>
+			</li>
+			<% }); %>
+		</ul>
+		<div class="clear_f"></div>
+	</div>
+	<div class="line1"></div>
+</div>
+<div class="box_two" id="green">
+	<div class="auto_box">
+		<div class="ico2"></div>
+		<ul>
+			<li>
+				<a class="face"><img src="<%=this.PICTURE_URL%>images/activity/macaron/mac_bg2.gif" /></a>
+				<h2 class="f_tle">适合健康小麦肤色</h2>
+				<p class="f_tail">清新淡雅而又舒爽宜人的薄荷绿色在搭配方面几乎百搭无禁忌,选择蜜桃粉或柠檬色相搭十分明智。</p>
+			</li>
+			<% this.green.tInfo && this.green.tInfo.map(function(data) { %>
+			<li>
+				<a class="pic" href="/share/<%=data.twitter_id%>" target="_blank"><img alt="<%= data.ginfo.goods_desc%>" src="<%=data.show_pic%>" /></a>
+				<div class="detail">
+					<h3 class="tle"><a href="/share/<%=data.twitter_id%>" target="_blank"><%= mSubstr(data.ginfo.goods_desc , 20 , '...')%></a></h3>
+					<p class="price"><%=data.ginfo.goods_price%></p>
+					<p class="source">来自店铺：<a href="/shop/<%=data.shop_intro.shop_id%>" target="_blank"><%=data.shop_intro.shop_nick%></a></p>
+				</div>
+			</li>
+			<% }); %>
+		</ul>
+		<div class="clear_f"></div>
+	</div>
+	<div class="line2"></div>
+</div>
+<div class="box_three" id="yellow">
+	<div class="auto_box">
+		<div class="ico3"></div>
+		<div class="ico4"></div>
+		<ul>
+			<li>
+				<a class="face"><img src="<%=this.PICTURE_URL%>images/activity/macaron/mac_bg3.gif" /></a>
+				<h2 class="f_tle">适合水润透白肤色</h2>
+				<p class="f_tail">夏日里吞下一大口柠檬汁的滋味一定很过瘾吧,现在你也可以把柠檬黄穿上身，它像一枚快乐的维他命让你充满活力和运动气息。</p>
+			</li>
+			<% this.yellow.tInfo && this.yellow.tInfo.map(function(data) { %>
+			<li>
+				<a class="pic" href="/share/<%=data.twitter_id%>" target="_blank"><img alt="<%= data.ginfo.goods_desc%>" src="<%=data.show_pic%>" /></a>
+				<div class="detail">
+					<h3 class="tle"><a href="/share/<%=data.twitter_id%>" target="_blank"><%= mSubstr(data.ginfo.goods_desc , 20 , '...')%></a></h3>
+					<p class="price"><%=data.ginfo.goods_price%></p>
+					<p class="source">来自店铺：<a href="/shop/<%=data.shop_intro.shop_id%>" target="_blank"><%=data.shop_intro.shop_nick%></a></p>
+				</div>
+			</li>
+			<% }); %>
+		</ul>
+		<div class="clear_f"></div>
+	</div>
+	<div class="line3"></div>
+</div>
+<div class="box_four" id="purple">
+	<div class="auto_box">
+		<div class="ico5"></div>
+		<ul>
+			<li>
+				<a class="face"><img src="<%=this.PICTURE_URL%>images/activity/macaron/mac_bg4.gif" /></a>
+				<h2 class="f_tle">适合透白小麦肤色</h2>
+				<p class="f_tail">香芋紫总有一种说不出的高雅，结合飘逸的雪纺或丝质，给炎热的夏季增添一抹沉静与优雅.</p>
+			</li>
+			<% this.purple.tInfo && this.purple.tInfo.map(function(data) { %>
+			<li>
+				<a class="pic" href="/share/<%=data.twitter_id%>" target="_blank"><img alt="<%= data.ginfo.goods_desc%>" src="<%=data.show_pic%>" /></a>
+				<div class="detail">
+					<h3 class="tle"><a href="/share/<%=data.twitter_id%>" target="_blank"><%= mSubstr(data.ginfo.goods_desc , 20 , '...')%></a></h3>
+					<p class="price"><%=data.ginfo.goods_price%></p>
+					<p class="source">来自店铺：<a href="/shop/<%=data.shop_intro.shop_id%>" target="_blank"><%=data.shop_intro.shop_nick%></a></p>
+				</div>
+			</li>
+			<% }); %>
+		</ul>
+		<div class="clear_f"></div>
+	</div>
+	<div class="line4"></div>
+</div>
+<div class="box_five" id="blue">
+	<div class="auto_box">
+		<div class="ico6"></div>
+		<ul>
+			<li>
+				<a class="face"><img src="<%=this.PICTURE_URL%>images/activity/macaron/mac_bg5.gif" /></a>
+				<h2 class="f_tle">适合健康小麦肤色</h2>
+				<p class="f_tail">天空蓝清新、忧郁,却能在夏季为你带来一丝清爽的感觉,但它不仅仅是这些，最为关键的是很百搭。</p>
+			</li>
+			<% this.blue.tInfo && this.blue.tInfo.map(function(data) { %>
+			<li>
+				<a class="pic" href="/share/<%=data.twitter_id%>" target="_blank"><img alt="<%= data.ginfo.goods_desc%>" src="<%=data.show_pic%>" /></a>
+				<div class="detail">
+					<h3 class="tle"><a href="/share/<%=data.twitter_id%>" target="_blank"><%= mSubstr(data.ginfo.goods_desc , 20 , '...')%></a></h3>
+					<p class="price"><%=data.ginfo.goods_price%></p>
+					<p class="source">来自店铺：<a href="/shop/<%=data.shop_intro.shop_id%>" target="_blank"><%=data.shop_intro.shop_nick%></a></p>
+				</div>
+			</li>
+			<% }); %>
+		</ul>
+		<div class="clear_f"></div>
+	</div>
+	<div class="auto_box" style="background: #F8FCFF; width: 940px; margin-top: 20px;">
+		<div class="mlsrz"></div>
+		<h1 class="shop_tle">宝贝来自以下认证好店，再去逛逛吧</h1>
+		<div class="shop_logo">
+			<% this.logo && this.logo.map(function(data) { %>
+				<a href="<%=data.shop_url%>" target="_blank"><img title="<%=data.shop_name%>" src="<%=data.img_url%>" /></a>
+			<% }); %>
+		</div>
+		<div class="clear_f"></div>
+	</div>
+</div>
+<div class="mac_foot">
+	<div class="bnr"></div>
+</div>
+</script>
+<div id="sideNav">
+	<a class="pink" href="#pink"></a>
+	<a class="green" href="#green"></a>
+	<a class="yellow" href="#yellow" style="margin-top:1px"></a>
+	<a class="purple" href="#purple"></a>
+	<a class="blue" href="#blue"></a>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/huodong/macaron');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot.html%>
+

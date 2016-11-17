@@ -1,0 +1,16 @@
+<%#head.html%>
+<div class="wrapper_bg">
+	<div class="inner">
+		<img src="<%= this.my_poster.show_pic %>" uname="<%= this.my_poster.uinfo.nickname%>" pid="<%= this.my_poster.pid%>" uid="<%= this.my_poster.uinfo.user_id%>"/>
+		<% if(this.my_poster.is_vote == 0){ %>
+			<span class="btnBox act_vote"></span>
+		<%}else{%> 
+			<span class="btnBox voted"></span>
+		<%}%>
+		<a href="http://www.meilishuo.com/biz/huodong/nissan/" target="_blank"></a>
+	</div>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/huodong/nissan_share');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

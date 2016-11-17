@@ -1,0 +1,137 @@
+<%#head.html%>
+<% this.headName = '订单确认'; %>
+<%# head_share.html%>
+
+<div class="confirm_area c_page">
+	<%if(this.addr && this.addr.addrInfo && this.addr.addrInfo.length == 0){%>
+		<a href="/address/new" class="add_addr">添加地址</a>
+	<%}%>
+	<ul class="addrShow">
+	<%if(this.addr.addrInfo){%>
+		<% this.addr.addrInfo.map(function(a){%>
+		<%if(a.is_default == '1'){%>
+		<li class="unit adrl_list" addr_id="<%= a.addr_id %>">
+			<a href="/address/">
+				<p><span><%= a.nickname%></span><span class="adrl_phone"><%= a.phone%></span></p>	
+				<p><span><%== a.address %></span></p>
+			</a>
+		</li>
+		<%}%>
+		<%});%>
+	<%}else{%>
+		<li class="unit adrl_new">
+			<p><a href="/address/new">添加地址</a></p>
+		</li>
+	<%}%>
+	</ul>
+	<ul>
+		<% this.order.info && this.order.info.goods.map(function(order){ %>
+		<li class="order_goods">
+			<div class="order_info">
+				<span>商家：<%= order.shop_name%></span>
+			</div>
+			<%= requireFn('block/orderGoods.html')({
+				'goods' : order.goods
+			});%>
+			<div class="total">
+				<div class="msg">
+					<input type="text" name="comment[]" value="" class="comment" id="comment_<%= order.shop_id %>" placeholder="购买留言"/>
+				</div>
+				<div><%= order.freight.indexOf('免运费')===-1 ? ('运费：'+order.freight) : order.freight %></div>
+				<div>店铺合计：<%= order.total_price %></div>
+			</div>
+		</li>
+		<% }); %>
+	</ul>
+
+	
+	<div class="order_bank">
+		<% if(this.bank.data.platform.length){ %>
+		<div class="c_field">
+			<div class="c_select checked">
+				<div class="c_s_label">
+					<span class="icon-check"></span>
+				</div>
+				<div class="c_s_con">
+					<span><%= this.bank.data.platform[0].bankName %></span>
+					<input class="c_s_radio" name="pay_type" type="radio" id="platform" value="platform" checked/>
+					<select class="list" name="pay_id">
+						<% this.bank.data.platform.forEach(function(p,i){ %>
+						<option data-name="<%= p.bankName %>" <%= i===0 ? 'selected' : '' %> value="<%= p.bankCode %>__<%= p.pmCode %>"><%= p.bankName %></option>
+						<% }); %>
+					</select>
+				</div>
+			</div>
+		</div>
+		<% } %>
+		<% if(this.bank.data.debit.length){ %>
+		<div class="c_field">
+			<div class="c_select">
+				<div class="c_s_label">
+					<label for="debit">使用储蓄卡支付</label>
+					<span class="icon-check"></span>
+				</div>
+				<div class="c_s_con">
+					<span><%= this.bank.data.debit[0].bankName %></span>
+					<input class="c_s_radio" name="pay_type" type="radio" id="debit" value="debit"/>
+					<select class="list" name="pay_id">
+						<% this.bank.data.debit.forEach(function(d){ %>
+						<option data-name="<%= d.bankName %>" value="<%= d.bankCode %>__<%= d.pmCode %>" id=""/><%= d.bankName %></option>
+						<% }); %>
+					</select>
+				</div>
+			</div>
+		</div>
+		<% } %>
+		<% if(this.bank.data.credit.length){ %>
+		<div class="c_field">
+			<div class="c_select">
+				<div class="c_s_label">
+					<label for="credit">使用信用卡支付</label>
+					<span class="icon-check"></span>
+				</div>
+				<div class="c_s_con">
+					<span><%= this.bank.data.credit[0].bankName %></span>
+					<input class="c_s_radio" name="pay_type" type="radio" id="credit" value="credit"/>
+					<select name="pay_id">
+						<% this.bank.data.credit.forEach(function(d){ %>
+						<option data-name="<%= d.bankName %>" value="<%= d.bankCode %>__<%= d.pmCode %>" id=""/><%= d.bankName %></option>
+						<% }); %>
+					</select>
+				</div>
+			</div>
+		</div>
+		<% } %>
+	</div>
+
+	<div class="order_confirm">
+		<%
+			var coupon_list = this.order.info.plat_coupon_info;
+			var credit = 0;
+		%>
+		<%if(coupon_list && coupon_list.length){%>
+		<span>使用优惠券</span>
+		<select id="coupon">
+			<% for(var i=0;i<coupon_list.length;i++){ %>
+			<% var coupon = coupon_list[i]; %>
+			<option value="<%= coupon.coupon_id %>" data-save="<%= coupon.credit %>" <%if(coupon.is_check){%>selected<%}%>>
+				<%= coupon.title %>
+			</option>
+			<%if(coupon.is_check){credit = coupon.credit;}%>
+			<% } %>
+		</select>
+		<span>优惠券扣减：<span id="coupon_save" class="credit"><%= credit %></span>元</span>
+		<% } %>
+		<% if ('share' != this._Request_query.ori){ %>
+		<p><a class="cartBtn" href="/cart">&lt;&lt;返回购物车</a></p>
+		<% } %>
+		<span>商品总价：￥</span><span id="total_price"><%= this.order.info.total_price %></span>
+		<a href="javascript:;" class="go_charge" id="charge">提交订单</a>
+	</div>
+</div>
+
+<form action="/order/create/" method="post" class="none_f" id="confirm_form"></form>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/doota/confirm');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

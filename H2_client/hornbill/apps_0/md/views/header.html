@@ -1,0 +1,56 @@
+<!doctype html>
+<html <%if(this.cache){%>manifest="/cache/m.manifest"<%}%>>
+<head>
+	<meta charset="utf-8">
+    <title><%== this.pageTitle%></title>
+    <meta name="keywords" content="<%= this.keywords%>" />
+    <meta name="description" content="<%= this.meta_description%>" />
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" id="meta_add" />
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<meta name="format-detection" content="telephone=no" />
+    <% if(!this.noBasecss){ %>
+	<link rel="stylesheet" type="text/css" href="<%= this.M_JCSTATIC_BASE %>css/wap/base.css?<%= this.SVERSION%>" />
+    <% } %>
+	<link rel="apple-touch-icon-precomposed" href="<%= this.CSS_JS_BASE_URL%>css/images/wap/web/apple-touch-icon-114x114-precomposed-touch.png" sizes="114x114"/>
+	<link rel="apple-touch-icon-precomposed" href="<%= this.CSS_JS_BASE_URL%>css/images/wap/web/apple-touch-icon-72x72-precomposed-touch.png" sizes="72x72"/>
+	<link rel="apple-touch-icon-precomposed" href="<%= this.CSS_JS_BASE_URL%>css/images/wap/web/apple-touch-icon-60x60-precomposed-touch.png"/>
+	<% this.user_id = (this.userInfo ? this.userInfo.user_id:0) || 0;%>
+	<%= (function(link){
+		var str = '';
+		var base = this.M_JCSTATIC_BASE;
+		var sversion = this.SVERSION;
+		link && link.map(function(src){
+			str += '<link rel="stylesheet" type="text/css" href="'+base+'css/'+src+'.css?'+ sversion +'"/>';
+			});
+		return str;
+		})(this._CSSLinks)%>
+	<% if (this._CSSstack && this._CSSstack.length) { %>
+		<style>
+		<%= this._CSSstack.join("\n");%>
+		</style>
+	<% }
+	%>
+	<script type="text/javascript" src="<%= this.M_JCSTATIC_BASE + this.SCRIPT_BASE %>fml.js?<%= this.SVERSION%>" ></script>
+	<script>
+	fml.setOptions({'sversion' : '<%= this.SVERSION %>','defer' : <%= this.JS_Defer %> ,'modulebase' : '<%= this.M_JCSTATIC_BASE + this.SCRIPT_BASE %>'});
+    var Meilishuo = {
+        'config' : {
+			nt : '<%= this.nToken%>',
+			server_url : '<%= this.SERVER_BASE %>',
+			picture_url : '<%= this.PICTURE_URL %>',
+			im_url : '<%= this.IM_ULR %>',
+			captcha_url : '<%= this.CAPTCHA_ULR %>',
+			controller : '<%== this.headTag%>',
+			os : <%= JSON.stringify(this.os) || '{}'%>,
+			access_token : '<%=this.accessToken || 0 %>',
+			avatar_c : '<%= this.userInfo.avatar_c %>',
+			nickname : "<%= this.userInfo.nickname || ''%>",
+			user_id : <%= this.user_id%>,
+			appId : 'wx4549498ac3b87bd4'
+		}
+    };
+	fml.vars.screen = {};
+	</script>
+</head>
+<body>

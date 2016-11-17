@@ -1,0 +1,113 @@
+var path = require('path')
+
+var VIEW_DIR = 'views/'
+var SRC_DIR = 'src/'
+var DIST_DIR = 'dist/'
+var TPL_DIR = '_tpl/'
+var TRANS_TPL_DIR = '_transTpl/'
+
+module.exports = function(grunt) {
+	grunt.config.init({
+		clean : {
+		  before : [TPL_DIR,TRANS_TPL_DIR, DIST_DIR],
+		  after: [TPL_DIR,TRANS_TPL_DIR]
+		},
+		concat: {
+			options: {
+				banner: "'use strict';\n",
+				process: function(src, filepath) {
+						return '// Source: ' + filepath + '\n' +
+						src.replace(/(^|\n)[ \t]*('use strict'|"use strict");?\s*/g, '$1');
+				},
+			},
+			v1:{
+				src: [
+					TRANS_TPL_DIR+'passport.js',
+					TRANS_TPL_DIR+'passport_ext.js',
+					TRANS_TPL_DIR+'etic.js',
+					TRANS_TPL_DIR+'shareTmp.js',
+					TRANS_TPL_DIR+'storage.js',
+					TRANS_TPL_DIR+'bridge.js',
+					TRANS_TPL_DIR+'urlHandle.js',
+					TRANS_TPL_DIR+'validate.js',
+					TRANS_TPL_DIR+'risk.js',
+					TRANS_TPL_DIR+'login.js',
+				],
+				dest: DIST_DIR+'v1.js'
+			},
+			blank:{
+				src: [
+					TRANS_TPL_DIR+'passport.js',
+					TRANS_TPL_DIR+'bridge.js',
+					TRANS_TPL_DIR+'urlHandle.js',
+				],
+				dest: DIST_DIR+'blank.js'
+			}
+		},
+		uglify:{
+			build:{
+				files: {
+				   'dist/v1.min.js': [DIST_DIR+'v1.js'],
+				   'dist/blank.min.js': [DIST_DIR+'blank.js'],
+				}
+			}	
+		},
+		watch: {
+			watch : {
+				files:['views/**/*.html', 'src/**/*.js'],	
+				tasks:['clean:before','mkTpl','transTpl','concat','uglify', 'clean:after']
+			}
+		}
+	});
+
+	grunt.loadNpmTasks('grunt-contrib-watch')
+	grunt.loadNpmTasks('grunt-contrib-clean');
+	grunt.loadNpmTasks('grunt-contrib-concat')
+	grunt.loadNpmTasks('grunt-contrib-uglify');
+
+
+	grunt.registerTask('mkTpl', function(){
+		grunt.file.recurse(VIEW_DIR, function(abspath, rootdir, subdir, filename){
+			var html = grunt.file.read(abspath)
+			html = html
+				.replace(/[\r\t\n]/g, "")
+				.replace(/'/g, "\\'")
+				.replace(/"/g, '\\"')
+
+			grunt.file.write(path.join(TPL_DIR, filename), html);
+		})
+	});
+
+	grunt.registerTask('transTpl', function(){
+		var type = '.html'
+		var reg = new RegExp("require\\((\'|\")([a-zA-Z0-9]+[_|\_|\.|\-]?)*[a-zA-Z0-9]" + type + "(\'|\")\\)", "g");
+		grunt.file.recurse(SRC_DIR, function(abspath, rootdir, subdir, filename){
+			var js = grunt.file.read(abspath)
+			var jsLine = js.split('\n')
+
+		   	jsLine.forEach(function(line, index){
+				if (!reg.test(line)) return;
+
+				line = line.replace(/,/g , ';')
+
+				var evaFn = new Function('require' , line)
+
+				evaFn(function(modName){
+					var body = grunt.file.read(path.join(TPL_DIR, modName))
+					var fanal = line.replace(reg, '\''+body+'\'')
+					jsLine.splice(index,1, fanal)
+
+				})
+
+			})
+			grunt.file.write(path.join(TRANS_TPL_DIR, filename), jsLine.join('\n'));
+
+		})
+	});
+
+
+	grunt.registerTask('default', ['watch']);
+	grunt.registerTask('debug', ['clean:before','mkTpl','transTpl','concat', 'uglify']);
+	grunt.registerTask('build', ['clean:before','mkTpl','transTpl','concat', 'uglify', 'clean:after']);
+
+};

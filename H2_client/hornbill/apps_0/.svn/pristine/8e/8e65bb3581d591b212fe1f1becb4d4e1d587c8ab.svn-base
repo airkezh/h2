@@ -1,0 +1,114 @@
+<%# head_simple.html%>
+
+	<%	
+	var first=this.crackBrand_welcome||{};
+	var range=this.range||{};
+	var firer_code=first.error_code;
+	var error_code = range.error_code;
+	if(error_code!="400400"){
+		var fin_status=first.data.fin_status;
+		var shareId=range.data.originator.id;
+	}else{
+		var fin_status=-1;
+		var shareId=0;
+	}
+	%>
+		<script>
+			(function(win, doc) {
+				var docel = doc.documentElement;
+				var meta = doc.querySelectorAll('meta[name=viewport]');
+				meta[0].setAttribute('content', 'width=device-width,user-scalable=no,initial-scale=1');
+
+				function recalc() {
+					var width = docel.clientWidth;
+					docel.style.fontSize = 100 * width / 640 + 'px';
+				}
+				if (doc) {
+					recalc();
+					win.addEventListener('orientationchange', recalc, false);
+				} else if (doc.addEventListener) {
+					doc.addEventListener('DOMContentLoaded', recalc, false);
+				}
+			})(window, document)
+		</script>
+		</head>
+
+		<body>
+
+			<div class="first_main">
+				<div class="top_main"></div>
+				<div class="bottom_main">
+					<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/index_bg_bottom_01.png" class="bg_imgs" />
+					<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/index_bg_bottom_02.png" class="bg_imgs" />
+					<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/index_bg_bottom_03.png" class="bg_imgs" />
+					<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/index_bg_bottom_04.png" class="bg_imgs" />
+					<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/index_bg_bottom_05.png" class="bg_imgs" />
+				</div>
+				<div class="first_rules"></div>
+				<div class="first_popwin">
+					<img class="first-popwin-rules" src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/cb_rules.png" />
+					<div class="rules-content">
+						1.活动时间：2015年11月1日00:00:00—2015年11月11日23:59:59。
+						<br/>2.活动条件：通过手机美丽说for iOS或for Android，或者通过微信分享的链接参与活动。
+						<br/>3.用户可发起游戏，并分享到微信中邀请好友共同撕名牌，好友有一定概率能成功撕名牌，最终能顺利撕下名牌的发起者将获得5元、10元、20元、50元、100元的美丽说优惠券奖励；
+						<br/>4. 若从微信中发起游戏且顺利撕下名牌，即可成功获得优惠券，用户可用微信账号登陆美丽说app后，在“我的优惠券”查看获得优惠券；
+						<br/>5.活动期间奖励数量有限，先到先得，发完为止。每个自然人用户仅能使用一个美丽说注册帐号参与本活动，美丽说任何活动均杜绝一切作弊行为，并保留追究其相关法律责任的权利；
+						<br/>6.优惠券的使用时间：2015年11月11日00:00:00—11月11日23:59:59。
+						<br/>7.活动中中奖的优惠券使用方式：适用于除海淘馆商品及个人商品外的全站所有商品，可与店铺优惠券叠加使用，但不能与平台优惠券同时使用。
+						<br/>8.优惠券不能提现、不能转赠、不能为他人付款。
+						<br/>9.美丽说在法律允许的范围内保留对本活动的最终解释权。
+						<br/>
+					</div>
+					<img class="first-popwin-know" src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/cb_rules_btn.png" />
+				</div>
+				<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/index_zhengk.png" class="runing_man rm_zhengk head_shake" />
+				<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/index_dengc.png" class="runing_man rm_dengc head_shake" />
+				<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/index_wangzl.png" class="runing_man rm_wangzl head_shake" />
+				<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/index-chenh.png" class="runing_man rm_chenh head_shake" />
+				<!--<a href="" class="runing_man brand_lh first_btn">
+					<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/index_luh_brand.png" />
+				</a>-->
+				<!-- 音效 -->
+				<audio id="audio_lh" hidden="true" preload="auto" autobuffer>
+					<source src="http://i.meilishuo.net/css/images/staticbed/6302.mp3">
+				</audio>
+				<div class="runing_man brand_lh first_btn" id="start_btn">
+					<div class="cover">
+						<div class="cover_left">
+							<div class="cover_color">
+								<div class="cover_img"></div>
+							</div>
+							<div class="cover_black"></div>
+						</div>
+						<div class="cover_right">
+							<div class="cover_bgc"></div>
+						</div>
+					</div>
+				</div>
+				<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/index_cb_tips.jpg" class="runing_man brand_cb_tips" />
+				<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/index_hands.png" class="runing_man rm_hands hand_shake" />
+				<audio src="http://i.meilishuo.net/css//images/wap/activity/crackbrand/friend_bgm.mp3" autoplay="autoplay" loop="loop">
+					您的浏览器不支持audio标签
+				</audio>
+			</div>
+			<div id="success_tips" class="success_tips" style="display: none;">成功撕下20%的名牌！</div>
+			<script>
+				fml.vars.isWxLogin = "<%= this.isWxLogin || false %>";
+				fml.vars.isWx = "<%= this.isWx %>";
+				fml.vars.ass_gid = "<%= shareId %>";
+				fml.vars.status = "<%= fin_status %>";
+				fml.vars.error_code = "<%=error_code%>";
+				var frm = fml.vars.isWx ? '&frm=isWx' : '&frm=isMLS';
+				if (fml.vars.error_code != "0") {
+					if (fml.vars.status == "0" && fml.vars.error_code == "400403") {
+						window.location.href = '/activity/crackbrand/start/?ass_gid=' + fml.vars.ass_gid + frm;
+					} else if (fml.vars.status == "1") {
+						window.location.href = '/activity/crackbrand/award/?ass_gid=' + fml.vars.ass_gid + frm;
+					}
+				}
+			</script>
+			<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+			<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+		fml.use('wap/page/activity/crackbrand/crackbrand');
+		_use:", this._JSstack, this._JSmods); %>
+				<%# foot.html%>

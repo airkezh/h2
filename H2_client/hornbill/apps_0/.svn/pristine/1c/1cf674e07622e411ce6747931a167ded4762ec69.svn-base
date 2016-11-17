@@ -1,0 +1,90 @@
+<%#head.html%>
+<%
+	var koreaInfo = this.koreaInfo || {}
+		, dataInfo = koreaInfo.data.tInfo || {}
+		, shopData = dataInfo.shopdata || []
+		, shopArr = dataInfo.shopArr || []
+%>
+<div class="wrap">
+	<% if(!this.bannerArr){ %>
+		<a href="<%= dataInfo.bannerlink ? dataInfo.bannerlink : 'javascript:;'%>" class="banner" data-xr="<%= this.koreaInfo_XR %>">
+			<img src="<%= dataInfo.banner %>" />
+		</a>
+	<% } %>
+	<%= requireFn('block/banner.html')({
+		'banner' : this.bannerArr,
+		'banner_r':this.koreaInfo_XR+':type=banner',
+		'hide_btn':false,
+		'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+	});%>
+	<% if(shopArr.length){ %>
+		<section class="hot-shop">
+			<div class="inner">
+				<h3>热门品牌</h3>
+				<ul data-xr="<%= this.koreaInfo_XR %>">
+					<% shopArr.map(function(data){ %>
+						<li>
+							<a class="gotoShop" data-shop_id="<%= data.shop_id %>" href="javascript:;">
+								<img src="<%= data.img %>" alt="">
+							</a>
+						</li>
+					<% }); %>
+				</ul>
+			</div>
+		</section>
+	<% } %>
+	<% dataInfo && shopData && shopData.map(function(data){ %>
+		<%
+			var shopInfo = data.shopInfo || {}
+				, shopGoods = data.shopGoods || []
+				, circleId = parseInt(shopInfo.goTalk)
+		%>
+		<section class="content">
+			<a href="<%= circleId ? "meilishuo://circle.meilishuo?json_params=" + encodeURIComponent(JSON.stringify({"circle_id" : circleId})) : this.mlsApp ? shopInfo.link : '/shop/shop/' + shopInfo.shop_id %>" class="shop" data-xr="<%= this.koreaInfo_XR %>">
+				<div class="logo">
+					<img src="<%= shopInfo.image_src%>" />
+				</div>
+				<div class="info">
+					<h2><%= shopInfo.title %><span><%= shopInfo.titleMore ? shopInfo.titleMore : ''%></span></h2>
+					<h3><%= shopInfo.intro %></h3>
+					<p>
+						<span class="title"><b></b><%= shopInfo.position %></span>
+						<span class="btn"><%= shopInfo.btn %></span>
+					</p>
+				</div>
+			</a>
+			<ul class="goods">
+				<% shopGoods && shopGoods.map(function(item){%>
+					<li>
+						<a href="<%= this.mlsApp ? item.link : '/share/item/' + item.tid %>" data-xr="<%= this.koreaInfo_XR %>">
+							<img src="<%= item.pic_url %>" />
+							<h3><%= item.title %></h3>
+							<p class="price"><%= item.price %></p>
+							<%if(item.horizontal_mark.length != 0){%>
+								<div class="mark">
+									<img src="<%= item.horizontal_mark[0].img_url %>" />
+								</div>
+							<%}%>
+						</a>
+					</li>
+				<%}); %>
+			</ul>
+			<a href="<%= circleId ? "meilishuo://circle.meilishuo?json_params=" + encodeURIComponent(JSON.stringify({"circle_id" : circleId})) : this.mlsApp ? shopInfo.link : '/shop/shop/' + shopInfo.shop_id %>" class="more" data-xr="<%= this.koreaInfo_XR %>">更多<span><%= shopInfo.title%></span>精选商品</a>
+		</section>
+	<%}); %>
+</div>
+
+<%= requireFn('wapShare.html')({
+	'share' : this.share 
+    , 'shareTitle' : '选择分享到'
+    , '_JSstack' : this._JSstack
+	, '_JSmods' : this._JSmods
+}); %>
+<script>
+	fml.vars.appShare = <%= this.appShare %>; 
+	fml.vars.params = <%= JSON.stringify(this.params) %>; 
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/korea/korea_new');
+_use:", this._JSstack, this._JSmods); %>
+<%#foot_simple.html%>

@@ -1,0 +1,17 @@
+<div class="tab_match">
+    <h2 class="tab_top"><a href="javascript:void 0" class="cur">店铺促销</a></h2>
+</div>
+<ul class="tab-content shop-promote">
+    <%
+        var types = {
+            'mail': '邮',
+            'reduce': '减',
+            'discount': '折'
+        };
+        this.goods_info.shop_promote.forEach(function(v) {
+    %>
+    <li class="item">
+        <i class="icon icon-<%= v.type %>"><%= types[v.type] %></i><p class="text"><%= v.text %><span class="note"><%= v.note %></span></p>
+    </li>
+    <%})%>
+</ul>

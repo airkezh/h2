@@ -1,0 +1,683 @@
+/*common*/
+
+/**
+ * @name: waterfall
+ * @version: 0.2.3
+ * @doc: http://static.w.meilishuo.com/docs/api/components/waterfall.html
+ * @notice:
+ *  1. 瀑布流使用了绝对定位，需要自己在样式中设置
+ *  2. 组件发出的请求中会自动携带 `frame` 和 `trace` 属性
+ *  3. 组件中所有事件函数的 `this` 值都是组件实例对象
+ */
+
+var ShareTmp                 = require( 'circle/component/shareTmp' ),
+    $                        = require( 'wap/zepto' ),
+    doc                      = document,
+    $doc                     = $( doc ),
+    $win                     = $( window ),
+    $winHeight               = $win.height(),
+
+    // 每个 WaterFall 的实例都有独自的 id，该 id 目前用于 `destroy()` 方法
+    guid                     = 1,
+    isGotopRunning           = false,
+    AJAX_TIMEOUT             = 3000,
+    DIR_DOWN                 = 'down',
+    DIR_UP                   = 'up',
+    FALSE                    = false,
+    TRUE                     = true,
+    // 设置在瀑布流元素的类名，标记它的布局已经计算完毕
+    LAYOUTED                 = 'js-layouted',
+
+    SHOW                     = 'waterfall-optimise-show',
+    HIDE                     = 'waterfall-optimise-hide',
+    // 空函数，叫 NOOP 是约定俗成
+    NOOP                     = function() {
+        return TRUE
+    },
+
+    //设置瀑布流容器及box的属性
+    STYLE_CONTAINER          = 'waterfall-container',
+    STYLE_BOX                = 'waterfall-box',
+
+    NORMAL                   = 'NORMAL',
+    REVERSE                  = 'REVERSE',
+    ADD_EXTRA_STYLE          = '$$AddExtraStyle',
+
+    CONS                     = {
+        NORMAL:  NORMAL,
+        REVERSE: REVERSE,
+        SHOW:    SHOW,
+        HIDE:    HIDE
+    },
+
+    DEFAULT_OFFSET           = $winHeight / 2,
+    SCROLL_EVENT             = 'scroll.waterfall',
+    TOUCHMOVE_EVENT          = 'touchmove.waterfall',
+    TOUCHEND_EVENT           = 'touchend.waterfall',
+    TIMEOUT_ID,
+
+    defaultConfig            = {
+        el:               '.goods-wall',
+        tmpl:             'posterWall',
+        type:             'get',
+        dataType:         'json',
+        data:             {
+            offset: 0,
+            frame:  0,
+            trace:  0,
+            limit:  10
+        },
+        dataName:         'tInfo',
+        // 该参数用于双向瀑布流，不需要手动设置。目前支持 "normal" 和 "reverse" 两种
+        layoutDirection:  NORMAL,
+        colGap:           8,
+        hasSideGap:       false,
+        // 这个参数暂时没有用，以后可以选择废除
+        layout:           'normal',
+        canFetch:         defaultScroll,
+        dataHandler:      defaultConstruct,
+        dataFilter:       defaultFilter,
+        onBeforeFetch:    NOOP,
+        onFetchStart:     NOOP,
+        onFetchFinished:  NOOP,
+        onFetchSuccess:   NOOP,
+        onFetchError:     NOOP,
+        onLayoutFinished: NOOP,
+        optimise:         null
+    },
+
+    findCurCol               = buildFindCondition( function( a, b ) {
+        return a.max - b.max
+    } ),
+
+    findHighestCol           = buildFindCondition( function( a, b ) {
+        return b.max - a.max
+    } ),
+
+    // 这里所谓 "最矮" 的列是指 min 值最大的
+    findLowestCol            = buildFindCondition( function( a, b ) {
+        return b.min - a.min
+    } ),
+
+    waterFallInstances       = [],
+    waterFallInstancesLength = 0,
+    prevScrollTop            = 0
+
+function initExtraStyle( config ) {
+    if ( window[ ADD_EXTRA_STYLE ] ) {
+        return
+    }
+
+    window[ ADD_EXTRA_STYLE ] = true
+
+    var style = doc.createElement( 'style' )
+
+    style.id        = 'waterfall-optimise-style'
+    style.innerHTML = '.' + SHOW + '{ display:block; }' +
+        '.' + HIDE + '{ display:none; }'
+    style.innerHTML += '.' + STYLE_CONTAINER + '{ position:relative;}' + '.'+ STYLE_BOX +'{ position:absolute; }'
+
+    $(config.el).addClass( STYLE_CONTAINER )
+
+    // WebKit hack :(
+    style.appendChild( doc.createTextNode( '' ) )
+
+    doc.head.appendChild( style )
+}
+
+// 使用 curry 来简化代码
+// 如果 col 的高度相同，那么优先获取左边的 col。findHighestCol() 也需要这样处理
+function buildFindCondition( custom ) {
+    return function( cols ) {
+        if ( !cols ) {
+            return null
+        }
+
+        return cols.sort( function( a, b ) {
+            return custom( a, b ) || ( a.left - b.left )
+        } )[ 0 ]
+    }
+}
+
+function defaultConstruct( list, config ) {
+    var helpers = config.helpers,
+        obj     = {},
+        key, layoutFn
+
+    if ( !list || !list.length ) {
+        return
+    }
+
+    for ( key in helpers ) {
+        if ( helpers.hasOwnProperty( key ) ) {
+            obj[ key ] = helpers[ key ]
+        }
+    }
+
+    // TODO，布局函数需要处理的内容比较多，对于自定义来说很困难，目前自定义布局的需求不明显，暂时不考虑优化这部分。
+    layoutFn = generalLayout
+
+    layoutFn.call( this, list, config, obj )
+    config.onLayoutFinished.call( this, config )
+
+    if ( config.useOptimise ) {
+        config.hasMoved = true
+        this.resetCurTop()
+        $doc.triggerHandler( config.touchEndEventName )
+    }
+}
+
+function defaultFilter( data ) {
+    return data[ this._config.dataName ]
+}
+
+function defaultScroll( scrollTop ) {
+    if ( $doc.height() - $winHeight - scrollTop < DEFAULT_OFFSET ) {
+        return true
+    }
+}
+
+function generalLayout( datas, config, obj ) {
+    var $el           = this.$el,
+        tmpl          = config.tmpl,
+        initTopOffset = config.initTopOffset,
+        colWidth      = config.colWidth,
+        useOptimise   = config.useOptimise,
+        //这里只用到了 colGapT 属性，colGapB 是不是可以去掉?
+        colGap        = config.colGapT,
+        frame         = config.data.frame,
+        str           = '',
+        curCol        = null,
+        // this._cols 的 max 应该始终为最高
+        cols          = this._cols,
+        colsHistory   = this._colsHistory,
+        oldCol        = colsHistory[ frame ],
+        boxes         = this._boxes,
+        tmpContainer  = [],
+        $boxes, tmpHeight
+
+    if ( oldCol ) {
+        // 这里重新定义了 cols，下面对 cols 的操作就会导致它与 this._cols 的数据不同步
+        // 应该将两次结果合并
+        cols = oldCol.map( function( obj ) {
+            return {
+                min:   obj.min,
+                max:   obj.min,
+                left:  obj.left,
+                frame: frame
+            }
+        } )
+    } else {
+        oldCol = cols.map( function( obj ) {
+            return {
+                min:   obj.max,
+                max:   obj.max,
+                left:  obj.left,
+                frame: frame
+            }
+        } )
+    }
+    datas.forEach( function( v, index ) {
+        obj.v     = v
+        obj.index = index
+        str += ShareTmp( tmpl, obj )
+    } )
+    $boxes = $el.append( str ).children().not( '.' + LAYOUTED )
+
+    // 设置和获取 DOM 属性需要分开，这是一种优化的手段，
+    // 但下面这个循环里对 `width` 进行了设置，分成两个循环就没有什么必要了
+    $boxes.each( function( i, el ) {
+        // 高度会依赖于宽度，因此要先设置
+        el.style.width = colWidth + 'px'
+
+        var height = el.offsetHeight,
+            topStyle
+
+        curCol   = findCurCol( cols )
+        findCurCol( oldCol )
+        topStyle = curCol.max + 'px'
+
+        tmpContainer.push( {
+            left:             curCol.left + 'px',
+            relativeTopStyle: topStyle,
+            top:              curCol.max + initTopOffset,
+            height:           height,
+            el:               el,
+            state:            useOptimise ? ( config.isFirstFrame ? SHOW : HIDE ) : SHOW
+        } )
+
+        curCol.max += height + colGap
+    } )
+
+    config.isFirstFrame = false
+
+    if ( !colsHistory[ frame ] ) {
+        colsHistory[ frame ] = cols.map( function( v, i ) {
+            return {
+                min:   oldCol[ i ].max,
+                max:   v.max,
+                left:  oldCol[ i ].left,
+                frame: frame
+            }
+        } )
+    }
+
+    tmpContainer.forEach( function( box ) {
+        var el        = box.el
+        el.style.top  = box.relativeTopStyle
+        el.style.left = box.left
+        box.baseClass = el.className += ' ' + LAYOUTED + ' waterfall-frame-' + frame + ' ' + STYLE_BOX
+        el.className += ' ' + box.state
+    } )
+
+    // 确保 boxes 中的元素是按照高度来排列的
+    // 因为 waterfallOptimise 中使用了二分法查找，如果顺序不对，结果就乱了。
+    if ( useOptimise ) {
+        if ( !boxes.length || boxes[ boxes.length - 1 ].top <= tmpContainer[ 0 ].top ) {
+            this._boxes = boxes.concat( tmpContainer )
+        } else {
+            this._boxes = tmpContainer.concat( boxes )
+        }
+    }
+
+    tmpHeight = findHighestCol( cols ).max
+    if ( !this._curTop || tmpHeight > this._curTop ) {
+        this.$el.height( this._curTop = tmpHeight )
+    }
+
+    this._cols = cols.map( function( obj, i ) {
+        var oldValue = this[ i ]
+        return {
+            min:   obj.min < oldValue.min ? obj.min : oldValue.min,
+            max:   obj.max > oldValue.max ? obj.max : oldValue.max,
+            left:  obj.left,
+            frame: frame
+        }
+    }, this._cols )
+}
+
+// 参考了 CSS 中设置 `margin` 的方式，`colGap` 可以按照上右下左的方式传值
+function parseColGap( config ) {
+    var originValue = config.colGap,
+        iterateLen  = 4,
+        gapArr, len, val
+
+    if ( originValue !== originValue ) {
+        return console.error( originValue + ' is not a valid number.' )
+    }
+
+    if ( typeof originValue == 'number' ) {
+        config.colGapT = config.colGapR = config.colGapB = config.colGapL = originValue
+    } else {
+        gapArr = String( originValue ).split( ' ' )
+        len    = gapArr.length
+
+        if ( len == 0 || len > 4 ) {
+            return console.error( originValue + '\'s format is not right.' )
+        }
+
+        while ( iterateLen-- ) {
+            val = gapArr[ iterateLen ]
+            if ( val === undefined ) {
+                continue
+            }
+
+            if ( isNaN( val = +val ) ) {
+                return console.error( originValue + ' contains invalid number.' )
+            }
+
+            gapArr[ iterateLen ] = val
+        }
+
+        switch ( len ) {
+            case 1:
+                config.colGapT = config.colGapR = config.colGapB = config.colGapL = gapArr[ 0 ]
+                break
+
+            case 2:
+                config.colGapT = config.colGapB = gapArr[ 0 ]
+                config.colGapR = config.colGapL = gapArr[ 1 ]
+                break
+
+            case 3:
+                config.colGapT = gapArr[ 0 ]
+                config.colGapR = config.colGapL = gapArr[ 1 ]
+                config.colGapB = gapArr[ 2 ]
+                break
+
+            case 4:
+                config.colGapT = gapArr[ 0 ]
+                config.colGapR = gapArr[ 1 ]
+                config.colGapB = gapArr[ 2 ]
+                config.colGapL = gapArr[ 3 ]
+                break
+        }
+    }
+}
+
+function WaterFall( config ) {
+    this._config = config
+    this._id     = guid++
+    this._boxes  = []
+    this._frames = {
+        loaded: {},
+        cur:    0,
+        max:    0,
+        min:    0 // @TODO：这里存在问题，在设置列信息的时候，这里也应该更新
+    }
+
+    this.init()
+}
+
+WaterFall.prototype = {
+    constructor: WaterFall,
+
+    init: function() {
+        var config     = this._config,
+            colNum     = config.colNum,
+            hasSideGap = config.hasSideGap,
+            i          = 0,
+            sideGap    = 0,
+            left       = 0,
+            gapL, gapR, maxGap, $el, cols, colWidth
+
+        $el = this.$el = $( config.el )
+        this._cols = cols = []
+        this._colsHistory = []
+
+        config.initTopOffset = $el.position().top
+        config.isFirstFrame  = true
+
+        parseColGap( config )
+
+        gapL   = config.colGapL
+        gapR   = config.colGapR
+        maxGap = gapR
+
+        /**
+         * 瀑布流和左右两个 side 的距离是由 gapL 决定的，gapR 只影响瀑布流元素之间的距离
+         */
+        if ( hasSideGap ) {
+            sideGap = 2 * gapL
+        }
+
+        if ( !colNum || colNum <= 0 ) {
+            throw Error( '请传入 colNum' )
+        } else {
+            // colGap 在计算时，如果两个边距相邻，那么取两个值中最大的
+            colWidth = config.colWidth = Math.floor( ( $el.width() - sideGap - ( colNum - 1 ) * maxGap ) / colNum )
+        }
+
+        for ( ; i < colNum; i++ ) {
+            if ( i == 0 ) {
+                left = hasSideGap ? gapL : 0
+            } else {
+                left += colWidth + maxGap 
+            }
+
+            cols.push( {
+                min:   0,
+                max:   0,
+                left:  left,
+                frame: 0
+            } )
+        }
+
+        if ( config.useOptimise = !!config.optimiseFn ) {
+            this.bindTouchmoveEvent()
+            config.optimiseFn.initRange( colNum )
+        }
+
+        this.fixGotop()
+    },
+
+    bindTouchmoveEvent: function() {
+        var _this  = this,
+            config = _this._config,
+            id     = '.' + _this._id,
+            touchMoveEventName, touchEndEventName, localTimeoutID
+
+        touchMoveEventName = config.touchMoveEventName = TOUCHMOVE_EVENT + id
+        touchEndEventName = config.touchEndEventName = TOUCHEND_EVENT + id
+
+        $doc.on( touchMoveEventName, function() {
+            config.hasMoved = true
+        } ).on( touchEndEventName, function() {
+            if ( config.hasMoved ) {
+                config.optimiseFn.optimise( _this._boxes, $win.scrollTop() )
+            }
+
+            config.hasMoved = false
+        } )
+
+        // 冗余代码
+        $win.on( SCROLL_EVENT, function() {
+            clearTimeout( localTimeoutID )
+            localTimeoutID = setTimeout( function() {
+                config.optimiseFn.optimise( _this._boxes, $win.scrollTop() )
+            }, 30 )
+        } )
+    },
+
+    fixGotop: function() {
+        var _this = this
+
+        $doc.on( 'gotop.begin', function() {
+            isGotopRunning = true
+        } ).on( 'gotop.finish', function() {
+            isGotopRunning = false
+
+            _this.resetCurTop()
+        } )
+    },
+
+    fetch: function( initData ) {
+        var _this  = this,
+            config = _this._config,
+            cData  = config.data
+
+        if ( _this._isLoading ) {
+            return
+        }
+
+        _this._isLoading = true
+        clearTimeout( TIMEOUT_ID )
+        TIMEOUT_ID       = setTimeout( function() {
+            _this._isLoading = false
+        }, AJAX_TIMEOUT )
+
+        if ( config.onBeforeFetch.call( _this, config ) === FALSE ) {
+            _this._isLoading = false
+            return
+        }
+
+        _this._config.onFetchStart.call( _this, config )
+
+        if ( this.isFrameLoaded( config.data.frame ) ) {
+            _this._isLoading = false
+            return
+        }
+
+        if ( initData ) {
+            fetchCompleteCallback( null, 200 )
+            fetchSuccessCallback( initData )
+            return
+        }
+
+        $.ajax( {
+            type:     config.type,
+            dataType: config.dataType,
+            data:     cData,
+            url:      config.url,
+            timeout:  AJAX_TIMEOUT,
+            success:  fetchSuccessCallback,
+            error:    fetchErrorCallback,
+            complete: fetchCompleteCallback
+        } )
+
+        function fetchCompleteCallback( xhr, status ) {
+            config.onFetchFinished.call( _this, xhr, status )
+            _this._isLoading = false
+        }
+
+        function fetchSuccessCallback( data ) {
+            var frames   = _this._frames,
+                curFrame = cData.frame
+
+            data = config.dataFilter.call( _this, data )
+            config.onFetchSuccess.call( _this, data, config )
+            config.dataHandler.call( _this, data, config )
+
+            frames.loaded[ cData.frame ] = 1
+            if ( frames.max < curFrame ) {
+                frames.max = curFrame
+            }
+
+            if ( frames.min > curFrame ) {
+                frames.min = curFrame
+            }
+
+            if ( config.layoutDirection == NORMAL ) {
+                cData.frame++
+            } else {
+                cData.frame--
+            }
+
+            cData.trace = data.trace || 0
+        }
+
+        function fetchErrorCallback( xhr, errorType, error ) {
+            config.onFetchError.call( _this, error, errorType )
+        }
+    },
+
+    // 默认初始化结束后，不会主动请求数据，需要手动执行 start() 方法
+    // 对 fetch 的封装，名字看起来更清晰一些
+    start: function( initData ) {
+        this.fetch( initData )
+        return this
+    },
+
+    // 被锁定的对象不响应 window 的 scroll 事件
+    lock: function() {
+        this._isLock = true
+        return this
+    },
+
+    // 瀑布流是否正在加载数据
+    isLoading: function() {
+        return this._isLoading
+    },
+
+    // API 不应该将内部对象直接暴露出去，这样的引用会造成不必要的麻烦
+    getColsInfo: function() {
+        return $.extend( true, [], this._cols )
+    },
+
+    getColsHistoryInfo: function() {
+        return $.extend( true, [], this._colsHistory )
+    },
+
+    setColsHistoryInfo: function( history ) {
+        this._colsHistory = $.extend( true, [], history )
+        return this
+    },
+
+    setColsInfo: function( cols ) {
+        if ( cols && cols.length ) {
+            this._cols = $.extend( true, [], cols )
+        }
+        return this
+    },
+
+    updateLayoutDirection: function( dir ) {
+        if ( dir in CONS ) {
+            this._config.layoutDirection = dir
+        } else {
+            throw Error( dir + ' is not a valid direction.' )
+        }
+        return this
+    },
+
+    findLowestCol: function() {
+        return findLowestCol( this._cols )
+    },
+
+    findHighestCol: function() {
+        return findHighestCol( this._cols )
+    },
+
+    isFrameLoaded: function( frameIndex ) {
+        return !!this._frames.loaded[ frameIndex ]
+    },
+
+    getCurrentFrame: function() {
+        return this._config.data.frame
+    },
+
+    unlock: function() {
+        this._isLock = false
+        return this
+    },
+
+    destroy: function() {
+        var len = waterFallInstancesLength
+        while ( len-- ) {
+            if ( waterFallInstances[ len ]._id === this._id ) {
+                waterFallInstances.splice( len, 1 )
+                waterFallInstancesLength--
+            }
+        }
+    },
+
+    resetCurTop: function() {
+        this._boxes._curTop = -9999
+        return this
+    },
+
+    triggerScroll: function( dir ) {
+        $win.triggerHandler( SCROLL_EVENT, [ dir || DIR_DOWN ] )
+        return this
+    }
+}
+
+// 开始初始化，绑定滚动加载事件，所有瀑布流实例都在同一个 `scroll` 事件中
+$win.on( SCROLL_EVENT, function( e, dir ) {
+    var isDown, scrollTop
+    if ( !waterFallInstancesLength ) {
+        return
+    }
+    scrollTop = $win.scrollTop()
+    if ( dir == DIR_DOWN ) {
+        isDown = true
+    } else {
+        if ( dir == DIR_UP ) {
+            isDown = false
+        } else {
+            isDown = scrollTop >= prevScrollTop
+        }
+    }
+
+    prevScrollTop = scrollTop
+
+    waterFallInstances.forEach( function( instance ) {
+        if ( !instance._isLock ) {
+            if ( instance._config.canFetch.call( instance, scrollTop, isDown ) === TRUE ) {
+                instance.fetch()
+            }
+        }
+    } )
+} )
+
+exports.CONS = CONS
+
+exports.init = function( config ) {
+    var instance
+    config = $.extend( true, {}, defaultConfig, config )
+
+    initExtraStyle( config )
+
+    waterFallInstances.push( instance = new WaterFall( config ) )
+    waterFallInstancesLength++
+    return instance
+}

@@ -1,0 +1,38 @@
+<%#head.html%>
+
+<div class="goods_wall"></div>
+<div class="pullUp" status="loading"></div>
+
+<%= requireFn("biz/beauty_sale/gotop.html")({
+	'isIphone': this.os.ios,
+	'_JSstack': this._JSstack,
+	'_JSmods': this._JSmods
+});%>
+
+<script>
+	<%= this.list ? 'Meilishuo.config.fallWall0 = '+JSON.stringify(this.list)+';':''; %>
+</script>
+
+<script type="text/html" id="posterWall">
+<? this.tInfo && this.tInfo.forEach(function(sec_data,index){ ?>
+	<div class="act_box">
+		<a href="<?= sec_data.url ?>" class="act_img"><img src="<?= sec_data.image_url ?>" alt="<?= sec_data.title ?>">
+			<?
+				var timeReg = /-/g;
+				sec_data.start_time = sec_data.start_time.replace(timeReg, '/');
+				var begin = new Date(sec_data.start_time);
+				var now = new Date();
+				var lastDate = (begin - now)/1000 + 4*24*60*60;
+				lastDate = lastDate>0 ? lastDate : 0;
+			?>
+			<div class="time_wrap <?= !lastDate ? 'act_end' : '' ?>">仅剩：<span class="timeStamp" time="<?= lastDate ?>">0天0小时0分0秒</span></div>
+		</a>
+	</div>
+<? }); ?>
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/biz/list');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot_simple.html%>

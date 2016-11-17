@@ -1,0 +1,13 @@
+function sq(){
+	return this;
+}
+var controlFns = {
+	show_pic : function(params){
+		// this.debugSnake({target : 'xiaolongrong.rdlab'});
+		var php = {
+			'show_list' : '/shouq/shouQ_goods_show_list'
+		}
+		this.ajaxTo(php[params])
+	}
+}
+exports.__create = controller.__create(sq , controlFns);

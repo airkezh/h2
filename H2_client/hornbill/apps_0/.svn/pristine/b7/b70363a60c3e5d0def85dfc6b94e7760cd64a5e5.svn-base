@@ -1,0 +1,112 @@
+/*common*/
+
+/*
+ Tab 组件
+
+ TODO
+ */
+
+var $              = require( 'wap/zepto' ),
+    NOOP           = function() {
+        return true
+    },
+
+    defaultConfig  = {
+        autoInit:     true,
+        event:        'click',
+        tab:          '.js-tab',
+        'tab-item':   '.js-tab-item',
+        content:      '.js-tab-content',
+        activeClass:  'active',
+        beforeChange: NOOP,
+        afterChange:  NOOP,
+        change:       function( item, content, config, instance ) {
+            item.addClass( config.activeClass )
+            content.show()
+        }
+    },
+
+    needFixedProps = [ 'tab', 'tab-item', 'content', 'activeClass' ]
+
+function Tab( config ) {
+    this.init( this.config = config )
+}
+
+Tab.prototype = {
+    constructor: Tab,
+
+    init: function( config ) {
+        this.fixClass( config )
+
+        var $p        = $( config.tab ),
+            $tabs     = $p.find( config[ 'tab-item' ] ),
+            $contents = $p.find( config.content ),
+            $curTab, $curContent
+
+        if ( config.autoInit ) {
+            $curTab = $tabs.filter( config.activeClass )
+
+            if ( !$curTab.length ) {
+                $curTab = $tabs.eq( 0 )
+            }
+
+            $curContent = $contents.eq( $curTab.index() )
+
+            $curTab.addClass( config.activeClassValue )
+            $contents.hide()
+            $curContent.show()
+        }
+
+        this.els = {
+            parent:     $p,
+            tabs:       $tabs,
+            contents:   $contents,
+            curTab:     $curTab,
+            curContent: $curContent
+        }
+
+        $( config.tab ).on( config.event, config[ 'tab-item' ], this.eventHandler.bind( this ) )
+    },
+
+    fixClass: function( config ) {
+        needFixedProps.map( function( value ) {
+            config[ value ] = ( value = config[ value ].trim() ).indexOf( '.' ) == 0 ? value : ( '.' + value )
+        } )
+
+        config.activeClassValue = config.activeClass.substring( 1 )
+    },
+
+    eventHandler: function( e ) {
+        var config           = this.config,
+            els              = this.els,
+            $el              = $( e.target ),
+            activeClassValue = config.activeClassValue,
+            $curContent
+
+        if ( !$el.hasClass( activeClassValue ) ) {
+            if ( !config.beforeChange( $el, els.curContent, config ) ) {
+                return
+            }
+
+            els.curTab.removeClass( activeClassValue )
+            els.curContent.hide()
+
+            $el.addClass( activeClassValue )
+            $curContent = els.contents.eq( $el.index() ).show()
+
+            els.curTab     = $el
+            els.curContent = $curContent
+
+            config.afterChange( $el, $curContent, config )
+        }
+    },
+
+    destroy: function() {
+        var config = this.config
+        $( config.tab ).off( config.event )
+    }
+}
+
+exports.init = function( config ) {
+    return new Tab( $.extend( true, defaultConfig, config ) )
+}

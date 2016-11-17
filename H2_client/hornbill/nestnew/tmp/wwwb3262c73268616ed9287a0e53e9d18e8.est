@@ -1,0 +1,12 @@
+/*--/Users/MLS/Documents/H2/H2_client/hornbill/apps_0/www/views/wins/full_site_widget.html--*/ 
+     var est = require(config.path.lib + 'est/est.js'); 
+     var _extFn = require('/Users/MLS/Documents/H2/H2_client/hornbill/nestnew/server/lib/est/extFn.js'); 
+     function requireFn(tpl) { return est.renderFile('/Users/MLS/Documents/H2/H2_client/hornbill/apps_0/www/views/' ,tpl , null , null ,'www' ,true); } ; 
+     function __getHtml (_data) { 
+       function jsRender(tpl , id) { return est.jsRender(requireFn(tpl)(_data), id  ); } ; 
+       var __htm ='';
+__htm += '<script type="text/html" id="apparel_alert">\n	<?\n		var apparel_data = apparel_alert.data;\n		var bg_style = \'background:url(\'+apparel_data.image+\') no-repeat;_filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src=\'+apparel_data.image+\', sizingMethod="scale");_background-image: none;\';\n	?>\n	<div class="fs_alert_320" style="<?= bg_style ?>">\n		<a class="check_act" target="_blank" href="<?= apparel_data.url ?>">查看</a>\n		<a class="closeButton" href="javascript:;">关闭</a>\n	</div>\n</script>\n<script>\n	fml.vars.apparel_alert = ';
+__htm += _data.apparel_alert === false ? false : true ;
+__htm += ';\n</script>\n';
+return __htm;} 
+ exports.html = __getHtml; 

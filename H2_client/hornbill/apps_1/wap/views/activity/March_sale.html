@@ -1,0 +1,70 @@
+<%#head.html%>
+<div class="top">
+	<img src="<%= this.PICTURE_URL%>images/huodong/March_sale/mob_top2.jpg" />
+	<a href="/biz/reg_feedback/page/welcome" class="jian5"></a>
+	<a href="/activity/four_years/prepare/?cid=343" class="jian10"></a>
+</div>
+<div class="chouj">
+	<img src="<%= this.PICTURE_URL%>images/huodong/March_sale/price_mob1.jpg" />
+	<img src="<%= this.PICTURE_URL%>images/huodong/March_sale/mob_dong.gif" class="cj_gif" />
+	<img src="<%= this.PICTURE_URL%>images/huodong/March_sale/mob_tap.png" class="cj_tap none_f" />
+	<p class="jiang"></p>
+	<% if(this.isLogin == 1){ %>
+		<p class="times"><span>你还有<strong id="promoteNum"><%= this.promote_num.data%></strong>次抽奖机会</span></p>
+	<%}%>
+</div>
+<div class="list">
+	<div class="moveX_wrap" id="roundText">
+		<ul>
+			<% this.record && this.record.data && this.record.data.map(function(data){  %>
+				<li><%= data.nickname%>抽中<%= data.amount%>元现金券</li>
+			<% }); %>
+		</ul>
+	</div>
+	<img src="<%= this.PICTURE_URL%>images/huodong/March_sale/list_mob1.jpg" />
+	<a href="http://mapp.meilishuo.com/activity/four_years/prepare/?cid=341"></a>
+</div>
+<ul class="banner">
+	<li ahref="<%= _extFn.getAppLink('shop' , {'shop_id':'101027'} , this.os, this.r) %>"><img src="<%= this.PICTURE_URL%>images/huodong/March_sale/mobimg5.jpg" /></li>
+	<li ahref="<%= _extFn.getAppLink('shop' , {'shop_id':'107463'} , this.os, this.r) %>"><img src="<%= this.PICTURE_URL%>images/huodong/March_sale/mobimg6.jpg" /></li>
+	<li ahref="<%= _extFn.getAppLink('shop' , {'shop_id':'107407'} , this.os, this.r) %>"><img src="<%= this.PICTURE_URL%>images/huodong/March_sale/mobimg3.jpg" /></li>
+	<li ahref="<%= _extFn.getAppLink('shop' , {'shop_id':'107461'} , this.os, this.r) %>"><img src="<%= this.PICTURE_URL%>images/huodong/March_sale/mobimg4.jpg" /></li>
+</ul>
+<div class="miao_tit"><img src="<%= this.PICTURE_URL%>images/huodong/March_sale/mobmiao_tit.jpg" /></div>
+<div class="miao_box">
+	<%= requireFn('block/banner.html')({
+		'banner' : this.miaosha.data
+		,'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+	});%>
+</div>
+<a href="/activity/summer_match/match/?ac_id=362" class="goods_link"><img src="<%= this.PICTURE_URL%>images/huodong/March_sale/mob_rihan.jpg" /></a>
+<a href="/activity/summer_match/match/?ac_id=363" class="goods_link"><img src="<%= this.PICTURE_URL%>images/huodong/March_sale/mob_guo.jpg" /></a>
+<a href="/activity/summer_match/match/?ac_id=364" class="goods_link"><img src="<%= this.PICTURE_URL%>images/huodong/March_sale/mob_mei.jpg" /></a>
+<% if(this.share){ %>
+	<%= requireFn('wapShare.html')({
+		'share' : this.share 
+	    , 'shareTitle' : '选择分享到'
+	    , '_JSstack' : this._JSstack
+		, '_JSmods' : this._JSmods
+	}); %>
+<%}%>
+<script type="text/html" id="drawing">
+	<div class="draw_box">
+		<p id="draw_tit"></p>
+		<p id="draw_text"></p>
+	</div>
+</script>
+<script type="text/html" id="toupdate">
+<div class="toupdate">
+	<p>只有最新版本才可以享受优惠喔，亲快去升级吧。</p>
+	<a class="btn3zi delayclose" href="/goto/download/">去更新</a>
+</div>
+</script>
+<script>
+	fml.vars.isNewest = "<%=this.isNewest%>";
+	fml.vars.isLogin = "<%=this.isLogin%>";
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/March_sale');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

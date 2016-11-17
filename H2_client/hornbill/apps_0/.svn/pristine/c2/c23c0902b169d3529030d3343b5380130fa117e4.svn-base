@@ -1,0 +1,111 @@
+@import "../block.less";
+@import "../pullUp.less";
+
+body{
+	.bgc(#eee); .fc(#5c5c5c);
+}
+img{
+	.w(100%);
+	.block;
+} 
+// 轮播slide
+.swipe{
+	.pr;.w(7.5rem);.h(3.2rem);.hidden;visibility: hidden;
+
+	.swipe-wrap{
+		.pr;.hidden;
+
+		a{ .pr;.left;.w(7.5rem);.h(3.2rem);background: no-repeat center;background-size: cover; }
+	}
+	.swipe_num{
+		.pa;bottom: .2rem;left: 0;.w(100%);.c;.h(.1rem);.f(0);
+
+		span{ .i_block;.w(.1rem);.h(.1rem);margin: 0px 0.1rem;.border-r(50%);border: 2px solid rgb(255, 255, 255);background-color: transparent; }
+		.active{ .bgc(#fff); }
+	}
+}
+.recommend{
+	.bgc(#fff); .mb(.2rem);
+	// .pb(.2rem);
+}
+.brand{
+	.list{
+		.pl(.11rem); .pr(.11rem); overflow: hidden;
+	}
+	.item{
+		.left; .ml(.16rem); .mr(.16rem); .mb(.16rem); .w(1.5rem); .f(.26rem); .fc(#333); .c;
+		p{
+			.mt(.12rem); .ellipsis;
+		}
+		span:before{
+			content: '';
+			.i_block;
+			.w(.22rem);.h(.2rem); .mr(.05rem); vertical-align: bottom;
+			background: url('http://d01.res.meilishuo.net/pic/_o/56/71/5e41eab3f01677c4d42407957f3a_22_20.cj.png');
+			background-size: cover;
+		}
+		span{
+			.mt(.1rem); .block; .f(.22rem);
+		}
+	}
+	.lookall{
+		.c; .f(0); .pt(.2rem); .pb(.3rem);
+		a{
+			.i_block; padding: .16rem .42rem .16rem .36rem; .bgc(#333); .fc(#fff); .f(.26rem);
+			border-radius: 4px;
+		}
+	}
+}
+.topic{
+	.pb(.2rem);
+	.list{
+		.pl(.06rem); .pr(.06rem); 
+		-webkit-overflow-scrolling: touch;
+		-moz-overflow-scrolling: touch;
+		-o-overflow-scrolling: touch;
+		-ms-overflow-scrolling: touch;
+		overflow-scrolling: touch;
+		overflow:hidden; 
+		overflow-x: scroll;
+		.item{
+			.left; .w(2.4rem); .h(3.2rem); .mr(.03rem); .ml(.03rem);
+		}
+	}
+	.list::-webkit-scrollbar {
+		display: none;
+	}
+	.gtthree{
+		.item{
+			.w(2.2rem); .h(2.94rem);
+		}
+	}
+}
+.activity{
+	.mb(0);
+	.wraper{
+		.pl(.1rem); .pr(.1rem); .pb(.2rem);
+	}
+	.list{
+		.item{
+			.block; .pr; .h(2.74rem); .mb(.03rem);
+			.num{
+				.pa; bottom: .2rem; right:.2rem; .f(.22rem); .fc(#fff); padding: .08rem .16rem;
+				.bgc(rgba(0,0,0,.6)); border-radius: .2rem;
+			}
+		}
+	}
+}
+.pullUp;
+.pullUp{
+	 font-size : .22rem;
+}
+.pullUp:before {
+}
+.pullUp[status="stop"] {
+	height: .4rem;
+	line-height: .2rem;
+}
+.bs_load_img{
+	background: url('http://d04.res.meilishuo.net/pic/_o/6f/fb/973570b75fdb5decfbd379f1598c_730_274.cj.jpg');
+	background-size: cover;
+}

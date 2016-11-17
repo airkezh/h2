@@ -1,0 +1,20 @@
+<script type="text/html" id="goods_tpl">
+	<? 
+		var data = this.v; 
+	?>
+	<div class="g_wrap">
+		<figure class="g" style="margin-left:.05rem;margin-right:.05rem;font-size:.24rem;">
+			<a class="g-entrance" href="/sq/detail?tid=<?= data.twitter_id?>&page_name=<?= data.page_name?>&d_r=<?= data.d_r?>" style="display:block;padding-top:<?= (data.pic_height/data.pic_width)*100 ?>%;background-position:center center;background-repeat:no-repeat;background-size:cover;" asrc="<?= data.goods_img ?>"></a>
+			<figcaption class="g-info" style="padding:.2rem;">
+				<p class="g-info-tile" style="font-size:.24rem;color:black;"><?= data.goods_title ?></p>
+				<p class="g-info-price" style="margin-top:.2rem;">
+					<span class="current" style="font-size:.3rem;color:#f69;">¥<?= data.discount_price ?></span>
+					<del class="original" style="margin-left:.1rem;color:#666;"><?= data.original_price ?></del>
+				</p>
+				<div class="g-info-extra" style="margin-top:.1rem;">
+					<p class="sale_num" style="color:#999;">已有<?= data.sale_num ?>人购买</p>
+				</div>
+			</figcaption>
+		</figure>
+	</div>
+</script>

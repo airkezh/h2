@@ -1,0 +1,42 @@
+<%# wx/header.html%>
+<%
+	var express = this.express.express
+	    , length = express ? express.length : 0
+	    , n = length - 1
+	    , imgStr
+%>
+<div class="wrap">
+	<ul class="logistic_info">
+	<% if(express && length){%>
+		<% express.forEach(function(e,i){ 
+			switch(i)
+			{
+			case 0:
+			  imgStr = "right";
+			  break;
+			case n:
+			  imgStr = "site";
+			  break;
+			default:
+			  imgStr = "way";
+			}
+		%>
+		<li class="logistic_li <%if(imgStr == 'site'){%>here<%}%>">
+			<img src="<%=this.PICTURE_URL%>/images/wap/web/wx/<%= imgStr%>_icon.png" class="<%= imgStr%>_icon">
+			<p>
+				<span class="ml_color"><%= e.text%></span>
+			</p>
+			<p class="time"><%= e.time%></p>
+		</li>
+		<%});%>
+		<%}%>
+		<li class="logistic_li here last">
+			<p>
+				物流公司：<span><%= this.express_company%></span>
+			</p>
+			<p class="order">运货单号：<span><%= this.express_id%></span></p>
+		</li>
+	</ul>
+	
+</div>
+<%# foot_simple.html%>

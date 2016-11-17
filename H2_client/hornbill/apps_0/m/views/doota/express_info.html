@@ -1,0 +1,57 @@
+<%# head.html%>
+<script>
+	var _data = {
+		"order_id" : <%=this.order_id%>,
+		"express_id" : <%=this.express_id%>,
+		"express_company" : "<%=this.express_company%>"
+	};
+</script>
+<div class="order_area">
+<div class="route">
+	<div class="route_bread">
+		<a href="/">美丽说</a>
+		<samp>&gt;</samp>
+		<a href="/order/list/">我的美丽说订单</a>
+		<samp>&gt;</samp>
+		<span class="red_f">物流详情</span>
+	</div>
+</div>
+<div class="order_goods order_express"></div>
+</div>
+<script type="text/html" id="expressInfoTpl">
+	<? var data = this.express_info; ?>
+	<ul>
+		<li>
+			<p>
+				<span>订单号：<?= data.order_id ?></span>
+				<span>下单时间：<?= data.ctime ?></span>
+				<span>商家：<?= data.seller_nickname ?></span>
+			</p>
+		</li>
+		<li>
+			<p>物流信息：</p>
+			<div class="express_info">
+				<p>
+					<span>物流公司：<?= data.express_company ?></span>
+					<span class="ml35">物流单号：<?= data.express_id ?></span>
+				</p>
+				<? if(data.express && data.express.length){?>
+				<p class="l">物流状态：</p>
+				<ul>
+					<? data.express.forEach(function(e,i){ ?>
+					<li <?= i===data.express.length-1 ? 'class="current"' : '' ?>><?= e ?></li>
+					<? }); ?>
+				</ul>
+				<?}?>
+			</div>
+		</li>
+		<li>
+			<p>收货人：<?= data.buyer_address.address ?>，<?= data.buyer_address.postcode ?>，<?= data.buyer_address.nickname ?>，<?= data.buyer_address.phone ?></p>
+			<p>发货人：<?= data.seller_address.refund_addr?>，<?= data.seller_address.partner_zipcode?>，<?= data.seller_address.partner_name?>，<?= data.seller_address.partner_tel?></p>
+		</li>
+	</ul>
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('m/page/doota/express_info');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

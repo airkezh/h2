@@ -1,0 +1,42 @@
+<%# head_simple.html%>
+<%
+this.homeBanner = this.data.homeBanner;
+
+this.banner = this.homeBanner;
+%>
+<style>
+	.banner-slider {position: fixed;top:0px}
+</style>
+</head>
+<body>
+
+
+<div class="banner-slider">
+<ul class="banner-slider-wrap">
+	<% this.banner.map(function(v,k){ %>
+	<li ahref="<%= v.url %>">
+		<a href="<%= v.url || 'javascript:;'%>"><img src="<%= v.image_url%>"/></a>
+	</li>
+	<%});%>
+	<%if(this.banner.length == 2){%>
+	<% this.banner.map(function(v,k){ %>
+	<li ahref="<%= v.url %>">
+		<a href="<%= v.url || 'javascript:;'%>"><img src="<%= v.image_url%>"/></a>
+	</li>
+	<%});%>
+	<%}%>
+</ul>
+
+</div>
+
+<div style="width: 100px; height: 3000px"></div>
+
+
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+
+fml.use('wap/page/activity/good_time');
+
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot_simple.html%>

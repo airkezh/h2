@@ -1,0 +1,130 @@
+.slide(){
+	.qianqian,.footBanner, .slideOpen{
+		.none;
+		.w(100%);.pf;bottom:0px;left:0px; z-index: 10;
+		.close{
+			.h(32*@px);.w(44*@px);.pa;top:-32*@px;
+			background-image: url("@{pic_url}/images/wap/web/openSlide/close.png");
+			background-size: 100% 100%;
+		}	
+	}
+	.qianqian,.footBanner{
+		.pt(100/640 *100%);
+		.slider{
+			background-color: rgba(0, 0, 0, .75);
+			.h(100%);.w(100%);
+			.pa;top:0px;left:0px;
+		}
+		img { .block; .w(100%);}
+	}
+	.slideOpen{
+		.gpu;
+		.pt(142*@w);
+		z-index:1000;
+		background-image: url("@{pic_url}/images/wap/web/openSlide/track.png");
+		background-size: 100% 100%;
+		.track{.pa;top:(28 + 6)/142 * 100%;left:(40 + 9)*@w;.w((446 - 106)*@w);.pt(76*@w);
+			.slider{
+				.h(100%);.w(106/(446 - 106)*100%);
+				.pa;top:0px;left:0px;
+				background-image: url("@{pic_url}/images/wap/web/openSlide/slide.png");
+				background-size: 100% 100%;
+				&[status="drop"]{
+					-webkit-transition:margin 0.1s ease-out 0s;
+				}
+			}
+		}
+	}
+	.appWelcome {
+		.w(100%); .h(100%); .pa; .bgwhite;
+		img { .w(100%); .block;}
+		.closeApp { .fc(#444); .f(30*@px); .block; .h(60*@px);  .l(60*@px); .c; .bgwhite;}
+	}
+	//半屏
+	.screen {
+		img { .w(100%);}
+		.w(100%); .pf; bottom: 0; left: 0; z-index: 500; background-color: rgba(0, 0, 0, .75); .none;
+		.scrn_close {
+			.h(50*@px); .l(50*@px); .pt(24*@px); .pb(30*@px); .pl(24*@px); .pr(30*@px); .border-1(#4f4f4f);
+			.mls_logo {
+				.left; .w(230*@px); .h(54*@px);
+			}
+			.close_btn {
+				.w(42*@px); .h(42*@px); .right; .mt(4*@px);
+				background: url("@{pic_url}/images/wap/web/closebp_btn.png") no-repeat;
+				background-size: 100% 100%;
+			}
+		}	
+		.scrn_slider {
+			.pt(20*@px); .pb(20*@px);  .c; .white;
+			.scrn_word { 
+				.block;
+			}
+		}		
+	}
+
+	//导流浮层
+	.leadApp {
+		.pa; top: 0; left: 0; z-index: 600; .w(100%); .h(100%);
+		img { .w(100%); .block;}
+		.closeApp {
+			.pa; top: 0; right: 0; .w(160*@w); .h(10%);
+			.closeBtn { 
+				.block; .w(72*@px); .h(72*@px); .right;
+				background-image: url("@{pic_url}/images/wap/web/closeLeadApp.png");
+				background-size: 100% 100%;
+			}
+		}
+		.downloadApp {
+			.w(100%); .mt(13%); .pa; top: 0; left: 0;
+			.downloadWrap {
+				.c; .mt(80%); .pb(40*@px);
+			}
+			.downloadBtn {
+				.i_block; .mt(5%); .bgc(#fd286d); .w(444*@px); .h(142*@px); .l(142*@px); .c; .border-r(10*@px); 
+				span {
+					.w(296*@px); .h(88*@px); .i_block; .mt(26*@px);
+					background: url("@{pic_url}/images/wap/web/leadAppbtn.png") center center no-repeat;
+					background-size: 100% 100%;
+				}
+			}
+			.downloadBtnH{
+				.bgc(#dc1a59);
+			}
+			.download_img { .none;}
+		}
+	}	
+
+	//banner
+	.daoliuBanner {
+		.pf; bottom: -2px; left: 0; box-sizing: border-box; .w(100%); .none;
+		// background-color: rgba(0, 0, 0, 0.7);
+		z-index: 10;
+		img { .w(100%);}
+		.closeIcon { .pa; top: 35%; left: 2px; .w(40px); .h(40px); .block; }
+	}
+
+	//headApp 
+	.headApp {
+		.bgc(#f2f2f2); width: 100%;
+		.zhiDing { .pr; }
+		img {.block; .w(100%);}
+		.downBtn {
+			background-color: rgba(255,102,102,.9); .w(40%); .border-r(1rem); .white; .f(.28rem); .c; .l(.65rem); .pa; bottom: 11%; left: 30%;
+			transform: scale(1,1);
+			-webkit-animation: fadeIn 3.5s ease-in 0s 1;
+			span { .w(0); .h(0); border-style: solid; border-width: .1rem 0 .1rem .2rem; border-color: transparent transparent transparent #fff; .i_block; .ml(.1rem); }
+		}
+
+		@-webkit-keyframes fadeIn {
+			0%   { background-color: rgba(255,102,102,.1); transform: scale(1.5,1.5);}
+			20%  { background-color: rgba(255,102,102,.3); transform: scale(1.4,1.4);}
+			40%  { background-color: rgba(255,102,102,.5); transform: scale(1.3,1.3); }
+			60%  { background-color: rgba(255,102,102,.7); transform: scale(1.2,1.2);}
+			80% { background-color: rgba(255,102,102,.8); transform: scale(1.1,1.1);}
+			100% { background-color: rgba(255,102,102,.9); transform: scale(1,1);}
+		}
+	}
+
+}
+

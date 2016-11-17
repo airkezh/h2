@@ -1,0 +1,75 @@
+@import "../block.less";
+
+html{.f(10*@f);}
+body{.bgc(#f8f8f8);}
+img{.block;.w(100%);}
+.bs100(){background-size:100% 100%}
+.ellipsis(){.hidden;white-space:nowrap;text-overflow:ellipsis}
+.ellipsis-row(@var){.hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:@var;-webkit-box-orient:vertical;}
+// box
+.box{
+	h3{.f(2rem);.fc(#000);.c}
+	.des{.f(1.6rem);.c;margin:5% 0 10% 0;
+		strong{.fc(#000)}
+	}
+	ul{.hidden;.pr;}
+	li{.left;.w(50%);
+		.inner{
+			margin:2px;border:1px solid #eee;padding:5px;.bgc(#fff);
+		}
+		.pic{.block;.hidden;}
+	}
+	.title{.f(1rem);.ellipsis;.mt(3%);.fc(#666);text-indent:2%;.h(14px)}
+	.buy-btn{.bgc(#ef3d31);padding:3% 0;.w(70%);.c;.f(1.2rem);.mt(6%);.mb(6%);.block;.auto;.fc(#fff);}
+	.buy-btn.ing-link{.bgc(#666);.fc(#fff);}
+	.btn-more{.bgc(#f6837e);.fc(#fff);.f(1.5rem);.c;.block;padding:8% 0;
+		b{.w(0);.h(0);.hidden;border:8px solid transparent;border-left:12px solid #fff;.f(0);.vm;.ml(5%)}
+	}
+	.price{.mt(5%);.c;letter-spacing:-.5px;
+		span{.f(1.4rem);.fc(#f00);.mr(5px)}
+		del{.f(1rem);.fc(#999)}
+	}
+}
+.box-red{.bgc(#f6837e);.fc(#fff);
+	h3,.title{.fc(#fff)}
+	.buy-btn,.btn-more{.bgc(#fff);.fc(#000)}
+	.btn-more b{border-left-color:#000}
+}
+.waiting { .pb(7%); .bgc(#f6837e);}
+// loading
+.pullUp{
+	.mt(20px);.mb(20px);
+	.pullUpDown > .common;.pullUpDown > .loading;
+	&:before{
+		.nowrap;
+		.ml(-10px);
+	}
+}
+.load_again {
+	.c; .fc(#6e6e6e); .pb(40px); .f(16px); .l(24px);.pt(50px);
+	p { .pb(20px);}
+	.btn {
+		.border-n; .w(120px); .h(30px); .l(30px); .c; .white; .border-r(3px); .bgc(#ee3d30);
+	}
+}
+/* gotop */
+.gotop{ .w(12.5%); .none; .pf; right: 10px;z-index: 10;}
+/* 分享 */
+.starBox { .star_box;.mt(2%)}
+
+/*dialog*/
+.dialog();
+.dialog {
+	#maskLayer { background:rgba(0 ,0 ,0 , 0.8);}
+	#dialogLayer { 
+		background: none;
+		box-shadow: none;
+		.dialogTitle { .none;}
+	}
+}
+.dialog_box {
+	.bgwhite; .pt(40*@px);  .fc(#686868); .border-r(10px); .f(26*@px);
+	h1 { .f(40*@px); .c; .pb(28*@px);}
+	p { .l(34*@px); .pl(20*@px); .pr(20*@px); .pt(2px);}
+	button { .bgc(#bbb); .border-n; .white; .c; .l(80*@px); .w(100%); border-bottom-right-radius: 10px; border-bottom-left-radius: 10px; .block; .mt(40*@px); .f(30*@px); .fb;}
+}

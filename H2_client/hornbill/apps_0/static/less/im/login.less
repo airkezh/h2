@@ -1,0 +1,122 @@
+@import "../block";
+
+@im_gray : #efe6e9;
+
+html, body{.hidden;}
+body{
+	background:#f8e7ec url("@{pic_url}/images/wap/web/im/loginbg2.png") repeat-x top center;
+}
+input{
+	border:0 none;padding:0px;margin:0px;
+}
+.copyright{.c;.fc(#ccc);.pa;bottom:0px;.w(100%);.l(30px);}
+.login{.pa;.h(100%);.w(100%);}
+.logo{
+	.c;.h(149px);.pt(40px);.pb(50px);
+//	.pt(10/250 * 100%);.pb(10/250 * 100%);
+}
+.logo, .loginForm, .loginUser{
+	.w(200px);.auto;
+}
+.loginForm, .loginUser, .userlist{
+	.none;
+}
+.loginUser{
+	.user_info{
+		.bgwhite;border:1px solid @im_gray;.border-r(4px);
+		.hidden;padding:10px;.pr;
+		.user_name{.fc(#333);.l(32px);}
+		p{.ml(42px);.ellipsis;}
+	}
+	.loginBtn{.mt(10px);}
+}
+
+
+
+
+.user_img{
+	.h(32px);.w(32px);
+	.left;.bgwhite;.hidden;
+	img{.w(100%);}
+}
+
+.userlist{
+	border-bottom:1px solid @im_gray;
+	padding:10px 10px 0px 10px;
+	.user_img{.cursor;.ml(6px);.mr(6px);.mb(10px);
+		span{.break-all;}
+	}
+	overflow:auto;max-height:42px;
+}
+.loginBtn{.bgred;.h(42px);.l(42px);.f(16px);.white;.border-r(4px);.c;.w(100%);.cursor;}
+
+.loginForm { 
+	.inputArea{
+		.pt(6px);.pb(6px);
+		.bgwhite;border:1px solid @im_gray;.border-r(4px);
+		p{
+			.pt(2px);.pb(2px);
+			input{
+				.w(100%);
+			}
+		}
+		p,.checkBox{.pl(40px);.pr;.pr(10px);
+			input{
+				.h(28px);.l(28px);.f(12px);
+			}
+		}
+		.login_name{
+			border-bottom:1px solid @im_gray;
+		}
+		.checkBox{
+			.hidden;
+			border-top:1px solid @im_gray;
+			input, .checkImage{ .w(50%);.left; }
+			.checkImage{.cursor;}
+			input{.mt(6px); }
+			img{.w(100%);}
+		}
+	}
+	.submitBox{.mt(10px);}
+	.loginErrorMessage{.red;.l(16px);.f(12px);.mt(10px);.c;}
+}
+.extArea{
+	.mt(10px);.pr; .h(16px);.l(16px);
+	a, span{.pa;right:0px;.gray;}
+	span{.tunder;.cursor;}
+}
+
+.imClient{
+	.loginForm { 
+		.inputArea{
+			.login_name{.pr(30px);}
+			.user_more{
+				.none;
+				.cursor; .pa;right:10px;
+				.w(0px);.h(0px);
+				top:12px;
+				border:6px solid; border-color:#ddd transparent transparent transparent; 
+				&.open{
+					top:6px;
+					border:6px solid; border-color:transparent transparent #ddd transparent; 
+				}
+			}
+		}
+	}
+}
+
+
+
+.user_icon, .pwd_icon, .code_icon{
+	.w(25px);.h(25px);.pa;left:10px;top:4px;
+	background:url("@{pic_url}/images/window/login_icon_3.png") no-repeat;
+}
+.pwd_icon{ .bp(-25px,0); }
+.code_icon{ .bp(-50px, 0);}
+
+.closeBtn{
+	.h(16px);.w(16px);.cursor;.pa;.none;
+	background: url("@{pic_url}/images/wap/web/im/closeBtn.png"); _filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='@{pic_url}/images/wap/web/im/closeBtn.png', sizingMethod='scale'); _background-image:none;
+}
+.closeBtn{top:50%;}
+.closeBtn{left:2px;.mt(-8px);}

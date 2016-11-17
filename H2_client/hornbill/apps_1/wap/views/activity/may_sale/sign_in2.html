@@ -1,0 +1,247 @@
+<!--
+/**
+ * @fileoverview 首页 － 每日签到
+ * @requires zepto
+ * @author kehuang@meilishuo.com
+ * @date 2015-01-09
+ */
+-->
+
+<%#head.html%>
+<%
+	var curLayerData = this.layerData || {};
+	var curSignUserData = this.signUserData;
+	var curUpgradeTipInfo = this.upgradeTipInfo;
+	var curSignUserInfo = this.signUserInfo.data;
+	var curUserTotalMoney = curSignUserInfo.bonus || 0;
+	var curConSignDays = curSignUserInfo.continuous || 0;
+	var curServerDate = this.serverDate;
+	var curServerTime = curServerDate.getTime();
+	var curServerYear = curServerDate.getFullYear();
+	var curServerMonth = curServerDate.getMonth() + 1;
+	var curServerDay = curServerDate.getDate();
+	var strServerMonth = (curServerMonth < 10) ? '0' + curServerMonth : curServerMonth;
+	var strServerDay = (curServerDay < 10) ? '0' + curServerDay : curServerDay;
+	var curServerDateStr = curServerYear + '-' + strServerMonth + '-' + strServerDay;
+%>
+<div class="load_shade">
+	<div class="load"></div>
+</div>
+
+<div class="top_main">
+	<div class="pic_box">
+		<img src="<%= this.PICTURE_URL %>images/wap/activity/may_sale/after_pig.gif" alt="">
+	</div>
+	<div class="top_box"></div>
+	<div class="rule_box">
+		<div class="rule_btn"></div>
+	</div>
+	<div class="icon_date"></div>
+	<div class="coin"></div>
+</div>
+
+<div class="money_box">
+	<div class="today total up_down">我的奖金：<span class="num" id="total_money"><%= curUserTotalMoney %></span> 元</div>
+</div>
+
+<div class="signin_box up_down">
+	<a href="javascript:;" id="j_signin_btn"></a>
+</div>
+
+<div class="person_main">
+	<ul class='person_box'></ul>
+</div>
+
+<div class="remind_top"></div>
+
+<div class="remind_box">
+	<div class="remind">
+		<a href="javascript:;" class="remind_switch <% if (this.remind == 1) { %> open <% } %>"></a>
+	</div>
+</div>
+
+<script type="text/html" id="signin_tips_layer">
+	<div class="shade j_layer_shade"></div>
+	<div class="win_box j_layer_main">
+		<p class="title">温馨提示</p>
+		<div class="signin_pig">
+			<img src="<%= this.PICTURE_URL %>images/wap/activity/may_sale/qd_pig.jpg" alt="">
+		</div>
+		<p class="signin_text"></p>
+		<div class="come_on"></div>
+	</div>
+</script>
+
+<script type="text/html" id="signin_stroke_layer">
+	<div class="shade j_layer_shade"></div>
+	<div class="win_box j_layer_main">
+		<p class="title">嘤嘤嘤~<br>没办法继续签到了呢....</p>
+		<p class="desc">每个账户，每个手机设备<br>只能签到一个账号。<br>详情见<a href="/activity/sign/sign_rule/">活动规则>></a></p>
+		<div class="signin_stroke">
+			<img src="<%= this.PICTURE_URL %>images/wap/activity/may_sale/sign_stroke_bg.jpg" alt="">
+		</div>
+		<div class="know_btn"></div>
+	</div>
+</script>
+
+<script type="text/html" id="patch_card_layer">
+	<div class="shade j_layer_shade"></div>
+	<div class="win_box win_card j_layer_main">
+		<?
+  			var superData = this.data,
+  				total = superData.total || 0,
+  				bonus = superData.bonus || 0;
+  		?>
+		<p class="title">恭喜你发现一张<br><em>超级补签卡</em></p>
+		<p class="desc"><em>除夕~今天</em>，一次补齐你<?= total ?>天的漏签<br>奖金将恢复到<em><?= bonus ?></em>元</p>
+		<div class="bg">
+			<img src="<%= this.PICTURE_URL %>images/wap/activity/may_sale/super_patch_card.jpg" alt="">
+		</div>
+		<p class="tip">立即使用，过期无效</p>
+		<div class="patch j_patch_btn"></div>
+		<p class="close j_close_btn">不使用补签卡</p>
+	</div>
+</script>
+
+<script type="text/html" id="patch_success_layer">
+	<div class="shade j_layer_shade"></div>
+	<div class="win_box win_patch j_layer_main">
+		<?
+  			var chance = this.chance || 0;
+  		?>
+		<p class="title">补签成功！</p>
+		<p class="desc">节日期间使用的<em><?= chance ?></em>张补签卡<br>现在退还给你，记得常来签到~</p>
+		<div class="bg">
+			<img src="<%= this.PICTURE_URL %>images/wap/activity/may_sale/sign_patch_card2.jpg" alt="">
+			<span><b>X</b><?= chance ?></span>
+		</div>
+		<div class="know j_know_btn"></div>
+	</div>
+</script>
+
+<script type="text/html" id="update_one_layer">
+	<div class="shade j_layer_shade"></div>
+	<div class="win_box win_update j_layer_main">
+		<div class="text">
+			<p>亲爱的主人：</p>
+			<p>春天到了，我也要长大了。</p>
+			<p>我将在4月初进行升级。升级后，奖金将变成金币，获得2项新技能：</p>
+			<p class="explain"> 1.金币能直接用于购买更多宝贝。<br>2.漏签后，金币不会被清零。</p>
+			<p>为了让我能装下更多的金币，签到规则将改为<span>连续签到5天，5元金币一次性存入我的肚子里</span>。还是每天签到得1元哦</p>
+		</div>
+		<div class="p_update_btn1"></div>
+	</div>
+</script>
+
+<script type="text/html" id="update_two_layer">
+	<div class="shade j_layer_shade"></div>
+	<div class="win_box win_update j_layer_main">
+		<div class="text">
+			<p>对了主人，升级以后，<span class="stress">补签卡只能用于补签金币，不能补签升级前的奖金了。</span></p>
+			<p>升级前的奖金总额（含补签），会全额转存成金币。</p>
+			<p>为了让转存金额更高，从今天起：<span>每天可不限次使用补签卡</span></p>
+			<p>请主人尽量把我装满吧！</p>
+			<div class="wish">
+				<p>期望每天都能看到你的签到小猪</p>
+				<p>^(￣(oo)￣*)^&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+			</div>
+		</div>
+		<div class="p_update_btn2"></div>
+	</div>
+</script>
+
+<script type="text/html" id="signin_calendar_layer">
+	<div class="shade j_layer_shade"></div>
+	<div class="calendar_box j_layer_main">
+		<a href="javascript:;" class="calendar_close"></a>
+	  	<div class="calanderWrap">
+	  		<?
+	  			var recData = this.data,
+	  				banner_src = recData.src || '',
+	  				banner_link = recData.link || 'javascript:void(0);',
+	  				banner_title = recData.title || '';
+
+	  			if (banner_src != '') {
+	  		?>
+	  		<a href="<?= banner_link ?>" class="layer_banner">
+	  			<img src="<?= banner_src ?>" alt="<?= banner_title ?>">
+	  		</a>
+	  		<?
+	  			}
+	  		?>
+	  		<%
+				var calPrevYear = 2015,
+					calNextYear = 2015,
+					calPrevMonth = 1,
+					calNextMonth = 1,
+					calCurYear = curServerYear,
+					calCurMonth = curServerMonth;
+
+				if (calCurMonth == 1) {
+					calPrevYear = calCurYear - 1;
+					calNextYear = calCurYear;
+					calPrevMonth = 12;
+					calNextMonth = calCurMonth + 1;
+				} else if (calCurMonth == 12) {
+					calPrevYear = calCurYear;
+					calNextYear = calCurYear + 1;
+					calPrevMonth = calCurMonth - 1;
+					calNextMonth = 1;
+				} else {
+					calPrevYear = calCurYear;
+					calNextYear = calCurYear;
+					calPrevMonth = calCurMonth - 1;
+					calNextMonth = calCurMonth + 1;
+				}
+
+				calPrevMonth = (calPrevMonth < 10) ? '0' + calPrevMonth : calPrevMonth;
+				calNextMonth = (calNextMonth < 10) ? '0' + calNextMonth : calNextMonth;
+			%>
+			<div class="date_box" <? if (banner_src == '') { ?>style="margin-top:8%;"<? } ?>>
+				<div class="prev_btn j_calander_btn" data-flag="prev" data-year="<%= calPrevYear %>" data-month="<%= calPrevMonth %>"></div>
+				<div class="icon_cal"></div>
+				<div class="month"><%= curServerDateStr %></div>
+				<div class="next_btn j_calander_btn" data-flag="next" data-year="<%= calNextYear %>" data-month="<%= calNextMonth %>"></div>
+			</div>
+			<div class="calander"></div>
+			<div class="cal_bottom"></div>
+			<p class="patch_tip">
+				<span class="txt">你已经补完了所有的漏签记录！</span>
+				<img src="<%= this.PICTURE_URL %>images/wap/activity/may_sale/ret_btn.png" alt="" class="patch_btn">
+			</p>
+	  	</div>
+	</div>
+</script>
+
+<script>
+	/*fml.vars.isNewest = "<%=this.isNewest%>";
+
+	if(Meilishuo.config.os && Meilishuo.config.os.mlsApp){
+		fml.vars.isApp = true;
+	}*/
+	fml.vars.isLogin = <%=this.isLogin%>;
+
+	var curServerTime = <%=curServerTime%>;
+	var curServerYear = <%=curServerYear%>;
+	var curServerMonth = <%=curServerMonth%>;
+	var curServerDateStr = '<%=curServerDateStr%>';
+	var curLayerData = <%=JSON.stringify(curLayerData)%>;
+	var curSignData = <%=JSON.stringify(curSignUserData.data)%>;
+	var curUpgradeTipInfo = <%=JSON.stringify(curUpgradeTipInfo)%>;
+	var curSignedArr = curSignData.signed;
+	var curConvertedArr = curSignData.converted;
+	var curConSignDays = <%=curConSignDays%>;
+	var curUserTotalMoney = <%=curUserTotalMoney%>;
+	var resetMoney = <%=this.resetMoney%>;
+	var firstView = <%=this.firstView%>;
+	var isNewest = <%=this.isNewest%>;
+	var curUserPatchData = <%=JSON.stringify(curSignUserInfo.patch)%>;
+	var curUserSuperData = <%=JSON.stringify(curSignUserInfo.super)%>;
+	var curFirstSignDate = '<%=curSignUserInfo.firstSignDate%>';
+	var curLastSignDate = '<%=curSignUserInfo.lastSignDate%>';
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/sign2');
+_use:", this._JSstack, this._JSmods); %>
+<%# foot_simple.html%>

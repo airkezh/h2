@@ -1,0 +1,76 @@
+<%# head.html %>
+
+<%
+    var nav = [{type : 'promote', name : '推荐'}, {type : 'all', name : '全部'}, {type : 'newest guide', name : '最新'}, {type : 'join', name : '我的'}]
+%>
+
+<div class="nav_wrap">
+    <div class="nav">
+        <div class="nav_in">
+            <% nav.forEach(function(data){ %>
+                <div <%= this.page_type == data.type.split(' ')[0] ? 'class="active"' : '' %> data-tab="<%= data.type %>"><%= data.name %></div>
+            <% }); %>
+        </div>
+    </div>
+</div>
+
+<% if(this.bannar && this.bannar.length){ %>
+<div class="banner_wrap">
+    <div class="imageSlide" id="imageSlide">
+        <ul>
+            <% this.bannar.forEach(function(bannar, index){ %>
+                <li>
+                    <a class="top_bannar swipe" href="<%= bannar.url %>"><img src="<%= bannar.image_url %>"></a>
+                </li>
+            <% }); %>
+        </ul>
+        <div class="num"></div>
+    </div>
+</div>
+<% } %>
+
+<div class="content js_content">
+    <div class="circle_wall js_circle_wall"></div>
+    <div class="pullUp" status="tap"></div>
+</div>
+
+<div class="gotop_wrap">
+    <a class="gotop">
+        <img src="http://i.meilishuo.net/css/images/wap/tuan/gotop.png" />
+    </a>
+</div>
+
+<script type="text/html" id="posterWall">
+    <?
+
+        function getAppLink(tid){
+            return 'meilishuo://circle.meilishuo?json_params='+encodeURIComponent(JSON.stringify({"circle_id" : tid,"r": "<%= decodeURIComponent(this.paramR||'') %>"}));
+        }
+        this.circle.forEach(function(circle) {
+    ?>
+        <a href="<?= getAppLink(circle.id) ?>" class="circle">
+            <div class="info">
+                <div class="icon" style="background-image: url(<?= circle.img ?>);"></div>
+                <? if(+circle.unread_message){ ?><div class="msg_num"><div>N</div></div><? } ?>
+                <div class="circle_queen">
+                    <div class="img_wrap"><img src="<?= circle.admin.avatar_a ?>"></div>
+                </div>
+            </div>
+            <p class="title"><?= circle.name ?></p>
+            <p class="number"><?= circle.member_num ?>/<?= circle.member_max ?></p>
+            <p class="desc"><?= circle.description ?></p>
+        </a>
+    <? }); ?>
+</script>
+
+<script>
+    fml.vars.isLogin = <%= this.isLogin %>;
+    fml.vars.r='<%= this.paramR%>';
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+    fml.use('wap/page/circle/list');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot_simple.html %>
+

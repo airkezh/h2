@@ -1,0 +1,38 @@
+<%# head.html %>
+
+<div class="main">
+	<div class="banner"><img src="http://d05.res.meilishuo.net/img/_o/b4/7a/dbd94c388781471375df317ef853_640_340.cg.jpg"></div>
+	<div class="nav">
+		<div class="item active"><span>全部</span></div>
+		<div class="item" data-nid="212587"><span>双肩包</span></div>
+		<div class="item" data-nid="6439"><span>导航一</span></div>
+		<div class="item" data-nid="3599"><span>导航一</span></div>
+	</div>
+	<div class="poster_wrap">
+		<div class="goods_wall"></div>
+		<div class="pullUp" status="loading"></div>
+	</div>
+</div>
+
+<script type="text/html" id="posterWall">
+<? var pt = (this.v.pic_height / this.v.pic_width) * 100; ?>
+<div class="poster_grid poster_wall" twitter_id="<?= this.v.twitter_id?>">
+	<figure>
+		<div class="pic_load">
+			<a xr="<%= this.xr.r %>" class="bs_load_img" href="/share/<?if(this.v.is_doota == '1'){?>item/<?}?><?= this.v.twitter_id ?>" asrc="<?= this.v.pic_url ?>"></a>
+		</div>
+		<p class="clothesTitle"><?= this.v.title ?></p>
+		<figcaption>
+			<span class="price"><?= this.v.price ?></span>
+			<span class="o_price"><?= this.v.origin_price ?></span>
+			<span class="discount"><?= this.v.discount ?>折</span>
+		</figcaption>
+	</figure>
+</div>
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/dacu');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot_simple.html %>

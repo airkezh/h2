@@ -1,0 +1,154 @@
+<%# head.html%>
+<%
+var query = this._Request_query;
+var getLink = _extFn.getLink;
+%>
+<div class="order_header">
+    <span class="icon"></span>
+</div>
+<div class="route">
+    <div class="route_bread">
+        <a href="<%=this.DOMAIN.www%>/">美丽说</a>
+        <samp>&gt;</samp>
+        <a href="<%= this.DOMAIN.order%>/order/list/">我的美丽说订单</a>
+        <samp>&gt;</samp>
+        <span class="red_f">确认收货</span>
+    </div>
+</div>
+<div class="order_area">
+    <%if(this.order && this.order.info){
+    var order = this.order.info.order || {}
+    , address = this.order.info.address
+    , goods = this.order.info.goods
+    , step = order.step
+    , address = this.order.info.address
+    , status = order.status;
+    this.order = order;
+    %>
+    <input type="hidden" id="tid" value="<%=goods && goods[0].twitter_id %>">
+    <input type="hidden" id="order_id" value="<%= order.order_id %>">
+    <div class="order_status_bar">
+        <p>当前状态：<%= order.status_text %></p>
+        <%= requireFn('common/order_status_bar.html')({
+        'steps' : ["提交订单","支付","发货","确认收货"],
+        'needTime' : false,
+        'distance' : 140,
+        'current_step' : 3
+        });%>
+    </div>
+
+    <div class="order_goods">
+        <table class="order_list">
+            <colgroup>
+                <col width="20">
+                <col width="20">
+                <col width="320">
+                <col width="120">
+                <col width="80">
+                <col width="100">
+                <col width="130">
+                <col width="120">
+            </colgroup>
+            <thead>
+            <tr>
+                <th>&nbsp;</th>
+                <th>&nbsp;</th>
+                <th>商品信息</th>
+                <th>单价（元）</th>
+                <th>数量</th>
+                <th>售后</th>
+                <th>小计（元）</th>
+                <th>订单状态</th>
+            </tr>
+            </thead>
+            <tbody class="order_list">
+            <tr class="order_info">
+                <td colspan="8">
+                    <span>商家：<a class="red_f" href="<%=this.DOMAIN.www%>/shop/<%= order.shop_id %>" target="_blank"><%= order.shop_name%></a></span>
+                    <% if(order.im || order.qq){ %><a class="getserviceqq knilmi" href="<%= this.ViewTools.callIM( order.im , order.qq) %>" target="_blank">&nbsp;</a><% } %>
+                </td>
+            </tr>
+            <% goods && goods.map(function(g, i){ %>
+            <tr class="order_goods_list">
+                <td>&nbsp;</td>
+                <td>
+                    <%if(g.receive_allow==0){%>
+                    <input type="checkbox" id="goods_<%= g.mid %>"/>
+                    <%}else if(g.receive_allow==1){%>
+                    <input type="checkbox" checked="checked" id="goods_<%= g.mid %>" disabled/>
+                    <%}else if(g.receive_allow==2){%>
+                    &nbsp;
+                    <%}%>
+
+                </td>
+                <td class="order_goods_goods<%if(i != 0){%> bb<%}%>">
+                    <a target="_blank" href="<%=this.DOMAIN.www%>/share/<%if(g.is_doota == '1'){%>item/<%}%><%= g.twitter_id %>">
+                        <img class="pic" src="<%= g.b_pic_url%>"/>
+                        <p class="title"><%= g.goods_title%></p>
+                        <p class="prop">
+                            <% g.prop && g.prop.map(function(prop){ %>
+                            <%if(prop.is_show){%>
+                            <span><%= prop.name%>：<%= prop.value%></span>
+                            <%}%>
+                            <%});%>
+                        </p>
+                    </a>
+                </td>
+                <td class="<%if(i != 0){%> bb<%}%>"><%= g.price%></td>
+                <td class="<%if(i != 0){%> bb<%}%>"><%= g.amount%></td>
+                <td class="<%if(i != 0){%> bb<%}%>">
+                    <%if(g.refund_id){%><p><a href="<%= this.DOMAIN.order%>/refund/detail?refund_id=<%=g.refund_id%>"><%= g.refund_status_text %></a></p><%}%>
+                    <%if(g.appeal_id){%><p><a href="<%= this.DOMAIN.order%>/appeal/?refund_id=<%=g.refund_id%>"><%= g.appeal_status_text %></a></p><%}%>
+                </td>
+                <td class="<%if(i != 0){%> bb<%}%>"><%= (g.price * g.amount).toFixed(2) %></td>
+                <% if(i==0){ %>
+                <td class="bl" rowspan="<%= goods.length %>" class="<%if(i != 0){%> bb<%}%>">
+                    <%= order.status_text %>
+                </td>
+                <% } %>
+            </tr>
+            <%});%>
+            </tbody>
+
+        </table>
+        <ul>
+            <li class="order_timer">
+                <p>
+                    <span class="first">订单号：<%= order.order_id %></span>
+                    <%if(order.ctime){%><span>下单时间：<%= order.ctime %></span><%}%>
+                    <%if(order.pay_time){%><span>付款时间：<%= order.pay_time%></span><%}%>
+                    <%if(order.send_time){%><span>发货时间：<%= order.send_time%></span><%}%>
+                    <%if(order.auto_confirm_time){%><span>系统自动确认收货时间：<%= order.auto_confirm_time%></span><%}%>
+                    <%if(order.receive_time){%><span>确认收货时间：<%= order.receive_time%></span><%}%>
+                    <%if(order.last_status_time){%><span>订单关闭时间：<%= order.last_status_time%></span><%}%>
+                    <%if(order.auto_close_time){%><span>未付款订单关闭时间：<%= order.auto_close_time%></span><%}%>
+                </p>
+            </li>
+            <li>
+                <p class="right_f">
+                    <%if(order.coupon_price){%><span>优惠券扣减：<%= order.coupon_price%>元</span><%}%>
+                    <%if(order.express_price){%><span>运费：<%= order.express_price %>元</span><%}%>
+                    <%if(order.tax){%><span>关税<%= order.tax %>元</span><%}%>
+                    <%if(order.weixin_coupon_price){%><span>微信支付：-<%= order.weixin_coupon_price %>元</span><%}%>
+                    <span class="last">商品总价：<strong class="red_f f18_f"><%= order.total_price %></strong></span>
+                </p>
+                <span class="left_f">优惠券：<%if(order.coupon){%><%=order.coupon%><%}else{%>未使用<%}%></span>
+                <div class="clear_f"></div>
+            </li>
+        </ul>
+
+
+    </div>
+    <div class="order_status_bar order_confirm_bar">
+        <span>联系客服：4000-800-577（客服工作时间：9：00至24：00）</span>
+        <%if(order.status_text!='交易成功'){%><span class="confirm" id="confirm"></span><%}%>
+    </div>
+
+
+
+    <%}%>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+        fml.use('order_pc/order/confirm_receive');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

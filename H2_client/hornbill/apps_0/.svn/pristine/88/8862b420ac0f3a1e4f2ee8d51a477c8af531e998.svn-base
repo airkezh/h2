@@ -1,0 +1,57 @@
+<ul class="rushbuy">
+	<%this.goods.forEach(function(data){
+		if(!data.is_hjf){
+			var link = '/share/item/' + data.twitter_id+'?gr_id='+data.groupon_id,
+				status_bg;
+			if(data.item_status == 0)
+				status_bg = 'act_prev';
+			else if(data.item_status == 2)
+				status_bg = 'goods_end';
+			%>
+	    	<li>
+	    		<%if(data.horizontal_mark.length){
+	    			var _l = 0;%>
+	    			<div class="new-png">
+						<%data.horizontal_mark.forEach(function(v1){%>
+							<span  style="position:relative;left:<%= _l%>px">
+								<img src="<%= v1.img_url%>" />
+							</span>
+							<%_l += 2;
+						})%>
+					</div>
+				<%}%>
+				<a class="s_pic" href="<%=link%>" target="_blank" title="">
+					<%if(this.is_lazyload){%>
+		               <span class="bs_load_img" asrc="<%= data.goods_img%>"></span>
+		             <%}else{%>
+						<img src="<%= data.goods_img%>" alt="">
+					<%}%>
+					<%if(status_bg){%>
+						<span class="goods_status <%=status_bg%>"></span>
+					<%}%>					
+				</a>
+				<div class="desc_box">
+					<p class="txt">
+						<a href="<%=link%>" target="_blank"><%=data.goods_name%></a>
+					</p>
+					<p class="pold">原价：<s>¥<%=data.origin_price%></s></p>
+					<p class="info-goods" style="border:none;">
+						团购价
+						<span class="f-18">¥</span>
+						<span class="f-14"><%=data.off_price%></span>
+						<span class="num"><%=data.join_user_num%><i>人抢</i></span>
+					</p>
+				</div>
+			</li>
+		<%}else{%>
+			<li>
+				<a class="hjfpos" href="<%=data.hjf_jump_url%>">
+					<img src=<%=data.hjf_pic_url%> />
+					<span>
+						<label class="goshop">进入店铺 > </label>
+					</span>
+				</a>
+			</li>
+		<%}%>
+	<%})%>
+</ul>

@@ -1,0 +1,131 @@
+fml.define('page/club/newTopic_ok' , ['jquery', 'ui/uploadBtn', 'component/shareTmp', 'app/checkLogin', 'ui/alert', 'component/focus'] , function(require , exports){
+	var $ = require('jquery');
+	var bind = require('ui/uploadBtn').bind;
+	var shareTmp = require('component/shareTmp');
+	var check = require('app/checkLogin');
+	var alertT = require('ui/alert');
+	var input = require('component/focus');
+
+	//调整容器为article_post
+	var $article_con = $('.article_post');
+
+	var alertTip = function(content) {
+		new alertT({
+			content: content, 
+			width: 420
+		});
+		$('.maga_suc').css('width', '420px');
+	};
+
+	var tool = function(){
+		// 图片上传
+		var overMaxPost = false;
+		var isFirst = false;
+		var hasAddPic = false;
+		var pic_id = 0;
+		var cur_total = 0;
+		bind('#add_pic' , {
+			'behind' : '/imageupload/pic_upload'
+			,multiple : true
+			,accept : "image/jpeg,image/gif,image/png"
+			,'FilesAdded' : function(file){
+				cur_total = file.length;
+				var res = {'isPic' : true};
+				overMaxPost = false;
+
+				for(var i = 0;i<cur_total;i++){
+					if(canPostNum <= 0){
+						overMaxPost = true;
+						continue ;
+					}
+					if ($article_con.find('.item').length == 0){
+						res.hide_up = 'none_f';
+					} else {
+						res.hide_up = '';
+						$article_con.find('.item').last().find('.arrow_down').removeClass('none_f');
+					}
+					var data = {'pic_title' : file[i].name, 'uppic_id' : pic_id+'_'+i};
+					res.data = data;
+					var tpl = shareTmp('addCon', res);
+					var itemObj = $article_con.append(tpl).find('.item').last();
+					if(!isFirst){
+						isFirst = true;
+						itemObj.addClass('firstPic');
+					}
+					canPostNum -= 1;
+				}
+				if(overMaxPost != false){
+					alertTip('亲，本次上传图片已超出上传限制，超出的图片未上传');
+				}
+			}
+			,'success' : function(res,obj,file_index){
+				file_index = file_index || 0;
+				cur_total -= 1;
+				if (typeof res.code != 'number') {
+					hasAddPic = $('#'+pic_id+'_'+file_index).parents('.item').find('.upload').length;
+					if(res.pic_id && !hasAddPic){
+						var data = {
+							pid : res.pic_id,
+							type : 2
+						}
+						var tpl = shareTmp('addPicCon', res);
+						var itemObj = $('#'+pic_id+'_'+file_index).parents('.uploading').hide().after(tpl).parents('.item').data(data);
+						input.inputFocus(itemObj.find('.desp')[0]);
+					} else {
+						var fileDom = $('#'+pic_id+'_'+file_index);
+						fileDom.parents('.item').addClass('error');
+						fileDom.parents('.progress_bar').hide();
+						fileDom.parents('.uploading').find('.upload_errormsg').html(res.msg).show();
+					}
+					$('.article_toolbar').addClass('article_toolbar_load');
+				} else {
+					var fileDom = $('#'+pic_id+'_'+file_index);
+					fileDom.parents('.progress_bar').hide();
+					fileDom.parents('.uploading').find('.upload_errormsg').html(res.msg).show();
+					fileDom.parents('.item').addClass('error').appendTo('.article_post_error');
+					$('.article_toolbar').addClass('article_toolbar_load');
+					$article_con.find('.item').last().find('.arrow_down').addClass('none_f');
+					$article_con.find('.item').first().find('.arrow_up').addClass('none_f');
+				}
+				if(cur_total == 0){
+					pic_id += 1;
+					var firstPic = $('.firstPic');
+					$('.editor').removeClass('editor');
+					firstPic.find('textarea').addClass('editor').focus();
+					firstPic.removeClass('firstPic');
+					isFirst = false;
+				}
+			}
+			,'error' : function(a,b,c,file_index){
+				if(typeof file_index == 'number'){
+					var fileDom = $('#' + '#'+pic_id+'_'+file_index);
+					fileDom.parents('.item').addClass('error');
+					fileDom.parents('.progress_bar').hide();
+					fileDom.parents('.uploading').find('.upload_errormsg').html('图片上传失败，网络错误或者图片太大！').show();
+				}
+			}
+			,'timeout' : 10000
+		})
+		//删除上传item
+		$('.article_post, .article_post_error').on('click', '.cl_i_close', function(){
+			var itemDiv = $(this).parents('.item');
+			var itemIndex = itemDiv.index();
+			var maxIndex = $('.article_post').find('.item').length;
+			canPostNum += 1;
+			if(itemDiv.find('.editor').length){
+				$('.content').addClass('editor');
+			}
+			if(itemIndex == 0){
+				itemDiv.next().find('.arrow_up').addClass('none_f');
+			} else if (itemIndex == (maxIndex-1)){
+				itemDiv.prev().find('.arrow_down').addClass('none_f');
+			}
+			maxIndex += $('.article_post_error').find('.item').length;
+			if(maxIndex == 1){
+				$('.article_toolbar').removeClass('article_toolbar_load');
+			}
+			itemDiv.remove();
+		});
+	}
+	exports.tool = tool;
+});

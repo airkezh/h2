@@ -1,0 +1,19 @@
+<ul class="clearfix_f limit">
+	<% this.saleList && this.saleList.map(function(data){ %>
+		<li class="list_link">
+			<div class="inner_box">
+				<h4><a onclick="javascript:Meilishuo.togo('<%=data.goods_url%>'); return false;"  href="<%=data.goods_url%>" target="_blank" ><%=data.goods_title%></h4>
+				<div class="pic"><a onclick="javascript:Meilishuo.togo('<%=data.goods_url%>'); return false;"  href="<%=data.goods_url%>" target="_blank"><img src="<%=data.pic_url%>" /></a></div>
+				<a onclick="javascript:Meilishuo.togo('<%=data.goods_url%>'); return false;" href="<%=data.goods_url%>" target="_blank" class="sale_price">¥<%=data.item_promo_price%></a>
+				<div class="time">
+					<a onclick="javascript:Meilishuo.togo('<%=data.goods_url%>'); return false;" href="<%=data.goods_url%>" target="_blank">
+						原价¥<strong class="through"><%=data.goods_price%></strong>折扣<strong class="red_f"><%=data.discount%></strong>折
+						<p class="timeStamp" end-date="<%=data.end_time%>">
+							<span>剩余时间：</span><strong id="day">0</strong><span>天</span><strong id="hour">0</strong><span>时</span><strong id="minute">0</strong><span>分</span><strong id="seconds">0</strong><span>秒</span>
+						</p>
+					</a>
+				</div>
+			</div>
+		</li>
+	<%});%>
+</ul>

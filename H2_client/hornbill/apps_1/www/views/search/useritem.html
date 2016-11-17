@@ -1,0 +1,66 @@
+<script type="text/html" id="userWall">
+<?$.each(tInfo , function(k , v){?>
+<div class="poster_grid poster_wall">
+	<div class="userinfo">
+		<?if(v.identity.purpleV){?>
+			<div class="brand" title="美丽说认证品牌"></div>
+			<div class="clear_f"></div>
+		<?}?>
+		<div class="avatar showChangeHead ">
+			<a href="/person/u/<?= v.user_id?>" target="_blank"><img src="<?= v.avatar_a?>"></a>
+			<?if(v.user_id == Meilishuo.config.user_id){?>
+				<a class=" change" target="_blank" href="/settings/setAvatar"></a>
+			<?}?>
+		</div>
+		<div class="nickname">
+			<a class="<?if(v.online_status){?>online<?}else{?>notonline<?}?>" target="_blank" href="/person/u/<?= v.user_id?>"><?= regString.cutstrX(v.nickname , 6 , '..')?></a>
+			<?var identity = v.identity;?>
+			<span class="identity_big_style">
+				<%# identity.html%>
+			</span>
+		</div>
+		<?if(v.identity.description){?>
+		<? v.identity.description = v.identity.description || {};?>
+		<p class="speclial">
+		<?if(v.identity.description.pinkV){?>
+			<?=v.identity.description.pinkV?>
+		<?}else if (v.identity.description.editorV){?>
+			<?=v.identity.description.editorV?>
+		<?}else if(v.identity.description.blueV){?>
+			<?=v.identity.description.blueV?>
+		<?}else if(v.identity.description.purpleV){?>
+			<?=v.identity.description.purpleV?>
+		<?}?>
+		</p><?}?>
+		<?
+			var statusClass = 'big';
+			if(v.follower_num >= 100000 || v.following_num >= 100000 || v.heart_num >= 100000){
+				statusClass ='';
+			}
+		?>
+		<ul class="status <?= statusClass?>">
+			<li><a href="/ur/fans/<?= v.user_id?>/" target="_blank"><span>粉丝</span><span class="nums"><?= v.follower_num?></span></a></li>
+			<li><a href="/ur/follow/<?= v.user_id?>/" target="_blank"><span>关注</span><span class="nums"><?= v.following_num?></span></a></li>
+			<li class="last"><a href="/atme/recommend/<?= v.user_id?>/" target="_blank"><span><img style=" margin-top: 2px;" alt="红心" src="<?= Meilishuo.config.picture_url?>images/twitter/ILikeit.gif" /></span><span class="nums"><?= v.heart_num?></span></a></li>
+		</ul>
+		<div class="clear_f"></div>
+		<div class="flw_msg">
+		<?if(Meilishuo.config.user_id == v.user_id){?>
+			<span class="red_follow" fuid="<?= v.user_id?>" following="<?= v.following?>" followed="<?= v.followed?>">自己哟</span>
+		<?}else{?>
+			<?if(v.followed == 0){?>
+				<span class="red_follow addUserFollow" fuid="<?= v.user_id?>" following="<?= v.following?>" followed="<?= v.followed?>">+ 加关注</span>
+			<?}?>
+			<?if(v.followed == 1){?>
+				<span class="pink_follow removeUserFollow" fuid="<?= v.user_id?>"  >已关注</span>
+			<?}?>
+			<?if(v.followed == 2){?>
+				<span class="pink_follow removeUserFollow" fuid="<?= v.user_id?>" following="<?= v.following?>" followed="<?= v.followed?>">互相关注</span>
+			<?}?>
+		<?}?>
+		</div>
+		<div class="clear_f"></div>
+	</div>
+</div>
+<?});?>
+</script>

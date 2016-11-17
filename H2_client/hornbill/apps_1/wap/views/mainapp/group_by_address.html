@@ -1,0 +1,30 @@
+<%# head.html%>
+
+<%
+    this.r = decodeURIComponent( this.r || '' );
+
+    var tabType = this.tabType,
+        tabs = [{
+            type: 'user',
+            text: '人'
+        }, {
+            type: 'circle',
+            text: '群'
+        }, {
+            type: 'item',
+            text: '宝贝'
+        }]
+%>
+<ul id="tabs" class="tabs">
+    <% tabs.forEach(function( t ) {
+        var type = t.type;
+    %>
+    <li class="<%= type == tabType ? 'active' : '' %>" data-type="addr-<%= type %>"><%= t.text %></li>
+    <% }) %>
+</ul>
+
+<%# mainapp/tmpl_user.html %>
+<%# mainapp/tmpl_circle.html %>
+<%# mainapp/tmpl_item.html %>
+
+<%# mainapp/group_footer.html %>

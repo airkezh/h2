@@ -1,0 +1,90 @@
+<%# header.html%>
+<%
+	var orderDetailInfo = this.md_orderDetail.data;
+	var goodsInfo = this.md_orderDetail.data.order_goods
+%>
+<div class="wrap">
+	<h2 class="wd_title">订单详情</h2>
+	<% if(orderDetailInfo.order_express){%>
+		<div class="receiver">
+			<div class="receiver_line"></div>
+			<div class="receiver_info">
+				<%if(orderDetailInfo.order_express.receiver_name){%>
+					<p>
+						<span><img src="<%=this.PICTURE_URL%>/images/wap/wd/user_icon.png" alt="" class="order_icon user_icon">收件人：<%= orderDetailInfo.order_express.receiver_name%></span>
+						<span><img src="<%=this.PICTURE_URL%>/images/wap/wd/tel_icon.png" alt="" class="tel_icon">电话：<%= orderDetailInfo.order_express.receiver_mobile%></span>
+					</p>
+					<p>收货地址：<%= orderDetailInfo.order_express.receiver_address%></p>
+				<%}%>
+			</div>
+			<div class="receiver_line"></div>
+		</div>
+	<%}%>
+	<div class="pay_ment">
+		<p>订单号：<%= orderDetailInfo.order_express.order_id%></p>
+	</div>
+	<%if(orderDetailInfo.order_express.express_company){%>
+		<div class="pay_ment">
+			<p>物流公司：<%= orderDetailInfo.order_express.express_company%></p>
+		</div>
+	<%}%>
+	<%if(orderDetailInfo.order_express.express_number){%>
+		<div class="pay_ment">
+			<p>物流单号：<%= orderDetailInfo.order_express.express_number%></p>
+		</div>
+	<%}%>
+	<div class="goods">
+		<% if(orderDetailInfo && goodsInfo){%>
+			<div class="goods_wrap">
+				<%if(orderDetailInfo.event_id != 0){%>
+					<a href="/md/treasure/?event_id=<%=orderDetailInfo.event_id%>">
+						<img src="<%=this.PICTURE_URL%>/images/wap/wd/next@2x.png" class="next_icon goods_next" />
+						<div class="goods_info_wrap">
+							<img src="<%= goodsInfo.goods_image[0].image_middle%>" class="goods_img" />
+							<div class="goods_info mar_r">
+								<p class="goods_title"><%= goodsInfo.goods_desc%></p>
+								<p class="goods_size">
+									<span>型号：<%= orderDetailInfo.order_sku.sku_name%></span>
+									<span>价格：<%= orderDetailInfo.order_total%></span>
+								</p>
+								<p class="goods_size">
+									<span>数量：<%= orderDetailInfo.order_amount%></span>
+								</p>
+							</div>
+						</div>
+						<% if (orderDetailInfo.order_event_item.item_description) { %>
+							<div class="goods_des"><%= orderDetailInfo.order_event_item.item_description %></div>
+						<% } %>
+					</a>
+				<%}else{%>
+					<a href="/md/detail/?goods_id=<%= orderDetailInfo.goods_id%>">
+						<img src="<%=this.PICTURE_URL%>/images/wap/wd/next@2x.png" class="next_icon goods_next" />
+						<div class="goods_info_wrap">
+							<img src="<%= goodsInfo.goods_image[0].image_middle%>" class="goods_img" />
+							<div class="goods_info mar_r">
+								<p class="goods_title"><%= goodsInfo.goods_desc%></p>
+								<p class="goods_size">
+									<span>型号：<%= orderDetailInfo.order_sku.sku_name%></span>
+									<span>价格：<%= orderDetailInfo.order_total%></span>
+								</p>
+								<p class="goods_size">
+									<span>数量：<%= orderDetailInfo.order_amount%></span>
+								</p>
+							</div>
+						</div>
+						<% if (orderDetailInfo.order_event_item.item_description) { %>
+							<div class="goods_des"><%= orderDetailInfo.order_event_item.item_description %></div>
+						<% } %>
+					</a>
+				<%}%>
+			</div>
+		<%}%>
+	</div>
+	<%if(orderDetailInfo.order_remark){%>
+		<div class="pay_ment">
+			<h6>订单备注：</h6>
+			<p><%= orderDetailInfo.order_remark%></p>
+		</div>
+	<%}%>
+</div>
+<%# footer.html%>

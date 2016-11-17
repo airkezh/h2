@@ -1,0 +1,27 @@
+<%#head_simple.html%>
+</head>
+<body>
+<img src="<%= this.PICTURE_URL%>images/wap/activity/dot99/banner130902_2.jpg" />
+<div class="bg_pink c_f">
+	请打开客户端参加购买
+	<!--
+	<div class="count_down">
+		<p class="time">热卖进行中！</p>
+	</div>
+	-->
+</div>
+<img src="<%= this.PICTURE_URL%>images/wap/activity/dot99/pro_coming130902.jpg" />
+<img src="<%= this.PICTURE_URL%>images/wap/activity/dot99/pro130902.jpg" />
+	<%= requireFn('wapShare.html')({
+		'share' : this.share 
+		,'shareID' : 'dot99'
+		, 'shareTitle' : '分享到朋友圈，购买时截图给我们，即可享受包邮优惠！'
+		, '_JSstack' : this._JSstack
+		, '_JSmods' : this._JSmods
+	}); %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/app/countdown' , function(){
+		this();	
+	});
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

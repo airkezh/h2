@@ -1,0 +1,120 @@
+@import "block.less";
+body{
+	.bgc (rgb(237, 233, 234));
+}
+.recommend{
+	overflow: hidden;
+	
+	// 轮播
+	.imageSlide{
+		border: 0px solid black;
+		position: relative;
+		overflow: hidden;
+		font-size: 0;
+		ul{ 
+			position: absolute;
+			li{
+				position: relative;
+				float: left;
+				display: inline;
+				img{.w (100%);}
+			}
+		}
+		.num{
+			.c;
+			position: absolute; 
+			.w (100%); 
+			left:0; 
+			bottom: 10px; 
+			z-index: 10;
+			b{
+				display: inline-block;
+				.w (3px); 
+				.h (3px); 
+				margin: 6px 10px 0 0;
+				border: 2px solid white;
+				.bgc (#fff);
+				.border-r-a (100%);
+				vertical-align: middle;
+			}
+			.cur{
+				.w (6px);
+				.h (6px);
+				border: 1px solid white;
+				border-radius: 8px;
+				.bgc (rgba(255, 255, 255, 0));
+			}
+	
+		}
+	}
+	//app部分的图标、描述即下载按钮的样式
+	.app{
+		.w (620*@w);
+		.bgc (white);	
+		.mr (10*@w);
+		.mb (20*@w);
+		.ml (10*@w);
+		.mt (20*@w);
+		-webkit-box-sizing: border-box;
+		box-sizing: border-box;
+		border: 1px solid rgb(217, 208, 211);
+		.pl (20*@w);
+		.software{
+			.w (580/600*100%);
+			.clearfix;
+			//软件图标，图片
+			.s-left{
+				.mt (30*@w);
+				.left;
+				.w (120*@w);
+				img{
+					.w(100%);
+				}
+			}
+			//图标相关介绍性信息描述
+			.s-right{
+				.left;
+				.w (300*@w);
+				.pl (30*@w);
+				.icon{
+					border: 0px solid black;
+					color: rgb(89,80,86);
+					font-size: 1.0rem;
+					.pt (100*@w);
+				}
+				.description{
+					color: #A7A0A4; //RGB(128,115,123);	
+					.pt (45*@w);
+					font-size: 0.6rem;	
+				}
+			}
+			//下载按钮
+			.icon-download{	
+				text-decoration: none;
+				.right;
+				border-radius: 5px;
+				.bgc(rgb(255,148,183));
+				.c;
+				.mt (50*@w);
+				.pt (15*@w);
+				.pb (15*@w);
+				.pl (40/580*100%);
+				.pr (40/580*100%);
+				font-size: 1.0rem;
+				color: white;
+				
+			}
+		}
+		.software-bottom{
+			border-top: 1px solid rgb(230, 229, 230);//横线的控制
+			color: #A7A0A4;	
+			font-size: 0.8rem;	
+			.pb (20/600*100%);
+			.pt (20/600*100%);
+			.pr (10/600*100%);
+			.mt (10/600*100%);
+			-webkit-box-sizing: border-box;
+			box-sizing: border-box;
+		}
+	}
+}

@@ -1,0 +1,166 @@
+<%#head.html%>
+<%var lottery=this.nissan_lottery%>
+
+<div class="mc-bd">
+
+	<div class="mc-bg1"></div>
+	<div class="mc-bg2">
+		<div class="main-cont">
+			<div class="step1">
+				<label><input type="radio" name="sel1" value="indie" checked/></label>
+				<label class="sec"><input type="radio" name="sel1" value="sweet" /></label>
+				<label class="third"><input type="radio" name="sel1" value="queen" /></label>
+				<label><input type="radio" name="sel1" value="handsome" /></label>	
+			</div>
+
+			<ul class="show-type">
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+			</ul>
+
+		</div>
+	</div>
+	<div class="mc-bg3">
+		<div class="main-cont">
+			<div class="step2">
+				<label><input type="radio" name="sel2" value="0" checked/>象牙白</label>
+				<label><input type="radio" name="sel2" value="1" />水晶粉</label>
+				<label><input type="radio" name="sel2" value="2" />翡丽灰</label>
+				<label><input type="radio" name="sel2" value="3" />加州橙</label>	
+				<label><input type="radio" name="sel2" value="4"/>炫雅红</label>
+				<label><input type="radio" name="sel2" value="5" />孔雀蓝</label>
+				<label><input type="radio" name="sel2" value="6" />碧玉黑</label>
+				<label><input type="radio" name="sel2" value="7" />月光银</label>	
+			</div>
+
+		</div>
+	</div>
+	<div class="mc-bg4">
+		<div class="main-cont">
+			<div class="step3">
+				<div class="upload-box">
+					<%= requireFn('biz/huodong/upload_photo.html')({
+						'upload_style' : 'obolaiUpWapper'
+					}); %>
+					<button class="next none_f"></button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="mc-bg5">
+		<div class="main-cont">
+			<div class="hb_box">
+				<div class="content_fluid">
+					<div class="goods_wall auto_f" style="width:987px;">
+					<% if(this.isLogin == 1 && this.my_poster && this.my_poster.data){ %>
+						<div class="corner_notic">
+							<div class="vote_box">
+								<a href="/share/<%= this.my_poster.data.twitter_id%>" target="_blank" class="pic_load">
+									<img class="goods_pic" src="<%= this.my_poster.data.show_pic%>" pid="<%= this.my_poster.data.pid%>" width="228" height="<%= this.my_poster.data.pic_height%>" />
+								</a>
+								<div class="info">
+									<div class="userInfo" uid="<%= this.my_poster.data.uinfo.user_id%>">
+										<div class="person">
+											<a href="/person/u/<%= this.my_poster.data.uinfo.user_id%>" target="_blank" class="face"><img src="<%= this.my_poster.data.uinfo.avatar_c%>" width="34" height="34" /></a>
+								            <span class="name"><%= this.my_poster.data.uinfo.nickname%></span>
+									    </div>
+										<ul class="txt_info">
+											<li>票数：<span class="red_f"><%= this.my_poster.data.score%></span></li>
+								            <li>排名：<span class="red_f"><%= this.my_poster.data.rank%></span></li>
+									    </ul>
+									</div>
+									<p class="btnBox auto_f" id="vote_share">拉投票</p>
+								</div>
+				            </div>
+					    </div>
+					<%}%>
+					</div>
+					<%#biz/huodong/vote/vote_poster.html%>
+					<div class="spinner botSpinner none_f"></div>
+					<div class="clear_f"></div>
+					<div class="paging_panel c_f"><%#paging.html%></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="mc-bg7">
+	</div>
+
+
+	<div class="mc-bg6">
+		<div class="main-cont">
+			<a class="link" href="http://www.dongfeng-nissan.com.cn/Nissan/car/march" target="_blank"></a>
+		</div>
+	</div>
+
+	<!-- 提交弹窗-->
+	<script type="text/html" id="share">
+		<div class="share_pop">
+			<span href="" class="close_btn" id="close"></span>
+			<img src="<?= act_pic?>" width="244" height="443" />
+			<%if(lottery.is_lottery==0){%>
+				<div class="lottery"></div>
+			<%}else{%>
+				<div class="lotteryed"></div>
+			<%}%>
+			<div class="share_btn invite"></div>
+			<ul>
+				<li class="sina_s"></li>
+				<li class="tx"></li>
+			</ul>
+		</div>
+	</script>
+
+
+	<!-- 拉投票弹窗-->
+	<script type="text/html" id="share1">
+		<div class="share_pop">
+			<span href="" class="close_btn" id="close"></span>
+			<img src="<%= this.my_poster.data.show_pic%>" width="244" height="443" />
+			<%if(lottery.is_lottery==0){%>
+				<div class="lottery"></div>
+			<%}else{%>
+				<div class="lotteryed"></div>
+			<%}%>
+			<div class="share_btn invite"></div>
+			<ul>
+				<li class="sina_s"></li>
+				<li class="tx"></li>
+			</ul>
+		</div>
+	</script>
+
+	<!-- 抽奖弹窗-->
+	<script type="text/html" id="draw">
+		<div class="draw_pop">
+			<span href="" class="close_btn" id="close"></span>
+			<? if(coupon_code == 0){ ?>
+				<img src="<%= this.PICTURE_URL %>images/huodong/machi/nocoupon.png"/>
+			<?}else if(coupon_code == 5){ ?>
+				<img src="<%= this.PICTURE_URL %>images/huodong/machi/coupon5.png"/>
+			<?}else if(coupon_code == 10){ ?>
+				<img src="<%= this.PICTURE_URL %>images/huodong/machi/coupon10.png"/>
+			<?}else if(coupon_code == 15){ ?>
+				<img src="<%= this.PICTURE_URL %>images/huodong/machi/coupon15.png"/>
+			<?}else{?>
+				<img src="<%= this.PICTURE_URL %>images/huodong/machi/nocoupon.png"/>
+			<?}?>
+		</div>
+	</script>
+
+<script>
+fml.vars.notFluid = true;
+<%= this.poster0? 'Meilishuo.config.poster0 = '+JSON.stringify(this.poster0)+';':'' ;%>
+<%= this.my_poster? 'Meilishuo.config.my_poster = '+JSON.stringify(this.my_poster)+';':'' ;%>
+</script>
+
+</div>
+
+<% $_ENGINE_SELF.callFn("useModule")("fml.use('page/poster0');", this._JSstack , this._JSmodsFast ); %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/huodong/nissan');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

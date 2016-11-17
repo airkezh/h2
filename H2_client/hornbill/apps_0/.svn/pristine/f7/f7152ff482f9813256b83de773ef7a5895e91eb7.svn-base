@@ -1,0 +1,332 @@
+@import "block.less";
+@import "pullUp.less";
+
+@color: #ff7a9a;
+
+.goTop;
+.goTop, #goTop {
+  bottom : 1rem;
+  li {
+    .pt(.16rem);
+    .pb(.08rem);
+    .pr(.04rem);
+    .icon-gotop {
+      .icon > .gotop;
+      .h(.8rem);
+      .w(.8rem);
+      .border-r(.8rem);
+    }
+  }
+}
+
+.pullUp;
+.pullUp {
+  margin-bottom : .3rem;
+}
+
+.pullUp:before {
+  position  : relative;
+  top       : 0;
+  font-size : .22rem;
+}
+
+body {
+  background-color : #f8f8f8;
+}
+
+.icon-like {
+  display         : inline-block;
+  width           : .2rem;
+  height          : .18rem;
+  margin-right    : .05rem;
+  background      : url("http://d03.res.meilishuo.net/pic/_o/79/48/051f7e0b8712f068eaae0e53d36f_20_18.cf.png") no-repeat center;
+  background-size : cover;
+}
+
+.main .icon-like {
+  width  : .16rem;
+  height : .14rem;
+}
+
+.icon-more {
+  display         : inline-block;
+  width           : .2rem;
+  height          : .2rem;
+  margin-left     : .1rem;
+  margin-right    : -.1rem;
+  background      : url('http://d03.res.meilishuo.net/img/_o/91/4c/7e7b92cde0c6eb57af6776129ef8_89_1110.ch.png') no-repeat right 62%;
+  background-size : .3rem;
+  vertical-align  : bottom;
+}
+
+.item {
+  margin-top : .2rem;
+  padding    : .2rem .1rem;
+  overflow   : hidden;
+}
+
+.main {
+  padding  : .2rem 0;
+  overflow : hidden;
+}
+
+.item {
+  background-color : #fff;
+}
+
+.item-mainpic {
+  float           : left;
+  width           : 1rem;
+  height          : 1rem;
+  margin-right    : .2rem;
+  background      : no-repeat;
+  background-size : cover;
+}
+
+.item-desc {
+  font-size : 0;
+}
+
+.item-title {
+  display       : block;
+  margin-bottom : .2rem;
+  font-weight   : normal;
+  font-size     : .24rem;
+  line-height   : .24rem;
+}
+
+.item-price {
+  display      : inline-block;
+  margin-right : .2rem;
+  font-size    : .26rem;
+  color        : @color;
+}
+
+.item-like {
+  font-size : .26rem;
+  color     : #999;
+}
+
+/* Tab */
+.tab {
+  padding          : .2rem .1rem 0;
+  font-size        : 0;
+  background-color : #fff;
+
+  &.fixed-tab {
+    position : fixed;
+    top      : 0;
+    left     : 0;
+    right    : 0;
+    padding  : .2rem .2rem 0;
+    z-index  : 100;
+  }
+}
+
+.tab-item {
+  display        : inline-block;
+  width          : 25%;
+  margin         : 0 3%;
+  padding-bottom : .16rem;
+  color          : #666;
+  font-size      : .28rem;
+  text-align     : center;
+
+  &:first-child {
+    margin : 0 9% 0 0;
+  }
+
+  &:last-child {
+    margin : 0 0 0 9%;
+  }
+
+  &.active {
+    color         : @color;
+    border-bottom : .03rem solid;
+  }
+}
+
+/*
+  content
+  padding-top 1px 是为了避免 margin collapse
+*/
+.content {
+  margin-bottom : .2rem;
+}
+
+.content-similar, .content-match {
+  padding          : 1px .1rem 0;
+  background-color : #fff;
+  overflow         : hidden;
+}
+
+.content-similar .data-blank {
+  display : none;
+}
+
+.waterfall-wrap {
+  margin-top : .1rem;
+}
+
+.content-match, .content-shop {
+  display : none;
+}
+
+.data-blank {
+  padding          : .5rem 0;
+  font-size        : .2rem;
+  text-align       : center;
+  background-color : #fff;
+}
+
+/* 相似宝贝 */
+.similar-item-pic {
+  display         : block;
+  background      : no-repeat center;
+  background-size : cover;
+}
+
+/* 相似宝贝和搭配宝贝样式差不多 */
+.similar-item, .match-goods {
+  display : block;
+
+  .item-desc {
+    padding-bottom : .2rem;
+    text-align     : center;
+  }
+
+  .item-title {
+    margin      : .15rem 0;
+    font-size   : .22rem;
+    line-height : .22rem;
+    .ellipsis;
+  }
+
+  .item-price, .item-like {
+    font-size : .22rem;
+  }
+}
+
+/* 搭配宝贝 */
+.match-goods {
+  float : left;
+  width : 48%;
+}
+
+.even {
+  margin-left : 4%;
+}
+
+.match-goods-title {
+  padding-top   : .4rem;
+  margin-bottom : .15rem;
+  font-size     : .24rem;
+  font-weight   : normal;
+  color         : #999;
+  clear         : both;
+
+  &:first-child {
+    padding-top : .16rem;
+  }
+}
+
+/* 相似店铺 */
+.shop-link-wrap {
+  display : inline-block;
+}
+
+.shop-item {
+  padding          : 0 .1rem;
+  margin-bottom    : .2rem;
+  font-size        : .22rem;
+  background-color : #fff;
+
+  .hd {
+    padding-top : .2rem;
+    font-size   : 0;
+  }
+
+  .bd {
+    padding-bottom : .2rem;
+    overflow-x     : scroll;
+  }
+
+  .follow-btn {
+    float         : right;
+    width         : .77rem;
+    height        : .36rem;
+    line-height   : .36rem;
+    font-size     : .22rem;
+    border        : .02rem solid;
+    text-align    : center;
+    border-radius : .04rem;
+  }
+
+  .is-not-follow {
+    color : @color;
+  }
+
+  .is-followed {
+    color        : #666;
+    border-color : #999;
+  }
+
+  .info {
+    margin   : .12rem 0 .2rem;
+    overflow : hidden;
+  }
+
+  .desc {
+    font-size : .22rem;
+    color     : #666;
+  }
+
+  .desc-link {
+    float     : right;
+    font-size : .22rem;
+    color     : @color;
+  }
+
+  .item-list {
+    overflow : hidden;
+  }
+
+  .item-single {
+    float        : left;
+    margin-right : .1rem;
+  }
+
+  .item-pic {
+    display         : block;
+    width           : 1.46rem;
+    height          : 1.46rem;
+    background      : no-repeat center;
+    background-size : cover;
+  }
+
+  .item-price {
+    display          : block;
+    width            : 100%;
+    height           : .26rem;
+    line-height      : .26rem;
+    font-size        : .18rem;
+    color            : #fff;
+    text-align       : center;
+    background-color : rgba(102, 102, 102, .5);
+  }
+}
+
+.shop-avatar {
+  display        : inline-block;
+  width          : .6rem;
+  height         : .6rem;
+  border-radius  : 50%;
+  vertical-align : middle;
+}
+
+.shop-name {
+  display     : inline-block;
+  margin-left : .16rem;
+  font-size   : .26rem;
+  color       : #333;
+}

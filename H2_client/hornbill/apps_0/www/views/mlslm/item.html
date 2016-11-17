@@ -1,0 +1,93 @@
+<%# lm/head.html%>
+<%
+    var goodsInfo = this.goods_info || {};
+    var shop_in   = this.shop_in;
+    var url       = '/share/item/' + this.tid
+    var query     = this._Request_query;
+    if(query && query.frm) {
+        url += '?frm=' + query.frm;
+    }
+%>
+<div class="detail twitter" twitter_id="<%= goodsInfo.twitter_id%>">
+     <div class="picture">
+         <div class="big_pic">
+               <a href="/share/item/<%= this.tid%>" target="_blank">
+                <img class="j_big_show twitter_pic" alt="<%= this.winTitle %>"
+                    src="<%= goodsInfo.image.image[0]%>" style="height:428px;"/>
+               </a>
+          </div>
+         <div class="clear_f"></div>
+     </div>
+     <div class="sale">
+         <h2 class="shop_name">
+           <a href="<%= url %>" target="_blank"><%=shop_in.shop_nick%></a>
+         </h2>
+         <h3 class="s_tle"><a href="<%= url%>" target="_blank"><%= goodsInfo.goods_title%></a></h3>
+         <%
+           var dianping = goodsInfo.goods_comment 
+           if(dianping){
+         %>
+         <div class="daren">
+            <a class="avatar32_f" href="javascript:;" target="_blank">
+             <img src="<%= dianping.avatar%>" />
+            </a>
+            <p>
+              <a href="javascript:;" target="_blank"><%= dianping.nick_name%></a>
+            </p>
+            <p class="text">
+            <span class="quot_l">&nbsp;</span><%= dianping.description%><span class="quot_r">&nbsp;</span>
+           </p>
+         </div>
+         <%}%>
+         <ul class="sku_meta">
+            <li>
+              <span class="sort">价&nbsp; &nbsp; &nbsp;格</span>
+              <span class="price">¥<%= goodsInfo.price%></span>
+              <% goodsInfo.label.forEach(function(label){%>
+              <span class="btn"><%= label.text %></span>
+              <%});%>
+            </li>
+            <li>
+              <span class="sort">原&nbsp; &nbsp; &nbsp;价</span>
+              ￥<span class="del"><%= goodsInfo.original_price%></span>
+            </li>
+            <li>
+                <span class="sort">运&nbsp; &nbsp; &nbsp;费</span>免运费
+            </li>
+            <li>
+                <span class="sort">销&nbsp; &nbsp; &nbsp;量</span>共售出<span><%= goodsInfo.sales%></span>件
+            </li>
+            <li>
+                <span class="sort">喜&nbsp; &nbsp; &nbsp;欢</span>有<%= goodsInfo.twitter_stat.count_like%>人喜欢该商品
+            </li>
+         </ul>
+    <div class="btn_box">
+        <div class="same_btn">
+            <a class="buy_btn" title="去购买" href="<%= url %>" target="_blank">
+              <em class="rmbico">&nbsp;</em>去购买
+            </a>
+        </div>
+    </div>
+  </div>
+</div>
+<div class="spinner midSpinner pa_f" style="top:1000px;"></div>
+<div class="content_fluid v_hidden">
+    <h2 class="subtitle"><span>相关推荐</span></h2>
+    <div class="goods_wall">
+    </div>
+    <div class="paging_panel c_f none_f">
+        <%#paging.html%>
+    </div>
+    <div class="spinner botSpinner none_f"></div>
+    <div class="clear_f"></div>
+</div>
+<%#poster.html%>
+<script>
+  fml.vars.tid = "<%= this.tid %>",
+  fml.vars.user_id = "<%= this.user_id %>";
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+  fml.use('page/poster0');
+  fml.use('page/item');
+_use:", this._JSstack , this._JSmods ); %>
+<%# mlslm/footLm.html%>

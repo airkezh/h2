@@ -1,0 +1,32 @@
+<%#head.html%>
+<div class="wrap_box">
+	<% if(this.exo_img){ %>
+		<div class="top"></div>
+		<div class="box1"></div>
+		<ul class="box2">
+			<% this.exo_img.news_section && this.exo_img.news_section.map(function(data){ %>
+				<li>
+					<p class="lp"><span>▪</span><%=data.time%></p>
+					<p class="rp"><%=data.text%></p>
+				</li>
+			<%});%>
+		</ul>
+		<div class="box3"></div>
+		<ul class="box4">
+		<% this.exo_img.news_section && this.exo_img.group_section.map(function(data){ %>
+			<li><a href="<%=data.link%>" target="_blank"><img src="<%=data.pic_url%>" /></a></li>
+		<%});%>
+		</ul>
+		<%#huodong/exo_bottom.html%>
+	<%}%>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('jquery' , function(){
+		$('.erweima').mouseover(function(){
+			$('.wei2').show();	
+		}).mouseout(function(){
+			$('.wei2').hide();
+		});	
+	});
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

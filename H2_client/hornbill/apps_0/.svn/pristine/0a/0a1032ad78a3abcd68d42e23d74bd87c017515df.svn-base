@@ -1,0 +1,594 @@
+@import "../common/core/block";
+@import "../common/window";
+@import "../common/dootablock";
+@import "../common/header";
+@import "../common/editOrderInfo";
+
+body{.bgc(@bodybg);overflow: visible;}
+
+.container{
+	.cart{
+		background:none;
+		.mb(50px);
+	}
+}
+.go_charge{.none;}
+.cartForm{
+	display:none;
+}
+.cart-empty{
+	.bgwhite;
+	.border-1(@lightGrayBd);
+	border-top:2px solid @red;
+	.auto;
+	.w(978px);
+}
+
+.cart{
+	a{
+		.red;
+	}
+	border-top:2px solid @red;
+	.auto;
+	.w(978px);
+	th{
+		.fn;
+		border-bottom:1px solid #d2d2d2;
+		.p15_0;
+	}
+	.shop .blank_tr td{.h(10px);position: relative;}
+	.shop .shop_title td{
+		.h(35px);.bgc(#f7f7f7);border-top:1px solid #d2d2d2;text-align: left;
+	}
+	.shop .shop_title td.first{border-left:1px solid #d2d2d2;padding-left: 20px;}
+	.shop .shop_title td.last{border-right:1px solid #d2d2d2;}
+
+	.shop{
+		//指定商品满额打折露出
+		// .discount_outer{
+		// 	.w(16px);
+		// 	.h(100px);
+		// 	position: absolute;
+		// 	left: -20px;
+		// 	background: #fbfbfb;
+
+		// }
+		span.shop_info{
+			max-width: 223px;
+			.left();
+			overflow: hidden;
+			height: 20px;		
+		}
+		a.shop_im{
+			.left();
+			position: relative;
+			top: 2px;
+		}
+		.shop_discount{
+			.clearfix();
+			max-width: 490px;
+			overflow: hidden;
+			.h(22px);
+			.l(22px);
+			padding-top: 1px;
+			.left();			
+			img{vertical-align: sub;margin-left: 5px;.left();position: relative;top: 2px;}
+			span{margin-left: 3px;.left();}
+		}
+		.coupon{ 
+			padding: 2px 8px; .border-1(@red); .i_block; .cursor;
+			.right();
+			.pr;
+			.h(16px);
+			.l(16px);
+			.coupon_arrow{.i_block; .w(12px); .h(10px); background:url("@{pic_url}/images/header/@{mls_ico}") no-repeat; .bp(-84px,-170px); .indent; *vertical-align: middle; zoom:1;}
+			.coupon_arrow_active{ .bp(-84px,-160px);}
+		}
+		.coupon_active{
+			z-index: 30;
+			border-bottom-color: #FFF;
+			.bgc(#FFF);
+		}
+		.coupon_words{.pt(5px);.pr(20px);}
+	}
+
+	.getserviceqq{
+		background: url("@{pic_url}/images/doota/doota_im1.gif") no-repeat;
+		.pb(6px); .pl(18px); .pt(2px);
+		.ml(8px); .indent;
+	}
+	.tl{
+		.tl;
+	}
+	thead th,tr.goods td{
+		&.first{
+			border-left:1px solid #d2d2d2 !important;
+			padding-left: 20px;
+		}
+		&.last{
+			border-right:1px solid #d2d2d2 !important;
+		}
+		.bgc(#ffffff);
+	}
+	tr.goods td{
+		border-bottom:1px dotted #bfbfbf;
+	}
+	tr.goods td.first,tr.goods td.last{
+		border-bottom:0;
+	}
+	tr.goods.first td{
+		border-top:1px solid #d2d2d2;
+	}
+	tr.goods.last td{
+		border-bottom:1px solid #d2d2d2 !important;
+	}
+	.invalid{
+		.i_block();
+		background:#e6e6e6;
+		padding:3px 8px;
+		border-radius:3px;
+	}
+	.amount{
+		.w(36px);
+		.h(19px);
+		.l(19px);
+		.c;
+		padding:0;
+		margin:0;
+		border:1px solid #d2d2d2;
+		outline:0;
+	}
+	.minus,.add{
+		.cursor;
+		.w(19px);
+		.h(19px);
+		border:1px solid #d2d2d2;
+		.i_block;
+		background:url("@{pic_url}/images/doota/add-minus1.png");
+		&.disabled{
+			background-image:url("@{pic_url}/images/doota/add-minus-gray2.png");
+		}
+	}
+	.stock_remain{ .w(100%); .hidden;
+		p{.w(78px); .h(19px); .l(19px); .bgc(#f2e2e7); .red; .ml(25px); .left;}
+	}
+	.minus,.add,.amount,.stock_remain{
+		float:left;
+	}
+	.minus{
+		.ml(25px);
+		border-right:0;
+	}
+	.add{
+		background-position:-19px 0;
+		border-left:0;
+	}
+	.g-content{
+		.tl;.pr();
+		img,span{
+			.block;
+			.left;
+		}
+		img{
+			.w(66px);
+			.h(66px);
+			.mr(20px);
+			.border-1(#e6e6e6);
+		}
+		span.name{
+			.w(130px);
+			.l(20px);
+			a{
+				.dgray;
+				&:hover{
+					.red;
+				};
+			}
+		}
+		.presale-btn{
+			.pa();.block();.h(16px);.w(68px);.bgc(#ff6699);.c();.l(16px);.fc(#ffffff);
+			top:88px;
+			left:0px;
+		}
+		.prop{
+			.gray;
+			.w(230px);
+			span{
+				.block;
+				.mr(26px);
+			}
+		}
+	}
+	.price_discount{z-index: 27;
+		span{
+			.block;
+		}
+		.promote_wrapper{.mt(5px);z-index:27;
+			.promote{.bgred;.white;padding: 2px 5px;}
+			.promo_sale ,.promo_num{.w(116px); .bgred; .white; .c; .auto; padding: 2px 0px 2px 0; .pr;cursor:default;z-index:27;
+				.promo_arrow{ .pa; .block; right: 8px; top: 6px; .w(10px); .h(5px); background:url("@{pic_url}/images/header/@{mls_ico}") no-repeat; .bp(-68px,-174px);}
+				.promo_arrow_active{.bp(-68px,-164px);}
+			}
+		}
+		.price_origial{ .gray;}
+	}
+	tr.goods td{
+		.pt(20px);
+		.pb(20px);
+		vertical-align:middle;
+		img{
+			/*border-bottom:1px solid #e6e6e6;*/
+		}
+	}
+    
+	tr.goods_useless{
+		td{.bgc(#fbfbfb);}
+		td.order_detail{
+			.bgc(#fbfbfb);
+			.order_info{
+				.border-1(#fbfbfb);
+				span.order_info_text{
+					.none();
+				}
+			}
+			.order_info:hover{
+				.border-1(#fbfbfb);
+				span.order_info_text{
+					.none();
+				}
+			}
+		}
+	}
+	tr.goods_useless:hover .order_detail .order_info{
+		.border-1(#fbfbfb)
+		span.order_info_text{
+			.none();
+		}
+	}
+	tr.goods .order_detail{.pr();padding:0px;z-index: 28;
+		.order_detail_wrapper{.block();.pr();}
+
+
+		.order_info{
+			.block;.pr();.pt(20px);.h(auto);.border-1(#ffffff);min-height:86px;cursor: default;
+			.order_info_item{
+				.block;.pl(10px);.l(20px);text-align: left;word-break:break-all;
+			}
+			.order_info_text{
+				.none();cursor:pointer;
+			}
+		}
+
+		.order_info:hover,.order_info.active{
+			border:1px dashed #ff6699;
+			.order_info_text{
+				.block();.pa();.bgc(#ff84ad);.fc(#ffffff);.w(30px);.h(16px);.l(16px);.pl(0px);
+				text-align:center;top:0px;right:0px;background-image:none; 
+			}
+		}
+		.order_edit{
+			.pa();.none();top:0px;right:-465px;z-index: 28;min-height: 243px;.w(450px);.pt(20px);.pb(20px);.border-1(#e6e6e6);
+			background: url("@{pic_url}/images/wilee/order/loading.gif") center center no-repeat #ffffff;
+			.arrow_left{
+				.i_block;.pa();.w(15px);.h(24px);top:12px;left:-10px;z-index:28;background: url("@{pic_url}/images/wilee/order/arrow_left.png") 0px 0px no-repeat;
+			}
+		}
+		.order_edit.active{
+			.block();
+		}
+	}
+   //指定商品满额打折露出
+   //  tr.discount{
+   //  	td{background: #fbfbfb;}
+   //  	.order_detail .order_info{
+			// .border-1(#fbfbfb);
+   //  	}
+   //  }
+	tr.goods:hover .order_info{
+			border:1px dashed #efefef;
+			.order_info_text{
+				.block();.pa();.bgc(#e6e6e6);.w(0px);.h(16px);.l(16px);.pl(16px);
+				overflow:hidden;text-align:center;top:0px;right:0px;
+				background-image:url("@{pic_url}/images/wilee/order/icons.png");
+				background-position: -25px -132px;
+			}
+	}
+	//指定商品满额打折露出
+	// tr.discount:hover .order_info{
+	// 	border:1px dashed #efefef;
+	// }
+}
+.banner{
+	.w(978px);
+	.clearfix();
+	.auto;
+	margin-bottom: 28px;
+	.banner1{
+		background-color: red;
+		a{
+			display: block;
+			img{.h(100px);.w(484px);display: block;}
+		}
+		
+		.left();
+		margin-right: 10px;
+	}
+	.banner2{
+		a{
+			display: block;
+			img{.h(100px);.w(484px);display: block;}
+		}
+		.left();
+	}
+}
+.status-top{
+	.clearfix();.w(978px);
+	.auto;
+	.clearfix();
+	//.pb(10px);
+	.right{
+		line-height: 4.5;
+		height: 30px;
+		.right;
+		a{
+			.ml(20px);
+			.red;
+		}
+	}
+	.ml24_f{ .ml(24px);}
+	.tag-show{
+		.left();
+		background: #f69;
+		color: #fff;
+		a{
+			cursor:default;
+			color: #fff;	
+		}
+	}
+	.tag-hidden{
+		.left();
+		background: #f2f2f2;
+		color: #f69;
+	}
+	.tag-item{
+		.left();
+		a{
+			.block();
+			height: 44px;
+			width: 170px;
+			.l(44px);
+			text-align: center;
+			font-weight: normal;
+		}
+	}
+}
+
+.size96x30{
+	.w(96px);
+	.h(30px);
+	.l(30px);
+	.f(16px);
+}
+
+.cart .empty , .cart .no_logged, .cart .error{
+	.w(290px);
+	.auto;
+	.pt(130px);
+	.pb(170px);
+}
+.cart .error{ .w(400px);}
+.cart .no_logged{ .w(400px);}
+.go-tour{
+	color:white !important;
+	.block;
+	.auto;
+	.mt(40px) !important;
+}
+.cart .empty .icon, .cart .no_logged .icon, .cart .error .icon{
+	.left;
+	.w(56px);
+	.h(47px);
+	background:url("@{pic_url}/images/doota/cart_icon.png");
+}
+.cart .empty .description, .cart .no_logged .description, .cart .error .description{
+	.f(16px);
+	.l(24px);
+	.left;
+	.ml(20px);
+}
+.cart .error .description{.l(50px)}
+.clear{
+	.hidden;
+}
+.login_in span{ vertical-align: 1px;}
+a.login_in{.red;}
+
+.cart_header{
+	margin:20px auto;
+	overflow:hidden;
+	.h(80px);
+	.w(980px);
+	.icon{
+		.w(148px);
+		.h(34px);
+		background:url("@{pic_url}/images/doota/cart_logo.png");
+		.left;
+	}
+	.logo_wrap{
+        .h(0);
+        .pb(0);
+        .pt(20px);
+    }
+	.status{
+		.w(430px);
+        .h(65px);
+		.right;
+		.chart{
+			background:url("@{pic_url}/images/wilee/order/chart_bg7.png");
+			.h(35px);
+			.w(435px);
+			.right;
+			.bp(-54px,-113px);
+			overflow:hidden;
+			.ball,.empty{
+				.w(12px);
+				.h(12px);
+				background:url("@{pic_url}/images/doota/ball.png") no-repeat;
+				.ml(162px);
+				.left;
+				&.first{
+					.ml(0);
+				}
+			}
+			.empty{
+				background-position:-12px 0;
+			}
+		}
+		.text{
+			.right;
+			.w(425px);
+			.current{
+				.red;
+			}
+			.first{
+				.w(155px);
+			}
+			.middle{
+				.w(175px);
+			}
+			span{
+				.left;
+				color:#bfbfbf;
+			}
+		}
+	}
+}
+.ad{
+	.w(980px);
+	.h(90px);
+	margin:50px auto 20px auto;
+	.bgwhite;
+	img{
+		.w(980px);
+		.h(90px);
+	}
+}
+
+.float_pannel{ .pf; z-index: 100;
+	.bgwhite;
+	.w(980px);
+	bottom:0;
+	margin:auto;
+}
+.cart table,.float_pannel table{
+	empty-cells:show;
+	table-layout:fixed;
+	width:100%;
+	.c;
+	tbody.empty td{
+		.h(10px);
+	}
+	tfoot td.last{
+		.h(52px);
+		span,a{
+			.l(52px);
+			.i_block;
+			.left;
+		}
+		.link{
+			.ml(50px);
+		}
+		.linkPro{
+			.ml(30px);
+		}
+		.remove_blank{
+			display: inline-block;
+			.w(84px);
+			.h(10px);
+		}
+		.del_item{
+			.w(86px);
+		}
+		.tips-has-disable{
+			color: #666;text-align:center;.ml(30px);.l(20px);margin-top: 7px;
+			em{
+				b{font-size: 14px;color: #f69;}
+			}
+		}
+        .tips{
+        	color: #666;text-align:center;.ml(123px);.l(20px);margin-top: 7px;
+        	em{
+        		b{font-size: 14px;color: #f69;}
+        	}
+        }
+		.txt{
+			.ml(140px);
+		}
+		.txtPro{
+			.ml(36px);
+		}
+		.red{
+			.f(20px);
+			.red;
+			span{
+				float:none;
+			}
+		}
+		.charge-btn{
+			.w(150px);
+			.h(54px);
+			.right;
+			.mt(-1px);
+			background:url("@{pic_url}/images/doota/charge-btn.png");
+		}
+	}
+	tfoot td{
+		text-align: left;
+		&.first{
+			border-left:1px solid @red !important;
+			padding-left: 20px;
+		}
+		&.last{
+			border-right:1px solid @red !important;
+		}
+		 .bgc(#ffffff);
+		border-top:1px solid @red;
+		border-bottom:1px solid @red !important;
+	}
+}
+
+.promo_pupop{.pa; .border-1(#d2d2d2); .hidden; .bgc(#ffffff); .l(20px); z-index: 101; padding: 8px 10px; }
+.coupon_pupop{.pa; .w(100px); .h(100px); .border-1(#d2d2d2); .bgc(@white);}
+
+.coupon_info{padding: 14px 0 20px 16px; .border-1(@red); .mb(10px); .gray;
+	.pa;
+	.bgc(#FFF);
+	z-index:29;	
+	*width:340px;
+	width: 340px;
+	ul{ .mt(18px); .mr(22px); .hidden;}
+	li{ .left;}
+	.coupon_bg{ background: url("@{pic_url}/images/header/@{mls_ico}") no-repeat; .bp(-104px,-163px); .w(52px); .h(24px); .c; .l(24px); }
+	.coupon_time{ .mt(6px);}
+	.coupon_get, .coupon_got{ .block; .w(46px); .h(22px); .c; .l(22px);}
+	.coupon_got{ .border-1(@white); cursor: text;}
+	.coupon_get{ .border-1(@red);}
+	.coupon_get_li{.right;}
+	.coupon_close{.cursor;}	
+}
+.suc_get{padding:6px; .pa; .bgc(#fff); filter:alpha(opacity=0); opacity:0; .red;.border-1(#ff6699);z-index: 32;}
+
+.timeBox{.none; .h(0); .bgc(@white); z-index: 101; .border-1(#d2d2d2); .red; .l(38px); .pl(14px); .pr(30px); .nowrap; .tl; .pa; .w(176px); .hidden;
+	.big_clock {.left; .h(38px); .w(32px); background: url("@{pic_url}/images/doota/@{doota_sale}") no-repeat; .bp(-265px,-60px);}
+}
+
+#big_pic_box{.bgc(#FFF); padding:10px; .pa; .none; .border-1(#dfdfdf); z-index: 99;
+	.pic_arrow{background: url("@{pic_url}/images/doota/@{doota_sale}") no-repeat; .bp(-29px, -116px); .pa; .block; .w(10px); .h(16px); top: 25px; left: 0; .ml(-9px);}
+	img{ max-width:220px; max-height:330px;}
+}
+
+// .header2014();
+.footer();
+
+
+

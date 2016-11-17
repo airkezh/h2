@@ -1,0 +1,13 @@
+function doota(){
+	return this;
+}
+var controlFns = {
+	order : function(params){
+		var php = {
+			'list_info' : 'doota::/order/list_info'
+		}
+		this.ajaxTo(php[params])
+	}
+}
+
+exports.__create = controller.__create(doota , controlFns);

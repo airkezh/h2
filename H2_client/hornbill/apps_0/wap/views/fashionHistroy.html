@@ -1,0 +1,75 @@
+<%#head.html%>
+	<script> 
+            (function(win,doc){
+                var docel = doc.documentElement;
+                var meta = doc.querySelectorAll('meta[name=viewport]');
+                meta[0].setAttribute('content','width=device-width,user-scalable=no,initial-scale=1');
+                function recalc(){
+                    var width = docel.clientWidth;
+                    docel.style.fontSize = 100 * width/640+'px';
+                }
+                if(doc){
+                    recalc();
+                    win.addEventListener('orientationchange',recalc,false);
+                }else if (doc.addEventListener){
+                    doc.addEventListener('DOMContentLoaded', recalc, false);
+                }
+            })(window,document)
+     </script>
+</head>
+<%
+    var reviewTop = this.reviewTop;
+    var review = reviewTop.data; %>
+<div class="wrap">
+    <!-- 精选 -->
+    <div class="selectedWrap">
+        <% if(review.head.image.pic_url){ %>
+            <img data-xr="<%= reviewTop.r %>" data-url="<%= review.head.url %>" class="selectedTitle tleImg" src="<%= review.head.image.pic_url %>"/>
+        <% } %>
+        <div class="selectedTopic">
+            <% review.main && review.main.forEach(function(data){%>
+                <% if( data.url && data.image.pic_url ){ %>
+                <div class="selectedInfo" data-href="<%= data.url %>" data-xr="<%= data.r %>"><img src="<%= data.image.pic_url %>"></div>
+                <% } %>
+            <% }) %>
+        </div>
+    </div>
+    <div class="popularWrap">
+        <% if(review.tail.image.pic_url){ %>
+        <div class="popolarImg"><img data-xr="<%= reviewTop.r %>" data-url="<%= review.tail.url %>" src="<%= review.tail.image.pic_url %>" class="tleImg"></div>
+        <% } %>
+        <div class="pullUp loading" status="loading"></div>
+        <div class="goods_wall"></div>
+    </div>
+</div>
+<div class="pullUp more" status="tap"></div>
+
+<a class="gotop" style="bottom:<%if(this.isIphone){%>60<%}else{%>20<%}%>px">
+    <img class="img100" src="<%= this.PICTURE_URL%>/images/wap/tuan/gotop.png" />
+</a>
+
+<script type="text/html" id="posterWall">
+    <? var v = this.v ?>
+    <div class="popularTopic">
+        <?if(v[0].month && v[0].week_index){ ?>
+        <div class="timeWrap">
+            <div class="forFixed">
+                <img src="http://d04.res.meilishuo.net/pic/_o/23/d7/3c723e7ec39a507ffd16c577f1e9_30_30.cf.png"/><span class="time"><?= v[0].month ?>月第<?= v[0].week_index ?>周</span>
+            </div>
+        </div>
+        <? } ?>
+        <div class="popularTitle">
+            <?  v && v.forEach(function(data){?>
+                <div class="popularInfo" data-fashionhref="<?= data.url?>" data-xr="<?= data.r ?>">
+                    <img class="popularImg" asrc="<?= data.pic_url ?>" src="<?= data.pic_url ?>">
+                </div>
+            <? }) ?>
+        </div>
+    </div>
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/fashionHistroy');
+_use:", this._JSstack , this._JSmods); %>
+
+<%#foot_simple.html%>

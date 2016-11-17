@@ -1,0 +1,50 @@
+<script type="text/html" id="tmpl-item">
+<?
+var pt = 100,
+    convertLink = this.convertLink,
+    v = this.v,
+    msgType = v.msg_type,
+    multimedia = 'multimedia_' + msgType,
+    sale_num = 0,
+    bgPic, url, title, tagNum, tags;
+
+if ( msgType == 'goods' ) {
+    bgPic = v[multimedia].goods_img;
+    url = convertLink( msgType, {
+        twitter_info: { twitter_id: v[multimedia].twitter_id, is_doota: "1"}
+    });
+   title = v[multimedia].goods_title;
+} else if( msgType == 'textpic' || msgType == 'miscpic' ) {
+    bgPic = v[multimedia][0].picurl;
+    url = convertLink( msgType, { type: msgType, msg_id: v.msg_id } );
+    title = v.msg_text;
+    tags = v[multimedia][0].tags;
+    tagNum = tags ? tags.length : 0;
+
+    tags && tags.forEach(function ( item, index ){
+        sale_num += +item.goods.sale_num;
+    });
+}
+?>
+<div class="item-wrap">
+    <a href="<?= url ?>" class="item-link" >
+        <div class="item-img-wrap" style="background-image: url(<?= bgPic ?>);padding-top:100%;"></div>
+        <? if( tagNum && tagNum > 0 ){ ?>
+        <div class="tag">
+            <span class="tag-icon"></span>
+            <span class="num"><?= tagNum ?></span>
+        </div>
+        <? } ?>
+        <div class="list_info">
+            <p class="list_title"><?= title ?></p>
+            <p class="list_cost">
+                <span class="normal_lick"><?= v.count_like?></span>
+                <span class="repin_num"><?= v.count_repin?></span>
+                <? if( sale_num > 0 ){ ?>
+                <span class="sale_num"><?= sale_num ?></span>
+                <? } ?>
+            </p>
+        </div>
+    </a>
+</div>
+</script>

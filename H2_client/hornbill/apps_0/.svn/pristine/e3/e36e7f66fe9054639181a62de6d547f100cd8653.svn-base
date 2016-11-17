@@ -1,0 +1,28 @@
+<%#head.html%>
+<div class="top_banner">
+	<div class="inner">
+	<ul>
+		<li <%if(this.nid == 11){%>class="clothe_cur"<%}else{%>class="clothe"<%}%>  ><a href="?nid=11" ></a></li>
+		<li <%if(this.nid == 13){%>class="shoes_cur"<%}else{%>class="shoes"<%}%> ><a href="?nid=13" ></a></li>
+		<li <%if(this.nid == 15){%>class="bags_cur"<%}else{%>class="bags"<%}%> ><a href="?nid=15" ></a></li>
+	</ul>
+	</div>
+</div>
+<div class="content_fluid">
+	<div class="goods_wall"></div>
+	<%#poster.html%>
+	<div class="spinner botSpinner none_f"></div>
+    <div class="clear_f"></div>
+    <div class="paging_panel c_f none_f">
+		<%#paging.html%>
+	</div>
+</div>
+
+<script>
+	<%= this.poster0? 'Meilishuo.config.poster0 = '+JSON.stringify(this.poster0)+';':'' ;%>
+</script>
+<% $_ENGINE_SELF.callFn("useModule")("fml.use('page/poster0');", this._JSstack , this._JSmodsFast ); %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/huodong/togobuy');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

@@ -1,0 +1,76 @@
+<%# head_simple.html%>
+<% var goodsInfo = this.goods_info;%>
+<%if(goodsInfo.url.indexOf('?') != -1){
+	var str = '&';
+}else{
+	var str = '?';
+}%>
+
+<div class="content">
+	<div class="twitter_l">
+		<div class="twitter" twitter_id="<%= goodsInfo.twitter_id%>" twitter_author_uid="<%= goodsInfo.uinfo.user_id%>">
+			<div class="redline1"></div>
+			<h1 class="tui_tle">
+				<a href="<% if(this.goods_info.shelf){%>/welcome<%}else{%><%= goodsInfo.url%><%}%>" target="_blank"><%= goodsInfo.ginfo.title%></a>
+			</h1>
+			<div class="btn_box">
+				<% if(this.goods_info.shelf){%>
+					<a class="price_go" style="line-height: 44px;" href="/welcome" target="_blank">下架,接着逛</a>
+				<%}else{%>
+					<a class="price_go" href="<%= goodsInfo.url%>" target="_blank"><span>去购买</span><span><%= goodsInfo.ginfo.price%></span></a>
+				<%}%>
+			</div>
+			<div class="clear_f"></div>
+			<div class="codepic_box">
+				<div class="code_pic">
+					<a href="<% if(this.goods_info.shelf){%>/welcome<%}else{%><%= goodsInfo.url%><%}%>" target="_blank"><% if(this.goods_info.shelf){%><span class="off_shelf"></span><%}%><img class="twitter_pic" src="<%= goodsInfo.show_pic%>"></a>		
+				</div>
+			</div>
+			<p class="detail"><%= goodsInfo.twitter_htmlcontent;%></p>
+			<p class="tags"><%= goodsInfo.twitter_create_time;%></p>
+		</div>
+	</div>
+	<div class="twitter_r">
+		<div class="rec_web">
+			<div class="redline2 ml14_f"></div>
+			<a class="icon" target="_blank" href="/"></a>
+			<span>网站来源</span>
+			<%if(this.goods_group ){%>
+			<div class="picBox">
+				<% if(this.goods_group.is_group){%>
+				<h3 class="tle">同类宝贝推荐</h3>
+				<a class="pic" href="/group/<%= this.goods_group.group_id%><%= this.frm || ''%>" target="_blank"><img src="<%= this.goods_group.mixpic %>" /></a>
+				<% }%>
+			</div>
+			<% }%>
+		</div>
+	</div>
+</div>
+<div class="clear_f"></div>
+<div class="auto_box">
+	<h2 class="rec_tle">美丽说精品推荐</h2>
+	<div class="goods_wall">
+	</div>
+</div>
+<%# poster_qzone.html%>
+
+<script>
+<%= this.poster0? 'Meilishuo.config.poster0 = '+JSON.stringify(this.poster0)+';':'' ;%>
+</script>
+<% $_ENGINE_SELF.callFn("useModule")("fml.use('page/poster0');fml.use('page/share_qzone');", this._JSstack , this._JSmodsFast ); %>
+
+<%# foot_simple.html %>
+<script src="http://qzonestyle.gtimg.cn/open/shopping/js/message.js"></script>
+<script>
+var hs = 0;
+function faSize(){
+	var h =  (document.documentElement.scrollHeight > document.documentElement.clientHeight) ? document.documentElement.scrollHeight : document.documentElement.clientHeight;
+	h += 30;
+	if (h > hs){
+		hs = h;
+		FA.setHeight(h )
+		}
+}
+window.onload = faSize;
+window.setTimeout(faSize, 3000)
+</script>

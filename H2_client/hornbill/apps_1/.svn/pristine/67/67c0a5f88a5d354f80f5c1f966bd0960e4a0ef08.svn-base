@@ -1,0 +1,39 @@
+
+<div class="body goods_wall">
+
+</div>
+<script type="text/html" id="posterWall">
+<? $.each(tInfo , function(k , v){?>
+<div class="fl_1 poster_wall">
+    <?var _l = 0;?>
+  <? $.each(v.horizontal_mark , function(k1 , v1){ ?>
+    <div class="new-png"  style="left:<?=2 + _l?>px"><img src="<?= v1.img_url?>" /></div>
+    <?_l += (+v1.img_width + 2);?>
+    <?});?>
+        <a href="<?= v.url?>" target="_blank">
+         <? if(v.soldout == 1){?>
+            <div class="soldout"></div>
+           <?}?>
+
+                  <img class="shop-img" src="<?= v.show_pic?>"/>
+            <div class="clear_f"></div>
+        </a>
+  <div class="goods-detail">
+        <p class="name-goods"><a href="<?= v.url?>" target="_blank"><?= v.ginfo.goods_title?></a></p>
+        <div class="info-goods">
+           <span class="f-18">¥</span> 
+           <span class="f-14"><?= v.ginfo.discount_goods_price?></span>
+           <s>¥<?= v.ginfo.goods_price?></s> 
+           <span class="pnum"><?= v.ginfo.discount?></span>
+        </div>
+        <div class="newdeal">
+                <div class="newdeal-left">
+                    <span><label class="time" time=<?= v.time_unix?>>-天-小时-分-秒</label></span>
+                </div>
+                <div class="newdeal-right"><span class="red_f f-c" style=""><?= v.count_participants?></span>人已参加
+                </div>
+        </div>
+  </div>
+</div>
+<?});?>
+</script>

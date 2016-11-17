@@ -1,0 +1,82 @@
+<%#head.html%>
+<%
+	var wlListRenderFn = requireFn('wins/reply_box.html');
+%>
+<div class="top">
+	<div class="top_banner">
+	<% var top_banner = this.banner.length; %>
+		<div class="boxImg" style="width:950px;height:600px; position:relative; ">
+			<ul class="_img" style="position:absolute;left:0;width:<%= (top_banner+1)*950 %>px;display:inline-block;">
+				<% this.banner && this.banner.map(function(data){  %>
+					<li class="left_f"><a target="_blank" href="<%=data.link%>"><img width="950" height="600" src="<%=data.src%>" /></a></li>
+				<%});%>
+			</ul>
+		</div>
+		<div class="_num adType1 <% if(top_banner == 1) { %>none_f<% } %>">
+			<% for (var i=1; i<=top_banner; i++) { %>
+				<% var current = i==1 ? 'current' : ''; %>
+				<a class="<%= current %>"><span class="none_f"><%= i %></span></a>
+			<% } %>
+		</div>
+	</div>
+</div>
+<div class="cont_box">
+<div class="main">
+	<ul>
+		<li><a href="?type=0#01" id="01" <%if(this.type == 0){%> class="active0" <%}else{%> class="normal0" <%}%> style="width:134px" >天使白</a></li>
+		<li><a href="?type=1#02" id="02" <%if(this.type == 1){%> class="active1" <%}else{%> class="normal1" <%}%> >摇滚黑</a></li>
+		<li><a href="?type=2#03" id="03" <%if(this.type == 2){%> class="active2" <%}else{%> class="normal2" <%}%> >浪漫蓝</a></li>
+		<li><a href="?type=3#04" id="04" <%if(this.type == 3){%> class="active3" <%}else{%> class="normal3" <%}%> >灵动黄</a></li>
+		<li><a href="?type=4#05" id="05" <%if(this.type == 4){%> class="active4" <%}else{%> class="normal4" <%}%> >梦幻红</a></li>
+		<li><a href="http://www.meilishuo.com/u/EVUP8z" target="_blank" class="buy">在线购买</a></li>
+		<li><a href="?type=5#06" id="06" <%if(this.type == 5){%> class="active5" <%}else{%> class="normal5" <%}%> >互动有礼</a></li>
+	</ul>
+	<p class="line line<%= this.type%>" ></p>
+	<% if(this.type == 5){ %>
+		<div class="jbox">
+			<a href="http://www.meilishuo.com/u/EVUP8z" target="_blank" class="top"></a>
+			<ul class="drbox">
+				<% this.darenList && this.darenList.map(function(data){  %>
+					<li>
+						<img src="<%=data.src%>" />
+					</li>
+				<%});%>
+			</ul>
+			<div class="discus_box">
+				<%#wins/publishor.html%>
+				<div class="reply_list comments">
+					<%this.topic_list && this.topic_list.list.map(function(data){%>
+						<%=wlListRenderFn(data)%>
+					<%});%>
+				</div>
+				<div class="paging_panel c_f">
+					<%#paging.html%>
+				</div>
+			</div>
+		</div>
+	<%}else{%>
+		<div class="cont">
+			<a href="<%= this.daren['section'+this.type].link1%>" target="_blank"><img src="<%= this.daren['section'+this.type].src1%>" /></a>
+			<p class="clearfix_f">
+				<% this.daren['darenPic'+this.type] && this.daren['darenPic'+this.type].map(function(data){ %>
+					<a href="<%= data.link%>" target="_blank" class="left_f"><img src="<%= data.src%>" /></a>
+				<%});%>
+			</p>
+			<a href="<%= this.daren['section'+this.type].link2%>" target="_blank"><img src="<%= this.daren['section'+this.type].src2%>" /></a>
+		</div>
+	<%}%>
+
+</div>
+</div>
+<script>
+	Meilishuo.config.tag_id = '<%=this.beauty_id%>';
+	Meilishuo.config.tag = '<%=this.beautyTag%>';
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use: 
+	fml.use('app/publishor');
+	fml.use('app/replyBox');
+	fml.use('app/adPoster', function(){
+		this.carousel('.top_banner',{'width':950,'height':600,'gap':2500,'type':2});
+	});
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

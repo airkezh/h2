@@ -1,0 +1,41 @@
+/*common*/
+
+/**
+ * @fileoverview 我的大转盘奖品 － 会员中心
+ * @requires zepto
+ * @author kehuang@meilishuo.com
+ * @date 2015-07-01
+ */
+
+require('wap/zepto/touch');
+require('wap/zepto/fastclick');
+
+var $ = require('wap/zepto');
+var shareTmp = require('wap/component/shareTmp');
+var scroll = require('wap/component/windowScroll');
+
+var turntablePrize = {
+	oPrizeWrap: $('#prize_wrap'),
+
+	init: function(){
+		this.renderHtml();
+		this.bindEvent();
+	},
+
+	bindEvent: function(){
+		var self = this;
+
+		window.onload = function(){
+			
+        };
+	},
+
+	renderHtml: function(){
+		var self = this,
+			prizeTpl = shareTmp('prize_list_tpl', {'data': {}});
+
+        self.oPrizeWrap.append(prizeTpl);
+	}
+}
+
+turntablePrize.init();

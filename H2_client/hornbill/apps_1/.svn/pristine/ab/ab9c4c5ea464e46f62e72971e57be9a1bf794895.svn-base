@@ -1,0 +1,189 @@
+function settings(){
+	return this;	
+}
+var controlFns = {
+	'index' : function(args){
+		var page = this.readData('page',this.req.__get,0)|0;
+		if(args == 'emailPsSuccess'){
+			this.success();
+		} else if(args == 'emailSend'){
+			this.emailSend();
+		} else if(args == 'personalUpdate'){
+			this.personalUpdate();
+		} else if(args == 'actived'){
+			this.actived();
+		} else {
+			var php = {
+				'setPassword' : {'checkemail' : '/setting/setting_checkemail'},
+				'setPersonal' : {'setPersonal' : '/setting/setting_personal', 'checkemail' : '/setting/setting_checkemail'},
+				'setEmail' : {'checkemail' : '/setting/setting_checkemail'},
+				'set_addr' : {'setAddr' : '/setting/setting_addr'},
+				'setAvatar' : {'setImg' : '/setting/setting_avatar'},
+				'sync' : {'sync' : '/setting/setting_sync'},
+				'bindMobile' : {},
+				'safeHelp' : {'safehelp':'doota::/user/Safetytips'},
+				'safeCon':{'safeinfo':'/user/Baseinfo','loginp':'doota::/user/Issetpassword'},
+				'loginEqm':{'historydevice':'/user/historydevice',},
+				'helpCon':{'safehelp':'doota::/user/Safetytips'},
+				'biePhone':{},
+				'myReport':{'userReport':'/risk/risk_get_user_report?limit=10&offset='+(page+1)
+							}
+			} , mSelf = this;	
+			php[args]['avatar'] = '/setting/setting_avatar';
+			this.setDefaultData(php[args]);
+			this.bridgeMuch(php[args]);
+
+			var frm = this.req.__get.frm,
+				err_bind = this.req.__get.err_bind;
+			this.listenOver(function(data){
+				if(data.userReport){
+		        	//获取分页总数
+					data.groupPg = {};
+					data.groupPg.total_num = data.userReport.total;
+					data.groupPg.current_page = page;
+					data.groupPg.page_size = 10;
+				}
+				if(frm) data.isShowTip = true;
+				if(!data.userInfo || !data.userInfo.user_id) return mSelf.redirectTo('/user/login');
+
+				data.pageTitle = data.userInfo.nickname + '的设置 - 美丽说';
+
+				var emailReg = /@yahoo|@ymail/; //yahoo 邮箱检查，增加设置邮箱的入口，当邮箱设置入口全开的时候，应当取出该段。当未激活的时候也需要显示邮箱设置。
+				if(emailReg.test(data.userInfo.email) || data.userInfo.is_actived == 6){
+					data.yahooMail = true;
+				}
+				/*==================================*/
+				if(args == 'helpCon'){
+					var tInfo = data.safehelp.tInfo;
+					for (var i = tInfo.length - 1; i >= 0; i--) {
+						if(tInfo[i].id == (this.req.__get.id || 1)){
+							data.tInfo = tInfo[i];
+							data.safehelp = null;
+							break;
+						}
+					};
+				}
+				/*==================================*/
+
+
+
+				data.headTag = args;
+				data.err_bind = err_bind;
+				data._CSSLinks = ['settings'];
+				data.isHideBindTip = true;
+				/*========================*/
+
+				/*如果不是meilishuo域名,绑定后跳转到ihome*/
+				var host = this.req.headers.host;
+				var orgUrl = this.req.__get.orgUrl || '';
+				if(orgUrl != '' && orgUrl.indexOf('meilishuo.com') < 0)
+					data.orgUrl = '/ihome';
+				else
+					data.orgUrl = orgUrl;
+
+				mSelf.render('settings/settings.html' , data);
+			});
+		}
+	},
+	'set' : function(args){
+		/*
+		**findconnectuser 互联用户找回pc端接口，修改昵称，密码，邮箱
+		**/
+		
+		var refer = this.req.headers.referer
+		//要判断只对 password 判断吗？
+		if ('password' == args &&  (!refer || -1 == refer.indexOf('meilishuo.com') || !this.isTokenLive(30) )) {
+			this.res.writeHead( 461)
+			this.res.end('{status:-21}')
+			return false
+        }
+		var php = {
+			'password' : '/setting/setting_setpassword',
+			'personalValidate' : '/setting/setting_personal_validate',
+			'findCity' : '/setting/setting_load_city',
+			'savePersonal' : '/setting/setting_personalaction',
+			'saveAddr' : '/setting/setting_addr_action',
+			'syncBind' : '/setting/setting_after_bind',
+			'syncSub' : '/setting/setting_sync_save',
+			'findconnectuser' : '/connect/Taobao_account_update'
+		};
+		this.ajaxTo(php[args]);
+	},
+	'emailSend' : function() {
+		var php = {'setEmailInfo' : '/setting/setting_set_email_info'}, mSelf = this;
+		this.setDefaultData(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			if(!data.userInfo || !data.userInfo.user_id)  return mSelf.redirectTo('/welcome');
+			data._CSSLinks = ['settings'];
+			data.pageTitle = '邮件已发送 - 美丽说';
+			data.new_email = data.setEmailInfo.email;
+			data.emailUrl = data.setEmailInfo.email_login_page_url;
+			data.subtitleMsg = '激活后可以发宝贝哦！';
+			mSelf.render('settings/emailsend_ok.html', data);
+		});
+	},
+	'actived' : function(code) {
+		var php = {'email_actived' : '/setting/setting_set_email_activate?activate_code=' + code}, mSelf = this;
+		this.setDefaultData(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			if(!data.userInfo || !data.userInfo.user_id)  return mSelf.redirectTo('/welcome');
+			data._CSSLinks = ['settings'];
+			var is_actived = data.email_actived.info;
+			if(is_actived == 'success'){
+				data.pageTitle = '邮件已激活 - 美丽说';
+				mSelf.render('settings/activeSuccess.html' , data);
+			} else {
+				data.pageTitle = '激活失败 - 美丽说';
+				mSelf.render('settings/emailsend_again.html', data);
+			}
+		});
+	},
+	'resetEmail' : function() {
+		var mSelf = this;
+		var php = {
+			'spam' : '/spam/spam_activate'
+		};
+		this.setDefaultData(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			if(data.spam.status){
+				return mSelf.redirectTo('/settings/setPassword?frm=spam_email');	
+			}else{
+				return mSelf.redirectTo('/ihome');
+			}
+		});
+	},
+	'success' : function() {
+		var php = {}, mSelf = this;
+		this.setDefaultData(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			if(!data.userInfo || !data.userInfo.user_id)  return mSelf.redirectTo('/welcome');
+			mSelf.req.__get.email = data.userInfo.email;
+			php = {'registerSuccess' : '/register/activate_message'};
+			mSelf.bridgeMuch(php);
+			mSelf.listenOver(function(data){
+				data._CSSLinks = ['register'];
+				data.pageTitle = '邮件已发送 - 美丽说';
+				mSelf.render('user/emailsend_success.html' , data);
+			});
+		});
+	},
+	'personalUpdate' : function() {
+		var php = {
+			'setPersonal' : '/setting/setting_personal'
+		}, mSelf = this;
+		this.setDefaultData(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			if(!data.userInfo || !data.userInfo.user_id)  return mSelf.redirectTo('/welcome');
+			if(data.userInfo.is_actived != 'taobao') return mSelf.redirectTo('/ihome');
+			data._CSSLinks = ['settings_PersonalUpdate'];
+			data.pageTitle = '个人信息更新 - 美丽说';
+			mSelf.render('settings/settingsPersonal.html' , data);
+		});
+	}
+}
+exports.__create = controller.__create(settings , controlFns);

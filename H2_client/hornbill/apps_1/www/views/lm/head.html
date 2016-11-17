@@ -1,0 +1,233 @@
+<%# head_simple.html%>
+
+<%* for ipad %>
+	<%if(this.is_iPad){%>
+		<%# head_ipad.html %>
+	<% } else { %>
+<%* for ipad %>
+
+<%
+var query = this._Request_query;
+var getLink = _extFn.getLink;
+var navFrm = 'frm=daeh';
+var mSubstr = _extFn.mSubstr;
+var addTrace = this.ViewTools.addTrace;
+var proData = this.promotionData || {};
+%>
+</head>
+<body>
+<div class="uinfo_bar">
+	<div class="header_top">
+		<% if (this.headerWelfare){ %>
+		<div class="daily_mobile">
+			<div class="boxImg">
+				<ul class="_img">
+					<li><span class="i_notice">&nbsp;</span><a href="<%= this.headerWelfare.url%>" target="_blank" title="<%= this.headerWelfare.txt%>"><%= mSubstr(this.headerWelfare.txt, 22, '...')%></a></li>
+				</ul>
+			</div>
+		</div>
+		<% } %>
+		<ul class="menu_leo">	
+	    <% if (this.user_id) { %>
+			<li><a id="shareMeiliDialog" class="h_share first" href="javascript:void(0)"><b class="f14_f">+</b> 分享我喜欢的</a></li>	
+			<li id="setting">
+				<a href="/person/u/<%= this.user_id%>?frm=headerprofile" title="<%= this.userInfo.nickname%>">
+					<% 
+					var avatar = this.userInfo.avatar_d
+					if (avatar && avatar.indexOf('http://') == -1 ){ 
+						avatar = this.avator_pic + avatar
+						}
+					%>
+					<span class="s_face"><img src="<%= avatar%>" /></span>
+					<%= mSubstr(this.userInfo.nickname,7,'...') %><em class="redarrow"></em>
+				</a>
+				<ul class="add_menu_leo hw76 none_f">
+					<% if (1 != this.userInfo.is_mall) {%>
+					<li><a href="/person/u/<%= this.user_id%>?type=editor" target="_blank">我的杂志</a></li>		
+					<li><a href="/person/u/<%= this.user_id%>?type=share" target="_blank">我的分享</a></li>
+					<%}%>
+					<li class="b_line"><a href="/settings/setPersonal" target="_blank">账号与安全</a></li>
+					<li><a id="headLogoutBtn" href="/user/logout">退出</a></li>
+				</ul>
+			</li>
+			<li id="message">
+				<a class="msg">
+					消息
+					<span class="num_bgc none_f"></span>	
+					<em class="redarrow"></em>
+				</a>
+				<ul class="add_menu_leo hw120 none_f" id="moreMessageBox">
+				</ul>
+			</li>
+			<li>
+				<a class="i_like" href="/person/u/<%= this.user_id%>?type=like" target="_blank">
+					<i></i>我的喜欢
+				</a>
+			</li>
+           <% } else { %>
+			<li><a class="first" href="/connect/auth/weixin"><em style='background:url("http://i.meilishuo.net/css/images/header/i_wx_single.png") no-repeat; padding:1px 8px;'>&nbsp;</em>微信登录</a></li>
+			<li><a href="/connect/auth/qzone"><em class="i_QQ">&nbsp;</em> QQ登录</a></li>
+			<li><a href="/user/login">登录</a></li>
+			<li><a href="/user/register">注册</a></li>
+			<% } %>
+           	<li>
+				<a href="/cart" target="_blank" class="mycart">
+					<em class="i_cart">&nbsp;</em>
+					我的购物车
+					<span class="num_bgc num_bgc_none">0</span>
+				</a>
+			</li>
+			<li>
+				<a href="/order" target="_blank"><em class="i_order">&nbsp;</em>	我的订单
+				</a>
+			</li>
+		</ul>
+	</div>
+	<div class="clear_f"></div>
+</div>
+<%
+	var actShow = this.ViewTools.timeStuff({'2015/3/10 10:00:00' : 0, '2015/3/21 00:00:00' : 0} , 0 );
+%>
+<div class="header_bg <% if(actShow == 1){ %>header_bg_christmas<% } %>" >
+	<% 
+		if(proData && proData.main && proData.branch.length > 0){ 
+			var navStyle = proData,
+				main = proData.main,
+				branch = proData.branch;
+	%>
+		<script type="text/javascript">
+			var style = document.createElement('style'),
+				head = document.head || document.getElementsByTagName('head')[0],
+				css = '#promo_nav{overflow:hidden;margin-bottom:5px;background-color:<%= navStyle.navBgColor %>;<% if(navStyle.navBgImg){ %>background-image:url(<%= navStyle.navBgImg %>);background-repeat: no-repeat;background-position:center top;background-size:auto 100%;<% } %>}#promo_nav .itemswrap{width:1200px;margin-left:auto;margin-right:auto;}#promo_nav li{font-size:14px;padding-left:10px;padding-right:10px;line-height:57px;height:57px;}#promo_nav .nav-items-main:hover,#promo_nav .nav-items-branch:hover{background-color:<%= navStyle.hoverStyle %>;}#promo_nav .nav-items-main{font-size:18px;padding-right:8px;}#promo_nav .main-a{padding-left:<%= 2 + 1 * navStyle.iconLeft.width %>px;background:url(<%= navStyle.iconLeft.img %>) left center no-repeat;}#promo_nav a{display:block;}#promo_nav span{padding-right:10px;background:url(<%= navStyle.itemsIcon %>) right center no-repeat;background-size:auto 64%;color:<%= navStyle.itemsColor %>;}#promo_nav .nav-items-main,#promo_nav .nav-items-branch{float:left;}#promo_nav .nav-items-itemright{float:right;padding-right:0;}#promo_nav .nav-items:after{content:".";clear:both;display:block;height:0;visibility:hidden;}#promo_nav .nav-items-itemright a{padding-top:6px;height:45px;}#promo_nav .nav-items-itemright img{height:100%;}';
+
+			style.type = 'text/css';
+			if(style.styleSheet){  
+				style.styleSheet.cssText = css;
+			}else{
+				style.appendChild(document.createTextNode(css));
+			}
+			head.appendChild(style);
+
+		</script>
+		<div id="promo_nav">
+			<div class="itemswrap">
+				<ul class="nav-items">
+					<li class="nav-items-main"><a class="main-a" target="_blank" href="<%= main.url %>"><span class="main-icon"><%= main.name %></span></a></li>
+				<% branch.forEach(function (item, index){ %>
+					<li class="nav-items-branch"><a target="_blank" href="<%= item.url %>"><span class="branch-icon"><%= item.name %></span></a></li>
+				<% }); %>
+					<li class="nav-items-itemright"><a target="_blank" href="<%= navStyle.iconRight.url %>"><img src="<%= navStyle.iconRight.img %>"></a></li>
+				</ul>
+			</div>
+		</div>
+	<% } %>
+	<div class="clear_f"></div>
+	<div class="header_top logo_wrap">
+		<% if (this.user_id){%>
+			<a class="logo_new" href="/?frm=logoa"></a>
+			<% }else{%>
+			<a class="logo_new" href="/welcome"></a>
+			<%}
+			this.cart_num = 0
+			var cart_num = this.cart_number && this.cart_number.info && this.cart_number.info.count
+			this.cart_num = cart_num
+		%>
+		<%
+		 	var plogo = proData.promoLogo,
+		 		timeData; 
+		 	if(plogo){ 
+				plogo.forEach(function (item, index){
+					timeData = {};
+					timeData[item.start] = 1;
+					timeData[item.end] = 0;
+					var showThisOne = this.ViewTools.timeStuff(timeData, 0);
+					if(showThisOne == 1){
+		%>
+
+					<a class="promologo" href="<%= item.url %>"><img src="<%= item.img %>" ></a>
+		<% }});} %>
+		<% if(this.logo_act && this.logo_act.logo_src){ %>
+			<a class="logo_act_entrance left_f" href="<%= this.logo_act.logo_link %>" target="_blank"><img src="<%= this.logo_act.logo_src %>"></a>
+		<% } %>
+		<div class="ser_n">
+			<% var txt = "搜流行商品";
+			if(this.headTag == 'dict') txt = "搜宝贝";
+			txt = proData.promoSearchPlaceholder || txt;
+			%>
+			<form class="searchBox" action="/lmsearch/" method="get" >
+				<div class="search-table">
+					<span style="height:28px;" class="cur" data-type="1">宝贝</span>
+					<div class="list">
+						<ul>
+							<li><a data-type="1">宝贝</a></li>
+						</ul>
+					</div>
+				</div>
+				<span class="ipt1"><em class="i_search"></em><input class="searchKey" name="searchKey" type="text" autocomplete="off" value="" placeholder="<%= txt %>" data-placeholder="<%= txt %>"  /></span>
+				<span class="ipt2"><input type="submit" class="fm_hd_btm_shbx_bttn" value="搜 索"/></span>
+			</form>
+			<div class="clear_f"></div>
+			<ul class="searchType none_f"></ul>
+			<script type="text/html" id="searchList">
+				<?$.each(prompt , function(index , data){?>
+					<li class="searchKeyItem" stype="goods"><?= data?></li>
+				<?});?>
+			</script>
+		</div>
+	</div>
+</div>
+<div id="navbar">
+<% if(!this.noNavbar){ %>
+	<div class="wheader">
+		<div class="header_b">
+		<% if(this.user_id){%>
+			<div style="margin-left: auto; margin-right: auto; position: relative; width: 948px;">
+				<div class="h_ico none_f"><a href="/ihome?frm=on_yellow_show"><span class="red_f"></span>个新分享，点击去看看!</a></div>
+			</div>
+		<%}
+		function tagHLight(tag){
+			return tag == this.headTag ? ['r_d' , '' , ''] : ['' , '' , '']; 
+			}
+		%>
+			<ul class="nav_new">
+				<li class="home">			
+					<% var tagH = tagHLight('welcome');%>
+					<a class="<%= tagH[0]%>" href="/lm/index?<%= navFrm%>">首页<span class="shining none_f"></span></a>
+				</li>
+				<li class="dress">
+					<% var tagH = tagHLight('dress');%>
+					<a class="<%= tagH[0]%>" href="/mlslm/catalog/10565<%= navFrm%>">衣服<em class="white_arrow"></em></a>
+					<div class="header_list">
+						<div class="header_lcon">
+							<a class="<%if(query.cata_id == 2001000000000){%>active<%}%>" href="/guang/catalog/dress?nid=210113&cata_id=2001000000000&<%= navFrm%>">上衣</a>
+							<a class="<%if(query.cata_id == 2004000000000){%>active<%}%>" href="/mlslm/catalog/10651&<%= navFrm%>">裙子</a>
+							<a class="<%if(query.cata_id == 2006000000000){%>active<%}%>" href="/mlslm/catalog/10935&<%= navFrm%>">裤子</a>
+							<a class="<%if(query.cata_id == 2009000000000){%>active<%}%>" href="/guang/catalog/dress?nid=210119&cata_id=2009000000000&<%= navFrm%>">内衣</a>
+						</div>
+					</div>
+				</li>
+				<li>
+					<% var tagH = tagHLight('shoes');%>
+					<a class="<%= tagH[0]%>" href="/mlslm/catalog/10375&<%= navFrm%>">鞋子</a>
+				</li>
+				<li>
+					<% var tagH = tagHLight('bag');%>
+					<a class="<%= tagH[0]%>" href="/mlslm/catalog/10980&<%= navFrm%>">包包</a>
+				</li>
+				<li>
+					<% var tagH = tagHLight('access');%>
+					<a class="<%= tagH[0]%>" href="/mlslm/catalog/10283&<%= navFrm%>">配饰</a>
+				</li>
+				<li>
+					<% var tagH = tagHLight('beauty');%>
+					<a class="r_r <%= tagH[0]%>" href="/beauty?<%= navFrm%>">美妆</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+<%}%>
+</div>
+
+<%* for ipad %>
+	<%}%>
+<%* for ipad %>

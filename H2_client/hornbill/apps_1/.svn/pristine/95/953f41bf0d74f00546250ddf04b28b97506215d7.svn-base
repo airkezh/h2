@@ -1,0 +1,10 @@
+<% if(this.marks && this.marks.length > 0){ %>
+	<div class="mark">
+		<% this.marks.forEach(function(marksData, i){ %>
+			<% if(i>1){return;} %>
+			<%marksData.line_height = !marksData.text_margin_top ? marksData.img_height : 14;%>
+			<%marksData.fs = !marksData.text_margin_top ? 12 : 14;%>
+			<span class="m_ico" style="font-size:<%=marksData.fs%>px;<%if(marksData.text_font_color){%>color:<%=marksData.text_font_color%>;<%}%>position: relative;background: url(<%= marksData.img_url %>) no-repeat;height: <%= marksData.img_height %>px;line-height:<%= marksData.line_height%>px;width: <%= marksData.img_width %>px; text-align: center;"><%if(marksData.mark_text){%><span style="width:<%=marksData.img_width%>px;left: 0;position: absolute;text-align: center;top: <%= marksData.text_margin_top%>px;"><%=marksData.mark_text%></span><%}%></span>
+		<% }); %>
+	</div>
+<% } %>

@@ -1,0 +1,100 @@
+<%# sq/header.html %>
+
+<%
+	var data    = this.basic.data;
+	var userD   = data.userInfo;
+	var signD   = data.signInfo;
+	var couponD = data.signCoupons;
+%>
+
+<div class="content">
+	<% 
+		var counter   = signD.signDays; 
+		var totalDays = signD.totalDays;
+	%>
+	<section class="sec1">
+		<div class="sec1-l">
+			<span style="background-image: url(<%= userD.avatar_a %>);"></span>
+		</div>
+		<div class="sec1-c">
+			<p class="sec1-c-t"><%= _extFn.mSubstr(userD.nickname, 7, '...') %></p>
+			<p class="sec1-c-m">本月已签到<%= counter %>天</p>
+			<div class="progress">
+				<% var progressValue = counter/totalDays*100; %>
+				<span class="progress-bar">
+					<i class="progress-bar-value" style="width: <%= progressValue %>%;"></i>
+					<i class="progress-bar-num full"><%= counter %></i>
+				</span>
+				<span class="progress-num"><%= counter %>/<%= totalDays %></span>
+			</div>
+		</div>
+		<div class="sec1-r">
+			<%
+				var signStatus = "sign";
+
+				if(signD.canSign == 0){
+					signStatus = "signed";
+				}
+			%>
+			<span id="sign" class="<%= signStatus %>" data-action="<%= signStatus %>"></span>
+		</div>
+	</section>
+
+	<% if(couponD){ %>
+	<section class="sec2">
+		<% 
+			couponD.forEach(function (c){ 
+				var creditText = "";
+				var status = "get";
+
+				if(c.threshold){
+					creditText = "满" + c.threshold + "元减" + c.credit + "元";
+				}else{
+					creditText = c.credit + "元直减券";
+				}
+
+				switch (c.canApplySatus){
+					case 1:
+						status = "out";
+						break;
+					case 2:
+						status = "got";
+						break;
+					case 6:
+						status = "reject";
+				}
+		%>
+		<div class="coupon <%= status %>">
+			<div class="coupon-content">
+				<p class="credit"><%= creditText %></p>
+				<p class="tips">签到<%= c.daysNeed %>天领取</p>
+			</div>
+			<div class="coupon-action" <% if(status == "get"){ %>data-action="getCoupon"<% }else if(status == "got"){ %>data-action="jump"<% } %> data-code="<%= c.rule_id %>">
+			</div>
+		</div>
+		<% }); %>
+	</section>
+	<% } %>
+
+	<section class="sec3">
+		<img src="<%= signD.img %>" alt="activity rule">
+	</section>
+</div>
+
+<script type="text/html" id="coupon_alert_tpl">
+	<p class="tag"><?= tpl ?></p>
+	<div class="url-box">
+		<a class="alink" href="/sq/user/coupon">查看我的优惠劵</a>
+		<a class="alink closeBtn">关闭</a>
+	</div>
+</script>
+
+<%! 
+	$_ENGINE_SELF.callFn("useModule")(
+		"<<<_use:fml.use('wap/page/sq/sign');_use:", 
+		this._JSstack, 
+		this._JSmods 
+); %>
+
+<%# block/dialog.html %>
+<%# sq/footer.html%>

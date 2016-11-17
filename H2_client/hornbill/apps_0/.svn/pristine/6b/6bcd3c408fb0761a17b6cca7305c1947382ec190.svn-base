@@ -1,0 +1,97 @@
+function refund() {
+    return this;
+}
+var controlFns = {
+    'apply': function (args) {
+        var php = {
+            "refund": "doota::/wap/refund/refund_init"
+            ,"setPayPsd":"doota::/user/baseinfo"
+            //"refund": "jeason::/wap/refund/refund_init"
+        };
+        var mSelf = this;
+        var wapMod = this.loadModel('tools.js');
+        var os = wapMod.uaos(this.req);
+        this.setMDefault(php);
+        this.bridgeMuch(php);
+
+        this.listenOver(function (data) {
+            //data = data.refund;
+            data.isNewest = wapMod.isNewest(mSelf.req, '4.2.0');
+            data.isWxOrSq = wapMod.isWxOrSq(mSelf.req,mSelf.res);
+            data.plat = wapMod.plat(mSelf.req,mSelf.res);
+            data.isApad = os.apad;
+            data.pageTitle = '退款申请';
+            if (data.refund === false) {
+                return mSelf.errorPage();
+            }
+            if (data.refund.code) {
+                data.tipMsg = data.refund.msg;
+                return mSelf.render('common/tips_page.html', data);
+            }
+            data.order_id = mSelf.req.__get.order_id;
+            data.mid = mSelf.req.__get.mid;
+            data.refund_mode = mSelf.req.__get.refund_mode||1;
+            data.callback = mSelf.req.__get.callback;
+            data.refund_money = mSelf.req.__get.refund_money || '';
+            data.refund_goods = mSelf.req.__get.refund_goods || '';
+            data._CSSLinks = ['order_app/refund/refund_apply'];
+
+            mSelf.render('refund/refund_apply.html', data);
+        });
+    },
+    'detail': function (args) {
+        var php = {
+            'refund': 'doota::/wap/refund/refund_detail',
+            'company_list': 'doota::/wap/express/company_list'
+            //"checkToWallet":'doota::/wap/'
+            //"refund":"jeason::/wap/refund/refund_detail"
+        };
+
+        var mSelf = this;
+        this.setMDefault(php);
+        this.bridgeMuch(php);
+        var wapMod = this.loadModel('tools.js');
+        this.listenOver(function (data) {
+            //data = data.refund;
+            if (data.refund === false) {
+                return mSelf.errorPage();
+            }
+            data.isNewest = wapMod.isNewest(mSelf.req, '4.2.0');
+            data.isWxOrSq = wapMod.isWxOrSq(mSelf.req,mSelf.res);
+            data.refund_id = mSelf.req.__get.refund_id;
+            data.is_send = mSelf.req.__get.is_send || 0;
+            data._CSSLinks = ['order_app/refund/refund_detail'];
+            if(data.is_send=="1"){
+                data.pageTitle = '上传快递单号';
+            }else{
+                data.pageTitle = '退款详情';
+            }
+            mSelf.render('refund/refund_detail.html', data);
+        });
+    },
+    'express':function(){
+        var php = {
+            "refund": "doota::/wap/refund/refund_detail"
+        };
+        var mSelf = this;
+        var wapMod = this.loadModel('tools.js');
+        var os = wapMod.uaos(this.req);
+        this.setMDefault(php);
+        this.bridgeMuch(php);
+
+        this.listenOver(function (data) {
+            data.pageTitle = '物流信息';
+            if (data.refund === false) {
+                return mSelf.errorPage();
+            }
+            if (data.refund.code) {
+                data.tipMsg = data.refund.msg;
+                return mSelf.render('common/tips_page.html', data);
+            }
+            data._CSSLinks = ['order_app/refund/express'];
+            mSelf.render('refund/express.html', data);
+        });
+    }
+};
+
+exports.__create = controller.__create(refund, controlFns);

@@ -1,0 +1,99 @@
+.loop(@name, @fn, @n, @i: 1, @step:1) when (@i =< @n) {
+	.@{name}@{i}, [@{name}="@{i}"] {@fn();}
+	.loop(@name, @fn, @n, (@i + @step));
+}
+
+.start(@fn){
+	&Start{@fn();};
+}
+
+.end(@fn){
+	&End{@fn();};
+}
+
+.opts(@fn){
+	&{@fn();};
+}
+
+.animate(@name; @duration:1s; @timing:ease; @delay:0s; @count:1; @direction:normal;){
+	-webkit-animation:@arguments;
+	animation:@arguments;
+	.fill(both);
+}
+
+.keyframe(@name; @fn;){
+	@-webkit-keyframes ~"@{name}"{@fn();}
+	@keyframes ~"@{name}"{@fn();}
+
+	.@{name}{ .animate(@name:@name;); }
+}
+
+.keyframes(@name; @fn; @fnStart; @fnEnd; @fnOpts){
+	.keyframe(@name:@name;@fn:@fn;);
+
+	.@{name}{
+		.start(@fnStart);
+		.end(@fnEnd);
+		.opts(@fnOpts)
+	}
+}
+
+.name(@n){
+	-webkit-animation-name:@n;
+	animation-name:@n;
+}
+.duration(@s:1){
+	-webkit-animation-duration: @s + 0s;
+	animation-duration: @s + 0s;
+}
+.delay(@s:0){
+	-webkit-animation-delay: @s + 0s;
+	animation-delay: @s + 0s;
+}
+
+
+.timing(@s:linear){
+	-webkit-animation-timing-function:@s; 
+	animation-timing-function:@s;
+}
+.count(@s:infinite){
+	-webkit-animation-iteration-count:@s;
+	animation-iteration-count:@s;
+}
+
+.fill(@s:both){
+	-webkit-animation-fill-mode: @s;
+	animation-fill-mode: @s;
+}
+
+.opacity(@s:0){
+	opacity:@s;
+}
+.transform(@a:none){
+	-webkit-transform+_: @a;
+	transform+_: @a;
+}
+.origin(@a:center center){
+	-webkit-transform-origin: @a;
+	transform-origin: @a;
+}
+
+
+
+
+
+
+
+
+
+
+/*
+.fn(@i){
+	opacity:@i;
+}
+.test(@fn){
+	color:red;
+	@fn();
+}
+div{.test({.fn(1);});}
+*/

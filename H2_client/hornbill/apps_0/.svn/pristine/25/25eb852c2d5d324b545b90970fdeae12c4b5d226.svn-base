@@ -1,0 +1,46 @@
+<%#head.html%>
+
+<% if(this.bs_bannar.top_banner && this.bs_bannar.top_banner.length){ %>
+	<div class="banner_wrap">
+		<div class="imageSlide" id="imageSlide">
+			<ul>
+				<% this.bs_bannar.top_banner.forEach(function(bannar, index){ %>
+					<li>
+						<a class="top_bannar swipe" href="<%= bannar.link %>"><img src="<%= bannar.pic %>"></a>
+					</li>
+				<% }); %>
+			</ul>
+			<div class="num"></div>
+		</div>
+	</div>
+<% } %>
+
+<div class="nav">
+	<a href="<%= _extFn.getAppLink('openURL', {"url": 'http://' + this.curr_host + '/biz/shareact/new_brand/main?r=' + this.params_r + '.2_mapp-biz_shareact_main', "inApp": 1, "require_app_info": 1}, this.os, '', '/biz/shareact/new_brand/main?r=' + this.params_r + '.1_m-biz_shareact_main'); %>"></a>
+	<a href="<%= _extFn.getAppLink('openURL', {"url": 'http://' + this.curr_host + '/biz/shareact/new_efficacy/main?r=' + this.params_r + '.2_mapp-biz_shareact_main', "inApp": 1, "require_app_info": 1}, this.os, '', '/biz/shareact/new_efficacy/main?r=' + this.params_r + '.1_m-biz_shareact_main'); %>"></a>
+	<a href="<%= _extFn.getAppLink('openURL', {"url": 'http://' + this.curr_host + '/biz/shareact/new_circle/main?r=' + this.params_r + '.2_mapp-biz_shareact_main', "inApp": 1, "require_app_info": 1}, this.os, this.r, '/biz/shareact/new_circle/main?r=' + this.params_r + '.1_m-biz_shareact_main'); %>"></a>
+</div>
+
+<div class="feed"></div>
+<div class="pullUp" status="loading"></div>
+
+<%# biz/beauty_sale/rec_goods.html %>
+<% if(this.guide && this.guide.data == 1){ %>
+	<div class="guide_wrap">
+		<div class="mask"></div>
+		<img src="http://d06.res.meilishuo.net/img/_o/e5/21/387fdd026ef8120db9a80566b6c3_640_1138.cf.png">
+	</div>
+<% } %>
+<a class="gotop" style="bottom:<%if(this.os.ios){%>60<%}else{%>20<%}%>px">
+	<img src="http://i.meilishuo.net/css/images/wap/tuan/gotop.png" />
+</a>
+
+<script>
+	fml.vars.params_r = '<%== this.params_r %>';
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/biz/new_home');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot_simple.html%>

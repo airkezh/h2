@@ -1,0 +1,63 @@
+<%# wx/header.html %>
+<%
+	var data = this.pageData.dress;
+	var more  = this.pageData.more || [];
+%>
+<div class="main">
+	<div class="goods_unscramble">
+		<figure>
+			<img src="<%= data.main_pic %>" alt="goods picture">
+			<figcaption><i class="red">搭配解读：</i><%= data.dress_desc %></figcaption>
+		</figure>
+		<div class="buy">
+			<b class="price red">￥<%= data.suit_price %></b>
+			<span class="save_money">节省:<i class="red">￥<%= data.suit_disc_price %></i></span>
+			<a href="/wx/dapei_buy?dress_id=<%= this.dressId %>" id="buy_btn">搭配购买</a>
+		</div>
+	</div>
+	<section class="goods_on_sale">
+		<h2><span class="text_wrap"><span>搭配单品</span><span class="en">Collocation</span></span></h2>
+		<div id="goods_shelf">
+			<% 
+				var goodsData = data.goodsInfos || [];
+				var goodsNum  = goodsData.length;
+			%>
+			<% goodsData.forEach(function (goods){ %>
+			<figure class="goods">
+				<a href="/wx/detail/<%= goods.twitter_id %>"><img src="<%= goods.show_pic %>" alt="goods image"></a>
+				<figcaption>
+					<p class="goods-desc"><%= goods.goods_title %></p>
+					<p class="goods-price red"><%= goods.goods_price %></p>
+				</figcaption>
+			</figure>
+			<% }); %>
+			<%if(goodsNum % 2 == 1){%>
+			<figure class="goods">
+				<img class="no_more_tips" src="http://d03.res.meilishuo.net/pic/_o/bf/56/45e60f990bbd646fb81909c0ccea_280_280.ch.png" alt="no more goods tips, image">
+			</figure>
+			<%}%>
+		</div>
+	</section>
+	<% if(more.length >= 6){ %>
+	<table class="more">
+		<caption>更多同类搭配</caption>
+		<tbody>
+		<tr>
+		<% more = more.slice(0,6) %>
+		<% more.forEach(function (goods, count){ %>
+			<td><a class="item" href="/wx/dapei_detail?dress_id=<%= goods.dress_id %>" style="background-image:url(<%= goods.main_pic %>);"></a></td>
+			<% if(count == 2){ %></tr><tr><% } %>
+		<% }); %>
+		</tr>
+		</tbody>
+	</table>
+	<% } %>
+</div>
+<%! 
+	$_ENGINE_SELF.callFn("useModule")(
+		"<<<_use:fml.use('wap/page/wx/dapei_detail');_use:", 
+		this._JSstack, 
+		this._JSmods 
+	); 
+%>
+<%# wx/footer.html %>

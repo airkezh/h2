@@ -1,0 +1,54 @@
+<%# wx_new/header.html%>
+<%
+	var getLink = _extFn.getLink
+		item_name = this.item_name
+		,typeTop = [] || (this.navTop[0]['page_categories'][item_name] ? this.navTop[0]['page_categories'][item_name] : []);
+%>
+<div class="posterWall wrap scroller" id='warpCon'>
+	<%if(this.tempInfo.src){%>
+		<img src="<%=this.tempInfo.src %>" />
+	<%}%>
+
+	<!-- typeTop -->
+	<%if(typeTop.length > 1){%>
+		<div class="typeTop">
+			<p>
+		<% typeTop.map(function(data, index){%>
+			<%var url =  "/wx/items/" + item_name + getLink({'cate_id' : data.cate_id})%>
+			<a href=<%=url %> typeId='<%= data.cate_id%>' class='<%=item_name %> cosmetictap  <%= (this.cate_id == data.cate_id) ? 'type_select' : '' %>'><%= data.cate_name%></a>
+		<%});%>
+			</p>
+		</div>
+	<%}%>
+	<!-- 瀑布流 -->
+	<ul class="new_goods goods_wall">
+	</ul>
+	<div class="pullUp" status="loading"></div>
+</div>
+<%# wx_new/posterWX.html%>
+<script>
+fml.vars.poster = {
+	'totalColNum':2,
+	'pageName' : '<%= this.pageName%>',
+	'cate_id' : '<%= this.cate_id%>'
+};
+
+fml.vars.isShare = <%= this.share || false %>;
+
+<%if ( this.tempInfo ) {%>
+fml.vars.shareData = {
+	'imgUrl' : '<%= this.tempInfo.share_img%>',
+	'title' : document.title,
+	'desc' : '<%= this.tempInfo.share_content || "专属达人挑款师带你开启美丽说时尚之旅！加入我们，发现流行，占有世界！" %>'
+};
+<% } %>
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/wx_new/ad_temp');
+_use:", this._JSstack , this._JSmods ); %>
+<%# wx_new/side.html%>
+<%# wx_new/footer.html%>
+
+
+

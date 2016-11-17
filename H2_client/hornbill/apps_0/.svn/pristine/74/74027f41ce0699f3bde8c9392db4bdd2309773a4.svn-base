@@ -1,0 +1,31 @@
+<%# head_simple.html%>
+
+<%* for ipad %>
+	<%if(this.is_iPad){%>
+		<%# head_ipad.html %>
+	<% } else { %>
+<%* for ipad %>
+
+</head>
+<body>
+
+<div id="topbar" style="height:30px;"></div>
+<%if(!this.hideSearch){ %>
+<div id="search" style="height:120px;"></div>
+<%} %>
+<%if(!this.hideNav){ %>
+<div id="nav" style="height:50px;"></div>
+<%} %>
+<script type="text/javascript" src="<%=this.JCSTATIC_BASE %>~common/blast?v1"></script>
+<script>
+	Blast.init({
+		topbar : '#topbar',
+		search : '#search',
+		nav : '#nav',
+		foot : '#foot'
+	});
+</script>
+
+<%* for ipad %>
+	<%}%>
+<%* for ipad %>

@@ -1,0 +1,177 @@
+<%# head_simple.html%>
+<%
+var posters = this.firstTabs;
+var goodsBlock = this.goodsBlock.data;
+%>
+<script>
+	if (window.location.search.indexOf("isFromShare") >= 0) {
+		isPc();
+	}
+	function isPc() {
+		var system ={
+			win : false,
+			mac : false,
+			xll : false
+		};
+		var p = navigator.platform;
+		system.win = p.indexOf("Win") == 0;
+		system.mac = p.indexOf("Mac") == 0;
+		system.x11 = (p == "X11") || (p.indexOf("Linux") == 0);
+		if(system.win||system.mac||system.xll){
+			window.location.href = "http://promotion.meilishuo.com/promotion/sale_141220/act1220/";
+		}
+	}
+</script>
+</head>
+<body>
+<div class="banner">
+	<div id="ban_rule" class="rule"></div>
+	<div class="act1"></div>
+	<div class="act2"></div>
+</div>
+
+<div class="city" >
+	<%
+	if (posters) {
+	for (var i = 0; i < posters.length; i++) { var p = posters[i];
+	%>
+	<a href='<%=_extFn.getAppLink("openURL", {"url": p.tar_url, "title": p.title || "圣诞分会场"}, this.os, null, p.tar_url)%>'>
+		<img class="venue <%='v' + i%>" src="<%=p.img_url%>" alt="泡泡"/>
+	</a>
+	<%}
+	}
+	%>
+</div>
+
+<div class="center">
+
+</div>
+
+
+<div class="bottom">
+
+</div>
+
+<%= requireFn('wapShare.html')({
+'share' : this.share
+, 'shareTitle' : '选择分享到'
+, '_JSstack' : this._JSstack
+, '_JSmods' : this._JSmods
+}); %>
+
+
+<span class="gotop" style="bottom:<%if(this.isIphone){%>60<%}else{%>20<%}%>px">
+	<img src="http://i.meilishuo.net/css/images/wap/tuan/gotop.png" />
+</span>
+
+
+
+<script type="text/html" id="goods-block-tpl">
+	<?this.goodsBlock.forEach(function(gb) {
+		var tInfo = gb.tInfo;
+	?>
+	<img class="blockHeader" src="<?=gb.header.pic?>" alt="标题"/>
+	<?
+	var mobUrl = Meilishuo.config.os && Meilishuo.config.os.mlsApp ? 'url_mob' : 'url';
+	$.each(tInfo , function(k , v){
+	?>
+	<div class="productBox" >
+		<a class="link_box" href="<?= v[mobUrl]?>">
+			<figure>
+				<? if(v.horizontal_mark && v.horizontal_mark[0]){
+						var _l = 0; var style = '';
+						v.horizontal_mark.forEach(function(marks_data, index){
+							if(index > 1) return;
+				?>
+				<div class="Farm" style="<?= style ?>">
+
+					<div style="text-indent: -2px; font-weight: bold;position: absolute;width:100%;text-align: center;top:<?= (marks_data.text_margin_top - 14)+'px'?>; color:<?=marks_data.text_font_color?>"><?= marks_data.mark_text?></div>
+					<img class="Standard" src="<?= marks_data.img_url?>" style="width:<?= marks_data.img_width/1.3 ?>px;"/>
+				</div>
+				<?		style = 'left: ' + (parseInt(marks_data.img_width/1.3) + 6) + 'px;';
+						});
+					} ?>
+
+				<?if(v.soldout){?>
+				<img class="zeroflag" src="http://i.meilishuo.net/css/images/doota/huodong/shareact/soldout.png" width="40" />
+				<?}?>
+				<?
+
+					if (!fml.vars.imgHeight) {
+						var imgScale=v.poster_height/v.poster_width;
+						var imgWidth = $(window).width()/2 * 0.968;
+						var imgHeight = imgWidth * imgScale;
+						fml.vars.imgHeight = imgHeight;
+					}
+				?>
+				<span class="bs_load_img" asrc="<?= v.show_pic ?>"  style="height:<?=fml.vars.imgHeight?>px"/>
+			</figure>
+			<figcaption>
+				<div class="proTitle"><?= v.ginfo.goods_title?></div>
+				<div class="proPrice">
+					<span class="price"><i></i><?= (v.ginfo.goods_price + '').replace(/\.[0]*$/,'').replace(/[.]$/,'')?></span>
+					<?if(v.ginfo.origin_price){?>
+					<del  class="orig_price"><?= (v.ginfo.origin_price + '').replace(/\.[0]*$/,'').replace(/[.]$/,'')?></del>
+					<!--折扣
+					<span class="discount"><?= (+(v.ginfo.goods_price + '').replace(/\.[0]*$/,'').replace(/[.]$/,'').replace(/^￥/,'')/+(v.ginfo.origin_price + '').replace(/\.[0]*$/,'').replace(/[.]$/,'').replace(/^￥/,'')*10).toFixed(1)?>折</span>
+					-->
+					<?}?>
+					<?if(v.ginfo.discount){?>
+					<span class="discount"><?= v.ginfo.discount?></span>
+					<?}?>
+				</div>
+				<div class="proStatis" style="border-bottom:none; display:none">
+					<span><i class="like"></i><?= v.count_like?></span>
+					<span class="num"><b><?= v.sale_num ?></b>人购买</span>
+				</div>
+				<?if (false && v.stock <= 10) {?>
+				<div class="proState">
+					<img src="<?=Meilishuo.config.picture_url?>images/wap/activity/promotion/1212/sub_meet/<?if (v.stock > 0){?>l<?=v.stock?>.png<?} else {?>sellout.png<?}?>" alt=""/>
+				</div>
+				<?}?>
+			</figcaption>
+		</a>
+	</div>
+	<?});?>
+	<a href="<?=gb.footer.url?>" >
+		<img  class="blockFooter" src="<?=gb.footer.pic?>" alt="标题"/>
+	</a>
+	<?});?>
+</script>
+
+<script type="text/html" id="rule_tpl">
+	<div class="shade"></div>
+	<div class="rule_dialog">
+		<div class="rule_dialog_btn"></div>
+		<div class="rule_close_btn">
+		</div>
+	</div>
+</script>
+
+
+<script type="text/html" id="temp_get_succ">
+	<div class="shade"></div>
+	<div class="get_success">
+		<div class="sure_get_succ"></div>
+	</div>
+</script>
+
+<script>
+	fml.vars.tabsData = <%=JSON.stringify(this.tabsData.data)%>;
+	fml.vars.goodsBlock = <%=JSON.stringify(goodsBlock)%>;
+
+	var imgUrl = '<%=this.shareInfo.pic%>';
+	var lineLink = '<%=this.shareInfo.url%>';
+	var descContent = '<%=this.shareInfo.content%>';
+	var shareTitle = '<%=this.shareInfo.title%>';
+	var shareTimelineText = '<%=this.shareInfo.title%>';
+	var customAppId = 'wxd00a5f16e02bed58';
+</script>
+<script src="<%= this.JCSTATIC_BASE  %>/js/open/shareCollect.js?<%= this.SVERSION%>"></script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+
+fml.use('wap/page/activity/promotion/main_venue_141220');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot_simple.html%>

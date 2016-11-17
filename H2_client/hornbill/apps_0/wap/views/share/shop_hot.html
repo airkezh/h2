@@ -1,0 +1,28 @@
+<div class="shopWrap">
+	<h3>本店热卖</h3>
+	<div id="goods_wall"></div>
+	<div class="status_tips"></div>
+</div>
+
+<script type="text/html" id="poster_tpl">
+<?
+var v = this.v;
+var pt = (v.img_height / v.img_width) * 100;	
+?>
+<div class="poster">
+	<figure>
+		<a xr="<?= fml.vars.poster_r?>" style="padding-top:<?= pt ?>%" class="poster-link img_frame" href="/share/<?= v.twitter_id ?>">
+			<img src="<?= v.goods_img ?>" alt="goods" />
+		</a>
+		<figcaption>
+			<p class="poster-info-title"><?= v.goods_title ?></p>
+			<div>
+				<span class="poster-info-price"><?= v.goods_price ?></span>
+				<span class="poster-info-like"><?= v.count_like ?></span>
+			</div>
+		</figcaption>
+	</figure>
+</div>
+</script>
+
+

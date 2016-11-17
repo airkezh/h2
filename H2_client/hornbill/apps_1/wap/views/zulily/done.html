@@ -1,0 +1,60 @@
+<%#head.html%>
+<div class="wrap">
+	<%# zulily/header.html%>
+	<div id="nextContent" class="contentArea">
+		<div class="tab-inner"></div>
+	</div>
+</div>
+<%= requireFn('wapShare.html')({
+	'share' : this.share 
+    , 'shareTitle' : '选择分享到'
+    , '_JSstack' : this._JSstack
+	, '_JSmods' : this._JSmods
+}); %>
+
+<script type="text/html" id="choiceTpl">
+<? 
+	var dataObj = this.dataObj || {}
+		, bigData = dataObj.big || [];
+?>
+<?if(bigData.length != 0){?>
+	<? dataObj && bigData && bigData.map(function(item, index){ ?>
+		<div class="most_wrap salelUrl" styleId="<?= item.id ?>" twitter_id="<?= item.twitter_id ?>" data-status="<?= item.status ?>">
+			<div class="most">
+				<div class="lazy_pic img-box" asrc="<?= item.poster_img?>">
+					<? if(parseInt(item.status)==5){ ?>
+						<span class="sold"></span>
+					<? } ?>
+				</div>
+				<div data-index="<?= item.id ?>" class="danmu d<?= item.id ?>"></div>
+				<div class="tips-box">
+					<span class="tips">
+						<b><?= parseInt(item.want_base) +  parseInt(item.want_num) ?>人想买
+						</b>
+					</span>
+				</div>
+			</div>
+			<p class="most_intro sale-title"><?= item.title ?></p>
+			<p class="price">
+				<span><?= item.sale_price ?></span>
+				<del><?= item.price ?></del>
+			</p>
+			<? if(parseInt(item.status)==5){ ?>
+				<a href="javascript:;" class="btn btn-none">售完欣赏</a>
+			<?} else {?>
+				<a href="javascript:;" class="btn btn-buy">立即购买</a>
+			<?}?>
+		</div>
+	<?}); ?>
+<?}?>
+</script>
+
+<script>
+	fml.vars.trace_id = '<%= this.desireTraceId %>'; 
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/zulily/done');
+_use:", this._JSstack, this._JSmods); %>
+
+<%# foot.html%>

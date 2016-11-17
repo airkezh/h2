@@ -1,0 +1,21 @@
+function region99(){
+	return this;
+}
+var controlFns = {
+	index : function(args){
+		var	php = {
+			'miaosha' : 'groupon::/groupon/groupon_marketing_miaosha?type=0&event_id=1065',
+			'tuan' : 'groupon::/groupon/groupon_marketing_tuangou'
+		};
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			if(!data.miaosha || !data.tuan || data.miaosha.error_code || data.tuan.error_code) return this.errorPage();
+			data.pageTitle = '限时特惠';
+			data.use_rem_screen = true;
+			data._CSSLinks = ['activity/region99'];
+			this.render('activity/region99.html' , data);
+		});
+	}
+}
+exports.__create = controller.__create(region99 , controlFns);

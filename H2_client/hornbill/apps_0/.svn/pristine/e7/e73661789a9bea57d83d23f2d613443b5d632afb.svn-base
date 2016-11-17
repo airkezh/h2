@@ -1,0 +1,47 @@
+function Passport(){
+
+	var _loadedCssFiles = {}
+
+	this.loadCssFile = function(url,cbk){
+		var url = this.api.protocol + this.api.jcstatic + url
+		if(!_loadedCssFiles[url]){
+			_loadedCssFiles[url]=true;
+			var link=document.createElement("link");
+			link.rel="stylesheet";
+			link.type="text/css";
+			link.href=url;
+			cbk && (link.onload = cbk)
+			document.getElementsByTagName("head")[0].appendChild(link)
+
+		}else{
+			cbk && cbk()	
+		}
+	}
+}
+
+Passport.prototype.init = function(opts){
+	this.opts = opts
+	this.api = {
+		protocol : (("https:" == document.location.protocol) ? " https://" : " http://")
+		,jcstatic: this.opts.jcstatic || 's.meilishuo.net'
+		,checkcode: this.opts.checkcodeApi || ('/Register/Captcha?token=asde39ad9&session=')	
+	}
+	this.dom = {}
+	this.watch = this.opts.watch || function(res){console.log(res)}
+}
+/*
+Passport.prototype.watch = function(watch){
+}
+*/
+
+
+Passport.prototype.show = function(name){
+	this.dom[name].show();
+}
+Passport.prototype.isShow = function(name){
+	return !this.dom[name].is(":hidden");
+}
+
+
+
+

@@ -1,0 +1,250 @@
+<%# head.html %>
+
+<%
+	function getTimeRemain(end_time){
+		var cur_time  = (new Date).getTime() / 1000;
+		if(end_time && end_time > cur_time){
+			return end_time - cur_time;
+		} else {
+			return '';
+		}
+	}
+
+	var goodsInfo = this.goods_info.data || {};
+	var promptRemain = getTimeRemain(goodsInfo.end_time);
+	var shop_in = this.shop_in.data || '';
+	var seo_wrods = this.seo_words && this.seo_words.data;
+	var global_xr = this.xr.r;
+%>
+
+<input type="hidden" name="order_init_r" value="<%= global_xr %>" />
+
+<%= requireFn('block/page_head.html')({
+	'pageTitle' : '单品页'
+	, 'title_url' : '/welcome'
+	, 'right_type' : 'item_new'
+	, 'xr' : this.xr
+	, '_JSstack' : this._JSstack
+	, '_JSmods' :  this._JSmods
+}); %>
+
+<section id="wrapper_main" class="wrapper">
+	<% if(seo_wrods.length){ %>
+		<div class="seo_wrods">
+			<div class="title">相关搜索：</div>
+			<div class="words_wrap">
+				<% seo_wrods.forEach(function(words){ %>
+					<a href="/search?keyword=<%= encodeURIComponent(words) %>" xr="<%= global_xr %>"><%= words %></a>
+				<% }); %>
+			</div>
+		</div>
+	<% } %>
+
+	<%
+		var goods_image = goodsInfo.image.image;
+		goods_image.length = goods_image.length > 5 ? 5 : goods_image.length;
+		var goods_image_l = goods_image.length;
+	%>
+	<div class="picture_wrap">
+		<div id='slider' class="slider_wrap swipe">
+			<div class='swipe-wrap'>
+				<% goods_image.forEach(function(image, index){ %>
+					<div class="image_item" style="background-image: url(<%= image %>)"></div>
+				<% }); %>
+			</div>
+		</div>
+		<div class="left_btn_wrap none_f"><span class="left_btn slider_btn"></span></div>
+		<div class="right_btn_wrap<%= goods_image.length == 1 ? 'none_f' : ''%>"><span class="right_btn slider_btn"></span></div>
+		<% if(goodsInfo.goods_desc){ %><div class="goods_desc_wrap"><h3 class="goods_desc"><%= goodsInfo.goods_desc %></h3></div><% } %>
+	</div>
+
+	<div class="sku_meta">
+		<div class="goods_info_wrap">
+			<span class="price red_f">¥<%= goodsInfo.price %></span>
+			<span class="original_price">¥<%= goodsInfo.original_price %></span>
+			<span class="discount_price">7.5折</span>
+			<div class="goods_cmt">销量 <span class="red_f"><%= goodsInfo.sales %></span>件<span class="space"></span>喜欢 <span class="red_f"><%= goodsInfo.twitter_stat.count_like ? goodsInfo.twitter_stat.count_like : '0' %></span>人</div>
+		</div>
+		<div class="title_wrap">
+			<h2 class="title"><%= goodsInfo.goods_title %></h2>
+			<p class="label">
+				<% if(goodsInfo.freight ){ %>
+					<span class="sort">运费：¥<%= Number(goodsInfo.freight).toFixed(2) %></span>
+				<% } else { %>
+					<% goodsInfo.label.forEach(function(label){ %>
+						<span><%= label.text %></span>
+					<% }); %>
+				<% } %>
+			</p>
+		</div>
+	</div>
+
+	<%# share/item_welfare.html %>
+
+	<% var pro_spec_banner_item = this.pro_spec_banner && this.pro_spec_banner.item_page; %>
+	<% if(pro_spec_banner_item && pro_spec_banner_item.banner_img){ %>
+		<a class="pro_spec_banner" href="<%= pro_spec_banner_item.banner_link %>" xr="<%= this.xr.r %>"><img src="<%= pro_spec_banner_item.banner_img %>"></a>
+	<% } %>
+	<%
+		var goods_comments = this.goods_comments.data;
+		var goods_comments_l = goods_comments.pages.totalNum;
+	%>
+	<div class="sku_main">
+		<div class="sku_comment js_open_detail" data-href="/share/item_detail/<%= goodsInfo.twitter_id %>?tab=2">
+			<% if(goods_comments_l == 0){ %>
+				<div class="no_title">此宝贝暂无评价</div>
+			<% } else { %>
+				<div class="title">宝贝评价<span><%= goods_comments.levelsNum[0] %>条</span></div>
+				<ul class="list">
+					<% goods_comments.cInfos.forEach(function(item, index){ %>
+						<% if(index > 1) return ''; %>
+
+						<li class="item">
+							<div class="img_wrap"><img src="<%= item.uInfo.avatar_a %>"></div>
+							<div class="info"><span class="nickname"><%= item.uInfo.nickname %></span><span class="words">好评</span><span class="time"><%= item.time %></span></div>
+							<p class="content"><%= _extFn.mSubstr(item.content, 42, '...') %></p>
+							<p class="sku"><%= item.style %></p>
+						</li>
+					<% }); %>
+				</ul>
+			<% } %>
+		</div>
+		<div class="sku_detail js_open_detail" data-href="/share/item_detail/<%= goodsInfo.twitter_id %>?tab=0">宝贝详情</div>
+		<div class="sku_size js_open_detail" data-href="/share/item_detail/<%= goodsInfo.twitter_id %>?tab=1">宝贝尺码</div>
+	</div>
+
+	<%if(shop_in.shop_id != ''){%>
+		<a href="/shop/<%= shop_in.shop_id%>" xr="<%= this.shop_in.r%>" class="sku_shop">
+			<div class="shop_info">
+				<span class="guang">进店逛逛</span>
+				<dl>
+					<dt>
+						<img src="<%= shop_in.shop_face_img %>" />
+					</dt>
+					<dd>
+						<p class="title"><%= shop_in.shop_nick %></p>
+						<p class="info">宝贝数量：<%= shop_in.shop_goods_num %><span>总销量：<%= shop_in.goods_sales %></span></p>
+					</dd>
+				</dl>
+			</div>
+		</a>
+		<a class="service" href="/help/return/" xr="<%= global_xr %>">
+			<ul class="promise">
+				<%
+					var service_data = [
+						{
+							type: 2,
+							text: "7天退货",
+							mini_text: "轻松购物有保障",
+							icon_pc: "http://d06.res.meilishuo.net/img/_o/4e/fb/4e1c2c755ae05cf846ef1694b895_40_46.cf.png"
+						},
+						{
+							type: 3,
+							text: "先行赔付",
+							mini_text: "轻松购物有保障",
+							icon_pc: "http://d02.res.meilishuo.net/img/_o/a7/87/61dfebd0571a64acbf577280b718_40_46.cg.png"
+						},
+						{
+							type: 4,
+							text: "退货补贴",
+							mini_text: "轻松购物有保障",
+							icon_pc: "http://d06.res.meilishuo.net/img/_o/47/99/936d5692a7a372e0c6495cf7288c_40_46.cf.png"
+						},
+						{
+							type: 5,
+							text: "急速发货",
+							mini_text: "轻松购物有保障",
+							icon_pc: "http://d02.res.meilishuo.net/pic/_o/c2/19/e26656b531e8bde65fd293d4347e_40_46.cf.png"
+						}
+					];
+				%>
+				<% service_data.map(function(data){ %>
+					<li>
+						<img src="<%= data.icon_pc %>" /><span class="words"><%= data.text %></span>
+					</li>
+				<% }); %>
+			</ul>
+		</a>
+	<% } %>
+	<div class="shop_wrap">
+		<h3>本店热销</h3>
+		<div id="goods_wall"></div>
+	</div>
+
+	<% if(this.goods_popular && this.goods_popular.data.length){ %>
+		<div class="hot_goods_wrap">
+			<h3>相关流行</h3>
+			<div class="goods_wrap">
+				<%
+					var hot_goods_r = this.goods_popular.r;
+					var goods_popular_l = this.goods_popular.data.length;
+					this.goods_popular.data.length = goods_popular_l > 9 ? 9 : goods_popular_l;
+				%>
+				<% this.goods_popular.data.forEach(function(goods){ %>
+					<div class="poster">
+						<figure>
+							<a xr="<%= hot_goods_r %>" class="poster-link img_frame" href="<%= goods.url %>">
+								<span class="bs_load_img" asrc="<%= goods.show_fix_pic %>"></span>
+							</a>
+							<figcaption>
+								<p class="title"><%= goods.ginfo.goods_title %></p>
+								<div>
+									<span class="price"><%= goods.ginfo.goods_price %></span>
+									<span class="like"><%= goods.count_like %></span>
+								</div>
+							</figcaption>
+						</figure>
+					</div>
+				<% }); %>
+			</div>
+			<a href="/goto/open/?bg=http%3A%2F%2Fm.meilishuo.com%2Fdownload%2Flatest%2F%3Fchannel%3D30902%26frm%3Ddingdan&url=<%= encodeURIComponent('meilishuo://twitter_single.meilishuo/?json_params=' + encodeURIComponent('{"twitter_info":{"twitter_id":"' + goodsInfo.twitter_id + '", "is_doota": "1"}}')) %>" xr="<%= global_xr %>" class="download_btn"><span></span>下载美丽说，看更多时尚单品</a>
+		</div>
+	<% } %>
+
+	<% if(seo_wrods.length){ %>
+		<div class="seo_wrods seo_wrods_bottom">
+			<div class="title">&nbsp;</div>
+			<div class="words_wrap">
+				<% seo_wrods.forEach(function(words){ %>
+					<a href="/search?keyword=<%= encodeURIComponent(words) %>" xr="<%= global_xr %>"><%= words %></a>
+				<% }); %>
+			</div>
+		</div>
+	<% } %>
+
+	<div class="bottom_search_wrap">
+		<% var search_promote = this.default_navigate && this.default_navigate.search_promote; %>
+		<form class="search_wrap js_search_form" action="/search" method="get">
+			<span class="search_icon"></span>
+			<input id="bottom_search" name="keyword" type="search" autocomplete="off" class="js_input" placeholder="<%= search_promote.search_default_word || search_promote.search_keyword || '搜索宝贝' %>" />
+			<label class="js_search_btn" data-url="<%= search_promote.search_jump_url || '' %>" data-words="<%= search_promote.search_keyword || '搜索宝贝' %>">搜索</label>
+		</form>
+	</div>
+
+	<script type="text/html" id="poster_tpl">
+		<? this.forEach(function(v, k){ ?>
+			<div class="poster">
+				<figure>
+					<a xr="<?= fml.vars.poster_r?>" class="poster-link img_frame" href="/share/<?= v.twitter_id ?>">
+						<span class="bs_load_img" asrc="<?= v.goods_img ?>"></span>
+					</a>
+					<figcaption>
+						<p class="poster-info-title"><?= v.goods_title ?></p>
+						<div>
+							<span class="poster-info-price"><?= v.goods_price ?></span>
+						</div>
+					</figcaption>
+				</figure>
+			</div>
+		<? }); ?>
+	</script>
+
+	<% this.show_bar_item = '.sku_detail' ; %>
+	<%# share/item_foot.html %>
+</section>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/share/item_new');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot.html %>

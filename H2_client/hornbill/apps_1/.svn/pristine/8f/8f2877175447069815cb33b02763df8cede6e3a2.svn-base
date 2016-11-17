@@ -1,0 +1,145 @@
+<%
+	var refund_info = this.refund;
+	var can_refund_goods = refund_info.can_refund_goods
+		, can_refund_money = refund_info.can_refund_money
+		, after_sale = refund_info.after_sale
+		, refund_cash = refund_info.refund_cash
+		, refund_id = refund_info.refund_id || ''
+		, type = refund_info.type
+		, send_goods = refund_info.send_goods
+		, use_coupon = refund_info.use_coupon
+		, refund_detail = refund_info.refund_detail ? refund_info.refund_detail : '' ;
+%>
+<%
+	function couponTip(f){
+		if(f){ %><p class="coupon_tip">亲，订单中使用了优惠券，退款时优惠券不退的哦</p><% }
+	}
+%>
+<%#head.html%>
+<section class="container">
+	<% if(!send_goods) {%>
+	<div class="apply_form">
+		<ul>
+			<li>
+				<label>退款原因（此项必填）：</label>
+				<select id="goods_refund_reason" name="refund_reason" <% if(refund_detail){%>isEdit="1"<%}%> >
+					<option value="">请选择退款原因</option>
+					<option <% if(refund_detail && refund_detail.select_reason=="商品破损" ){%>selected<%}%> value="商品破损">商品破损或无法使用</option>
+					<option <% if(refund_detail && refund_detail.select_reason=="商家错发或漏发" ){%>selected<%}%> value="商家错发或漏发">商家错发或漏发</option>
+					<option <% if(refund_detail && refund_detail.select_reason=="商品与描述不符" ){%>selected<%}%> value="商品与描述不符">商品与描述不符</option>
+					<option <% if(refund_detail && refund_detail.select_reason=="商品质量问题" ){%>selected<%}%> value="商品质量问题">商品质量问题</option>
+					<option <% if(refund_detail && refund_detail.select_reason=="未按约定时间发货" ){%>selected<%}%> value="未按约定时间发货">未按约定时间发货</option>
+					<option <% if(refund_detail && refund_detail.select_reason=="不想买了" ){%>selected<%}%> value="不想买了">不想买了</option>
+					<option <% if(refund_detail && refund_detail.select_reason=="不喜欢" ){%>selected<%}%> value="不喜欢">不喜欢</option>
+					<option value="-1" svalue="<% if(refund_detail){ %> <%=refund_detail.select_reason%> <% } %>" >其他</option>
+				</select>
+				<textarea name="refund_reason_other" class="none_f"></textarea>
+			</li>
+			<li>
+				<label class="txt">退款金额：</label><span class="red_f"><%=refund_cash%></span><span>元</span>
+				<% couponTip(use_coupon); %>
+			</li>
+			<li>
+				<label>退款说明：</label>
+				<textarea name="reason"><%if(refund_detail){%> <%= refund_detail.reason%> <%}%></textarea>
+			</li>
+		</ul>
+		<div class="big_btn">
+			<span class="btn" id="refund_apply" type="button">提交申请</span>
+		</div>
+	</div>
+	<% } else { %>
+	<div class="apply_form">
+		<ul>
+			<li>
+				<label>是否需要退货：</label>
+				<%if(!refund_id){%>
+				<select name="is_refund_goods">
+					<% if(can_refund_money){%><option value="0" >只退款不退货</option> <%}%>
+					<% if(can_refund_goods){%><option value="1" selected>退款且退货</option><% } %>
+				</select>
+				<%}else{%>
+					<select name="is_refund_goods">
+					<% if(type==='money'){ %><option value="0" >只退款不退货</option> <%}%>
+					<% if(type==='goods'){%><option value="1" selected>退款且退货</option><% } %>
+					</select>
+				<%}%>
+			</li>
+			<li>
+				<label>退款原因（此项必填）：</label>
+				<select id="goods_refund_reason" name="refund_reason" <% if(refund_detail){%>isEdit="2" selectVal="<%=refund_detail.select_reason%>"<%}%> >
+					<option value="">请选择退款原因</option>
+					<option value="七天无理由退货">七天无理由退货</option>
+					<option must="1" value="商品破损">商品破损</option>
+					<option must="1" value="商家错发或漏发">商家错发或漏发</option>
+					<option must="1" value="商品质量问题">商品质量问题</option>
+					<option value="未按约定时间发货">未按约定时间发货</option>
+					<option value="尺码不合适">尺码不合适</option>
+					<option value="-1">其他</option>
+				</select>
+				<% if(after_sale) { %>
+				<select id="refund_reason" <% if(refund_detail){%>isEdit="2" selectVal="<%=refund_detail.select_reason%>"<%}%> name="refund_reason" class="none_f">
+					<option value="">请选择退款原因</option>
+					<option must="1" value="尺寸不符">尺寸不符</option>
+					<option must="1" value="材质/面料不符">材质/面料不符</option>
+					<option must="1" value="工艺问题">工艺问题</option>
+					<option must="1" value="颜色/款式与描述不符">颜色/款式与描述不符</option>
+					<option value="发货问题">发货问题</option>
+					<option must="1" value="服务态度">服务态度</option>
+					<option value="不喜欢/穿着不好">不喜欢/穿着不好</option>
+					<option value="拍错/多拍">拍错/多拍</option>
+					<option value="-1">其他</option>
+				</select>
+				<% } %>
+				<textarea name="refund_reason_other" class="none_f refund_other"></textarea>
+			</li>
+			<li>
+				<label class="maxReturn_txt">退款金额（最多<%=refund_cash %>元）</label>
+				<input name="refund_price_apply" class="maxReturn_in" type="text" value=" <%if(refund_detail){%> <%= refund_detail.refund_price_apply%> <%}else{%> <%=refund_cash %> <%}%>"><span>元</span>
+				<% couponTip(use_coupon); %>
+			</li>
+			<li>
+				<label>退款说明：</label>
+				<textarea name="reason"><%if(refund_detail){%> <%= refund_detail.reason%> <%}%></textarea>
+			</li>
+			<li>
+
+				<label>上传凭证（最多5张）</label>
+				<div class="upload_tip">
+					您可以上传商品破损照片,客服聊天记录截屏、快递单照片等作为凭证
+				</div>
+				<div class="img_list">
+					<%if(refund_detail){%>
+						<%refund_detail.refund_evidence && refund_detail.refund_evidence.forEach(function(e){ %>
+							<a class="pic" href="javascript:;">
+								<img src="<%=e.thumb%>" width="100%" asrc="<%=e.orig%>" /> 
+							</a>
+						<%});%>
+					<%}%>
+					<a class="pic addBtn" href="javascript:;"></a>
+					<div class="clear_f"></div>
+				</div>
+				<%#app/low_version_tip.html%>
+			</li>
+			<div class="big_btn">
+				<span class="btn" id="refund_apply_goods" type="button">提交申请</span>
+			</div>
+		</ul>
+	</div>
+	<% } %>
+</section>
+<input type="text" class="none_f" id="order_id" value="<%=this.order_id %>" >
+<input type="text" class="none_f" id="mid" value="<%=this.mid %>" >
+<input type="text" class="none_f" id="refund_id" value="<%=refund_id %>" >
+<%#app/mls_hotline.html%>
+<script>
+	var max_price = <%=refund_cash || 0 %>;
+	var after_sale = <%=after_sale ? 1 : 0 %>;
+</script>
+<script type="text/html" id="img_upload">
+	<img src="<?=this.H_pic_url ?>" width="100%" height="100%" asrc="<?=this.o_pic_url ?>" />
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use('wap/client/page/refund_apply');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

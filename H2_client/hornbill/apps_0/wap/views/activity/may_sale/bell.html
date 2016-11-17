@@ -1,0 +1,54 @@
+<%#head.html%>
+<div class="bell_top">
+	<a class="share" data_href="meilishuo://editor.meilishuo?json_params=%7B%22default_text%22%3A%22%23EXO-M%20%E7%94%B7%E7%A5%9E%E9%97%B9%E9%92%9F%23%22%2C%22take_a_picture%22%3A%221%22%2C%22need_a_picture%22%3A%221%22%7D"></a>
+
+</div>
+<div class="b_detail">
+	<a href="http://m.meilishuo.com/download/latest/web " class='android'></a>
+	<a href="javascript:;" class='ios'></a>
+</div>
+<img src="<%= this.PICTURE_URL%>images/wap/activity/may_sale/bell_031.jpg">
+<div class="bell_pic"></div>
+<img src="<%= this.PICTURE_URL%>images/wap/activity/may_sale/bell_08.jpg">
+<div class="main">
+	<%= requireFn("activity/may_sale/love_post.html")({
+		'goods': this.goods,
+		'_JSstack': this._JSstack,
+		'_JSmods': this._JSmods
+	});%>
+</div>
+
+<script type="text/html" id="toupdate">
+<div class="dialog_box toupdate">
+	<p>只有最新版本才可以享受优惠喔，亲快去升级吧。</p>
+	<a class="btn3zi delayclose" href="/goto/download/">去更新</a>
+</div>
+</script>
+<script type="text/html" id="next">
+<div class="dialog_box next">
+	<p>亲〜你的男神图片分享成功了么？</p>
+	<a class="btn3zi check_coupon" data="1" href="javascript:;">分享成功</a><a class="btn3zi check_coupon" href="javascript:;">稍后再说</a>
+</div>
+</script>
+
+<script type="text/html" id="invite_no">
+<div class="dialog_box invite">
+	<p>分享给你的好友集赞召唤男神吧</p>
+	<a class="btn3zi delayclose" href="/activity/sale/loveshare/<%= this.userInfo.user_id %>">确定</a>
+</div>
+</script>
+
+
+<script>
+	fml.vars.isNewest = "<%=this.isNewest%>";
+	fml.vars.isLogin = <%=this.isLogin%>;
+	if(Meilishuo.config.os && Meilishuo.config.os.mlsApp){
+		fml.vars.isApp = true;
+	}
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/app/hackWeixin');
+	fml.use('wap/page/activity/bell');
+_use:", this._JSstack , this._JSmods); %>
+
+<%# foot_simple.html%>

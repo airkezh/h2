@@ -1,0 +1,93 @@
+<%#head.html%>
+<div class="group_main">
+	<div class="group_l topic_info" style="width:682px;">
+		<h3>杂志成员</h3>
+		<div class="mg_tab mt14_f">
+			<ul>
+				<%var style = function(tab){ return tab===this.type ? ' class="active red_f"' : ''; };%>
+				<li<%=style('members')%>><a href="/group/<%=this.magid%>/members">编辑部</a></li>
+				<li<%=style('followerlist')%>><a href="/group/<%=this.magid%>/followerlist">粉丝</a></li>
+				<%if(this.isAdmin){%>
+				<li<%=style('applyinglist')%>><a href="/group/<%=this.magid%>/applyinglist">加入申请</a></li>
+				<li<%=style('blacklist')%>><a href="/group/<%=this.magid%>/blacklist">黑名单</a></li>
+				<%}%>
+			</ul>
+		</div>
+		<%if(this.type == 'members'){%>
+		<h4 class="mt14_f">杂志主编</h4>
+		<ul class="mt14_f members border">
+			<%this.admins && this.admins.map(function(data){%>
+			<li uid="<%=data.user_id%>">
+				<a href="/person/u/<%=data.user_id%>" class="avatar64_f" target="_blank"><img src="<%=data.avatar_b%>"></a>
+				<%if(this.isSuper) {%>
+				<a class="m_ico m_ico4 down_editor" alt="降为编辑" title="降为编辑"></a>
+				<%}%>
+				<a href="/person/u/<%=data.user_id%>" class="m_name" target="_blank"><%=data.nickname%></a>
+			</li>
+			<%});%>
+		</ul>
+		<%}%>
+		<%
+			var mem = {
+				'members' : '杂志编辑', 
+				'followerlist' : '关注<a class="red_f" href="/group/' + this.magid + '">' + this.group_header.group_info.name + '</a>的爱美丽',
+				'applyinglist' : '申请加入<a class="red_f" href="/group/' + this.magid + '">' + this.group_header.group_info.name + '</a>的编辑',
+				'blacklist' : '黑名单'
+			};
+			var icos = {
+				'ico11' : '<a class="m_ico m_ico1 agree" alt="通过申请" title="通过申请"></a>',
+				'ico12' : '<a class="m_ico m_ico1 unblock" alt="解封" title="解封"></a>',
+				'ico21' : '<a class="m_ico m_ico2 delete" alt="从杂志中移除" title="从杂志中移除"></a>',
+				'ico22' : '<a class="m_ico m_ico2 refuse" alt="拒绝申请" title="拒绝申请"></a>',
+				'ico3' : '<a class="m_ico m_ico3 block" alt="加入黑名单" title="加入黑名单"></a>',
+				'ico4' : '<a class="m_ico m_ico4 down" alt="降为粉丝" title="降为粉丝"></a>'
+			};
+			var m_icos = {
+				'members' : icos.ico21 + icos.ico3 + icos.ico4,
+				'followerlist' : icos.ico21 + icos.ico3,
+				'applyinglist' : icos.ico11 + icos.ico22,
+				'blacklist' : icos.ico12
+			};
+			var m_ico = this.isAdmin ? m_icos[this.type] : '';
+		%>
+		<h4 class="mt14_f"><%=mem[this.type]%></h4>
+		<%if(this.mg_members && this.mg_members.users) {%>
+		<ul class="members mt14_f">
+			<%this.mg_members && this.mg_members.users.map(function(data){%>
+			<li uid="<%=data.user_id%>">
+				<a href="/person/u/<%=data.user_id%>" class="avatar64_f" target="_blank"><img src="<%=data.avatar_b%>"></a>
+				<%=m_ico%>
+				<a href="/person/u/<%=data.user_id%>" class="m_name" target="_blank"><%=data.nickname%></a>
+			</li>
+			<%});%>
+		</ul>
+		<%} else {%>
+			<%if(this.type == 'applyinglist') {%>
+				<p>暂时还没有加入的申请～～～</p>
+			<%} else if (this.type == 'blacklist') {%>
+				<p>黑名单无内容!</p>
+			<%}%>
+		<%}%>
+		<div class="paging_panel c_f">
+			<%#paging.html%>
+		</div>	
+	</div>
+	<div class="group_r">
+		<div class="topic_info clearfix_f">
+			<a href="/group/<%=this.group_header.group_info.group_id%>" class="avatar64_f"><img src="<%=this.group_header.group_info.logo_path%>"></a>
+			<div class="r_bar">
+				<h3><%=this.group_header.group_info.name%></h3>
+				<p class="gray_f"><%=this.group_header.group_info.count_member%>人关注</p>
+				<a href="/group/<%=this.group_header.group_info.group_id%>">返回杂志&gt;&gt;</a>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+Meilishuo.config.mag_id = '<%=this.group_header.group_info.group_id%>';
+Meilishuo.config.m_type = '<%== this.type%>';
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/magazine_mem');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

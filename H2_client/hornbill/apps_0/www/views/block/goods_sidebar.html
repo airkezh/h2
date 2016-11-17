@@ -1,0 +1,35 @@
+<%
+var query = this._Request_query;
+var getLink = _extFn.getLink;
+%>
+			<%if(this.attr_brand && this.attr_brand.length > 0){%>
+				<div class="attr_box">
+					<h2 class="f14_f"><span class="red_f"><%= this.attr_title_keywords.word_name%></span>的推荐品牌</h2>
+					<div class="brand">
+						<% this.attr_brand.map(function(data){%>
+							<a class="<%if(data.isred == 1){%> red_f <%}%>" href="/guang/brand/<%= data.word_name%>" target="_blank"><%= data.word_name%></a>
+						<%});%>
+					</div>
+				</div>
+			<%}%>
+			<% if(this.attr_group && this.attr_group.length > 0){%>
+			<h2 class="mt14_f f14_f">喜欢<span class="red_f"><%= this.attr_title_keywords.word_name%></span>的MM喜欢的杂志</h2>
+			<% var magItemRenderFn = requireFn('group/magitem.html'); %>
+			<% this.attr_group && this.attr_group.map(function(data, index){
+				if (this.isMagFavor) {
+					data.frm = '?frm=guang'+(index+6);
+					data.isMagFavor = true;
+				}
+			%>
+				<%= magItemRenderFn(data , 8);%>
+			<%}); %>
+			<%};%>
+			<% if(this.attr_baike && this.attr_baike.msg && false){%>
+			<div class="attr_box">
+				<h2 class="f14_f"><span class="red_f"><%= this.attr_title_keywords.word_name%></span>的小百科</h2>
+				<p class="baike">
+					<%= this.attr_baike.msg%>
+				</p>
+			</div>
+			<%};%>
+

@@ -1,0 +1,42 @@
+<div class="passport-form-inner">
+<form class="passport-form" id="loginForm" method="post" onsubmit="return false" action="">
+	<?if(this.formTitleShow !== 0){?>
+	<h3><?= this.formTitleText || '登录美丽说' ?></h3>
+	<?}?>
+	<div class="passport-form-list">
+		<p class="passport-form-item">
+			<input class="passport-form-input" id="username" name="username" type="text" placeholder="<?= this.usernamePlaceholder ?>" />
+			<span></span>
+			<label for="username" class="icon-user"><?= this.usernameLabelText || ''?></label>
+		</p>
+	</div>
+	<div class="passport-form-list">
+		<p class="passport-form-item">
+			<input class="passport-form-input" id="password" name="password" type="password" placeholder="<?= this.passwordPlaceholder ?>" />
+			<span></span>
+			<label for="password" class="icon-pwd"><?= this.passwordLabelText || ''?></label>
+		</p>
+	</div>
+	<div id="riskpicBox"></div>
+	<div class="passport-form-message"></div>
+	<div class="passport-form-submit passport-form-submit-<?= this.name?>">
+		<input type="submit" value="<?= this.submitBtnText || '立即登录' ?>"/>
+	</div>
+	<?if(this.rememberBtnShow !== 0){?>
+	<div class="btn-remember">
+		<input type="checkbox" name="remember" id="remember" checked="checked" />
+		<label for="remember"><?= this.rememberBtnText || '记住我' ?></label>
+	</div>
+	<?}?>
+	<?if(this.findBtnShow !== 0){?>
+	<div class="btn-find">
+		<a href="https://account.meilishuo.com/user/findPwd" target="_blank"><?= this.findBtnText || '忘记密码？'?></a>
+	</div>
+	<?}?>
+	<?if(this.registerBtnShow !== 0){?>
+	<div class="btn-register">
+		<a href="https://account.meilishuo.com/user/register"><?= this.registerBtnText || '注册' ?></a>
+	</div>
+	<?}?>
+</form>
+</div>

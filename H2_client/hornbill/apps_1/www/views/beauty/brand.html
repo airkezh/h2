@@ -1,0 +1,38 @@
+<%#head.html%>
+<div class="beauty">
+	<%if (this.star.ads_img) {%>
+		<div style="background:url(<%=this.star.ads_img%>) center top no-repeat; height:100px;" class="mt14_f"> </div>
+	<%}%>
+	<div class="sideBar pr_f">
+		<div class="brandInfo">
+			<a target="_blank" href="<%=this.star.brand_mls_url%>"><img src="<%=this.star.brand_img%>" alt=" " /></a>
+			<a class="bigbutton" href="<%=this.star.brand_mls_url%>" target="_blank">去美丽说<%=this.star.brand_name%>主页>></a>
+		</div>
+	</div><!--end leftBar-->
+	<div class="beauty_con">
+		<%#beauty/singleStar.html%>	
+	</div><!-- end 单品-->
+</div>
+<div class="clear_f"></div>
+<div class="bty_auto main_content">
+	<%this.goodsMain.gInfo && this.goodsMain.gInfo.map(function(data){%>
+	<div class="groupBox">
+		<div class="groupCon">
+			<a class="picBox" href="/beauty/single/<%=data.goods_id%>" target="_blank"><img src="<%=data.img%>" alt="<%=data.goods_name%>" /></a>
+			<h3><a href="/beauty/single/<%=data.goods_id%>" target="_blank"><%=data.goods_name%></a></h3>
+			<div class="u_like">
+				<div class="u_num"><b><%=data.test_user%></b>人使用</div>
+				<span>好评度</span><em><i style="width:<%=Math.floor(data.grade*5.8)%>px;"></i></em>
+			</div>
+			<div class="u_com">
+				<p>评价：<span><%=data.comment&&data.comment[0].comment%></span></p>
+			</div>
+		</div>
+	</div>
+	<%});%>
+</div>
+<div class="clear_f"></div>
+<div class="paging_panel c_f mt14_f">
+	<%#paging.html%>
+</div>
+<%#foot.html%>

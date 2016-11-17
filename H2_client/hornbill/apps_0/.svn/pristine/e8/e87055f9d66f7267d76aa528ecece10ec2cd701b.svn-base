@@ -1,0 +1,135 @@
+<%# head.html%>
+<%
+	var exchange_type = {
+		'1' : '已兑完',
+		'0' : '去兑换'
+	}
+	var userinfo = this.user_info.data;
+	var mSubstr = _extFn.mSubstr;
+%>
+<div class="wrap">
+	<%  if (!userinfo) {%>
+		<div class="get_wrap">
+			<div class="get">
+				<a href="javascript:void(0)" class="get_btn"></a>
+			</div>
+		</div>
+	<%} else {%>
+		<% if(this.hasGet_status.data.free_point == 0){%>
+			<div class="get_wrap">
+				<div class="get">
+					<a href="javascript:void(0)" class="get_btn"></a>
+				</div>
+			</div>
+		<%} else {%>
+			<div class="user_wrap">
+				<div class="user_info">
+					<div class="more">			
+						<a href="/tuan?frm=member_more" target="_blank">
+							<b class="shop_icon"></b>
+							去购物领取更多积分 &gt;
+						</a>
+					</div>
+					<div class="user">
+						<a class="user_pic">
+							<img src="<%= this.user_info.data.avatar_b%>" alt="">
+						</a>
+						<dl class="user_main">
+							<dt><%= this.user_info.data.nickname%> </dt>
+							<dd>
+								<span class="user_point"><%= this.user_info.data.point%></span>积分
+								&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
+								<a href="/member/list" target="_blank">积分明细 &gt; </a>
+							</dd>
+						</dl>
+					</div>
+				</div>
+			</div>
+		<%}%>
+	<%}%>
+	<div class="center">
+		<%#member/intro.html%>
+		<div class="nav">
+			<h4><b></b>精选积分兑换商品（兑完即止）</h4>
+			<!-- <ul class="nav_list tab_tle">
+				<li>
+					<a href='' class="tabArea cur"><%= this.act_info.new_goods_info.tag_name%></a>
+				</li>
+				<li>|</li>
+				<li>
+					<a href='' class="tabArea"><%= this.act_info.hot_goods_info.tag_name%></a>
+				</li>
+				<li>|</li>
+				<li>
+					<a href='' class="tabArea"><%= this.act_info.final_goods_info.tag_name%></a>
+				</li>
+			</ul> -->
+		</div>
+		<ul class="goods new_goods contentArea" type="new">
+			<% this.act_info.new_goods.length && this.act_info.new_goods.map(function(data, idx){%>
+			<li <% if(idx % 3 == 2){%>class="nomr"<%}%> tid = "<%= data.twitter_id%>">
+				<a class="good_img">
+					<img src="<%= data.pic_url%>">
+				</a>
+				<div class="good_info">
+					<p class="good_title"><%= mSubstr(data.goods_titile, 36, '...')%></p>
+					<p class="need">
+						<span class="worth">
+							价值：￥<%= data.value%>
+						</span>
+						需<span class="redword"><b><%= data.point%></b>积分</span>
+					</p>
+					<a href="javascript:void(0)" point="<%= data.point%>" exchangeNum ="<%= data.exchangeNum%>"class="good_btn <%= this.exchange_status.data.new_goods[data.twitter_id] ? 'over' : 'go'%>"><%= exchange_type[this.exchange_status.data.new_goods[data.twitter_id]]%></a>
+				</div>
+			</li>
+			<%});%>
+		</ul>
+		<ul class="goods hot_goods contentArea hide" type="hot">
+			<% this.act_info.hot_goods.length && this.act_info.hot_goods.map(function(data, idx){%>
+			<li <% if(idx % 3 == 2){%>class="nomr"<%}%> tid = "<%= data.twitter_id%>">
+				<a class="good_img">
+					<img src="<%= data.pic_url%>">
+				</a>
+				<div class="good_info">
+					<a class="good_title"><%= data.goods_titile%></a>
+					<p class="need">
+						<span class="worth">
+							价值：￥<%= data.value%>
+						</span>
+						需<span class="redword"><b><%= data.point%></b>积分</span>
+					</p>
+					<a href="javascript:void(0)" point="<%= data.point%>" class="good_btn <%= this.exchange_status.data.hot_goods[data.twitter_id] ? 'over' : 'go'%>"><%= exchange_type[this.exchange_status.data.hot_goods[data.twitter_id]]%></a>
+				</div>
+			</li>
+			<%});%>
+		</ul>
+		<ul class="goods final_goods contentArea hide" type="final">
+			<% this.act_info.final_goods.length && this.act_info.final_goods.map(function(data, idx){%>
+			<li <% if(idx % 3 == 2){%>class="nomr"<%}%> tid = "<%= data.twitter_id%>">
+				<a class="good_img">
+					<img src="<%= data.pic_url%>">
+				</a>
+				<div class="good_info">
+					<a class="good_title"><%= mSubstr(data.goods_titile,10,'...')%></a>
+					<p class="need">
+						<span class="worth">
+							价值：￥<%= data.value%>
+						</span>
+						需<span class="redword"><b class="point"><%= data.point%></b>积分</span>
+					</p>
+					<a href="javascript:void(0)" point="<%= data.point%>" class="good_btn <%= this.exchange_status.data.final_goods[data.twitter_id] ? 'over' : 'go'%>"><%= exchange_type[this.exchange_status.data.final_goods[data.twitter_id]]%></a>
+				</div>
+			</li>
+			<%});%>
+		</ul>
+	</div>
+</div>
+<script>
+fml.vars.userInfo = '<%= userinfo %>'
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/member');
+_use:", this._JSstack , this._JSmods ); %>
+
+
+<%# foot.html%>

@@ -1,0 +1,54 @@
+<%# paipai/head.html%>
+<%
+var query = this._Request_query;
+var getLink = _extFn.getLink;
+%>
+
+<div class="spinner midSpinner pa_f" style="top:250px;"></div>
+<div style="zoom:1" class="content_fluid v_hidden">
+	<div class="paipai_banner"></div>
+	<div class="cata_title">
+		<h2><%= this.currentWord %></h2>
+	</div>
+	<div class="goods_wall" style="height:1000px; width:100%;">
+		<div class="corner_notic">
+			<div class="rec_nav red_tb">
+				<div class="catacon">
+				<% this.attr_hot_keywords.sub && this.attr_hot_keywords.sub.group_map.map(function(group_name, index){ %>
+					<% var group_icon = this.attr_hot_keywords.sub.group_info[group_name].ico_sortno - 1,
+							group_iconX = -((group_icon % 6) * 38),
+							group_iconY = -((Math.floor(group_icon / 6)) * 32);
+					%>
+					<h2><span style="background-position:<%= group_iconX %>px <%= group_iconY %>px;"></span><%=group_name%></h2>
+					<div class="category">
+						<%for(var data in this.attr_hot_keywords.sub.group_keywords[group_name]){%>
+							<% var group_info = this.attr_hot_keywords.sub.group_keywords[group_name][data]; %>
+							<a class="<%if(this.currentWord == group_info.word_name){%>active<%}else{%><%= group_info.isred == 1?'ishot':''%><%}%>" href="/paipaiguang/<%= encodeURIComponent(group_info.word_name)%>" ><%= group_info.word_name %></a>
+						<%}%>
+						<div class="clear_f"></div>
+					</div>
+				<%});%>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="goods_banner"><a href="/welcome" target="_blank"></a></div>
+	<div class="spinner botSpinner none_f"></div>
+	<div class="clear_f"></div>
+	<div class="paging_panel c_f none_f">
+	<%#paging.html%>
+	</div>
+</div>
+<%# paipai/poster.html%>
+</script>
+<script>
+<%= this.poster0? 'Meilishuo.config.poster0 = '+JSON.stringify(this.poster0)+';':'' ;%>
+fml.vars._guang_word_name = "<%= this.attrName%>";
+</script>
+<% $_ENGINE_SELF.callFn("useModule")("fml.use('page/poster0');", this._JSstack , this._JSmodsFast ); %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+		fml.use('page/paipai/guang');
+		fml.use('page/poster_guang');
+_use:", this._JSstack , this._JSmods ); %>
+<%if(this.attrName == 'new'){%><div class="h_update none_f"><a><span id="msgSize">0</span>个新分享</a></div><%}%>
+<%# paipai/foot.html%>

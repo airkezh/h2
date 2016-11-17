@@ -1,0 +1,215 @@
+/*common*/
+require( 'wap/zepto/touch' )
+var lazyLoad = require('m/component/lazyLoad')
+    , Swipe = require('wap/component/swipe')
+
+var $                  = require( 'wap/zepto' ),
+    WaterFall          = require( 'circle/component/waterfall' ),
+    optimiseFn         = require( 'circle/component/waterfallOptimise' ),
+    timedown           = require( 'wap/app/doota/timedown' ),
+    WindowScroll       = require( 'wap/component/windowScroll' ),
+    isIOS              = !Meilishuo.config.os.android,
+
+    $doc               = $( document ),
+    $tabs              = $doc.find( '.tab' ),
+    $activeTab         = $tabs.eq( 0 ),
+    $nav               = $( '.wap_nav' ),
+    $tabContainer      = $( '.poster-wall' ),
+    $fixedTab          = $( '.js-fixed-tab' ),
+
+    oldMarginTop       = $tabContainer.css( 'marginTop' ),
+
+    navHeight          = isIOS ? 0 : $nav.height(),
+    tabHeight          = $fixedTab.height(),
+    isTabFixed         = false,
+    lastTabPos         = $fixedTab.offset().top,
+    isTriggerFinished  = false,
+    alreadyLoadedItem  = {},
+
+    waterfallInstances = {
+        'feature': {
+            url:  '/aj/welcome/getGoods/feature',
+            tmpl: 'featurePosterWall'
+        },
+
+        'new': {
+            url:  '/aj/welcome/getGoods/new',
+            tmpl: 'newPosterWall'
+        },
+
+        'hot': {
+            url:  '/aj/getGoods/hot',
+            tmpl: 'normalPosterWall'
+        }
+    },
+
+    urls               = {
+        'feature': '',
+        'new':       '',
+        'hot':       ''
+    },
+
+    ACTIVE             = 'active',
+
+    curWaterfallType   = 'new';
+
+/* baidu lightapp js */
+
+setTimeout(function(){
+    lastTabPos = $fixedTab.offset().top
+},2000);
+
+(function() {
+    var e = document.createElement( 'script' ),
+        s = document.getElementsByTagName( 'script' )[ 0 ]
+
+    e.type = 'text/javascript'
+    e.name = 'baidu-tc-cerfication'
+    e.src  = 'http://apps.bdimg.com/cloudaapi/lightapp.js#b9f5e498889cf25a702988eebd2a53a9'
+    s.parentNode.insertBefore( e, s )
+
+    window.bd && bd._qdc && bd._qdc.init( { app_id: '18a49f24d007a1e8a816bd2c' } )
+})()
+
+/* baidu lightapp js */
+
+var personArea = $( '#personArea' )
+
+$( '.home_page' ).on( 'tap', function( e ) {
+    if ( Meilishuo.config.user_id == '0' )
+        window.location.href = window.__get_r( '/user/login', fml.vars.common_r )
+
+    e.preventDefault()
+    e.stopPropagation()
+
+    if ( personArea.attr( 'isShow' ) == '0' ) {
+        personArea.show()
+        personArea.attr( 'isShow', '1' )
+    } else {
+        personArea.hide()
+        personArea.attr( 'isShow', '0' )
+    }
+} )
+
+WindowScroll.bind( function( lastPos ) {
+    if ( lastPos - lastTabPos > navHeight ) {
+        if ( !isTabFixed ) {
+            $fixedTab.addClass( 'fixed-tab' )
+            $tabContainer.css( 'marginTop', tabHeight )
+            isTabFixed = true
+        }
+    } else if ( isTabFixed ) {
+        $fixedTab.removeClass( 'fixed-tab' )
+        $tabContainer.css( 'marginTop', oldMarginTop )
+        isTabFixed = false
+        lastTabPos = $fixedTab.offset().top
+    }
+} )
+
+
+//瀑布流宽高比 640*832
+
+function initTab() {
+    $doc.find( '.poster-wall' ).on( 'tap', '.tab', function() {
+        var $this = $( this )
+
+        if ( !$this.hasClass( ACTIVE ) ) {
+            $activeTab.removeClass( ACTIVE )
+            $this.addClass( ACTIVE )
+            $activeTab = $this
+            activeWaterfall( $this.data( 'type' ) )
+
+            if ( isTriggerFinished && isTabFixed ) {
+                setTimeout( function() {
+                    // 30 是试验出来的数字
+                    window.scrollTo( 0, $tabContainer.offset().top - 30 + navHeight )
+                }, 0 )
+            }
+        }
+    } )
+
+    $activeTab.trigger( 'tap' )
+    isTriggerFinished = true
+}
+
+/**
+ * 过滤掉后端的重复数据
+ */
+function filterLoaded( data ) {
+    var id = data.id || data.twitter_id
+    return !alreadyLoadedItem[ id ] && ( alreadyLoadedItem[ id ] = 1 )
+}
+
+function activeWaterfall( type ) {
+    var wf    = waterfallInstances[ type ],
+        oldWf = waterfallInstances[ curWaterfallType ]
+
+    if ( oldWf.instance ) {
+        oldWf.instance
+            .lock()
+            ._config.el.hide()
+    }
+
+    curWaterfallType = type
+
+    if ( !wf.instance ) {
+        waterfallInstances[ type ].instance = wf.instance = WaterFall.init( {
+            el:             $( '.tab-' + type ),
+            url:            wf.url,
+            tmpl:           wf.tmpl,
+            data:           {
+                offset: 30,
+                cata:   0,
+                sbase:  0,
+                sort:   1,
+                limit:  20
+            },
+            dataFilter:     function( data ) {
+                fml.vars.poster_r = data.r || fml.vars.common_r;
+
+                return data.data.tInfo.filter( filterLoaded )
+            },
+            colNum:         2,
+            colGap:         10,
+            optimiseFn:     optimiseFn,
+            onFetchSuccess: function( data ) {
+                if ( data.length == 0 ) {
+                    $( '.pullUp' ).attr( 'status', 'stop' )
+                    this.lock()
+                }
+            }
+
+        } ).start()
+    }
+
+    wf.instance
+        .unlock()
+        ._config.el.show()
+}
+
+initTab()
+
+fml.use( 'wap/app/frame6', function() {
+    this.openClosedFn();
+    this.searchFn();
+    this.routeFn();
+} );
+
+/* lazyLoad load setting, 采用全屏扫点方式加载 */
+var lazy_pic = lazyLoad.init({
+    'xpath': '.lazy_pic_big,.lazy_pic, .lazy_pic_bnr',
+    'parentName': '.goods_list, .run_man_dis, .fashion, .run_man, .business'
+});
+lazy_pic.scroll();
+lazy_pic.load();
+
+var runman_swip = new Swipe($('#slider')[0], {
+    speed: 400,
+    auto: 3000,
+    continuous: true,
+    disableScroll: false,
+    stopPropagation: false
+})
+
+
+

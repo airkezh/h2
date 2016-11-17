@@ -1,0 +1,67 @@
+<%# head_simple.html%>
+<% 
+    var gid = this.gid.data.newId;
+%>
+
+	<script> 
+            (function(win,doc){
+                var docel = doc.documentElement;
+                var meta = doc.querySelectorAll('meta[name=viewport]');
+                meta[0].setAttribute('content','width=device-width,user-scalable=no,initial-scale=1');
+                function recalc(){
+                    var width = docel.clientWidth;
+                    docel.style.fontSize = 100 * width/640+'px';
+                }
+                if(doc){
+                    recalc();
+                    win.addEventListener('orientationchange',recalc,false);
+                }else if (doc.addEventListener){
+                    doc.addEventListener('DOMContentLoaded', recalc, false);
+                }
+            })(window,document)
+     </script>
+</head>
+<body>
+<div id="warp" class="warp">
+<div class="step1">
+    <img src="http://d04.res.meilishuo.net/pic/_o/8d/52/d6c56ca1a9f2939d608e48e843bb_640_1003.ch.png">
+    <button class = "start sub">开始测试</button>
+</div>
+<div class="step2">
+    <div class="dialog_news">
+        <img class = "user_img" src="<%= this.gid.data.pic_A%>">
+        <span class="text">亲爱的，快扫码与我配对哦~</span>
+    </div>
+    <div class="code">
+        <img src="http://d05.res.meilishuo.net/pic/_o/34/2c/7dc717fdedf882cec19389308dc0_340_66.cf.png">
+        <div id="qrcode_c"></div>
+        <img class = "call_txt" src="http://d02.res.meilishuo.net/pic/_o/b0/9d/e246b98d4171d3ae48e7e702f1be_280_42.cf.png">
+    </div>
+</div>
+</div>
+<div class="mypopbox" id="mypopbox" >
+
+	<div class="dialog dialog_appshare" id="dialog_appshare" >
+		
+	</div>
+
+	<div class="overlay">
+	</div>
+</div>
+
+<script>
+    fml.vars.isWxLogin= <%= this.isWxLogin || false %>   ;
+
+    fml.vars.isWx = <%= this.isWx %>;
+
+    fml.vars.gid = <%= this.gid.data.newId %>;
+
+</script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use('wap/page/activity/twoScreen');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot.html%>
+

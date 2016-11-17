@@ -1,0 +1,103 @@
+<%# header.html%>
+<%
+	var listsInfo = this.md_chan_list.data || {}
+%>
+<%if(listsInfo){%>
+	<div class="wrap">
+		<%for(var i = 0; i < listsInfo.list.length; i++){%>
+			<%if(listsInfo.list[i].event_type == 1){%>
+				<a href="/md/treasure/?event_id=<%=listsInfo.list[i].event_id%>">
+					<section class="chan_goods_wrap">
+						<img src="<%= listsInfo.list[i].event_image[0].image_middle%>" width="100%">
+						<div class="chan_goods">
+							<dl>
+								<dt><img src="<%= listsInfo.list[i].designer_avatar.image_thumbnail%>"></dt>
+								<dd class="preslae_brand">
+									<p><b>设计师：</b><span><%= listsInfo.list[i].designer_name%></span></p>
+									<p><b>品牌：</b><span><%= listsInfo.list[i].event_goods.goods_shop.shop_name%></span></p>
+									<p>
+										<span class="preslae_brand_pri">预售</span>
+									</p>
+								</dd>
+								<dd><%= listsInfo.list[i].event_description%></dd>
+							</dl>
+						</div>
+					</section>
+				</a>
+			<%}else if(listsInfo.list[i].event_type == 2){%>
+			<div class="act_shop">
+				<a href="/md/home/?shop_id=<%= listsInfo.list[i].shop_id%>&category_id=<%= listsInfo.list[i].category_id%>">
+					<section class="classify_wrap">
+						<img src="<%= listsInfo.list[i].event_image[0].image_middle%> ">
+					</section>
+					<section style="clear:both;"></section>
+					<section class="origin_wrap">
+						<div class="origin_goods">
+							<dl>
+								<dt><img src="<%= listsInfo.list[i].event_shop.shop_logo%>"></dt>
+								<dd class="origin">
+									<p><b>品牌：</b><span><%= listsInfo.list[i].event_shop.shop_name%></span></p>
+									<p><b>品牌创始人：</b><span><%= listsInfo.list[i].brand_founder%></span></p>
+								</dd>
+								<dd><%= listsInfo.list[i].event_description%></dd>
+							</dl>
+						</div>
+					</section>
+				</a>
+			</div>
+			<%}%>
+		<%}%>
+	</div>
+	<%if(this.is_mls){%>
+		<div class="register_wrap mag_bot"></div>
+			<div class="share_buy_wrap"  id="shareMd">		
+				<div>
+					<span id="close"></span>
+					<img src="<%=this.PICTURE_URL%>/images/md/close_ico.png">
+				</div>	
+				<p onclick="shareToWx('weixin_timeline')">分享到朋友圈<span>|</span></p>
+				<p onclick="shareToWx('weixin_favorite')">收藏到微信</p>
+			</div>
+		<div>
+			<span class="md_share">
+				<i class="mdSha"></i>
+				<img src="http://i.meilishuo.net/css/images/md/show_ico.png" />
+			</span>
+		</div>
+	<%}%>
+<%}%>
+<script type="text/javascript">
+	var imgUrl = '<%=this.PICTURE_URL%>/images/md/activity_icon.png';
+	var lineLink = location.href;
+	var shareTitle = '蜜店精选';
+	var descContent = '顶尖潮流设计师主打最新款，预售优惠快来抢';
+	var shareTimelineText = '蜜店精选 - 顶尖潮流设计师主打最新款，预售优惠快来抢';
+
+	var shareToWx = function shareToWx(type) {
+		var params = {
+			message_type : 'webpage',
+			type : type,
+			title : shareTimelineText,
+			text : shareTimelineText,
+			thumb_url : imgUrl,
+			url : location.href
+		};
+
+		var url = 'meilishuo://share.meilishuo?json_params=' + encodeURIComponent(JSON.stringify(params));
+		location.href = url;
+    };
+
+</script>
+<script src="<%= this.JCSTATIC_BASE  %>/js/open/shareCollect.js?<%= this.SVERSION%>"></script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('md/page/detail');
+	fml.use('md/page/mdChare');
+_use:", this._JSstack , this._JSmods ); %>
+<%# footer.html%>
+
+
+
+
+
+
+

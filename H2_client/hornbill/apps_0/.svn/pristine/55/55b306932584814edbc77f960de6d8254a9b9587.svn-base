@@ -1,0 +1,71 @@
+<%# head.html %>
+<%* mlslm/headLm.html *%>
+  	<% var data = this.pageInfo; %>
+  	<div class="top-img" style="background:url('http://d02.res.meilishuo.net/img/_o/ed/d1/25c0603a2df6beebcf028f8869f9_2000_450.cg.jpg') center center; height:420px"></div>
+  	<div class="main">
+    		<div class="sec_nav_wrap" id="tab_position">
+				<div class="tab_wrap">
+					<div class="bs_tab_wrap">
+							<a href="#" class="p_tab_active"> title1</a>
+							<a href="#" class=""> title2</a>
+					</div>
+				</div>
+				<div class="sec_nav"></div>
+			</div>
+			<div class="sec-img" style="background:url(http://d06.res.meilishuo.net/img/_o/53/60/d736c1b220360a103a756a9a0bca_1200_107.ch.jpg) center center; height:106px"></div>
+	  	  	<div class="goods_wall"></div>
+	   	<div class="paging_panel c_f none_f">
+	      	<%# paging.html %>
+	      </div>
+	      <div class="spinner botSpinner none_f"></div>
+	      <div class="clear_f"></div>   	
+  	</div>
+  	<script>
+    	fml.vars.poster = {};
+  	</script>
+  	<script type="text/html" id="posterWall">
+		<?
+			$.each(tInfo, function(k, v){
+				var goods_link = '';
+				if(v.link){
+					goods_link = v.link;
+				} else {
+					goods_link = '/share/item/' + v.twitter_id + '?d_r=' + v.d_r;
+				}
+				var show_pic = v.show_pic ? v.show_pic : v.image;
+				var goods_title = v.goods_title ? v.goods_title : "";
+		?>
+			<a href="<?= goods_link ?>" target="_blank" class="productCon goods_units poster_grid retsop poster_wall">
+				<?var _l = 0;?>
+				<? v.horizontal_mark.forEach(function(v1 , k1){ ?>
+					<div class="new-png"  style="left:<?=6 + _l?>px"><img src="<?= v1.img_url?>" /></div>
+					<?_l += (+v1.img_width + 2);?>
+				<? });?>
+
+				<div class="proImg" style="height: <?= v.img_height * v.img_width / 220 ?>px;">
+					<img width="220" src="<?= show_pic ?>" />
+				</div>
+				<div class="proTitle">
+					<?= goods_title ?>
+				</div>
+				<div class="proPrice">
+					<b><?= v.price ?></b>
+					<? if(v.origin_price){ ?>
+						<span class="original_price"><?=v.origin_price?></span>
+						<span class="sale_price"><?= v.discount ?></span>
+					<? } ?>
+				</div>
+				<div class="proBtnWrap">
+					<span class="js-addToCart btn-addToCart buy_btn" data-tid="<?=v.twitter_id?>">立即抢购</span>
+				</div>
+			</a>
+		<? }); ?>
+	</script>
+  	<script type="text/html" id="tmplAddToCart">
+		<%# tmpl/app.addToCart.html%>
+	</script>
+	<% $_ENGINE_SELF.callFn("useModule")("fml.use('page/poster0');", this._JSstack , this._JSmodsFast ); %>
+	<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+		fml.use('page/xuanguan/xuanguan');
+	_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html %>

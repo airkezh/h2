@@ -1,0 +1,57 @@
+<% if(0){ %>
+<ul id="goTop" class="goTop">
+	<li id="go_top" class="none_f"><a class="ico_top"><span>返回顶部</span></a></li>
+	<% if (!this.onlyShowGoTop) {%>
+		<%if(this.help){%>
+			<li><a class="survey" target="_blank" href="/helpcenter/survey/?is_outer=1&is_test=0">问卷调查</a></li>
+		<%}%>
+	<li>
+		<a class="ico_guide" href="/helpcenter/" target="_blank"><span>购物帮助</span></a>
+	</li>
+	<% if(this._serviceIM) {%>
+		<li>
+			<a class="ico_serviceqq knilmi" href="<%= this.ViewTools.callIM(this._serviceIM) %>" target="_blank"></a><a class="txt knilmi" href="<%= this.ViewTools.callIM (this._serviceIM) %>" target="_blank">客服</a>
+		</li>
+	<% } %>
+	<%}%>
+</ul>
+<%}%>
+<% if (0) {%>
+<ul class="bot_cart">
+	<% if (!this.showSaleSideBar) { %>
+	<li class="first">
+		<a href="/cart" target="_blank">
+			<em class="b_cart">&nbsp;</em><span class="cart_nums <%= this.cart_num?'':'none_f'%>"><span><%= this.cart_num || ''%></span></span> 购物车
+		</a>
+	</li>
+	<% }%>
+	<li class="last <% if (this.showSaleSideBar) { %>first<%}%>">
+	<% if (this.is_iPad) { %>
+		<a href="/im/" class="">
+	<% } else { %>
+		<a href="<%= this._serviceIM? this.ViewTools.callIM(this._serviceIM) : '/im/'%>" class="openIM">
+	<% } %>
+			<em class="b_msg">&nbsp;</em><span class="msg_nums none_f"></span> 客服消息
+		</a>
+	</li>
+</ul>
+<% } %>
+
+
+<script type="text/html" id="bay_window">
+	<?for (i=0; i<baydata.length;i++){
+		var nowdate=new Date().getTime();
+		var startime=new Date(baydata[i].start.replace(/-/g,"/")).getTime();
+		var endtime=new Date(baydata[i].end.replace(/-/g,"/")).getTime();
+		if(	nowdate>startime && nowdate<endtime){?>
+			<div class="activity_ad11" style="background:url(<?= baydata[i].img?>) no-repeat;">
+				<span class="close_ad11"></span>
+				<a href="<?= baydata[i].link?>" target="_blank" class="ad11_link"></a>
+			</div>
+		<?}?>
+	<?}?>
+</script>
+
+<script>
+	fml.vars.ad_leftPic = <%= this.ad_leftPic === false ? false : true %>;
+</script>

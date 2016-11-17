@@ -1,0 +1,76 @@
+/*common*/
+window.$                  = require('wap/zepto');
+var waterFall             = require( 'circle/component/waterfall' );
+var biWaterFallPlugin     = require( 'circle/component/biWaterfallPlugin' );
+var waterFallReflowPlugin = require( 'circle/component/waterfallReflowPlugin' );
+var optimiseFn            = require('circle/component/waterfallOptimise');
+var lazy                  = require( 'm/component/lazyLoad' );
+var Alert                 = require('wap/ui/alert');
+var UrlHandle    		  = require('wap/component/urlHandle');
+var lazyLoad              = lazy.init({xpath:'.pic_load'});
+var $pullUp               = $('.pullUp');
+var urlParams    		  = UrlHandle.getParams( location.href );
+var is_recommend 		  = fml.vars.is_recommend;
+var snow                  = require('wap/page/wx_new/snow')
+
+/* 预先绑定懒加载事件 */
+lazyLoad.scroll();
+urlParams.recom = is_recommend;
+history.pushState( null,  '' , '?' + UrlHandle.http_build_query( urlParams ) ); 
+
+/* 瀑布流相关 */
+var sessionKey = window.sessionStorage.getItem('wx-search-keyword');
+var isClearBackup = false;
+if( !sessionKey || sessionKey != fml.vars.key ){
+	isClearBackup = true;
+	window.sessionStorage.setItem( 'wx-search-keyword', fml.vars.key )
+}
+
+/**
+ * goods_ctime : 默认
+ * sale_num : 热销
+ * price_high - 降序； 
+ * price_lower - 升序
+ */
+// var tabInstance = {
+// 	'base' :  'goods_ctime',
+// 	'hot' :  'sale_num',
+// 	'price-h' : 'price_high',
+// 	'price-l' : 'price_lower'
+// }
+
+var waterFallInstance = waterFall.init({
+	el: '.goods_wall',
+	url: '/aj/wx/search/waterfall',
+	dataName: 'tInfo', //默认
+	colNum: 2,
+	colGap : '10 8',
+	hasSideGap : true,
+	plugins: [ biWaterFallPlugin, waterFallReflowPlugin ],
+	forceClearBackup: isClearBackup, //强制清除session缓存
+	hasSideGap : true,
+	data : {
+			'key_word' : fml.vars.key,
+			'orderby' :  fml.vars.tabType,
+			'is_recommend' : is_recommend,
+			'limit' : 10
+	},
+	onFetchSuccess: function(data){
+		if(data.length === 0){
+			$('.pullUp').attr('status','stop');
+		}
+	},
+	onFetchFinished: function(data){
+		lazyLoad.load()
+	},
+	onLayoutFinished:function() {
+		if(fml.vars.key.match('圣诞')){
+			snow.startSnow();
+			setTimeout(snow.stopSnow,30000)
+		}
+	},
+	optimiseFn: optimiseFn
+}).start()
+
+
+

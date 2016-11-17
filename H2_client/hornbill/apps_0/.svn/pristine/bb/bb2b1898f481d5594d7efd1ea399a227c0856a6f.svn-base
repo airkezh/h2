@@ -1,0 +1,65 @@
+<%# head.html %>
+
+<% var page_xr = this.xr.r;
+   var pro_spec_banner = this.pro_spec_banner || {};
+   var pro_banner = pro_spec_banner.book_page || {};
+   var down_info = this.down_info || {};
+   var download_info = down_info.book_page || {};
+   var poster_blcok_mt = download_info.img ? (download_info.img_height/download_info.img_width)*100+'%':'0px';
+%>
+
+<% if( download_info.img ){%>
+<div class="head_img">
+	<% var down_link = download_info.link ? download_info.link : '/goto/open/?bg=http%3A%2F%2Fm.meilishuo.com%2Fdownload%2Flatest%2F%3Fchannel%3D30902%26frm%3Ddingdan&url=meilishuo%3A%2F%2Fopen.meilishuo';
+	%>
+	<a href="<%= down_link %>" xr="<%= this.xr.r %>">
+		<img src="<%= download_info.img %>" class="mls_desc">
+	</a>
+</div>
+<% } %>
+<div class="main_page" style="margin-top: <%= poster_blcok_mt %>;" >
+	<%= requireFn('block/wap_head.html')({
+		'search_words' : this.search_words
+		, 'cat_banner' : pro_spec_banner.cat_bar
+		, 'xr' : this.xr
+		, '_JSstack' : this._JSstack
+		, '_JSmods' :  this._JSmods
+	});%>
+
+	<% if( pro_banner.banner_img ){%>
+		<% var url = pro_banner.banner_link || 'javascript:;' %>
+		<div class="pro_banner">
+			<a href="<%= url %>" xr="<%= this.xr.r %>">
+				<img src="<%= pro_banner.banner_img%>" alt="">
+			</a>
+		</div>
+	<%}%>
+	<div class="goods_wall">
+		<% this.poster0.tInfo.forEach(function(goods, index){ %>
+			<div class="poster_grid">
+				<figure>
+					<div class="pic_load">
+						<a xr="<%= page_xr %>" class="bs_load_img" href="/share/<% if(goods.is_doota == '1'){ %>item/<% } %><%= goods.twitter_id %>" asrc="<%= goods.pic_url %>"></a>
+					</div>
+					<p class="clothesTitle"><%= goods.title %></p>
+					<figcaption>
+						<span class="price"><%= goods.price %></span>
+						<span class="like icon-heart"><%= goods.count_like %></span>
+					</figcaption>
+				</figure>
+			</div>
+		<% }); %>
+	</div>
+</div>
+
+<%# block/wap_foot.html %>
+
+<% if(this.bdZhiShu && this.bdZhiShu.res){ %>
+	<iframe style="display:none;" src="http://www.baidu.com/s?wd=%E7%BE%8E%E4%B8%BD%E8%AF%B4&rsv_bp=0&ch=&tn=baidu&bar=&rsv_spt=3&ie=utf-8&rsv_sug3=6&rsv_sug4=58&rsv_sug1=6&rsv_sug2=0&inputT=9"></iframe>
+<% } %>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/new_book');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot.html %>

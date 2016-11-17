@@ -1,0 +1,88 @@
+<%# head_simple.html %>
+</head>
+<body>
+<div class="wrap">
+	<div class="reg_wrap">	
+		<div class="head">
+			<a href="/" class="reg_logo"></a>
+			<a href="/" class="welcome_txt"></a>
+		</div>
+		<div class="main">
+			<div class="ad_wrap">
+				<img src="<%=this.PICTURE_URL%>images/register/ad_img.jpg" width="370" height="353" />
+			</div>
+			<div class="login_form">
+				<form id="loginForm" method="post" onsubmit="return false" action="">
+					<h3>
+						<a href="/user/register">注册</a>
+						登录美丽说
+					</h3>
+					<div class="login_list">
+						<p class="login_box">
+							<input class="login_txt" id="mlsUser" name="mlsUser" type="text" placeholder="邮箱/手机号/昵称" />
+							<span></span>
+							<span class="user_icon"></span>
+						</p>
+					</div>
+					<div class="login_list">
+						<p class="login_box">
+							<input class="login_txt" id="password" name="password" type="password" placeholder="密码" />
+							<span></span>
+							<span class="pwd_icon"></span>
+						</p>
+					</div>
+					<div class="login_list authcode <% if(this.captcha.need_captcha != 1){ %>none_f<% } %>">
+						<div class="login_box">
+							<input class="login_txt" id="checkcode" name="checkcode" type="text" placeholder="请输入验证码" maxlength="4" />
+							<span></span>
+							<span class="code_icon"></span>
+							<div class="checkImage" onselectstart="return false;">
+								<img width="90" height="36" src="<%= this.PICTURE_URL %>images/register/blank.jpg"><span class="refresh"></span>
+							</div>
+						</div>
+					</div>
+					<div class="loginErrorMessage none_f"></div>
+					
+					<div class="login_btn_wrap">
+						<input type="submit" class="login_btn" value="立即登录"/>
+					</div>
+					<div class="remember">
+						<input type="checkbox" name="savestate" id="savestate" checked="checked" />
+						<label for="savestate">记住我</label>
+					</div>
+					<div class="forget_pwd">
+						<a href="/user/findPwd" target="_blank">忘记密码？</a>
+					</div>
+				</form>
+				<div class="fast_login">
+					<h3>无需注册，即可登录</h3>
+					<div class="fast_way">
+						<a href="/connect/auth/qzone" class="qq_way"></a>
+						<a href="/connect/auth/weibo" class="sina_way"></a>
+						<a href="/connect/auth/weixin" class="weixin_way"></a>
+					</div>
+				</div>
+				<div class="more_way_wrap">
+					<h4 onselectstart="return false">更多登录方式>></h4>
+					<div class="more_way none_f">
+						<a href="/connect/auth/txweibo" class="txweibo"></a>
+						<a href="/connect/auth/douban" class="douban"></a>
+						<a href="/connect/auth/renren" class="renren"></a>
+						<a href="/connect/auth/baidu" class="baidu"></a>
+					</div>
+				</div>
+				<div class="notice">
+					公告：淘宝互联已失效，点此进行 
+					<a href="/user/appeal_tb/">账号申诉</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	Meilishuo.config._or = "%s";
+	fml.use('page/login');
+_use:", this._JSstack , this._JSmods ,this._OrginRequest||''); %>
+<% this._disableThirdParty = true%>
+<%# foot_simple_cr.html %>
+

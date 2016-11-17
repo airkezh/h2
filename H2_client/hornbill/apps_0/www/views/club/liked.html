@@ -1,0 +1,94 @@
+<%# head.html%>
+<div class="main-content">
+	<div class="recom_wraper">
+		<div class="recom_title_bg"></div>
+		<div class="recom_title_wrap<%if(this.pageType && this.pageType == 'liked_club'){%> liked_club<%}%>"><a href="/ur/recommend/<%=this.userInfo.user_id%>" class="liked_nav">被喜欢的分享</a><a href="/club/liked/<%=this.userInfo.user_id%>" class="clubliked_nav">被喜欢的晒单</a></div>
+		<div class="article_sg">
+			<div class="reply_list">
+				<%if(!this.liked_list.aInfo && this.liked_list.aInfo.length == 0){%>
+					<div class="no_recommend">还没有人喜欢过你的晒单</div>
+				<%}%>
+			<%this.liked_list.aInfo && this.liked_list.aInfo.map(function(data, index){%>
+				<div class="reply_item">
+					<a class="left_f"><img class="ava_r" src="<%=data.uinfo.avatar_a%>" width="40" height="40"></a>
+					<div class="reply_con">
+						<div class="reply_title"><a class="reply_name"><%=data.uinfo.nickname%></a> 喜欢了你的晒单，送了一颗<span class="start"></span></div>
+						<div class="clearfix_f">
+							<p class="cnt_r article_title"><%if(data.stinfo.highlight){%><span class="best_title"></span><%=data.stinfo.highlight%><%}%><a href="/club/single/<%=data.stinfo.article_id%>" target="_blank"><%=data.stinfo.article_title%></a></p>
+						</div>
+						<div class="clear_f"></div>
+						<div class="item_bar clearfix_f">
+							<span class="time"><%=data.time%>  <%=data.source%></span>
+						</div>
+					</div>
+				</div>
+				<div class="clear_f"></div>
+				<div class="separation"></div>
+				<%});%>
+			</div>
+			<div class="clear_f"></div>
+		</div>
+		<div class="paging_panel c_f">
+		<%#paging.html%>
+		</div>
+	</div>
+	<div class="corner-notic">
+		<%if(this.user_list && this.user_list.identity){%>
+			<%# userinfo.html%>
+		<%}%>
+		<%if(this.user_label && this.user_list){%>
+			<%# block/person_sidebar.html%>
+		<%}%>
+	</div>
+</div>
+<script type="text/html" id="beauty">
+<div class="beauty">
+	<h3><strong class="f14_f">说一句你的美丽宣言</strong><span class="limit">（最多40字）</span></h3>
+	<textarea class="area" id="contextDecl"></textarea>
+</div>
+</script>
+<script type="text/html" id="mytabs">
+<div class="mytabs">
+	<div class="ml40_f">
+		<ul class="sel_tab">
+		<%if(this.user_label.length > 0){%>
+		</ul>
+		<%}else{%>
+		</ul>
+			<p class="defaultText">从下方选择你的标签</p>	
+		<%}%>
+	<div class="clear_f"></div>
+		<h2 class="tips labelDesc">告诉大家自己最擅长的美丽技能吧</h2>
+		<p class="explain">点击进行选择，你可以给自己贴20个标签哦！<span class="labelerror red_f"></span></p>
+	</div>
+	<div class="tab_b">
+		<div class="before none_f">&lt;</div>
+		<div class="next">&gt;</div>
+		<div class="tab_list">
+			<ul class="tab_container">
+				<li class="tab_item">
+				<% 
+					var _typei; 
+					this.all_label && this.all_label.map(function(data){%>
+					<% if(_typei && data.type != _typei){%>
+					</li>
+					<li class="tab_item">
+					<%}%>
+						<span class="addLabel active" labelId="<%= data.label_id%>"><%= data.label_name%></span>
+						<% _typei = data.type;%>
+				<%});%>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="edit_box">
+		<span>或自己写标签：</span>
+		<span><input maxlength="10" class="newLabelName ipt searchKey" type="text" placeholder="自己写一个标签" /></span>
+		<span class="btn newLabel">贴上</span><span class="add_suc addLabelSucess none_f">添加成功!</span>
+	</div>
+</div>
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/club/liked');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

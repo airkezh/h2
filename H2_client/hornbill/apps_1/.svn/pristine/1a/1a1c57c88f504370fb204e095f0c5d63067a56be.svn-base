@@ -1,0 +1,104 @@
+<%# head.html %>
+<%
+var hour    = (new Date).getHours(),
+noBonus = this.ViewTools.timeStuff( { '2015/1/23 00:00:00' : 1 }, 0 )
+
+if ( hour >= 6 && hour < 20 ) {
+className = 'danmu-day'
+} else {
+className = 'danmu-night'
+}
+%>
+<div id="danmu" class="<%=className%>" data-nobonus="<%=noBonus%>">
+    <div id="stage">
+        <div id="bullet-signal" class="bullet"></div>
+    </div>
+    <div class="ft">
+        <div class="wrap">
+            <p id="error-msg"></p>
+            <div class="btns">
+                <span class="btn" data-action="showRule">活动规则</span>
+                <div class="invite">
+                    <span class="btn" data-action="share">邀好友来哔哔</span>
+                    <!--<p>邀请逗比朋友一起来哔哔!</p>-->
+                </div>
+            </div>
+        </div>
+        <div class="inputs">
+            <input id="input" type="text" maxlength="30" placeholder="吐槽水瓶座模式开启！">
+            <span  id="shoot" class="btn" data-action="shoot">发射</span>
+            <div class="wrapper">
+                <div id="fast_shoot_btns">
+                    <span class="btn fs-btn1 surprice" data-action="fastShoot">我要发大财</span>
+                    <span class="btn fs-btn2 surprice" data-action="fastShoot">么么</span>
+                    <span class="btn fs-btn3 surprice" data-action="fastShoot">莫西莫西</span>
+                </div>
+                <span id="fresh" class="btn" data-action="fresh"></span>
+            </div>
+        </div>
+    </div>
+    <div id="rule">
+        <div class="bd">
+            <div class="content">
+                <h3>活动规则</h3>
+                <p>通过手机美丽说for iOS v5.0及以上和 for Android v5.0及以上版本用户参与。</p>
+
+                <h4>水瓶座弹幕:</h4>
+                <ol>
+                    <li>活动时间：2015年1月20日10：00——1月22日24：00。</li>
+                    <li>在活动期间，用户可发射弹幕，弹幕全站可见。每人发射弹幕的次数不限制，每条弹幕最多支持30个汉字。</li>
+                    <li>弹幕的内容严禁黄赌毒及违反国家政策。</li>
+                </ol>
+
+                <h4>戳【水瓶】赢全场优惠券:</h4>
+                <ol>
+                    <li>活动时间：2015年1月20日10：00——1月22日24：00。</li>
+                    <li>在弹幕页的屏幕中，会随机掉落水瓶，在水瓶消失前点中水瓶，有机会获得美丽说无门槛直接减券与满减券，中奖率超高。</li>
+                    <li>优惠券的金额为1元、5元、 10元、50元、100元直减优惠券，与满49元减5元、满79元减10元的满减优惠券。</li>
+                    <li>中奖的优惠券可以在美丽说app,“我---我的优惠券”中查看。</li>
+                    <li>如果在微信抓红包获得优惠券,则可用微信登陆美丽说 app,在 “我---我的优惠券”中查看。</li>
+                    <li>活动中中奖的全场直减券与满减券使用时间：2015年1月20日10：00-1月31日 24：00。</li>
+                    <li>活动中中奖的全场直减券与满减券的使用方式: 用户在美丽说平台可使用持有的有效优惠券购买除韩国馆之外的平台商品,可与店铺优惠券叠加使用,但不能同平台优惠券同时使用，全场直减券与满减券不支持同时使用。</li>
+                    <li>若订单的金额小于优惠券的金额，多出部分不予退回。</li>
+                    <li>全场直减券与满减券一经使用，不可退回。如产生退货，所退款项只限您实际支付的金额，优惠券不退。</li>
+                    <li>全场直减券与满减券不能提现、不能转增、不能为他人付款。</li>
+                    <li>凡作弊用户,美丽说有权作废结果,最终解释权归美丽说所有。</li>
+                </ol>
+            </div>
+            <div class="btn" data-action="closeRule">知道了</div>
+        </div>
+    </div>
+    <div id="panel-mask"></div>
+    <div id="panel">
+        <div class="bd">
+            <div class="wrapper">
+                <h3 id="panel-title"></h3>
+                <h3 id="panel-desc"></h3>
+                <div class="btns">
+                    <span id="hide-panel-btn" class="btn" data-action="hidePanel"></span>
+                    <span id="share-panel-btn" class="btn" data-action="sharePanel"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="wx-tips" data-action="hideWxTip"></div>
+</div>
+<canvas id="fall" style="position: fixed; top: 0; left: 0; z-index: 29; pointer-events: none;"></canvas>
+<script>
+    fml.vars.isLogin = <%= this.userInfo.user_id %>;
+    fml.vars.danmakuDatas = <%= JSON.stringify( this.danmu.data.info ) %>;
+
+    /*var imgUrl      = 'http://i.meilishuo.net/css/images/activity/danmu/wxBarrageShare.jpg',
+     lineLink    = 'http://' + location.host + '/wx/christmas2014/',
+     customAppId = 'wxd00a5f16e02bed58',
+     descContent,
+     shareTitle,
+     shareTimelineText;
+
+     descContent = shareTitle = shareTimelineText = '美丽说圣诞弹幕来啦!更有 1225 元直接减券等你来抓~'*/
+</script>
+<!--script src="<%= this.JCSTATIC_BASE  %>/js/open/shareCollect.js?<%= this.SVERSION%>"></script-->
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+        fml.use('wap/page/activity/aquarius');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html %>

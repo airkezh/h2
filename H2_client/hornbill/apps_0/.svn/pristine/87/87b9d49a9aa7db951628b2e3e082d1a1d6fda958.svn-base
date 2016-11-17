@@ -1,0 +1,107 @@
+<%# sq/header.html%>
+<div id="cart">
+	
+</div>
+<script type="text/html" id="noThings">
+<div class="cart_null">
+	<img class="shoppingCart" src="http://i.meilishuo.net/css/images/wap/web/sq/cart/shoppingCart.png" alt="">
+	<p class="content">您的购物车内还没有商品!</p>
+	<a href="/sq/mall/daily">
+		<div class="goMallButton">
+			<p class="buttonContent">立即逛逛</p>
+		</div>
+	</a>
+</div>
+</script>
+
+<script type="text/html" id="cartThing">
+<?
+var splitStr = function(str, num){
+	return (str.length > num) ? (str.substr(0,num - 1) + "…") : str;
+};
+?>
+<div class="cart">
+	<?var list_over = [];?>
+	<? info && info.map(function(list, index){?>
+	<?	var list_num = 1,
+			list_total = 0,
+			_list = list.goods;
+		_list && _list.map(function(thingsInfo, thingsIndex){
+			list_total += +(thingsInfo.goods_activity_price) * thingsInfo.amount;
+		});
+		if(list_num){
+	?>
+	<div class="shopThings" data-shopid="<?= list.shop_id?>">
+		<div class="shop-info">
+			<div class="select-all right"></div>
+			<p>商家：<span><?= splitStr(list.shop_name, 12) ?></span></p>
+		</div>
+		<div class="line"></div>
+		<? list.goods && list.goods.map(function(thingsInfo, thingsIndex){?>
+		<?if(1 || thingsInfo.shelf === "1" && thingsInfo.stock != 0){?>
+		<li class="singleThing <?if(thingsInfo.shelf !== "1" || thingsInfo.stock == 0){?>singleThing-grey<?}?>" sid="<?= thingsInfo.sid?>">
+			<div class="select null" sid="<?= thingsInfo.sid?>"></div>
+			<a class="single-img" href="/sq/detail?tid=<?= thingsInfo.twitter_id?>">
+			<img src="<?= thingsInfo.b_pic_url?>" alt="">
+			<?
+				if (!+thingsInfo.shelf || thingsInfo.stock == 0) {  
+			?>
+			<div class="mask">
+
+			</div>
+			<div class="mask-con">
+				已下架
+			</div>
+			<?};?>
+			</a>
+			<div class="thingInfo">
+			<a href="/sq/detail?tid=<?= thingsInfo.twitter_id?>">
+				<p class="thingName"><?= splitStr(thingsInfo.goods_title, 9) ?><span class="floatRight">￥<?= thingsInfo.goods_activity_price?></span></p></a>
+				<div>
+					<span class="thingOther otherOne"><?= splitStr(thingsInfo.prop[0].name + "：" + thingsInfo.prop[0].value + " " + thingsInfo.prop[1].name + "：" +  thingsInfo.prop[1].value, 10).replace(/：$/,'')?></span>
+					<span class="thingOther otherTwo">￥<?= thingsInfo.goods_price_origial?></span>
+				</div>
+				<div class="secondLine">
+					<div class="otherFour">
+						<p class="numBox">								
+							<span class="minus disabled">-</span>								
+							<span  class="amount nums" sid="<?= thingsInfo.sid?>" data-ori="1" data-stock="<?= thingsInfo.stock?>" ><?= thingsInfo.amount?>
+							</span>			
+
+							<span class="add plus">+</span>
+						</p>
+						<span class="del floatRight" data-sid="<?= thingsInfo.sid?>"></span>
+					</div>
+				</div>
+			</div>
+		</li>
+		<div class="line"></div>
+		<?}?>
+		<?});?>
+		<div class="bt-main">
+			<span class="shop-num none">共<?= list_num?>件商品</span>
+			<span class="floatRight shop-total">本店合计：<span>￥<?= list_total .toFixed(2)?></span></span>
+		</div>
+	</div>
+	<?}?>
+	<?});?>
+	
+
+	<div class="clear_f"></div>
+	<div class="gap"></div>
+	<div class="float_ctrl">
+		<ul>
+			<li class="selectBtn selectAll cancleAll">全选</li>
+			<li>
+				<p>合计:￥<span class="total">0.00</span></p>
+				<p>节省:￥<span class="total-all">0.00</span></p>
+			</li>
+			<li class="go_buy"><a>去结算</a></li>
+		</ul>
+	</div>
+</div>
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/sq/cart');
+_use:", this._JSstack , this._JSmods ); %>
+<%# sq/footer.html%>

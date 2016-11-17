@@ -1,0 +1,30 @@
+<%# head_simple.html%>
+	<script> 
+            (function(win,doc){
+                var docel = doc.documentElement;
+                var meta = doc.querySelectorAll('meta[name=viewport]');
+                meta[0].setAttribute('content','width=device-width,user-scalable=no,initial-scale=1');
+                function recalc(){
+                    var width = docel.clientWidth;
+                    docel.style.fontSize = 100 * width/640+'px';
+                }
+                if(doc){
+                    recalc();
+                    win.addEventListener('orientationchange',recalc,false);
+                }else if (doc.addEventListener){
+                    doc.addEventListener('DOMContentLoaded', recalc, false);
+                }
+            })(window,document)
+     </script>
+</head>
+<div class="wrap">
+	<div class="imgWrap"></div>
+		<input type="text" class="name" name="name" maxlength="8" placeholder = "请输入你的大名...">
+		<input type="submit" class="start" value="揭晓我的命运">
+</div>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use('wap/page/activity/runMan');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot.html%>

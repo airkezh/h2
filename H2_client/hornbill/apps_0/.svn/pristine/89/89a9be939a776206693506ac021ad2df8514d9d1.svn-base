@@ -1,0 +1,42 @@
+<%	
+	if(this.searchNav){
+		var searchKey = this.key;
+		var cartNum = this.cartNum;
+		var msg = this.message;
+		var searchDefaultKeyWord = this.searchDefaultKeyWord ? this.searchDefaultKeyWord.value : '搜索宝贝';
+%>
+
+<div class="search">
+	<a class="search-l" href="http://im.meilishuo.com/wap/msgList/?button_stat_area=personal_message">
+	<% if(msg.code == 0 && msg.data.msg_num > 0){ %>
+		<i class="search-l-tip"></i>
+	<% } %>
+	</a>
+	<form id="form" class="search-c" method="get">
+		<input id="input" class="search-c-input" type="search" placeholder="<%= searchDefaultKeyWord %>" <% if(searchKey){ %>value="<%= searchKey %>"<% } %> >
+		<span id="clear" class="search-c-clear" data-action="clear"></span>
+	</form>
+	<a id="cart" class="search-r1" href="/sq/cart/">
+		<% if(cartNum){ %>
+		<span class="search-r1-cart"><%= cartNum > 99 ? "99+" : cartNum %></span>
+		<% } %>
+	</a>
+	<span id="cancel" class="search-r2" data-action="cancel">取消</span>
+	<span id="submit" class="search-r3" data-action="submit">搜索</span>
+	<ul id="associated_word_list" class="search-b"></ul>
+</div>
+
+<%}%>
+
+<script type="text/html" id="associated_word_tpl">
+<? this.forEach(function (item){ ?>
+	<li class="search-b-item" data-jumpto="<?= item.url ?>" data-action="jump">
+		<a href="<?= item.url ?>"><span class="search-b-item-l"><?= item.key_word ?></span></a>
+		<ul class="search-b-item-r">
+		<? item.tags.forEach(function (tag){ ?>
+			<li class="search-b-item-r-item"><a href="<?= tag.url ?>"><?= tag.name ?></a></li>
+		<? }); ?>
+		</ul>
+	</li>	
+<? }); ?>
+</script>

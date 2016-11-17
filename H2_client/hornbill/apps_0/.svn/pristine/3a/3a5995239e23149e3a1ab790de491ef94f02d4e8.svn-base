@@ -1,0 +1,103 @@
+/*common*/
+require('wap/zepto/fastclick');
+var openAppLink = require('wap/app/openAppLink')
+	,lazy = require( 'm/component/lazyLoad' )
+	,scroll = require('wap/component/windowScroll')
+	,WaterFall = require( 'circle/component/waterfall' )
+	,optimiseFn = require('circle/component/waterfallOptimise')
+	,touchSlide = require('wap/app/touchSlide')
+var lazyLoad = lazy.init({xpath:'.goods_wall .goodsImg'});
+var $likeGoodsLi = $('.likeGoods').find('li')
+	,$likeGoods = $('.likeGoods')
+	,$likeGoodsA = $('.likeGoods').find('img')
+	,$goods_wall = $('.goods_wall')
+	,$goShop = $('.goShop')
+	,$loading = $('.loading')
+	,$more = $('.more')
+// 判断是否支持overflow-scrolling:touch
+function hasScrolling() {
+	// CSS.supports('(-webkit-overflow-scrolling:touch) or (-moz-overflow-scrolling:touch) or (-o-overflow-scrolling:touch) or (-ms-overflow-scrolling:touch) or (overflow-scrolling:touch)')
+	var element = document.createElement('div');
+	element.style['webkitOverflowScrolling'] = 'touch';
+	element.style['mozOverflowScrolling'] = 'touch';
+	element.style['oOverflowScrolling'] = 'touch';
+	element.style['msOverflowScrolling'] = 'touch';
+	element.style['overflowScrolling'] = 'touch';
+	return element.style['webkitOverflowScrolling'] === 'touch' || element.style['mozOverflowScrolling'] === 'touch' || element.style['oOverflowScrolling'] === 'touch' || element.style['msOverflowScrolling'] === 'touch' || element.style['overflowScrolling'] === 'touch'
+}
+if(fml.vars.gene){
+	if (hasScrolling()) {
+		// 采用use_rem_screen时有小数情况
+		var setWidth = window.getComputedStyle($likeGoodsLi[0], null).width;
+		var newLiWidth = parseInt(setWidth);
+		if (parseInt(setWidth) != parseFloat(setWidth)) {
+			newLiWidth = Math.ceil(parseFloat(setWidth));
+			$likeGoodsLi.width(newLiWidth);
+		}
+		$likeGoods.find('ul').width(newLiWidth * $likeGoodsLi.length);
+	} else {
+		$likeGoods.touchSlide({
+			isAuto: false,
+			isSlideLi: true
+		});
+	}
+}
+
+/*获取单品页链接*/
+function getDoneUrl(ele) {
+	var twitter_id = parseInt(ele.data('tid')),
+		Url = Meilishuo.config.os.mlsApp ? openAppLink.getAppLink({
+			'protocol': 'twitter_single',
+			'param': {
+				"twitter_info": {
+					"twitter_id": twitter_id,
+					"is_doota": 1
+				}
+			}
+		}) : '/share/item/' + twitter_id;
+	// window.location.href = window.__get_r(Url, param);
+	window.location.href = Url;
+}
+
+function initWaterFall(){
+	var waterFallInstance = WaterFall.init({
+		el: '.goods_wall',
+		url: '/fashion_gene/aj/other',
+		colNum: 2,
+		colGap : '0 10',
+		hasSideGap : true,
+		data : {
+			'geneid' : fml.vars.geneid
+			,'limit' : 10
+			,'__get_r' :1
+		},
+		dataFilter:function( data ) {
+			return data.data.goods
+		},
+		onFetchSuccess: function(data,index){
+			$more.hide();
+			lazyLoad.scroll();
+			lazyLoad.load();
+			waterFallInstance._config.data.offset += 10
+		},
+		onFetchFinished: function(data){
+			lazyLoad.load();
+			$more.show();
+			$loading.attr('status','stop');
+			$loading.hide();
+			if(JSON.parse(data.response).data.goods.length==0){
+				$more.attr('status','stop')
+			}
+		},
+		optimiseFn: optimiseFn
+	});
+	return waterFallInstance;
+}
+var water = initWaterFall();
+water.start();
+$likeGoodsA.on('click',function(){
+	getDoneUrl($(this));
+})
+$goods_wall.on('click','.goodsInfo .goodsImg' ,function(){
+	getDoneUrl($(this));
+})

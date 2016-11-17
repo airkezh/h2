@@ -1,0 +1,166 @@
+<script type="text/javascript">
+Meilishuo.config.user_nickname = "<%==this.setPersonal.nickname%>";
+</script>
+<strong class="title">我的信息</strong>
+<fieldset class="setPassword">
+    <form id="setPersonForm" method="post" onsubmit="return false" action="">
+        <p class="form-list">
+            <label>
+                注册邮箱
+            </label>
+            <input id="register_mail" name="register_mail" autocomplete="off" class="l_ipt"
+            type="text" value="<%==this.checkemail.email.replace(/(\d{1})\d{10}/, '$1****')%>" disabled="disabled" />
+            <strong>
+            </strong>
+        </p>
+        <p class="form-list">
+            <label>
+                真实姓名
+            </label>
+            <input id="true_name" name="true_name" autocomplete="off" class="l_ipt"
+            type="text" value="<%==this.setPersonal.realname%>" />
+            <strong>
+            </strong>
+        </p>
+        <p class="form-list">
+            <label>
+                昵称
+            </label>
+            <input id="nickname" name="nickname" autocomplete="off" class="l_ipt"
+            type="text" value="<%==this.setPersonal.nickname%>" />
+            <strong>
+            </strong>
+            <a class="visit_icon">
+            </a>
+        </p>
+        <p class="passChange">
+            <label>
+                性别
+            </label>
+            <input name="gender" type="radio" value="女" <%if(this.setPersonal.gender == '女' || !this.setPersonal.gender){%>checked="checked"<%}%> />
+            <label class="sexChaneg" style="width:15px;float:none;">
+                女
+            </label>
+            <input name="gender" type="radio" value="男" <%if(this.setPersonal.gender == '男'){%>checked="checked"<%}%>/>
+            <label class="sexChaneg" style="width:15px;float:none;">
+                男
+            </label>
+            <strong>
+            </strong>
+        </p>
+        <p class="form-list">
+            <label>
+                生日
+            </label>
+            <input id="birthday" name="birthday" autocomplete="off" class="l_ipt"
+            type="text" value="<%==this.setPersonal.birthday%>" onfocus="HS_setDate(this)"
+            />
+            <strong>
+            </strong>
+        </p>
+        <p class="form-list">
+            <label>
+                所在地
+            </label>
+            <select id="provinceid" name="provinceid">
+                <option value="0">
+                    所在省份
+                </option>
+                <%for(var i = 0; i < this.setPersonal.provinces.length; i++){%>
+                	<option value="<%==this.setPersonal.provinces[i].prov_id%>" 
+                		<%if(this.setPersonal.provinces[i].prov_name == this.setPersonal.province_name){%>
+                			selected="selected"
+                		<%}%>
+                		><%==this.setPersonal.provinces[i].prov_name%>
+                	</option>
+                <%}%>
+            </select>
+            <select id="city_id" name="city_id">
+                <option value="0">
+                    所在城市
+                </option>
+                <%if(this.setPersonal.city_id){%>
+                <option value="<%==this.setPersonal.city_id%>"><%==this.setPersonal.city_name%></option>
+                <%}%>
+            </select>
+            <strong>
+            </strong>
+        </p>
+        <p class="form-list">
+            <label>
+                学校
+            </label>
+            <input id="school_id" name="school_id" autocomplete="off" class="l_ipt"
+            type="text" value="<%==this.setPersonal.school%>" />
+            <strong>
+            </strong>
+        </p>
+        <p class="form-list">
+            <label>
+                工作单位
+            </label>
+            <input id="work_place" name="work_place" autocomplete="off" class="l_ipt"
+            type="text" value="<%==this.setPersonal.workplace%>" />
+            <strong>
+            </strong>
+        </p>
+        <p class="form-list">
+            <label>
+                从事行业
+            </label>
+            <select name="occupation" id="occupation">
+                <option value="0">
+                    请选择你的职业
+                </option>
+                <%for(var i = 0; i < this.setPersonal.init_industry.length; i++){%>
+                	<option value="<%==this.setPersonal.init_industry[i].occupation_id%>" 
+                		<%if(this.setPersonal.init_industry[i].occupation_id == this.setPersonal.industry.occupation_id){%>
+                			selected="selected"
+                		<%}%>
+                		><%==this.setPersonal.init_industry[i].occupation_name%>
+                	</option>
+                <%}%>
+            </select>
+            <strong>
+            </strong>
+        </p>
+        <p class="form-list">
+            <label>
+                爱好
+            </label>
+            <input id="hobby" name="hobby" autocomplete="off" class="l_ipt" type="text"
+            value="<%==this.setPersonal.hobby%>" />
+            <strong>
+            </strong>
+        </p>
+        <p class="form-list">
+            <label>
+                新浪微博地址
+            </label>
+            <input id="weibo_add" name="weibo_add" autocomplete="off" class="l_ipt"
+            type="text" value="<%==this.setPersonal.weibo_url%>" />
+            <strong>
+            </strong>
+        </p>
+        <p class="form-list">
+            <label>
+                美丽宣言
+            </label>
+            <textarea id="beauty" name="beauty"><%==this.setPersonal.about_me%></textarea>
+            <strong>
+            </strong>
+        </p>
+        <p class="setting_success">
+            修改成功
+        </p>
+        <input type="submit" value="确 认" class="ext_submit" />
+    </form>
+    <div id="setting_box_warnningnickname" class="setting_box_warnning">
+       <!--  <img src="http://i.meilishuo.net/css/images/confirm.gif"> -->
+       <img src="http://i.meilishuo.net/css//images/yaoyaotest/war.png" alt="">
+        <p>
+            &nbsp;已经有人用了，换一个吧
+        </p>
+    </div>
+</fieldset>
+<script type="text/javascript" src="<%= this.JCSTATIC_BASE  %>~calenderJS"></script>

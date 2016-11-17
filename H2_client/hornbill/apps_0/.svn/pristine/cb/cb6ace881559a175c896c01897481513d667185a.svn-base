@@ -1,0 +1,188 @@
+<%# head_simple.html%>
+	<%	
+	var welcome = this.welcome || {};
+	var error_code = welcome.error_code;
+
+if(error_code == 0){
+	var jinducha = welcome.data.originator.total_dist - welcome.data.originator.fin_dist;
+	var fin_dist = welcome.data.originator.fin_dist
+	var arrFriend = welcome.data.assistant;
+	var role = welcome.data.role;
+	var status = welcome.data.originator.fin_status;
+	var have_origed = welcome.data.have_origed;
+	var originatorId = welcome.data.originator.user_id;
+	var extra = welcome.data.extra;
+}else{
+	var jinducha = 0;
+	var fin_dist = '';
+	var arrFriend = [];
+	var role = '';
+	var status = '';
+	var have_origed = '';
+	var originatorId = '';
+	var extra = [];
+}
+%>
+		</head>
+
+		<body>
+			<!--好友未助力过-->
+			<%if(role==0){%>
+				<div class="friend_before">
+					<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/friendBefore_bg_01.jpg" class="bg_imgs" />
+					<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/friendBefore_bg_02.jpg" class="bg_imgs" />
+					<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/friendBefore_bg_03.jpg" class="bg_imgs" />
+					<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/friendBefore_bg_04.jpg" class="bg_imgs" />
+					<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/friendBefore_bg_05.jpg" class="bg_imgs" />
+					<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/percent_02_01.png" class="runing_man fb_icon_1 move_big" />
+					<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/fb_icon_2.png" class="runing_man fb_icon_2" />
+					<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/index_cb_tips.jpg" class="runing_man brand_cb_tips" />
+					<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/index_hands.png" class="runing_man rm_hands hand_shake2" />
+					<div class="runing_man brand_lh brand_wrap" id="simingpai">
+						<div class="cover">
+							<div class="cover_left">
+								<div class="cover_color">
+									<div class="cover_img"></div>
+								</div>
+								<div class="cover_black"></div>
+							</div>
+							<div class="cover_right">
+								<div class="cover_bgc"></div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<%}%>
+					<%if(role==0){%>
+						<div class="start friend_after" style="display: none;">
+							<%}else{%>
+								<div class="start friend_after">
+									<%}%>
+										<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/start_bg_top_01.png" class="bg_imgs" />
+										<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/start_bg_top_02.png" class="bg_imgs" />
+										<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/start_bg_top_03.png" class="bg_imgs" />
+										<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/start_bg_top_04.png" class="bg_imgs" />
+										<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/start_bg_top_05.jpg" class="bg_imgs" />
+										<!-- 音效 -->
+										<audio id="audio_lh" hidden="true" preload="auto" autobuffer src="http://i.meilishuo.net/css/images/staticbed/6302.mp3">
+										</audio>
+										<div class="brand_wrap start_brand">
+											<a href="javascript:void(0);" id="award_link">
+												<div class="cover">
+													<div class="cover_left">
+														<div class="cover_color">
+															<div class="cover_img"></div>
+														</div>
+														<div class="cover_black"></div>
+													</div>
+													<div class="cover_right">
+														<div class="cover_bgc"></div>
+													</div>
+												</div>
+											</a>
+										</div>
+										<div class="mini_wrap fail_1">
+											<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/fb_icon_2.png" class="runing_man fail_1_1" />
+											<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/percent_02_01.png" class="runing_man fail_1_2 move_big" />
+										</div>
+								</div>
+								<!--好友未助力过-->
+								<%if(role==0){%>
+									<div class="friend_before_tips">
+										<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/friendBefore_top_red.jpg" />
+										<p class="">还有
+											<%=jinducha%>%未撕掉,快滑动名牌快帮好友助攻吧!</p>
+									</div>
+									<div class="firend_after_tips" style="display: none;">
+										<p class="os_tips">就差一点！鹿晗才不像祖蓝那么容易就被撕了呢</p>
+										<!-- 我也要玩 -->
+										<% if(have_origed == 0){ %>
+											<a href="/activity/crackbrand/first/" class="btn_play woyewan"></a>
+											<%}else{%>
+												<a href="/activity/crackbrand/start/?ass_gid=<%= have_origed %>" class="btn_play btn_jinzhan"></a>
+												<%}%>
+									</div>
+									<%}else if(role==2){%>
+										<!--好友助力过-->
+										<div class="firend_after_tips">
+											<!--失败：就差一点！鹿晗才不像祖蓝那么容易就被撕了呢！成功：成功撕下20%名牌!你和baby一样都是善良的小天使~-->
+											<p class="os_tips">就差一点！鹿晗才不像祖蓝那么容易就被撕了呢</p>
+											<!-- 我也要玩 -->
+											<% if(have_origed == 0){ %>
+												<a href="/activity/crackbrand/first/" class="btn_play woyewan"></a>
+												<%}else{%>
+													<a href="/activity/crackbrand/start/?ass_gid=<%= have_origed %>" class="btn_play btn_jinzhan"></a>
+													<%}%>
+										</div>
+										<%}%>
+											<div class="friend_list">
+												<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/start_icon_01.jpg" class="friend_img" />
+												<!--描述：没有好友-->
+												<% if(arrFriend.length == 0){ %>
+													<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/start_icon_02.jpg" class="friend_img" id="no_friend" />
+													<div class="friends-list">
+													</div>
+													<%}else{%>
+														<!--描述：好友列表-->
+														<div class="friends-list">
+															<% arrFriend.forEach(function(item,index){%>
+																<div class="friends-msg">
+																	<img class="friend-img" src="<%=item.user_pic%>">
+																	<span class="friend-name"><%=item.nick_name%></span>
+																	<span class="friend-desc">&nbsp;&nbsp;&nbsp;<%= item.ass_desc %></span>
+																</div>
+																<% }) %>
+														</div>
+														<%}%>
+											</div>
+											<!--活动规则-->
+											<div class="first_rules"></div>
+											<div class="first_popwin">
+												<img class="first-popwin-rules" src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/cb_rules.png" />
+												<div class="rules-content">
+													<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/guize_new_bg_01.jpg" />
+													<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/guize_new_bg_02.jpg" />
+													<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/guize_new_bg_03.jpg" />
+												</div>
+												<img class="first-popwin-know" src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/cb_rules_btn.png" />
+											</div>
+											<div id="success_tips" class="success_tips" style="display: none;">成功撕下20%的名牌！</div>
+											<!--<audio src="http://i.meilishuo.net/css//images/wap/activity/crackbrand/lh_out.mp4" autoplay="autoplay" loop="loop">
+													您的浏览器不支持audio标签
+												</audio>-->
+											<div id="success_tips" class="success_tips" style="display: none;">成功撕下20%的名牌！</div>
+											<audio src="http://i.meilishuo.net/css//images/wap/activity/crackbrand/friend_bgm2.MP3" autoplay="autoplay" loop="loop">
+												您的浏览器不支持audio标签
+											</audio>
+		</body>
+		<script>
+			fml.vars.isWxLogin = <%= this.isWxLogin || false %> ;
+			fml.vars.isWx = <%= this.isWx %> ;
+			fml.vars.jindu = "<%=fin_dist%>";
+			fml.vars.ass_gid = "<%== this.ass_gid %>";
+			fml.vars.status = "<%= status %>";
+			fml.vars.role = "<%= role %>";
+			fml.vars.jinducha = "<%= jinducha %>";
+			fml.vars.originatorId = "<%= originatorId %>";
+			fml.vars.have_origed="<%=have_origed%>";
+			var frm = fml.vars.isWx ? '&frm=isWx' : '&frm=isMLS';
+			if (fml.vars.role == 1) {
+				/*如果是发起者*/
+				if ((Meilishuo.config.os.mlsApp && Meilishuo.config.user_id) || fml.vars.isWx) {
+					if (fml.vars.status == 0) {
+						window.location.href = '/activity/crackbrand/start/?ass_gid=' + fml.vars.have_origed + frm;
+					} else {
+						window.location.href = '/activity/crackbrand/award/?ass_gid=' + fml.vars.have_origed + frm;
+					}
+				}
+			} else if (fml.vars.role == 2) {
+				if (fml.vars.status == 1) {
+					window.location.href = '/activity/crackbrand/awardFriend/?ass_gid=' + fml.vars.have_origed + frm;
+				}
+			}
+		</script>
+		<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/crackbrand/friendBefore');
+_use:", this._JSstack, this._JSmods); %>
+			<%# foot.html%>

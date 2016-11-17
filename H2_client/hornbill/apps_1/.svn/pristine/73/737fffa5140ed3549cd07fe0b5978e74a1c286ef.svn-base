@@ -1,0 +1,115 @@
+<%#head.html%>
+
+<%
+	var getLink = _extFn.getLink,
+		pageData = this.pageData;
+
+%>
+<div class="main">
+	<% pageData.bannar.length > 0 && pageData.bannar.map(function(data, index){ %>
+		<div class="head_bg" style="background-image:url('<%= data.pic %>');height:<%= data.h %>px;"></div>
+	<% }); %>
+	<div class="sec_nav_wrap">
+		<div class="tab_wrap">
+			<div class="bs_tab_wrap">
+				<div class="p_tab_active tab0" go="hot">人气品牌</div>
+				<div class="" go="rec">推荐品牌</div>
+				<div class="" go="poster_title">精选单品</div>
+			</div>
+		</div>
+		<div class="sec_nav"></div>
+	</div>
+	<div class="hot">
+		<div class="title"><img src="<%= pageData.hot_title %>"></div>
+		<div class="shop_wrap">
+			<% pageData.hot.forEach(function(shop, index){ %>
+			<%
+				var link = shop.link;
+				var ac_id = link.match(/ac_id=(\d+)/);
+				ac_id = ac_id && ac_id[1];
+				link += '&hdtrc=mz' + ac_id + '_1111fenhuichang';
+			%>
+				<a href="<%= link %>" target="_blank"><span class="lazyimg" asrc="<%= shop.pic %>"></span></a>
+			<% }); %>
+		</div>
+	</div>
+	<div class="rec">
+		<div class="title"><img src="<%= pageData.rec_title %>"></div>
+		<div class="shop_wrap">
+			<% pageData.rec.forEach(function(shop, index){ %>
+				<%
+					var link = shop.link;
+					var ac_id = link.match(/ac_id=(\d+)/);
+					ac_id = ac_id && ac_id[1];
+					link += '&hdtrc=mz' + ac_id + '_1111fenhuichang';
+				%>
+				<a href="<%= link %>" target="_blank"><span class="lazyimg" asrc="<%= shop.pic %>"></span></a>
+			<% }); %>
+		</div>
+	</div>
+	<div class="poster_title"><img src="<%= pageData.goods %>"></div>
+	<div class="poster" id="poster">
+		<div class="goods_units">
+			<%
+				this.goods && this.goods.data.forEach(function(goods_data, index){
+					var goods_link = '';
+					if(goods_data.link){
+						goods_link = goods_data.link;
+					} else {
+						goods_link = '/share/item/' + goods_data.twitter_id + '?d_r=' + goods_data.d_r;
+					}
+			%>
+				<a href="<%= goods_link %>" target="_blank" class="productCon">
+					<%var _l = 0;%>
+					<% if(goods_data.is_end == 1){%>
+						<div class="soldend"></div>
+					<% } else if(goods_data.repertory == 0){%>
+						<div class="soldout"></div>
+					<% } else { %>
+						<% goods_data.marks.forEach(function(v1 , k1){ %>
+							<div class="new-png"  style="left:<%=6 + _l%>px"><img src="<%= v1.img_url%>" /></div>
+							<%_l += (+v1.img_width + 2);%>
+						<% });%>
+					<% } %>
+					<div class="proImg">
+						<span class="lazyimg" asrc="<%=goods_data.image%>"></span>
+					</div>
+					<div class="proTitle">
+						<%=goods_data.goods_title%>
+					</div>
+					<div class="proPrice">
+						<b><em>￥</em><%=goods_data.price%></b>
+						<% if(goods_data.original_price && goods_data.original_price != goods_data.price+'.00'){ %>
+							<span class="original_price">￥<%=goods_data.original_price%></span>
+							<%
+								var sale_price = '' + Math.round(goods_data.price/goods_data.original_price*100)/10;
+								if(sale_price.indexOf('.')<0){
+									sale_price += '.0';
+								}
+							%>
+							<span class="sale_price"><%= sale_price %>折</span>
+						<% } %>
+					</div>
+					<div class="proStatus">
+						<%=goods_data.sell_num%><%= this.is_start ? "人已喜欢" : "人在抢购" %>
+					</div>
+				</a>
+			<% }); %>
+		</div>
+	</div>
+	<div class="footer_bannar">
+		<% pageData.foot_bannar.forEach(function(bannar, index){ %>
+			<a href="<%= bannar.link || '###' %>" target="_blank"><img src="<%= bannar.pic %>"></a>
+		<% }); %>
+	</div>
+</div>
+
+<script>
+	fml.vars.hdtrc = '<%== this.hdtrc %>';
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/huodong/beauty_sale011');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot.html%>

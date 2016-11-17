@@ -1,0 +1,58 @@
+@import "../beauty_sale/bs_base.less";
+@nav_bg : 'http://imgtest-dl.meiliworks.com/img/_o/c0/53/434ad1a33fd1001e75f6188c4f03_640_60.ch.jpg';
+@nav_active_bg : 'http://d02.res.meilishuo.net/img/_o/c3/b8/2c26a912e7da49571352d65d5750_640_60.ch.jpg';
+
+.fix_tab,
+.poster_tab{
+	.fc(#fff);.bgc(#fff);.hidden;.hidden;.w(100%);
+	.inner div{
+		.indent;.pa;top: 0;.h(100%);
+	}
+	.tab_{
+		&0{ left: 0;.w(221*@w); }
+		&1{ left: 221*@w;.w(195*@w); }
+		&2{ left: 416*@w;.w(224*@w); }
+	}
+	.p_tab_active{ background: url(@nav_active_bg) no-repeat left center;background-size: 640/221*100%; }
+	.p_tab_active.tab_{
+		&1{ background-position: center;background-size: 640/195*100%;}
+		&2{ background-position: right center;background-size: 640/224*100%;}
+	}
+	.inner{ .pr;.pt(70*@w);background: url(@nav_bg) no-repeat left center;background-size: 100%;.hidden; }
+}
+
+.hot{
+	.hidden;.pt(10*@w);
+	a{.left;.w(305*@w);.mb(10*@w);.ml(10*@w);}
+	.bs_load_img{.pt(164/320*100%);.block;.w(100%);background: url("@{pic_url}/images/huodong/tuan/prebg.png") center no-repeat;background-size: 100%;}
+}
+.rec{
+	.hidden;
+	a{ .pr; }
+	.bs_load_img{.pa;top: 0;left: 0;.h(100%);.block;.w(100%);background: url("@{pic_url}/images/huodong/tuan/prebg.png") center no-repeat;background-size: 100%;}
+	.rec_1{ .w(50%);.left;.pt(312*@w); }
+	.rec_2{ .w(50%);.left;.pt(156*@w); }
+	.rec_3{ .w(50%);.left;.pt(157*@w); }
+	.rec_4{ .w(50%);.left;.pt(153*@w); }
+	.rec_5{ .w(50%);.left;.pt(153*@w); }
+	.rec_6{ .w(50%);.left;.pt(156*@w); }
+}
+
+.fix_tab{
+	.pf;top: 0;left: 0;.w(100%);.mt(0);.none;z-index: 10;
+}
+
+/* 回顶部 */
+.gotop;
+.goods_show_fuzhuang;
+
+.pullUp{
+	.mt(20px);.mb(20px);
+	.pullUpDown > .common;.pullUpDown > .loading;
+	&:before{
+		.nowrap;
+		.ml(-10px);
+	}
+}
+
+.sidebar;

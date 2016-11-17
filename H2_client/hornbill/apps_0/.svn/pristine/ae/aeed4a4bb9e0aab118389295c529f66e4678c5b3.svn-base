@@ -1,0 +1,23 @@
+<script type="text/html" id="weakPassword">
+	<div class="weakPassword">
+		<div class="warnning">
+			小主，您的登陆密码好像要弱爆了，快去“账号与管理”中重新设置吧!
+		</div>
+		<a class="goSet" href="/settings/setPersonal" >去设置</a>
+		<div class="keepWeakPasswork">继续弱爆</div>
+		<div class="Tips">
+			<div class="warmTip">
+				重要提示
+			</div>
+			<div class="tipContent">
+				近期不法分子通过攻击其他网站，获取密码薄弱的用户账号信息后再利用其尝试登陆美丽说，试图诈骗用户信息或进行其它欺诈行为，为此我们强烈建议您立即修改登陆密码。拒不修改密码的用户将存在较大风险。
+			</div>
+		</div>
+	</div>
+</script>
+<script>
+	fml.vars.weak = JSON.stringify(<%= this.userInfo.is_weak_password %>);
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('/page/weakPassword');
+_use:", this._JSstack , this._JSmods); %>

@@ -1,0 +1,161 @@
+<%#head.html%>
+<%
+	var banner = this.banner;
+	var tabConfig = banner.button_color || {};
+	var tab_bg = tabConfig.background_color || '#f5f5f5';
+	var act_bg_color = tabConfig.background_chosen || '#ff6699';
+	var normal_fcolor = tabConfig.font_color || '#676767';
+	var active_fcolor = tabConfig.font_chosen || '#fff';
+%>
+
+<div class="main">
+	<div class="top_bannar"><img src="<%= banner && banner.banner_image %>"></div>
+	<div class="nav_wrap">
+		<div class="nav" style='background:<%= tab_bg %>; <%if(banner && banner.show_cata == 0){%>display:none;<%}%>'>
+			<% banner && banner.cata_info && banner.cata_info.forEach(function(data, index){
+				var fcolor;
+				var bg_color;
+				var tab_class;
+				if( data.is_selected == 1 ){
+					tab_class = 'p_tab_active';
+					fcolor = active_fcolor;
+					bg_color = act_bg_color;
+				}else{
+					tab_class = '';
+					fcolor = normal_fcolor;
+					bg_color = tab_bg;
+				}
+			 %>
+				<a asid="<%= data.asid %>" data-r="<%= data.r%>" class="js_tab <%= tab_class %>" style="color:<%=fcolor%>">
+						<span class="line"></span>
+						<span class="word" style="background:<%=bg_color%>"><%= data.name %></span>
+					</a>
+			<% }); %>
+		</div>
+	</div>
+	<div class="main_image_wrap">
+		<% banner && banner.middle_image && banner.middle_image.forEach(function(Img,index){ %>
+			<%
+				var jump = banner.middle_link[index] ? banner.middle_link[index] : 'javascript:;';
+			%>
+			<a href="<%= jump%>"><img class="main_img" src="<%=Img%>"></a>
+		<%});%>
+	</div>		
+	<div class="poster" style="min-height:2000px;">
+		<div class="goods_wall goods_units"></div>
+		<div class="pullUp" status="loading"></div>
+	</div>
+</div>
+<div class="appshare">
+<%= requireFn('wapShare.html')({
+	'share' : this.share
+	, 'shareTitle' : '选择分享到'
+	, '_JSstack' : this._JSstack
+	, '_JSmods' : this._JSmods
+}); %>
+</div>
+<span class="gotop" style="bottom:<%if(this.isIphone){%>60<%}else{%>20<%}%>px">
+  	<img src="http://i.meilishuo.net/css/images/wap/tuan/gotop.png" />
+</span>
+<script>
+	fml.vars.isWx = <%= this.weixinBrowser %>;
+	fml.vars.isQQ = <%= this.os.mobileQQ %>
+</script>
+<script type="text/html" id="main_banner">
+	<? var banner = this.banner ?>
+	<? banner && banner.middle_image && banner.middle_image.forEach(function(Img,index){
+	?>
+	<? 
+		var jump = banner.middle_link[index] ? banner.middle_link[index] : 'javascript:;';
+	?>
+	<a href="<?=jump?>"><img class="main_img" src="<?= Img ?>"></a>
+	<?});?>
+</script>
+<script type="text/html" id="posterWall">
+	<?
+		function getStringLengthArr(s , len){
+			var w = 0;
+			var time = 0;
+			for(length=s.length; time<length; ){
+				if(/[^\x00-\xff]/.test(s[time])){
+					w+=2;
+				}else{
+					w+=1;
+				}	
+				time ++;
+				if(w >= (len*2)){
+					break;
+				}
+			}
+			return time;
+		}
+		function getAppLink(tid, r, dr, adtag){
+			if(!<%= this.os.mlsApp ? true : false %>){
+				if(fml.vars.isWx){
+					return 'http://m.meilishuo.com/wx/detail?tid='+ tid+'&d_r='+ dr+'-weixin_xuanguan&ad_tag=' + adtag;
+				}else if(fml.vars.isQQ){
+					return 'http://m.meilishuo.com/sq/detail?_wv=5123&tid='+ tid +'&channel=sq_dacu_xuanguan&ad_tag=' + adtag;
+				}else{
+					return '/share/item/'+tid+'?r='+r;
+				}
+			} else {
+				return 'meilishuo://twitter_single.meilishuo?json_params='+encodeURIComponent(JSON.stringify({"twitter_info" : {"twitter_id":tid, "is_doota":1}, "r":r}));
+			}
+		}
+		function mSubstr(str , len , pad){
+			if (!str || 0 == str.length) return '';
+			if (undefined == pad ) pad = '...';
+			len = getStringLengthArr(str , len);
+			return str.substr( 0 , len) + ((pad && str.length> len) ? pad : '');
+		}
+		
+		this.tInfo && this.tInfo.forEach(function(data){
+			var link= getAppLink(data.twitter_id, data.r, data.d_r, data.ad_tag);
+	?>
+	
+		<div class="goods_box">
+			<a class="goods_img" href="<?=link?>">
+				<span class="bs_load_img" asrc="<?= data.image ?>"></span>
+				<?if(data.horizontal_mark && data.horizontal_mark[0]){
+						var _l = 0; var style = '';
+						data.horizontal_mark.forEach(function(marks_data, index){
+							if(index > 1) return;
+					?>
+							<div class="Farm" style="<?= style ?>">
+								<img class="Standard" src="<?= marks_data.img_url?>" style="width:<?= marks_data.img_width/1.3 ?>px;"/>
+							</div>
+					<?		style = 'left: ' + (parseInt(marks_data.img_width/1.3) +  6) + 'px;';
+					});
+				} ?>
+			</a>
+			<div class="desc_box">
+				<p class="desc"><a href="<?= link ?>"><?= mSubstr(data.goods_title, 20, '...') ?></a></p>
+				<p class="price">
+				<span class="red_f now_price"><?= data.price ?></span>
+				<? if(data.origin_price){ ?>
+					<span class="sequence"><del><?= data.origin_price ?></del></span>
+					<span class="discount_num"><?= data.discount ?></span>
+				<? } ?>
+				</p>
+				<? if( data.goods_type == 1){?>
+					<a href="<?= link ?>"><div class="cart">立即抢购</div></a>
+				<?}else{?>
+					<a href="<?= link ?>"><div class="cart not-buy"><?= data.goods_desc ?></div></a>
+				<?}?>
+			</div>
+		</div>
+	<? }); ?>
+</script>
+
+<script>
+	fml.vars.asid = '<%== this.asid || ''%>';
+	fml.vars.tab_bg = '<%= tab_bg %>';
+	fml.vars.act_bg_color = '<%= act_bg_color %>';
+	fml.vars.normal_fcolor = '<%= normal_fcolor %>';
+	fml.vars.active_fcolor = '<%= active_fcolor %>';
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/xuanguan');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot_simple.html%>

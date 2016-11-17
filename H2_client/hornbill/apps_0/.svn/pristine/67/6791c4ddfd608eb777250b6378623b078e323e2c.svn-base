@@ -1,0 +1,135 @@
+@import "../block.less";
+
+body{ .pr;.w(6.4rem);.f(.24rem);.bgc(#f4f4f4); }
+
+.goTopRem;
+.wap_head;
+.slide;
+
+.poster_nav{
+	.w(100%);.bgc(rgba(255,255,255,.97));.hidden;z-index: 200;
+
+	div{ .left;.w(33.33%);padding: .2rem 0; }
+	span{ .i_block;.w(100%);.l(.32rem);box-sizing: border-box;border-right: 1px solid #ccc;.c; }
+	div.last-child span{ border: none; }
+	.active span{ .f(.28rem);.fc(#ff7a9a); }
+}
+
+.pullUp{
+	.pullUpDown > .common;.pullUpDown > .loading;
+	&:before{
+		.nowrap;
+		.ml(-10px);
+	}
+	&[status="tap"]{
+		background:0 none;
+		&:before{
+			content:"上拉看更多..."
+		}
+	}
+	&[status="stop"]{
+		background:0 none;
+		&:before{
+			content:"木有了...";
+		}
+	}
+}
+
+/* banner轮播 */
+.wrap{
+	// .h(3.41rem);
+	.sliderBanner;
+	.banner-slider{ 
+		.pr; 
+		.banner-slider-wrap{
+			li{.w(100%);}
+		}
+		.banner-slider-point{ 
+			.pa;left:0;bottom: .12rem;.ml(50%);-webkit-transform:translateX(-50%);
+			li{ .i_block;background-color:#fff;.w(.1rem);.h(.1rem);.mr(.16rem); }
+			li:last-child{ .mr(0); }
+			.curr{ background-color: #FF6099; }
+		}
+	}
+	a{ .block; }
+}
+
+/* 分类 */
+.classify_bg{
+	.w(100%);.bgc(#fff);.mb(.2rem);
+	.classify{
+		.w(5.6rem);margin: 0 auto;.pt(.2rem);.hidden;.pb(.12rem);
+		a{ .block; }
+		img{ .w(.8rem);.h(.8rem); }
+		.tab{ .w(.8rem);.left;.mr(.8rem);.mb(.2rem); }
+		.tab:nth-child(4n){ .mr(0); }
+		p{ .f(.2rem);.fc(#595056);.c; }
+	}
+}
+
+/* 秒杀 */ 
+.seckill_bg{ 
+	.w(100%);.h(.6rem);.bgc(#fff);.l(.6rem);.f(.28rem);.fc(#333);
+	.seckill{ .ml(.2rem);.mr(.2rem); }
+	span{ .f(.22rem);.fc(#999);.right; }
+}
+.swipe {
+    .hidden;visibility: hidden;.pr;.w(100%);.pt(.2rem);.bgc(#fff);.mb(.2rem);
+    .swipe-wrap { .hidden;.pr;}
+	.swipe-wrap > div { .left;.w(100%);.pr();.f(.3rem);.fc(#999); }
+	.goods{
+		.good{ 
+			.block;.w(1.92rem);.left;.ml(.12rem);.pr;
+			a{ .block; }
+			.img{ .w(100%);.h(2.22rem); }
+			.cut{ .pa;top: 0;left: 0;.w(.45rem);.h(.45rem);.c;.l(.45rem);.f(.15rem);.fc(#fff);background: url('http://d03.res.meilishuo.net/pic/_o/64/e9/d7aa015e75e46cb9c66f91ed6255_45_44.cj.png');background-size: 100% 100%; }
+			p{ .w(100%);.f(.2rem);.fc(#323232);.mt(.10rem);white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+			.price{ .f(.2rem);.fc(#ff6699);.mt(.10rem);.block;.c; }
+			del{ .f(.14rem);.fc(#999);.ml(.1rem); }
+		}
+		.good:nth-child(1){ .ml(.2rem); }
+	}
+	ul{
+		margin: 0 auto;.mt(.22rem);.i_block;margin-left: 50%;-webkit-transform: translateX(-50%);
+		li{ .w(.1rem);.h(.1rem);.i_block;.bgc(#e4e4e4);.ml(.16rem);border-radius: 50%;.mb(.16rem);.left; }
+		.active{ background-color: #FF6099; }
+	}
+}
+
+/* 品牌团 */
+.brand{
+	.w(100%);
+	.title_bg{ 
+		.w(100%);.h(.6rem);.f(.28rem);.fc(#333);.l(.6rem);.bgc(#fff);
+		.title{ .ml(.2rem);.mr(.2rem); }
+		span{ .f(.22rem);.fc(#999);.right;.mr(.2rem); }
+	}
+	.brand_goods{ 
+		.block;.mb(.2rem);.hidden;.bgc(#fff);
+		// .img{ .w(6rem);.h(2.4rem);margin: 0 auto; }
+		.img{ 
+			.w(100%);
+			img{ .w(100%);.block;margin: 0 auto; }
+		}
+		.time_bg{ 
+			.c;.mt(.1rem);.pb(.1rem);
+			img{ .i_block; }
+			p{ .i_block;.f(.23rem);.fc(#000);.ml(.08rem); }
+		}
+	}
+}
+
+/* 瀑布流 */
+.poster_wrap{
+	.bgc(#fff);min-height: 10rem;
+	.title{ .f(.26rem);.fc(#666);padding: .2rem;.c; }
+	.goods_wall{ .pr; }
+	.poster_grid{ .pa;.c;.pt(.25rem); }
+	.pic_load{ .hidden;.w(3.05rem);background: #FFF url("http://d03.res.meilishuo.net/pic/_o/41/dd/3bcda8d9d9e92dcd064958fe2643_290_290.ch.jpg") center center no-repeat;background-size: 100%; }
+	.bs_load_img{ .block;.w(100%);.h(3.95rem);background: no-repeat;background-size: cover;opacity: 0; }
+	.clothesTitle{ .w(90%);.auto;.mt(.1rem);.mb(.14rem);.f(.22rem);.fc(#666);.ellipsis; }
+	.price{ .f(.26rem);.fc(#FF7A9A);.pr(.18rem); }
+	.like{ .pl(.3rem);.f(.26rem);.fc(#999);background: url(@icon_bg) no-repeat -.1rem 81.8%;background-size: .45rem; }
+	.h_mark{ .left;.ml(.08rem);.mt(-1px); }
+}
+.wap_foot{ .none; }

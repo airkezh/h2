@@ -1,0 +1,147 @@
+<script type="text/html" id="posterWall">
+<? $.each(tInfo , function(k , v){ ?>
+<?if(!v){return}?>
+<?var goods_title = v.ginfo ? v.ginfo.goods_title : "";?>
+<div class="poster_grid poster_wall" twitter_id="<?=v.twitter_id?>" twitter_author_uid="<?=v.twitter_author_uid?>" twitter_source_tid="<?= v.twitter_source_tid?>" twitter_show_type="<?=v.twitter_show_type?>" like_twitter_id="<?=v.like_twitter_id?>">
+<%*为了海报之间间距大2px，增加的层%>
+	<div class="new_poster">
+		<div class="np_pic hover_pic">
+			<?if(v.isnb || true){?><div class="no<?= v.isnb?>"></div><?}?>
+			<?if(v.isShowPrice && v.ginfo){?>
+				<div class="price"><?= v.ginfo.goods_price?></div>
+			<?}?>
+			<? var show_pic = v.show_pic ? v.show_pic : v.ginfo ? v.ginfo.goods_pic_url : ''; ?>
+			<? var goodsUrl = v.url ? v.url : '/share/' + v.like_twitter_id; ?>
+			<a class="pic_load" href="<?= goodsUrl?>" target="_blank"><img class="goods_pic" width="<?=v.poster_width?>" height="<?=v.poster_height?>" src="<?= show_pic ?>" title="<?= goods_title?>" alt="<?= goods_title?>" /></a>
+			<div class="like_merge">
+				<a class="hw46 right_f poster_comment" href="javascript:void(0)"><span class="plm_bgr"></span><em class="lm_comm">&nbsp;</em>评论</a>
+				<a class="hw73 left_f poster_forward" href="javascript:void(0)"><span class="plm_bgr"></span><em class="lm_shouji">&nbsp;</em>收进杂志</a>
+				<? if(v.isShowClose){?>
+					<a class="hw33 left_f poster_del" href="javascript:void(0)"><span class="plm_bgr"></span>删除</a>
+				<?}
+				if(v.isShowLike){?>
+					<a class="hw46 left_f poster_like <?if(v.is_liked){?>liked<?}?>" href="javascript:void(0)"><?if(v.is_liked){?><span class="plm_bgr"></span>已喜欢<?}else{?><span class="plm_bgr"></span><em class="lm_love">&nbsp;</em>喜欢<?}?></a>
+				<?};?>	
+
+			</div>
+
+		</div>
+		<!--海报修改-->
+		<div class="issue_box comment_panel">
+			<div class="issue">
+				<a class="avatar32_f userInfoTips" href="/person/u/<?= v.uinfo.user_id ?>" user_id="<?= v.uinfo.user_id ?>" target="_blank"><img src="<?= v.uinfo.avatar_c ?>" /></a>
+				<p class="commentHover">
+					<a class="fb_f" href="/person/u/<?= v.uinfo.user_id ?>" target="_blank"><?= v.uinfo.nickname ?></a><?= v.repin?>&nbsp;&nbsp;<?if(v.from_act_name != ""){?>-来自<a href="/act/<?= v.from_act_id?>">#<?= v.from_act_name?>#</a><?}?><a class="comment_reply v_hidden" href="javascript:void(0)">评论</a>
+				</p>
+				<div class="clear_f"></div>
+			</div>
+			<p class="comm_num">
+				<?if(v.count_forward  || v.count_like || v.count_reply){?>
+					<span><b><?= v.count_forward ?></b> 收进杂志</span>
+					<span><b><?= v.count_like?></b> 喜欢</span>
+					<span><b><?= v.count_reply ?></b> 评论</span>
+				<?}?>
+			</p>
+		</div>
+		<?if(v.twitter_htmlcontent){?>
+			<div class="comm_issue commentHover">
+				<a class="small_ava userInfoTips" href="/person/u/<?= v.uinfo.user_id ?>" user_id="<?= v.uinfo.user_id ?>" target="_blank"><img src="<?= v.uinfo.avatar_c ?>" /></a>
+				<p><a class="fb_f" href="/person/u/<?= v.uinfo.user_id ?>" target="_blank"><?= v.uinfo.nickname ?></a><span class="posterContent"><?= v.twitter_htmlcontent ?></span><a class="comment_reply v_hidden" href="javascript:void(0)">回复</a></p>
+				<div class="clear_f"></div>
+			</div>
+		<?}?>
+		<? if(v.comments.length > 0){?>
+		<?$.each(v.comments , function(key , data){?>
+		<div class="comm_issue commentHover">
+			<a class="small_ava userInfoTips" user_id="<?= data.author.user_id?>" href="/person/u/<?= data.author.user_id?>" target="_blank"><img src="<?= data.author.avatar_c?>" /></a>
+			<p><a class="fb_f" href="/person/u/<?= data.author.user_id?>" target="_blank"><?= data.author.nickname?></a><span class="gray_f"><?= data.twitter_htmlcontent?></span><a class="comment_reply v_hidden" href="javascript:void(0)">回复</a></p>
+			<div class="clear_f"></div>
+		</div>
+		<?});?>
+		<?}?>
+		<? if(v.count_reply > 3 && v.comments.length > 0){?>
+		<div class="more_comm">
+			<a href="/share/<?= v.like_twitter_id ?><?= v.tag ?>" target="_blank"> 查看全部<b><?= v.count_reply ?></b>条评论...</a>
+		</div>
+		<?}?>
+		<div class="discuss_two poster_cmt none_f">
+			<a class="small_ava userInfoTips" href="/person/u/<%= this.user_id%>" user_id="<%= this.user_id%>" target="_blank"><img src="<%= this.AVATOR_PIC + this.userInfo.avatar_c%>" /></a>
+			<div class="cmt_r" style="margin-left: 28px;">
+				<textarea class="poster_textarea" style="width: 162px;"></textarea>
+				<div class="clear_f"></div>
+				<p class="discuss" style="margin-left:0;">
+					<a class="pl_btn poster_comment_btn" href="javascript:void(0);">评论</a><a class="share_smileys">表情</a>
+				</p>
+			</div>
+			<div class="clear_f"></div>
+		</div>
+	</div>
+</div>
+<? }); ?>
+</script>
+<script type="text/html" id="comment_content">
+<div class="comm_issue commentHover">
+	<a class="small_ava userInfoTips" user_id="<%= this.user_id%>" href="/person/u/<%= this.user_id%>" target="_blank"><img src="<%= this.AVATOR_PIC + this.userInfo.avatar_c%>" /></a>
+	<p class="ml40_f"><a class="fb_f" href="/person/u/<%= this.user_id%>" target="_blank"><%=this.userInfo.nickname%></a><span class="gray_f"> <?= tContent ?></span></p>
+	<div class="clear_f"></div>
+</div>
+</script>
+<script type="text/html" id="facePop" >
+<div class="face_pop">
+	<div class="corner_t none_f"></div>
+	<div class="pop_con">
+		<div class="fp_con">
+			<div class="fp_info">
+				<a class="avatar64_f" href="/person/u/<?=user_id?>" target="_blank"><img src="<?= avatar_c?>" /></a>
+				<p>
+					<a class="<?if(online_status){?> online <?}else{?> notonline <?}?>" href="/person/u/<?=user_id?>" target="_blank"><?= nickname?>
+					<?if(is_taobao_buyer == 1){?>
+						<em class="i_buyer" title="美丽说心级买家认证">&nbsp;</em>
+					<?}else if(is_taobao_buyer == 2){?>
+						<em class="i_diamond" title="美丽说黄钻买家认证">&nbsp;</em>
+					<?}?>
+					<?if(verify_icons){?>
+						<?$.each(verify_icons , function(data , key){?>
+							<?if(key == 's'){?>
+								<em class="i_special" title="美丽说特别认证">&nbsp;</em>
+							<?}else if(key == 'e'){?>
+								<em class="i_editor" title="美丽说超级主编">&nbsp;</em>
+							<?}else if(key == 't'){?>
+								<em class="i_lv" title="资深爱美丽">&nbsp;</em>
+							<?}else if(key == 'b'){?>
+								<em class="i_zv" title="美丽说认证品牌">&nbsp;</em>
+							<?}?>
+						<?});?>
+					<?};?>
+					</a>
+				</p>
+				<?if(province || city){?>
+					<p><?=province?> <?=city?></p>
+				<?}?>
+				<p> 
+					<span><a href="/ur/fans/<?=user_id?>" target="_blank">粉丝</a><a class="red_f" href="/ur/fans/<?=user_id?>" target="_blank"><?= follower_num?></a></span>
+					<span><a href="/person/u/<?=user_id?>#personNavBar?type=book" target="_blank">分享</a><a class="red_f" href="/person/u/<?=user_id?>/all#personNavBar" target="_blank"><?= twitter_num?></a></span>
+					<a class="red_f" href="/atme/recommend/<?= user_id?>" target="_blank"><em class="lm_love">&nbsp;</em><?= heart_num?></a>
+				</p>
+			</div>
+			<div class="clear_f"></div>
+			<p class="fp_labels">标签：
+				<?if(label == ''){?><span class="gray_f">这个爱美丽真懒，什么标签都没给自己贴</span><?}?>
+					<? $.each(label , function(k , v){?>
+						<a class="labels"><?= v.label_name?></a>
+					<?});?>
+			</p>
+			<div class="isFollowedStatus">
+				<? if(followed == 0){?>
+					<p class="fp_follow"><span class="btn addFollow" fuid='<?=user_id?>' followed="<?= followed?>">+ 加关注</span></p>
+				<?}else if(followed == 1){?>
+					<p class="fp_follow"><span class="removeFollow followed" fuid='<?=user_id?>'>已关注</span></p>
+				<?}else if(followed == 2){?>
+					<p class="fp_follow"><span class="followed removeFollow" fuid='<?= user_id?>' followed="<?= followed?>">互相关注</span></p>
+				<?}?>
+			</div>	
+		</div>
+	</div>
+	<div class="corner_b none_f"></div>
+</div>
+</script>

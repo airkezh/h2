@@ -1,0 +1,183 @@
+/*common*/
+require('wap/jquery');
+
+require('wap/component/lark/slotmachine');
+var tracking = require('wap/app/tracking');
+//分享
+$(".show_love").on("click",function(){
+	var shareText =  '快来！';
+	var shareImg =  'http://d05.res.meilishuo.net/pic/_o/a2/35/42a7dd2333d0c4c23cc44197b8e8_200_200.cf.png';
+	var shareTitle =  '双屏游戏~！';
+	var shareUrl =  window.location.href;
+	//埋点
+	tracking.cr('bilayer_game',{action:'click',page:'game_page',area:'game_page_share'});
+
+	if(Meilishuo.config.os.mlsApp ){
+		var schemeJsonWx = {
+	        	type : 'weixin' , 
+	        	message_type : 'webpage' ,
+	        	title : shareTitle,
+	        	text : shareText,
+	        	url : shareUrl,
+	        	thumb_url : shareImg
+	        }
+	    	,schemeLinkWx = "meilishuo://share.meilishuo/?json_params=" + encodeURIComponent(JSON.stringify(schemeJsonWx));
+	    $('#shareBut_wx').attr('href',schemeLinkWx);
+		var schemeJsonPyq = {
+	        	type : 'weixin_timeline' , 
+	        	message_type : 'webpage' ,
+	        	title : shareTitle,
+	        	text : shareText,
+	        	url : shareUrl,
+	        	thumb_url : shareImg
+	        }
+	    	,schemeLinkPyq = "meilishuo://share.meilishuo/?json_params=" + encodeURIComponent(JSON.stringify(schemeJsonPyq));
+	    $('#shareBut_pyq').attr('href',schemeLinkPyq);
+		$(".mypopbox").show();
+		$("#dialog_appshare").show().on("click",function(){
+			$("#mypopbox").hide();
+		});
+		$(".shareBut_close").on("click",function(){
+			$("#mypopbox").hide();
+		})
+	}else{
+		$(".mypopbox").show();
+		$("#dialog_wxshareguide").show().on("click",function(){
+			$("#mypopbox").hide();
+		});
+	}
+
+});
+//摇一摇
+var clearShake;
+$(".love_line").on("click",function(){
+		$(".ready_shake").hide();
+		$(".result").show();
+		$(".keyword").show();
+		$(".keyword1").hide();
+		tiger();
+		clearShake = setInterval(searchShake,2000);
+})
+
+
+/*
+fml.vars.shakeS = 1;
+var util = require('wap/page/ws/util-shake');
+util.shake(function(date){
+	if(fml.vars.shakeS){
+		$(".ready_shake").hide();
+		$(".result").show();
+
+		setInterval(searchShake,4000);
+		//searchShake();
+		fml.vars.shakeS = 0
+	}
+});*/
+//轮询摇一摇
+var count = 0;
+function searchShake(){
+	
+	count = count + 1;
+	console.log(count);
+	$.ajax({
+		type:"get",
+		url:"/aj/twoScreen/love_dec",
+		data : {
+			gid : fml.vars.gid
+		},
+		dataType:"json",
+		success : function(msg){
+			
+			
+			if(msg.data.flag == 0){
+				alert("另一个没有瑶");
+				/*if(count > 15){
+					alert("超时了")
+					clearInterval(clearShake);
+				}*/
+			}
+			if(msg.data.flag == 1){
+				alert("");
+				$(".male_min span").html(msg.data.data.words[parseInt(msg.data.data.srand)].userA);
+				$(".female_min span").html(msg.data.data.words[parseInt(msg.data.data.srand)].userB);
+				$(".wait").hide();
+				$(".next").show();	
+				clearInterval(clearShake);
+
+			}
+
+		},
+		error : function(){
+			alert("摇一摇失败");		
+		}
+
+	});
+
+}
+//轮询是否扫过二维码
+$.ajax({
+		type:"get",
+		url:"/aj/twoScreen/player",
+		data : {
+			gid : fml.vars.gid
+		},
+		dataType:'json',
+		success : function(res){
+			if( res.data.flag == 1){
+				alert('sao guo2')
+			};
+			if( res.data.flag == 0){
+				alert('weisao')
+			}		
+			alert("player  请求成功");
+		},
+		error : function(){
+			alert("请求失败 nvvvvvvnh");			
+		}
+	});
+
+
+
+var machine = {};
+function tiger(){
+	for(var i = 0 ;i < 4;i++){
+		machine[i] =  $("#text_box"+i).slotMachine({
+			active	: 1,
+			delay	: 500
+		});
+		machine[i].shuffle();
+	}
+}
+
+$(".wait").on("click",function(){
+	stopTiger()
+});
+
+function stopTiger(){
+	for(var i = 0; i < 4; i++){
+		//
+		machine[i].stop();
+	}
+}
+
+//我还要玩埋点
+$(".play_again").on("click",function(){
+	tracking.cr('bilayer_game',{action:'click',page:'game_page',area:'game_page_again'});
+});
+
+//818埋点
+$(".go-to").on("click",function(){
+	tracking.cr('bilayer_game',{action:'click',page:'game_page',area:'game_page_promotion'});
+});
+//我也要玩埋点
+$(".play").on("click",function(){
+	tracking.cr('bilayer_game',{action:'click',page:'frishare_page',area:'frishare_page_again'});
+});
+//c 818大促 埋点
+$(".go-to").on("click",function(){
+	tracking.cr('bilayer_game',{action:'click',page:'frishare_page',area:'frishare_page_promotion'});
+});
+
+	
+
+

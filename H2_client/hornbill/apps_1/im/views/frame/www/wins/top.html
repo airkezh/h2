@@ -1,0 +1,33 @@
+<% if(!this.hideGoTop){ %>
+<ul id="goTop" class="">
+	<li id="go_top" class="none_f"><a class="ico_top"><span>返回顶部</span></a></li>
+	<% if(this._serviceIM) {%>
+		<li>
+			<a class="ico_serviceqq knilmi" href="<%= this.ViewTools.callIM(this._serviceIM) %>" target="_blank"></a><a class="txt knilmi" href="<%= this.ViewTools.callIM (this._serviceIM) %>" target="_blank">客服</a>
+		</li>
+	<% } %>
+	<li>
+		<a class="ico_guide" href="/help/feedback" target="_blank"><span>购物帮助</span></a>
+	</li>
+</ul>
+<%}%>
+<% if (!this.hideBotBar) {%>
+<ul class="bot_cart">
+	<% if (!this.showSaleSideBar) { %>
+	<li class="first">
+		<a href="/cart" target="_blank">
+			<em class="b_cart">&nbsp;</em><span class="cart_nums <%= this.cart_num?'':'none_f'%>"><span><%= this.cart_num || ''%></span></span> 购物车
+		</a>
+	</li>
+	<% }%>
+	<li class="last <% if (this.showSaleSideBar) { %>first<%}%>">
+	<% if (this.is_iPad) { %>
+		<a href="/im/" class="">
+	<% } else { %>
+		<a href="<%= this._serviceIM? this.ViewTools.callIM(this._serviceIM) : '/im/'%>" class="openIM">
+	<% } %>
+			<em class="b_msg">&nbsp;</em><span class="msg_nums none_f"></span> 客服消息
+		</a>
+	</li>
+</ul>
+<% } %>

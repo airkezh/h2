@@ -1,0 +1,205 @@
+<%# head.html%>
+<%
+	var pageData=this.pageData || {};
+	var rules=pageData.rules || [];
+	var nav_tab=this.tab.data || {};
+	var stock=pageData.stock || 10;
+	pageData.bgNext=pageData.bgNext || {};
+	pageData.bgNext.date=pageData.bgNext.date || "";
+	pageData.bgNext.time=pageData.bgNext.time || "";
+%>
+<%# mua/banner.html%>
+<div class="mua_wrap">
+	<div class="time_down">
+		<div class="clock">
+			<div class="clock_center">
+				<%if(nav_tab.curr){
+					var now_time = new Date();
+					var lastDate = (new Date(nav_tab.curr.end_time) - now_time)/1000;
+					var isStart = new Date(nav_tab.curr.start_time) < now_time;
+					if(!isStart){ 
+				%>
+					<span>10点准时开售</span>
+					<% } else { %>
+						MUA限时抢购   距离结束：
+						<span class="time" time="<%= lastDate %>"><b></b>时<b></b>分<b></b>秒<b></b></span>
+					<% } %>
+				<% } else {
+					isStart = false;
+				%>
+					<span>抢购结束，下次抢购时间：<%= pageData.bgNext.date %><%= pageData.bgNext.time %></span>
+				<% } %>
+			</div>
+		</div>
+		<div class="notice" id="btn-rules">卖场须知</div>
+	</div>
+	<% if(nav_tab.curr){ %>
+		<%# mua/coupons.html%>
+	<% } %>
+	<div class="mua_content">
+		<div class="mua_nav <%= nav_tab.curr ? '' : 'nav_two' %>">
+			<% if(nav_tab.prev){ %>
+				<span data-class="prev-tab" class="prev-tab <%= nav_tab.curr?'':'cur' %>">往期回顾</span>
+			<% } %>
+			<% if(nav_tab.curr){ %>
+				<span data-class="curr-tab" class="curr-tab cur">本期上新</span>
+			<% } %>
+			<% if(nav_tab.next){ %>
+				<span data-class="next-tab" class="next-tab">下期预告</span>
+			<% } %>
+		</div>
+		<div class="mua_data" id="contentBox">
+			<% if(nav_tab.prev){ %>
+				<div class="prev <%= nav_tab.curr ? '' : 'cur-box' %>">
+					<div id="prevBox9"></div>
+					<div class="scroll-btn-box">
+						<a href="javascript:;" class="btn2"></a>
+						<a href="javascript:;" class="btn"></a>
+					</div>
+					<div id="prevNormal"></div>
+					<div id="prevList"></div>
+				</div>
+			<% } %>
+			<% if(nav_tab.curr){ %>
+				<div class="curr cur-box">
+					<div id="currBox9"></div>
+					<div class="scroll-btn-box">
+						<a href="javascript:;" class="btn3"></a>
+						<a href="javascript:;" class="btn4"></a>
+					</div>
+					<div id="currList"></div>
+					<div id="currNormal"></div>
+				</div>
+			<% } %>
+			<% if(nav_tab.next){ %>
+				<div class="next">
+					<div class="box9" style="background: url(<%=this.PICTURE_URL%>/images/mua/box9_bgc.jpg) no-repeat;">
+						<div class="next_show" style="background: url(<%= pageData.bgNext.bg %>) no-repeat;">
+							<p><%= pageData.bgNext.date %></p>
+							<p><%= pageData.bgNext.time %></p>
+						</div>
+					</div>
+					<div id="nextNormal"></div>
+				</div>
+			<% } %>
+		</div>
+	</div>
+</div>
+<div class="rules-popup" id="rulesPopup">
+	<div class="layer_box layer_box2">
+		<span class="close_btn"></span>
+	    <p class="mua_icon">
+			<img src="<%=this.PICTURE_URL%>/images/mua/mua_icon.png"/>
+		</p>
+		<p class="shoud_know">卖场须知</p>
+		<ul class="mua_notice">
+			<% rules.length && rules.forEach(function(item,index){ %>
+				<li><%= item.text %></li>
+			<% }) %>
+		</ul>
+		<input type="button" value="知道了" name="button" class="btn"/>
+	</div>
+</div>
+<script type="text/html" id="box9Tpl">
+	<div class="box9" style="background: url(<%=this.PICTURE_URL%>/images/mua/box9_bgc.jpg) no-repeat;">
+		<ul>
+			<? for(var i=0;i<data.length;i++){ ?>
+				<li class="goto-list" data-id="<?= data[i].id ?>">
+					<a href="javascript:;" class="lazy_pic">
+						<span class="bs_load_img box9_load_img" asrc="<?= data[i].cover ?>"></span>
+					</a>
+					<? if(data[i].stock<=0){ ?>
+						<span class="state_icon sold"></span>
+					<? }else if(data[i].stock< <%= stock %>){ ?>
+						<span class="state_icon last"><?= data[i].stock ?>件</span>
+					<? } ?>
+				</li>
+			<? } ?>
+		</ul>
+		<div class="arriva" style="background:url(<%=this.PICTURE_URL%>/images/mua/<?= isPrev?'review1.jpg':'new_pic.jpg'?>) no-repeat">
+			<? if(!isPrev){ ?>
+				<p><span><%= nav_tab.curr && nav_tab.curr.start_time %></span><%= nav_tab.curr && nav_tab.curr.end_time %></p>
+			<? }else{ ?>
+				<p><span><%= nav_tab.prev && nav_tab.prev.start_time %></span><%= nav_tab.prev && nav_tab.prev.end_time %></p>
+			<? } ?>
+		</div>
+	</div>
+</script>
+<script type="text/html" id="listTpl">
+	<div class="pro-title">
+		<p><?= isPrev?'往期回顾':'MUA首发最新款' ?></p>
+	</div>
+	<p class="pro-des"><?= isPrev?'当季新款·售完即止·时尚首发':'设计师推荐·当季新款·拒绝撞衫' ?></p>
+	<div class="goods_info">
+		<? for(var i=0;i<data.length;i++){ ?>
+			<a href="/share/item/<?= data[i].id ?>" class="mua_goods <?= (i%2)!=0?'mr_none':'' ?> go_<?= data[i].id ?>" target="_blank">
+				<span class="bs_load_img goods_load_img" data-ids="<?=i?>" asrc="<?= data[i].pic ?>"></span>
+				<? if(data[i].stock<=0 || isPrev){ ?>
+					<span class="sold"></span>
+				<? }else if(data[i].stock< <%= stock %>){ ?>					<p class="sale_status">库存紧张 最后<?= data[i].stock ?>件</p>
+				<? } ?>
+				<? if(!isPrev && data[i].stock>0){ ?>
+					<span class="discount" style="background:url(<%= pageData.discountBg %>) no-repeat"></span>
+				<? } ?>
+				<dl>
+					<dt>
+						<? if(data[i].sale_price){ ?>
+							<span class="price_now">¥<span><?= data[i].sale_price ?></span></span>
+						<? } ?>
+						<? if(data[i].price){ ?>
+							<span class="price_normal">¥<span><?= data[i].price ?></span></span>
+						<? } ?>
+						<span class="list-title"><?= mSubstr(data[i].title, 16, '...') ?></span>
+					</dt>
+					<? if(!isPrev){ ?>
+						<% if(!isStart){ %>
+							<dd>10:00开售</dd>
+						<% } %>
+					<? } ?>
+				</dl>
+			</a>
+		<? } ?>
+	</div>
+</script>
+<script type="text/html" id="normalTpl">
+	<div class="pro-title normalProTitle">
+		<p>MUA精选热销款</p>
+	</div>
+	<p class="pro-des">随心百搭·做工精细·面料优质</p>
+	<div class="normal-box">
+		<? for(var i=0;i<data.length;i++){ ?>
+			<ul>
+				<? for(var j=0;j<data[i].length;j++){ ?>
+					<li class="<?= data[i][j].pic_size==0?'small':'large' ?> go_<?= data[i][j].id ?>">
+						<a href="/share/item/<?= data[i][j].id ?>" target="_blank">
+							<span class="bs_load_img box9_load_img" asrc="<?= data[i][j].pic ?>"></span>
+							<p class="goods_title"><?= mSubstr(data[i][j].title, 16, '...') ?></p>
+							<p class="price">
+								<? if(data[i][j].sale_price){ ?>
+									<span>RMB<?= data[i][j].sale_price ?></span>
+								<? } ?>
+								<? if(data[i][j].price){ ?>
+									/ <del>RMB<?= data[i][j].price ?></del>
+								<? } ?>
+							</p>
+							<p class="goods_sales">总销量：<?= data[i][j].sales ?></p>
+						</a>
+					</li>
+				<? } ?>
+			</ul>
+		<? } ?>
+	</div>
+</script>
+<script>
+	function mSubstr(str , len , pad){
+		if (!str || 0 == str.length) return '';
+		if (undefined == pad ) pad = '...';
+		return str.substr( 0 , len) + ((pad && str.length> len) ? pad : '');
+	}
+	<%= nav_tab.curr ? 'fml.vars.curr_id="'+ nav_tab.curr.id + '";' : '' %>
+	<%= nav_tab.prev ? 'fml.vars.prev_id="'+ nav_tab.prev.id +'";' : '' %>
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use("page/mua");
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

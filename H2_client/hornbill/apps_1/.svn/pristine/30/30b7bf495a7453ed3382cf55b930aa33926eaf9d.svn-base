@@ -1,0 +1,11 @@
+<div class="current_status">
+	<% if(this.refund.info.header){%>
+	<div class="cur_txt">当前状态：<%=this.status%></div>
+	<%= requireFn('common/order_status_bar.html')({
+		'steps' : this.refund.info.header.flow,
+		'needTime' : false,
+		'distance' : 110,
+		'current_step' : this.refund.info.header.step
+	});%>
+	<%}%>
+</div>

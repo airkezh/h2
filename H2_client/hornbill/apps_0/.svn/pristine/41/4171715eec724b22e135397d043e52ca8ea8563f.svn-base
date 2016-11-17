@@ -1,0 +1,97 @@
+/*common*/
+window.$ = require('wap/zepto');
+var WaterFall = require( 'circle/component/waterfall' )
+	,biWaterFallPlugin = require( 'circle/component/biWaterfallPlugin' )
+	waterFallReflowPlugin = require( 'circle/component/waterfallReflowPlugin' )
+	,lazy = require( 'm/component/lazyLoad' )
+	,tracking = require('wap/app/tracking')
+	,Alert = require('wap/ui/alert')
+
+var optimiseFn = require('circle/component/waterfallOptimise')
+
+
+var lazyLoad = lazy.init({xpath:'.pic_load'})
+/* 预先绑定懒加载事件 */
+lazyLoad.scroll()
+
+var waterFallInstance = WaterFall.init({
+	el: '.goods_wall',
+	url: '/aj/wx_new/daily_list',
+	dataName: 'tInfo', //默认
+	colNum: 2,
+	colGap : '10 8',
+	hasSideGap : true,
+	plugins: [ biWaterFallPlugin, waterFallReflowPlugin ],
+	// onFetchStart: function(wf){
+	// 	// wf.data.offset = wf.data.frame*10;
+	// },
+	onFetchSuccess: function(data){
+		if(data.length === 0){
+			$('.pullUp').attr('status','stop');
+		}
+	},
+	onFetchFinished: function(data){
+		lazyLoad.load()
+		// hide_loading();
+	},
+	optimiseFn: optimiseFn
+}).start()
+
+/* 跑男活动 微信钱包指示信息层 */
+if(fml.vars.wxGuide){
+	var cookie = require('component/iStorage');
+	if(!cookie.getCookie('wx_guide')){
+		cookie.setCookie('wx_guide','1',{ "duration" : 365*24*3600} ); //过期时间：秒
+	}
+	runLayer();
+}
+function runLayer(){
+	var $layer = $('body').children('.runlayer');
+	$('html,body').css({
+		'height': '100%',
+		'overflow': 'hidden'
+	});
+	$layer.on('click', function() {
+		$('html,body').css({
+		'height': 'auto',
+		'overflow': 'auto'
+		});
+		$(this).hide();
+	});
+}
+
+
+window.onload =  function(){
+	tracking.cr('wx/onload');
+}
+
+/* 穿衣助手 */
+$(".test_close").on("click",function(){
+	$(".clothes_report").hide();
+});
+
+
+/* 砸蛋逻辑 */
+/*var $egg = $('#egg')
+	,mark = true
+
+$egg.find('.egg').click(function(event) {
+	if(mark){
+		mark = false
+		$.post('/aj/wx_new/hit_egg', function(data){
+			if (data && data.ret == 0) {
+				tracking.cr('wx/receive_coupon', {'action' : 'click', 'result' : 'success','name':'320大促'});
+				$egg.find('.egg').hide();
+				$egg.find('.egg-open').show();
+				setTimeout(function(){
+					alertCon('恭喜您获得10元优惠券，马上可以使用哦！');
+					$egg.find('.egg-open').hide();
+				},500);
+			}else{
+				tracking.cr('wx/receive_coupon', {'action' : 'click', 'result' : 'fail','name':'320大促'});
+				alertCon(data.msg);
+			}
+			mark = true
+		}, 'json')
+	}
+});*/

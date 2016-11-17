@@ -1,0 +1,86 @@
+<%# head_simple.html%>
+<%
+ var posters = this.firstTabs;
+ var tipClass = this.ViewTools.timeStuff({'2014/11/10 20:00:00' : 'tip1' , '2014/11/11 23:00:00' : 'tip3'} , 'tip0');
+%>
+</head>
+<body>
+
+<div class="banner loadingImg">
+	<div id="ban_rule" class="rule rule_act"></div>
+	<img src="http://i.meilishuo.net/css/images/wap/activity/promotion/11/meet/nnb_6.jpg" >
+	<div class="countdown" >
+		<div class="bannerText"></div>
+		<div class="timerArea">
+			<dl class="timeStamp" end-date="" now="">
+				<dd id="day0"><span >-</span></dd>
+				<dd id="day1"><span>-</span></dd>
+				<dd id="hour0"><span >-</span></dd>
+				<dd id="hour1"><span >-</span></dd>
+				<!--<dt class="bigmao">：</dt>-->
+				<dd id="minute0"><span >-</span></dd>
+				<dd id="minute1"><span >-</span></dd>
+				<!--<dt class="bigmao">：</dt>-->
+				<dd id="seconds0"><span >-</span></dd>
+				<dd id="seconds1"><span >-</span></dd>
+			</dl>
+		</div>
+
+	</div>
+	<div class="tip <%=tipClass%>"></div>
+</div>
+
+<div class="menu loadingImg" >
+	<img src="http://i.meilishuo.net/css/images/wap/activity/promotion/11/meet/mm_6.jpg" >
+	<div class="tab tab1" index="6"></div>
+	<div class="tab tab2" index="1"></div>
+	<div class="tab tab3" index="2"></div>
+	<div class="tab tab4" index="3"></div>
+	<div class="tab tab5" index="4"></div>
+	<div class="tab tab6" index="5"></div>
+</div>
+
+<div class="postWall">
+	<%
+	if (posters) {
+		for (var i = 0; i < posters.length; i++) { var p = posters[i];
+	%>
+	<figure class="poster">
+		<a class="loadingImg" href="<%=p.tar_url%>" style="">
+			<span class="bs_load_img" asrc="<%=p.img_url%>"  ></span>
+		</a>
+	</figure>
+	<%}
+		}
+	%>
+</div>
+
+
+<span class="gotop" style="bottom:<%if(this.isIphone){%>60<%}else{%>20<%}%>px">
+	<img src="http://i.meilishuo.net/css/images/wap/tuan/gotop.png" />
+</span>
+
+<script type="text/html" id="temp_poster">
+	<?for (var i = 0; i < this.posters.length; i++) { var poster = this.posters[i];?>
+	<figure class="poster">
+		<a class="loadingImg" href="<?=poster.tar_url?>" style="">
+			<span class="bs_load_img" asrc="<?=poster.img_url?>"  ></span>
+		</a>
+	</figure>
+	<?}?>
+</script>
+
+<script>
+	fml.vars.menus = <%=JSON.stringify(this.menus)%>;
+	fml.vars.banners = <%=JSON.stringify(this.banners)%>;
+	fml.vars.tabsData = <%=JSON.stringify(this.tabsData.data)%>;
+</script>
+
+
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+
+fml.use('wap/page/activity/promotion/meet11');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot_simple.html%>

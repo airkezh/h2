@@ -1,0 +1,50 @@
+<%# frame/www/head_simple.html%>
+<style>
+	.test{margin:10px;}
+	.client{line-height:2em;font-size:1.2em;}
+	.client .send h3{border-bottom:1px solid #ccc;}
+	.board{margin-top:40px;overflow:auto;height:300px;}
+	.board p{margin-top:10px;}
+/*
+	.test>div{background:#ccc;padding:4px;}
+*/
+</style>
+</head>
+<body>
+<div class="test">
+	<div class="client">
+		<h2>client</h2>
+		<div class="send">
+			<h3>send</h3>
+			<p>eg:{"event":"changeUser","data":{"toid":1767534}}</p>
+			<input type="text" value="1767534" placeholder="toid" id="toid"/>
+			<input type="button" value="send" id="changeUserSend"/>
+		</div>
+		<div class="send">
+			<h3>on('message')</h3>
+			<p>eg:socket.on('changeUserPush')</p>
+		</div>
+	</div>
+	<div class="server">
+		<h2>server to client</h2>
+		<input type="button" value="clean" id="clean"/>
+	</div>
+	<div class="board">
+	</div>
+</div>
+
+<script>
+fml.vars.im = {
+	fromid : <%= this.user_id %>
+	, toid : <%= this.toid || 0 %>
+	, type : "<%= this.type || 0 %>"
+	, source : 'web'
+};
+</script>
+
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/im/client');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# frame/www/foot_simple.html%>

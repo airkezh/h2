@@ -1,0 +1,19 @@
+function check_code_aj() {
+    return this;
+}
+var controlFns = {
+  	check_code  : function (params, newParam) {
+		newParam = newParam || {
+				'get_punish': '/risk/risk_common_get_punish_dfz'
+				, 'pic': '/risk/captcha_picvalidate' //图片解除
+				, 'pic_dfz': '/risk/captcha_picvalidate_dfz' //图片解除 定福庄
+				, 'send_sms': '/risk/Captcha_sms' //发送短信
+				, 'sms': '/risk/Captcha_smsvalidate' //短信解除
+                , 'sms_dfz': '/risk/Captcha_smsvalidate_dfz' //短信解除 定福庄
+            };
+		var php = newParam
+		this.ajaxTo(php[params]);
+	}
+}
+
+exports.__create = controller.__create(check_code_aj, controlFns);

@@ -1,0 +1,46 @@
+/*--/Users/MLS/Documents/H2/H2_client/hornbill/apps_0/www/views/common/search.html--*/ 
+     var est = require(config.path.lib + 'est/est.js'); 
+     var _extFn = require('/Users/MLS/Documents/H2/H2_client/hornbill/nestnew/server/lib/est/extFn.js'); 
+     function requireFn(tpl) { return est.renderFile('/Users/MLS/Documents/H2/H2_client/hornbill/apps_0/www/views/' ,tpl , null , null ,'www' ,true); } ; 
+     function __getHtml (_data) { 
+       function jsRender(tpl , id) { return est.jsRender(requireFn(tpl)(_data), id  ); } ; 
+       var __htm ='';
+__htm += '';
+
+	var domain = _data.MAIN_SITE_DOMAIN;
+	var promotionData = _data.promotionData || {};
+	var promoLogo = promotionData.promoLogo && promotionData.promoLogo[0];
+	var promoPlaceholder = promotionData.promoSearchPlaceholder || '搜流行宝贝';
+;__htm += '\n<div id="com-search">\n	<div class="inner">\n		<a href="';
+__htm +=domain;
+__htm += '" class="logo">\n			<img src="http://d05.res.meilishuo.net/img/_o/67/24/65bc4ebfe22d0c2eca1702c9736c_117_43.ch.png" alt="">\n		</a>\n		<a href="';
+__htm +=promoLogo.url;
+__htm += '" class="sublogo">\n			<img src="';
+__htm +=promoLogo.img;
+__htm += '" alt="">\n		</a>\n		<div class="search">\n			<div class="search-tab">\n				<span class="active" data-type="0">宝贝</span><span data-type="1">店铺</span>\n			</div>\n			<div class="search-box">\n				<input type="text" class="search-txt" placeholder="';
+__htm +=promoPlaceholder;
+__htm += '" data-placeholder="';
+__htm +=promoPlaceholder;
+__htm += '">\n				<span class="search-btn"></span>\n				<div class="suggest-box"></div>\n			</div>\n			<div class="hotword">\n				';
+ _data.word_recommend && _data.word_recommend.forEach(function(item){ 
+					var link = domain + "/search/baobei?searchKey=" + encodeURIComponent(item.words) + 
+							   '&pstrc=' + encodeURIComponent('_search='+ item.words) + 
+							   '&filter=goods&frm=searchsuggestion';
+				;__htm += '\n					<a target="_blank" href="';
+__htm += link ;
+__htm += '" class="';
+__htm += item.is_red == '1' ? 'red_f' : '' ;
+__htm += '">\n						';
+__htm +=item.words;
+__htm += '\n					</a>\n				';
+ }); ;__htm += '\n			</div>\n		</div>\n		';
+ var dataAds = _data.ads_one && _data.ads_one[0];
+		   if(dataAds){
+		;__htm += '\n			<a class="spread" href="';
+__htm +=dataAds.links;
+__htm += '" target="_blank">\n				<img src="';
+__htm +=dataAds.img_url;
+__htm += '" />\n			</a>\n		';
+ } ;__htm += '\n	</div>\n</div>';
+return __htm;} 
+ exports.html = __getHtml; 

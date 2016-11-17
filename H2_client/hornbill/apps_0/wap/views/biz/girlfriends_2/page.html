@@ -1,0 +1,85 @@
+<%# head_simple.html%>
+</head>
+<body>
+<%
+	var candidate_info = this.candidate_info.data;
+%>
+<div class="appBox">
+	<%
+		if( !candidate_info.pic_url ){
+			var huodong_desc = this.pageSettings.huodong.huodong_desc;
+			var upload_url = _extFn.getAppLink('editor' , {"default_text": huodong_desc,"take_a_picture":1,"need_a_picture":1} , this.os, this.r);
+			var pageS_upload = this.pageSettings.upload;
+	%>
+		<div class="upload_con">
+			<div class="img_wrap">
+				<img src="<%= pageS_upload.upload_bg %>" alt="">
+			</div>
+			<a class="top_btn w_top_btn js_upload_btn" href="<%= upload_url %>"><%= pageS_upload.upload_btn %></a>
+		</div>
+	<%
+		} else {
+			var pageS_myPic = this.pageSettings.login;
+			var h = candidate_info.pic_height;
+			var w = candidate_info.pic_width;
+			var ml = 0;
+			var style = ''
+			if(w/h >= 19/27){
+				ml = (27*w-19*h)*100/38/h;
+				style = 'height: 100%;left:-'+ml+'%;width: auto;';
+			} else {
+				style = 'width: 100%;height: auto;';
+			}
+	%>
+		<div class="myPic_con">
+			<div class="img_wrap">
+				<img src="<%= pageS_myPic.login_bg %>" alt="">
+			</div>
+			<div class="user_pic">
+				<img src="<%= candidate_info.pic_url %>" class="pic_me" style="<%= style %>">
+			</div>
+			<ul class="num_info">
+				<li><span class="vote_t">您的票数为</span></li>
+				<li class="vote_num"><div><span><%= candidate_info.score %></span>票</div></li>
+				<li class="rank">当前排名为第<span><%= candidate_info.rank %></span>名</li>
+				<li class="next_seat">还差<span><%= candidate_info.nextScore %></span>票就能上升一位！</li>
+				<li class="invite_btn"><a class="top_btn w_top_btn" href="/biz/girlfriends_2/vote/invite?cid=<%= this.cid %>&access_user=<%= candidate_info.user_id || 0 %>&r=<%= this.r%>"><%= pageS_myPic.login_btn %></a></li>
+			</ul>
+		</div>
+	<%}%>
+	<div class="nav_top">
+		<nav class="nav_box">
+			<ul class="goods">
+				<li <%if(this.order == 0){%>class="active"<%}%> >
+					<a href="/biz/girlfriends_2/page/myPic?cid=<%= this.cid %>&order=0&app_version=<%= this.app_version %>&app_access_token=<%= this.access_token %>&r=<%= this.r%>">人气排行</a>
+				</li>
+				<li <%if(this.order == 1){%>class="active"<%}%>>
+					<a href="/biz/girlfriends_2/page/myPic?cid=<%= this.cid %>&order=1&app_version=<%= this.app_version %>&app_access_token=<%= this.access_token %>&r=<%= this.r%>">最新上传</a>
+				</li>
+			</ul>
+		<nav>
+	</div>
+	<div class="scroller">
+		<span class="colFlag"></span>
+		<div class="goods_wall">
+		</div>
+		<div class="pullUp" status="loading"></div>
+	</div>
+</div>
+<%# biz/girlfriends_2/poster.html%>
+<script>
+fml.vars.poster = {};
+fml.vars.access_token = '<%=this.access_token%>';
+fml.vars.app_version = '<%=this.app_version%>';
+fml.vars.huodong_enname = '<%=this.pageSettings.huodong.huodong_enname%>';
+fml.vars.mac = '<%=this.mac%>';
+fml.vars.id = '<%=this.id%>';
+fml.vars.r = '<%=this.r%>';
+fml.vars.cid = '<%=this.cid%>';
+fml.vars.order = '<%=this.order || 0%>';
+</script>
+<% $_ENGINE_SELF.callFn("useModule")("fml.use('wap/page/poster0');", this._JSstack , this._JSmodsFast ); %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/biz/girlfriends_2');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html%>

@@ -1,0 +1,193 @@
+<%#head.html%>
+<%
+var runner_index = this.runner_index;
+var no1Item = runner_index.currentrank && runner_index.currentrank[0];
+var mobile = runner_index.phone || this.userInfo.mobile || '';
+var color = runner_index.bgc || '#27365a';
+%>
+<div class="poster_container">
+	<% if(no1Item && no1Item.poster){ %>
+	<img src="<%=no1Item.poster %>" class="winner_poster">
+	<% } %>
+	<div id="stage">
+        <div id="bullet-signal" class="bullet"></div>
+    </div>
+    <% 
+    if(no1Item){
+    %>
+    <div class="no1_tip_wrapper">
+    	<div class="no1_icon"></div>
+    	<p class="no1_title"><%=no1Item.title ||'' %></p>
+    	<p class="no1_name"><%=no1Item.name %></p>
+    	<p class="no1_vote"><span class="vote_num" data-id="<%=no1Item.voteId %>"><%=no1Item.vote %></span><span>票</span></p>
+    </div>
+    <%}%>
+    <div class="online_num_wrapper">
+    	<p><!-- <i class="online_icon"></i> -->当前在线</p>
+    	<p>
+    		<span class="red_color"><%=runner_index.onlinenum || 1 %></span>人
+    	</p>
+    </div>
+</div>
+<div class="send_danmu_wrapper">
+	<form onsubmit="return false" class="send_danmu_form">
+		<input type="text" placeholder="快来跟大家聊聊吧" name="danmu_content" class="danmu_content_input">
+		<button type="submit" class="send_danmu_btn">发送</button>	
+	</form>
+</div>
+<% if(runner_index.prize){ %>
+<div class="prize_wrapper" style="background:<%=color %>;">
+	<div class="tle_icon"></div>
+	<ul class="prize_list">
+		<% runner_index.prize.forEach(function(item){%>
+		<li>
+			<img src="<%=item.img %>" alt="奖品图">
+			<p><%=item.name %></p>
+		</li>
+		<%});%>
+	</ul>
+	<div class="foot_icon"></div>
+</div>
+<% } %>
+<div class="rank_wrapper">
+	<% if(!runner_index.isstart){ %>
+	<div class="vote_tip">
+		<i></i>本期已截止，下周一10点开始
+	</div>
+	<% } %>
+	<div class="tab_wrapper">
+		<a class="tab_btn" style="border-color:<%=color %>;background:<%=color %>;">
+			<span>本期票数</span>
+		</a>
+		<a class="tab_btn" style="border-color:<%=color %>;background:<%=color %>;">
+			<span>总票数</span>
+		</a>
+	</div>
+	<div class="content_wrapper">
+		<div class="content">
+			<table>
+				<% runner_index.currentrank && runner_index.currentrank.forEach(function(item, index){%>
+				<tr>
+					<td><%=index<3?index+1:'' %></td>
+					<td>
+						<img src="<%=item.head_img %>" class="head_img">
+						<p class="name_wrapper"><%=item.name %></p>
+					</td>
+					<td><span class="vote_num" data-id="<%=item.voteId %>"><%=item.vote %></span>票</td>
+					<td>
+						<% if(!runner_index.isvote){  %>
+						<button type="button" class="vote_to_btn" data-id="<%=item.voteId %>">给Ta投票</button>
+						<% } else if(runner_index.isvote==item.voteId){ %>
+						<button type="button" class="voted_btn">已投</button>
+						<p class="voted_tip">明天还可投票</p>
+						<% } %>
+					</td>
+				</tr>
+				<%});%>
+			</table>
+		</div>
+		<div class="content">
+			<table>
+				<% runner_index.totalrank && runner_index.totalrank.forEach(function(item, index){%>
+				<tr>
+					<td><%=index<3?index+1:'' %></td>
+					<td>
+						<img src="<%=item.head_img %>" class="head_img">
+						<p class="name_wrapper"><%=item.name %></p>
+					</td>
+					<td><%=item.vote %>票</td>
+				</tr>
+				<%});%>
+			</table>
+		</div>		
+	</div>
+</div>
+<div class="desc_wrapper" style="background:<%=color %>;">
+	<div class="tle_icon"></div>
+	<p>1.找到您喜爱的跑男明星，给TA投票加油吧！（每天可以投一票，周六周日除外）</p>
+	<p>2.投票+评论参与有奖互动。有机会赢取“鹿晗签名照、鹿晗签名抱枕、美丽说现金抵用券”等奖品</p>
+	<p>3.当期获得最多票数的明星，将展示在顶部照片墙封面，每周一10点整更新票数</p>
+	<p>4.本次活动最终解释权归“美丽说(北京)网络科技有限公司”所有</p>
+</div>
+<% if(!this.os.mlsApp){ %>
+<div class="download_foot">
+	<a href="/goto/download/" target="_blank">
+		<img src="http://d05.res.meilishuo.net/pic/_o/68/74/4dd36c3423fab831f0584a96136b_640_102.cg.png" alt="">
+	</a>
+</div>
+<% } %>
+<script type="text/html" id="voted_btn_tmp">
+	<button type="button" class="voted_btn">已投</button>
+	<p class="voted_tip">明天还可投票</p>
+</script>
+
+<script type="text/html" id="success_pop_tmp">
+	<div class="success_pop pop_win" style="top:<?=window.scrollY ?>px;">
+		<div class="success_win">
+			<div class="close_btn">关闭</div>
+			<h3>恭喜你，投票成功!</h3>
+			<div class="add1_icon"></div>
+			<div style="text-align:center;">
+			<% if(this.os.mlsApp){ %>
+				<button type="button" class="weixin_timeline_btn">分享到朋友圈</button>
+				<button type="button" class="weixin_btn">发送微信好友</button>
+			<% } else if(this.os.weixinBrowser) { %>
+				<button type="button" class="share_btn">分享到朋友圈</button>
+			<% } %>
+			</div>
+			<p class="share_tip">(转发后自动参与抽奖)</p>
+			<% if(!mobile){ %>
+			<div class="phone_info_wrapper">
+				<a class="more_phone">点此处填写抽奖手机号，以便我们及时与你联系</a>
+				<div class="phone_input_wrapper">
+					<form onsubmit="return false" class="submit_phone_form">
+						<input type="tel" class="phone_input" name="phone" />
+						<button type="submit" class="phone_sub_btn">确定</button>
+					</form>
+					<p class="phone_input_tip">请输入您的手机号</p>
+				</div>
+			</div>
+			<% } %>
+		</div>
+	</div>
+</script>
+<script type="text/html" id="share_tip_tmp">
+	<div class="share_tip_pop pop_win" style="top:<?=window.scrollY ?>px;">
+		<img src="http://d04.res.meilishuo.net/pic/_o/95/4c/c6a0dfb4469408772e11edf8e77a_493_513.cf.png" />
+	</div>
+</script>
+<script>
+	fml.vars.barrage_get = <%= JSON.stringify(this.barrage_get||[]) %>;
+	fml.vars.share_info = <%= JSON.stringify(runner_index.share ||null) %>;
+</script>
+<% if(this.os.weixinBrowser){ %>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<% } %>
+<% if(this.os.mlsApp){ %>
+<script>
+	<% if(!this.appShare){ %>
+	    <%= requireFn('wapShare.html')({
+	        'share' : this.share 
+	        , 'shareTitle' : '选择分享到'
+	        , '_JSstack' : this._JSstack
+	        , '_JSmods' : this._JSmods
+	    }); %>
+	<% } %>
+	fml.vars.appShare = <%= this.appShare %>; 
+	fml.vars.params = <%= JSON.stringify(this.params) %>;
+</script>
+<% } %>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-66656481-5', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/running_man_vote');
+_use:", this._JSstack, this._JSmods); %>
+<%#foot_frame.html%>

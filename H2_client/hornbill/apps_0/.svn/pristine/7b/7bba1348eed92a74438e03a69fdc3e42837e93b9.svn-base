@@ -1,0 +1,84 @@
+<%# head_simple.html %>
+</head>
+<body>
+<% var unfreeze = this.unfreeze; %>
+<div class="header">
+	<a class="logo_new" href="/welcome"></a>
+</div>
+<div class="wrap">
+	<div class="flowStep">
+		<ul>
+			<li class="current">
+				<span></span>
+				<div class="redline"></div>
+				<p>申请解冻</p>
+			</li>
+			<li class="current">
+				<span></span>
+				<div class="redline"></div>
+				<p>身份验证</p>
+			</li>
+			<li class="third">
+				<span></span>
+				<div class="redline"></div>
+				<p>重置密码</p>
+			</li>
+			<li class="four">
+				<span></span>
+				<p class="last">完成</p>
+			</li>
+		</ul>
+	</div>
+	<div class="freezeWrap">
+		<div class="selfFreeze">
+			<div class="account info">
+				<span class="dec">账号昵称</span><span class="context"><%= unfreeze.data.nickname %></span>
+			</div>
+			<div class="tel info">
+				<span class="dec">已绑定手机</span><span class="context"><%= unfreeze.data.mobile %></span>
+				<span class="btn">发送验证码</span>
+				<span class="red_f time_box"></span>
+			</div>
+			<div class="vertificate">
+				<span class="dec">输入验证码</span>
+				<input class="context vertification" type="text">
+			</div>
+		</div>
+		<div class="serviceFreeze">
+			<div class="dec">请选择其他申请方式</div>
+			<a href="/user/serviceFreeze?nickname=<%= this.nickname %>" target="_blank" class="service">人工申请</a>
+		</div>
+		<div class="next chooseWays">下一步</div>
+		<div class="error"></div>
+	</div>
+	<div class="passWordWrap"></div>
+	<div class="sucWrap"></div>
+</div>
+<script type="text/html" id="changePwd">
+	<div class="changePwd">
+		<%# user/changePwd.html %>
+		<div class="change">下一步</div>
+		<div class="warn"></div>
+	</div>
+</script>
+<script type="text/html" id="sucessWrap">
+	<div class="sucessWrap">
+		<img src="http://d01.res.meilishuo.net/pic/_o/21/70/5e136e6c841a37ac6b6e23e65663_52_53.cg.png"/>
+		<div class="sucess">
+			<div class="freezeSucess">恭喜您，账号解冻成功!</div>
+			<div class="info">
+				请稍等5分钟，重新登录<br/>美丽说，去发现，收藏、分享你的美丽点滴！
+			</div>
+		</div>
+	</div>
+	<a href="/welcome" target="_self" class="btn goWelcome">去逛逛</a>
+</script>
+<script>
+	fml.vars.nickname = <%= JSON.stringify(unfreeze.data.nickname) %> || '';
+	fml.vars.mobile = <%= JSON.stringify(unfreeze.data.mobile) %>;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/freeze');
+_use:", this._JSstack , this._JSmods); %>
+<%# foot_simple_cr.html %>
+

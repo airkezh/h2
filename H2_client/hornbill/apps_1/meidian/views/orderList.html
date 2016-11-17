@@ -1,0 +1,116 @@
+<%# header.html%>
+<%
+	var orderlistInfo = this.md_orderList.data
+%>
+<div class="wrap">
+
+<% if (orderlistInfo.list.length == 0) { %>
+	<div class="empty_tip">
+		你还没有在美店下过单喔～
+	</div>
+<% } %>
+
+<ul>
+<%for(var i = 0; i < orderlistInfo.list.length ; i++){%>
+<a href="/md/orderDetail?order_id=<%=orderlistInfo.list[i].order_id%>">
+	<div class="list_wrapper">
+		<p class="staus">
+			订单状态：
+			<%if(orderlistInfo.list[i].order_status == 1){%><span>等待付款</span>
+			<%}else if(orderlistInfo.list[i].order_status == 2){%><span>已支付</span><%}else if(orderlistInfo.list[i].order_status == 3){%><span>已发货</span><%}else if(orderlistInfo.list[i].order_status == 5){%><span>已关闭</span><%}else{%>
+				<%= orderlistInfo.list[i].order_status%>
+				<%}%>
+		</p>
+		<div class="shop_info">
+			<p>店铺：<span><%= orderlistInfo.list[i].order_goods.goods_shop.shop_name%></span></p>
+			<p>共<span><%= orderlistInfo.list[i].order_amount%></span>件</p>
+		</div>
+		<div class="goods_info_wrap">
+			<img src="<%= orderlistInfo.list[i].order_goods.goods_image[0].image_middle%>" class="goods_img">
+			<div class="goods_info">
+				<p class="goods_title"><%= orderlistInfo.list[i].order_goods.goods_desc%></p>
+				<p class="goods_size">
+					<span>型号：<%= orderlistInfo.list[i].order_sku.sku_name%></span>
+					<span>价格：<%= orderlistInfo.list[i].order_total%></span>
+				</p>
+			</div>
+		</div>
+		<%if(orderlistInfo.list[i].order_status == 1){%>	
+			<div class="payment_info">
+				<p>合计：<%= orderlistInfo.list[i].order_total%></p>
+				<p><sapn class="pay">去付款</sapn></p>
+			</div>
+		<%}%>
+	</div>
+</a>
+<%}%>
+</ul>
+<% if(orderlistInfo.list.length < orderlistInfo.total){%>
+		<p class="more eva_more">
+			查看更多订单
+			<span class="xiala_icon">
+				<img src="<%= this.PICTURE_URL%>/images/wap/web/wx/xiala.png">
+			</span>
+		</p>
+	<%}%>
+</div>
+
+<script type="text/html" id="orderListTpl">
+	<?for(var i = 0; i < orderlistInfo.list.length ; i++){?>
+	<a href="/md/orderDetail?order_id=<?=orderlistInfo.list[i].order_id?>">
+		<div class="list_wrapper">
+			<p class="staus">
+				订单状态：
+				<?if(orderlistInfo.list[i].order_status == 1){?><span>等待付款</span>
+				<?}else if(orderlistInfo.list[i].order_status == 2){?><span>已支付</span><?}else if(orderlistInfo.list[i].order_status == 3){?><span>已发货</span><?}else if(orderlistInfo.list[i].order_status == 5){?><span>已关闭</span><?}else{?>
+					<?= orderlistInfo.list[i].order_status?>
+					<?}?>
+			</p>
+			<div class="shop_info">
+				<p>店铺：<span><?= orderlistInfo.list[i].order_goods.goods_shop.shop_name?></span></p>
+				<p>共<span><?= orderlistInfo.list[i].order_amount?></span>件</p>
+			</div>
+			<div class="goods_info_wrap">
+				<img src="<?= orderlistInfo.list[i].order_goods.goods_image[0].image_middle?>" class="goods_img">
+				<div class="goods_info">
+					<p class="goods_title"><?= orderlistInfo.list[i].order_goods.goods_desc?></p>
+					<p class="goods_size">
+						<span>型号：<?= orderlistInfo.list[i].order_sku.sku_name?></span>
+						<span>价格：<?= orderlistInfo.list[i].order_total?></span>
+					</p>
+				</div>
+			</div>
+			<?if(orderlistInfo.list[i].order_status == 1){?>	
+				<div class="payment_info">
+					<p>合计：<?= orderlistInfo.list[i].order_total?></p>
+					<p><sapn class="pay">去付款</sapn></p>
+				</div>
+			<?}?>
+		</div>
+	</a>
+	<?}?>
+</script>
+
+<script>
+fml.vars.orderlistInfo = <%= JSON.stringify(orderlistInfo)%>;
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('meidian/page/orderList');
+_use:", this._JSstack , this._JSmods ); %>
+<%# footer.html%>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

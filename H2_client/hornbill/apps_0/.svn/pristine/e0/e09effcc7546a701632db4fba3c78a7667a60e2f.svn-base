@@ -1,0 +1,100 @@
+<%#head.html%>
+<%
+	var query = this._Request_query;
+	function reLink(str){
+		var buyLink = str;
+		if(this.phoneType == 'ipad'){
+			buyLink = "meilishuohd" + buyLink;
+		}else{
+			buyLink = "meilishuo" + buyLink;	
+		}
+		if (query.frmOpen)
+			buyLink = '/goto/open/?url='+ encodeURIComponent(buyLink)
+		return buyLink;
+	}
+	function taobao_link(link){
+		var url = link;
+		if(this.r){
+			if(url.indexOf('?') == -1){
+				url += "?r="+this.r
+			}else{
+				url += "&r="+this.r
+			}
+		}
+		url = "http://www.meilishuo.com/gooo/tbapp/?link=" + encodeURIComponent(url);
+		var twitter = {
+			'url' : url,
+			'inApp' : '1',
+			'require_app_info' : '1'
+		}
+		return reLink("://openURL.meilishuo?json_params=" + encodeURIComponent(JSON.stringify(twitter)));
+	}
+%>
+	<% if(this.wap_brand.banner){ %>
+	<div class="top_banner">
+		<img src="<%= this.wap_brand.banner%>" />
+		<% if(this.wap_brand.audio_url){ %>
+		<div class="audio_box">
+			<%= requireFn('block/audio.html')({
+			'audio': {
+				'audio' :{
+					'audio_url' : this.wap_brand.audio_url
+					,'audio_duration' : this.wap_brand.audio_duration
+					,'avatar_url':this.wap_brand.avatar_url
+					,'nickname':this.wap_brand.nickname
+					,'title':this.wap_brand.title
+				}
+			}
+			, 'id' : 'top0'
+			});%>
+		</div>
+		<%}%>
+	</div>
+	<%}%>
+	<% if(this.wap_brand.story_pic){ %>
+	<div class="story">
+		<img src="<%= this.wap_brand.story_pic%>" />
+	</div>
+	<%}%>
+	<% if(this.wap_brand.rule_pic){ %>
+	<div class="rule">
+		<img src="<%= this.wap_brand.rule_pic%>" />
+	</div>
+	<%}%>
+	<div class="design">
+		<% if(this.wap_brand.left_goods){ %>
+		<a href="<%= taobao_link(this.wap_brand.left_link)%>"><img src="<%= this.wap_brand.left_goods%>" class="goods_l" /></a>
+		<%}%>
+		<div class="desc_r">
+			<img src="<%= this.PICTURE_URL%>images/wap/activity/design.jpg" />
+			<%= this.wap_brand.design_text%>
+		</div>
+	</div>
+	<div class="goods_box">
+		<% this.wap_brand.goods_section && this.wap_brand.goods_section.forEach(function(goods){  %>
+		<div class="single_info">
+			<div class="goods_pic">
+				<a href="<%= taobao_link(goods.taobao_link)%>"><img src="<%= goods.pic_url%>" /></a>
+			</div>
+			<p class="tit"><%= goods.goods_tit%></p>
+			<p class="gray">活动价：¥<%= goods.price%></p>
+			<div class="btn_box"><a href="<%= taobao_link(goods.taobao_link)%>" class="buy_btn"><%= goods.buy_btn%></a></div>
+		</div>
+		<% }); %>
+	</div>
+	<% if(this.wap_brand.next_act){ %>
+	<h3>下期预告</h3>
+	<div class="next"><a href="<%= this.wap_brand.next_link%>"><img src="<%= this.wap_brand.next_act%>" /></a></div>
+	<%}%>
+<% if(this.share){ %>
+	<%= requireFn('wapShare.html')({
+	    'share' : this.share 
+		, 'shareTitle' : '分享给好友，赢LG口袋相印机：'
+	    , '_JSstack' : this._JSstack
+		, '_JSmods' : this._JSmods
+	}); %>
+<%}%>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+     fml.use('wap/page/audio');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

@@ -1,0 +1,12 @@
+/*--/Users/MLS/Documents/H2/H2_client/hornbill/apps_0/www/views/foot_jquery_conflict.html--*/ 
+     var est = require(config.path.lib + 'est/est.js'); 
+     var _extFn = require('/Users/MLS/Documents/H2/H2_client/hornbill/nestnew/server/lib/est/extFn.js'); 
+     function requireFn(tpl) { return est.renderFile('/Users/MLS/Documents/H2/H2_client/hornbill/apps_0/www/views/' ,tpl , null , null ,'www' ,true); } ; 
+     function __getHtml (_data) { 
+       function jsRender(tpl , id) { return est.jsRender(requireFn(tpl)(_data), id  ); } ; 
+       var __htm ='';
+__htm += '';
+ if (_data.jQueryConflict) { ;__htm += '\n;(function(){\n	var t = window.setInterval(function(){\n		if (window.jQuery && window.$ !==  window.jQuery) {\n			window.$ = window.jQuery.noConflict();\n			console.log(\'set $ to jQuery\');\n			window.clearInterval(t);\n		}\n	}, 30);\n	window.setTimeout(function(){\n		window.clearInterval(t);\n	} , 4000);\n})();\n';
+};__htm += '\n';
+return __htm;} 
+ exports.html = __getHtml; 

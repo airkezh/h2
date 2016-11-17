@@ -1,0 +1,19 @@
+<%* '样式文件在 【static/less/wap/block/wap_head.less】【.wap_foot】 ' *%>
+<%
+	return '';
+	var page_tag = this.page_tag;
+	var page_r = this.xr.r;
+	var pro_spec_banner = this.pro_spec_banner && this.pro_spec_banner.promotion_foot;
+	var show_promotion = pro_spec_banner && pro_spec_banner.banner_img;
+%>
+<% if(page_tag){ %>
+	<footer class="wap_foot">
+		<div class="foot_fixed_wrap<%= show_promotion ? ' promotion_active' : '' %>">
+			<a <%= page_tag == 'welcome' ? 'class="active" href="javascript:;"' : ' href="/welcome"' %> xr="<%= page_r %>"><span class="i_home"></span>首页</a>
+			<a <%= page_tag == 'guang' ? 'class="active" href="javascript:;"' : ' href="/guang"' %> xr="<%= page_r %>"><span class="i_catalog"></span>分类</a>
+			<% if(show_promotion){ %><a class="promotion" href="<%= pro_spec_banner.banner_link %>" xr="<%= page_r %>" style="background-image:url('<%= pro_spec_banner.banner_img %>');"></a><% } %>
+			<a <%= page_tag == 'cart' ? 'class="active" href="javascript:;"' : ' href="/cart"' %> xr="<%= page_r %>"><span class="i_cart"></span>购物车</a>
+			<a <%= page_tag == 'myCenter' ? 'class="active" href="javascript:;"' : ' href="/myCenter"' %> xr="<%= page_r %>"><span class="i_myCenter"></span>我/订单</a>
+		</div>
+	</footer>
+<% } %>

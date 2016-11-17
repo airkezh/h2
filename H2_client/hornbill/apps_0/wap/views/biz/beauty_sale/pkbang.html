@@ -1,0 +1,75 @@
+<%#head.html%>
+
+<%
+	var pkInfo = this.pageData.pkInfo;
+	var productInfo = this.pageData.productInfo;
+%>
+
+<div class="pk_desc">
+	<p class="title"><%= pkInfo.title %></p>
+	<p class="argument"><%= pkInfo.description %></p>
+	<p class="num"><span class="red_f"><%= pkInfo.vote_total %></span>人已参与</p>
+</div>
+
+<% productInfo.forEach(function(product, index){ %>
+	<div class="pk_defences">
+		<div class="title"><span class="top"><%= index ? '黄方：' : '红方：' %><%= product.product_title %></span></div>
+		<img src="<%= product.product_img %>">
+		<div class="user"><img src="<%= product.avatar_c %>"><span class="red_f"><%= product.nickname %></span><span class="time"><%= pkInfo.create_time %></span></div>
+		<p class="sketch"><%= product.product_desc %></p>
+	</div>
+<% }); %>
+
+<div class="pk_choose">
+	<div class="title"><span class="top">PK</span></div>
+
+	<%
+		var total = productInfo[0].product_vote + productInfo[1].product_vote;
+		var red_per = productInfo[0].product_vote / total * 100;
+		var yellow_per = productInfo[1].product_vote / total * 100;
+		if(!total){
+			red_per = 0;
+			yellow_per = 0;
+		}
+	%>
+
+	<div class="red_one choose_mass"><span>红方：</span><div class="progress"><div class="num" style="left: <%= red_per*0.9 + '%' %>;"><%= productInfo[0].product_vote %>人</div><div class="pro_in" style="width: <%= red_per + '%' %>;"></div></div>
+	<% if(!pkInfo.vote_productid){ %>
+		<div class="self_btn choose_btn js_support" data-support='<%= productInfo[0].product_vote %>' data-id="<%= productInfo[0].product_id %>">支持</div>
+	<% } else { %>
+		<% if(pkInfo.vote_productid == productInfo[0].product_id){ %><div class="self_btn choose_btn has_choose">已支持</div><% } %>
+	<% } %>
+	</div>
+	<div class="yellow_one choose_mass"><span>黄方：</span><div class="progress"><div class="num" style="left: <%= yellow_per*0.9 + '%' %>;"><%= productInfo[1].product_vote %>人</div><div class="yellow pro_in" style="width: <%= yellow_per + '%' %>;"></div></div>
+		<% if(!pkInfo.vote_productid){ %>
+			<div class="self_btn choose_btn js_support" data-support='<%= productInfo[1].product_vote %>' data-id="<%= productInfo[1].product_id %>">支持</div>
+		<% } else { %>
+			<% if(pkInfo.vote_productid == productInfo[1].product_id){ %><div class="self_btn choose_btn has_choose">已支持</div><% } %>
+		<% } %>
+	</div>
+</div>
+
+<div class="fixed_wrap">
+	<% if(pkInfo.groupring_url){ %>
+		<div class="line">
+			<a href="<%= pkInfo.groupring_url %>" class="join_cricle">来讨论好货吧 ></a>
+		</div>
+	<% } %>
+</div>
+
+<script type="text/html" id="user_msgs">
+	<div class="msgs">
+		<img src="<%= this.userInfo_wap.data.avatar_c %>"><span class="name red_f"><%= this.userInfo_wap.data.nickname %></span><span class="comments"><?= this.content ?></span><span class="time">刚刚</span>
+	</div>
+</script>
+
+<script>
+	fml.vars.user_id = <%= this.userInfo_wap.data.user_id %>;
+	fml.vars.circle_id = '<%= pkInfo.circle_id || 0 %>';
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/biz/pkbang');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot.html%>

@@ -1,0 +1,52 @@
+<%#head.html%>
+
+<div class="bindingForm">
+	<h2>亲爱的用户，
+		<span>您的帐号存在安全问题，动一动手指，让它更安全</span>
+		<span>为了确保你的账户安全，请填写手机验证码</span>
+	</h2>
+	<h3>请验证您的手机号码，当您的帐号异常活动时，我们会及时通知您</h3>
+	<h3>我们已经向你的手机<span class="phoneNum">1861058****</span>发送了验证短信，<a href="">重新发送</a></h3>
+	<div class="binding_mls">
+		<fieldset>
+			<h2>验证您的手机：</h2>
+			<form id="bindingForm" method="post" onsubmit="return false" action="">
+			<p>
+				<label for="mobile">手机号：</label>
+				<input class="l_ipt" id="mobile" type="text" name="mobile" value="" /><strong></strong>
+				<span class="registerErrorMessage" style="display:none;"></span>
+			</p>
+			<p>
+				<label for="code">验证码：</label>
+				<input class="l_ipt" id="code" name="code" type="text" value="" maxlength="6" /><strong></strong>
+				<span class="registerErrorMessage" style="display:none;"></span>
+			</p>
+			<p>
+				<span class="send_code"><a class="red_f">发送验证码</a></span>
+			</p>
+			<div class="submitBox"><input class="loginBtn button left_f" type="submit" value="确&nbsp;&nbsp;&nbsp;认"/></div>
+			</form>
+			<p>如果任何问题，请发送邮件到kefu@meilishuo.com</p>
+		</fieldset>
+	</div>
+	<div class="clear_f"></div>
+	<div class="binding_verify">
+		<fieldset>
+			<div class="wrapper">
+				<input class="l_ipt code" id="mlsCode" name="mlsCode" type="text" value="" />
+				<input class="loginBtn button btn_verify" type="submit" value="完成验证"/>
+			</div>
+		</fieldset>
+		<div class="question">
+                        <p class="st1">遇到问题？</p>
+                        <p class="st2">如果任何问题，请发送邮件到kefu@meilishuo.com</p>
+                </div>
+	</div>
+</div>
+
+
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/binding');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html %>

@@ -1,0 +1,127 @@
+<%#head.html%>
+<%
+	var userInfo = this.userInfo || {};
+	var newHot = this.newHot || {};
+	var newHotData = newHot.data || {};
+	var newHotDataBanner=newHotData.banner||[];
+	var desireList = this.desireList.data || [];
+%>
+<div class="wrap" id="wrap">
+	<%# zulily/header.html%>
+	<nav class="tab-new" id="tabNew">
+		<div id="prevTabNew">
+			<a href="javascript:;">新品上架</a>
+		</div>
+		<div id="nextTabNew">
+			<a href="javascript:;">全部商品</a>
+		</div>
+		<div id="specialTabNew">
+			<a href="javascript:;" class="hot-box">潮流抢先<b class="hot">HOT</b></a>
+		</div>
+	</nav>
+	<div class="new-box" id="newBox">
+		<%= requireFn('block/banner.html')({
+			'banner' : newHotDataBanner,
+			'banner_r':this.newHot_XR,
+			'hide_btn':false,
+			'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+		});%>
+		<p class="tips">每周二/四/六 11:00上新</p>
+		<p class="time"><%= newHotData.title %></p>
+	</div>
+	<% if(desireList.length){ %>
+		<ul class="kinds" id="kinds">
+			<% desireList.forEach(function(item,index){ %>
+				<li>
+					<a href="<%= item.url %>" xr="<%= this.desireList_XR %>"><img src="<%= item.pic %>" alt=""></a>
+				</li>
+			<% }) %>
+		</ul>
+	<% } %>
+	<div class="sort-box" id="sortBox">
+		<a href="javascript:;" id="sortDefault" class="cur">默认</a>
+		<a href="javascript:;" id="sortPrice">价格<b><i></i></b></a>
+		<a href="javascript:;" id="sortSale">销量</a>
+		<a href="javascript:;" id="sortDate">上新时间</a>
+	</div>
+	<div class="posterWall wall" id="content">
+		<ul class="goods_wall goods"></ul>
+		<div class="pullUp" status="loading"></div>
+	</div>
+</div>
+<% if(!this.appShare){ %>
+	<%= requireFn('wapShare.html')({
+		'share' : this.share 
+	    , 'shareTitle' : '选择分享到'
+	    , '_JSstack' : this._JSstack
+		, '_JSmods' : this._JSmods
+	}); %>
+<% } %>
+<script type="text/html" id="specialPosterWall">
+	<li class="special-list" data-url="<?= this.v.special_url ?>" data-xr="<?= this.xr ?>">
+		<? var imgBoxHeight=parseInt($(window).width())* this.v.special_img_height / this.v.special_img_width +'px'; ?>
+		<div class="new-inner">
+			<img src="<?= this.v.special_img ?>" style="height:<?= imgBoxHeight ?>" alt="">
+			<p class="tag"><?= this.v.special_category ?></p>
+			<? if(this.v.special_title){ ?>
+				<p class="title"><?= this.v.special_title ?></p>
+			<? } ?>
+			<? if(this.v.special_desc){ ?>
+				<p class="des"><?= this.v.special_desc ?></p>
+			<? } ?>
+		</div>
+	</li>
+</script>
+<script type="text/html" id="newPosterWall">
+	<li data-styleId="<?= this.v.id ?>" data-xr="<?= this.xr ?>" data-twitter_id="<?= this.v.twitter_id ?>" class="salelUrl">
+		<? var imgBoxHeight=parseInt($(window).width())* this.v.big_img_height / this.v.big_img_width +'px'; ?>
+		<div class="new-inner">
+			<img src="<?= this.v.big_img ?>" style="height:<?= imgBoxHeight ?>" alt="">
+			<p class="tag"><?= this.v.brand_category ?></p>
+			<p class="title"><?= this.v.desire_title ?></p>
+			<p class="des"><?= this.v.desire_desc ?></p>
+			<p class="new-price">
+				<span>Desire价: <?= this.v.sale_price ?> </span>
+				<del>原款价: <?= this.v.original_price ?> </del>
+			</p>
+		</div>
+	</li>
+</script>
+<script type="text/html" id="posterWall">
+	<li class="most_wrap salelUrl" data-xr="<?= this.xr ?>" data-styleId="<?= this.v.id ?>" data-twitter_id="<?= this.v.twitter_id ?>" data-status="<?= this.v.status ?>">
+		<? var imgBoxHeight=parseInt($(window).width()/2)* 400 / 320 +'px'; ?>
+		<div class="goods_info">
+			<div class="most">
+				<div class="most" style="height:<?= imgBoxHeight ?>">
+					<img src="<?= this.v.poster_small_img?>" alt="">
+					<? if(parseInt(this.v.status)==5){ ?>
+						<span class="sold"></span>
+					<? } ?>
+				</div>
+				<div data-index="<?= this.v.id ?>" class="danmu d<?= this.v.id ?>"></div>
+				<div class="tips-box">
+					<span class="tips">
+						<b><?= parseInt(this.v.want_base) +  parseInt(this.v.want_num) ?>人想买
+						</b>
+					</span>
+				</div>
+			</div>
+			<p class="most_intro sale-title"><?= this.v.title ?></p>
+			<p class="price">
+				<span><?= this.v.sale_price ?></span>
+				<del><?= this.v.price ?></del>
+			</p>
+		</div>
+	</li>
+</script>
+
+<script>
+	fml.vars.trace_id = '<%= this.desireTraceId %>';
+	fml.vars.appShare = <%= this.appShare %>; 
+	fml.vars.params = <%= JSON.stringify(this.params) %>;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/zulily/doneSmallNew');
+_use:", this._JSstack, this._JSmods); %>
+
+<%# foot.html%>

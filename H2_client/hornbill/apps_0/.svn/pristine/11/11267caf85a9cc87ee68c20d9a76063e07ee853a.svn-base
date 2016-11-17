@@ -1,0 +1,60 @@
+<%# wx_new/header.html%>
+<%
+	var getLink = _extFn.getLink
+		,query = this._Request_query
+		,typeName = {"hot" : "热卖","new" : "新品"}
+		,navInfo = this.nav_top ? this.nav_top : [{'page_title':'新春特惠'},{'page_title':'服饰团购'},{'page_title':'美妆特卖'}]
+		,pageNameArr = [{"en":"daily"},{"en":"clothes"},{"en":"cosmetic"}]
+		,seckillBtn = ["整点开抢", "立即购买", "抢光了", "还有机会"]
+		,item_name = this.item_name
+
+	var typeTop = this.nav_top[0]['page_categories'][item_name] ? this.nav_top[0]['page_categories'][item_name] : []
+	
+		
+%>
+<div>
+	<%= requireFn('wx_new/top_nav.html')({
+		'pageName' : this.pageName
+		,'navInfo' : navInfo
+		,'PICTURE_URL' : this.PICTURE_URL
+		,'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+	});%>
+	<div class="m50"></div>
+	<img src="<%=this.bg_img %>" />
+</div>
+
+<div class="posterWall wrap scroller">
+	<!-- typeTop -->
+	<%if(typeTop.length > 1){%>
+		<div class="typeTop">
+			<p>
+		<% typeTop.map(function(data, index){%>
+			<%var url =  "/wx/items/" + item_name + getLink({'cate_id' : data.cate_id})%>
+			<a href=<%=url %> typeId='<%= data.cate_id%>' class='<%=item_name %> cosmetictap  <%= (this.cate_id == data.cate_id) ? 'type_select' : '' %>'><%= data.cate_name%></a>
+		<%});%>
+			</p>
+		</div>
+	<%}%>
+	<!-- 瀑布流 -->
+	<ul class="new_goods goods_wall">
+	</ul>
+	<div class="pullUp" status="loading"></div>
+	
+</div>
+<%# wx_new/posterWX.html%>
+<script>
+fml.vars.poster = {
+	'totalColNum':2,
+	'pageName' : '<%= this.pageName%>',
+	'cate_id' : '<%= this.cate_id%>'
+};
+</script>
+<script src="http://pub.idqqimg.com/qqmobile/qqapi.js?_bid=152"></script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/wx_new/mall');
+_use:", this._JSstack , this._JSmods ); %>
+<%# wx_new/side.html%>
+<%# wx_new/footer.html%>
+
+
+

@@ -1,0 +1,53 @@
+<%#head.html%>
+<% var data = this.pageData.data;%>
+
+<%if(data && data.top_banner_mob){%>
+<div class="bbox">
+	<a class="t-banner">
+		<img src="<%= data.top_banner_mob%>" />
+	</a>
+</div>
+<%}%>
+
+<%if(data.img_info.length){
+	var istwo = data.img_info.length ==2 ? 1 : 0 ;%>
+<div class="imgtab-box">
+	<%data.img_info.forEach(function(v, k){%>
+	<div <%= istwo ? "class='two'" : ""%>><a href="#<%= v.position%>"><img src="<%= v.focus_img_mob%>" /></a></div>
+	<%})%>
+</div>
+<%}%>
+<div class="main">
+	<%if(data.shop_info.length){
+		data.shop_info.forEach(function(v, k){%>
+	<div id=<%= v.position%> class="shop-box">
+		<div class="info">
+			<div class="portrait"><img src="<%= v.shop_img%>" /></div>
+			<div class="intro">
+				<h1><%= v.shop_name%></h1>
+				<%if(v.level.length){%>
+				<div class="btns">
+					<%v.level.forEach(function(v1, k2){%>
+					<span><%= v1%></span>
+					<%})%>
+				</div>
+				<%}%>
+				<i></i>
+				<p><%= v.shop_desc%></p>
+			</div>
+		</div>
+		<div class="goods_wall">
+			<%= requireFn('tuan/tuan_tmp.html')({
+			'_imgurlhead' : this.PICTURE_URL
+			,'_isstart' : data.event_status
+			,'data' : v.goods_list
+			,'is_lazyload_poster' : true
+			});%>
+		</div>
+	</div>
+	<%})}%>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/tuan/activity/rushbuy');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html%>

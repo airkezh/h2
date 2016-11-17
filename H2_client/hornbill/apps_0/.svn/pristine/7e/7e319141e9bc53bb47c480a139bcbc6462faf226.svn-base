@@ -1,0 +1,339 @@
+<%
+	/**
+ 	 * @fileoverview 首页－会员足迹
+     * @requires zepto
+     * @author kehuang@meilishuo.com
+     * @date 2015-11-30
+     */
+%>
+
+<%#head.html%>
+<%
+	var curUserIsLogin = this.isLogin;
+	var curServerDate = this.serverDate;
+	var curPageData = this.pageData;
+	var curGiftPageData = this.giftPageData;
+	var curFootprintData = this.footprintData;
+	var curServerTime = curServerDate.getTime();
+	var curUserFootprintData = (curFootprintData && curFootprintData.data) ? curFootprintData.data : {};
+	var curPicDescData = curPageData.footprint_pic_desc || [];
+	var curUserName = curUserFootprintData.nick_name || '- -';
+	var curUserLevel = parseInt(curUserFootprintData.user_grade || 0);
+	var curUserRegDays = curUserFootprintData.register_date_sub || 0;
+	var curUserAvatar = curUserFootprintData.avatar || 'http://d06.res.meilishuo.net/ap/a/78/32/59c5fb29fb8ea04deddb2ad0ff42_256_256.cf.png';
+	var curUserInterestsList = (curGiftPageData && curGiftPageData['interests_level_' + curUserLevel]) ? curGiftPageData['interests_level_' + curUserLevel] : [];
+	var curUserTotalInterests = ((curUserInterestsList.length - 1) < 0) ? 0 : (curUserInterestsList.length - 1);
+	var curUserisNewUser = (curUserRegDays < 1) ? true : false;
+%>
+
+<div class="top_tab_wrap">
+	<ul class="top_tab_list">
+		<li class="top_tab_item first active">
+			<span class="title title_1" data-index="1"></span>
+		</li>
+		<li class="top_tab_item">
+			<span class="title title_2" data-index="2"></span>
+		</li>
+		<li class="top_tab_item">
+			<span class="title title_3" data-index="3"></span>
+		</li>
+		<li class="top_tab_item">
+			<span class="title title_4" data-index="4"></span>
+		</li>
+		<li class="top_tab_item">
+			<span class="title title_5" data-index="5"></span>
+		</li>
+		<li class="top_tab_item">
+			<span class="title title_6" data-index="6"></span>
+		</li>
+		<li class="top_tab_item last"></li>
+	</ul>
+</div>
+
+<img style="display: none;" id="mc" src="http://i.meilishuo.net/css/images/member_anim1/mc.png">
+<img style="display: none;" id="bg" src="http://i.meilishuo.net/css/images/member_anim1/bg.jpg">
+<img style="display: none;" id="flag" src="http://i.meilishuo.net/css/images/member_anim1/flag.png">
+<img style="display: none;" id="moon" src="http://i.meilishuo.net/css/images/member_anim1/moon.png">
+<img style="display: none;" id="astronaut" src="http://i.meilishuo.net/css/images/member_anim1/astronaut.png">
+<img style="display: none;" id="coin" src="http://i.meilishuo.net/css/images/member_anim1/coin.png">
+<img style="display: none;" id="cloud" src="http://i.meilishuo.net/css/images/member_anim1/cloud.png">
+<img style="display: none;" id="ufo" src="http://i.meilishuo.net/css/images/member_anim1/UFO.png">
+<img style="display: none;" id="light" src="http://i.meilishuo.net/css/images/member_anim1/light.png">
+<img style="display: none;" id="money1" src="http://i.meilishuo.net/css/images/member_anim/money1.png">
+<img style="display: none;" id="money2" src="http://i.meilishuo.net/css/images/member_anim/money2.png"/>
+<img style="display: none;" id="money3" src="http://i.meilishuo.net/css/images/member_anim/money3.png">
+<img style="display: none;" id="money4" src="http://i.meilishuo.net/css/images/member_anim/money4.png">
+<img style="display: none;" id="money5" src="http://i.meilishuo.net/css/images/member_anim/money5.png">
+<img style="display: none;" id="money6" src="http://i.meilishuo.net/css/images/member_anim/money6.png">
+<img style="display: none;" id="dress1" src="http://i.meilishuo.net/css/images/member_anim/dress1.png">
+<img style="display: none;" id="dress2" src="http://i.meilishuo.net/css/images/member_anim/dress2.png">
+<img style="display: none;" id="alien" src="http://i.meilishuo.net/css/images/member_anim1/alien.png">
+<img style="display: none;" id="hand" src="http://i.meilishuo.net/css/images/member_anim1/hand.png">
+<img style="display: none;" id="crowd" src="http://i.meilishuo.net/css/images/member_anim1/crowd.png">
+<img style="display: none;" id="cloud4" src="http://i.meilishuo.net/css/images/member_anim1/cloud4.png">
+<img style="display: none;" id="mooncloud" src="http://i.meilishuo.net/css/images/member_anim1/mooncloud.png">
+<img style="display: none;" id="moonlight" src="http://i.meilishuo.net/css/images/member_anim/moonlight.png">
+<img style="display: none;" id="girl" src="http://i.meilishuo.net/css/images/member_anim1/girl4.png">
+<img style="display: none;" id="girlshadow" src="http://i.meilishuo.net/css/images/member_anim1/girlshadow.png">
+<img style="display: none;" id="bling" src="http://i.meilishuo.net/css/images/member_anim1/bling.png">
+<img style="display: none;" id="bottomcloud" src="http://i.meilishuo.net/css/images/member_anim/topcloud.png">
+<img style="display: none;" id="topcloud" src="http://i.meilishuo.net/css/images/member_anim/bottomcloud.png">
+<img style="display: none;" id="rocket" src="http://i.meilishuo.net/css/images/member_anim/rocket.png">
+<img style="display: none;" id="ring" src="http://i.meilishuo.net/css/images/member_anim/ring.png">
+<img style="display: none;" id="ball1" src="http://i.meilishuo.net/css/images/member_anim/ball1.png">
+<img style="display: none;" id="ball2" src="http://i.meilishuo.net/css/images/member_anim/ball2.png">
+<img style="display: none;" id="ball3" src="http://i.meilishuo.net/css/images/member_anim/ball3.png">
+<img style="display: none;" id="ball4" src="http://i.meilishuo.net/css/images/member_anim/ball4.png">
+<img style="display: none;" id="bg2" src="http://i.meilishuo.net/css/images/member_anim1/bg6.png">
+<img style="display: none;" id="ball61" src="http://i.meilishuo.net/css/images/member_anim1/ball61.png">
+<img style="display: none;" id="ball62" src="http://i.meilishuo.net/css/images/member_anim1/ball62.png">
+<img style="display: none;" id="ball63" src="http://i.meilishuo.net/css/images/member_anim1/ball63.png">
+<img style="display: none;" id="ball64" src="http://i.meilishuo.net/css/images/member_anim1/ball64.png">
+
+<canvas id="cvs"></canvas>
+
+<div class="bottom_desc_wrap"></div>
+
+<%
+	if (!this.appShare) {
+%>
+	<%= requireFn('wapShare.html')({
+		'share' : this.share,
+	    'shareTitle' : '选择分享到',
+	    '_JSstack' : this._JSstack,
+		'_JSmods' : this._JSmods
+	}); %>
+<%
+	}
+%>
+
+<script type="text/html" id="footprint_desc_tpl_1">
+	<%
+		var curServerYear = curServerDate.getFullYear(),
+			curServerMonth = curServerDate.getMonth() + 1,
+			curServerDay = curServerDate.getDate(),
+			curServerStrTime = curServerYear + '-' + ((curServerMonth < 10) ? ('0' + curServerMonth) : curServerMonth) + '-' + ((curServerDay < 10) ? ('0' + curServerDay) : curServerDay),
+			curUserRegDate = curUserFootprintData.register_date || curServerStrTime;
+	%>
+	<div class="footprint_desc_box">
+		<p class="title"><i><%= curUserRegDate %></i>你注册了美丽说</p>
+		<p class="sub_title">踏上了开启美丽的时尚之旅</p>
+		<div class="footprint_desc footprint_desc_1"></div>
+	</div>
+</script>
+
+<script type="text/html" id="footprint_desc_tpl_2">
+	<%
+		var sTitle = '',
+			sSubTitle = '',
+			curUserMonthGmvDiff = curUserFootprintData.gmv_diff || 0,
+			curUserMonthGmvType = parseInt(curUserFootprintData.gmv_type || 0);
+
+		if (curUserisNewUser) {
+			sTitle = '时尚单品正在等你抱回家哦';
+			sSubTitle = '快去逛逛吧';
+		} else {
+			switch (curUserMonthGmvType) {
+				case 1:
+					sTitle = '本月比上月少花了<i>' + curUserMonthGmvDiff + '</i>块';
+
+					if (curUserMonthGmvDiff <= 100) {
+						sSubTitle = '拥抱时尚的正确方式，是买个正确流行款';
+					} else if ((curUserMonthGmvDiff > 100) && (curUserMonthGmvDiff <= 300)) {
+						sSubTitle = '钱没了可以再挣，东西下架了就真没了';
+					} else if ((curUserMonthGmvDiff > 300) && (curUserMonthGmvDiff <= 500)) {
+						sSubTitle = '论学习剁手党快速回血技能的重要性';
+					} else {
+						sSubTitle = '停歇，是为了更猛烈的爆发';
+					}
+
+					break;
+				case 2:
+					sTitle = '本月比上月多花了<i>' + curUserMonthGmvDiff + '</i>块';
+
+					if (curUserMonthGmvDiff <= 100) {
+						sSubTitle = '买正确流行的东西，才是正经事';
+					} else if ((curUserMonthGmvDiff > 100) && (curUserMonthGmvDiff <= 300)) {
+						sSubTitle = '地球人已无法阻止你追赶时尚的步伐';
+					} else if ((curUserMonthGmvDiff > 300) && (curUserMonthGmvDiff <= 500)) {
+						sSubTitle = '世间最美的东西 良辰、美景、买买买';
+					} else {
+						sSubTitle = '目测你的购物袋已可以平铺一个篮球场';
+					}
+
+					break;
+				case 3:
+					sTitle = '本月与上个月消费金额神同步';
+					sSubTitle = '追逐时尚就像大姨妈，每月不来一次肿么行';
+
+					break;
+				case 4:
+					sTitle = '近两月没有买买买';
+					sSubTitle = '再不下手，时尚就要离你而去了';
+
+					break;
+			}
+		}
+	%>
+	<div class="footprint_desc_box">
+		<p class="title"><%= sTitle %></p>
+		<p class="sub_title"><%= sSubTitle %></p>
+		<div class="footprint_desc footprint_desc_2"></div>
+	</div>
+</script>
+
+<script type="text/html" id="footprint_desc_tpl_3">
+	<%
+		var sTitle = '',
+			sSubTitle = '',
+			curUserMonthOrderDiff = curUserFootprintData.order_diff || 0,
+			curUserMonthOrderType = parseInt(curUserFootprintData.order_type || 0);
+
+		if (curUserisNewUser) {
+			sTitle = '美丽说有很多质量稳定的衣服哦';
+			sSubTitle = '遇到喜欢的就拔草吧';
+		} else {
+			switch (curUserMonthOrderType) {
+				case 1:
+					sTitle = '本月比上月少剁手<i>' + curUserMonthOrderDiff + '</i>次';
+					sSubTitle = (curUserMonthOrderDiff < 3) ? '冲动女魔王秒变淡定姐' : '已没有更多的手可以被剁';
+
+					break;
+				case 2:
+					sTitle = '本月比上月多剁手<i>' + curUserMonthOrderDiff + '</i>次';
+					sSubTitle = (curUserMonthOrderDiff < 3) ? '初步诊断为剁手癌初期患者' : '别叫我剁手党，我只是习惯性付款';
+
+					break;
+				case 3:
+					sTitle = '与上月剁手次数神同步';
+					sSubTitle = '双手的进化，就是为了买买买';
+
+					break;
+				case 4:
+					sTitle = '近2个月没有剁手';
+					sSubTitle = '主银，你是不是不爱我了 T T';
+
+					break;
+			}
+		}
+	%>
+	<div class="footprint_desc_box">
+		<p class="title"><%= sTitle %></p>
+		<p class="sub_title"><%= sSubTitle %></p>
+		<div class="footprint_desc footprint_desc_3"></div>
+	</div>
+</script>
+
+<script type="text/html" id="footprint_desc_tpl_4">
+	<%
+		var sTitle = '',
+			sSubTitle = '',
+			curUserMonthBeauty = curUserFootprintData.score_this_month || 0;
+
+		if (curUserisNewUser) {
+			sTitle = '美丽值已开始积攒';
+			sSubTitle = '生命不停 为美丽加分不断';
+		} else {
+			sTitle = '本月获得美丽值<i>' + curUserMonthBeauty + '</i>分';
+
+			if (curUserMonthBeauty <= 500) {
+				sSubTitle = '生命不停 为美丽加分不断';
+			} else if ((curUserMonthBeauty > 500) && (curUserMonthBeauty <= 1000)) {
+				sSubTitle = '朝着晋级之路努力奔跑中';
+			} else {
+				sSubTitle = '棒棒哒 向等级晋升迈进了一大步';
+			}
+		}
+	%>
+	<div class="footprint_desc_box">
+		<p class="title"><%= sTitle %></p>
+		<p class="sub_title"><%= sSubTitle %></p>
+		<div class="footprint_desc footprint_desc_4"></div>
+	</div>
+</script>
+
+<script type="text/html" id="footprint_desc_tpl_5">
+	<%
+		var sTitle = '',
+			sSubTitle = '';
+
+		if (curUserisNewUser) {
+			sTitle = '拥有的特权击败了“爱美丽伐木累”<i>10%</i>的用户';
+			sSubTitle = '潜力女神 你还可以拥有更多';
+		} else {
+			var sPercent = '';
+
+			switch (curUserLevel) {
+				case 0:
+					sPercent = '10%';
+					sSubTitle = '潜力女神 你还可以拥有更多';
+
+					break;
+				case 1:
+					sPercent = '40%';
+					sSubTitle = '特权在手 福利样样有';
+
+					break;
+				case 2:
+					sPercent = '60%';
+					sSubTitle = '特权duang 的一下就增多了';
+
+					break;
+				case 3:
+					sPercent = '80%';
+					sSubTitle = '尊贵的女王大人 请收下我的膝盖';
+
+					break;
+				case 4:
+					sPercent = '99%';
+					sSubTitle = '论拥有全部特权是种怎样的体验';
+
+					break;
+				default:
+					sPercent = '10%';
+					sSubTitle = '潜力女神 你还可以拥有更多';
+
+					break;
+			}
+
+			sTitle = '拥有的特权击败了“爱美丽伐木累”<i>' + sPercent + '</i>的用户';
+		}
+	%>
+	<div class="footprint_desc_box">
+		<p class="title"><%= sTitle %></p>
+		<p class="sub_title"><%= sSubTitle %></p>
+		<div class="footprint_desc footprint_desc_5"></div>
+	</div>
+</script>
+
+<script type="text/html" id="footprint_desc_tpl_6">
+	<%
+		var sSubTitle = '&nbsp;',
+			sTitle = curUserisNewUser ? '时尚正在悄悄走近你' : '努力追赶时尚，寻找正确的流行';
+	%>
+	<div class="footprint_desc_box">
+		<p class="title"><%= sTitle %></p>
+		<p class="sub_title"><%= sSubTitle %></p>
+		<div class="footprint_desc footprint_desc_6"></div>
+	</div>
+</script>
+
+<script>
+	fml.vars.r = '<%= this.xr.r || '' %>';
+	fml.vars.isLogin = <%= curUserIsLogin %>;
+	fml.vars.isNewUser = <%= curUserisNewUser %>;
+	fml.vars.userLevel = <%= curUserLevel %>;
+	fml.vars.serverTime = <%= curServerTime %>;
+	fml.vars.appShare = <%= this.appShare %>;
+	fml.vars.params = <%= JSON.stringify(this.params) %>;
+	fml.vars.userInterests = <%= curUserTotalInterests %>;
+	fml.vars.footprintData = <%= JSON.stringify(curUserFootprintData) %>;
+</script>
+
+<!-- <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script> -->
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/member/footprint');
+_use:", this._JSstack, this._JSmods); %>
+
+<%#foot_simple.html%>

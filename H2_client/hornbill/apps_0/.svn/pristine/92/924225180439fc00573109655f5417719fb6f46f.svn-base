@@ -1,0 +1,40 @@
+<%# head_simple.html%>
+<% var data = this.specials_data; %>
+<nav>
+	<% data.image && data.image.forEach(function (v,k){ %>
+		<a href="/activity/fwindow/fuider_specials/?classify_id=<%= v.ac_id %>">
+			<img  class="<% if((k+1)%3 == 0){ %>right<% }else if((k+1)%3 == 1){ %>left<% } %>" src="<%= v.img_url %>" alt="分类入口">
+		</a>
+	<% }); %>
+</nav>
+<div class="main">
+  	<div id="wall"></div>
+  	<% if(!this.isSecondPage){ %>
+  	<div class="status_tips" data-status="loading"></div>
+  	<% } %>
+</div>
+<span class="gotop" style="bottom:<%if(this.os.iphone){%>60<%}else{%>20<%}%>px">
+	<img src="http://i.meilishuo.net/css/images/wap/tuan/gotop.png" />
+</span>
+<script>
+	<%= 'fml.vars.isSecondPage = ' + this.isSecondPage + ';'%>
+	<%= 'Meilishuo.config.poster0 = ' + JSON.stringify(data.activity_info) + ';'  %>
+</script>
+<script type="text/html" id="tpl">
+	<? this && this.forEach(function (v,k){ ?>
+	<figure>
+		<a class="poster-link lazy_bg" href="<?= v.url ?>" data-src="<?= v.image_url ?>" style="display: block; width: 100%; height: <?= v.image_height * fml.vars.winWidth / v.image_width ?>px;"></a>
+		<figcaption>
+			<p><span><?= v.ctime ?></span><? if(v.title){ ?><?= v.title ?><? } ?></p>
+		</figcaption>
+	</figure>
+	<? }); ?>
+</script>
+
+<script>
+	fml.vars.type = <%= this.type %>;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/fuider_specials');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html %>

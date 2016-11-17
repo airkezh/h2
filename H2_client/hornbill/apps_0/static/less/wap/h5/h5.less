@@ -1,0 +1,35 @@
+@import "../block.less";
+
+html,body{.hidden;}
+.wrap{
+	.w(100%);
+	.auto;
+}
+.main,.page{.w(100%);.h(100%);}
+.main{
+	.pr;
+}
+.page{
+	.pa;.hidden;
+	.bgwhite;
+
+	&[status="drop"]{
+		-webkit-transition:all 0.3s ease-out 0s;
+		z-index:1;
+	}
+
+	>div{.pa;background-size:100%;background-repeat:no-repeat;
+		a{.pa;.w(100%);.h(100%);top:0px;left:0px;}
+	}
+	.hide{.none;}
+	&:first-child{z-index:1;}
+}
+
+.mask{.pa;top:0px;left:0px;right:0px;bottom:0px;z-index:99;
+	.none;
+	background:rgba(0,0,0,0.6) url("http://i.meilishuo.net/css/images/wap/activity/baoyang/shareLead.png") center 10% no-repeat;
+	background-size:76%;
+}
+.shareInfo{
+	.h(0px);.hidden;
+}

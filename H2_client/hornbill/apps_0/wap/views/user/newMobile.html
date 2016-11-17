@@ -1,0 +1,27 @@
+<%# head.html %>
+
+<div class="outer_main">
+	<div class="title">
+		请先验证你的新手机号码
+	</div>
+	<form id="bindMobileForm" method="post" onsubmit="return false" action="">
+		<div class="form_wrap">
+			<p class="form-list">
+				<input class="lipt l_ipt lipt_length" autocomplete="off" id="mobile" name="mobile" type="tel"  placeholder="输入需要绑定的手机号码" value=""/>
+			</p>
+			<p class="form-list">
+				<input class="lipt l_ipt" autocomplete="off" id="code" name="code" type="text" value="" placeholder="请输入验证码"/>
+				<input class="s_button" type="submit" name="s_code" id="s_code" style="" value="发送验证码" />
+			</p>
+		</div>
+		<div class="submitBox">
+			<span class="ErrorMessage" style="display:none">错误信息</span>
+			<input class="next_step" type="submit" value="下一步"/>
+		</div>
+	</form>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/newMobile');
+_use:", this._JSstack , this._JSmods); %>
+
+<%# foot_simple.html%>

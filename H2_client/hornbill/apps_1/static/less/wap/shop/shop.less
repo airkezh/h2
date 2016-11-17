@@ -1,0 +1,153 @@
+@import "../block.less";
+html { .f(62.5%); }
+html,body {
+	.bgwhite;
+	.fc(#787878);
+}
+.slide;
+.poster;
+
+header {
+	.h(11rem);
+	background-size: 100% auto;
+	background-position: center center;
+	.shop_info {
+		.pt(1.5rem);
+		.h(9.5rem);
+		background-color: rgba(0,0,0,.7);
+	}
+	.shop_logo {  
+		.block;
+		margin: 0 auto 1rem;
+		border: 2px solid #fff;
+		&,img {
+			.w(4.8rem);
+			.h(4.8rem);
+			.border-r(999px);  /*@hack android2.3自带浏览器不支持 % */
+			.border-r(50%);
+		}
+	}
+	h3 { .f(1.7rem); .fn; .c; .white; }
+}
+
+nav {
+	.pr;
+	.h(4rem);
+	.pr(1.4rem);
+	.f(1.4rem);
+	.border-bc(solid);
+	.mb(1.75rem);
+	li {
+		.left;
+		.w(25%);
+		.l(4rem);
+		.c;
+		.f(1.7rem);
+		strong {
+			.fn;
+			.i_block;
+			.pl(.5rem);
+			.pr(.5rem);
+		}
+	}
+	.clearfix;
+	.on_price {
+		strong { .pr; }
+	}
+	#price_order { 
+		.pa; 
+		top: 0; 
+		right: -1rem; 
+		.w(1.1rem); 
+		.h(100%); 
+		background: url("@{pic_url}/images/shop/price_order_default.png") 0 50% no-repeat;
+		background-size: 80% auto;
+	}
+	.current {
+		.f(1.9rem);
+		.red;
+		strong { border-bottom: .2rem solid @red; }
+		#price_order {
+			&.price-up { background-image: url("@{pic_url}/images/shop/price_up.png"); }
+			&.price-down { background-image: url("@{pic_url}/images/shop/price_down.png"); }
+		}
+	}
+}
+
+/*回到顶部*/
+#gotop{
+	.none;
+	.pf;
+	right: 20px;
+	.w(80*@w);
+	img{
+		.w(100%);
+	}
+}
+
+/** poster样式 */
+.poster(){
+	#goods_wall { .pr; }
+	.poster-link {
+		.pr;
+		.block;
+		background: #fff url("@{pic_url}/images/huodong/tuan/prebg.png") center center no-repeat;
+		background-size: 100% auto;
+		img { .w(100%); .h(100%); .pa; top: 0;}
+		.none { .none; }
+	}
+	.poster {
+		.pa;
+		figure{
+			margin-left: .25rem;
+			margin-right: .25rem;
+			height: 100%;
+			-webkit-border-radius: 7px;
+			border-radius: 7px;
+			box-sizing: border-box;
+		}
+		figcaption { 
+			padding: .4rem; .bgwhite; 
+			div { margin: .4rem 0; .f(1.3rem); }
+		}
+		.poster-info-title {
+			.f(1.2rem);
+			.l(120%);
+			/* 文本折行隐藏 */
+			overflow: hidden;
+			text-overflow: ellipsis;
+			display: -webkit-box;
+			-webkit-line-clamp: 2;
+			-webkit-box-orient: vertical;
+		}
+		.poster-info-price { .red; }
+		.poster-info-like { 
+			.fc(#999); 
+			.ml(1rem);
+			.pl(1.3rem);
+			background: url("@{pic_url}/images/shop/heart.png") 0 48% no-repeat;
+			background-size: 1.2rem auto;
+		}
+	}
+	[data-col="0"] { figure { .pl(.6rem); .pr(.3rem); } }
+	[data-col="1"] { figure { .pl(.3rem); .pr(.6rem); } }
+
+	/*加载提示*/
+	.status_tips {
+		.c; .l(4rem); .f(1.4rem); color:#888;
+		&[data-status="loading"] {
+			&:before {
+				content: '加载中 ...'
+			}
+		}
+		&[data-status="stop"] {
+			&:before {
+				content: '木有了'
+			}
+		}
+	}
+}
+.show { display: block; }
+.hide { display: none; }
+
+

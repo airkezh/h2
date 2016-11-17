@@ -1,0 +1,31 @@
+<script type="text/html" id="posterWall">
+<?
+var pt = this.pt * 100;
+	if(!pt){
+		pt = (this.v.pic_height / this.v.pic_width) * 100;	
+	}
+?>
+<li class="goods_li poster_grid poster_wall"> 
+	<div class="li_border">
+		<a style="padding-top:<?= pt ?>%" asrc="<?=this.v.goods_img?>" href="/wx/detail?tid=<?= this.v.twitter_id?>&d_r=<?= this.v.d_r?>&page_name=<?= this.v.page_name?>" class="list_img img_bt pic_load">
+		</a>
+		<span class="goods_type">
+			<? this.v.mark && this.v.mark.map(function(data, idx){?>
+				<img src="<?= data.img_url?>"/>
+			<?});?>
+		</span>
+		<div class="list_info">
+			<p class="list_title"><?= this.v.goods_title?></p>
+			<p class="list_cost">
+				<span class="money_now ml_color">￥<?= this.v.discount_price?></span>
+				<?if(this.v.original_price){?>
+				<del class="normal_cost">¥<?= this.v.original_price?></del>
+				<?}?>
+			</p>
+			<p class="colorgrey">
+				已有<span><?= this.v.sale_num?></span>人购买
+			</p>
+		</div>
+	</div> 
+</li>
+</script>

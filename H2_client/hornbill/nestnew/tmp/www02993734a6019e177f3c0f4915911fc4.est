@@ -1,0 +1,114 @@
+/*--/Users/MLS/Documents/H2/H2_client/hornbill/apps_0/www/views/common/topbar.html--*/ 
+     var est = require(config.path.lib + 'est/est.js'); 
+     var _extFn = require('/Users/MLS/Documents/H2/H2_client/hornbill/nestnew/server/lib/est/extFn.js'); 
+     function requireFn(tpl) { return est.renderFile('/Users/MLS/Documents/H2/H2_client/hornbill/apps_0/www/views/' ,tpl , null , null ,'www' ,true); } ; 
+     function __getHtml (_data) { 
+       function jsRender(tpl , id) { return est.jsRender(requireFn(tpl)(_data), id  ); } ; 
+       var __htm ='';
+__htm += '';
+
+	var mSubstr = _extFn.mSubstr;
+
+	var domain = _data.MAIN_SITE_DOMAIN;
+	var userInfo = _data.userInfo;
+	var msg = _data.msg || {};
+;__htm += '\n<div id="com-topbar">\n	<div class="inner">\n		<ul>\n			';
+ if(userInfo && userInfo.user_id){ ;__htm += '\n				<li class="drop">\n					<a class="nick" href="http://order.meilishuo.com/pcenter">\n						<img class="face" src="';
+__htm += userInfo.avatar_d ;
+__htm += '" />\n						';
+__htm += mSubstr(userInfo.nickname, 7, '...') ;
+__htm += '\n					</a>\n					<a class="member" href="';
+__htm +=domain;
+__htm += '/member/main/">\n						<span class="level level-';
+__htm +=userInfo.user_grade;
+__htm += '"></span><em class="arrow"></em>\n					</a>\n					<ul class="down account">\n						';
+ if (userInfo.is_mall != 1) {;__htm += '\n						<li><a href="';
+__htm +=domain;
+__htm += '/person/u/';
+__htm += userInfo.user_id;
+__htm += '?type=editor" target="_blank">我的杂志</a></li>\n						<li><a href="';
+__htm +=domain;
+__htm += '/person/u/';
+__htm += userInfo.user_id;
+__htm += '?type=share" target="_blank">我的分享</a></li>\n						';
+};__htm += '\n						<li><a href="';
+__htm +=domain;
+__htm += '/settings/setPersonal" target="_blank">账号与安全</a></li>\n						<li><a href="';
+__htm +=domain;
+__htm += '/user/logout">退出</a></li>\n					</ul>\n				</li>\n				<li class="drop">\n					<a>\n						消息\n						';
+if(msg.total_num != 0){;__htm += '\n							<span class="msg-num">';
+__htm +=msg.total_num;
+__htm += '</span>\n						';
+};__htm += '\n						<em class="arrow"></em>\n					</a>\n					<ul class="down msg">\n						';
+
+							var msgTitle = {
+								"customer_num" : ["有%d个客服消息", domain + "/im/"],
+								"fans_num" : ["有%d个新关注", domain + "/ur/fans/" + userInfo.user_id],
+								"atme_num" : ["有%d个新@我的", domain + "/atme/"],
+								"pmsg_num" : ["有%d条新私信", domain + "/msg/main/user"],
+								"sysmesg" : ["有%d条新系统消息", domain + "/msg/main/syser"],
+								"recommend_num" : ["有%d个喜欢我的", domain + "/ur/like/" + userInfo.user_id],
+								"a_reply_num" : ["有%d条新的回复", domain + "/club/recommend/" + userInfo.user_id]
+							}
+
+							var outMsg = '';
+
+							Object.keys(msgTitle).forEach(function(key){
+								if(key in msg && msg[key] != 0){
+									outMsg += '<li class="notice"><a target="_blank" href="' + msgTitle[key][1] + '">' +
+											   msgTitle[key][0].replace('%d','<i>'+msg[key]+'</i>') + '</a></li>';
+								}
+							});
+
+							if(outMsg){
+								outMsg += '<li class="know">知道了</li>';
+							}
+						;__htm += '\n						';
+__htm +=outMsg;
+__htm += '\n						<li><a href="';
+__htm +=domain;
+__htm += '/ur/fans/';
+__htm += userInfo.user_id;
+__htm += '" target="_msg"> 查看关注</a></li>\n						<li><a href="';
+__htm +=domain;
+__htm += '/atme/" target="_msg"> 查看@我的</a></li>\n						<li><a href="';
+__htm +=domain;
+__htm += '/msg/main/user" target="_msg"> 查看私信</a></li>\n						<li><a href="';
+__htm +=domain;
+__htm += '/msg/main/syser" target="_msg"> 查看系统消息</a></li>\n						<li><a href="';
+__htm +=domain;
+__htm += '/ur/like/';
+__htm += userInfo.user_id;
+__htm += '" target="_msg"> 查看喜欢我的</a></li>\n						<li><a href="';
+__htm +=domain;
+__htm += '/club/recommend/';
+__htm += userInfo.user_id;
+__htm += '" target="_msg"> 查看回复我的</a></li>\n					</ul>\n				</li>\n				<li>\n					<a href="';
+__htm +=domain;
+__htm += '/person/u/';
+__htm += userInfo.user_id;
+__htm += '?type=like" target="_blank">\n						<em class="like"></em>我的喜欢\n					</a>\n				</li>\n			';
+ } else { ;__htm += '\n				<li> \n					<a href="';
+__htm +=domain;
+__htm += '/connect/auth/weixin"><em class="weixin"></em>微信登录</a>\n				</li>\n				<li>\n					<a href="';
+__htm +=domain;
+__htm += '/connect/auth/qzone"><em class="qq"></em>QQ登录</a>\n				</li>\n				<li>\n					<a href="';
+__htm +=domain;
+__htm += '/user/login">登录</a>\n				</li>\n				<li>\n					<a href="';
+__htm +=domain;
+__htm += '/user/register">注册</a>\n				</li>\n			';
+ } ;__htm += '\n			<li>\n				<a href="';
+__htm +=domain;
+__htm += '/cart" target="_blank"><em class="cart"></em>我的购物车 <span class="cart-num">0</span></a>\n			</li>\n			<li>\n				<a href="';
+__htm +=domain;
+__htm += '/order" target="_blank"><em class="order"></em>我的订单</a>\n			</li>\n			';
+ if(!(userInfo && userInfo.user_id)){ ;__htm += '\n			<li>\n				<a href="';
+__htm +=domain;
+__htm += '/member/main/" target="_blank"><em class="imember"></em>美丽说会员</a>\n			</li>\n			';
+ } ;__htm += '\n			<li class="drop">\n				<a href="';
+__htm +=domain;
+__htm += '/client/?frm=daeh" target="_blank">\n					<em class="mob"></em>下载App<em class="arrow"></em>\n				</a>\n				<ul class="down app">\n					<li>\n						<img src="http://d01.res.meilishuo.net/pic/_o/80/81/44b8493edbbf431a52895c99376f_120_120.cg.jpg">\n						<div class="client">美丽说客户端</div>\n						<div>发现流行，只做正确流行款</div>\n					</li>\n					<li>\n						<img src="http://d04.res.meilishuo.net/pic/_o/46/01/1112dfa5a6d33ee590c81181a7db_167_165.ch.png">\n						<div class="client">美丽说HIGO客户端</div>\n						<div>扫码下载，新手红包免费拿</div>\n					</li>\n				</ul>\n			</li>\n			<li>\n				<a class="last" href="';
+__htm +=domain;
+__htm += '/helpcenter/?frm=top_to_help" target="_blank">帮助中心</a>\n			</li>\n		</ul>\n	</div>\n</div>\n';
+return __htm;} 
+ exports.html = __getHtml; 

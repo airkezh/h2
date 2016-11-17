@@ -1,0 +1,70 @@
+<script type="text/html" id="posterWall">
+	<?
+var isShowShoppingCart = new Date().getTime() < new Date("2014-12-22").setHours(20) ? true : false;
+fml.vars.twitter_load = fml.vars.twitter_load || {};
+var scale = <% if (this.os.iphone) {%>30 <%} else {%>20 *  fml.vars.poster.scale<%}%>;
+	var mobUrl = Meilishuo.config.os && Meilishuo.config.os.mlsApp ? 'url_mob' : 'url';
+	$.each(this.tInfo , function(k , v){
+	if(!v || fml.vars.twitter_load[v.twitter_id]){return}
+	fml.vars.twitter_load[v.twitter_id] = true;
+
+	var pic_height = parseInt(v.poster_height * fml.vars.poster.colWidth/v.poster_width) + 90;
+	var len = fml.vars.poster.totalColNum * 2;
+	?>
+	<div class="productBox" style="position:absolute;width:<?= fml.vars.poster.colWidth?>px;" poster_height="<?= pic_height ?>">
+		<a class="link_box" href="<?= v[mobUrl]?>">
+			<figure>
+				<? if(v.horizontal_mark && v.horizontal_mark[0]){
+						var _l = 0; var style = '';
+						v.horizontal_mark.forEach(function(marks_data, index){
+							if(index > 1) return;
+				?>
+				<div class="Farm" style="<?= style ?>">
+
+					<div style="text-indent: -2px; font-weight: bold;position: absolute;width:100%;text-align: center;top:<?= (marks_data.text_margin_top - 14)+'px'?>; color:<?=marks_data.text_font_color?>"><?= marks_data.mark_text?></div>
+					<img class="Standard" src="<?= marks_data.img_url?>" style="width:<?= marks_data.img_width/1.3 ?>px;"/>
+				</div>
+				<?		style = 'left: ' + (parseInt(marks_data.img_width/1.3) + 6) + 'px;';
+						});
+					} ?>
+
+				<?if(v.soldout){?>
+				<img class="zeroflag" src="http://i.meilishuo.net/css/images/doota/huodong/shareact/soldout.png" width="40" />
+				<?}?>
+				<img  src="<?= v.show_pic?>" alt="" />
+			</figure>
+			<figcaption>
+				<div class="proTitle"><?= v.ginfo.goods_title?></div>
+				<div class="proPrice">
+					<span class="price"><i></i><?= (v.ginfo.goods_price + '').replace(/\.[0]*$/,'').replace(/[.]$/,'')?></span>
+					<?if(v.ginfo.origin_price){?>
+					<del  class="orig_price"><?= (v.ginfo.origin_price + '').replace(/\.[0]*$/,'').replace(/[.]$/,'')?></del>
+					<!--折扣
+					<span class="discount"><?= (+(v.ginfo.goods_price + '').replace(/\.[0]*$/,'').replace(/[.]$/,'').replace(/^￥/,'')/+(v.ginfo.origin_price + '').replace(/\.[0]*$/,'').replace(/[.]$/,'').replace(/^￥/,'')*10).toFixed(1)?>折</span>
+					-->
+					<?}?>
+					<?if(v.ginfo.discount){?>
+					<span class="discount"><?= v.ginfo.discount?></span>
+					<?}?>
+				</div>
+				<div class="proStatis" style="border-bottom:none; display:none">
+					<span><i class="like"></i><?= v.count_like?></span>
+					<span class="num"><b><?= v.sale_num ?></b>人购买</span>
+				</div>
+				<!--售罄标-->
+				<?if (typeof v.stock != "undefined" && v.stock <= 10) {?>
+				<div class="proState">
+					<img src="<?=Meilishuo.config.picture_url?>images/wap/activity/promotion/1220/sub_venue/<?if (v.stock > 0){?>nl<?=v.stock?>.png<?} else {?>nsellout.png<?}?>" alt=""/>
+				</div>
+				<?}?>
+				<!--立即抢购/加入购物车-->
+				<?if (true) {?>
+				<div class="proTips">
+					<img src="<?=Meilishuo.config.picture_url?>images/wap/activity/promotion/1220/sub_venue/<?if(isShowShoppingCart){?>gou_wu_che.png<?} else {?>qiang_gou.png<?}?>" alt=""/>
+				</div>
+				<?}?>
+			</figcaption>
+		</a>
+	</div>
+	<?});?>
+</script>

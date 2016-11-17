@@ -1,0 +1,87 @@
+<%#head.html%>
+<%
+if(this.b_banner && this.b_banner.mob_tuan_big_banner&&this.b_banner.mob_tuan_big_banner.length){
+	var bigbanners=this.b_banner.mob_tuan_big_banner;%>
+<div id="topbanner">
+	<a href="<%= bigbanners[0].link%>">
+		<img src="<%= bigbanners[0].show_pic%>" alt="<%= bigbanners[0].tab_name%>" />
+	</a>
+</div>
+<%}%>
+<%if(this.s_banner&& this.s_banner.mob_tuan_pin_banner_right&&this.s_banner.mob_tuan_pin_banner_right.length){
+	var smallbanners=this.s_banner.mob_tuan_pin_banner_right,
+	pinbanner=this.m_banner&& this.m_banner.mob_tuan_pin_banner&& this.m_banner.mob_tuan_pin_banner?this.m_banner.mob_tuan_pin_banner:null;%>
+<div class="bannerbox">
+	<%if(pinbanner){%>
+		<figure><a href="<%= pinbanner[0].link%>"><img src="<%= pinbanner[0].show_pic%>" alt="<%= pinbanner[0].tab_name%>" /></a></figure>
+	<%}%>
+	<%smallbanners.forEach(function(data){%>
+       <figure><a href="<%= data.link%>"><img src="<%= data.show_pic%>" alt="<%= data.tab_name%>" /></a></figure>
+	<%})%>
+</div>
+<%}%>
+<section class="container">
+	<%if(this.tuanhome){%>
+	<hgroup>
+		<h3><img src="<%= this.PICTURE_URL%>images/wap/tuan/t_free.png" alt="" /></h3>
+		<span>每日10:00上新</span>
+		<div class="clear_f"></div>
+	</hgroup>
+	<%}%>
+	<div class="content">
+		<div class="goods_wall">
+		</div>
+		<div class="pullUp" status="loading"></div>
+	</div>
+</section>
+<!-- <div class="filter_nav">
+	<div class="show_filter <%=!isNaN(this.cata)&&this.cata!=0? 'filtered': 'filter'%>"></div>
+	<a deg="270" href="/tuan?cata=1" class="item cloth">
+		<span>
+            <i>衣服</i>
+        </span>
+    </a>
+	<a deg="292.5" href="/tuan?cata=2" class="item shoe">
+		<span>
+            <i>鞋子</i>
+        </span>
+    </a>
+	<a deg="315" href="/tuan?cata=3" class="item bag">
+		<span>
+            <i>包包</i>
+        </span>
+    </a>
+    <a deg="337.5" href="/tuan?cata=4" class="item jewelry">
+    	<span>
+            <i>配饰</i>
+        </span>
+    </a>
+	<a deg="360" href="/tuan" class="item all">
+		<span>
+            <i>全部</i>
+        </span>
+    </a>
+</div> -->
+<a class="gotop" style="bottom:<%if(this.isIphone){%>60<%}else{%>20<%}%>px">
+	<img src="http://i.meilishuo.net/css/images/wap/tuan/gotop.png" />
+</a>
+<%= requireFn('tuan/tuan_list.html')({
+	'os' : this.os
+	, 'apk' : ''
+	,'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+});%>
+<script>
+fml.vars.poster = {
+
+};
+fml.vars.isIphone='<%=this.isIphone%>';
+fml.vars.isIpad='<%=this.isIpad%>';
+<%= this.list? 'Meilishuo.config.poster0 = '+JSON.stringify(this.list)+';':'' ;%>
+fml.vars.geturl='<%=this.geturl%>';
+fml.vars.hostname='<%=this.hostnm%>';
+fml.vars.is_lazyload_poster=true;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/tuan');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html%>

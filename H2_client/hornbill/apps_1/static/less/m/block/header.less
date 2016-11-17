@@ -1,0 +1,53 @@
+.header(){
+	.a(){
+		.header{
+			.pa;
+			.pr;
+		}
+	}
+	.header{
+		.pf;
+		.c;.w(100%);z-index:11;
+		top:0px;left:0px;
+		.icon-person{ .icon > .person;
+			.mr(10*@px);
+		}
+		.icon-right{.icon > .rightBtn;.mr(20*@px);}
+
+		.icon-menu{ .icon > .menu; z-index:10;}
+		.icon-search{ .icon > .search; z-index:10;}
+		.icon-search-input{ .icon > .search-input; }
+		.icon-logo{ .icon >.logo; }
+		.icon-back{.icon > .back;}
+		.icon-home{.icon > .home;}
+		.fixBling;
+		.content{
+			.bannerStyle;
+			.l(@header_top);.f(36*@px);
+		}
+		&[status="open"]{
+			.openClosed{
+				.transform(rotate(0deg));	
+			}
+		}
+		&[status="search"]{
+			.nav_top{
+				.h(@header_nav + 20*@px);
+			}
+			.nav_box{
+				-webkit-transition:right 0.2s ease-out 0.4s;
+				right:100%;
+			}
+			.search{
+				-webkit-transition:right 0.2s ease-out 0.4s;
+				.w(100%);
+				right:0%;
+			}
+		}
+		&[status="hide"]{
+			.nav_top{
+				.h(0px);	
+			}
+		}
+	}
+}

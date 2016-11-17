@@ -1,0 +1,364 @@
+@import "../../block.less";
+@import "../tuanbase.less";
+@import "../imgSlide.import.less";
+
+html,body{
+	.bgc(#fff);
+	.w(100%);
+	.f(10px);
+}
+.main{
+	.pr;
+	.hidden;
+	min-width: 320px;
+	margin: 0 auto;
+	max-width: 640px;
+}
+.slideWraper{
+	.pr;
+}
+.slide;
+img{
+	.w(100%);
+	.block;
+}
+ul{list-style:none;}
+i{font-style:normal;}
+.line{
+	.pa; 
+	top: 30px;
+}
+.f_14{.f(1.4rem);}
+.f_15{.f(1.5rem);}
+.f_16{.f(1.6rem);}
+.f_20{ .f(2rem);}
+.f_30{.f(3rem);}
+.f_23{.f(2.3rem);}
+.f_25{.f(2.5rem);}
+.red_f1{.fc(#f66);}
+.bgray_f{ .bgray;}
+.top-bnr{.pr;.hidden;}
+/*
+.a-desc{
+	.none;
+	.w(20%);
+	.pa;
+	right: 0;
+	bottom: 20px;
+}
+.movelr{
+	-webkit-animation: movelr 1s .2s 2 ease both;
+}
+*/
+.rbclose{
+	.w(50%);
+	.h(50%);
+    .pa;
+    top: 10px;
+    right: 10px;
+}
+.nav_wap{
+	min-height: 3.6rem;
+}
+.navbox{
+	.none;
+	.w(100%);
+	.f(1.4rem);
+	.fc(#999);
+	.bgwhite;
+}
+.scrollin{
+	.pf; top:-1px; left: 0; margin: 0 auto; z-index:100;
+}
+.scrollout{
+	.pr;
+}
+.lhp100{
+	.line-h05(100%);
+}
+.act-tip{ .pt(10px); .pb(10px); .pl(3.4%); .f(1.2rem); .gray; .bgc(#f8f8f8);
+	.t-c{ .right; .mr(.9rem);}
+	.time-bg{ .bgc(#777); .white; .border-r(2px); padding: 1px;}
+}
+.navtip{
+	.left;
+	.ml(8px);
+	.w(60px);
+	background: url('@{pic_url}/images/wap/tuan/navtip.png') center center no-repeat;
+	background-size: 104% 70%;
+	text-indent: -999px;
+}
+.points {
+	position: relative;
+	overflow: hidden;
+	.w(100%);
+	margin: 0 auto;
+	height: 42px;
+}
+.points s {
+	width: 52px;
+	height: 40px;
+	border-bottom: 3px solid #ff6666;
+	position: absolute;
+	left: 50%;
+	bottom: -1px;
+	margin-left: -26px;
+	//background: url('http://d01.res.meilishuo.net/pic/_o/9e/07/e796f0e2feed9aca188e16f3ffad_104_91.cf.png') top center no-repeat;
+	//background-size: 125%;
+	z-index: 10;
+}
+
+.points ul {
+	list-style: none;
+	-webkit-transform: translate3d(0,0,0);
+	-webkit-transition: all .3s ease-in-out;
+	width: 1000px;
+	overflow: hidden;
+	position: relative;
+	z-index: 10;
+}
+.points ul li {
+	float: left;
+	line-height: 17px;
+}
+.points ul li a {
+	.fc(#999);
+	.f(1.6rem);
+	display: block;
+	//width: 63px;
+	margin-top: 5px;
+	text-align: center;
+	text-decoration: none;
+	font-weight: 700;
+	outline: 0;
+	font-weight: 400;
+	font-family: "Helvetica Neue";
+	label{
+		.transform(scale(0.875));
+		.block;
+		.f(1rem);
+	}
+}
+.points ul .darkgray a{
+	.fc(#666);
+	label{.fc(#999);}
+} 
+.points ul .tomorrow a{
+	.f(1.3rem);
+	label{
+		.fc(#666);
+		.transform(scale(1));
+		.f(1.3rem);
+	}
+}
+.points ul .curr a{
+	.fc(#ff6666);
+	label{
+		.fc(#ff6666);
+	}
+}
+#content_box{ padding: 0 2%; }
+.zhengdian{			
+	.mt(14px);.pr;.bgc(#fff);min-height:140px;
+	>figure{.w(45%);.i_block;.pr;.mt(2px);
+	}
+	.desc{.w(55%);.right;
+		li{.ml(7px);.mr(7px);.pa;.w(53%);}
+		li.li-a{top:1%; overflow: hidden; white-space: nowrap;}
+		li.li-b{top:19%;}
+		li.li-c{top:45%;}
+		li.li-d{bottom:3px;}
+		
+	}
+	.now_price{
+		.ml(-6px);
+	}
+	.old_price{.ml(-4px); .f(1rem); .fc(#b3acb0);}
+	.gcata{
+		display: inline-block;
+		line-height: 15px;
+		width: 38px;
+		i{
+			.f(0.9rem);
+			.fc(#fff);
+			padding: 1px 5px;
+			.ml(-1px);
+		}
+	}
+	.t_count{
+		.f(1rem);
+		.fc(#80737b);
+	}
+	.red_bg{ .bgc(#f66);}
+	.yel_bg{
+		.bgc(#ffb414);
+	}
+	.mark{
+		position: absolute;
+		top: -10px;
+		left: -10px;
+		.w(45px);
+		.h(45px);
+		background: url('@{pic_url}/images/wap/tuan/mflag.png') center center no-repeat;
+		background-size: 100% 100%;
+	}
+	.saleinfo{
+		p{
+			.fc(#80737b);
+			height: 1.5rem;
+			.f(1rem);
+			
+			line-height: 1.5rem;
+			
+		}
+		.scale{
+			border: solid 1px rgba(255, 232, 20, .6);
+			text-align: center;
+			position: relative;
+			z-index: 5;
+		}
+		.progress{
+			display: block;
+			height: 1.6rem;
+			opacity: .6;
+			.bgc(#ffe814);
+			margin-top: -1.6rem;
+			margin-left: 1px;
+		}
+	}
+}
+.status_btn {
+	.pt(10px);
+	.pb(10px);
+	.f(1.4rem);
+	.fc(#fff);
+	.block;
+	text-align: center;
+	background-color: #ff6666;
+}
+span.over_btn,li.over_btn{.bgc(#ccc;);}
+span.reminded_btn,li.reminded_btn{background: #ddd;}
+span.empty_btn,li.empty_btn{.bgc(#b6b6b6);} 
+span.buy_btn,li.buy_btn{
+	.bgc(#da333e); 
+	a{.block;.w(100%);
+		.h(100%); 
+		.fc(#fff);
+	}
+}
+/* new list*/
+.zhengdian-new.fir{ border-top: none;}
+.zhengdian-new{	.pt(14px); .mb(14px); .pr; .bgc(#fff); min-height:110px; border-top: 1px solid #eee;
+	>figure{ .w(34%); .i_block; .pr; .mt(2px); }
+	.desc{ .w(66%); .right; 
+		li{ .ml(7px); .mr(7px); .pa; .w(62%); .bgray;}
+		li.li-a{top:1%; overflow: hidden; white-space: nowrap; .pt(14px);}
+		li.li-b{top:34%;}
+		li.li-c{top:55%;}
+		li.li-d{bottom:2px;}
+	}
+	.discout{
+		.bgc(#FF6666); .i_block; padding: 0.3rem 4px; .white; .ml(2.1%);
+	}
+	.now_price{ .bgray; .ml(-7px); vertical-align: bottom; }
+	.old_price{ .f(1rem); .gray;}
+	.mark{
+		position: absolute;
+		top: -10px;
+		left: -10px;
+		.w(45px);
+		.h(45px);
+		background: url('@{pic_url}/images/wap/tuan/mflag.png') center center no-repeat;
+		background-size: 100% 100%;
+	}
+	.saleinfo{
+		p{ .gray; height: 1.5rem; .f(1rem); line-height: 1.5rem; }	
+	}
+	.statusinfo{ border: 2px solid #ff6666; .border-r(3px); .h(2rem); .l(2rem); .flexbox;
+		.staus-bar, .status-btn{ .flex(1); .c; min-width: 50%; max-width: 50%;}
+		.staus-bar{ .pr;}
+		.status-btn{ .bgc(#ff6666); .white;
+			a{ .block; .white;}
+		}
+		.progress{ .pa; .h(2rem); opacity: .1; .bgc(#ff6666); left: 0; top: 0;}
+	}
+	.statusinfo.status_sum_empty, .statusinfo.status_sum_over, .statusinfo.status_sum_empty{ 
+		border: 2px solid #ddd;
+		.status-btn{ .bgc(#ddd);}
+		.progress{ opacity: .2; .bgc(#ddd);}
+	}
+	.statusinfo.status_sum_remind{ 
+		border: 2px solid #fdac29;
+		.status-btn{ .bgc(#fdac29);}
+	}
+}
+
+/*dialog*/
+.dialog();
+#dialogLayer .dialogTitle .close{.none;}
+.dialog_box{
+	.pt(1rem);.c;
+	p{ .l(2rem); .f(1.4rem); }
+	.mask_btn{.white; .border-r(40*@px); .border-n; .f(1.4rem); padding: 1% 1rem;.w(32%); .left;.ml(4%);.mt(20px);
+		}
+	.r_btn{.right;.mr(5%);background:#f69;}
+	.l_btn{background:#ffad5c;}
+}
+/* 分享 */
+//.starBox { .star_box; }
+/* 明日预告列表*/
+.period{ .f(1.6rem); .auto; .w(70%); .mt(15px); .mb(12px); .pr; z-index: 1;
+	.line-bg{ .line-h05(100%); margin-top: .7rem; .pa; z-index: 2}
+	h6{ .c; .w(30%); .auto; .bgwhite; .pr; z-index: 3;}
+}
+.forshow-box{ .clearfix;
+	.goodinfo{ .w(48%); .left; padding: 1%;}
+	figcaption{ padding: 10px 0 10px; .c; 
+		.status-btn{ .mt(10px); .pt(6px); .pb(6px); .f(1.4rem); .fc(#fff); .block; .w(80%); .auto; .c; .bgc(#ff6666); .border-r(3px);}
+		.status-btn.reminded_btn{ .bgc(#ddd);}
+		.foretit{ .f(1.3rem); 
+			a{ .bgray;} 
+		}
+		.foreprice{ .mt(10px);
+			.now_price{ .f(1.5rem); .bgray;}
+			.old_price{ .gray;}
+			.discout{ .bgc(#FF6666); .i_block; vertical-align: bottom; padding: 0.3rem 4px; .white;}
+		}
+	}
+}
+
+/* 明日预告滚动 */
+.foreshow{ .mb(15px);
+	.colorbar{ .h(8px); .bgc(#f8f8f8);}
+	.fore-tit{ padding: 1rem 0; .pl(3.1%); 
+		.activity-rule{ .right; .w(5rem); .mt(-5px);}
+	}
+	.fore-list{  .nowrap; .hidden; .pr;	
+		.fore-list-wrap{ .flexbox;}
+		.goodsInfo{ .block; .w(25%); .ml(3.1%);
+			.desc{ .c; .pt(10px);
+				.flexbox;
+				.justify-content(center);
+				span, del{
+					.block;
+					.transform(scale(0.875));
+				}
+				span{ .fc(#333); .f(1.3rem);}
+				del{ .fc(#999);}
+			}
+		}
+		.goodsInfo.seemore{ .bgc(#eee);
+			p{ .pt(46%); .c;}
+		}
+	}
+}
+@-webkit-keyframes movelr{
+	0%{-webkit-transform:translate(5px,0);}
+	50%{-webkit-transform:translate(0px,0);}
+	100%{-webkit-transform:translate(5px,0);}
+}
+@media screen and (min-width: 360px){
+	html,body {
+	.f(12px);
+	}
+}

@@ -1,0 +1,128 @@
+<!--
+/**
+ * @fileoverview 首页 － 签到领优惠券
+ * @requires zepto
+ * @author kehuang@meilishuo.com
+ * @date 2015-05-08
+ */
+-->
+
+<%#head.html%>
+<%
+	var curPageData = this.pageData || {},
+		curCouponsData = this.couponsInfo.data || {},
+		curUserHeadPic = this.mobUserInfo.data.avatar_b || this.PICTURE_URL + 'images/wap/activity/sign_mall/default_head.jpg';
+%>
+
+<div class="main">
+	<%
+		var curBodyBg = curPageData.bg_pic || '',
+			curBodyStyle = (curBodyBg == '') ? '' : 'background:url(' + curBodyBg + ') no-repeat;background-size:100%;';
+	%>
+	<div class="body_wrap" style="<%= curBodyStyle %>">
+		<div class="head_wrap">
+			<!-- <a href="javascript:;" class="head">
+				<img src="<%= curUserHeadPic %>">
+			</a>
+			<div class="award">
+				<div id="j_total_award" class="num"><%= curCouponsData.coin || 0 %></div>
+			</div> -->
+
+			<div id="j_total_award" class="total_award">&nbsp;&nbsp;&nbsp;<%= curCouponsData.coin || 0 %></div>
+		</div>
+
+		<div class="coupon_wrap"></div>
+	</div>
+</div>
+
+<script type="text/html" id="j_coupon_tpl">
+	<?
+		var coupons = this.threshold || [];
+
+		if (coupons.length > 0) {
+			var serverDate = new Date(this.serverDate),
+				serverDay = serverDate.getDate(),
+				serverTime = serverDate.getTime(),
+				serverHours = serverDate.getHours(),
+				activityStartTime = new Date(2015,6,16,23,59,59).getTime(),
+				activityEndTime = new Date(2015,6,20,00,00,00).getTime();
+	?>
+	<ul class="coupon_wall">
+	<?
+			$.each(coupons, function(index, coupon){
+				var status = 0,
+					curClassName = '',
+					iconClassName = '',
+					statClassName = '',
+					left = coupon.left || 0,
+					credit = coupon.credit || 0,
+					dcredit = coupon.display_credit || 0,
+					threshold = coupon.threshold || 0,
+					starttime = coupon.expiration.start || '',
+					endtime = coupon.expiration.end || '',
+					tempHours = 12;
+
+				if ((serverTime > activityStartTime) && (serverTime <= activityEndTime)) {
+					if (serverHours < tempHours) {
+						status = (tempHours == 12) ? 0 : 1;
+						statClassName = ' robbed';
+					} else {
+						if (left < 1) {
+							if (serverDay < 18) {
+								status = 3;
+							} else {
+								status = 4;
+							}
+
+							statClassName = ' robbed';
+						} else {
+							status = 2;
+							statClassName = '';
+						}
+					}
+				} else {
+					status = (tempHours == 12) ? 0 : 1;
+					statClassName = ' robbed';
+				}
+
+				if (status == 2) {
+					iconClassName = 'convert_' + dcredit + '_' + status + '_icon';
+				} else {
+					iconClassName = 'convert_' + status + '_icon';
+				}
+
+				curClassName = 'full_' + dcredit + '_coupon' + statClassName;
+	?>
+		<li>
+			<div class="coupon <?= curClassName ?>" data-price="<?= dcredit ?>" data-type="2">
+				<div class="<?= iconClassName ?>"></div>
+			</div>
+		</li>
+	<?
+			});
+	?>
+	</ul>
+	<?
+		}
+	?>
+
+	<%
+		var curBtnLink = curPageData.venue_link || 'javascript:void(0);',
+			curBtnBg = curPageData.btn_pic || '',
+			curBtnStyle = (curBtnBg == '') ? '' : 'background:url(' + curBtnBg + ') no-repeat center;background-size:100%;';
+	%>
+	<a href="<%= curBtnLink %>">
+		<div class="btn_box" style="<%= curBtnStyle %>"></div>
+	</a>
+</script>
+
+<script>
+	fml.vars.isLogin = <%= this.isLogin %>;
+	fml.vars.couponsData = <%= JSON.stringify(curCouponsData) %>;
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use("wap/page/activity/sign_coupon4");
+_use:", this._JSstack, this._JSmods); %>
+
+<%#foot_simple.html%>

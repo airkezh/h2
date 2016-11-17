@@ -1,0 +1,144 @@
+<%# head.html %>
+<%
+	var attr_intro = this.attr_intro && this.attr_intro.intro && this.attr_intro.intro[0];
+	var attr_word = this.attr_word;
+	var classify = this.classify.classify;
+
+	var poster_blcok_mt = (Math.ceil(attr_word.length/5)*1.66) + 'rem';
+	var down_info = this.down_info || {};
+    var download_info = down_info.guang_page || {};
+	if(!attr_word.length){
+		poster_blcok_mt = download_info.img ? (download_info.img_height/download_info.img_width)*100+'%':'0px';
+	}
+
+	function getAppLink(tid,xr){
+		if(!this.os.mlsApp ? true : false){
+			return '/share/item/'+tid;
+		} else {
+			return 'meilishuo://twitter_single.meilishuo?json_params='+encodeURIComponent(JSON.stringify({"twitter_info" : {"twitter_id":tid, "is_doota":1}, "r": xr}));
+		}
+	}
+%>
+
+<section id="poster_blcok" class="main_page" style="margin-top: <%= poster_blcok_mt %>;">
+
+	<!-- banner轮播 -->
+	<div id='banner-slider' class='banner-swipe' <% if(!this.banner){ %>style="display:none;"<% } %>>
+	    <div class='banner-swipe-wrap'>
+	    	<% this.banner && this.banner.data.forEach(function(data,index){ %>
+		    	<div><a href="<%= data.url %>" data-xr="<%= data.r %>"><img src="<%= data.image_url %>"></a></div>
+		    <% }); %>
+	    </div>
+	    <ul>
+	    	<% 
+	    		if(this.banner.data.length > 1){ 
+	    			this.banner && this.banner.data.forEach(function(list,i){
+	    	%>
+	    		<li <% if(i == 0){ %> class="banner-active" <% } %>></li>
+	    	<% });} %>
+	    </ul>
+	</div>
+
+	<!-- 分类 -->
+	<div class="classify_bg">
+		<div class="classify">
+			<% 
+				classify && classify.forEach(function(data,index){ 
+					var url = data.url;
+					if(index == 3){
+						url = "/beauty/brand/";
+					}
+					if(index >= 4){
+						url = "/beauty/effect/?id=#" + data.title;
+					}
+			%>
+			<div class="tab"><a href="<%= url %>" data-xr=" _page_code=cosmetic-Cosmetic_wap_ category:_page_area=category:_pos_id=<%= (index+1) %>"><img class="icon" src="<%= data.image_url %>"></img><p><%= data.title %></p></a></div>
+			<% }); %>
+		</div>
+	</div>
+
+	<!-- 秒杀 -->
+	<% if(this.spike.error_code == 0 && this.spike.data.length > 0){ %>
+	<div class="seckill_bg"><div class="seckill">惊喜秒杀<span>每日10:00  限时抢购</span></div></div>
+	<div id='slider' class='swipe'>
+	    <div class='swipe-wrap'>
+	    	<% this.spike && this.spike.data.forEach(function(list,i){ %>
+		    <div class="goods">
+		    	<% list.forEach(function(data,index){ %>
+		    	<div class="good"><a href="<%= getAppLink(data.twitter_id,this.xr.r) %>" data-xr="<%= data.r %>">
+		    		<div class="img" style="background:url('<%= data.goods_img %>');background-size:100% 100%;"></div>
+		    		<div class="cut"><%= parseInt( (data.goods_price/data.origin_price)*10 ) %>折</div>
+		    		<p><%= data.goods_title %></p>
+		    		<p class="price">￥<%= data.goods_price %><del>￥<%= data.origin_price %></del></p>
+		    	</a></div>
+		    	<% }); %>
+		    </div>
+		    <% }); %>
+	    </div>
+	    <ul>
+	    	<% 
+	    		if(this.spike.data.length > 1){
+	    		this.spike && this.spike.data.forEach(function(list,i){ 
+	    	%>
+	    	<li <% if(i == 0){ %> class="active" <% } %>></li>
+	    	<% });} %>
+	    </ul>
+	</div>
+	<% } %>
+
+	<!-- 品牌团 -->
+	<% if(this.brand.error_code == 0 && this.brand.data.length > 0){ %>
+		<div class="brand">
+			<div class="title_bg"><div class="title">品牌特卖<span>正品保障  精选好货</span></div></div>
+			<% this.brand && this.brand.data.forEach(function(data,index){%>
+			<a class="brand_goods" href="<%= data.url %>" data-xr="<%= data.r %>">
+				<div class="img"><img src="<%= data.image_url %>"></div>
+				<div class="time_bg"><img src="http://d04.res.meilishuo.net/pic/_o/07/92/067598f5ee204c7164d37a9fcc09_19_19.cj.png"><p class="time" time="<%= data.time_left %>">距结束还剩<span> 03 </span>天<span> 23 </span>小时<span> 44 </span>分<span> 23 </span>秒</p></div>
+			</a>
+			<% }); %>
+		</div>
+	<% } %>
+
+	<!-- 瀑布流 -->
+	<div class="poster_wrap">
+		<div class="poster_nav">
+			<div class="nav_item hot active" data-type="hot"><span>推荐</span></div>
+			<div class="nav_item boom" data-type="boom"><span>热销</span></div>
+			<div class="nav_item new" data-type="new"><span>上新</span></div>
+		</div>
+		<div class="goods_wall hot_section"></div>
+		<div class="goods_wall boom_section"></div>
+		<div class="goods_wall new_section"></div>
+		<div class="pullUp" status="loading"></div>
+	</div>
+</section>
+
+<%# block/wap_foot.html %>
+
+<script type="text/html" id="posterWall">
+	<? var v = this.v; ?>
+	<div class="poster_grid poster_wall" twitter_id="<?= v.twitter_id?>">
+		<figure>
+			<div class="pic_load" data-tid="<?= v.twitter_id?>">
+				<a xr="<?= v.r ?>" class="bs_load_img" asrc="<?= v.n_pic_file ?>" style="background-size:100% 100%;">
+						<img class="h_mark" style="width:0.48rem;" src="<?= v.horizontal_mark[0] && v.horizontal_mark[0].img_url ?>"/>
+				</a>
+			</div>
+			<p class="clothesTitle"><?= v.ginfo.goods_title ?></p>
+			<figcaption>
+				<span class="price"><?= v.ginfo.goods_price ?></span>
+				<span class="like icon-heart"><?= v.count_like ?></span>
+			</figcaption>
+		</figure>
+	</div>
+</script>
+
+<script>
+	fml.vars.poster0 = <%= JSON.stringify(this.poster0.tInfo) || '""' %>;
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/beauty/beauty');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot.html %>

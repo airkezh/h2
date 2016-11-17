@@ -1,0 +1,61 @@
+<%# lm/head.html%>
+<%
+var query = this._Request_query;
+var getLink = _extFn.getLink;
+var mSubstr = _extFn.mSubstr;
+%>
+<%if(this.navigate_banner.img_url){%><div class="banner_top" style="background:url(<%=this.navigate_banner.img_url%>)50% 0% repeat; height:420px;"></div>
+<%}%>
+<div class="spinner midSpinner pa_f" style="top:110px;"></div>
+<div class="content_fluid v_hidden">
+	<div class="cata_title">
+		<h1>大家喜欢的<%= this.catalog.currentWord || '宝贝'%></h1>
+	</div>
+	<div class="goods_wall">
+	<%if(this.catalog && this.catalog.sub){%>
+		<div class="corner_notic">
+			<div class="rec_nav red_tb">
+				<div class="catacon">
+				<% this.catalog.sub.group_map && this.catalog.sub.group_map.map(function(group_name, index){ %>
+					<% 
+					var icon_url = this.catalog.sub.group_info[group_name].icon_url;
+					%>
+					<h2><b><img src="<%=icon_url%>"/></b><%=group_name%></h2>
+					<div class="category">
+						<%for(var data in this.catalog.sub.group_keywords[group_name]){%>
+							<% var group_info = this.catalog.sub.group_keywords[group_name][data]; %>
+							<a class="<%if(this.catalog.currentWord == group_info.wm_name){%>active<%}else{%><%= group_info.isred == 1?'ishot':''%><%}%>"
+							href="<%= group_info.url ? group_info.url : '/guang/'+encodeURIComponent(group_info.word_name)%>" ><%= group_info.wm_name %></a>
+						<%}%>
+						<div class="clear_f"></div>
+					</div>
+				<%});%>
+				</div>
+			</div>
+		</div>
+	<%}%>
+	</div>
+	<div class="paging_panel c_f none_f">
+		<%#paging.html%>
+	</div>
+	<div class="spinner botSpinner none_f"></div>
+	<div class="clear_f"></div>
+</div>
+<%#poster.html%>
+<ul id="goTop" class="none_f">
+	<li id="go_top"><span class="ico_top"></span><a class="txt">返回顶部</a></li>
+</ul>
+
+<script>
+fml.vars.wm_id = '<%= this.wm_id %>';
+</script>
+
+<script>
+<%= this.alliance_poster? 'Meilishuo.config.poster0 = '+JSON.stringify(this.alliance_poster)+';':'' ;%>
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+  fml.use('page/poster0');
+  fml.use('page/lmCatalog');
+_use:", this._JSstack , this._JSmods ); %>
+<%# lm/foot.html%>

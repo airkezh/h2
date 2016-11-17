@@ -1,0 +1,49 @@
+<%# header.html%>
+<% 
+	var rankInfo = this.bg_rank.data
+%>
+<div class="wrapper">
+	<div class="rank_list">
+		<h6>小伙伴逼格排行榜<span class="top_r"></span></h6>
+		<%if(rankInfo.list.length > 0){%>
+			<%for(var i = 0; i < rankInfo.list.length;i++){%>
+				<%if(i < 3){%>
+					<a href="/bigger/activity/result/?bigger_id=<%= rankInfo.list[i].bigger_id%>">
+						<dl>
+							<dt class="top_num"><%= i+1%></dt>
+							<dd class="mar_l"><img src="<%= rankInfo.list[i].bigger_image.image_thumbnail%>"></dd>
+							<dd class="mark_det">
+								<p class="pad_b24"><%= rankInfo.list[i].bigger_count%>人参加打分 <span class="rig"><%= rankInfo.list[i].bigger_score%>分</span></p>
+								<% if (rankInfo.list[i].last_comment) { %>
+									<p class="comment"><%= rankInfo.list[i].last_comment.comment_content%></p>
+								<% } %>
+							</dd>
+						</dl>
+					</a>
+				<%}else{%>
+					<a href="/bigger/activity/result/?bigger_id=<%= rankInfo.list[i].bigger_id%>">
+						<dl>
+							<dt><%= i+1%></dt>
+							<dd class="mar_l"><img src="<%= rankInfo.list[i].bigger_image.image_thumbnail%>"></dd>
+							<dd class="mark_det">
+								<p class="pad_b24"><%= rankInfo.list[i].bigger_count%>人参加打分 <span class="rig"><%= rankInfo.list[i].bigger_score%>分</span></p>
+								<% if (rankInfo.list[i].last_comment) { %>
+									<p class="comment"><%= rankInfo.list[i].last_comment.comment_content%></p>
+								<% } %>
+							</dd>
+						</dl>
+					</a>
+				<%}%>
+			<%}%>
+		<%}else{%>
+			<div class="no_tank">
+				咦～没人?!<br/>
+				<a href="/bigger/activity/test/" class="link_btn">第一归我了!</a>
+			</div>
+		<%}%>
+	</div>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('meidian/page/conatr');
+_use:", this._JSstack , this._JSmods ); %>
+<%# footer.html%>

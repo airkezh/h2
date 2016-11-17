@@ -1,0 +1,31 @@
+<div class="mp_coupon" <% if( this.bg360 && this.bg360 == '360_dj_820cx' ){ %>style="background: #fff url('http://i.meilishuo.net/css/images/biz/phonepriv/d360.jpg') no-repeat top center;"<%}%>>
+	<div class="coupon_main" >
+	<% if(this.coupons){
+		for(var i in this.coupons){
+			if( i ==1){
+	 %>
+		<div class="coupon1">
+			<a href="javascript:;" data-type="<%= this.coupons[i].coupon_type%>" data-code="<%= this.coupons[i].coupon_code%>" class="btn <%if(this.coupons[i].use1 == '100starting'){%>get_coupon<%}%>">
+				<img src="<%= this.imgs[i]%>" alt="">
+			</a>
+			<p class="text">
+				<%if(this.left100 > 0){%>本阶段还剩<span><%= this.left100%></span>张<%}%>
+			</p>
+			<a href="http://www.meilishuo.com/biz/huodong/fuide/?cid=2401" target="_blank" class="view"></a>
+		</div>
+		<% }else{%>
+		<div class="coupon_pub <%if(i==2){%>m30<%}%> <%if(i==3){%>m50<%}%> <%if(i==4){%>m80<%}%>">
+			<a href="javascript:;"  data-type="<%= this.coupons[i].coupon_type%>" data-code="<%= this.coupons[i].coupon_code%>" class="btn <%if(this.coupons[i].use == 'ostarting'){%>get_coupon<%}%>">
+				<img src="<%= this.imgs[i]%>" alt="">
+			</a>
+			<p class="text">
+				<%if(this.coupons[i].left_amount > 0){%>本阶段还剩<span><%= this.coupons[i].left_amount%></span>张<%}%>
+			</p>
+		</div>
+	<% } } } %>	
+	</div>
+</div>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use('app/huodong/820coupon');
+_use:", this._JSstack , this._JSmods ); %>

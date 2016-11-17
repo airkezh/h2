@@ -1,0 +1,32 @@
+function timeMachine(){
+	return this;
+}
+var controlFns = {
+	mm : function(params){
+		// var mlsApp = os.mlsApp;
+		// var weixinBrowser = this.req.headers['user-agent'].indexOf('MicroMessenger') > 0;
+		var wapMod = base.loadModel('wap/tools.js');
+		var php = {
+			
+		};
+		var mSelf = this;
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			data.pageTitle = '时光机';
+			data.use_rem_screen = true;
+			// app分享
+			var params = {
+				'title': '我是app内分享的标题',
+				'text': '我是app内分享',
+				'pic': 'http://d04.res.meilishuo.net/pic/_o/9c/b7/4e3606165fa675d5609515b4a7e8_98_98.ch.jpg',
+				'url': 'http://m.meilishuo.com/goto/open/?appUrl=' + encodeURIComponent('/activity/timeMachine/mm/') + '&bg='+ encodeURIComponent('/activity/timeMachine/mm/')
+			};
+			data.share = wapMod.shareTo(this.req, params, ['weixin_timeline', 'weixin']);
+
+			data._CSSLinks = ['activity/timeMachine'];
+			mSelf.render('activity/timeMachine.html' , data);
+		});
+	}
+}
+exports.__create = controller.__create(timeMachine , controlFns);

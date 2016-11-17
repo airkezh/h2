@@ -1,0 +1,23 @@
+<%#head.html%>
+	<div class="main">
+		<p class="mainTitle">商品详情</p>
+		<div class="goodsWrap">
+			<a href="<%= this.single.gInfo.url%>"><img src="<%= this.single.pic_url%>" alt=""></a>
+			<h3 class="goodsTitle"><%= this.single.gInfo.title%></h3>
+			<p class="goodsPrice"><%= this.single.gInfo.price%></p>
+		</div>
+		<a href="<%= this.single.gInfo.url%>" class="buyBtn">立即购买</a>
+		<!-- <div class="tra"></div>
+		<div class="show">亲爱的用户，由于对方网站技术接口临时故障，我们将用手机浏览器为您打开购买页面。稍后问题将被修复。</div> -->
+		<div class="imagesWarp">
+			<% if(this.itemImages) {%>
+				<p class="imagesTitle">图文详情</p>
+				<%this.itemImages.map(function(data, index){ %>
+					<%if(index < 4){ %>
+						<img src="<%=data.pic_url%>" alt="">
+					<%}%>
+				<%});%>
+			<%}%>
+		</div>
+	</div>
+<%#foot_simple.html%>

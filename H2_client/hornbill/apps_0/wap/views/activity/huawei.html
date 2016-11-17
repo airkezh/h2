@@ -1,0 +1,46 @@
+<%# head.html %>
+<% 
+	var pageData = this.pageData || ''
+%>
+<div class="wrap">
+	<section>
+		<% pageData && pageData.banners && pageData.banners.map(function(data){ %>
+			<img src="<%= data.src %>" />
+		<%}); %>
+	</section>
+	<div class="getCoupon">
+		点击领取
+	</div>
+</div>
+
+<script type="text/html" id="couponSuccess">
+	<div class="dialog_share">
+		<img class="resulePic" src="<%= pageData.success.src %>" />
+	</div>
+</script>
+
+<script type="text/html" id="havedCoupon">
+	<div class="dialog_share">
+		<img class="resulePic" src="<%= pageData.haved.src %>" />
+	</div>
+</script>
+
+<script type="text/html" id="couponFail">
+	<div class="dialog_share">
+		<img class="resulePic" src="<%= pageData.fail.src %>" />
+	</div>
+</script>
+
+<script type="text/html" id="couponPast">
+	<div class="dialog_share">
+		<img class="resulePic" src="<%= pageData.pasted.src %>" style="height:5.52rem;"/>
+	</div>
+</script>
+
+<script>
+	fml.vars.userId = <%= this.userInfo.user_id %>;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/huawei');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

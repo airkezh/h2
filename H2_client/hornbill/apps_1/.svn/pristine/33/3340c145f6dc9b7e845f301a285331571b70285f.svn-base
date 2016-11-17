@@ -1,0 +1,58 @@
+<script type="text/html" id="address_content">
+<fieldset>
+	<form id="addressForm" class="address_form" method="post" onsubmit="return false" action="">
+		<legend>新增/编辑收货地址表单</legend>
+		<p><span>*</span><label for="addressUser">收货人姓名：</label><input class="l_ipt mls-input-text" id="addressUser" type="text" name="nickname" value=""/><strong></strong></p>
+		<p><span>*</span><label for="validatePhoneOrMobile">联系电话：</label><input class="l_ipt mls-input-text" id="validatePhoneOrMobile" type="text" name="phone" value=""/><strong></strong></p>
+		<p><span>*</span>
+			<label for="addressPid">所在地：</label><select class="mls-select" id="addressPid" name="pid">
+				<option value="0">请选择</option>
+				<% if(this.address_select && this.address_select.data && this.address_select.data.province){ %>
+					<% this.address_select.data.province.map(function(data){%>
+					<option value="<%= data.pid%>"><%= data.province %></option>
+					<%});%>
+				<% }else{ %>
+					<option value="" >所在地信息载入出错</option>
+				<% } %>
+			</select><select class="mls-select" id="addressCid" name="cid">
+				<option value="0">请选择</option>
+			</select><select class="mls-select" id="addressDid" name="did">
+				<option value="0">请选择</option>
+			</select><select class="mls-select none_f" id="addressSid" name="sid">
+				<option value="0">请选择</option>
+			</select>
+			<strong></strong>
+		</p>
+		<p><span>*</span><label for="addressStreet">街道地址：</label><input class="l_ipt_s mls-input-text" id="addressStreet" type="text" name="street" value=""/><strong></strong></p>
+		<div>
+			<p><label for="addressPostcode">邮政编码：</label><input class="l_ipt mls-input-text" id="addressPostcode" type="text" name="postcode" value=""/><strong></strong></p>
+			<p><label>&nbsp;</label><input class="mls-input-checkbox" type="checkbox" name="is_default" id="is_default" value=""/><label class="mls-input-label mls-input-checkbox-label red-check" for="is_default">设为默认</label></p>
+		</div>
+		<div class="submitBox">
+			<input class="button addressBtn" type="submit" value="保存"/>
+			<input class="button cancelBtn" type="button" value="取消"/>
+		</div>
+	</form>
+</fieldset>
+
+</script>
+
+<script type="text/html" id="address_select_city">
+<option value="0">请选择</option>
+<? $.each(city , function(k , v){ ?>
+	<option value="<?= v.cid?>"><?= v.city ?></option>
+<? }); ?>
+</script>
+<script type="text/html" id="address_select_district">
+<? $.each(district , function(k , v){ ?>
+	<option value="<?= v.did?>"><?= v.district ?></option>
+<? }); ?>
+</script>
+<script type="text/html" id="address_select_street">
+<? $.each(street , function(k , v){ ?>
+	<option value="<?= v.sid?>"><?= v.street ?></option>
+<? }); ?>
+</script>
+<script type="text/html" id="address_select">
+<option value="0">请选择</option>
+</script>

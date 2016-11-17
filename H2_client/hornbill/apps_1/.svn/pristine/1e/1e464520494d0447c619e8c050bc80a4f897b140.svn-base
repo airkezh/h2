@@ -1,0 +1,93 @@
+<%# head.html%>
+<div class="wrap">
+	<div class="wraper_l">
+		<div class="article_title_wrap">
+			<h1>发帖</h1>
+			<div class="hint_msg"></div>
+			<div class="clear_f"></div>
+			<div class="cata_title">
+				<div class="btn_group">
+					<p class="dropdown_tog catalog" data='0'>请选择</p>
+					<em class="cl_i_dropdown"></em>
+					<div class="clear_f"></div>
+					<ul class="dropdown_menu">
+						<%this.board_info && this.board_info.map(function(data){%>
+							<li data="<%=data.board_id%>"><%=data.board_title%></li>
+						<%});%>
+					</ul>
+				</div>
+				<input type="text" class="title" maxlength="40" placeholder="请输入标题">
+			</div>
+		</div>
+		<div class="page_decoration"><div class="pd_left"></div><div class="pd_right"></div></div>
+		<div class="article_subject">
+			<div class="article_con">
+				<div class="article_context">
+					<textarea class="content editor" placeholder="在这里输入正文..."></textarea>
+				</div>
+				<div class="article_post"></div>
+			</div>
+			<div class="article_toolbar">
+				<div class="toolwrap">
+					<a href="javascript:;" class="add_smileys"><span class="share_smileys">&nbsp;</span><span class="cl_i_hover"></span></a>
+					<div id="addPic_con"><a href="javascript:;" id="add_pic" class="add_pic ntBdaolpu" style="display:block"><span>图片<em class="cl_i_img">&nbsp;</em></span><span class="cl_i_hover"></span></a></div>
+					<a href="javascript:;" class="add_goods"><span>宝贝链接<em class="cl_i_link">&nbsp;</em></span><span class="cl_i_hover"></span></a>
+					<div class="clear_f"></div>
+				</div>
+				<div class="checkBox<%= this.clubTest.checkCode ? '' : ' none_f' %>" id="checkBox">
+					<label for="checkcode">验证码：<input class="l_ipt<%= this.clubTest.checkCode ? '' : ' noCheck' %>" id="checkcode" name="checkcode" type="text" value="" placeholder="验证码" maxlength="4" /></label>
+					<div class="checkImage" title="点击换一张">
+						<span id="checkcodeImage">
+							<img width="78" height="26" isblank="true" src="<%= this.PICTURE_URL %>images/register/blank.jpg">
+						</span>
+					</div>
+				</div>
+				<div class="submit_con">
+					<span class="submit">发布</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/html" id="addCon">
+	<div class="item pr_f">
+		<div class="separation"></div>
+		<div class="item_con">
+			<div class="item_arrow">
+				<p class="arrow_up <?=hide_up?>"></p>
+				<p class="arrow_down none_f"></p>
+			</div>
+			<div>
+				<? if (isPic) {?>
+					<div class="addPic">
+						<div class="uploading">
+							<span class="pic_title"><?= data.pic_title ?></span>
+							<div class="progress_bar"><div class="upload_percentage" id="<?= data.uppic_id ?>"></div></div>
+							<div class="upload_errormsg"></div>
+						</div>
+					</div>
+				<? } else {?>
+					<div class="addGoods">
+						<img src="<?=data.gInfo.image?>" width="128" height="128">
+						<div class="price_wrap"><span class="price_tx">￥<?=data.gInfo.price?></span></div>
+						<textarea class="desp" placeholder="请添加真实有效的商品描述..."></textarea>
+					</div>
+				<? } ?>
+				<div class="cl_i_close"></div>
+			</div>
+			<div class="clear_f"></div>
+		</div>
+	</div>
+</script>
+<script  type="text/html" id="addPicCon">
+	<div class="upload">
+		<img src="<?= pic_url ?>" pid="<?= pic_id ?>">
+		<textarea class="desp" placeholder="请添加图片描述..."></textarea>
+	</div>
+</script>
+
+<%# user/windows.html%>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/club/newTopicN');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

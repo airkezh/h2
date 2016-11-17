@@ -1,0 +1,50 @@
+Bridge.prototype.ajax = function(url,data,cbk){
+	var mSelf = this
+
+	if(this.protocol + this.domainname != this.host.domain){
+
+		this.setIframe(url,data,cbk)
+		return;
+	}
+
+	$.ajax({
+		url: '/aw/passport' + url,
+		dataType:'json',
+		data:data,
+		success:function(res){
+			cbk(res)
+			mSelf.watch(res)
+		}
+	})
+};
+
+Bridge.prototype.setIframe = function(url,data,cbk){
+	data.blank=this.blank
+	data.domainname=this.domainname
+	data.protocol=this.protocol
+	data.timestamp=+Math.random()
+
+	var src = this.host.domain + '/passport/blank'+url+'?'+this.urlHandle.http_build_query(data)
+
+	var ifr = this.iframes[url]
+
+	if(!ifr){
+		ifr = document.createElement('iframe');
+		ifr.style.display = 'none';
+		ifr.src = src
+		document.body.appendChild(ifr);
+		this.iframes[url] = ifr
+
+	}else{
+		ifr.src = src
+		this.iframes[url] = ifr
+	}
+
+	console.log(ifr)
+
+	this.callbacks[url] = cbk
+}
+
+Bridge.prototype.send = function(){
+	console.log(111)
+}

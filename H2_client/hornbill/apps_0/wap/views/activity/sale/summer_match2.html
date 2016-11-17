@@ -1,0 +1,42 @@
+<%
+	var mSubstr = _extFn.mSubstr;
+%>
+<div class="clearfix_f">
+	<% this.summer_goods && this.summer_goods.map(function(data){ %>
+	<% if(data.sell_status == 0){ %>
+		<% 
+			var buy_link = this.reLink(data.url);
+			if(data.link_to == 2){
+				buy_link = "/goto/count/?p="+encodeURIComponent(buy_link)+"&access_token="+this.access_token+"&twitter_id="+data.twitter_id+"&r="+data.r+"&goods_id="+data.goods_id+"&frm=temai"	
+			}
+		%>
+		<div class="single_goods2">
+			<a href="<%= buy_link%>"><img class="radiusTop" src="<%= data.pic_pathe%>" /></a>
+			<div class="desc_box">
+				<div class="padd">
+					<p class="desc"><a href="<%= buy_link%>"><%= mSubstr(data.description , 20 , '...') %></a></p>
+					<p><a href="<%= buy_link%>"><span class="red_f bigfont">¥<%= data.goods_price%></span><span class=""><del><% if(data.cost){ %>¥<%= data.cost%><% } %></del></span></a></p>
+				</div>
+				<hr />
+				<p class="sell"><span class="red_f"><% if(data.sell_num){%><%=data.sell_num%><%}else{%>0<%}%></span>人已购买</p>
+			</div>
+		</div>
+	<%}else{%>
+		<div class="single_goods2">
+			<img class="radiusTop" src="<%= data.pic_pathe%>" />
+			<% if(data.sell_status != -1){ %>
+				<img class="zeroflag" src="<%= this.PICTURE_URL%>images/wap/activity/summer_match/over3.png" /> 
+			<%}%>
+			<div class="desc_box">
+				<div class="padd">
+					<p class="desc"><%= mSubstr(data.description , 20 , '...') %></p>
+					<p><span class="red_f bigfont">¥<%= data.goods_price%></span><span class=""><del><% if(data.cost){ %>¥<%= data.cost%><% } %></del></span></p>
+				</div>
+				<hr />
+				<p class="sell"><span class="red_f"><% if(data.sell_num){%><%=data.sell_num%><%}else{%>0<%}%></span>人已购买</p>
+			</div>
+		</div>
+	<%}%>
+		<span class="sm_tid none_f"><%=data.twitter_id%></span><span class="sm_r none_f"><%=data.r%></span><span class="sm_gid none_f"><%=data.goods_id%></span>
+	<%});%>
+</div>

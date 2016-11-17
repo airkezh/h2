@@ -1,0 +1,39 @@
+/*--/Users/MLS/Documents/H2/H2_client/hornbill/apps_0/www/views/wins/top.html--*/ 
+     var est = require(config.path.lib + 'est/est.js'); 
+     var _extFn = require('/Users/MLS/Documents/H2/H2_client/hornbill/nestnew/server/lib/est/extFn.js'); 
+     function requireFn(tpl) { return est.renderFile('/Users/MLS/Documents/H2/H2_client/hornbill/apps_0/www/views/' ,tpl , null , null ,'www' ,true); } ; 
+     function __getHtml (_data) { 
+       function jsRender(tpl , id) { return est.jsRender(requireFn(tpl)(_data), id  ); } ; 
+       var __htm ='';
+__htm += '';
+ if(0){ ;__htm += '\n<ul id="goTop" class="goTop">\n	<li id="go_top" class="none_f"><a class="ico_top"><span>返回顶部</span></a></li>\n	';
+ if (!_data.onlyShowGoTop) {;__htm += '\n		';
+if(_data.help){;__htm += '\n			<li><a class="survey" target="_blank" href="/helpcenter/survey/?is_outer=1&is_test=0">问卷调查</a></li>\n		';
+};__htm += '\n	<li>\n		<a class="ico_guide" href="/helpcenter/" target="_blank"><span>购物帮助</span></a>\n	</li>\n	';
+ if(_data._serviceIM) {;__htm += '\n		<li>\n			<a class="ico_serviceqq knilmi" href="';
+__htm += _data.ViewTools.callIM(_data._serviceIM) ;
+__htm += '" target="_blank"></a><a class="txt knilmi" href="';
+__htm += _data.ViewTools.callIM (_data._serviceIM) ;
+__htm += '" target="_blank">客服</a>\n		</li>\n	';
+ } ;__htm += '\n	';
+};__htm += '\n</ul>\n';
+};__htm += '\n';
+ if (0) {;__htm += '\n<ul class="bot_cart">\n	';
+ if (!_data.showSaleSideBar) { ;__htm += '\n	<li class="first">\n		<a href="/cart" target="_blank">\n			<em class="b_cart">&nbsp;</em><span class="cart_nums ';
+__htm += _data.cart_num?'':'none_f';
+__htm += '"><span>';
+__htm += _data.cart_num || '';
+__htm += '</span></span> 购物车\n		</a>\n	</li>\n	';
+ };__htm += '\n	<li class="last ';
+ if (_data.showSaleSideBar) { ;__htm += 'first';
+};__htm += '">\n	';
+ if (_data.is_iPad) { ;__htm += '\n		<a href="/im/" class="">\n	';
+ } else { ;__htm += '\n		<a href="';
+__htm += _data._serviceIM? _data.ViewTools.callIM(_data._serviceIM) : '/im/';
+__htm += '" class="openIM">\n	';
+ } ;__htm += '\n			<em class="b_msg">&nbsp;</em><span class="msg_nums none_f"></span> 客服消息\n		</a>\n	</li>\n</ul>\n';
+ } ;__htm += '\n<script type="text/html" id="bay_window">\n	<?for (i=0; i<baydata.length;i++){\n		var nowdate=new Date().getTime();\n		var startime=new Date(baydata[i].start.replace(/-/g,"/")).getTime();\n		var endtime=new Date(baydata[i].end.replace(/-/g,"/")).getTime();\n		if(	nowdate>startime && nowdate<endtime){?>\n			<div class="activity_ad11" style="background:url(<?= baydata[i].img?>) no-repeat;">\n				<span class="close_ad11"></span>\n				<a href="<?= baydata[i].link?>" target="_blank" class="ad11_link"></a>\n			</div>\n		<?}?>\n	<?}?>\n</script>\n<script>\n	fml.vars.ad_leftPic = ';
+__htm += _data.ad_leftPic === false ? false : true ;
+__htm += ';\n</script>\n';
+return __htm;} 
+ exports.html = __getHtml; 

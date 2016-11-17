@@ -1,0 +1,372 @@
+@import "wx-rem.less";
+
+body{.bgc(#F8F8F8); .f(.24rem);}
+.padding-20(){padding: .2rem .3rem;}
+.padding-25(){padding: .25rem .3rem;}
+.padding-30(){padding: .3rem;}
+.wx_icon () { .left; .mr(.16rem); .vm;}
+.wx_btn () { .bgred; .f(.32rem); .c; .i_block; .vm; .border-n; .border-r(); .white;}
+.module_info(){ .mt(.2rem); .bgc(#fff); .border-td9; .border-bd9;}
+
+
+// .pageNav1{ .page > .pageRed; .c; margin: .6rem auto; }
+.piciture { .f(.24rem);
+	.border-bd9;
+	.pic_wrap { .w(640*@w); .c; .block; .border-bd9;}
+	.name {
+		.padding-25; .clearfix; .bgwhite;
+		.now { .f(.36rem); .pb(.1rem);.mr(.1rem);}
+		.normal { .t-through; .tr; .wx_grey; }
+	}
+	.price{ .ml(-0.06rem);}
+	
+	.g-name-box{ .mb(.3rem); .mt(.12rem); 
+		.goods_name{.vm; .f(.26rem); .i_block; .w(4.3rem); font-weight: normal; .ellipsis;  }
+		.goods_name,.icon{.h(.3rem); .l(.3rem);}
+		.icon{ .f(.2rem); .ml(.06rem); .fc(#fff); .i_block; .right; .w(.6rem); .c;}
+		.free-postage{.bgc(#37D5F8);}
+		// .discount{.bgc(#FA4E52);}
+	}
+	.sale-box{ 
+		 .c; .l(.24rem); .ellipsis;
+		.sale{.mr(.2rem); .i_block; }
+		.sale:nth-of-type(3){.mr(0); .ml(-0.1rem);}
+	}
+	
+	
+
+
+	.name_fixed {
+		.module_info; .pf; border-bottom:0; bottom: 1.12rem; .w(580*@w); .pt(18*@w); .pb(18*@w); .pl(30*@w); .pr(30*@w); .clearfix;
+	}
+}
+
+.service{ 
+	.c; .h(.22rem); .pt(.3rem); .pb(.3rem);
+	.promise{ 
+		.hidden;.f(.22rem);.fc(#999);.i_block; .ml(-0.8rem);
+		img{ .w(.22rem);.left; .h(.22rem); }
+		li{ .left;.nowrap;.c;.ml(.8rem); }
+		.words{ .pl(.05rem);.vm; }
+	}
+}
+
+.goods_info {  .f(.24rem); .padding-20(); .bgwhite;
+	.type { .left; }
+	.info { .ml(70/560*100%);}
+	.info_list {
+		.border-bd9; .pb(.1rem); .pt(.1rem);
+	}
+	.pdtop { .pt(.3rem); .pb(.1rem);}
+	.info_list, .amount{.l(.6rem);}
+	li{
+		.i_block;
+		.mb(.2rem); .mr(.2rem);
+		span {
+			.block;.c; .break-word; min-width: .2rem; .fc(#666);
+			.pl(.4rem); .pr(.4rem);
+			.border-d9(#666);  .border-r(.04rem);
+			.l(.6rem);	
+			&.active{ .bgc(#ff80a9);.white; border:none;.pt(.02rem);.pb(.02rem);}
+			&.out_of_stock { /*.border-1(#d6d6d6);*/ .fc(#d6d6d6);}
+		}
+	}
+	.colorShow{.none;.h(2rem);.w(1.42rem);background-size:100%;.ml(180/560*100%);background-repeat:no-repeat;}
+	.num {
+		.pt(30*@w);
+		.color { .mr(10*@w);}
+		.handle { .pl(20/560*100%); .pr(20/560*100%);}
+	}
+	.beauty_num { .pt(0);}
+
+	.amount{
+		.now_num {.gray;.ml(.1rem);
+			.num_only{.fc(#f69);.ml(.2rem);}
+		}
+		.numBox {.left;.c;
+			.minus, .plus {
+				.hidden;.border-r(.06rem);.red;.border-1(#ff80a9);.w(.6rem); .f(.3rem);
+			}
+			.minus { .left;}
+			.plus { .right; }
+			.buy_num{.c; .left; .hidden; padding:0;margin:0 0.1rem;.border-d9(#666); .border-r(.04rem); .l(.6rem);.w(1rem); .h(.6rem); .fc(#666);}
+			.nums{.none;}
+		}
+	}
+	.msg_box {.hidden;}
+	.msg_ico{background: url("@{pic_url}/images/wap/web/sq/msg_error.png") no-repeat;}
+	.msg {
+		&_limit, &_over, &_zero { .bgc(#ffebf2); .border-1(#d2d2d2); padding: .14rem .2rem; .i_block;}
+		&_limit, &_over, &_zero {
+			.l(.32rem); .mt(.2rem);.left;.none;
+		}
+		&_ico { .left; .h(.32rem); .mr(.2rem); .w(.32rem); }
+	}
+}
+
+.like {  .f(.24rem);
+	.padding-20; .module_info; 
+	.user {.clearfix; .pb(.2rem);}
+	p { .l(.32rem);}
+	.user_pic { .w(100/560*100%); .h(100/560*100%); .left;}
+	.tuijian { .left; .f(.24rem);}
+	.user_info { 
+		.ml(120/560*100%); .pt(20*@w);
+		h3 { .pb(20*@w);}
+	}
+	.love { .right; .fc(#666);}
+	.like_icon { .wx_icon; .w(.26rem); .h(.24rem); .mr(.06rem);}
+}
+
+// =============
+// 
+.nav {
+	.module_info; .mt(0); .pr; z-index: 9; .w(100%); .ml(-1px);
+	.flexbox(); .pt(.28rem); .pb(.26rem);
+	.tabArea{ .flex(1); display: block; .c; .border-ld9(#ccc); .h(.3rem); .l(.3rem);  }
+	.cur{.fc(@red);}
+}
+
+.goods_detail {.f(.24rem);
+	.padding-30; .bgwhite;  .mb(1.6rem);
+	
+	.norms {
+		h3 { .f(.28rem); font-weight: normal; .border-bd9; .l(.4rem); .pb(.1rem); .fc(#333);.mb(.16rem);}
+	}
+	.norms_type { .mb(.2rem);
+		p { /*.pt(20*@px);*/ .l(.36rem); .fc(#666); .f(.24rem);}
+		.last { .border-n;}
+		span { .w(260/560*100%); .l(.4rem); .i_block; }
+		b { font-weight: normal;}
+	}
+	.norm_tab {
+		.w(100%);
+		td{
+			.l(60*@px); .border-bd9;
+		}
+	}
+	.img_wrap { /*.border-bd9; */ }
+	.norms_img { .w(560/560*100%); .pb(20*@w); .block; .c;}
+	.more { .f(.28rem); .block; .c; }
+	.eva_more,.more { .l(1.1rem);  .h(.9rem);}
+	.xiala_icon { .w(.28rem); .h(.16rem); .i_block;}
+	.next_icon { .h(.24rem); .w(.16rem); .i_block;}
+	
+	.user_picture { .wx_icon; .w(.6rem); .h(.6rem); .i_block; .left;}
+	.public_info { 
+	 .ml(.8rem); .border-bd9; .pb(.16rem);
+	 p { .l(.32rem);}
+	}
+	.pub_right { .right;}
+	.content { .pt(.04rem);}
+	.good_info { 
+		.good_style{ .ellipsis(); .i_block(); max-width: 58%; }
+		.pt(.16rem); .fc(#999);
+	}
+	.comment_time { .mr(.12rem); .right(); .fc(#999);}
+	.star, .star b { .h(.24rem); .left; }
+	.star { .mr(.1rem);.mt(1px);}
+	.star b { .w(.28rem);.fn;}
+	.star .open { background: url("@{pic_url}/images/wap/web/wx/open.png") no-repeat;}
+	.star .shut { background: url("@{pic_url}/images/wap/web/wx/shut.png") no-repeat;}
+
+	.evaluate {
+		li { .pt(.16rem);}
+	}
+
+	.public {
+		li {.pt(.16rem); .f(.24rem); }
+		.beacuse { .pt(.2rem);}
+	}
+	.pro_txt { .pb(.2rem); .l(.48rem); }
+
+	/* 尺码 */
+	.size { .bgwhite;
+	    .table_gap { .block; .l(.38rem); .h(.38rem); .fn; .fc(#333); .tl; .border-bd9; }
+	    table { 
+			.w(100%); 
+			tr { .l(300%); .border-bd9; }
+			th { .tl; .fc(#666); .w(20%); }
+			td { .c; }
+			.size-content { .red; }
+  	    }
+		.td-style2 { td { .w(80%); } }
+		.td-style3 { td { .w(40%); } }
+		.td-style4 { td { .w(26.66%); } }
+		.td-style5 { td { .w(20%); } }
+  	    img { .w(100%); }
+	    .no-size-info {
+		    .c;
+		    .f(14px);
+		    .fn;
+		    .fc(#999);
+	    }
+	}
+
+	/* 晒单 */
+	.show-list{ /*.f(.22rem);*/ .clearfix; .mb(.2rem);
+		.user_picture{ .border-r(50%); .hidden; }
+		.public_info{border: none;}
+		.content{.mt(.08rem);}
+		.goods-size{ .fc(#999); .pt(.08rem);.f(.22rem);}
+		// .u-name{.f(.22rem);}
+		.time{ .l(.34rem);.fc(#ccc); .f(.2rem); }
+		.item-show-pic{.pt(.15rem);}
+		.item-img{.w(1rem); .h(1rem); .left; .mr(.1rem); .mb(.1rem);}
+	}
+}
+/*晒单图片放大模板*/
+.img-show-mark{ .none; .pf; top: 0; left: 0; width: 100%; height: 100%; .bgwhite; z-index: 451; /* goTop的z-index 450 */ background-size: contain; background-position: center center; background-repeat: no-repeat; }
+
+// =============
+
+.mz_mb { .mb(.88rem);}
+.my_mb { .mb(1.3rem);}
+
+//=============
+
+.buy {
+	z-index: 10; .f(.24rem);
+	.module_info; .pr; bottom: 0; .c; .pf; .w(560/560*100%); .pt(.2rem); .pb(.2rem); .pl(0); .pr(0);
+	span{.i_block;}
+	.cart_btn{.wx_btn; .w(182/640*100%);  .l(.8rem);.bgc(#ffe814); .ml(30/640*100%);.mr(10/640*100%); .fc(#595056);
+		&:hover{.fc(#595056);}
+	}
+	.buy_btn{ .wx_btn; .w(172/640*100%); .l(.8rem); .ml(10/640*100%);.mr(30/640*100%); .bgc(#ff6666);}
+	.non_cart{.cart_btn; .bgc(#999);}
+	.non_buy {.buy_btn; .bgc(#999);}
+	.r_btn{.vm;.pr;
+		.cart_img{.pa; top:-.2rem; right: -.08rem;z-index: 1; .w(.32rem);.h(.32rem); background: url("@{pic_url}/images/wap/web/sq/cart_num.png") no-repeat; background-size: auto .32rem; .none; 
+			.cart_num{.i_block; .w(90%); .mt(.08rem);.f(.16rem);.fc(@white);.hidden; font-style: normal;}
+		}
+		.icon_img{.i_block;.w(.4rem);.h(.38rem); .mb(.1rem);}
+	}
+}
+#goTop li .icon-cart .cart_num{
+	position: absolute;
+    top: .1rem;
+    right: .09rem;
+    width: .32rem;
+    line-height: .32rem;
+    font-size: .16rem;
+    font-style: normal;
+    color: #ff6699;
+    text-align: center;
+    background: url(http://d02.res.meilishuo.net/pic/_o/ce/25/bba22fc778ee385e8506818fde56_32_30.cg.png) center center no-repeat;
+    background-size: contain;
+    padding: 0;
+    -webkit-border-radius:0;
+    border-radius:0;
+    height:auto;
+}
+
+//=============
+
+// buyer_intro
+.goods_buyer{.border-bd9; .border-td9; .pt(.4rem);.pb(.4rem);.mt(.2rem);.pl(.3rem);.pr(.3rem);.bgwhite;
+	dl{
+		dt{.left;.w(80/620*100%);.h(80/620*100%);
+			img{.border-r(50%);border:1px solid rgba(0,0,0,0.03); }
+		    }
+		    dd{.l(.4rem);.fc(#272727);.f(.24rem);
+		    }
+
+		    .preslae_brand{.pr;.pb(.3rem);.f(.24rem);
+		    	p{.pr;
+		    		b{.pl(.2rem);.f(.24rem);}
+		    		.f_red{.fc(@red);}
+		    		i{.i_block; .w(.24rem);}
+		    		 em{font-style: normal;.pl(.12rem);}
+		    		.g_like{.pa; right: 0;}
+		    	}
+		    }
+	}
+}
+
+.goTop();
+.go-top-rem();
+
+/* === layerBox start === */
+.layer_wrap {
+	.none;.c;/* .mr(40*@px); .ml(40*@px);*/ .pf; top: 300*@w; .w(480*@w); .bgc(#666); opacity:0.85; .f(.28rem); .padding;.white;z-index: 99;left: 40*@w;
+}
+
+/*== 店铺版块，进店逛逛 ===*/
+.shop {
+	padding: .3rem .3rem .2rem; .mb(.2rem); .f(.18rem);.bgwhite;.pr;
+	h2 { .fn; .f(.28rem); .fc(#333); }
+	.honor-indicators {
+		.mt(.2rem);
+		.c; 
+		.flexbox;
+		.clearfix;
+		li { 
+			.flex(1);
+		}
+		.icon0 { background-image: url(http://d05.res.meilishuo.net/pic/_o/d9/6e/422f80537b2207a94b0569bb1846_20_20.cg.png); }
+		.icon1 { background-image: url(http://d05.res.meilishuo.net/pic/_o/58/30/8451887d1b66124e9b6940e5e6b6_20_20.ch.png); }
+		.icon2 { background-image: url(http://d02.res.meilishuo.net/pic/_o/5a/a7/98cb998a6e4b6561eb4d60ccf783_20_20.ch.png); }
+	}
+	.honor-indicators-item {
+		.pr(.36rem); .f(.2rem);
+		background-position: center right;
+		background-repeat: no-repeat;
+		background-size: auto .2rem;
+	}
+	.shop-goto{
+		.pa; left: 0; top: 0; right: 0; bottom: 0;z-index: 2;
+	}
+
+	.t-red{ .fc(#f43238);}
+}
+
+.shop-info {
+	.pr;
+	.clearfix;
+	.shop-logo,
+	figcaption {
+		.left;
+	}
+	.shop-logo {
+		.w(.7rem);
+		.h(.7rem);
+		.border-r(50%);
+		.hidden;
+		img { .w(100%); }
+	}
+	figcaption { 
+		.ml(.15rem);
+		.gray;
+		.shop-performance {
+			.mt(.16rem);
+		}
+		.shop-name {
+			.fc(#333);
+			.f(.26rem);
+		}
+	}
+	.shop-entrance {
+		.pa; top: 0; right: 0;
+		.pl(.1rem);
+		.pr(.12rem);
+		.mt(.06rem);
+		.l(.45rem);
+		.white;
+		.border-r();
+		.bgred;
+	}
+	.shop-performance {
+		.f(.2rem);
+		.clearfix;
+		li {
+			.left;
+			.mr(.18rem);
+		}
+	}
+}
+
+/*== 优惠券 ==*/
+.coupon-wrap();
+.coupon-wrap{.mt(.2rem); .mb(.2rem); }
+
+

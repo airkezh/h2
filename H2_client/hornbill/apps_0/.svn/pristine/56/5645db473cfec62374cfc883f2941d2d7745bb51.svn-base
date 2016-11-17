@@ -1,0 +1,86 @@
+<%
+	var userStats = this.user_stats.data || {}
+		, userNum = userStats.stats || {}
+		, coupon=this.coupon||{}
+		, couponData=coupon.data||[]
+		, pageInfo = this.share_info || {}
+		, qunquanData=pageInfo.qunquan||[];
+%>
+<nav class="tab" id="tab">
+	<div class="select">
+		<a href="javascript:;" class="prveTab <%= this.isPrev ? 'cur' : '' %>">待我挑选</a>
+		<a href="javascript:;" class="nextTab <%= this.isPrev ? '' : 'cur' %>">火热开售</a>
+		<span href="javascript:;" class="personal">
+			我的
+			<%if(parseInt(userNum.want_style_new_done_num)){%>
+				<b class="love-num" id="love_num">
+					<%= parseInt(userNum.want_style_new_done_num) %>
+				</b>
+			<%}%>
+		</span>
+	</div>
+</nav>
+<% if(this.isPrev){ %>
+	<%= requireFn('block/banner.html')({
+		'banner' : this.banner,
+		'hide_btn':false,
+		'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+	});%>
+<% } %>
+<% if(couponData.length){ %>
+	<div class="coupon_wrap <%= couponData.length==1 ? 'coupon_wrap_one' : 'coupon_wrap_two' %>">
+		<% couponData.forEach(function(coupons, index){ %>
+			<div class="coupons <%= coupons.status ? '' : 'btnCoupons' %>" code="<%= coupons.coupon_apply_code %>">
+				<b class="title"><%= coupons.title %></b>
+				<% if(coupons.status==1){ %>
+					<span class="no">已经领取</span>
+				<% }else if(coupons.status==2){ %>
+					<span class="no">已被抢光</span>
+				<% }else{ %>
+					<span class="yes">立即领取</span>
+				<% } %>
+			</div>
+		<% }); %>
+	</div>
+<% } %>
+<% if(qunquanData.length){ %>
+	<section class="qunquan-box" id="qunquanBox">
+		<h3>Desire 热门圈子</h3>
+		<ul>
+			<% qunquanData.forEach(function(data, index){ %>
+				<li>
+					<a href="javascript:;" data-id="<%= data.id %>">
+						<img src="<%= data.image_src %>" alt="">
+						<p><%= data.text %></p>
+					</a>
+				</li>
+			<% }); %>
+		</ul>
+	</section>
+<% } %>
+<div class="top-box" style="bottom:<%if(this.isIphone){%>60<%}else{%>20<%}%>px">
+	<a class="gotop">
+		<img src="http://d02.res.meilishuo.net/img/_o/41/62/c1d9e0f159bfb506b27dea648ccb_80_80.cg.png" />
+	</a>
+</div>
+<script type="text/html" id="coupon_alert">
+	<div class="mask">
+		<div class="coupon_alert">
+			<h3>领取<?= this.isSuccess ? '成功' : '失败' ?></h3>
+			<p class="<?= this.isSuccess ? '' : 'fail' ?>"><?= this.text ?></p>
+			<? if(this.use_time){ ?>
+				<p class="use_time"><?= this.use_time ?></p>
+			<? } ?>
+			<div class="close_btn"><span>知道了</span></div>
+		</div>
+	</div>
+</script>
+<script>
+	fml.vars.isLogin = <%= this.userInfo.user_id %>;
+	fml.vars.inAppTabbar = <%= this.inAppTabbar %>;
+	fml.vars.trace_id = '<%= this.desireTraceId %>'; 
+	fml.vars.doneNum = <%= parseInt(userNum.want_style_new_done_num) %>;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/zulily/header');
+_use:", this._JSstack, this._JSmods); %>

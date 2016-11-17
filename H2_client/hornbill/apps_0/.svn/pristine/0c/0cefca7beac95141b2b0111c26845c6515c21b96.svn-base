@@ -1,0 +1,40 @@
+/*common*/
+var $ = require('jquery')
+	,shareTmp = require('component/shareTmp')
+	,dialog = require('ui/dialog');
+var $keepWeakPasswork = $('.keepWeakPasswork')
+	,$body = $('body');
+var url = window.location.href;
+var index = url.indexOf('/settings/');
+//继续弱爆请求函数
+function removeAj(){
+	var $maskLayer = $('.maskLayer')
+	,$dialogLayer = $('.dialogLayer');
+	$.get('/aj/weakPassword_aj/weakPassword/remove','',function(res){
+		$dialogLayer.hide();
+		$maskLayer.hide();
+	},'json');
+}
+//关闭 请求事件
+function close(){
+	$body.on('click','.close_z',function(){
+		removeAj();
+	})
+}
+//弹层
+var weak = function(){
+	new dialog({
+			title : "请设置密码"
+			, width : 300
+			, content : shareTmp('weakPassword')
+			, onclose : close()
+	});
+}
+//弱密码且不在账号与安全页面链接下，弹层
+if(fml.vars.weak == 1 && index <0){
+	weak();
+}
+//继续弱爆 请求事件皆苦
+$body.on('click','.keepWeakPasswork',function(){
+	removeAj();
+})

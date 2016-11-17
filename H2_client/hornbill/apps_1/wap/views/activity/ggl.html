@@ -1,0 +1,144 @@
+<%# head_simple.html%>
+</head>
+<body>
+
+
+<div id="wap" class="warp">
+    <div class="main" id="main" style="display:">
+        <img class="header_img" alt="sale 515夏日狂欢"  src="http://d02.res.meilishuo.net/pic/_o/1f/53/2bdce115706769017c31f33f7172_721_470.cg.jpg" />
+        <div class="quan">
+            <img class="quan-img" src="http://d05.res.meilishuo.net/pic/_o/2e/ad/8d2b0a1a40dfcb3c2600dc466bf2_1242_466.ch.png" />
+            <div class="quan_con">
+                <p id="quanWin" class="quan_text" style="display: none">
+                    ￥ <span id="quanNub" class="quan_nub" >0</span> 元现金券
+                </p>
+                <p id="quanLoad" class="quan_text" style="display:;">
+                    <!-- 奖券载入中 -->
+                </p>
+                <div class="quan_cover">
+                    
+                </div>
+            </div>
+        </div>
+        <div class="share">
+            
+        </div>
+        <div class="rule_but">
+            <a name="main" href="javascript:;">
+                活动规则
+            </a>
+        </div>
+
+    </div>
+
+
+
+    <div class="result" id="result" style="display:none">
+
+        <h2>
+            领 取 成 功
+        </h2>
+        <div class="quanresult">
+            <img src="http://d02.res.meilishuo.net/pic/_o/b0/b0/58d08e0b3299424c04e28ee54502_578_283.ch.jpg" alt="">
+            <p  class="quan_text" >
+                ￥ <span id="resultQuanNub" class="quan_nub" >0</span> 元现金券
+            </p>
+        </div>
+
+        <p class="text">
+            515夏日狂欢不等人 ，快去查看快去花！
+        </p>
+        
+        <a class="but" id="openAppBut" href="javascript:;">
+            <img src="http://d03.res.meilishuo.net/pic/_o/d2/f8/5111112334cf8cde85e98946be1a_795_169.cg.png" alt="">
+        </a>
+        <p class="text2">
+            （现金券已放入您的美丽说账户中 <br> 请到优惠券目录中查看）
+
+        </p>
+        <div class="share">
+            
+        </div>
+        <div class="rule_but">
+            <a name="result" href="javascript:;">
+                活动规则
+            </a>
+        </div>
+
+    </div>
+
+    <div id="rule" class="rule" style="display:none">
+        <div id="ruleClose" class="rule_close">   </div>
+        <h2>活 动 规 则</h2>
+        <p class="rule_text">
+            <span class="tit">1</span> 活动时间：2015/5/13-2015/5/17
+        </p>
+        <p class="rule_text">
+            <span class="tit">2</span> 活动每个用户每天可以参加一次刮奖活动。（同一手机、同一IP地址、同一设备号或其他可以合理显示为同一用户的情形，均视为同一用户。美丽说有权根据自身掌握的情况独立判断参与活动的用户是否实施了违规行为，违反本规则美丽说有权利收回已领用的优惠券及对注册用户进行进一步处罚甚至冻结其账号的权利。）
+        </p>
+        <p class="rule_text">
+            <span class="tit">3</span> 每个自然人用户仅能使用一个美丽说注册账号参与本活动，美丽说任何活动均杜绝一切作弊行为，如作弊行为给美丽说平台造成损失的，美丽说保留追究其相关法律责任的权利。
+        </p>
+        <p class="rule_text">
+            <span class="tit">4</span> 用户一旦选择参加本活动，即同意接受活动涉及到的所有规则，任何对活动规则或者其他相应规则有异议的，不得参加活动，否则，美丽说有权取消其参与资格。
+        </p>
+        <p class="rule_text">
+            <span class="tit">5</span> 美丽说在法律允许的范围内保留对本活动的最终解释权。
+        </p>
+
+    </div>
+</div>
+
+
+
+
+
+<div class="mypopbox" id="mypopbox">
+    
+    <div class="prompt">
+        <img src="http://d04.res.meilishuo.net/pic/_o/fd/6b/541e43806e956bf69dfde8cd3726_525_508.cf.png" alt="转发给好友和家人">
+    </div>
+    
+    <div class="overlay">
+        
+    </div>
+</div>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+    fml.use('wap/page/activity/ggl',function(){
+        if(Meilishuo.config.os.weixinBrowser){
+            $.ajax({
+                url: '/aj/wx/sign'
+                , data: {
+                    url:window.location.href
+                }   
+                , dataType: 'json'
+                , type: 'post'
+                , success : function(data){
+                    wx.config({
+                        debug:false
+                        //debug:false 
+                        , appId: data.info.appId
+                        , timestamp: data.info.timestamp
+                        , nonceStr: data.info.nonceStr
+                        , signature: data.info.signature
+                        , jsApiList: [
+                            'checkJsApi',
+                            'onMenuShareTimeline',
+                            'onMenuShareAppMessage',
+                            'onMenuShareQQ',
+                            'onMenuShareWeibo'
+                        ]   
+                    }); 
+                },
+                error: function(err){
+                }
+            })
+        }
+    });
+_use:", this._JSstack, this._JSmods); %>
+
+<%# foot.html%>
+

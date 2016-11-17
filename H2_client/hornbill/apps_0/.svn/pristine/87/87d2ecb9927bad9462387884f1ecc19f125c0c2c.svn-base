@@ -1,0 +1,77 @@
+<%# sq/header.html %>
+
+<%
+	var basicD = this.basic;
+
+%>
+
+<div class="storefront">
+	<section class="sec1" style="background-image: url(<%= basicD.shop_focus_img %>);">
+		<figure class="shop">
+			<a class="shop-logo"><img src="<%= basicD.shop_face_img %>" alt="shop logo"></a>
+			<figcaption>
+				<p class="shop-name"><%= basicD.shop_nick %></p>
+				<ul class="shop-performance">
+					<li>宝贝数量：<i><%= basicD.shop_goods_num %></i></li>
+					<li>总销量：<i><%= basicD.total_sale_num %></i></li>
+				</ul>
+			</figcaption>
+		</figure>
+	</section>
+	<% 
+		var couponD = basicD.shop_coupon_apply; 
+		if(couponD){ 
+	%>
+	<section class="sec2">
+		<% 
+			var applyStatus = 'get';
+			var creditClass = 'credit';
+			var text        = '点击\n领取'; 
+			couponD.forEach(function (cp){ 
+		 
+				if(cp.can_apply_status == 2){
+					applyStatus = 'got';
+					text = '已领';
+				}
+
+				var threshold = cp.threshold;
+
+				if(threshold == 0){
+					creditClass = 'no_threshold';
+				}
+		%>
+		<div class="coupon <%= applyStatus %>" data-id="<%= cp.coupon_apply_code %>">
+			<div class="action">
+				<span class="status"><%= text %></span>
+			</div>
+			<div class="denomination">
+				<p class="<%= creditClass %>">￥<%= cp.credit %></p>
+				<% if(threshold != 0){ %><p class="threshold">消费满<%= threshold %>使用</p><% } %>
+			</div>
+		</div>
+		<% }); %>
+	</section>
+	<% } %>
+	<section class="sec3">
+		<ul class="goods_was_sort_by">
+			<li class="s_item active" data-id="0">默认</li>
+			<li class="s_item" data-id="1">最新</li>
+			<li class="s_item" data-id="2">热销</li>
+			<li class="s_item" data-id="3">价格<i class="price-icon"></i></li>
+		</ul>
+		<div class="goods_shelf"></div>
+		<div class="pullUp" status="loading"></div>
+	</section>
+</div>
+
+<%# sq/goods_tpl.html %>
+
+<%! 
+	$_ENGINE_SELF.callFn("useModule")(
+		"<<<_use:fml.use('wap/page/sq/shop');_use:", 
+		this._JSstack, 
+		this._JSmods 
+	); 
+%>
+
+<%# sq/footer.html %>

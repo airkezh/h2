@@ -1,0 +1,45 @@
+<%# head_simple.html%>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+<%
+	var weixinBrowser = this.weixinBrowser;
+%>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<div class="new-main">
+	<div class="audio_box">
+		<div id="jp-jplayer-top0" class="jp-jplayer" audio_url="<%= this.PICTURE_URL%>images/wap/activity/fuide/luhan.m4a"></div>
+		<div class="audio_control" id="jp_container_top0">
+			<div class="audio_info">
+				<p class="control_btn jp-play">
+					<span class="start"><img src="<%= this.PICTURE_URL%>images/wap/activity/fuide/lu-play.png"></span>
+				</p>
+				<p class="control_btn jp-pause" style="display:none;">
+					<span class="pause"><img src="<%= this.PICTURE_URL%>images/wap/activity/fuide/lu-stop.png"></span>
+				</p>
+			</div>
+		</div>
+	</div>
+	<div class="content">
+		<div class="new-text">
+			<img src="http://d01.res.meilishuo.net/pic/_o/0c/f7/f38236218c1c45c560f82d405568_640_215.cg.png">
+		</div>
+		<div class="link-area">
+			<a class="game-link" href="/activity/summerFuide/question/">
+				<img src="http://d02.res.meilishuo.net/pic/_o/1d/66/da0fce53a3d8538554fbede31510_224_225.cf.png">
+			</a>
+			<a class="pics-link" href="http://pages.w.meilishuo.com/cooper/11279">
+				<img src="http://d01.res.meilishuo.net/pic/_o/42/77/46420bbc257ae67f69f1bcf751cc_173_159.ch.png">
+			</a>
+		</div>
+	</div>
+	<div class="btn-rule"><img src="http://d01.res.meilishuo.net/pic/_o/c3/8e/cf7be402a9789f6fa78e814e87e1_148_41.cg.png"></div>
+	<div class="mask"></div>
+	<div class="rules-txt"><img src="http://d01.res.meilishuo.net/pic/_o/00/1c/2d217fdbf96050ca2c1788edede4_512_650.cf.gif"></div>
+</div>
+<script>
+	fml.vars.isLogin = <%= this.userInfo.user_id%>;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use('wap/page/audio');
+fml.use('wap/page/activity/summerFuide/home');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

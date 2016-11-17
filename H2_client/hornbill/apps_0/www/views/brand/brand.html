@@ -1,0 +1,188 @@
+<%# head.html%>
+<%
+var query = this._Request_query;
+var getLink = _extFn.getLink;
+var mSubstr = _extFn.mSubstr;
+%>
+<%if(this.brand_ad.ad.category == 1) {%>
+<div class="top_box">
+    <div class="boxImg" style="width:948px;height:400px;">
+        <% var seclen = this.brand_ad.ad.list ? this.brand_ad.ad.list.length : 0; %>
+		<ul class="_img" style="position:absolute;left:0;width:<%= (seclen+1)*948 %>px;display:inline-block;">
+		   <%this.brand_ad.ad.list && this.brand_ad.ad.list.map(function(data, index){ %>
+			   <li class="left_f"><a target="_blank" href="<%= data.url%>"><img width="948" height="400" src="<%= data.image%>"></a></li>
+		   <% }); %>
+		</ul>
+	</div>
+	<div class="_num adType1 <% if(seclen == 1) { %>none_f<% } %>">
+		<% for (var i=1; i<=seclen; i++) { %>
+		<% var current = i==1 ? 'current' : ''; %>
+		<a class="<%= current %>"><span class="none_f"><%= i %></span></a>
+		<% } %>
+	</div>
+</div>
+<%}%>
+<div class="auto_box">
+	<div class="redline1"></div>
+	<div class="brand_tit">
+		<h2 class="bd_tle4">编辑精选推荐/EDITIOR'S PICKS</h2>
+	</div>
+	<% if(this.handpick.data){ %>
+	<ul id="accordion-slider" class="brand_accordion">
+		<% this.handpick.data.map(function(data){ %>
+			<li>
+				<a href="<%= data.url%>" target="_blank"><img src="<%= data.img%>" /></a>
+				<p class="focus_text"><%= data.content%></p>
+			</li>
+		<% }); %>
+	</ul>
+	<%}%>
+</div>
+<div class="auto_box">
+	<div class="redline1"></div>
+	<div class="brand_tit">
+		<h2 class="bd_tle5">时尚杂志/FASHION MAGAZINES</h2>
+		<a href="http://www.meilishuo.com/magazine" target="_blank" class="more">查看更多&gt;&gt;</a>
+	</div>
+	<div class="brand_group">
+	<% 
+		var showimg = 0;
+		var magItemRenderFn = requireFn('group/magitem.html');
+		this.brandGroup.data && this.brandGroup.data.map(function(magazine){ %>
+			<%= magItemRenderFn(magazine , showimg++)%> 
+	<% });%>
+	</div>
+</div>
+<div class="auto_box">
+	<div class="redline1"></div>
+	<div class="brand_tit">
+		<h2 class="bd_tle1">大牌LOOK/looks</h2>
+	</div>
+	<ul class="looks">
+		<% this.looks && this.looks.map(function(data) { %>
+			<li>
+				<a class="pic" href="<%if(data.brand_minisiteurl != ''){%><%=data.brand_minisiteurl%><%}else {%>/brand/<%=data.domain%><%}%>" target="_blank"><img alt="<%=data.brand_name%>" title="<%=data.brand_name%>" src="<%=data.image_url%>" /></a>
+				<dl class="list">
+					<dt>共<%=data.brand_twitter_num%>张</dt>
+					<dd class="fb_f gray_f">
+						<a href="<%if(data.brand_minisiteurl != ''){%><%=data.brand_minisiteurl%><%}else {%>/brand/<%=data.domain%><%}%>" target="_blank"><%=data.title%></a>
+					</dd>
+					<dd><%=data.ctime%></dd>
+				</dl>
+			</li>
+		<% }); %>
+	</ul>
+	<div class="clear_f"></div>
+</div>
+<div class="auto_box">
+	<div class="redline1"></div>
+	<div class="brand_tit">
+		<h2 class="bd_tle6">口碑美妆/MAKEUP</h2>
+		<a href="http://www.meilishuo.com/beauty/" target="_blank" class="more">查看更多&gt;&gt;</a>
+	</div>
+	<div class="out-mz">
+		<a class="left-mz j-l"></a>
+		<div class="in-mz">
+			<div>
+				<a href="/beauty/catalog/5" target="_blank">
+					<img src="http://i.meilishuo.net/css/images/brand/meizhuang/baoshi.jpg" />
+					<p>保湿</p>
+				</a>
+				<a href="/beauty/catalog/7" target="_blank">
+					<img src="http://i.meilishuo.net/css/images/brand/meizhuang/meibai.jpg" />
+					<p>美白</p>
+				</a>
+				<a href="/beauty/catalog/9" target="_blank">
+					<img src="http://i.meilishuo.net/css/images/brand/meizhuang/bushui.jpg" />
+					<p>补水</p>
+				</a>
+				<a href="/beauty/catalog/33" target="_blank">
+					<img src="http://i.meilishuo.net/css/images/brand/meizhuang/qudou.jpg" />
+					<p>祛痘</p>
+				</a>
+				<a href="/beauty/catalog/35" target="_blank">
+					<img src="http://i.meilishuo.net/css/images/brand/meizhuang/yanshuang.jpg" />
+					<p>眼霜</p>
+				</a>
+				<a href="/beauty/catalog/43" target="_blank">
+					<img src="http://i.meilishuo.net/css/images/brand/meizhuang/mianmo.jpg" />
+					<p>面膜</p>
+				</a>
+				<a href="/beauty/catalog/181" target="_blank">
+					<img src="http://i.meilishuo.net/css/images/brand/meizhuang/mianshuang.jpg" />
+					<p>面霜</p>
+				</a>
+				<a href="/beauty/catalog/47" target="_blank">
+					<img src="http://i.meilishuo.net/css/images/brand/meizhuang/ruye.jpg" />
+					<p>乳液</p>
+				</a>
+				<a href="/beauty/catalog/153" target="_blank">
+					<img src="http://i.meilishuo.net/css/images/brand/meizhuang/chungao.jpg" />
+					<p>唇膏</p>
+				</a>
+				<a href="/beauty/catalog/171" target="_blank">
+					<img src="http://i.meilishuo.net/css/images/brand/meizhuang/fendiye.jpg" />
+					<p>粉底液</p>
+				</a>
+				<a href="/beauty/catalog/179" target="_blank">
+					<img src="http://i.meilishuo.net/css/images/brand/meizhuang/xiangshui.jpg" />
+					<p>淡香水</p>
+				</a>
+				<a href="/beauty/catalog/185" target="_blank">
+					<img src="http://i.meilishuo.net/css/images/brand/meizhuang/yanxiangao.jpg" />
+					<p>眼线膏</p>
+				</a>
+			</div>
+		</div>
+		<a class="right-mz j-r"></a>
+	</div>
+	<div class="clear_f"></div>
+</div>
+<%if(this.events.length > 0){%>
+<div class="auto_box">
+	<div class="redline1"></div>
+	<div class="brand_tit">
+		<h2 class="bd_tle2">品牌活动/Events</h2>
+		<a href="http://www.meilishuo.com/brand/brand_actList/" target="_blank" class="more">查看更多&gt;&gt;</a>
+	</div>
+	<% this.events && this.events.map(function(data) { %>
+		<a class="e_pic" href="<%=data.activity_url%>" target="_blank"><img alt="<%=data.activity_name%>" title="<%=data.activity_name%>" src="<%=data.activity_image%>" /></a>
+	<% }); %>
+	<div class="clear_f"></div>
+</div>
+<%}%>
+<div class="auto_box">
+	<div class="redline1"></div>
+	<div class="brand_tit">
+		<h2 class="bd_tle3">人气品牌/TopBrand</h2>
+	</div>
+	<% this.topbrand && this.topbrand.map(function(data) { %>
+		<div class="tle_line">
+			<h3 class="top_tle"><span class="gray_f"><%=data.category_name%></span><span class="red_f ml6_f"><%=data.category_name_en%></span></h3>
+		</div>
+		<ul class="tb_pic">
+		<% data.brandList && data.brandList.map(function(pics) { %>
+			<li>
+				<a class="hoverpic">
+					<img alt="<%=pics.brand_slogan%>" title="<%=pics.brand_slogan%>" src="<%=pics.brand_index_logo%>" />
+					<span class="gray_f"><%=pics.brand_slogan%></span>
+				</a>
+				<a class="onpic none_f" <%if(pics.brand_minisiteurl != ''){%>href="<%=pics.brand_minisiteurl%>"<%}else {%>href="/brand/<%=pics.domain%>"<%}%> target="_blank">
+					<%if(pics.brand_name != ''){ %>
+						<b class="f18_f mt20_f"><%=pics.brand_name_en%></b>
+						<b><%=pics.brand_name%></b>
+					<%}else {%>
+						<b class="f18_f mt30_f"><%=pics.brand_name_en%></b>
+					<%}%>
+				</a>
+			</li>
+		<% }); %>
+		</ul>
+	<% }); %>
+	<div class="clear_f"></div>
+</div>
+<%# user/windows.html%>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/brand');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

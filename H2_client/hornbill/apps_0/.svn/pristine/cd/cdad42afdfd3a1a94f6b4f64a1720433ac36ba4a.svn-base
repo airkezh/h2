@@ -1,0 +1,95 @@
+<%# head.html%>
+<%
+	var banner=this.banner || {};
+	var bannerData=banner.data || {};
+	var bannerArr=bannerData.banner || [];
+%>
+<% var getLink = _extFn.getLink; %>
+
+<div class="wrap">
+	<% if(bannerArr.length){ %>
+		<div class="banner">
+			<ul>
+				<% bannerArr.forEach(function(data , index){ %>
+					<li>
+						<a href="<%= data.url || 'javascript:;' %>" data-img ="<%= data.src %>" style="background: repeat center top;"></a>
+					</li>
+				<% }); %>
+			</ul>
+			<% if(bannerArr.length>=2){ %>
+				<div class="focus">
+					<% bannerArr.forEach(function(data){ %>
+						<a></a>
+					<% }); %>
+				</div>
+			<% } %>
+		</div>
+	<% } %>
+	<div id="menuBox" class="menu-box">
+		<div class="menu-inner">
+			<div class="kinds-menu">
+				<ul>
+			    	<li class="<%= (!this.cata || this.cata=='0' || this.cata>4 || isNaN(this.cata)) ? 'tab_active' : '' %>">
+			        	<a class="link cicon <%= (!this.cata || this.cata=='0' || this.cata>4 || isNaN(this.cata)) ? 'light_all' : 'all' %>" href="/desire/<%=getLink({'cata':0,'sort':this.sort,'sortKind':this.sortKind})%>#menuBox">
+			       			<span class="ctitle">全部</span>
+			       		</a>
+			       		<span class="border"></span>
+			       	</li>
+					<li class="<%= this.cata==1 ? 'tab_active' : '' %>">
+			        	<a class="link cicon <%= this.cata==1 ? 'light_cloth' : 'cloth' %>" href="/desire/<%=getLink({'cata':1,'sort':this.sort,'sortKind':this.sortKind})%>#menuBox">
+			       			<span class="ctitle">上衣</span>
+			       		</a>
+			       		<span class="border"></span>
+			       	</li>
+			       	<li class="<%= this.cata==2 ? 'tab_active' : '' %>">
+			        	<a class="link cicon <%= this.cata==2 ? 'light_shoes' : 'shoes' %>" href="/desire/<%=getLink({'cata':2,'sort':this.sort,'sortKind':this.sortKind})%>#menuBox">
+			       			<span class="ctitle">裙子</span>
+			       		</a>
+			       		<span class="border"></span>
+			       	</li>
+			       	<li class="<%= this.cata==3 ? 'tab_active' : '' %>">
+			        	<a class="link cicon <%= this.cata==3 ? 'light_baobao' : 'baobao' %>" href="/desire/<%=getLink({'cata':3,'sort':this.sort,'sortKind':this.sortKind})%>#menuBox">
+			       			<span class="ctitle">裤子</span>
+			       		</a>
+			       		<span class="border"></span>
+			       	</li>
+			       	<li class="<%= this.cata==4 ? 'tab_active' : '' %>">
+			        	<a class="link cicon <%= this.cata==4 ? 'light_peishi' : 'peishi' %>" href="/desire/<%=getLink({'cata':4,'sort':this.sort,'sortKind':this.sortKind})%>#menuBox">
+			       			<span class="ctitle">其他</span>
+			       		</a>
+			       	</li>
+			    </ul>
+		    </div>
+		    <div class="sort-menu">
+		    	<ul>
+		    		<li class="<%= this.sort==0 ? 'active' : '' %>">
+			        	<a href="/desire/<%=getLink({'cata':this.cata,'sort':0,'sortKind':0})%>#menuBox">上新</a>
+			        	<span class="special">|</span>
+			        </li>
+			        <li class="<%= this.sort==1 ? 'active' : '' %>">
+			        	<a href="/desire/<%=getLink({'cata':this.cata,'sort':1,'sortKind':0})%>#menuBox">销量</a>
+			        	<span class="special">|</span>
+			        </li>
+			        <li class="<%= this.sort==2 ? 'active' : '' %>">
+			        	<a href="/desire/<%=getLink({'cata':this.cata,'sort':2,'sortKind':(this.sort==2 && this.sortKind==1) ? '0' : '1'})%>#menuBox">价格<i class="<%= (this.sort==2 && this.sortKind==1) ? 'arrow_t' : 'arrow_d' %>">&nbsp;</i></a>
+			        </li>
+			      </ul>
+		    </div>
+	    </div>
+    </div>
+	<div class="goods_wall_box">
+		<div class="spinner midSpinner"></div>
+		<div class="goods_wall"></div>
+	</div>
+	<div class="spinner botSpinner none_f"></div>
+	<div class="paging_panel c_f none_f">
+		<%#paging.html%>
+	</div>
+	<div class="clear_f"></div>
+	<%#desire/poster.html%>
+</div>
+<% $_ENGINE_SELF.callFn("useModule")("fml.use('page/poster0');", this._JSstack , this._JSmodsFast ); %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/desire/index');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

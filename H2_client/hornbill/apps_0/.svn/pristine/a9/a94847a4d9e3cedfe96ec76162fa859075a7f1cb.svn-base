@@ -1,0 +1,222 @@
+<%#head.html%>
+ <%
+	var query = this._Request_query
+		, getLink = _extFn.getLink;
+%>
+<% if(this.os.mobileQQ){ %>
+	<script src="http://pub.idqqimg.com/qqmobile/qqapi.js?_bid=152"></script>
+<% } %>
+<%
+	var info = this.actinfo.data;
+	var curtab = this.curtab;
+%>
+<div class="main">
+	<div class="bbox">
+		<div class="t-banner">
+			 <img src="<%=info.banner_mob%>" /> 
+		</div>
+		<%if(info.small_banners){%>
+		<div class="s_banner">
+			<%for(var item in info.small_banners){
+				var itemobj = info.small_banners[item];
+				if(itemobj.jump_url.length){%>
+			<div>
+				<a href="<%=itemobj.jump_url%>"><img src="<%=itemobj.banner_img%>" />
+				</a>
+			</div>
+			<%}}%>
+		</div>
+		<%}%>
+	<!-- 	<div class="ctl">
+
+			<%if(info.time_val!=0){%>
+				<p class="time_tit"><%= info.time_tip%></p>
+			    <dl class="hd_ltime" stime="<%= info.time_val%>">
+			    	<%if(  parseInt(info.time_val) > 86400){%>
+			    	<dd id="day"></dd><i>天</i>
+			    	<%}%>
+			    	<dd id="hour"></dd><strong>:</strong>
+			    	<dd id="minu"></dd><strong>:</strong>
+			    	<dd id="sec" class="last"></dd>
+			    </dl> 
+		    <%}else{%>
+		    	<p class="time_tit">活动已结束</p>
+		    <%}%>
+		</div> -->
+		<%
+			var actShow = this.ViewTools.timeStuff({'2015/4/14 00:00:00' : 1, '2015/4/17 00:00:00' : 0} , 0 );
+		%>
+		<% if(this.coupon && (actShow == 1)){%>
+		<div class="coupon-wrapper">
+				<p class="get-time">
+					<span class="bold">4月14日~16日 每天10点准时派券！</span><br>
+					<span class="bold">每种券只能领一张哦~</span>
+				</p>
+		</div>
+		<% }%>
+	</div>
+
+	<section class="nav_wap" id="nav_wap">
+	    <div class="nav scrollout" id="m_ca">
+	    	<%if(info.tabs.length){%>
+		    	<ul class="nav_tabs">
+		    	<%
+		    	info.tabs.forEach(function(data,i){%>
+		            <li <%= curtab == data.tab ? 'class=\'curr\'' : ''%> data-cata="<%=data.tab%>"><a href="javascript:void(0);"><span><%=data.title%></span></a></li>
+		    	<%})%>
+				</ul>
+			<%}%>
+			<ul class="range">
+				<li data-sbase="0" data-sort="0" class="active"><a href="javascript:void(0);">默认</a><span>|</span></li>
+				<li data-sbase="1" data-sort="0"><a href="javascript:void(0);">人气</a><span>|</span></li>
+				<li data-sbase="4" data-sort="0"><a href="javascript:void(0);">销量</a><span>|</span></li>
+				<li data-sbase="3" data-sort="1"><a href="javascript:void(0);">价格<i class="arrow_t">&nbsp;</i></a></li>
+			</ul>		
+	    </div>
+	</section>
+	<section id="container" class="container" style="padding-top:10px; min-height:700px;">
+		<div class="content">
+			<div class="goods_wall">
+			</div>
+			<div class="pullUp" status="loading"></div>
+		</div>
+    </section>
+</div>
+<!-- <a class="gotop" style="bottom:<%if(this.isIphone){%>60<%}else{%>20<%}%>px">
+	<img src="<%= this.PICTURE_URL%>/images/wap/tuan/gotop.png" />
+</a> -->
+
+<div class="sidebar_shade" style="display: none;"></div>
+
+<script id="coupon" type="text/html">
+	<? if( this.error_code == 0 && this.data.coupon && this.data.coupon.length){ ?>
+		<ul class="coupon">
+			<? this.data.coupon.forEach(function(v, k){?>
+
+				<? if(v.state == '10'){?>
+					<li data-coupon="<?= v.coupon_code?>" class="out">
+						<p class="info">
+							减&nbsp;<span class="credit"><?= v.credit?></span><br />
+							<span class="threshold">
+								<? if(parseInt(v.threshold) == 0 ){?>
+										无门槛使用
+								<? }else{?>
+									满￥<?= v.threshold?>使用
+								<? }?>
+							</span>
+						</p>
+						<p class="get">
+							<span>10点<br />开抢</span>
+						</p>
+					</li>
+				<? }?>
+
+				<? if(v.state == 'can_apply'){?>
+					<li data-id="<?= v.id?>" data-code="<?= v.coupon_code?>"  data-threshold="<?= v.threshold?>" data-credit="<?= v.credit?>" class="can">
+
+						<p class="info">
+							减&nbsp;<span class="credit"><?= v.credit?></span><br />
+							<span class="threshold">
+								<? if(parseInt(v.threshold) == 0 ){?>
+										无门槛使用
+								<? }else{?>
+									满￥<?= v.threshold?>使用
+								<? }?>
+							</span>
+						</p>
+
+						<p class="get">
+							<span>立即<br />领取</span>
+						</p>
+					</li>
+				<? }?>
+
+				<? if(v.state == 'applied'){?>
+					<li data-coupon="<?= v.coupon_code?>" class="receive">
+						<p class="info">
+							减&nbsp;<span class="credit"><?= v.credit?></span><br />
+							<span class="threshold">
+								<? if(parseInt(v.threshold) == 0 ){?>
+										无门槛使用
+								<? }else{?>
+									满￥<?= v.threshold?>使用
+								<? }?>
+							</span>
+						</p>
+						<p class="get">
+							<span>券已<br />领取</span>
+						</p>
+					</li>
+				<? }?>
+
+				<? if(v.state == 'tomorrow'){?>
+					<li data-coupon="<?= v.coupon_code?>" class="out">
+						<p class="info">
+							减&nbsp;<span class="credit"><?= v.credit?></span><br />
+							<span class="threshold">
+								<? if(parseInt(v.threshold) == 0 ){?>
+										无门槛使用
+								<? }else{?>
+									满￥<?= v.threshold?>使用
+								<? }?>
+							</span>
+						</p>
+						<p class="get">
+							<span>明日<br />再来</span>
+						</p>
+					</li>
+				<? }?>
+
+				<? if(v.state == 'empty'){?>
+					<li data-coupon="<?= v.coupon_code?>" class="out">
+						<p class="info">
+							减&nbsp;<span class="credit"><?= v.credit?></span><br />
+							<span class="threshold">
+								<? if(parseInt(v.threshold) == 0 ){?>
+										无门槛使用
+								<? }else{?>
+									满￥<?= v.threshold?>使用
+								<? }?>
+							</span>
+						</p>
+						<p class="get">
+							<span>券已<br />抢完</span>
+						</p>
+					</li>
+				<? }?>
+
+		<? });?>
+		</ul>
+	<? }?>
+	
+</script>
+<script>
+	fml.vars.poster = {
+	};
+	fml.vars.event_id='<%== this.event_id%>';
+	fml.vars.is_lazyload_poster=true;
+
+	fml.vars.coupon = <%=this.coupon%>;
+</script>
+<%= requireFn('tuan/hd_list.html')({
+	'os' : this.os
+	, 'apk' : ''
+	,'_JSstack' : this._JSstack
+	,'_JSmods' : this._JSmods
+	,'_imgurlhead' : this.PICTURE_URL
+	,'_isstart' : this.isstart
+});%>
+<% if(this.share){ %>
+	<%= requireFn('wapShare.html')({
+		'share' : this.share 
+		, 'shareTitle' : '选择分享到'
+		, '_JSstack' : this._JSstack
+		, '_JSmods' : this._JSmods
+	}); %>
+<%}%>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/app/hackWeixin');
+	fml.use('wap/page/tuan/activity/hd');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html%>

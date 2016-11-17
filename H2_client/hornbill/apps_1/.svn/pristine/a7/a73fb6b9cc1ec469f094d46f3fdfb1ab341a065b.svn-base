@@ -1,0 +1,199 @@
+<%# header.html%>
+<%
+	var goodsInfo = this.goods_detail.data || {}
+%>
+<div class="wrap">
+	<h2 class="wd_title">商品详情</h2>
+	<div class="layer_wrap1" id="propNotice"></div>
+	<figure class="goods_wrap"  goods_id="<%= goodsInfo.goods_id || ''%>" share_id="<%= goodsInfo.share_id || ''%>" shop_id="<%= goodsInfo.shop_id%>" category_id="<%= goodsInfo.category_id || 0%>">
+		<div class="goods_img">
+			<img src="<%= goodsInfo.goods_image[0].image_header%>" image_thumbnail="<%= goodsInfo.goods_image[0].image_thumbnail %>" image_id="<%= goodsInfo.goods_image[0].image_id %>"/>
+			<%if(goodsInfo.for_sale == 1 || goodsInfo.goods_status == 1){%>
+				<span class="shelves">很遗憾呢~此商品已下架哟~</span>
+			<%}%>
+		</div>
+		<div class="goods_info">
+			<div class="price">
+				<ul>
+			    	<li>
+						<span>¥</span><span class="now"><%= (goodsInfo.goods_type == 1) ? goodsInfo.goods_display_price_presale : goodsInfo.goods_display_price%></span><span class="han_p">&nbsp;(韩币&nbsp;₩<i class="now_k"><%= goodsInfo.goods_display_price_korea%></i>)</span>
+					</li>						
+				</ul>
+			</div>
+			<div class="goods_name"><%= goodsInfo.goods_desc%></div>
+			<div class="goods_dec" id="goods_dec"><%= goodsInfo.goods_brief%></div>
+			<div>
+				<ul class="goods_fa">
+					<li>
+						<p>尺码</p>
+						<p><%= goodsInfo.goods_display_size%></p>
+					</li>
+					<li>
+						<p>颜色</p>
+						<p><%= goodsInfo.goods_display_color%></p>
+					</li>
+				</ul>
+			</div>
+			<div class="li_last">
+				<p>物流</p>
+				<p><span>免国际物流</span><span class="grap_l">预计10天内到达</span></p>
+			</div>
+			<div class="li_last">
+				<p class="bor_n">采购地</p>
+				<p class="bor_n"><span class="grap_l"><%= goodsInfo.goods_display_source%></span></p>
+			</div>
+			<div>
+				<ul class="nav_f">
+					<li>
+						<img src="<%=this.PICTURE_URL%>/images/wap/wd/plane.png">
+						<p>韩国直邮</p>
+					</li>
+					<li>
+						<img src="<%=this.PICTURE_URL%>/images/wap/wd/pre.png">
+						<p>正品保证</p>
+					</li>
+					<li>
+						<img src="<%=this.PICTURE_URL%>/images/wap/wd/buyer.png">
+						<p>买手精品</p>
+					</li>
+					<li>
+						<img src="<%=this.PICTURE_URL%>/images/wap/wd/lightn.png">
+						<p>快速发货</p>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</figure>
+	<%if(goodsInfo.shop_id && goodsInfo.shop_id != '174223'){%>
+		<figure class="store_wrap">
+			<a href="/mdNew/homeNew/?shop_id=<%=goodsInfo.shop_id%>" class="guang_btn">进店逛逛</a>
+			<a href="/mdNew/homeNew/?shop_id=<%=goodsInfo.shop_id%>" class="store_pic detail_store_pic">
+				<img src="<%= goodsInfo.goods_shop.shop_logo%>">
+			</a>
+			<div class="store_info store_cont">
+				<p class="store_name"><span><%= goodsInfo.goods_shop.shop_name%></span></p>
+				<p class="goods_num">微信号：<span><%= goodsInfo.goods_shop.shop_weixin%></span></p>
+			</div>
+		</figure>
+	<%}%>
+	<figure class="grap"></figure>
+	<figure class="goods_detail">
+		<% if (goodsInfo && goodsInfo.goods_image) { %>
+		<div class="detail_cont" id="detail_cont">
+			<% goodsInfo.goods_image.forEach(function(item , key){%>
+			<span class="detail_img">
+				<img src="<%= item.image_middle%>" image_id="<%= item.image_id%>"/>
+			</span>
+			<%});%>
+			<span><img src="<%=this.PICTURE_URL%>/images/md/korea.jpg"></span>
+		</div>	
+		<%}%>
+	</figure>
+	<figure class="after_sale_wrap">
+		<p class="tit"><span class="line l_l"></span>服务保障说明<span class="line r_l"></span></p>	
+		<p>• 物流： 商品在成交次日从韩国首尔直发至购买地址，国际物流时间一般在7天左右。商品发出后您会收到短信提示。物流信息查询，请关注“蜜店”微信公共号。
+		</p>
+		<p>• 断货： 韩国商品更新速度快，每次更新款式少，容易出现断货。如遇断货，客服会致电您进行订单全额退款，需要您提供银行卡账号和开户人姓名用于转账退款。客服人员不会向您索要银行卡账号和开户人姓名之外的任何信息，以保证您账户安全。请认准客服号码4000800577。</p>
+		<p>• 关于退换货：因韩国商品特殊，暂时不能支持退换货服务，请您谅解</p>
+		<%if(goodsInfo.shop_id && goodsInfo.shop_id != '174223'){%>
+		<p>其他售后问题，建议您与商家直接沟通解决。<br><span>客服微信号：<%= goodsInfo.goods_shop.shop_weixin%></span></p>
+		<%}%>
+		<p>商家不能解决的问题、咨询以及投诉，请联系蜜店客服。<br><span>蜜店客服电话：4000800577</span></p>
+	</figure>
+	<%if(goodsInfo.shop_id && goodsInfo.shop_id != '174223'){%>
+		<%if(this.is_mls){%>
+			<div class="register_wrap mag_bot"></div>
+			<div class="share_buy_wrap">
+				<div class="share_col_wrap">
+					<div onclick="shareToWeixin('weixin')">
+						<img src="<%=this.PICTURE_URL%>/images/wap/wd/wx_share@2x.png"><p>分享到微信</p>
+					</div>
+					<div onclick="shareToWeixin('weixin_timeline')">
+						<img src="<%=this.PICTURE_URL%>/images/wap/wd/friends@2x.png"><p>分享到朋友圈</p>
+					</div>
+					<div onclick="shareToWeixin('weixin_favorite')">
+						<img src="<%=this.PICTURE_URL%>/images/wap/wd/col@2x.png"><p>收藏到微信</p>
+					</div>
+				</div>
+				<div class="buy_wrap">
+					<a class="buy_btn1 <%if(goodsInfo.goods_status == 1 || goodsInfo.for_sale == 1){%>non_buy eventnone<%}%>">立即购买</a>
+				</div>
+			</div>
+		<%}else{%>
+			<div class="register_wrap"></div>
+			<div class="buy_wrap">
+				<a class="buy_btn1 <%if(goodsInfo.goods_status == 1 || goodsInfo.for_sale == 1){%>non_buy eventnone<%}%>">立即购买</a>
+			</div>
+		<%}%>
+	<%}%>
+</div>
+
+<script type="text/html" id="share_md">
+		<div class="goods_msg" id="goods_msg">
+			<%var goods_s = goodsInfo.goods_sku_map.prop; if (goods_s && goods_s[1] && goods_s[1].is_show) { %>
+			<dl class="prop info_list">
+				<dt class="type"><%= goods_s[1].name%></dt>
+				<dd class="info">
+					<ul id="colorList">
+						<% goods_s[1].value.forEach(function(item , key){%>
+								<li><span><%= item%></span></li>
+							<%});%>
+					</ul>
+					<div class="colorShow"></div>
+				</dd>
+			</dl>
+		<%}%>
+		<% if (goods_s && goods_s[0] && goods_s[0].is_show) { %>
+		<dl class="prop info_list">
+			<dt class="type"><%= goods_s[0].name%></dt>
+			<dd class="info">
+				<ul id="sizeList">
+					<% goods_s[0].value.forEach(function(item , key){%>
+							<li><span><%= item%></span></li>
+						<%});%>
+				</ul>
+				<div class="colorShow"></div>
+			</dd>
+		</dl>
+		<%}%>
+		<dl class="amount pdtop">
+			<dt class="type">选择数量</dt>
+			<dd class="info">
+				<div class="numBox">
+					<span class="minus"></span>
+					<input class="nums" title="请输入购买数量" type="text" value="1" readonly="readonly" />
+					<span class="plus"></span>
+				</div>	
+			</dd>
+		</dl>
+		<div class="buy_tot"><span class="line l_l"></span>合计：<span id="total_price"></span><span class="line r_l"></span></div>
+		<% if(goodsInfo.goods_type == 1){ %>
+			<p class="amount pdtop predel">
+				预计发货时间：<span><%=goodsInfo.goods_express_delay%></span>
+			</p>						
+	    <%}%>
+	</div>
+	<div class="buy_wrap buy_pos">
+		<a class="buy_btn <%if(goodsInfo.goods_status == 1 || goodsInfo.for_sale == 1){%>non_buy eventnone<%}%>">立即购买</a>
+	</div>
+</script>
+
+<script>
+/*fml.vars.goods_sku = <%= JSON.stringify(goodsInfo.goods_sku)%>;*/
+fml.vars.goods_total_repertory = '<%=goodsInfo.goods_total_repertory%>';
+fml.vars.goods_stock = <%= JSON.stringify(goodsInfo.goods_sku_map.stock)%>;
+fml.vars.goods_prop = <%= JSON.stringify(goodsInfo.goods_sku_map.prop)%>;
+fml.vars.goods_o_current_price = '<%= goodsInfo.goods_display_price%>';
+fml.vars.goods_current_price = '<%= (goodsInfo.goods_type == 1) ? goodsInfo.goods_display_price_presale : goodsInfo.goods_display_price%>';
+fml.vars.goods_price_korea = '<%= goodsInfo.goods_display_price_korea%>';
+	var imgUrl = '<%= goodsInfo.goods_image[0].image_middle%>';
+	var lineLink = location.href;
+	var descContent = '<%= goodsInfo.goods_desc%>';
+	var shareTitle = '蜜店 - <%= goodsInfo.goods_shop.shop_name%>';
+	var shareTimelineText = '蜜店【<%= goodsInfo.goods_shop.shop_name%>】<%= goodsInfo.goods_desc%>';
+</script>
+<script src="<%= this.JCSTATIC_BASE  %>/js/open/shareCollect.js?<%= this.SVERSION%>"></script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('md/page/detailNew');
+_use:", this._JSstack , this._JSmods ); %>
+<%# footer.html%>

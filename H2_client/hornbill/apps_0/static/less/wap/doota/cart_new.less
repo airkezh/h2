@@ -1,0 +1,143 @@
+@import "../block.less";
+
+@box_bg: 'http://d03.res.meilishuo.net/pic/_o/ac/80/9e6369e43570c2168179aa82fa34_88_88.ch.png';
+@box_checked_bg: 'http://d04.res.meilishuo.net/pic/_o/30/15/4f618255837f268c2dd9df55b201_88_89.cg.png';
+@bg_icon: 'http://d03.res.meilishuo.net/pic/_o/c6/fc/9b0ba6f3238a9af4b4b576ebe6d6_580_678.cf.png';
+@bg_icon_cart: 'http://d03.res.meilishuo.net/pic/_o/f5/3d/52158d5a318a12602373182f3899_200_400.cf.png';
+.ellipsis-row(@var:1){ .hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:@var;-webkit-box-orient:vertical; }
+.icon_bg(@x:0, @y:0){
+	background: url(@bg_icon) no-repeat;
+	background-size: 2.9rem;
+	background-position: @x @y;
+}
+.icon_cart_bg(@x:0, @y:0){
+	background: url(@bg_icon_cart) no-repeat;
+	background-size: 1rem;
+	background-position: @x @y;
+}
+.checkbox(){
+	input{ .ml(-10rem); }
+	label{ .left;.w(.44rem);.h(.45rem);background: url(@box_bg) center no-repeat;background-size: .44rem; }
+	input:checked+label{ background-image: url(@box_checked_bg); }
+}
+
+html,
+body{ .bgc(#f4f4f4);.f(.24rem);.fc(#666);.w(6.4rem); }
+
+.page_head;
+
+.cart_list{
+	.mb(.2rem);.bgc(#fff);.hidden;
+}
+.shop_title{
+	padding: .3rem .2rem .3rem .3rem;.hidden;
+
+	&>div{ .left;.l(.44rem); }
+	.box_btn{
+		.w(.44rem);.mr(.2rem);.hidden;
+
+		.checkbox;
+	}
+	.shop_name{ .f(.26rem);max-width: 2.8rem;.ellipsis; }
+	.shop_tatol_price{
+		.right;
+
+		span{ .fc(#ff7a9a); }
+	}
+	.fold_btn{ .right;.w(.32rem);.ml(.2rem);.indent;.icon_cart_bg(0, -8%); }
+}
+
+.order_goods_list{
+	border-top: 1px solid rgba(51,51,51,.2);
+
+	.goods{ .w(5.8rem);.ml(.3rem);padding: .3rem;.pl(0);.hidden;border-bottom: 1px solid rgba(51,51,51,.2); }
+	.goods:last-child{ border-bottom: none; }
+	.box_btn{
+		.w(.44rem);.h(.44rem);.mt(.38rem);.left;
+
+		.checkbox;
+	}
+	.main{
+		.left;.ml(.2rem);.w(5.16rem);
+
+		img{ .w(100%);.h(100%); }
+		.pic_wrap{ .pr;.left;.mr(.2rem);.w(1.2rem);.h(1.2rem); }
+		.stock_nervous{ .pa;bottom: 0;left: 0;.w(100%);.l(.26rem);.c;.f(.18rem);.fc(#fff);.bgc(rgba(255,102,102,.8);); }
+		.middle{ .left; }
+		.right{
+			.pr;.right;text-align: right;
+
+			.goods_price{ .fc(#ff7a9a);.h(.24rem); }
+			.origin_price{ margin: .12rem 0 .2rem 0;.f(.2rem);.fc(#999);text-decoration: line-through;.pl(.01rem);.h(.2rem); }
+			.delete_btn{ .pa;right: -.1rem;bottom: -.35rem;.h(.5rem);.w(.9rem);text-align: left;.indent;.icon_cart_bg(-480%, 101%); }
+		}
+		.title{ .w(2.7rem);.h(.26rem);.ellipsis-row;.f(.26rem);.l(.28rem); }
+		.prop{
+			.w(2.7rem);.f(.2rem);.fc(#999);margin: .1rem 0 .08rem;.hidden;
+
+			span{ .left;.pb(.05rem); }
+		}
+		.first{ .mr(.05rem); }
+		.numBox{ .pr; }
+		.minus,
+		.plus{ .left;.w(.48rem);.h(.48rem);border: 1px solid rgba(204,194,201,.6);.c;.l(.48rem); }
+		.minus{ border-top-left-radius: .03rem;border-bottom-left-radius: .03rem;.indent;.icon_cart_bg(-12%, 54%); }
+		.plus{ border-top-right-radius: .03rem;border-bottom-right-radius: .03rem;.indent;.icon_cart_bg(126%, 55%); }
+		.nums{ border: none;margin: 0;.border-r(0);outline: 0;padding: 0;-webkit-appearance: none;appearance: none;.left;border-top: 1px solid rgba(204,194,201,.6);border-bottom: 1px solid rgba(204,194,201,.6);.l(.48rem);.w(.7rem);.c;.f(.28rem);.fc(#80737b); }
+		.nums_mask{ .pa;top: 0;left: .5rem;.w(.7rem);.h(.48rem); }
+	}
+}
+.folded{
+	.fold_btn{ .icon_cart_bg(98%, -9%); }
+	.order_goods_list{ .none; }
+}
+
+
+.cart_delete{
+	.order_goods_list{
+		border: none;
+
+		.pic_wrap,
+		.middle{ opacity: .6; }
+	}
+	.btnG{ .block;.w(2rem);.h(.54rem);.l(.54rem);margin: .3rem auto;border: 2px solid #ff93b2;.border-r(.06rem);.fc(#ff93b2);.c; }
+	.main{ .w(5.6rem); }
+}
+
+
+.float_ctrl_wrap{
+	.pr;.h(1rem);
+
+	.float_ctrl{ .pf;bottom: .98rem;left: 0;.w(5.8rem);padding: .2rem .3rem;.bgc(#fff);border-top: 1px solid rgba(51,51,51,.2); }
+	.goods_check_box{
+		.left;.mt(.08rem);.l(.44rem);.f(.22rem);.fc(#666);
+
+		span{ .i_block; }
+		.box_btn{
+			.w(.44rem);.h(.46rem);.left;.mr(.05rem);
+
+			.checkbox;
+		}
+	}
+	.order_msg{
+		.right;.mr(.2rem);.f(.22rem);
+
+		span{ .fc(#ff7a9a); }
+		.price{
+			.mb(.1rem);.f(.24rem);
+
+			span{ .f(.28rem); }
+		}
+		.msg{ .fc(#999); }
+	}
+	.go_charge{ .right;.bgc(#f66);.fc(#fff);.border-r(.03rem);.w(1.8rem);.h(.6rem);.l(.6rem);.c; }
+}
+
+.none_info{
+	.c;.pt(1rem);
+
+	p{ .l(.3rem); }
+	.btn{ .block;.w(1.52rem);.auto;.border-r(.03rem);padding: .18rem 0;.mt(.4rem);.fc(#fff);.border-r(.03rem);.bgc(#f66);.fc(#fff); }
+}
+
+.wap_foot;

@@ -1,0 +1,80 @@
+<%#head.html%>
+<div class="fixed_wrap">
+	<a href="/biz/huodong/togobuy/?nid=11" target="_blank"></a>
+	<a href="/biz/huodong/togobuy/?nid=13" target="_blank"></a>
+	<a href="/biz/huodong/togobuy/?nid=15" target="_blank"></a>
+</div>
+<div class="years">
+	<div class="topbg">
+		<div class="top_bnr"></div>
+		<a class="markup_main" name="main_content"></a>
+		<div class="tab_tle tlebg2">
+			<a href="/biz/fouryears/zero/#main_content" class="first_tab">零元暖心购</a>
+			<a href="/biz/fouryears/ranking/#main_content">款姐排行榜</a>
+		</div>
+	</div>
+	<div class="rankBox">
+		<div class="promptBox">
+			<% if(!this.userInfo.user_id){ %>
+				<a class="btn">登录查看排名</a>
+			<% } else { %>
+				<span class="txt">亲爱的<%= this.rank.data.user_info.user_name || '' %>，你的总消费金额是￥<%= this.rank.data.user_info.money || 0 %>，<%= this.rank.data.user_info.rank == 1 ? '距离上一名差距' : '距离获得富士拍立得还差'%><%= this.rank.data.user_info.next_money || 0 %>元。</span>
+			<% } %>
+		</div>
+		<div class="rank_con mt10_f">
+			<div class="r_pop">
+				<%
+					var day = new Date();
+					day.setDate(day.getDate()-1);
+					var t_day = day.getDate();
+					var y_date = (day.getMonth()+1)+'月'+(t_day>10 ? t_day : '0'+t_day)+'日';
+				%>
+				<h2 class="title"><%= y_date %>无忧购款姐排行榜</h2>
+				<%
+					var rank_list = this.rank.data.list;
+					var k = rank_list.length > 15 ? 15 : rank_list.length;
+				%>
+				<table class="pop_l">
+					<% for(var i = 0; i<k; i++){ %>
+						<tr>
+							<td><div class="rank_number"><span class="<%= i<3 ? 'red_f' : '' %>">第<%= i+1 %>名：</span></div></td>
+							<td><div class="user_name"><%= rank_list[i].user_name %></div></td>
+							<td>￥<%= rank_list[i].money %></td>
+						</tr>
+					<% } %>
+				</table>
+				<%
+					if(rank_list.length > 15){
+					var k = rank_list.length > 30 ? 30 : rank_list.length;
+				%>
+					<table class="pop_r">
+						<% for(var i = 15; i<k; i++){ %>
+							<tr>
+								<td><div class="rank_number">第<%= i+1 %>名：</div></td>
+								<td><div class="user_name"><%= rank_list[i].user_name %></div></td>
+								<td>￥<%= rank_list[i].money %></td>
+							</tr>
+						<% } %>
+					</table>
+				<% } %>
+				<div class="clear_f"></div>
+			</div>
+		</div>
+		<div class="link_wrap"><a class="td_rank_link" href="/biz/fouryears/ranking/#main_content">返回活动</a></div>
+		<div class="rank_foot foot_link">
+			<a href="/biz/huodong/togobuy/?nid=11" target="_blank"></a>
+			<a href="/biz/huodong/togobuy/?nid=13" target="_blank"></a>
+			<a href="/biz/huodong/togobuy/?nid=15" target="_blank"></a>
+		</div>
+	</div>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use(['jquery', 'app/checkLogin'],function(){
+		var $ = this.jquery,
+			check = this.checkLogin;
+		$('.btn').click(function(){
+			if(!check()) return;
+		});
+	});
+_use:", this._JSstack , this._JSmods);%>
+<%#foot.html%>

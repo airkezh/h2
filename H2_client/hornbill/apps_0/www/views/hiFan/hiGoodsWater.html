@@ -1,0 +1,97 @@
+<%# head.html%>
+<% var category = {
+ 	'data' : [
+ 		{'categoryName' : '全部'}
+ 		,{'categoryName' : '上装'}
+ 		,{'categoryName' : '裙装'}
+ 		,{'categoryName' : '裤装'}
+ 		,{'categoryName' : '包包'}
+ 		,{'categoryName' : '鞋子'}
+ 		,{'categoryName' : '配饰'}
+ 		,{'categoryName' : '男装'}
+ 	]
+ };
+ var style = {
+ 	'data' : [
+ 		{'styleName' : '全部'}
+ 		,{'styleName' : '欧美'}
+ 		,{'styleName' : '原创设计'}
+ 		,{'styleName' : '日韩'}
+ 		,{'styleName' : '清新甜美'}
+ 		,{'styleName' : '文艺复古'}
+ 	]}
+ %>
+<div class="wrap">
+	<!-- 分类 -->
+	<div class="choiceWrap">
+		<div class="choiceContent">
+			<div class="classify">分类</div>
+			<ul class="classifyInfo">
+				<%for( var i=0 ; i<8 ;i++ ){%>
+				<% if(i == this.category ){ %>
+				<li data-category="<%= i %>"><span  class="cur"><%= category.data[i].categoryName %></span></li>
+				<% }else{ %>
+				<li data-category="<%= i %>"><span><%= category.data[i].categoryName %></span></li>
+				<% }} %>
+			</ul>
+		</div>
+		<div class="choiceContent">
+			<div class="classify">风格</div>
+			<ul class="classifyInfo">
+				<% for( var j=0 ; j<6 ; j++ ){ %>
+				<% if(j == this.style){ %>
+				<li data-style="<%= j %>"><span class="cur" ><%= style.data[j].styleName %></span></li>
+				<% }else{ %>
+				<li data-style="<%= j %>"><span><%= style.data[j].styleName %></span></li>
+
+				<% }} %>
+			</ul>
+		</div>
+	</div>
+	<!-- 排序 -->
+	<div class="sortWrap">
+		<div class="sortWayWrap">
+			<div class="sortWay onWay">热销</div>
+			<!-- <div class="sortWay new">上新</div> -->
+		</div>
+		<div class="condition">
+			<div class="border"></div>
+			<div class="priceSortWrap">
+				<div class="priceCHN">价格</div>
+				<div>￥</div>
+				<div class="inputPrice lowPrice">
+					<input placeholder="<%= this.min %>" type="text">
+				</div>
+				<div>
+				~ &nbsp;&nbsp;￥
+				</div>
+				<div class="inputPrice highPrice" >
+					<input placeholder="<%= this.max %>" type="text">
+				</div>
+			</div>
+			<div class="search">
+				搜索
+			</div>
+		</div>
+	</div>
+	<div class="goods_wall">
+	</div>
+	<div class="paging_panel c_f none_f">
+	<%#paging.html%>
+	</div>
+</div>
+<%# hiFan/poster.html %>
+<script>
+	fml.vars.frame = <%= parseInt(this.frame) || 0 %>;
+	fml.vars.page = <%= parseInt(this.page) || 0%>;
+	fml.vars.category = <%= parseInt(this.category) || 0 %>;
+	fml.vars.style = <%= parseInt(this.style) || 0 %>;
+	fml.vars.order = <%= JSON.stringify(this.order) %>;
+</script>
+<% $_ENGINE_SELF.callFn("useModule")("fml.use('page/poster0');", this._JSstack , this._JSmodsFast ); %>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/hiFan/hiGoodsWater');
+	fml.use('page/poster_guang');
+_use:", this._JSstack , this._JSmods); %>
+<%# foot.html%>

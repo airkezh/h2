@@ -1,0 +1,37 @@
+<%#head.html%>
+<%
+	var goodsList = this.goodsList && this.goodsList.data && this.goodsList.data.goods_list;
+	var banner = this.banner && this.banner.data && this.banner.data.mob_tuan_top;
+%>
+<%if(banner && banner.length > 0){%>
+<section class="banner">
+	<figure class="pic_load">
+		<span class="bs_load_img" asrc="<%= banner[0].show_pic%>"></span>
+	</figure>
+</section>
+<%}%>
+<section class="main">
+	<%if(goodsList && goodsList.length > 0){
+		goodsList.forEach(function(item){
+	%>
+		<div class="goodsItem">
+			<a class="link_box" href="<%= item.url_mob%>">
+				<figure class="pic_load">
+					<span class="bs_load_img" asrc="<%= item.goods_image_mob%>"></span>
+				</figure>
+				<figcaption>
+					<span class="discount"><%= item.discount %></span>
+					<span class="price"><em class="red_f">￥</em><%= item.off_price %></span>
+				</figcaption>
+			</a>
+		</div>	
+	<%	});
+	}%>
+</section>
+<span class="gotop" style="bottom:<%if(this.isIphone){%>60<%}else{%>20<%}%>px">
+	<img src="http://i.meilishuo.net/css/images/wap/tuan/gotop.png" />
+</span>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use('wap/page/tuan/activity/life');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html%>

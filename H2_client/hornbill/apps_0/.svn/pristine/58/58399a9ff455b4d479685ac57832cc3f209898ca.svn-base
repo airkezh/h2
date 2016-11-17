@@ -1,0 +1,122 @@
+<%#sq/header.html%>
+
+<%
+	var coupon   = this.coupon;
+	var pageD = this.pageData;
+	var sec2D = pageD.mainHall;
+%>
+
+<section class="sec1" style="background-color: <%= pageD.totalHallColor || '#fff' %>;">
+	<img src="<%= pageD.totalHallBanner %>" alt="page image">
+
+	<%
+		if(coupon && coupon.ret != 9){
+			var snatchTime = coupon.tip_time || ''
+			var tArray = snatchTime.split(':')
+			var h = + tArray[0]
+			var m = + tArray[1]
+			var s = + tArray[2]
+
+			var status = coupon.ret;
+			var bgStye = 'bg_common'
+
+			switch(status){
+				case 0:
+					bgStye = 'bg_red'
+					break
+				case 3:
+					bgStye = 'bg_gray'
+					break
+			}
+
+	%>
+	<div class="sec1-coupon_box">
+		<section class="content">
+			<% if(coupon.apply_tip){ %><h3 class="tc"><%= coupon.apply_tip %></h3><% } %>		
+			<div class="coupon_info <%= bgStye %>">
+				<div class="content-left">
+					<span class="rmb">RMB</span>
+					<span class="credit"><%= coupon.credit %></span>
+					<span class="info">
+						<em class="threshold">优惠劵</em>
+						<i class="threshold">满<%= coupon.threshold %>元可用</i>
+					</span>
+					<!-- <p class="amount"><%= coupon.inform_msg %></p> -->
+				</div>
+				<div class="content-right">
+					<%if(status == 0){%>
+						<div class="get"><i class="get-text">立即<br>领取</i><span class="get-icon"></span></div>
+					<%}else if(status == 2){%>
+						<a href="/sq/user/coupon"><span class="got">已领取</span></a>
+					<%}else if(status == 3){%>
+						<span class="sold_out">已抢光</span>
+					<%}else if(status == 4){%>
+						<span class="wait">明日<br>再来</span>
+					<%}else if(status == 5){%>
+						<span class="wait"><%=h%>点<br>开抢</span>
+					<%}else{%>
+						<span class="other">不在<br>活动<br>期间</span>
+					<% } %>
+				</div>
+			</div>
+			<p class="rule">点击查看活动规则&nbsp;&gt;&gt;</p>
+		</section>
+	</div>
+	<%};%>
+</section>
+
+<% if(sec2D){ %>
+<section class="sec2">
+	<% sec2D.forEach(function (item){ %>
+	<img src="<%= item.headBanner %>" alt="page image">
+
+	<% 
+		var waterfallD = item.branchHall;
+
+		if(waterfallD){
+	%>
+	<div class="sec2-banner_list" style="background-color: <%= item.color %>;">
+		<% waterfallD.forEach(function (item){ %>
+		<a class="sec2-banner_list-item" href="<%= item.url %>" style="background-image: url(<%= item.headBanner %>);"></a>
+		<% }); %>
+	</div>
+	<% } %>
+	<% }); %>
+</section>
+<% } %>
+
+<div class="rule_panel">
+	<div class="alert">
+		<div class="content">
+			<img src="<%= pageD.couponRule %>" alt="rule image">
+		</div>
+		<span id="hide_btn">知道了~</span>
+	</div>
+</div>
+
+<!-- for timedown component -->
+<span class="none clr"></span>
+
+<script type="text/html" id="get_coupon">
+	<p class="tag"><?= tpl ?></p>
+	<div class="url-box">
+		<a class="alink" href="/sq/user/coupon">查看我的优惠劵</a>
+		<a class="alink closeBtn">关闭</a>
+	</div>
+</script>
+
+<script>
+	fml.vars.ms = <%= Date.now() %>;
+	fml.vars.timeline = <%= h * 3600 + m * 60 * s %>;
+	fml.vars.shareInfo = { "title" : "双十二狂欢","desc" : "红包来袭  全场4折","share_url" : location.href };
+</script>
+
+<%! 
+	$_ENGINE_SELF.callFn("useModule")(
+		"<<<_use:fml.use('wap/page/sq/activity');_use:", 
+		this._JSstack, 
+		this._JSmods 
+); %>
+
+<%# block/dialog.html %>
+<%#sq/footer.html%>

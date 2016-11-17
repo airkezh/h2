@@ -1,0 +1,84 @@
+@import "../block.less";
+html,body{ .bgwhite; }
+nav { 
+  .pt(5px);
+  .pb(10px);
+  a { .block; }
+  img { 
+  	.left;
+  	padding: 20*@w 20*@w;
+  	.w(160*@w);  
+  } 
+  img.left { .pl(40*@w); }
+  img.right { .pr(40*@w); }
+  .clearfix;
+}
+.main {
+  .pt(20px);
+  .ml(10px);
+  border-left: 1px solid #d9d5d7;
+}
+figure {
+  .pr;
+  .ml(-11px);
+  .mb(20px);
+  .pb(15px);
+  a { 
+    .block;
+    img { .w(100%); }
+  }
+  figcaption {
+    .pa;
+    top: -20px;
+    left: 10px;
+    .l(14px);
+    .f(14px);
+    span { 
+  	  .i_block;
+  	  .pl(10px);
+      .mr(20px);
+  	  .f(12px);
+  	  .fc(#80737b);
+   	  background: url("@{pic_url}/images/fuider/dot.png") no-repeat left center;
+   	  background-size: auto 40%;
+    }
+    p{ .ml(-1px); .cutText; }
+  }
+}
+figure:last-child { .mb(0); }
+.poster-link {
+  background: #fff url("@{pic_url}/images/fuider/prebg.png") center center no-repeat;
+  background-size: 17% auto;
+}
+/*回到顶部*/
+.gotop{
+	.none;
+	.pf;
+	right: 20px;
+	.w(80*@w);
+	img{
+		.w(100%);
+	}
+}
+/*加载提示*/
+.status_tips {
+  .c; .l(40px); .f(14px); color:#888;
+  &[data-status="loading"] {
+    &:before {
+      content: '加载中 ...'
+    }
+  }
+  &[data-status="stop"] {
+    &:before {
+      content: '木有了'
+    }
+  }
+}
+/*控制文本超过两行部分显示 ...*/
+.cutText(){
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}

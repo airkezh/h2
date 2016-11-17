@@ -1,0 +1,176 @@
+/*common*/
+/** @file
+ *  @name posters.js
+ *  @desc 瀑布流组件
+ *  ------------------ @params -----------------------
+ *
+ *   maxFrame 帧数控制
+ *
+ *     1. maxFrame = 0: 不做分帧加载
+ *     2. 0 < maxFrame < Infinity: 分帧加载，有帧数控制
+ *     3. maxFrame = Infinity: 无限下拉加载（默认）
+ *
+ *   offsetY/offsetX 海报间距控制
+ *
+ *     1. offsetY: 控制海报的纵向pisition，这只上下间距
+ *     2. offsetX: 海报的横向间距由less控制（通常设置 模板最外层 的padding）；
+ *                 offsetX = padding-left + padding-right；
+ *                 用于计算poster的显示宽度。
+ *
+ *  ------------------ @params -----------------------
+ *  @use addPoster(opt);
+ */
+var scroll = require( 'wap/component/windowScroll' ),
+shareTmp   = require( 'wap/component/shareTmp' ),
+urlHandle  = require( 'wap/component/urlHandle' ),
+LFP   = require( 'wap/page/shop/loadFromPoint' );
+
+require( 'wap/zepto' );
+
+var _settings = {
+        'url'     : '',
+        'maxFrame': Infinity,
+        'params'  : {
+            'frame': 0,
+            'limit': 30
+        },
+        'layout'  : {
+            'colNum'     : 2,
+            'offsetY'    : 60,
+            'offsetX'    : 0,
+            'containerId': 'goods_wall'
+        }
+    },
+    _data     = {
+        'colHeight': [],
+        'minHeight': 0,
+        'container': null,
+        'colWidth' : 0
+    };
+
+var isPosterLoaded = true,
+    loadingOffset  = 0,
+    win            = $( window ),
+    winHeight      = win.height(),
+    winWidth       = win.width(),
+    fragment       = document.createDocumentFragment();
+
+function lazyLoad(){
+    LFP.load();
+}
+
+function initData( settings ) {
+    _settings = $.extend( true, _settings, settings );
+    _data.container = $( '#' + _settings.layout.containerId );
+    _data.colWidth = winWidth / _settings.layout.colNum;
+    for ( var i = 0; i < _settings.layout.colNum; i++ ) {
+        _data.colHeight[ i ] = 0;
+    }
+    fml.vars.posterWidth = _data.colWidth - _settings.layout.offsetX;
+}
+
+/** 首帧加载 */
+function addPoster0() {
+    var poster0 = Meilishuo.config.poster0;
+    if ( poster0 && poster0.gInfo.length > 0 ) {
+        append( shareTmp( 'poster_tpl', poster0 ) );
+        _settings.params.frame++;
+    }
+}
+
+function scrollPoster() {
+    scroll.bind( callbackFn, 'scrollPoster' );
+}
+
+function unBindscroll() {
+    scroll.unBind( callbackFn );
+}
+
+/** @function
+ *  @desc 滚动事件绑定的回调函数
+ */
+function callbackFn( pos, isDown ) {
+    if ( isDown ) {
+        var tips = $( '.status_tips' )
+
+        if ( !tips.length ) {
+            return
+        }
+
+        loadingOffset = tips[ 0 ].getBoundingClientRect().top;
+        if ( loadingOffset - 200 < winHeight && isPosterLoaded ) {
+            if ( _settings.params.frame > _settings.maxFrame ) {
+                $( '.status_tips' ).data( 'status', 'stop' );
+                return;
+            } else {
+                ajaxPoster();
+            }
+        }
+    }
+}
+
+function ajaxPoster(cbk) {
+    if ( _settings.url === '' ) {
+        return;
+    }
+    isPosterLoaded = false;
+    $( '.status_tips' ).data( 'status', 'loading' );
+    $.post( _settings.url, _settings.params, function( res ) {
+        append( shareTmp( 'poster_tpl', res ) );
+        cbk && cbk();
+        _settings.params.frame++;
+        isPosterLoaded = true;
+        if ( !res.gInfo || res.gInfo.length === 0 ) {
+            $( '.status_tips' ).data( 'status', 'stop' );
+            setTimeout(function (){
+                $( '.status_tips' ).data( 'status', '' );
+            }, 3000);
+        }
+    }, 'json' );
+}
+
+function append( elements ) {
+    if ( $.trim( elements ) === '' ) {
+        return;
+    }
+    $( elements ).each( layout );
+    var maxColHeight = Math.max.apply(Math , _data.colHeight),
+        h =  maxColHeight > winHeight ? maxColHeight : winHeight;
+    _data.container
+        .height(h)
+        .append( fragment );
+}
+
+function layout( index, pin, putTo ) {
+    if ( !pin || pin.nodeType != 1 ) {
+        return;
+    }
+    for ( var i = 0; i < _settings.layout.colNum; i++ ) {
+        if ( _data.colHeight[ i ] <= _data.minHeight ) {
+            putTo = i;
+            break;
+        }
+    }
+    pin.setAttribute( 'data-col', putTo );
+    pin.style.position = 'absolute';
+    pin.style.top = _data.colHeight[ putTo ] + 'px';
+    pin.style.left = putTo * _data.colWidth + 'px';
+	pin.style.width = _data.colWidth + 'px';
+    fragment.appendChild( pin );
+
+    _data.colHeight[ putTo ] += $( pin ).data( 'height' ) + _settings.layout.offsetY;
+    _data.minHeight = Math.min.apply( Math, _data.colHeight );
+}
+
+// /** 添加加载提示条，less控制样式 */
+// function addStatusTips() {
+//     var parent = _data.container.parent();
+//     ( $('.status_tips', parent).length > 0 ) || parent.append( $( '<div class="status_tips" data-status="loading"></div>' ) );
+// }
+
+exports.initData = initData;
+exports.addPoster0 = addPoster0;
+exports.lazyLoad = lazyLoad;
+exports.unBindscroll = unBindscroll;
+exports.scrollPoster = scrollPoster;
+exports.ajaxPoster = ajaxPoster;

@@ -1,0 +1,85 @@
+<%# head_simple.html%>
+	
+
+
+
+<%	
+	var data = this.data ;
+	var range = data.range || {};
+	var error_code = range.error_code;
+
+if(error_code == 0){
+	var shareId = range.data.originator.id;
+	var have_origed = range.data.have_origed;
+	var got_coupon = range.data.originator.got_coupon;
+	var role = range.data.role;
+	var originatorId = range.data.originator.user_id;
+}else{
+	var shareId = '';
+	var have_origed = '';
+	var got_coupon = '';
+	var role = '';
+	var originatorId = '';
+}
+
+%>
+	<script> 
+            (function(win,doc){
+                var docel = doc.documentElement;
+                var meta = doc.querySelectorAll('meta[name=viewport]');
+                meta[0].setAttribute('content','width=device-width,user-scalable=no,initial-scale=1');
+                function recalc(){
+                    var width = docel.clientWidth;
+                    docel.style.fontSize = 100 * width/640+'px';
+                }
+                if(doc){
+                    recalc();
+                    win.addEventListener('orientationchange',recalc,false);
+                }else if (doc.addEventListener){
+                    doc.addEventListener('DOMContentLoaded', recalc, false);
+                }
+            })(window,document)
+     </script>
+</head>
+<body>
+<div class="first-main">
+	<img class="first-bg" src="http://d02.res.meilishuo.net/pic/_o/67/08/e9c6de68224d0c5f63c1c261c7a9_640_1007.ch.jpg" />
+	<a href="/activity/distance/start/?ass_gid=<%= shareId %>" class="first-btn">
+		<img src="http://d03.res.meilishuo.net/pic/_o/b2/53/0aff67954dabab376094612f7f6a_276_102.cf.png" />
+	</a>
+	<div class="first-rules"></div>
+	<div class="first-popwin">
+		<img class="first-popwin-rules" src="http://d04.res.meilishuo.net/pic/_o/b2/8d/f378d89eec18874ebfdba457a1b6_550_860.cf.png" />
+		<div class="rules-content">
+			1.活动时间：2015年8月11日00:00:00—2015年8月20日23:59:59。<br/>
+			2.活动条件：通过手机美丽说for iOS或for Android，或者通过微信分享的链接参与活动。<br/>
+			3.用户可发起游戏，并分享到微信中邀请好友送助攻，好友的助攻数将随机出现正数或负数，最终能顺利走完7000米的发起者即可获得1元、5元、10元、15元的美丽说七夕专属优惠券奖励，8月18日至8月20日七夕期间更有777元直减券大放送。<br/>
+			4.若从美丽说APP发起游戏且完成相遇，返回到APP中再次打开游戏页面，即可成功获得优惠券，并在“我的优惠券”查看获得优惠券。<br/>
+			5. 若从微信中发起游戏且完成相遇，即可成功获得优惠券，用户可用微信账号登陆美丽说app后，在“我的优惠券”查看获得优惠券。<br/>
+			6.活动期间奖励数量有限，先到先得，发完为止。每个自然人用户仅能使用一个美丽说注册帐号参与本活动，美丽说任何活动均杜绝一切作弊行为，并保留追究其相关法律责任的权利。<br/>
+			7.优惠券的使用时间：2015年8月18日00:00:00—8月20日23:59:59。<br/>
+			8.活动中中奖的优惠券使用方式：适用于除海淘馆商品及个人商品外的全站所有商品，可与店铺优惠券叠加使用，但不能与平台优惠券同时使用。<br/>
+			9.优惠券不能提现、不能转赠、不能为他人付款。<br/>
+			10.美丽说在法律允许的范围内保留对本活动的最终解释权。<br/>
+		</div>
+		<img class="first-popwin-know" src="http://d05.res.meilishuo.net/pic/_o/53/be/69c5755e3f9009ce9f05b176a3f7_208_59.cg.png" />
+	</div>
+</div>
+<script>
+	fml.vars.isWxLogin= <%= this.isWxLogin || false %>   ;
+    fml.vars.isWx = <%= this.isWx %>;
+	fml.vars.ass_gid = "<%= shareId %>";
+	fml.vars.have_origed = "<%= have_origed %>";
+	fml.vars.got_coupon = "<%= got_coupon %>";
+	fml.vars.role = "<%= role %>";
+	fml.vars.originatorId = "<%= originatorId %>";
+	fml.vars.got_coupon = "<%= got_coupon %>";
+	fml.vars.status = "";
+	fml.vars.pageId = 'index';
+	fml.vars.error_code = "<%= error_code %>";
+</script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/distance');
+_use:", this._JSstack, this._JSmods); %>
+<%# foot.html%>

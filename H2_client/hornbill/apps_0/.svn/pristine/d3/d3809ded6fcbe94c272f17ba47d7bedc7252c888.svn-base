@@ -1,0 +1,52 @@
+<div class="mp_coupon">
+	<div class="coupon_main" >
+		<% for(var i = 2;i < 5;i++) {%>
+			<% if(i == 2){ %>
+				<div class="couponLi m40">
+					<p class="text">
+						<% if(this.coupons[i].left_amount > 0){ %>
+						本阶段还剩<br>
+						<span class="nums"><%= this.coupons[i].left_amount%></span>/<%= this.coupons[i].total_amount%>张
+						<%}%>
+					</p>
+					<a href="javascript:;" data-type="<%= this.coupons[i].coupon_type%>" data-code="<%= this.coupons[i].coupon_code%>" class="btn <% if( this.coupons[i].use == "starting"){%>get_coupon<%}%>">
+						<img src="<%= this.imgs[i]%>" alt="">
+					</a>
+				</div>
+			<%}%>
+			<% if(i == 3){ %>
+				<div class="couponLi m80">
+					<p class="text">
+						<% if(this.coupons[i].left_amount > 0){ %>
+						本阶段还剩<br>
+						<span class="nums"><%= this.coupons[i].left_amount%></span>/<%= this.coupons[i].total_amount%>张
+						<%}%>
+					</p>
+					<a href="javascript:;" data-type="<%= this.coupons[i].coupon_type%>" data-code="<%= this.coupons[i].coupon_code%>" class="btn <% if( this.coupons[i].use == "starting"){%>get_coupon<%}%>">
+						<img src="<%= this.imgs[i]%>" alt="">
+					</a>
+				</div>
+			<%}%>
+			<% if(i == 4){ %>
+				<div class="couponLi m120">
+					<p class="text">
+						<% if(this.coupons[i].left_amount > 0){ %>
+						本阶段还剩<br>
+						<span class="nums"><%= this.coupons[i].left_amount%></span>/<%= this.coupons[i].total_amount%>张
+						<%}%>
+					</p>
+					<a href="javascript:;" data-type="<%= this.coupons[i].coupon_type%>" data-code="<%= this.coupons[i].coupon_code%>" class="btn <% if( this.coupons[i].use == "starting"){%>get_coupon<%}%>">
+						<img src="<%= this.imgs[i]%>" alt="">
+					</a>
+				</div>
+			<%}%>
+		<%}%>
+		
+	</div>
+</div>
+<script>
+fml.vars.key = '<%= this.key %>';
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use('app/huodong/916coupon');
+_use:", this._JSstack , this._JSmods ); %>

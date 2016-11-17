@@ -1,0 +1,41 @@
+<%# head_simple.html%>
+<%
+var pageData = this.pageData;
+var rootUrl = this.rootUrl;
+var nextPageIndex = parseInt(pageData.nextPageIndex);
+
+%>
+</head>
+<body>
+
+<div class="question" style="width: 100%; padding-top: 140%;background: url('<%=(rootUrl + pageData.pic1)%>')  no-repeat top center; background-size: 100%">
+	<a class="a" sel="0" href="/activity/promotion/game/question?nextPageIndex=<%=nextPageIndex%>&sNum=0"></a>
+	<a class="b" sel="1" href="/activity/promotion/game/question?nextPageIndex=<%=nextPageIndex%>&sNum=1"></a>
+	<a class="c" sel="2" href="/activity/promotion/game/question?nextPageIndex=<%=nextPageIndex%>&sNum=2"></a>
+	<a class="d" sel="3" href="/activity/promotion/game/question?nextPageIndex=<%=nextPageIndex%>&sNum=3"></a>
+</div>
+<div id="aaa" style="width: 100%; padding-top: 9.5%; position: fixed; bottom: 0px; background: url('<%=(rootUrl + pageData.pic2)%>')  no-repeat top center; background-size: 100%">
+
+</div>
+
+<script>
+	fml.vars.nextPageIndex = <%=nextPageIndex%>;
+
+	fml.vars.shareInfo = <%=JSON.stringify(this.shareInfo)%>;
+	var imgUrl = fml.vars.shareInfo.pic;
+	var lineLink = fml.vars.shareInfo.shareLink;
+	var descContent = fml.vars.shareInfo.desc;
+	var shareTitle = fml.vars.shareInfo.title;
+	var shareTimelineText = fml.vars.shareInfo.desc;
+	var customAppId = 'wxd00a5f16e02bed58';
+</script>
+<script src="<%= this.JCSTATIC_BASE  %>/js/open/shareCollect.js?<%= this.SVERSION%>"></script>
+
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+
+fml.use('wap/page/activity/promotion/test_game');
+
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot_simple.html%>

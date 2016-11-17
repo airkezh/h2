@@ -1,0 +1,69 @@
+<%# head_simple.html%>
+</head>
+<body>
+<header class="banner">
+	<%if (this.endTime) {%>
+	<div class="countdown" >
+		<div class="bannerText"><%=this.bannerText%></div>
+		<dl class="timeStamp" end-date="<%=this.endTime%>" now="<%=this.startTime%>">
+			<dd id="day0"><span >-</span></dd>
+			<dd id="day1"><span>-</span></dd>
+			<dd id="hour0"><span >-</span></dd>
+			<dd id="hour1"><span >-</span></dd>
+			<!--<dt class="bigmao">：</dt>-->
+			<dd id="minute0"><span >-</span></dd>
+			<dd id="minute1"><span >-</span></dd>
+			<!--<dt class="bigmao">：</dt>-->
+			<dd id="seconds0"><span >-</span></dd>
+			<dd id="seconds1"><span >-</span></dd>
+		</dl>
+	</div>
+	<%} else {%>
+	<div class="bannerText" style="width: 100%; text-align: center; top:58%"><%=this.bannerText%></div>
+	<%}%>
+</header>
+<nav class="nav" id="nav">
+	<a href="/activity/sale/match916/1?hdtrc=916maindp_daohang01#nav" class="cur">199元封顶</a>
+	<a href="/activity/sale/match916/2?hdtrc=916maindp_daohang02#nav">299元封顶</a>
+	<a href="/activity/sale/match916/3?hdtrc=916maindp_daohang03#nav">499元封顶</a>
+</nav>
+<section class="pro-box">
+	<ul>
+		<% this.list && this.list.forEach(function(proList){ %>
+			<li class="pro-list" data-id="<%= proList.dress_id %>">
+				<a href="<%= proList.mob_url %>" class="pro-img">
+					<span class="bs_load_img" asrc="<%= proList.pic %>"></span>
+				</a>
+				<div class="pro-info">
+					<p class="pro-des">
+						<a href="<%= proList.mob_url %>"><%= proList.desc %></a>
+					</p>
+					<div class="pro-price">
+						<span class="red_f price-now"><%= proList.price %></span>
+						<span class="price-ago"><del><%= proList.origin_price %></del></span>
+						<span class="rebate"><%= proList.discount %></span>
+					</div>
+					<p class="buy-num">
+						<span class="red_f"><%= proList.total_users %></span>人在抢购
+					</p>
+				</div>
+			</li>
+		<% }); %>
+	</ul>
+</section>
+<a href="javascript:;" class="gotop" id="gotop">返回顶部</a>
+<script>
+	fml.vars.isLogin = <%=this.isLogin%>;
+	fml.vars.isNewest = <%=this.isNewest%>;
+	var cur = <%=this.cur%>;
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+
+fml.use('wap/page/activity/match916');
+fml.use('wap/app/countdown2', function() {
+	this();
+});
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot_simple.html%>

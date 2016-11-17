@@ -1,0 +1,39 @@
+<form class="login-form" id="loginForm" method="post" onsubmit="return false" action="">
+	<h3>登录美丽说</h3>
+	<a class="btn-register" href="/user/register">注册</a>
+	<div class="login-form-list">
+		<p class="login-form-item">
+			<input class="login-form-input" id="mlsUser" name="mlsUser" type="text" placeholder="邮箱/手机号/昵称" />
+			<span></span>
+			<span class="icon-user"></span>
+		</p>
+	</div>
+	<div class="login-form-list">
+		<p class="login-form-item">
+			<input class="login-form-input" id="password" name="password" type="password" placeholder="密码" />
+			<span></span>
+			<span class="icon-pwd"></span>
+		</p>
+	</div>
+	<div class="login-form-list checkcodeArea<?if(this.checkcodeArea == 0){?> none_f<?}?>">
+		<div class="login-form-item">
+			<input class="login-form-input" id="checkcode" name="checkcode" type="text" placeholder="请输入验证码" maxlength="4" />
+			<span></span>
+			<span class="icon-code"></span>
+			<div class="checkImage" onselectstart="return false;">
+				<img width="90" height="36" src="http://i.meilishuo.net/css/images/register/blank.jpg"><span class="icon-refresh"></span>
+			</div>
+		</div>
+	</div>
+	<div class="login-form-message"></div>
+	<div class="login-form-submit">
+		<input type="submit" value="立即登录"/>
+	</div>
+	<div class="btn-remember">
+		<input type="checkbox" name="savestate" id="savestate" checked="checked" />
+		<label for="savestate">记住我</label>
+	</div>
+	<div class="btn-findpwd">
+		<a href="/user/findPwd" target="_blank">忘记密码？</a>
+	</div>
+</form>

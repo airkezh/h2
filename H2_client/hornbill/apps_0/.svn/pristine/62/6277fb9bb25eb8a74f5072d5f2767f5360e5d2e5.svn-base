@@ -1,0 +1,126 @@
+<%# head_simple.html%>
+</head>
+<body>
+
+<img class="audio-banner" src="<%= this.all.data.header.banner_url%>"/>
+<%for(var i = 0; i < this.all.data.parts.length; i++){%>
+<% var t_data = this.all.data.parts[i];%>
+<div class="audio-main audio-backcolor<%=i+1%>">
+	<%if(i%2 == 0){%>
+	<div class="audio-title audio-state-left">
+		<p class="audio-color<%=i+1%>"><%=t_data.title%></p>
+	</div>
+	<div class="audio-left">
+
+		<a class="audio-left-up" href="<%=t_data.person_url%>">
+			<img src="<%=t_data.person_img%>" />
+		</a>
+		<p class="audio-title-color">-<strong><%=t_data.person_name%></strong>-</p>
+		<p class="audio-title-color"><%=t_data.person_title%><br />
+<%=t_data.person_desc%></p>
+		<span class="audio-big"><img src="http://i.meilishuo.net/css/images/wap/massivevoice/left-quote.png" width="5%" /></span>
+		<p class="audio-content">
+			<%=t_data.twitter_info.twitter_desc%>
+		</p>
+		<span class="audio-big audio-float-right"><img src="http://i.meilishuo.net/css/images/wap/massivevoice/right-quote.png" width="5%" /></span>
+
+	</div>
+	<div class="audio-right">
+
+		<a class="audio-right-top" href="<%=t_data.twitter_info.client_url%>">
+			<img src="<%=t_data.twitter_info.twitter_img%>" />
+		</a>
+
+		<div>
+			<span class="audio-price audio-float-left"><%=t_data.twitter_info.goods_price%></span>
+			<div class="audio-float-right audio-float-block">
+				<span class="audio-talk">
+					<img src="http://i.meilishuo.net/css/images/wap/massivevoice/talk.png">
+				</span>
+				<span><%=t_data.twitter_info.count_reply%></span>
+				<span class="audio-love">
+					<img src="http://i.meilishuo.net/css/images/wap/massivevoice/love.png">
+				</span>
+				<span style="margin-right:10%"><%=t_data.twitter_info.count_like%></span>
+			</div>
+		</div>
+
+		<div class="audio_box">
+			<%= requireFn('block/audio.html')({
+            'audio': {
+            		'audio' :{
+            				'audio_url':t_data.voice_url
+            				,'audio_duration':t_data.voice_time
+            		}
+            	}
+            , 'id' : i
+            });%>
+		</div>
+
+	</div>
+
+	<%}else{%>
+	<div class="audio-right"  style="margin-left:3%">
+
+		<a class="audio-right-top" href="<%=t_data.twitter_info.client_url%>">
+			<img src="<%=t_data.twitter_info.twitter_img%>" />
+		</a>
+
+		<div>
+			<span class="audio-price audio-float-left"><%=t_data.twitter_info.goods_price%></span>
+			<div class="audio-float-right audio-float-block">
+				<span class="audio-talk">
+					<img src="http://i.meilishuo.net/css/images/wap/massivevoice/talk.png">
+				</span>
+				<span><%=t_data.twitter_info.count_reply%></span>
+				<span class="audio-love">
+					<img src="http://i.meilishuo.net/css/images/wap/massivevoice/love.png">
+				</span>
+				<span style="margin-right:10%"><%=t_data.twitter_info.count_like%></span>
+			</div>
+		</div>
+
+		<div class="audio_box">
+			<%= requireFn('block/audio.html')({
+            'audio': {
+            		'audio' :{
+            				'audio_url':t_data.voice_url
+            				,'audio_duration':t_data.voice_time
+            		}
+            	}
+            , 'id' : i
+            });%>
+		</div>
+
+	</div>
+	<div class="audio-title audio-state-right">
+		<p class="audio-color<%=i+1%>"><%=t_data.title%></p>
+	</div>
+	<div class="audio-left">
+
+		<a class="audio-left-up" href="<%=t_data.person_url%>">
+			<img src="<%=t_data.person_img%>" />
+		</a>
+		<p class="audio-title-color">-<strong><%=t_data.person_name%></strong>-</p>
+		<p class="audio-title-color"><%=t_data.person_title%><br />
+<%=t_data.person_desc%></p>
+		<span class="audio-big"><img src="http://i.meilishuo.net/css/images/wap/massivevoice/left-quote.png" width="5%" /></span>
+		<p class="audio-content">
+			<%=t_data.twitter_info.twitter_desc%>
+		</p>
+		<span class="audio-big audio-float-right"><img src="http://i.meilishuo.net/css/images/wap/massivevoice/right-quote.png" width="5%" /></span>
+
+	</div>
+	<%}%>
+
+</div>
+<%}%>
+<div class="audio-down audio-backcolor5">
+	<a href="<%=this.all.data.more%>">逛更多连衣裙&nbsp;></a>
+</div>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/audio');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot_simple.html%>

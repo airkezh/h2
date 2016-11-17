@@ -1,0 +1,93 @@
+<%#head.html%>
+<div class="top_bannar" style="background: url(<%= this.list.big_pic %>) repeat center top;">
+	<div class="title_bg"></div>
+	<div class="act_title">
+		<% if(this.time > 0){ %>
+			<div class="countdown"><img src="http://d06.res.meilishuo.net/img/_o/ff/4a/81f5d5a9d42073b5886d0c6a168a_30_30.c6.png" alt=""><span></span><%= this.list.word %><div id="alt" alt="<%= this.time%>">-天-小时-分-秒</div></div>
+		<% } else { %>
+			<div class="countdown"><img src="http://d06.res.meilishuo.net/img/_o/ff/4a/81f5d5a9d42073b5886d0c6a168a_30_30.c6.png" alt=""><span></span>本活动已结束</div>
+		<% } %>
+		<% if(!this.list.not_start){ %>
+			<div class="join_num"><img src="http://d01.res.meilishuo.net/img/_o/01/4f/4ea51cc1fead3314b7166196a2d3_30_30.c6.png" alt=""><span><%= this.list.ac_uv || 0 %></span>人正在抢购</div>
+		<% } %>
+	</div>
+</div>
+<div class="star_goods">
+	<% this.list.top_push.forEach(function(data){ %>
+		<a href="<%= data.link || 'javascript:;' %>" target="_blank"><img src="<%= data.pic %>"></a>
+	<% }); %>
+</div>
+<div class="goods_wrap">
+	<div class="content">
+		<% this.ele.data && this.ele.data.forEach(function(data){ %>
+			<div class="clear_f"></div>
+			<% if(data.group_words){ %><div class="goods_title"><%= data.group_words %></div><% } %>
+			<div class="productBox">
+				<%= requireFn("huodong/block/beautySale_twitter.html")({
+					'goods': data.twitters,
+					'is_start': this.list.not_start,
+					'type': 'share'
+				});%>
+				<div class="clear_f"></div>
+			</div>
+		<% }); %>
+	</div>
+</div>
+<%if(this.sales && this.sales.length){%>
+<div class="act_box">
+	<div class="act_title">
+		<div class="title"><span class="redborder"></span>热门特卖</div>
+	</div>
+	<div class="content">
+		<div class="hotDeals">
+			<%for(var i = 0; i < this.sales.length; i++){%>
+			<a target="_blank" href="/biz/shareact/activity/?ac_id=<%=this.sales[i].ac_id%>&page=<%=this.groupPg.current_page%>&od=po" class="hotCon">
+				<div class="hotImg">
+					<img src="<%=this.sales[i].vertical_pic%>" />
+				</div>
+				<div class="hotTitle">
+					<%=this.sales[i].brand_name%><span>|</span><%=this.sales[i].show_name%><br />
+					<div><%=this.sales[i].discount_desc%></div>
+				</div>
+			</a>
+			<%}%>
+			<div class="clear_f"></div>
+		</div>
+	</div>
+</div>
+<%}%>
+<% if(this.ads.length){ %>
+	<div class="act_box foot_bannar">
+		<div class="check_history"><span>更多精彩特卖</span><a href="/biz/shareact/list/?frm=bs_back" target="_blank">查看全部></a></div>
+		<% this.ads.forEach(function(data, index){ %>
+			<a href="<%= data.ad_pc_link || 'javascript:;' %>" target="_blank" title="<%= data.ad_words || ''%>" style="<%= index%2 ? 'margin-right:0;' : '' %>"><img src="<%= data.ad_pc_banner %>" alt="<%= data.ad_words || ''%>"></a>
+		<% }); %>
+		<div class="clear_f"></div>
+	</div>
+<% } %>
+<div class="act_box">
+	<div class="services">
+		<div class="act_title">
+			<div class="title"><span class="redborder"></span>优质服务保障</div>
+		</div>
+		<div class="content">
+			<ul class="serIcons">
+			<% this.service && this.service.forEach(function(data,k){ %>
+				<li <%if(k == this.service.length - 1){%>class="noborder"<%}%>>
+					<a href="/help/return/" target="_blank" class="iconService">
+						<img src="<%=data.icon_pc_60 %>" /></a> 
+						<%=data.text%>
+				</li>
+			<% }) %>
+			</ul>
+			<div class="clear_f"></div>
+		</div>
+	</div>
+	<%# doota/list_contact.html%>
+	<div class="clear_f"></div>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/doota/shareact');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot.html%>

@@ -1,0 +1,37 @@
+<script type="text/html" id="posterWall">
+<?
+var pt = this.pt * 100;
+	if(!pt){
+		pt = (this.v.pic_height / this.v.pic_width) * 100;	
+
+	}
+?>
+<li class="goods_li poster_grid poster_wall"> 
+	<div class="li_border">
+		<a style="padding-top:<?= pt ?>%" href="/sq/detail?tid=<?= this.v.twitter_id?>&page_name=<?= this.v.page_name || 'undefined'?>&d_r=<?= this.v.d_r?>" asrc="<?=this.v.goods_img?>" class="list_img img_bt pic_load">
+			<p class="countdown"><span><?= this.v.last?></span></p>
+			<span class="progress" style="width:<?= this.v.progress?>%;"></span>
+			<span class="progress" style="width:<?= 100-this.v.progress?>%; left:<?= this.v.progress?>%;background-color:#6e6d6c;"></span>
+		</a>
+		<span class="goods_type">
+			<? this.v.mark && this.v.mark.map(function(data, idx){?>
+				<img style="width:<?= data.img_width/2?>px;" src="<?= data.img_url?>"/>
+			<?});?>
+		</span>
+		<div class="list_info">
+			<p class="list_title"><?= this.v.goods_title?></p>
+			<p class="list_cost">
+				<del class="money_now ml_color wx_grey">¥<?= this.v.original_price?></del>
+				<?if(this.v.original_price){?>
+				<span class="normal_cost right"><span><?= this.v.sale_num?></span>人购买</span>
+				<?}?>
+			</p>
+			<div class="money_now ml_color price_btm">
+				<span class="normal_cost">￥<?= this.v.discount_price?></span> 
+				<span class="discount"><?= this.v.discount?>&nbsp;|&nbsp;抢&nbsp;&gt;</span>
+			</div>
+			
+		</div>
+	</div> 
+</li>
+</script>

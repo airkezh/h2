@@ -1,0 +1,96 @@
+<%#head.html%>
+<% var lottery=this.nissan_lottery;
+   var thelike=this.nissan_like;
+%>
+<div class="bg1">
+	<img src="<%= this.PICTURE_URL%>images/wap/activity/nissan/wbg1.jpg" />
+</div>
+
+<div class="bg2">
+	<img src="<%= this.PICTURE_URL%>images/wap/activity/nissan/wbg2.jpg" />
+</div>
+
+<div class="bg3">
+	<img src="<%= this.PICTURE_URL%>images/wap/activity/nissan/wbg3.jpg" />
+	<%if(thelike.data.indie==0){%>
+		<div class="like" data-status="indie"></div>
+	<%}else{%>
+		<div class="liked"></div>
+	<%}%>
+</div>
+
+<div class="bg4">
+	<img src="<%= this.PICTURE_URL%>images/wap/activity/nissan/wbg4.jpg" />
+	<%if(thelike.data.sweet==0){%>
+		<div class="like" data-status="sweet"></div>
+	<%}else{%>
+		<div class="liked"></div>
+	<%}%>
+</div>
+
+<div class="bg5">
+	<img src="<%= this.PICTURE_URL%>images/wap/activity/nissan/wbg5.jpg" />
+	<%if(thelike.data.queen==0){%>
+		<div class="like" data-status="queen"></div>
+	<%}else{%>
+		<div class="liked"></div>
+	<%}%>
+</div>
+
+<div class="bg6">
+	<img src="<%= this.PICTURE_URL%>images/wap/activity/nissan/wbg6.jpg" />
+	<%if(thelike.data.handsome==0){%>
+		<div class="like like2" data-status="handsome"></div>
+	<%}else{%>
+		<div class="liked"></div>
+	<%}%>
+</div>
+
+
+<div class="bg8">
+	<img src="<%= this.PICTURE_URL%>images/wap/activity/nissan/wbg8.jpg" />
+</div>
+
+
+<div class="bg9">
+	<img src="<%= this.PICTURE_URL%>images/wap/activity/nissan/wbg9.jpg" />
+</div>
+
+
+<div class="bg7">
+	<img src="<%= this.PICTURE_URL%>images/wap/activity/nissan/wbg72.jpg" />
+</div>
+
+
+<script type="text/html" id="toupdate">
+<div class="dialog_box toupdate">
+	<? if(this.coupon_code == 0){ ?>
+		<img src="<%= this.PICTURE_URL %>images/huodong/machi/nocoupon.png"/>
+	<?}else if(this.coupon_code == 5){ ?>
+		<img src="<%= this.PICTURE_URL %>images/huodong/machi/coupon5.png"/>
+	<?}else if(this.coupon_code == 10){ ?>
+		<img src="<%= this.PICTURE_URL %>images/huodong/machi/coupon10.png"/>
+	<?}else if(this.coupon_code == 15){ ?>
+		<img src="<%= this.PICTURE_URL %>images/huodong/machi/coupon15.png"/>
+	<?}else{?>
+		<img src="<%= this.PICTURE_URL %>images/huodong/machi/nocoupon.png"/>
+	<?}?>
+</div>
+</script>
+
+
+<%= requireFn('wapShare.html')({
+	'share' : this.share 
+    , 'shareTitle' : '选择分享到'
+    , '_JSstack' : this._JSstack
+	, '_JSmods' : this._JSmods
+}); %>
+
+<script>
+	fml.vars.isLogin = <%=this.isLogin%>;
+	fml.vars.is_lottery= <%=lottery.is_lottery%>; 
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/nissan');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

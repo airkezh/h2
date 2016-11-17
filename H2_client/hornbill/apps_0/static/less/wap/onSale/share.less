@@ -1,0 +1,49 @@
+@import "../block.less";
+html{.f(10*@f);}
+body{.bgc(#fef242);}
+img{.block;.w(100%);}
+.bs100(){background-size:100% 100%}
+.ellipsis(){.hidden;white-space:nowrap;text-overflow:ellipsis}
+.ellipsis-row(@var){.hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:@var;-webkit-box-orient:vertical;}
+
+// wrap
+.wrap{
+	// .hidden;.h(100%);.pa;left:0;top:0;
+	.bgc(#fff);
+}
+// img-box
+.img-box{.pr;.ml(6px);.mr(6px);.pt(6px);
+	.opacity{background: rgba(0,0,0,.5);.l(3);.c;.pa;left:0;bottom:12px;.w(100%);
+		span,strong{.f(1.6rem);.fc(#fff);.vm;}
+		strong{.fc(#f00);.fn;.ellipsis;.il-block;.w(45%);.vm;.mt(-5px)}
+		// img{.pa;left:5%;top:8%;.w(10%)}
+		img{.il-block;.w(10%);.vm;}
+		b{.pa;left:0;bottom:-15px;.w(100%);.h(18px);background:url('http://imgtest.meiliworks.com/img/_o/87/6c/02bc8325f447758c4bad02cd1ae3_600_19.cg.png') 0 0 no-repeat;.bs100;}
+	}
+}
+// bottom
+.bottom{.w(100%);.auto;.mt(10px);.pr;background:url('http://d02.res.meilishuo.net/img/_o/fa/eb/b7faee857d53b8d3122d1e1a7a1d_640_410.cf.png') 0 0 no-repeat;.bs100;.pt(62%);
+	// des
+	.des{.w(85%);.pa;left:10%;bottom:45%;.c;.f(1.4rem);.l(1.2);}
+	// btn
+	.btn{.pa;.w(86%);left:7%;bottom:10%;.bgc(#f23456);.c;.f(2rem);.fc(#fff);.l(2.5);.fb;.border-r(30px)}	
+}
+// animate
+@-webkit-keyframes swing{
+	0%{-webkit-transform:rotate(30deg)}
+	50%{-webkit-transform:rotate(0deg)}
+	100%{-webkit-transform:rotate(-30deg)}
+}
+// small-tips
+.small-tips{.pa;
+	img{.w(15px);.left;z-index:10;-webkit-transform-origin:50% 0;-webkit-animation:swing 1s linear 0s infinite alternate;}
+	.des{.right;.fc(#fff);.f(1.4rem);background:rgba(0,0,0,.6);.l(1.8);padding:1px 5px;border-radius:0 3px 3px 3px;.pr;.ml(6px);
+		span{.mr(8px)}
+		b{.hidden;.w(0);.h(0);.pa;left:-8px;top:0;border:4px solid transparent;border-top:4px solid rgba(0,0,0,.6);border-right:4px solid rgba(0,0,0,.6)}
+	}
+}
+// onsale-dialog
+.onsale-dialog{background:rgba(0 ,0 ,0 , 0.8);.pf;left:0;top:0;.none;.w(100%);.h(100%);z-index:1000;
+}
+.share-img{.pf;.none;right:10px;top:0;.w(550*@px); .h(194*@px);.bgc(#331621);z-index:1100;background:url("http://d06.res.meilishuo.net/img/_o/2b/b7/d23087310a1577a9d49453be3df7_626_193.cg.png") 0 0 no-repeat;.bs100;
+}

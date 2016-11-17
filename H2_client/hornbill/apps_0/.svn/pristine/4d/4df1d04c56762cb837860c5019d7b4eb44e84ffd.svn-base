@@ -1,0 +1,88 @@
+<%#head.html%>
+<%
+	var wlListRenderFn = requireFn('wins/reply_box.html');
+	var mSubstr = _extFn.mSubstr;
+%>
+<%#group/maghead.html%>
+<div class="group_main">
+	<div class="group_l">
+		<div class="topic_info comments">
+			<%if(this.topic_info && this.topic_info.summary){%>
+			<div class="t_info clearfix_f">
+				<h3><%=this.topic_info.summary.topic_title%></h3>
+				<p class="mt10_f gray_f">
+					<span class="right_f">回复(<%=this.topic_info.summary.topic_number%>)</span>
+					发表于&nbsp;<%=this.topic_info.summary.topic_create_time%>
+				</p>
+			</div>
+			<%}%>
+			<%this.topic_info.info && this.topic_info.info.map(function(data){%>
+				<%data.isAdmin = this.isAdmin;%>
+				<%data.isEditor = this.is_admin.is_editor && this.userInfo.user_id == data.uinfo.user_id;%>
+				<%data.headTag = this.headTag;%>
+				<%=wlListRenderFn(data);%>
+			<%});%>	
+		</div>
+		<%# wins/publishor.html%>
+		<%if(this.group_list){%>
+		<div id="group_twitter_list" class="comments reply_list">
+			<%this.group_list && this.group_list.tInfo.map(function(data){%>
+				<%data.isAdmin = this.isAdmin;%>
+				<%data.isEditor = this.is_admin.is_editor && this.userInfo.user_id == data.uinfo.user_id;%>
+				<%data.headTag = this.headTag;%>
+				<%=wlListRenderFn(data);%>
+			<%});%>
+		</div>
+		<%}%>
+		<div class="paging_panel c_f">
+			<%#paging.html%>
+		</div>	
+	</div>
+	<div class="group_r">
+		<div class="new_topics">
+			<h3 class="f14_f">杂志最热话题</h3>
+			<ul class="mt10_f">
+				<%var topic_len = this.group_topics.length;%>
+				<%this.group_topics && this.group_topics.map(function(data, index){%>
+				<li <%if(topic_len-1 == index){%>style="border-bottom:none;"<%}%>>
+					<span class="gray_f">#</span>
+					<a href="<%=data.group_id%>?topic_id=<%=data.topic_id%>"><%=mSubstr(data.topic_title, 8, '...')%><span class="red_f">(<%=data.twitter_number%>)</span>
+					</a>
+				</li>
+				<%});%>
+			</ul>
+		</div>
+	</div>
+</div>
+<script type="text/html" id="twitter_comment">
+<? item && $.each(item.reverse() , function(key , data){?>
+	<li>
+		<a class="avatar32_f userInfoTips" user_id="<?= data.uinfo.user_id?>" href="/person/u/<?= data.uinfo.user_id?>" target="_blank"><img src="<?= data.uinfo.avatar_c?>" /></a>
+		<p>
+			<span class="date"><?= data.twitter_create_time?></span>
+			<a class="red_f twitter_comment_name" target="_blank" href="/person/u/<?= data.uinfo.user_id?>"><?= data.uinfo.nickname?></a>
+		</p>
+		<p><?= data.twitter_content?><a class="reply twitter_comment_reply">回复</a></p>
+	</li>
+<?});?>
+</script>
+<script type="text/html" id="twitter_comment_item">
+	<li>
+		<a class="avatar32_f"  href="/person/u/<%= this.userInfo.user_id%>" target="_blank"><img src="<%= this.userInfo.avatar_c%>" /></a>
+		<p>
+			<span class="date">1分钟</span>
+			<a class="red_f twitter_comment_name" target="_blank" href="/person/u/<%= this.userInfo.user_id%>"><%= this.userInfo.nickname%></a>
+		</p>
+		<p><?= tContent?><a class="reply twitter_comment_reply">回复</a></p>
+	</li>
+</script>
+<script>
+Meilishuo.config.mag_id = '<%=this.group_header.group_info.group_id%>';
+Meilishuo.config.topic_title = '<%=this.topic_info.summary&&this.topic_info.summary.topic_title%>';
+Meilishuo.config.is_editor = <%=this.is_admin.is_admin || this.is_admin.is_editor%>;
+</script>
+<%#group/magfoot.html%>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/magazine_topic');
+_use:", this._JSstack , this._JSmods);%>
+<%#foot.html%>

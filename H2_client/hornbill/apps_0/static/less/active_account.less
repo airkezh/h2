@@ -1,0 +1,140 @@
+@import "./block.less";
+
+html,
+body,
+input { 	
+	padding: 0;
+	margin: 0;  
+}
+
+body {
+	.bgc(#f9f9f9); 
+	.f(#666);
+}
+
+.main {
+	.w(442px);
+	.h(493px);
+	.mt(50px);
+	.auto;
+	.header {
+		.pr;
+		.h(36px);
+		.mb(26px);
+		.ml(2px);
+		background: url("@{pic_url}/images/header/logo_n4.png") left center no-repeat;
+		a { .pa; top: 0; left: 2px; .w(106px); .h(36px); }
+	}
+	.content {
+		.h(430px);
+	}
+}
+/*再激活用户*/
+
+@ico: "@{pic_url}/images/window/active_ico2.png";
+
+.active_account{
+	.border-1(#ddd);
+	border-top: 2px solid @red;
+	.bgwhite;
+	h2 {  
+		.f(20px);
+		padding: 20px 0 20px 40px;
+	}
+	.notice {
+		.f(12px);
+		.l(200%);
+		.mb(20px);
+		padding: 20px 40px;
+		background: url("@{pic_url}/images/window/notice_bg.png") left top repeat;
+	}
+	.inputs {
+		padding: 0 40px 50px;
+	}
+	input { 
+		.h(36px); 
+		line-height: 36px\9; 
+		.fc(#999);
+	}
+	.active_box{
+		.mt(10px);
+		.pr;
+		.f(0);
+		.phone_info {  
+			.block;
+			.h(38px);
+			.f(12px);
+			span {
+				.pl(20px);
+				.f(20px);
+			}
+		}
+		.phone {
+			.w(323px); .border-1(#ddd); .pl(35px);
+		}
+		.ms_code,
+		.code {
+			.pl(35px);.w(183px); .border-1(#ddd); .fc(#999);
+		}
+		.re_get{
+			.pa;
+			right: 1px;
+			top: 0;
+			.fc(#666);
+			//vertical-align: 1px;
+			.cursor;
+			.w(130px);
+			.h(38px); 
+			.border-1(#ddd);
+			.bgc(#EAECEB);
+			//.ml(10px);
+		}
+		.checkImage{
+			.pa;
+			right: 1px;
+			top: 0;
+			.border-1(#ddd);
+			img{
+				.cursor;
+			}
+			.refresh{
+				background: url("@{pic_url}/images/register/reload_m.png") no-repeat center;
+				.h(36px);
+				.w(38px);
+				.il-block;
+				.cursor;
+			}
+		}
+		.reg_icon () { background: url(@ico) no-repeat;  .i_block; .w(25px); .h(25px);}
+		.tel_icon,
+		.code_icon,
+		.ms_code_icon { .reg_icon; .pa; top: 6px; left: 4px; }
+		.tel_icon { .bp(0,-50px); }
+		.code_icon { .bp(0,-25px); }
+		.ms_code_icon { .bp(-25px,-25px); }
+		.status1,
+		.status2 {
+			.pa;
+			top: 5px;
+			right: -30px;
+			.w(25px);
+			.h(25px);
+		}
+		.pass {  
+			background: url(@ico) no-repeat;
+			.bp(-25px,0);
+		}
+		.stop { 
+			background: url(@ico) no-repeat;
+		}
+	}
+	.err {
+		.block;
+		.red;
+		.pt(5px);
+		.h(15px);
+	}
+	#active_now{
+		 .white; .block; .f(16px); .c; .border-n; .w(100%); .h(48px); .bgred; .l(46px); .cursor;
+	}
+}

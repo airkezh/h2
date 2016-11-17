@@ -1,0 +1,79 @@
+<%# frame/wap/head_simple.html%>
+</head>
+<body>
+<div class="order">
+<%
+var len = 0
+if(this.recent_order.data.datas){
+	len = this.recent_order.data.datas.length;	
+	if(len){%>
+	<div class="order_list wall">
+	</div>
+	<div class="pullUp" status="tap"></div>
+	<%}
+}else{%>
+	<div class="order_none">
+		<span class="icon"></span>
+		<p>还没有订单</p>
+	</div>
+<%}%>
+</div>
+<script type="text/html" id="im_order_item">
+<? this.data && this.data.map(function(item){?>
+	<div order_id="<?= item.id ?>">
+		<div class="o_info">
+			<p>订单信息</p>
+			<div>
+				<p>订单号：<?= item.id ?></p>
+				<p>下单日期：<?= item.date ?></p>
+				<p>订单状态：<?= item.status ?></p>
+			</div>
+		</div>
+		<div class="o_recive">
+			<p>收货信息</p>
+			<div>
+				<p>收货人：<?= item.address.nickname ?></p>
+				<p>联系电话：<?= item.address.phone ?></p>
+				<p>收货地址：<?= item.address.address ?></p>
+			</div>
+		</div>
+		<div class="o_goods">
+			<p>商品信息</p>
+			<ul>
+			<? item.goods && item.goods.map(function(goods, v){?>
+				<li>
+					<img class="goods_img" src="<?=goods.thumb ?>">
+					<div class="o_txt_wrapper">
+						<p><?= goods.title ?></p>
+						<div>
+							<span>价格：￥<?= goods.price ?></span>
+							<? for(var j=0;j<goods.attr.length;j++){
+								var attr = goods.attr[j];
+							?>
+							<?if(attr.is_show==1){?><span class="goods_sku"><?=attr.name ?>：<?=attr.value ?></span><?}?>
+							<? } ?>
+						</div>
+					</div>
+				</li>
+			<?});?>
+			</ul>
+		</div>
+	</div>
+<?});?>
+</script>
+
+<script>
+fml.vars.im = {
+	fromid : <%= this.user_id %>
+	, toid : <%= this.toid || 0 %>
+	, type : "<%= this.type || 0 %>"
+	, source : 'mob'
+};
+</script>
+
+<%if(len){%>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('m/page/im/order');
+_use:", this._JSstack , this._JSmods ); %>
+<%}%>
+<%# frame/wap/foot_simple.html%>

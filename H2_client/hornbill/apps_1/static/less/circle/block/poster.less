@@ -1,0 +1,56 @@
+.poster(@outerMarginOld:20, @colMargin:20){
+	//@outerMarginOld:外容器单边值
+	//@colMargin:海报间距(中缝)
+
+	@outerMargin : @outerMarginOld - (@colMargin/2);
+	@w : 1/(640 - (@outerMargin * 2)) * 100%;
+
+	.goods_wall{
+		.ml(@outerMargin*@w);.mr(@outerMargin*@w);
+		.frame{
+			.pr;
+		}
+		.poster{
+			.gpu;
+		}
+		figure {
+			.pr;.border-1(@bc);.bgwhite;
+			.ml(@colMargin*@w);.mr(@colMargin*@w);
+			.mb(@colMargin * 2 *@w);
+			.border-r(4px);
+			.hidden;
+
+			.pic_load {.block;.hidden;.pr;
+				img{.pa;top:0px;.w(100%);}
+			}
+			a {background-size:100%;
+				background-repeat:no-repeat;
+			}
+			figcaption {.f(24*@px);.fc(#666); .l(32*@px);}
+		}
+	}
+	.pullUp;
+}
+	
+.posterPa(@outerMarginOld:20, @colMargin:20){
+	.poster(@outerMarginOld:20, @colMargin:20);
+	.goods_wall{
+		.poster{
+			.pa;
+		}
+	}
+}
+.posterFall(@outerMarginOld:20, @colMargin:20){
+	.poster(@outerMarginOld:20, @colMargin:20);
+	.goods_wall{
+		.poster{
+			.left;
+		}
+		/* 自定义：固定高度
+		** 例子：
+		figure {
+			figcaption {.l(32*@px);.h(32*@px);.hidden;}
+		}
+		*/
+	}
+}

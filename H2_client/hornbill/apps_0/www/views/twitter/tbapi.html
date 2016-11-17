@@ -1,0 +1,71 @@
+<html>
+<head>
+<title></title>
+<script src="http://a.tbcdn.cn/apps/top/x/sdk.js?appkey=12173575"></script>
+<script type="text/javascript">
+function getParams(url){
+	if(url == '') return ''; 
+	var options = {}; 
+	var name,value,i;
+	var params = url.indexOf('?');
+	var str = url.substr(params + 1); 
+	var arrtmp = str.split('&');
+	for(i=0 , len = arrtmp.length;i < len;i++){
+		var paramCount = arrtmp[i].indexOf('=');
+		if(paramCount > 0){ 
+			name = arrtmp[i].substring(0 , paramCount);
+			value = arrtmp[i].substr(paramCount + 1); 
+			try{
+				if (value.indexOf('+') > -1){
+					value= value.replace(/\+/g,' ')
+				}
+				options[name] = decodeURIComponent(value);
+			}catch(exp){}
+		}
+	}
+	return options;
+} 
+var params = getParams(window.location.href.toString());
+var click_url = params.u;
+var data = {
+	method : 'taobao.taobaoke.widget.items.convert',
+	num_iids : params.t,
+	fields : 'click_url'
+};
+if(!params.t){
+	location.href = click_url;	
+}else {
+	var st = new Date;
+	TOP.api('rest', 'get',data, function(resp){
+		if (st % 10 == 0){
+			var log = new Image;
+			var logsrc = 'http://sense.meilishuo.com/log/tbapi/'+ params.t +'/speed_'+ (new Date - st); 
+			logsrc += '/refer_' + encodeURIComponent(document.referrer);
+			if (resp.error_response) logsrc +=  'error_'+  resp.error_response.code+'_' + encodeURIComponent(resp.error_response.msg);
+			if (resp.total_results){
+				logsrc += '/url_'+ resp.taobaoke_items.taobaoke_item[0].click_url;
+			}
+				
+			log.src = logsrc;
+		}
+
+		if(resp.error_response || resp.total_results == 0){
+         }else{
+            click_url = resp.taobaoke_items.taobaoke_item[0].click_url;
+        }
+
+        window.setTimeout(function(){
+			if (params.spm){
+				click_url += click_url.indexOf('?') > 0 ? '&':'?'
+				click_url += 'spm=' +params.spm
+				}
+	        location.href = click_url ;
+        }, 10);
+
+	}) 
+}
+</script>
+</head>
+<body>
+</body>
+</html>

@@ -1,0 +1,155 @@
+<%#head.html%>
+<div class="chat_mainbox">
+	<div class="animation">
+		<img src="http://d06.res.meilishuo.net/img/_o/c0/00/b5a029a809ad2da9cf65c5c1ecba_123_104.cf.png" class="useful">
+		<img src="http://d02.res.meilishuo.net/img/_o/57/fb/996efe7d643371d23d324df20ec3_126_106.cf.png" class="unuseful">
+	</div>
+
+	<div class="chat_dialogbox">
+		<div class="dialog">
+			<div class="text robot">
+				<span class="robot_img">
+					<img src="http://i.meilishuo.net/css/images/staticbed/robot.png" alt="">
+				</span>
+
+				<div class="con">
+					<div class="bubble">
+						<p>爱时尚，爱美丽，欢迎小主</p>
+						<span class="shap"></span>
+						<span class="shapb"></span>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+	<div class="pos"></div>
+	<div class="bottom_con">
+
+		<div class="chat_inputbox">
+			<span class="icon"></span>
+			<form method="post" onsubmit="return false" action="">
+				<textarea class="inputbox_input"  placeholder="请输入文字"></textarea>
+				<input class="button sendBtn" type="submit" value="发送"/>
+			</form>
+		</div>
+
+		<div class="order_icon_wrapper">
+			<div class="icon_box">
+				<p class="order_icon">
+					<img src="http://d05.res.meilishuo.net/img/_o/1f/99/41d47173455271cb9e601e413c05_80_80.cg.png">
+					<span class="icon_name">我的订单</span>
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script id="revise" type="text/html">
+	<div class="revise_box">
+		<div class="revise_hand_wrapper">
+			<span class="revise_hand"></span>
+		</div>
+		<div class="revise_con">
+			<div class="unuseful_wrapper">
+				<span class="unuseful"></span>
+			</div>
+			<div class="useful_wrapper">
+				<span class="useful"></span>
+			</div>
+		</div>
+	</div>	
+</script>
+
+<script id="robot_dialog" type="text/html">
+	<div class="text robot create">
+		<span class="robot_img">
+			<img src="http://i.meilishuo.net/css/images/staticbed/robot.png" alt="">
+		</span>
+
+		<div class="con">
+			<div class="bubble">
+				<?var isInApp = Meilishuo.config.os.mlsApp;
+					if(isInApp){
+				?>
+
+					<? if(!obj.data.length){?>
+						<p><?= obj.tips?></p>
+					<?}else{?>
+						<p data-id="<?= obj.data[0].id?>" data-index="<?= obj.data[0].index?>">
+							<?= obj.data[0].answer?>
+						</p>
+					<?}?>
+				<?}?>
+				<span class="shap"></span>
+				<span class="shapb"></span>
+			</div>
+		</div>
+		
+	</div>
+</script>
+
+<script id="client_dialog" type="text/html">
+	<div class="text client">
+		<div class="user_info">
+			<span class="user_img">
+				<img src="<?= obj.portrait?>" alt="">
+			</span>
+		</div>
+		<div class="con">
+			<div class="bubble">
+				<p><?= obj.text?></p>
+				<span class="shap"></span>
+				<span class="shapb"></span>
+			</div>
+		</div>
+	</div>
+</script>
+
+<script id="order" type="text/html">
+	<div class="order_list">
+		<?$.each(obj.goods, function(index ,value){?>
+			<div class="order_item">
+				<p class="order_shop">
+					<span class="shop_name">商家：<?= obj.order.shop_name?></span>
+					<span class="status"><?= obj.order.status_text?></span>
+				</p>
+				<div class="order_goods">
+					<img src="<?= value.goods_img?>" alt="" class="goods_pic">
+					<div class="goods_detail">
+						<p class="goods_name"><?= value.goods_title?></p>
+						<span class="price">￥<?= value.price?></span>
+						<span class="count">x<?= value.amount?></span>
+					</div>
+					
+				</div>
+			</div>
+		<?});?>	
+		<div class="summation">
+			<? 
+				var isInApp = Meilishuo.config.os.mlsApp;
+				var express_url = 'meilishuo://order_express_info.meilishuo/?json_params=' + encodeURIComponent( JSON.stringify( { order_id: obj.order.order_id, express_id: obj.order.express_id, express_company: obj.order.express_company } ) );
+				var more_url = 'meilishuo://order_list.meilishuo/?json_params=' + encodeURIComponent( JSON.stringify( { status: 0 } ) );
+			?>
+			<p class="account">合计：<span>￥<?= obj.order.order_price?></span></p>
+			<? if( obj.order.express_id){?>
+				<a href="<?=express_url?>"><span class="logistics">查看物流</span></a>
+			<?}?>
+		</div>
+		<div class="more_url_wrapper">
+			<a href="<?=more_url?>" class="go_more">点击查看更多</a>
+		</div>
+	</div>
+</script>
+
+<script>
+fml.vars.isLogin = <%= this.isLogin%>;
+fml.vars.portrait = "<%= this.userInfo.avatar_e%>";
+fml.vars.userId = <%= this.userInfo.user_id%>;
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+        fml.use('wap/page/robotChat');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot.html%>

@@ -1,0 +1,146 @@
+<%#head.html%>
+<div><%#paging.html%></div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+     fml.use('page/doota/shareact');
+_use:", this._JSstack , this._JSmods ); %>
+<div class="act_box">
+	<div class="top_title">
+
+		<div class="sTips"><span class="iClock"></span>每天上午10点准时上新！</div>
+
+		<div class="clear_f"></div>
+	</div>
+	<div class="act_banner">
+		<%if(this.turn){%>
+		<div class="boxImg">
+			<% var data = this.turn.data,seclen = data.length;%>
+			<ul class="_img"  style="position:absolute;left:0;width:<%= (seclen+1)*948 %>px;display:inline-block;">
+				<%for(var i = 0; i < data.length; i++){%>
+				<li class="left_f">
+					<a href="<%=data[i].link_url%>" target="_blank">
+						<img width="948" src="<%=data[i].pic_path%>" />
+					</a>
+				</li>
+				<%}%>
+			</ul>
+		</div>
+		<div class="_num adType1 <% if(seclen == 1) { %>none_f<% } %>">
+			<% for (var i=1; i<=seclen; i++) { %>
+			<% var current = i==1 ? 'current' : ''; %>
+			<a class="<%= current %>"><span class="none_f"><%= i %></span></a>
+			<% } %>
+		</div>
+		<%}%>
+	</div>
+</div>
+<div class="act_box">
+	<%if(this.main){%>
+	<div class="act_title">
+		<div class="title"><span class="redborder"></span>当前特卖</div>
+	</div>
+	<%for (var i = 0; i < this.main.length; i++){%>
+	<div class="saleBox <%if(i%2){%>mr0<%}%>">
+		<a target="_blank" class="saleCon" href="/biz/shareact/activity/?ac_id=<%= this.main[i].ac_id%>&page=0&od=po">
+			<% 
+			//var dis_desc = this.main[i].discount_desc;
+			var dis_desc = this.main[i].discount_desctag;
+			if (dis_desc){ %>
+			<div class="discount"><%= dis_desc%></div>
+			<% } %>
+			<div class="saleImg">
+				<img width="450" src="<%=this.main[i].horizon_pic%>" />
+			</div>
+			<div class="btn_buy" href="#">立即抢购</div>
+			<div class="saleTitle">
+					<%= this.main[i].show_name%><span>|</span><%= this.main[i].brand_name%>
+			</div>
+			<div class="s_countdown">
+				<span></span>剩余<div class="alt" alt="<%= this.main[i].end_time - new Date().getTime() / 1000%>">-天-小时-分-秒</div>
+			</div>
+		</a>
+	</div>
+	<%}%>
+	<%}%>
+	<div class="clear_f"></div>
+</div>
+<div class="act_box mt10">
+	<%if(this.ready){%>
+	<div class="act_title">
+		<div class="title"><span class="redborder"></span>即将开始</div>
+	</div>
+	<%for (var i = 0; i < this.ready.length; i++){%>
+	<div class="saleBox <%if(i%2){%>mr0<%}%>">
+		<div class="saleCon">
+			<% var dis_desc = this.ready[i].discount_desctag;
+			if (dis_desc){ %>
+			<div class="discount"><%= dis_desc%></div>
+			<% } %>
+			<div class="saleImg">
+				<img width="450" src="<%=this.ready[i].horizon_pic_mask%>" />
+			</div>
+			<div class="begin">
+				<span class="date"><%= this.ready[i].start_time.split('-')[1]%>月<%= this.ready[i].start_time.split('-')[2].split(' ')[0]%>日</span><%= this.ready[i].start_time.split(' ')[1].replace(/:\d{2}$/,'')%><br />
+				<span class="f16_f">准时开场</span>
+			</div>
+			<div class="saleTitle">
+				<%= this.ready[i].show_name%><span>|</span><%= this.ready[i].brand_name%>
+			</div>
+			<div class="s_countdown">
+				<span></span>剩余<div class="alt1" alt="<%= this.ready[i].end_time - new Date().getTime() / 1000%>">-天-小时-分-秒</div>
+			</div>
+		</div>
+	</div>
+	<%}%>
+	<%}%>
+	<div class="clear_f"></div>
+</div>
+<div class="act_box mt10">
+	<%if(this.already){%>
+	<div class="act_title">
+		<div class="title"><span class="redborder"></span>往期回顾</div>
+	</div>
+	<div class="content">
+		<div class="hotDeals">
+			<%for(var i = 0; i < this.already.length; i++){%>
+			<a target="_blank" href="/biz/shareact/activity/?ac_id=<%= this.already[i].ac_id%>&page=0&od=po" class="hotCon">
+				<div class="hotImg">
+					<img width="208" src="<%=this.already[i].vertical_pic%>" />
+				</div>
+				<div class="hotTitle1">
+						<%=this.already[i].show_name%><span>|</span><%=this.already[i].brand_name%><br />
+					<div>已于<%=this.already[i].end_time_str.split(' ')[0]%>结束，精彩还在继续</div>
+				</div>
+			</a>
+			<%}%>
+			<div class="clear_f"></div>
+		</div>
+	</div>
+	<%}%>
+</div>
+<div class="act_box">
+	<div class="services">
+		<div class="act_title">
+			<div class="title"><span class="redborder"></span>优质服务保障</div>
+		</div>
+		<div class="content">
+			<ul class="serIcons">
+				<li>
+					<span class="icon1"></span>全场包邮
+				</li>
+				<li>
+					<span class="icon2"></span>7天无理由退货
+				</li>
+				<li>
+					<span class="icon3"></span>先行赔付
+				</li>
+				<li class="noborder">
+					<span class="icon4"></span>退货返10元运费
+				</li>
+			</ul>
+			<div class="clear_f"></div>
+		</div>
+	</div>
+	<%# doota/list_contact.html%>
+	<div class="clear_f"></div>
+</div>
+<%#foot.html%>

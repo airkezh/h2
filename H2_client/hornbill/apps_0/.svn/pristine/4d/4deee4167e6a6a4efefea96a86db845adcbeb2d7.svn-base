@@ -1,0 +1,45 @@
+<%
+	var bs_seckill = this.bs_seckill.tInfo;
+	if(!this.bs_seckill || !bs_seckill || !bs_seckill.miao.length){
+		return '';
+	}
+%>
+<div class="k_top_btn k_fader" style="bottom:<%if(this.isIphone){%>60<%}else{%>20<%}%>px">
+	<img src="http://i.meilishuo.net/css/images/wap/biz/all/kill_top_btn1.png"/>
+</div>
+
+<div class="seckill_title" id="seckill_title"></div>
+
+<div class="seckill_wrap">
+	<div class="seckill_inner" <%= bs_seckill.have_cur != 1 ? 'style="margin-left: -100%;"' : '' %>>
+		<div class="today">
+			<% bs_seckill.miao.forEach(function(goods, index){ %>
+				<a class="kill_goods <%= index == 0 ? 'first_goods' : '' %>" href="<%= goods.link %>" gohref="<%= goods.link %>" time="<%= goods.start_time %>">
+					<p class="kill_img"><img src="<%= goods.pic_pathe %>"></p>
+					<p class="goods_desc"><%= goods.description %></p>
+					<p class="goods_op"><span class="price_now red_f">￥<%= goods.discount_cost %>元</span><span class="original"><%= goods.original_price %>元</span><span class="num">限量<i class="red_f"><%= goods.sell_num %></i>份</span><span class="remind_btn <%= goods.sell_status !== 0 ? 'wait_btn' : '' %>"><%= goods.sell_status != 0 ? (goods.sell_status == 1 ? '抢光了' : '即将开抢' ) : '正在抢购' %></span></p>
+				</a>
+			<% }); %>
+		</div>
+		<div class="btn_tomorrow"></div>
+		<div class="btn_today"></div>
+		<div class="tomorrow">
+			<% bs_seckill.miao_next && bs_seckill.miao_next.forEach(function(goods, index){ %>
+				<a class="kill_goods <%= index == 0 ? 'first_goods' : '' %>" href="<%= goods.link %>">
+					<p class="kill_img"><img src="<%= goods.pic_pathe %>"></p>
+					<p class="goods_desc"><%= goods.description %></p>
+					<p class="goods_op"><span class="price_now red_f">￥<%= goods.discount_cost %>元</span><span class="original"><%= goods.original_price %>元</span><span class="num">限量<i class="red_f"><%= goods.sell_num %></i>份</span><span class="remind_btn <%= goods.sell_status !== 0 ? 'wait_btn' : '' %>"><%= goods.sell_status != 0 ? (goods.sell_status == 1 ? '抢光了' : '即将开抢' ) : '正在抢购' %></span></p>
+				</a>
+			<% }); %>
+		</div>
+		<% if(bs_seckill.message_next){ %>
+			<div class="expect_msg">
+				<div class="text"><%= bs_seckill.message_next %></div>
+			</div>
+		<% } %>
+	</div>
+</div>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/biz/seckill');
+_use:", this._JSstack, this._JSmods ); %>

@@ -1,0 +1,65 @@
+<%# head.html %>
+
+<%
+	var attr_intro = this.attr_intro && this.attr_intro.intro && this.attr_intro.intro[0];
+	var attr_word = this.attr_word;
+
+	var poster_blcok_mt = (Math.ceil(attr_word.length/5)*1.66) + 'rem';
+	if(!attr_word.length) poster_blcok_mt = 0;
+%>
+
+<% if(attr_word.length){ %>
+	<div id="attr_block">
+		<% attr_word.forEach(function(item, index){ %>
+			<a href="/guang/catalog_new/?nid=<%= item.nid %>&tag_word=<%= encodeURIComponent(item.query_word) %>" xr="<%= this.xr.r %>"><span class="bs_load_img" asrc="<%= item.pic %>"></span><span><%= item.word_name %></span></a>
+		<% }); %>
+	</div>
+<% } %>
+
+<section id="poster_blcok" class="main_page" style="margin-top: <%= poster_blcok_mt %>;">
+	<% var pro_spec_banner = this.pro_spec_banner || {}; %>
+	<%= requireFn('block/wap_head.html')({
+		'xr' : this.xr
+		, 'search_words' : this.tag_word
+		, 'default_navigate' : this.default_navigate && this.default_navigate.root_category
+		, 'cat_banner' : pro_spec_banner.cat_bar
+		, '_JSstack' : this._JSstack
+		, '_JSmods' :  this._JSmods
+	});%>
+
+	<% if(attr_intro){ %>
+		<div class="attr_desc"><a href="<%= attr_intro.url %>" xr="<%= this.xr.r %>"><img src="<%= attr_intro.pic %>"></a></div>
+	<% } %>
+
+	<div class="poster_wrap">
+		<div class="goods_wall"></div>
+		<div class="pullUp" status="loading"></div>
+	</div>
+</section>
+
+<script type="text/html" id="posterWall">
+	<div class="poster_grid poster_wall" twitter_id="<?= this.v.twitter_id?>">
+		<figure>
+			<div class="pic_load">
+				<a xr="<?= fml.vars.poster_r ?>" class="bs_load_img" href="/share/<?if(this.v.is_doota == '1'){?>item/<?}?><?= this.v.twitter_id ?>" asrc="<?= this.v.z_pic_url ?>"></a>
+			</div>
+			<p class="clothesTitle"><?= this.v.remark ?></p>
+			<figcaption>
+				<span class="price"><?= this.v.title ?></span>
+				<span class="like icon-heart"><?= this.v.count_like ?></span>
+			</figcaption>
+		</figure>
+	</div>
+</script>
+
+<script>
+	fml.vars.poster_r = '<%= this.xr.r %>';
+	fml.vars.poster0 = <%= JSON.stringify(this.poster0) || [] %>;
+	fml.vars.tag_word = '<%== this.tag_word %>';
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/guang/new');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot.html %>

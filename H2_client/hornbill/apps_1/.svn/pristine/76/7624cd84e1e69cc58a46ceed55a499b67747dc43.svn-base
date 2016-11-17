@@ -1,0 +1,52 @@
+<%#head.html%>
+<%
+var query = this._Request_query;
+var getLink = _extFn.getLink;
+%>
+
+<div class="welfare">
+	<div class="top_bnr"><img src="<%= this.info.top_banner%>" /></div>
+	<div class="main">
+		<div class="con">
+			<h2 class="tle">手机专属福利</h2>
+			<p class="mt5_f"><%= this.info.title%></p>
+			<div class="pic_up"><img src="<%= this.info.index_banner%>" /></div>
+			<h2 class="tle">推荐理由</h2>
+			<div class="pic_up"><%= this.info.products_introduction%></div>
+			<h2 class="tle">实物展示</h2>
+			<div class="pic_up2"><%= this.info.summary%></div>
+		</div>
+		<div class="aside">
+			<%if(this.info){%>
+			<div class="preview">
+				<span class="ico"></span>
+				<p class="pre_bg" style="background-image:url(<%= this.info.products_preview_img%>)"></p>
+				<p class="mt20_f">开始时间：<%= this.info.start_time_format%></p>
+				<%if (this.info.preview_start_time * 1000 >= Date.parse(new Date())) {%>
+					<p class="time timeStamp" end-date="<%= this.info.preview_start_time%>"><span>还有</span><strong class="f20_f" id="day">0</strong><span>天</span><strong class="f20_f" id="hour">0</strong><span>时</span><strong class="f20_f" id="minute">0</strong><span>分</span><strong class="f20_f" id="seconds">0</strong><span>秒</span></p>
+				<% } %>
+				<p class="red_f mt10_f">敬请期待</p>
+			</div>
+			<%}%>
+			<div class="clear_f"></div>
+			<h2 class="tle">火热进行中</h2>
+			<div class="pic">
+				<%this.old && this.old.welfare_list_now.map(function(data){%>
+					<a href="<%= data.link_url%>" target="_blank"><img src="<%= data.pic_url%>" /></a>
+				<% }); %>
+			</div>
+			<h2 class="tle">过往福利</h2>
+			<div class="pic">
+				<%this.old && this.old.welfare_list_pre.map(function(data){%>
+					<a href="<%= data.link_url%>" target="_blank"><img src="<%= data.pic_url%>" /></a>
+				<% }); %>
+			</div>
+		</div>
+	</div>
+	<div class="clear_f"></div>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/huodong/welfare');
+_use:", this._JSstack , this._JSmods); %>
+
+<%#foot.html%>

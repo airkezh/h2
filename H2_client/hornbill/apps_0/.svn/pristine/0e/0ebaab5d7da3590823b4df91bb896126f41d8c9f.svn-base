@@ -1,0 +1,183 @@
+<%#head.html%>
+	<section id="wrapper_main" class="wrapper">
+		<div class="main">
+			<%if(this.user_info.user_id!=0){%>
+			<div class="top_banner">
+				<div class="level_box">
+					<div class="user_photo">
+						<img src="<%=this.user_info.avatar_e%>" />
+					</div>
+					<h2 class="user_level">
+					<span><%=this.user_info.nickname%></span><span class="user_level_tips">V<%=this.user_info.user_grade==""?"0":this.user_info.user_grade%>会员</span>
+				</h2>
+				</div>
+			</div>
+			<%}%>
+			<section class="nav_wap" id="nav_wap">
+				<div class="nav" id="m_ca">
+					<ul>
+						<li class="curr" data-url='/m_welfare/'>
+							<a href="javascript:void(0)"><span>已申请</span></a>
+						</li>
+						<li data-url='/m_welfare/mywlf_unpast/'>
+							<a href="javascript:void(0)"><span>未通过</span></a>
+						</li>
+						<li data-url='/m_welfare/mywlf_past/'>
+							<a href="javascript:void(0)"><span>已通过</span></a>
+						</li>
+					</ul>
+				</div>
+			</section>
+			<section id="container" class="container">
+				<div class="content show">
+					<div class="mywlf">
+						<%if(this.userInfo && this.userInfo.user_id){ 
+							  if(this.wlf_apply.error_code==0&&this.wlf_apply.data&&this.wlf_apply.data.list&&this.wlf_apply.data.list.length){%>
+							<div class="goods_wall">
+							</div>
+							<div class="pullUp" status="loading"></div>
+							<%}else{%>
+								<div class="nowlf">
+									<img src="<%=this.PICTURE_URL%>images/m_welfare/wlf_nowlf.jpg">
+									<p>您还没有申请过福利哦</p>
+									<a href="/m_welfare/" class="goSee" id="goSeeBtn">去看看</a>
+								</div>
+								<%}}%>
+					</div>
+				</div>
+			</section>
+		</div>
+	</section>
+	<a class="goindex" style="bottom:<%if(this.isIphone){%>80<%}else{%>65<%}%>px" href="/m_welfare/">
+		<img src="<%= this.PICTURE_URL%>/images/m_welfare/icon_index_new1.png" />
+	</a>
+	<a class="gotop" style="bottom:<%if(this.isIphone){%>60<%}else{%>20<%}%>px">
+
+		<img src="<%= this.PICTURE_URL%>/images/wap/tuan/gotop.png" />
+
+	</a>
+	<script type="text/html" id="posterWall">
+		<div class="haswlf">
+			<div class="goodsWall">
+				<?if(this.data.list&&this.data.list.length){this.data.list.forEach(function(item){?>
+					<div class="wlf_box">
+						<a class="myWlf_link" href="/m_welfare/item/<?=item.activity_id?>" data_id="<?=item.activity_id?>">
+
+													<span class="wlf_img bs_load_img"  asrc='<?=item.small_pic?>' ></span>
+
+													<div class="text_content">
+
+														<h3><?=item.title?></h3>
+
+														<p>申请时间：<?=item.apply_time?></p>
+
+													</div>
+					</a>
+						<div class="wlf_state">
+
+							<?
+
+															var status=item.final_status,style="",desc="",urlStr="",pcUrl="";
+
+															switch(status){
+
+																case 1:
+
+																	style="gray";
+																	desc="已申请";
+																	urlStr="javascript:void(0)";
+
+																break;
+
+																case 2:
+
+																	style="gray";
+
+																	desc="正在审核";
+																	urlStr="javascript:void(0)";
+																	break;
+
+																case 3:
+
+																	style="pink";
+																	urlStr="javascript:void(0)";
+
+																	desc="已通过";
+
+																break;
+
+																case 4:
+
+																	style="red";
+
+																	desc="未通过";
+																	urlStr="javascript:void(0)";
+
+																	break;
+
+																case 5:
+
+																	style="bor";
+																	urlStr="javascript:void(0)";
+
+																	desc="点击兑换";
+
+																break;
+
+																case 6:
+
+																	style='red';
+																	urlStr="javascript:void(0)";
+
+																	desc="失效";
+
+																	break;
+
+																case 9:
+
+																	style="bor";
+																	urlStr="http://mapp.meilishuo.com/m_welfare/subReport/"+item.activity_id;
+																	pcUrl="/m_welfare/subReport/"+item.activity_id;
+
+																	desc="提交报告";
+
+																	break;
+
+																case 10:
+
+																	style="bor";
+																	urlStr="http://mapp.meilishuo.com/m_welfare/reprotDetails/"+item.rid;
+																	pcUrl="/m_welfare/reprotDetails/"+item.rid;
+																	desc="查看报告";
+
+																	break;
+
+															}
+
+														?>
+
+								<a href="" data_url="<?=urlStr?>" data_pc_url="<?=pcUrl?>" class="<?=style?> singleLink">
+									<?=desc?>
+								</a>
+
+						</div>
+
+					</div>
+					<?});}?>
+			</div>
+		</div>
+	</script>
+
+	<script>
+		<%= this.wlf_apply.data ? 'Meilishuo.config.poster0=' + JSON.stringify(this.wlf_apply.data) + ';' : ''; %>
+		fml.vars.wlfTotalNum = '1';
+		fml.vars.geturl = '<%=this.geturl%>';
+		fml.vars.is_lazyload_poster = true;
+		fml.vars.isLogin = "<%= this.userInfo.user_id%>";
+	</script>
+	<%! $_ENGINE_SELF.callFn( "useModule")( "<<<_use:
+
+	fml.use('wap/page/welfare_new/mywlf_index');
+
+_use:", this._JSstack , this._JSmods ); %>
+		<%#foot.html%>

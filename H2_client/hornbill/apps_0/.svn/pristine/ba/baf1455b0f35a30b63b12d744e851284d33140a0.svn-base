@@ -1,0 +1,34 @@
+<?if(this.item ){?>
+	<? for(var s in this.item){
+		var item = this.item;
+	?>
+		<div class="period">
+			<div class="line-bg"></div>
+			<h6><?= s ?>点场</h6>
+		</div>
+		<?if(item[s] && item[s].length){
+			var items = item[s];
+		?>
+		<ul class="forshow-box">
+			<?for( var i = 0 ; i < items.length; i++){
+				var data = items[i]
+					, fore_url = fml.vars.joinurl('twitter_single', {'twitter_info' : {'twitter_id' : data.twitter_id , 'is_doota' : 1}}, fml.vars._os, fml.vars._r, '/share/item/'+data.twitter_id);
+			?>
+			<li class="goodinfo good_box" twid="<?=data.twitter_id?>" shopid="<?=data.shop_id?>" stime="<?=data.start_time?>">
+				<figure>
+					<a href="<?= fore_url?>"><img src="<?= data.goods_image ?>"></a>
+				</figure>
+				<figcaption>
+					<div class="foretit"><a href="<?= fore_url?>"><?= data.goods_name ?></a></div>	
+					<div class="foreprice">
+						<span class="now_price">￥<?= data.off_price ?></span>
+						<del class="old_price">￥<?= data.origin_price ?></del>
+						<span class="discout"><?= data.discount?></span>
+					</div>		
+				</figcaption>
+			</li>
+			<?}?>
+		</ul>
+		<?}?>
+	<?}?>
+<?}?>

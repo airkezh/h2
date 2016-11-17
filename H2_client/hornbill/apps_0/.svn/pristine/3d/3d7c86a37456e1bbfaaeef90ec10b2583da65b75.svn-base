@@ -1,0 +1,83 @@
+<%#head.html%>
+<%
+	var wlListRenderFn = requireFn('wins/reply_box.html');
+%>
+	<div class="wapper">
+		<div class="imgBox">
+			<img src="<%=this.magicBoxMain.boxInfo.toppic%>" width="950" />
+			<% if( this.magicBoxMain.boxInfo.start_time * 1000 - Date.parse(new Date()) >= 0 ){ %>
+				<p class="time timeStamp" end-date="<%=this.magicBoxMain.boxInfo.start_time%>"><span class="mr14_f">距活动开启</span><strong id="day">0</strong><span>天</span><strong id="hour">0</strong><span>时</span><strong id="minute">0</strong><span>分</span><strong id="seconds">0</strong><span>秒</span></p>
+			<%}else{%>
+				<p class="buy">火热进行中......</p>
+			<%}%>
+		</div>
+		<div class="imgBox sharebg">
+			<p class="share"></p>
+		</div>
+		<div class="goods_detail">
+		<% this.boxPage && this.boxPage.map(function(data){ %>
+			<% if(data.tmp_id == 1){ %>
+				<% data.data_json && data.data_json.map(function(data1){  %>
+					<img src="<%=data1.pic%>" />		
+				<%});%>
+			<%}else if(data.tmp_id == 2){%>
+				<% data.data_json && data.data_json.map(function(data1){  %>
+					<a href="<%=data1.subject%>" target="_blank"><img src="<%=data1.pic%>" /></a>
+				<%});%>
+			<%}else if(data.tmp_id == 3){%>
+				<div class="clearfix_f">
+					<% data.data_json && data.data_json.map(function(data1){  %>
+						<a class="left_f" href="<%=data1.subject%>" target="_blank"><img src="<%=data1.pic%>" /></a>
+					<%});%>
+				</div>
+			<%}%>
+		<%});%>
+		</div>
+		<div class="leftBox">
+			<%#wins/publishor.html%>
+			<div class="reply_list comments">
+				<%this.topic_list && this.topic_list.list.map(function(data){%>
+					<%=wlListRenderFn(data)%>
+				<%});%>
+			</div>
+			<div class="paging_panel c_f">
+				<%#paging.html%>
+			</div>		
+		</div>
+		<div class="rightBox">
+			<%if(this.wf_girl){%>
+				<div class="pending">
+				    <h3 class="f16_f">福利情报</h3>
+					<p class="mt14_f">关注福利花小美，第一时间获得最新的福利情报！</p>
+					<div class="mt8_f clearfix_f">
+						<a class="left_f" target="_blank" href="/person/u/<%=this.wf_girl.user_id%>">
+							<img width="86" height="86" src="<%=this.wf_girl.avatar_a%>">
+						</a>
+						<div class="wf_girl_r">
+							<a class="f14_f fb_f block_f" target="_blank" href="/person/u/<%=this.wf_girl.user_id%>"><%=this.wf_girl.nickname%>
+								<span class="identity_big_style">
+								<%= jsRender('identity.html')(this.wf_girl) ;%>
+								</span>
+							</a>
+							<% if(this.wf_girl.followed == 0){%>
+							<span class="red_follow addUserFollow" fuid="<%= this.wf_girl.user_id%>" following=<%= this.wf_girl.following%> followed="<%= this.wf_girl.followed%>">+ 加关注</span>
+							<%} else if(this.wf_girl.followed == 1){%>
+							<span class="pink_follow removeUserFollow" fuid="<%= this.wf_girl.user_id%>"  >已关注</span>
+							<%} else if(this.wf_girl.followed == 2){%>
+							<span class="pink_follow removeUserFollow" fuid="<%= this.wf_girl.user_id%>" following=<%= this.wf_girl.following%> followed="<%= this.wf_girl.followed%>">互相关注</span>
+							<%}%>
+						</div>
+					</div>
+				</div>
+			<%}%>		
+		</div>
+
+	</div>
+<script>
+	Meilishuo.config.tag_id = '<%=this.beauty_id%>';
+	Meilishuo.config.tag = '<%=this.beautyTag%>';
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/huodong/beautyBox');
+_use:", this._JSstack , this._JSmods); %>
+<%#foot.html%>

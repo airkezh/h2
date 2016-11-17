@@ -1,0 +1,30 @@
+<script type="text/html" id="bs_bannar">
+	<% this.bs_bannar.big_banner && this.bs_bannar.big_banner.forEach(function(data){ %>
+		<a class="top_img js_show_img" href="<%= data.link %>"><img src="<%= data.pic %>" alt=""></a>
+		<div class="count_time">
+			<%
+				if(data.end_time > 0){
+					var leftsecond = data.end_time,
+					d = parseInt(leftsecond/(3600*24)),
+					h = parseInt((leftsecond/3600)%24),
+					m = parseInt((leftsecond/60)%60),
+					timeword = d + '天' + (h < 10 ? '0'+h : h) + '小时' + (m < 10 ? '0'+m : m) + '分';
+					timeword = data.word + ' ' + timeword
+				} else {
+					var timeword = '活动已结束';
+				}
+			%>
+			<%= timeword %>
+		</div>
+	<% }); %>
+	<% this.brand_rec.forEach(function(mass, index){ %>
+		<div class="brand_mass">
+			<div class="mass_in">
+				<a href="<%= mass.link || 'javascirpt:;' %>" style="background-image:url(<%= mass.img %>);"><%= mass.brand_name %></a>
+				<% mass.brand_list.forEach(function(brand){ %>
+					<a href="<%= brand.link %>" style="background-image:url(<%= brand.img %>);"><%= brand.brand_name %></a>
+				<% }); %>
+			</div>
+		</div>
+	<% }); %>
+</script>

@@ -1,0 +1,25 @@
+<%#head.html%>
+<%
+    var isOver = promotePhase = this.ViewTools.timeStuff({
+        '2015/6/09 00:00:00': false,
+        '2015/6/19 00:00:00': true
+    }, '');
+
+    if ( this.info && this.info.code == -5 ) {
+        isOver = true;
+    }
+
+    if ( isOver ) {
+%>
+<div class="activity-over">
+    <div class="wrap">
+        <h3>啊哦O(∩_∩)O</h3>
+        <p>这个活动结束惹~</p>
+        <p>请关注美丽说，更多好玩的活动等你呦</p>
+    </div>
+</div>
+<% } %>
+
+<script>
+    fml.vars.isOver = <%= !!isOver %>;
+</script>

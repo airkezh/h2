@@ -1,0 +1,35 @@
+function single_aj() {
+	return this;
+}
+
+var controlFns = {
+	/*好友助力撕名牌*/
+	crackbrand: function(params) {
+		var php = {
+			'friend': '/crackbrand/crackBrand_doassist',
+			"origin":'/crackbrand/crackBrand_origin'
+		};
+
+		this.ajaxTo(php[params]);
+	},
+	olay_yuyue: function(params) {
+		var php = {
+			'olay_sms_op': '/huodong/Olay_sms_op',
+			'olay_yy':'/huodong/Olay_record_user'
+		};
+
+		this.ajaxTo(php[params]);
+	},
+	m_welfare: function(params) {
+		var php = {
+			'wlf_apply_pass':'/welfaremob/Welfare_apply_list?type=pass',
+			'wlf_apply_wait':'/welfaremob/Welfare_apply_list?type=wait',
+			'wlf_apply_fail':'/welfaremob/Welfare_apply_list?type=fail',
+			'wlf_activity_list':'/welfaremob/Welfare_activity_list'
+		};
+
+		this.ajaxTo(php[params]);
+	}
+}
+
+exports.__create = controller.__create(single_aj, controlFns);

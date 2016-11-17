@@ -1,0 +1,70 @@
+fml.define('wap/app/openClient2' , ['wap/zepto/fastclick', 'component/iStorage', 'wap/app/openApp'] , function(require , exports){
+    var openApp = require('wap/app/openApp');
+
+    var open_client_goto_download = function(btn) {
+        open_client_default(btn)
+        gotoDownLoad(btn)   
+    };
+
+    //下载客户端
+    var gotoDownLoad = function(btn) {
+        var storage = require('component/iStorage')
+        var channel = storage.getCookie('channel_mark')
+        
+        var appNtURL = btn.attr('red_url')
+
+       if (channel && (appNtURL.indexOf('app.qq.com') == -1)){
+            var param = appNtURL.indexOf('?') > 0 ? "&":"?"
+            appNtURL += param + "channel=" + channel;
+        } 
+        
+        var testOpen = setTimeout(function() {
+            window.location.href = appNtURL || '/goto/download/';
+        }, 2000);
+        var testHide = function(){
+            if(document.webkitHidden)
+                clearTimeout(testOpen)
+            else
+                setTimeout(arguments.callee, 100)
+        }
+        testHide()
+    };
+
+    //唤起
+    var open_client_default = function(btn) {
+        var storage = require('component/iStorage')
+        var appURl = btn.attr('href')
+        var channel = storage.getCookie('channel_mark')
+        if(channel && channel == '40106') return
+        if(navigator.userAgent.indexOf('MicroMessenger') != -1){
+            openApp(appURl)
+        } else if (Meilishuo.config.os.ios) {
+
+            if(!storage.getCookie('open_client')){
+                    window.location.href = appURl
+                    setTimeout(function(){ window.location.reload() }, 500)
+                    storage.setCookie('open_client' , new Date().getTime() ,{'duration' : 3600});
+                }
+
+        } else {
+            var _iframe = $('<iframe src="' + appURl + '" width="0" height="0" frameborder="0" style="display:none;"></iframe>')
+            btn.after(_iframe)
+        }
+
+    };
+
+
+    var bind = function(){
+        $('.openBtn').on('click', function(event){
+            event.preventDefault();
+            open_client($(this))
+        })
+    };
+
+
+    exports.open = open_client_goto_download
+    
+    exports.opencd = open_client_default
+
+    exports.bind = bind;
+});

@@ -1,0 +1,70 @@
+@import "../block.less";
+@lazyLoad_bg: 'http://d03.res.meilishuo.net/pic/_o/99/35/40c6aaf5fc823010eff6496ee06e_300_300.cf.jpg';
+@icon: 'http://d03.res.meilishuo.net/pic/_o/1a/7d/2f744dc521780df195a5d2ee8eca_450_240.cj.png';
+
+.icon_self(@x:0, @y:0){
+	background: url(@icon) no-repeat;background-size: 2.25rem;background-position: @x @y;
+}
+
+body{ .f(.24rem);.fc(#666);.bgc(#F8F8F8); }
+
+// 页面组件
+.goTopRem;
+.pullUpRem;
+
+// 公用class
+.lazy_pic_bg{ background: url(@lazyLoad_bg) no-repeat center;background-size: 2rem; }
+
+// 头部
+.page_head{
+	.h(.88rem);.w(6.4rem);.hidden;.c;.bgc(#fff);.l(.88rem);.mb(.2rem);z-index: 100;
+
+	.back_icon{
+		.pr;z-index: 5;.left;.w(2em);padding: 0 .3rem;.h(.88rem);
+
+		i{ .block;.w(.3rem);.h(.3rem);.mt(.29rem);.icon_self(0, 0); }
+	}
+	.right_btn{
+		.right;.pr;z-index: 5;.w(2em);padding: 0 .3rem;.h(.88rem);.indent;
+
+		&::before{ content: '';.w(.4rem);.h(.4rem);.pa;top: 50%;right: .3rem;.ml(-.2rem);.mt(-.2rem);.icon_self(64%, -6%); }
+	}
+	.title{ .w(6.4rem);.f(.32rem);.h(.88rem);.pa;left: 0;z-index: 1; }
+	.cart_nums{ .pa;.w(.34rem);.h(.32rem);.l(.32rem);.c;top: .13rem;right: .15rem;text-indent: 0;.f(.16rem);.fc(@red);.icon_self(101%, -2%);.none; }
+}
+
+nav {
+	z-index: 100;.h(.6rem);.pr(.14rem);.f(.24rem);border-bottom: 1px solid #e6e6e6;.bgc(rgba(255,255,255,.95));.clearfix;
+
+	li {
+		.left;.w(25%);.l(.6rem);.c;
+
+		strong { .fn;.i_block;padding: 0 .1rem; }
+	}
+	.on_price strong { .pr; }
+
+	#price_order{ .pa;top: 0;right: -.1rem;.w(.11rem);.h(100%);background: url("@{pic_url}/images/shop/price_order_default.png") 0 50% no-repeat;background-size: 80% auto; }
+	.current {
+		.red;
+
+		strong { border-bottom: 2px solid @red; }
+		#price_order {
+			&.price-up { background-image: url("@{pic_url}/images/shop/price_up.png"); }
+			&.price-down { background-image: url("@{pic_url}/images/shop/price_down.png"); }
+		}
+	}
+}
+
+// 瀑布流
+#goods_wall{
+	.w(6.3rem);.ml(.05rem);.bgc(#fff);min-height: 10rem;
+
+	.goods_wall{ .pr;.w(6.3rem);.ml(.05rem); }
+	.poster_grid{ .pa;.c;padding: .25rem .05rem 0;box-sizing: border-box; }
+	.pic_load{ .hidden;.w(3.05rem);background: #FFF url(@lazyLoad_bg) center center no-repeat;background-size: 2rem; }
+	.bs_load_img{ .block;.w(100%);.h(3.95rem);background: no-repeat;background-size: cover;opacity: 0;-webkit-transition: opacity .5s ease; }
+	.clothesTitle{ .w(90%);.auto;.mt(.1rem);.mb(.14rem);.f(.22rem);.fc(#666);.ellipsis; }
+	.price{ .f(.26rem);.fc(#FF7A9A);.pr(.18rem); }
+	.like{ .pl(.3rem);.f(.26rem);.fc(#999);background: url(@icon_bg) no-repeat -.1rem 81.8%;background-size: .45rem; }
+	.h_mark{ .left;.ml(.08rem);.mt(-1px);background: no-repeat;background-size: cover;opacity: 0; }
+}

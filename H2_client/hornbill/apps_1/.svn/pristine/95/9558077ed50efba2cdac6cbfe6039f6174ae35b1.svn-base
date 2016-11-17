@@ -1,0 +1,97 @@
+<%# head.html%>
+<%
+var query = this._Request_query;
+var getLink = _extFn.getLink;
+%>
+<div class="route">
+	<div class="route_bread">
+		<a href="<%=this.DOMAIN.www%>/">美丽说</a>
+		<samp>&gt;</samp>
+		<a href="<%= this.DOMAIN.order%>/order/list/">我的美丽说订单</a>
+		<samp>&gt;</samp>
+		<span class="red_f">我的收货地址</span>
+	</div>
+</div>
+<div class="address_area">
+	<%# common/navBar.html %>
+	<div class="address_content">
+		<div class="address_content_box">
+			<%if(this.needUpdate){%>
+				<div class="address_top_tips">
+					为享受更好的配送服务，请立即“升级”收货地址。
+				</div>
+			<%}%>
+			<table class="address_list">
+				<colgroup>
+					<col width="90">
+					<col width="240">
+					<col width="80">
+					<col width="100">
+					<col width="90">
+					<col width="140">
+				</colgroup>
+				<thead>
+					<tr>
+						<th class="adrl_nickname">收货人</th>
+						<th>收货地址</th>
+						<th>邮政编码</th>
+						<th>联系电话</th>
+						<th></th>
+						<th class="adrl_control">操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<% if(this.address_list && this.address_list.addrInfo){
+						 this.address_list.addrInfo.map(function(data){
+					%>
+					<tr class="adrl_list <%=data.flag?'adrl_update_list':''%>" addr_id="<%= data.addr_id %>" pid="<%= data.pid %>" cid="<%= data.cid%>" did="<%= data.did%>" sid="<%=data.sid||''%>" street="<%= data.street %>" is_default="<%= data.is_default%>">
+						<td class="adrl_nickname"><%= data.nickname%></td>
+						<td class="adrl_address"><%= data.address%></td>
+						<td class="adrl_postcode"><%= data.postcode%></td>
+						<td class="adrl_phone"><%= data.phone%></td>
+						<td><%if(data.is_default == 1){%><span>默认地址</span><%}else{%><a href="javascript:void(0)" class="set_default">设为默认</a><%}%></td>
+						<td class="adrl_control">
+							<%
+							//如果是需要升级四级地址
+							if(data.flag){%>
+								<a class="adrl_update btn-update" href="javascript:void(0)">升级</a>
+							<%}else{%>
+								<a class="adrl_edit" href="javascript:void(0)">修改</a>
+							<%}%>
+							<samp>|</samp><a class="adrl_delete" href="javascript:void(0)">删除</a>
+						</td>
+					</tr>
+					<%})};%>
+				</tbody>
+			</table>
+			<% if(this.address_list && this.address_list.addrInfo.length==0){ %>
+				<div class="address_no_data">
+					<div>
+						您还没有收货地址，快来增加吧。
+					</div>
+					<div class="address_add_wrap">
+						<span class="button" id="btn-new">新增地址</span>
+					</div>
+				</div>
+			<%}else{%>
+				<div class="address_add_wrap">
+					<span class="button" id="btn-new">新增地址</span>
+				</div>
+			<%}%>
+		</div>
+	</div>
+</div>
+
+<%# common/address.html%>
+
+<%*收货地址弹窗%>
+<script type="text/html" id="Address_add_warnwin" >
+<div class="address_warn_content">
+<div class="warn_container"><i class="warn_icon"></i><span class="warntip">收货地址最多支持保存10条，超过10条将会替换最早创建的地址<span></div>
+<div class="abtns"><input class="abtn savebtn" type="button" value="保存并替换" /><input class="abtn cancelbtn" type="button" value="取消" /></div>
+</div>
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+		fml.use('order_pc/address/index');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

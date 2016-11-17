@@ -1,0 +1,35 @@
+<%#head.html%>
+<div class="container">
+<% if(!this.user_list.complainStat){%>
+	<p class="desc">您的账号由于违反美丽说<a href="/aboutus/direct" target="_blank" class="red_f">《社区指导原则》</a>已被锁定
+	<br>如果有任何疑义，可以在此申诉
+	<br><br>
+	</p>
+	<table>
+		<tr>
+			<td class="tle">联系邮箱：</td>
+			<td><input name="mobile" type="text" class="mobile" placeholder="请填写联系邮箱"></td>
+		</tr>
+		<tr>
+			<td class="tle">申诉理由：</td>
+			<td><textarea name="reason" class="reason" placeholder="请填写申诉理由（不超过300字）"></textarea></td>
+		</tr>
+		<tr>
+			<td colspan="2" class="btn_td">
+				<input type="button" value="提交申诉" class="sub">
+			</td>
+		</tr>
+	</table>
+	<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+		fml.use('page/person_complain');
+	_use:", this._JSstack , this._JSmods ); %>
+<% } else { %>
+<p class="waiting">
+	<% var status = this.user_list.complainStat; %>
+	<% if(status==1){ %>您的申诉已经成功提交，请耐心等待处理结果。<%}%>
+	<% if(status==2){ %>您因发布了违反平台政策的信息而被关闭账号，申诉处理结果请到您所留的联系邮箱中查看。<%}%>
+</p>
+<% } %>
+</div>
+
+<%#foot.html%>

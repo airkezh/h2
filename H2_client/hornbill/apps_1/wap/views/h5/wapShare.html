@@ -1,0 +1,24 @@
+<% if( this.share ){
+	var shareBtn = this.shareBtn || '分享';	
+%>
+<div class="starBox" id="01">
+	<h2><%= this.shareTitle %></h2>
+	<div class="share_ico" id="share_ico">
+		<p class="icons_box">
+		<% this.share && this.share.map(function(data) { %>
+			<%	var plat_name = {'weixin_timeline':'朋友圈' , 'weixin':'微信' , 'qzone':'Qzone' , 'weibo':'新浪微博' , 'txweibo':'腾讯微博'};
+				plat_name = plat_name[data.type] || '';
+			%>
+			<a class="<%= data.type%><%if(data.isDefault){%> active<%}%>" share_url="/goto/count/?p=<%= encodeURIComponent(data.share_url)%>&frm=share&type=<%= data.type%>&shareid=<%= this.shareID || ''%>"><%= plat_name%></a>
+		<% }); %>
+		</p>
+		<div class="clear_f"></div>
+		<span class="btn" id="shareBtn"><%= shareBtn %></span>
+		<div class="clear_f"></div>
+	</div>
+</div>
+<%}%>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/app/hackWeixin');
+	fml.use('wap/page/activity/shareTo2');
+_use:", this._JSstack , this._JSmods ); %>

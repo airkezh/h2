@@ -1,0 +1,69 @@
+<%# head_simple.html%>
+<%
+var pageData = this.pageData;
+var rootUrl = this.rootUrl;
+var picUrl = rootUrl;
+if (this.os.mlsApp) {
+	if (this.canSendRed) {
+		picUrl += pageData.appPic;
+	} else {
+		picUrl += pageData.appPic2;
+	}
+} else {
+	picUrl += pageData.pic
+}
+var bottom = this.os.mlsApp ?  85.5: 78;
+var rTop = this.os.mlsApp ?  152 : 205;
+%>
+</head>
+<body >
+<div style="position: relative;width:100%;padding-top: <%=rTop+'%'%>;background: url('<%=picUrl%>') no-repeat top center; background-size: 100%">
+<div class="share" style="top:<%=bottom%>%;border:0px solid red">
+</div>
+<div class="shareTips" >
+	分享至微信朋友圈，你和姐妹都有红包拿噢！
+</div>
+
+<div class="openApp" style="border:0px solid red"></div>
+
+</div>
+
+<script type="text/html" id="shareDialog">
+	<div class="shade"></div>
+	<div class="shareD">
+		<div class="toFriend"></div>
+		<div class="toGroup"></div>
+		<div class="close"></div>
+	</div>
+</script>
+
+<script type="text/html" id="weiXinShare">
+	<div class="shade"></div>
+	<div class="weiXinShareD">
+	</div>
+</script>
+
+<script>
+	fml.vars.isEndPage = <%=this.isEndPage?true : false%>;
+
+	fml.vars.picRootUrl = '<%=rootUrl%>';
+	fml.vars.mlsApp = <%=this.os.mlsApp%>;
+	fml.vars.shareInfo = <%=JSON.stringify(this.shareInfo)%>;
+	fml.vars.canSendRed = <%=this.canSendRed%>;
+	var imgUrl = fml.vars.shareInfo.pic;
+	var lineLink = fml.vars.shareInfo.shareLink;
+	var descContent = fml.vars.shareInfo.desc;
+	var shareTitle = fml.vars.shareInfo.title;
+	var shareTimelineText = fml.vars.shareInfo.desc;
+	var customAppId = 'wxd00a5f16e02bed58';
+</script>
+<script src="<%= this.JCSTATIC_BASE  %>/js/open/shareCollect.js?<%= this.SVERSION%>"></script>
+
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+
+fml.use('wap/page/activity/promotion/test_game');
+
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot_simple.html%>

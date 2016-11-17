@@ -1,0 +1,672 @@
+@import "../../block.less";
+html{.f(10*@f);}
+body{.bgc(#ff5f53);}
+img{width:100%;.block;}
+
+.load_shade{.pf;.w(100%);.h(100%);.bgc(#fff);left:0;top:0;z-index:999}
+.load{.pa;.w(300*@w);.h(201*@w);left:25%;top:24%;
+	.img{.pa;}
+}
+.top_main{.pr;.w(100%);.pt(90%);
+	.coin{.pa;opacity:0;z-index:99;left:45%;top:36%;.w(50*@w);.pt(50*@w);background:url("@{pic_url}/images/wap/activity/may_sale/coin.png") no-repeat;background-size: 100%;}
+	.coin_animate{
+		-webkit-animation:coin 1.2s .2s ease both;
+		@-webkit-keyframes coin{
+			0%{opacity:1;-webkit-transform:translateY(400%);.w(100*@w);.pt(100*@w);}
+			60%{opacity:1;-webkit-transform:translateY(-300%);.w(50*@w);.pt(50*@w);}
+			80%{opacity:1;-webkit-transform:translateY(-100%)}
+			96%{opacity:.5;-webkit-transform:translateY(-10%)}
+			100%{opacity:0;-webkit-transform:translateY(0%)}
+		}
+	}
+}
+.moveCoin {
+  -webkit-transition:all 400ms ease;
+  transition:all 400ms ease;
+}
+.modeCoinX {
+  -webkit-transform:rotateX(360deg);
+  transform:rotateX(360deg);
+}
+.top_box{.pa;left:0;top:0;.w(100%);.pt(200*@w);background:url("@{pic_url}/images/wap/activity/may_sale/stop_bg.jpg") no-repeat;background-size: 100%;
+	.money{.pa;top:0;left:0;.w(100%);.pt(200*@w);background:url("@{pic_url}/images/wap/activity/may_sale/sign_money1.png") no-repeat;background-size: 100%;
+		.total{.pa();left:25%;top:60%;.h(20%);.w(50%);.c;.f(1.8rem);.fc(#ff2c2c);font-weight:bold}
+		.plus{.pa(); border:1px solid #ddd;display: block;top:50%;left:58%;.w(32*@w);.pt(35*@w);background: url("@{pic_url}/images/wap/activity/may_sale/j1.png") no-repeat;background-size: 100%;}
+	}
+}
+.pic_box{.pa;.w(100%);.pt(420*@w);left:0;top:37%;
+	img{.pa;left:0;top:0}
+}
+.money_box{.pr;.w(100%);.pt(8%);
+	.today{.pa;left:0;top:0;.w(100%);.f(2rem);.fc(@white);.c;.h(70/640*100%);
+		.num{.fc(#fff000)}
+	}	
+}
+.gz_box{.pa;left:0;top:20%;.w(100%);.h(60*@px);.c;.pt(3%);
+	a{.w(180*@px);.h(40*@px);.block;.auto;background:url("@{pic_url}/images/wap/activity/may_sale/gz_btn.jpg") no-repeat;background-size: 100%;}
+}
+.qd_box{.pr;.w(100%);.pt(24%);.c;overflow:hidden;
+	a{.pa;left:20%;top:20%;.w(60%);.pt(20%);.block;.auto;background:url("@{pic_url}/images/wap/activity/may_sale/qd_btn.jpg") no-repeat;background-size: 100%;}
+}
+
+
+.date_top{.pr;.w(100%);left:0;top:0;.pt(6%);background:url("@{pic_url}/images/wap/activity/may_sale/date_bg.jpg") no-repeat;background-size: 100%;}
+// .date_box{.pr;left:0;top:0;.pt(5.5%);.fc(#fff);.f(1.4rem);.l(1.6rem);.w(100%);.h(38/640*100%);background:url("@{pic_url}/images/wap/activity/may_sale/date_icon.jpg") no-repeat;background-size: 100%;
+// 	.month{.pa;left:10%;top:0;.w(30%);}
+// 	.total{.pa;right:3%;top:0;
+// 		.num{.fc(#fff000)}
+// 	}
+// }
+.remind_box{.pr;.w(100%);.pt(20%);left:0;top:0;.bgc(#5b494e);
+	.remind{.pa;left:0;top:30%;.w(100%);.auto;.pt(62/640*100%);background:url("@{pic_url}/images/wap/activity/may_sale/remind_bg.jpg") no-repeat;background-size: 100%;
+		.cont{.pa;top:0;left:74%;.block;.w(138/640*100%);.pt(72/640*100%);}
+		.open{background:url("@{pic_url}/images/wap/activity/may_sale/open_btn.jpg") no-repeat;background-size: 100%;}
+	}
+}
+/*弹窗*/
+.shade{.pf;top:0;left:0;z-index:10;.w(100%);.h(100%);background:rgba(0,0,0,.5);}
+.win_btn{.pa();left:21%;.auto;.w(360/640*100%);.h(80*@px);.block;}
+.win_box{.pf;top:10%;left:7%;z-index:99;.w(86%);.pt(115%);background:url("@{pic_url}/images/wap/activity/may_sale/dailog_bg.png") no-repeat;background-size: 100%;
+	.title{.pa();top:0;left:10%;.w(80%);.l(1.8rem);.fc(#7c4848);.f(1.5rem);.c;.pt(10%)}
+	.coupon_dhtext{left:6%;.w(86%);.l(1.6rem);.fc(#7c4848);.f(1.4rem);.c;.pt(10%)}
+	.gz_tit{.f(1.8rem);}
+}
+.activity_text{.pa;top:15%;.w(80%);left:10%;.h(60%);}	
+.know{.win_btn;bottom:8%;background:url("@{pic_url}/images/wap/activity/may_sale/know_btn.jpg") no-repeat;background-size: 100%;}
+
+.pig_pic{.pa;.h(40%);.w(80%);left:10%;top:25%;}
+.pig_coupon{.pa;.h(30%);.w(80%);left:10%;top:28%;}
+.coupon_num{.pa;bottom:25%;left:20%;.w(60%);.h(18%);.c;background:url("@{pic_url}/images/wap/activity/may_sale/coupon_bg.jpg") no-repeat;background-size: 100%;
+	.num_text{.pt(5%);.fc(#af6d3d);.f(28*@px);font-style:italic;
+		.num{.f(50*@px);}
+	}
+	.time{.pr;.fc(#000);.pt(3%);.auto;.f(1rem);.i_block;
+		p{.left;.fc(#936543)}
+		.timeStamp{
+			.left;.h(12%);.auto;.f(1rem);.fc(#936543);
+			span{.fc(#936543);.w(6px);.block;.c;}
+			p,dl,dt,dd{.left;.fc(#936543);}
+			p,dt{.l(1.2rem);color:#936543;}
+		}
+	}
+}
+.coupon_btn{bottom:8%;left:22%;.win_btn;background:url("@{pic_url}/images/wap/activity/may_sale/coupon_btn.jpg") no-repeat;background-size: 100%;}
+
+.dj_btn,.dj1_btn{bottom:20%;.win_btn;background:url("@{pic_url}/images/wap/activity/may_sale/dj_btn.jpg") no-repeat;background-size: 100%;}
+.dj1_btn{bottom:8%;background:url("@{pic_url}/images/wap/activity/may_sale/dj1_btn.jpg") no-repeat;background-size: 100%;}
+
+.qd_sucpic{.pa();.w(80%);left:10%;top:10%;.h(60%);}
+.qd_stext{.pa();.w(70%);left:15%;bottom:22%;.pt(23%);background:url("@{pic_url}/images/wap/activity/may_sale/qd_text2.jpg") no-repeat;background-size: 100%;}
+.come_on{bottom:8%;.win_btn;background:url("@{pic_url}/images/wap/activity/may_sale/know_btn.jpg") no-repeat;background-size: 100%;}
+
+.again_btn{bottom:8%;.win_btn;background:url("@{pic_url}/images/wap/activity/may_sale/again_btn.jpg") no-repeat;background-size: 100%;}
+.fat_btn{bottom:8%;.win_btn;background:url("@{pic_url}/images/wap/activity/may_sale/fat_btn.jpg") no-repeat;background-size: 100%;}
+
+.enough_btn{bottom:20%;.win_btn;.c;background:url("@{pic_url}/images/wap/activity/may_sale/enough.jpg") no-repeat;background-size: 100%;
+	.countTime{
+		.block;.w(100%);.h(12%);.auto;.f(1rem);.fc(#fff000);.c;.pt(12%);.ml(13%);
+		span{.fc(#fff000);.w(6px);.block;.c;}
+		p,dl,dt,dd{.left;.fc(#fff000);}
+		p,dt{.l(1.2rem);color:#fff000;}
+	}
+}
+.enough_no_btn{bottom:8%;.win_btn;background:url("@{pic_url}/images/wap/activity/may_sale/enough_no_btn.jpg") no-repeat;background-size: 100%;}
+
+.qd_pig{.pa;.h(40%);.w(70%);left:15%;top:15%;}
+.pig_coupon_s{.pa;.h(20%);.w(74%);left:13%;top:25%;}
+.pig_coupon_f{.pa;.h(30%);.w(60%);left:20%;top:25%;}
+.pig_dh{.pa;.h(30%);.w(60%);left:20%;top:28%;}
+
+/*弹窗背景图*/
+.tip_bg{.pr;.w(80%);.pt(52%);.auto;background:url("@{pic_url}/images/wap/activity/may_sale/tip_bg1.jpg") no-repeat;background-size:100%;}
+
+.doubt_bg{.pr;.w(90%);.pt(60%);margin:1rem auto;background:url("@{pic_url}/images/wap/activity/may_sale/doubt_bg.jpg") no-repeat;background-size:100%;}
+
+.nurturing_bg{.pr;.w(90%);.pt(52%);.auto;background:url("@{pic_url}/images/wap/activity/may_sale/seek_nurturing_bg.jpg") no-repeat;background-size:100%;}
+
+/*date*/
+.calanderWrap{
+	.pa;
+	top:0;
+	.w(97%);
+	.pt(2.5%);
+	.pl(3%);
+	.pb(1%);
+	.clearfix;
+	background:#755860;
+	border-radius:3px;
+	.t{
+		.pr;
+		left:0%;
+		top:0;
+		.pt(9%);
+		.fc(#fff);
+		.f(1.4rem);
+		/*.l(1.6rem);*/
+		.w(100%);
+		.prev_btn{
+			.pa;
+			top:4%;
+			left:0;
+			.w(46*@w);
+			.pt(46*@w);
+			background:url("@{pic_url}/images/wap/activity/may_sale/prev_btn.png") no-repeat;
+			background-size:100%;
+		}
+		.next_btn{
+			.pa;
+			top:4%;
+			right:4%;
+			.w(46*@w);
+			.pt(46*@w);
+			background:url("@{pic_url}/images/wap/activity/may_sale/next_btn.png") no-repeat;
+			background-size:100%;
+		}
+		.icon_cal{
+			.pa;
+			top:18%;
+			left:10%;
+			.mt(1%);
+			.w(5%);
+			.pt(6%);
+			background:url("@{pic_url}/images/wap/activity/may_sale/cal_icon.png") no-repeat;
+			background-size:100%;
+		}
+		.month{
+			.pa;
+			left:16%;
+			top:29%;
+			.w(30%);
+		}
+		.totals{
+			.pa;
+			.none;
+			right:13%;
+			top:29%;
+			.num{.fc(#fff000)}
+		}
+	}
+}
+
+.calander_win{
+	.pt(5.5%);
+}
+
+.calanderWrap1 {.pr;.mb(4%);background:#755860;.w(91%);.pl(3%);.auto;}
+.calanderWrap > .cTop {.pa;top:4%; left:2%; right:2%; .pt(2.5%);background:url("@{pic_url}/images/wap/activity/may_sale/ct.png") no-repeat; background-size: 100%}
+.calanderWrap > .cBottom {.pt(2.5%);.w(94.5%); padding-left: 5px; background:url("@{pic_url}/images/wap/activity/may_sale/calander_bottom.png") no-repeat; background-size: 100%}
+.calander {.pr;.clearfix;.w(100%);.pt(2.5%);}
+.calander > div {width: 13.5%;  float: left; position: relative;}
+.h {background: #f4e6ea; text-align: center; color: #ff938b;line-height: 200%; border-right: 1px solid #f4e6ea; }
+.h2 { background: #fff;padding-top: 11%;color: #a38e8e;border-right: 1px solid #e5e5e5; border-bottom: 1px solid #e5e5e5}
+
+.h2 > .day {position: absolute; top:0; left: 0}
+.qdStatus {position: absolute ;top: 15%; left:20%; right: 10%; .w(70%);.pt(60%) ; }
+.qdStatus_yq {background: url(http://i.meilishuo.net/css/images/wap/activity/may_sale/qd.png) no-repeat; background-size: 100%}
+.qdStatus_lq {background: url(http://i.meilishuo.net/css/images/wap/activity/may_sale/wqd.png) no-repeat; background-size: 100%}
+.qdStatus_wq {.w(60%);left:23%;.pt(67%);background: url(http://i.meilishuo.net/css//images/wap/activity/may_sale/qd1.png) no-repeat; background-size: 100%}
+.dhStatus {.pa; right:4%;top:4%; .w(60%); .pt(29%); }
+.dhStatus_dhr {background: url(http://i.meilishuo.net/css//images/wap/activity/may_sale/dh.png) no-repeat; background-size: 100%}
+.dhStatus_ydh {background: url(http://i.meilishuo.net/css//images/wap/activity/may_sale/ydh.png) no-repeat; background-size: 100%}
+
+/*css animation*/
+.fadeout{
+	-webkit-animation:fadeOut 1s .2s ease both;
+	@-webkit-keyframes fadeOut{
+		0%{opacity:1}
+		100%{opacity:0;}
+	}
+}
+.fadein{
+	display:block;
+	-webkit-animation:fadein 1.3s .2s ease both;
+	@-webkit-keyframes fadein{
+		0%{opacity:0}
+		100%{opacity:1}
+	}
+}
+.in_down{
+	-webkit-animation:bounceInDown .7s 0s ease both;
+	-moz-animation:bounceInDown .7s 0s ease both;}
+	@-webkit-keyframes bounceInDown{
+	0%{opacity:0;
+	-webkit-transform:translateY(-2000px)}
+	60%{opacity:1;
+	-webkit-transform:translateY(30px)}
+	80%{-webkit-transform:translateY(-10px);}
+	100%{-webkit-transform:translateY(0)}
+	}
+	@-moz-keyframes bounceInDown{
+	0%{opacity:0;
+	-moz-transform:translateY(-2000px)}
+	60%{opacity:1;
+	-moz-transform:translateY(30px)}
+	80%{-moz-transform:translateY(-10px)}
+	100%{-moz-transform:translateY(0)}
+}
+.up_down{
+	-webkit-animation:bounceInUp .7s .1s ease both;
+	-moz-animation:bounceInUp .7s .1s ease both;}
+	@-webkit-keyframes bounceInUp{
+	0%{opacity:0;
+	-webkit-transform:translateY(1000px)}
+	60%{opacity:1;
+	-webkit-transform:translateY(-30px)}
+	80%{-webkit-transform:translateY(10px)}
+	100%{-webkit-transform:translateY(0)}
+	}
+	@-moz-keyframes bounceInUp{
+	0%{opacity:0;
+	-moz-transform:translateY(2000px)}
+	60%{opacity:1;
+	-moz-transform:translateY(-30px)}
+	80%{-moz-transform:translateY(10px)}
+	100%{-moz-transform:translateY(0)}
+}
+.plus1 {
+  display: block !important;
+	-webkit-animation:fadeOutUp 1s 1s ease both;
+	-moz-animation:fadeOutUp 1s 1s ease both;}
+	@-webkit-keyframes fadeOutUp{
+		0%{opacity:0;
+			.w(10*@w);.h(12*@w);
+			-webkit-transform:translateY(0)}
+		30%{opacity:1;
+			.w(32*@w);.pt(35*@w);
+			-webkit-transform:translateY(-4px)}
+		50%{opacity:1;
+			.w(32*@w);.pt(35*@w);
+			-webkit-transform:translateY(-4px)}
+		100%{opacity:0;
+			-webkit-transform:translateY(-20px)}
+		}
+	@-moz-keyframes fadeOutUp{
+      0%{opacity:0; display:block;
+        .w(10*@w);.h(12*@w);
+        -webkit-transform:translateY(0)}
+      30%{opacity:1;
+        .w(32*@w);.pt(35*@w);
+        -webkit-transform:translateY(-4px)}
+      50%{opacity:1;
+        .w(32*@w);.pt(35*@w);
+        -webkit-transform:translateY(-4px)}
+      100%{opacity:0;
+        -webkit-transform:translateY(-20px)}
+    }
+.main{.pf;top:10%;z-index:10;.w(86%);.h(auto);left:7%;background:url("@{pic_url}/images/wap/activity/may_sale/win_t.png") no-repeat;background-size: 100%;
+	.t{.pr;.w(100%);.pt(15%);}
+	.m{.pr;z-index:20;.w(91%);left:4.5%;.bgc(#fff);border-radius:2*@px;
+		.t1{.fc(#7c4848);.f(1.6rem);.c;}
+		p{.l(1.6rem);.fc(#7c4848);.f(1.2rem);padding:0 5%;}
+	}
+	.f{.pr;.w(91%);left:4.5%;.pt(14%);background:url("@{pic_url}/images/wap/activity/may_sale/win_foot.png") no-repeat;background-size: 100%;}
+}
+
+.layer{top:0%;}
+
+.doubt{
+	top:5%;
+	p {.c;}
+	.m {
+    	p {.f(1.4rem);.l(1.4);}
+	    p.t1 {.f(1.7rem);.l(1.7);}
+	    p.prompt {.fc(#f00);}
+	}
+	.j_know_btn{.w(75%);.auto;.pt(17%);.mt(5%);.block;background:url("@{pic_url}/images/wap/activity/may_sale/know_btn2.jpg") no-repeat;background-size:100%;}
+}
+
+.nurturing{
+	top:0%;
+	p {.c;}
+	.m {
+    	p {.f(1.5rem);.l(1.5);}
+	    p.t1 {.f(1.8rem);.l(1.8);}
+	}
+	.nurturing_btn{.w(75%);.auto;.pt(17%);.block;.mb(6%);background:url("@{pic_url}/images/wap/activity/may_sale/seek_nurturing_btn.jpg") no-repeat;background-size:100%;}
+	.j_close_btn{.w(75%);.auto;.pt(17%);.block;background:url("@{pic_url}/images/wap/activity/may_sale/close_btn.jpg") no-repeat;background-size:100%;}
+}
+
+.signin{
+	top:5%;
+	p {.c;}
+	.m {
+    	p {.f(1.3rem);.l(1.5);}
+	    p.t1 {.f(1.8rem);.l(1.8);}
+	    p.sub1{.fc(#f00);}
+	    p.sub1,p.sub2{margin:8% 0;}
+	}
+	.j_look_btn{.w(75%);.auto;.pt(17%);.block;.mb(6%);background:url("@{pic_url}/images/wap/activity/may_sale/look_detail_btn.jpg") no-repeat;background-size:100%;}
+	.j_close_btn{.w(75%);.auto;.pt(17%);.block;background:url("@{pic_url}/images/wap/activity/may_sale/know_btn3.jpg") no-repeat;background-size:100%;}
+}
+
+.qzone{
+	top:0%;
+	p {.c;}
+    .m {
+    	p {.f(1.5rem);.l(1.5);}
+	    p.t1 {.f(1.8rem);.l(1.8);}
+	    .tip_bg{.pr;.w(80%);.pt(58%);.mt(3%);.auto;background:url("@{pic_url}/images/wap/activity/may_sale/sign_share_bg.png") no-repeat;background-size:100%;}
+	    .share_btn {.w(75%);.auto;.pt(17%);.mb(6%);background:url("@{pic_url}/images/wap/activity/may_sale/share_qzone_btn.png") no-repeat;background-size:100%;}
+	    .close_btn {.w(75%);.auto;.pt(17%);background:url("@{pic_url}/images/wap/activity/may_sale/no_share_btn.png") no-repeat;background-size:100%;}
+    }
+}
+.succ{
+	top:0%;
+	p {.c;}
+    .m {
+    	p {.f(1.5rem);.l(1.5);}
+	    p.t1 {.f(1.8rem);.l(1.8);}
+	    .tip_bg{.pr;.w(90%);.pt(80%);.auto;background:url("@{pic_url}/images/wap/activity/may_sale/share_succ_bg.png") no-repeat;background-size:100%;}
+	    .scan_btn {.w(75%);.auto;.pt(20%);background:url("@{pic_url}/images/wap/activity/may_sale/succ_scan_btn.png") no-repeat;background-size:100%;}
+    }
+}
+.redMain{.pf;top:0%;z-index:10;.w(86%);.h(auto);left:7%;background:url("@{pic_url}/images/wap/activity/may_sale/win_t.png") no-repeat;background-size: 100%;
+	p {text-align: center}
+    .t{.pr;.w(100%);.pt(15%);}
+	.m{.pr;z-index:20;.w(91%);left:4.5%;.bgc(#fff);border-radius:2*@px;
+		.t1{.fc(#7c4848);.f(1.6rem);.c;}
+		p{.l(1.6rem);.fc(#7c4848);.f(1.2rem);padding:0 5%;}
+	}
+    .red {
+      .p1 {.f(18px); .fc(#ff5959); line-height: 22px}
+      .redMiddle {width:100%; padding-top:75%;background: url('http://i.meilishuo.net/css/images/wap/activity/may_sale/redBg.png') no-repeat;background-size: 100%;}
+      .redShare {.w(75%);.auto;.pt(17%);.mb(4%);background:url("@{pic_url}/images/wap/activity/may_sale/redShare1.png") no-repeat;background-size: 100%;}
+      .redClose {.w(75%);.auto;.pt(17%);background:url("@{pic_url}/images/wap/activity/may_sale/redClose1.png") no-repeat;background-size: 100%;}
+      span {.fc(#ff5959)}
+    }
+	.f{.pr;.w(91%);left:4.5%;.pt(14%);background:url("@{pic_url}/images/wap/activity/may_sale/win_foot.png") no-repeat;background-size: 100%;}
+}
+.redMain2 {
+  z-index: 1000;.pa; top:7%; .w(100%);.pt(110%);background:url("@{pic_url}/images/wap/activity/may_sale/redBgFor11.png") no-repeat;background-size: 100%;
+  .redShare {
+    .pa; top:65%; left:20%; .w(60%); .pt(15%); border: 0px solid red;
+  }
+  .redClose {
+    .pa; top:82%; left:20%; .w(60%); .pt(15%); border: 0px solid blue;
+  }
+}
+.ok_btn,.new_know{.auto;.w(360/640*100%);.h(80*@px);.mt(5%);.block;}
+.ok_btn{background:url("@{pic_url}/images/wap/activity/may_sale/ok_btn1.jpg") no-repeat;background-size:100%;}
+.new_know{background:url("@{pic_url}/images/wap/activity/may_sale/know_btn.jpg") no-repeat;background-size:100%;}
+.point_text{.c;.l(1.6rem);.f(1.3rem)}
+.point_pig{.pa;.h(40%);.w(90%);left:5%;top:35%;}
+.point_btn{bottom:8%;.win_btn;background:url("@{pic_url}/images/wap/activity/may_sale/tomorrow.jpg") no-repeat;background-size: 100%;}
+
+.pig_820{.pa;top:40%;.w(80%);left:10%;.h(30%);}
+// 1.1
+
+.person_main{.pr;.auto;.mb(3%);.w(94%);.h(120*@px);background:rgba(255,255,255,.1);border-radius:3px;overflow:hidden;
+	.person_box{.pa;.auto;.w(94%);.block;
+		li{.pr;.block;clear:both;.w(100%);.h(120*@px);overflow:hidden;
+			.top{.pa;left:3%;top:20%;.w(13%);.h(60%);}
+			.text{.pa;.block;left:20%;top:20%;.h(70%);.w(82%);.fc(#fff);.l(1.8rem);.f(1.3rem);overflow:hidden;
+				.t{.fc(#ffea5f);white-space:nowrap;overflow:hidden;text-overflow: ellipsis;}
+				.m{.h(1.8rem);white-space:nowrap;overflow:hidden;text-overflow: ellipsis;}
+			}
+		}
+	}
+}
+.mark_box{.pr;.w(100%);.pt(115%);background:url("@{pic_url}/images/wap/activity/may_sale/sign18_04.jpg") no-repeat;/*.pt(134%);background:url("@{pic_url}/images/wap/activity/may_sale/sign18_05.jpg") no-repeat;*/background-size:100%;
+	.top{.pa;left:40%;.w(20%);.h(17%);/*.w(19%);.h(14%);*/top:1%;.block;border-radius:50%;border:3px solid #fff;overflow:hidden;
+		img{border:0}
+	}
+	.nums_my{.pa;left:0;top:28%;/*top:24%;*/.w(58%);.fc(#814b3d);.f(2rem);text-align:right;
+		span{.fc(#ff124a);.f(2.4rem);.mr(2%);.ml(2%);}
+	}
+	.dh_btn{.pa;left:60%;top:28%;/*top:24%;*/.w(28%);.pt(10%);.block;background:url("@{pic_url}/images/wap/activity/may_sale/change.png") no-repeat;background-size: 100%;}
+	.dh_no{background:url("@{pic_url}/images/wap/activity/may_sale/nochange.png") no-repeat;background-size: 100%;}
+	
+	.change_text{.pa;.none;left:57%;top:16%;/*top:14%;*/.w(34%);.h(16%);.pt(1%);.fc(#fff);.c;.l(1.3rem);background:url("@{pic_url}/images/wap/activity/may_sale/changebg.png") no-repeat;background-size: 100%;}
+
+	.sign_tips{.pa;left:9%;top:33%;.block;.w(82%);.h(12%);background:url("@{pic_url}/images/wap/activity/may_sale/sign_tips2.png") no-repeat;background-size:100%;}
+
+	.m{.pa;top:38%;.h(64%);/*top:44%;.h(56%);*/.c;.w(100%);
+		p{.pa;left:20%;top:18%;.c;.w(60%);.f(1.6rem);.l(1.9rem);.fc(#c35d41);
+			span{.fc(#ff124a)}
+		}
+		.tips_button,.share_button,.visit_button{.pa;left:25%;top:62%;/*top:65%;*/.block;.w(50%);.h(18%);}
+		.tips_button{top:48%;background:url("@{pic_url}/images/wap/activity/may_sale/sign_cap_tipsbtn.jpg") no-repeat;background-size:100%;}
+		.share_button{background:url("@{pic_url}/images/wap/activity/may_sale/sign18_sharebtn.jpg") no-repeat;background-size:100%;}
+		.visit_button{background:url("@{pic_url}/images/wap/activity/may_sale/sign_visit_btn2.jpg") no-repeat;background-size:100%;}
+		.sign_mall{
+			.pa;left:10%;top:8%;/*top:10%;*/.block;.w(80%);.h(52%);background:url("@{pic_url}/images/wap/activity/may_sale/sign_mall_bg.jpg") no-repeat;background-size:100%;
+			.mall_tip{
+				.c;
+				.mt(28%);
+				.l(1.5rem);
+				.f(1.2rem);
+				.fc(#c35d41);
+				em{
+					.fc(#f00);
+					font-style:normal;
+				};
+				span{
+					.f(1.5rem);
+				};
+			}
+		}
+	}
+	.tip{
+		.pa;left:0;top:86%;.pl(8%);
+		img{.i_block;.w(12px);.h(12px);};
+		.txt{.f(1.3rem);.l(1.6rem);.fc(#c35d41);em{.fc(#ff124a);font-style:normal;};a{.fc(#ff124a)};}
+	}
+}
+
+.main .m{.sub_title{.c;padding:6px 0 10px 0;};em{.fc(#ff124a);font-style:normal;};}
+
+.active_gz{.pa;left:0;top:20%;.w(100%);.pt(68*@w);
+	a{.pa();left:0;top:0;.block;.w(100%);.pt(58*@w);background:url("@{pic_url}/images/wap/activity/may_sale/sign18_02.jpg") no-repeat;background-size: 100%;}
+}
+.icon_date{.pa;top:24%;left:82%;.w(14%);.pt(14%);background:url("@{pic_url}/images/wap/activity/may_sale/qd_icon.png") no-repeat;background-size: 100%;}
+.pic_box{.pa;.w(100%);.pt(420*@w);left:0;top:25%;
+	img{.pa;left:0;top:0}
+}
+.top_box{.pa;left:0;top:0;.w(100%);.pt(120*@w);background:url("@{pic_url}/images/wap/activity/may_sale/sign18_01.jpg") no-repeat;background-size: 100%;}
+.qd_box{.pr;.w(100%);.pt(25%);.c;overflow:hidden;
+	a{.pa;left:10%;top:20%;.w(80%);.pt(20%);.block;.auto;background:url("@{pic_url}/images/wap/activity/may_sale/qd_btn.png") no-repeat;background-size: 100%;}
+}
+.icon_animate{
+	-webkit-animation:shake 1s .2s ease both;
+	-moz-animation:shake 1s .2s ease both;
+	@-webkit-keyframes shake{
+	0%,100%{-webkit-transform:translateX(0);}
+	10%,30%,50%,70%, 90%{-webkit-transform:translateX(-10px);}
+	20%,40%,60%,80%{-webkit-transform:translateX(10px);}
+	}
+}
+.calendar_box{.pf;top:20%;left:3%;z-index:99;.w(94%);.pt(85%);}
+.calendar_close{.pa;.block;z-index:99;top:-5%;right:-3%;.w(10%);.pt(10%);background:url("@{pic_url}/images/wap/activity/may_sale/sign18_close.png") no-repeat;background-size: 100%;}
+.calanderWrap1{
+	.date_box{
+		.pr;
+		left:0;
+		.pt(8%);
+		.fc(#fff);
+		.f(1.4rem);
+		.l(1.6rem);
+		.w(100%);
+		.prev_btn{
+			.pa;
+			top:2%;
+			left:0;
+			.w(46*@w);
+			.pt(46*@w);
+			background:url("@{pic_url}/images/wap/activity/may_sale/prev_btn.png") no-repeat;
+			background-size:100%;
+		}
+		.next_btn{
+			.pa;
+			top:2%;
+			right:3%;
+			.w(46*@w);
+			.pt(46*@w);
+			background:url("@{pic_url}/images/wap/activity/may_sale/next_btn.png") no-repeat;
+			background-size:100%;
+		}
+		.icon_cal{
+			.pa;
+			top:12%;
+			left:10%;
+			.mt(1%);
+			.w(5%);
+			.pt(6%);
+			background:url("@{pic_url}/images/wap/activity/may_sale/cal_icon2.png") no-repeat;
+			background-size:100%;
+		}
+		.month{
+			.pa;
+			left:16%;
+			top:12%;
+			.w(30%);
+		}
+		.totals{
+			.pa;
+			.none;
+			right:13%;
+			top:12%;
+			.num{
+				.fc(#fff000)
+			}
+		}
+	}
+}
+.add_text{.pr;.w(100%);.pt(2%);.hidden;.c;.fc(#ffef85);.f(1.3rem);}
+
+/*补签提示*/
+.ret_tip{clear:both;.hidden;.fc(#fff);.l(27px);padding:5px 0;}
+.ret_tip .txt{.left;.f(1.3rem);}
+.ret_tip .ret_btn{.right;.i_block;.w(68px;);.h(27px);padding-right:3%;}
+
+.new_dh {
+  .pa;
+  top:5%;
+  .w(80%);
+  left: 10%;
+  .pt(115%);
+  z-index: 10;
+  background:url("@{pic_url}/images/wap/activity/may_sale/dh_bg.png") no-repeat;background-size: 100%;
+  .coupons {
+    .pa;
+    top:14%;
+    .w(55%);
+    left:28%;
+    border:0px solid red;
+    .new_dh_coupon {
+      .pr;
+      .w(100%);
+      .pt(24%);
+      .mb(3%);
+      border:0px solid blue;
+    }
+    .c_content {
+      .pa;
+      top : 16%;
+      .w(100%);
+      left:7%;
+      .f(1.5rem);
+      .fc(#af6d3d);
+      span {.f(2rem); font-weight: bold; font-style: italic}
+
+    }
+    .c_left {
+      .pa;
+      .none;
+      right: 0;
+      top: 0;
+      .w(27%);
+      height: 100%;
+      margin-right: -6%;
+      background:url("@{pic_url}/images/wap/activity/may_sale/noleft.jpg") no-repeat;background-size: 100% 100%;
+    }
+    .isNotTimeGet {
+      .pa;
+      .none;
+      right: 0;
+      top: 0;
+      .w(27%);
+      height: 100%;
+      margin-right: -6%;
+      background:url("@{pic_url}/images/wap/activity/may_sale/isNotTimeGet.jpg") no-repeat;background-size: 100% 100%;
+    }
+    .canSel {
+      background:url("@{pic_url}/images/wap/activity/may_sale/dh_q1.jpg") no-repeat;background-size: 100%;
+    }
+    .noSel {
+      background:url("@{pic_url}/images/wap/activity/may_sale/dh_q0.jpg") no-repeat;background-size: 100%;
+    }
+    .currSel {
+      background:url("@{pic_url}/images/wap/activity/may_sale/dh_q2.jpg") no-repeat;background-size: 100%;
+    }
+    .noSelForText{.fc(#938585)};
+  }
+  .coupon_tips {
+    .pa;
+    top:65%;
+    .w(100%);
+    .c();
+    .f(14px);
+    .fc(#7c4848);
+    .cp, .lp {.fc(#ff0000)}
+  }
+  .new_dj_btn {
+    .pa;
+    .pt(17%);
+    top:69.6%;
+    .w(67%);
+    left: 16.5%;
+    border:0px solid red;
+  }
+  .new_dj_btn_gray {
+    /*background:url("@{pic_url}/images/wap/activity/may_sale/new_dj_btn_gray.jpg") no-repeat;*/
+    background:url("@{pic_url}/images/wap/activity/may_sale/go_sign_mall_btn.jpg") no-repeat;
+    background-size:100%;
+  }
+  .new_coupon_qr_close {
+    .pa;
+    .pt(16%);
+    top:83%;
+    .w(70%);
+    left: 15%;
+    border:0px solid red;
+  }
+}
+
+.dh_succ {
+  .pa;
+  top:5%;
+  .w(80%);
+  left: 10%;
+  .pt(115%);
+  z-index: 10;
+  background:url("@{pic_url}/images/wap/activity/may_sale/dh_succ0.png") no-repeat;background-size: 100%;
+  .getCouponInfo {
+    .pa;
+    top:56%;
+    .w(100%);
+    .f(1.5rem);
+    .fc(#af6d3d);
+    .c;
+    span {.f(2.2rem); font-weight: bold; font-style: italic}
+  }
+  .new_coupon_btn {
+    .pa;
+    top:68%;
+    .pt(16%);
+    .w(70%);
+    left : 15%;
+    border:0px solid red;
+  }
+  .dh_succ_close {
+    .pa;
+    top:81%;
+    .pt(16%);
+    .w(70%);
+    left : 15%;
+    border:0px solid red;
+  }
+}
+
+/*.icon11 {border-right:1px solid #da0000;border-bottom:1px solid #da0000;;background:url("@{pic_url}/images/wap/activity/may_sale/c12.jpg") no-repeat;background-size:100%;}
+.icon11Border1 {border-bottom:1px solid #da0000}
+.icon11Border2 {border-right:1px solid #da0000}*/

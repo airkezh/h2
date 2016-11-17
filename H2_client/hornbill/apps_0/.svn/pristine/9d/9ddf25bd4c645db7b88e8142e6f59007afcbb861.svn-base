@@ -1,0 +1,87 @@
+<%# wx_new/header.html%>
+<%
+	var getLink = _extFn.getLink;
+	var navThreeWord = 'veryvalue';
+%>
+<div class="posterWall wrap scroller">
+	<%if(0){%>
+	<%= requireFn('wx_new/top_nav.html')({
+		'pageName' : this.pageName
+		,'navInfo' : this.nav_top || []
+		,'PICTURE_URL' : this.PICTURE_URL
+		,'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+	});%>
+	<div class="m50"></div>
+	<%}%>
+<!-- 分享 -->
+	<figure class="wxShareImg none_f">
+		<img src="<%=this.PICTURE_URL%>/images/wap/web/wx/shareWXB.jpg"/>
+	</figure>
+<!-- 轮播 -->
+	<% if(this.banner.head){%>
+	<section style="-webkit-transform: translateZ(0);">
+		<%= requireFn('block/banner.html')({
+			'banner' :this.banner.head
+			,'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+		});%>
+	</section>
+	<% } %>
+
+
+<!-- 倒计时 -->
+	<div class="end-time">
+		<a href="/wx/tuan_buy/1065?goods_type=2"><img src="http://d04.res.meilishuo.net/pic/_o/be/c7/3c5b1b3412838800b766354c9e72_640_283.cf.png" alt="">
+	
+	<div class="surprise-discount">
+		<div class="s-content">
+			<p class="s-title">惊喜秒杀</p>
+			<p class="s-txt"><%= this.q8_banner.time_tip%></p>
+			 <dl class="s-ltime" stime="<%= this.q8_banner.time_value%>">
+            	<dd id="hour"></dd><strong>:</strong>
+            	<dd id="minu"></dd><strong>:</strong>
+            	<dd id="sec" class="last"></dd>
+            </dl> 
+			
+		</div>
+		
+	</div>
+	</a>
+</div>
+<!-- 今日团购 -->
+<div class="tip">
+	<img src="http://d04.res.meilishuo.net/pic/_o/a0/25/412765afef96a92cc71726005fb2_231_33.ch.png" alt="">
+</div>
+
+<%if(this.navInfo.page_categories ) {
+		var navThress = this.navInfo.page_categories
+		%>
+	<!-- typeTop 三级菜单 -->
+	<div class="typeTop">
+		<p>
+			<% navThress.map(function(data, index){%>
+				<%var url =  this.url + getLink({'cate_id' : data.cate_id})%>
+				<a href=<%=url %> typeId='<%= data.cate_id %>' class='cosmetictap <%= navThreeWord %>  <%= (this.nowCate == data.cate_id) ? 'type_select' : '' %>'><%= data.cate_name%></a>
+			<%});%>
+		</p>
+	</div>
+	<%}%>
+
+<!-- 瀑布流 -->
+
+	<ul class="new_goods goods_wall">
+	</ul>
+	<div class="pullUp" status="loading"></div>
+
+</div>
+<%# wx_new/tuanWX.html%>
+<script>
+fml.vars.poster = {
+	'totalColNum':2,
+	'pageName' : '<%= this.pageName%>'
+};
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/wx_new/tuan');
+_use:", this._JSstack , this._JSmods ); %>
+<%# wx_new/side.html%>
+<%# wx_new/footer.html%>

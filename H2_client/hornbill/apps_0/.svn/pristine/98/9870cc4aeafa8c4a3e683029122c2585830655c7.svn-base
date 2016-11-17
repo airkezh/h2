@@ -1,0 +1,256 @@
+<%
+	/**
+ 	 * @fileoverview 大转盘抽奖－会员中心
+     * @requires zepto
+     * @author kehuang@meilishuo.com
+     * @date 2015-08-07
+     */
+%>
+
+<%#head.html%>
+<%
+	var curUserIsLogin = this.isLogin;
+	var curPageData = this.pageData;
+	var curUserData = this.getUserBeans.data || {};
+	var curCouponsData = this.getCoupons.data || [];
+	var curUserTotalBeans = curUserData.beans || 0;
+	var curUserLotteryFreeTimes = parseInt(curUserData.free_times) || 0;
+	var curUserTotalFreeTimes = parseInt(curUserData.free_times_total) || 0;
+	var curTurntableThxData = curPageData.awards || {};
+	var curPromotionHref = curPageData.promotion_href || '';
+	var curNotLoginPointerImg = curPageData.pointer_1.img_src || '';
+	var curFreePointerImg = curPageData.pointer_2.img_src || '';
+	var curAvailablePointerImg = curPageData.pointer_3.img_src || '';
+	var curUnavailablePointerImg = curPageData.pointer_4.img_src || '';
+	var curTurntableAwardsData = this.getAwardData.data || {};
+	var curTurntablePrizeData = curTurntableAwardsData.awards || [];
+	var curTurntableThreshold = parseInt(curTurntableAwardsData.threshold) || 20;
+
+	curTurntablePrizeData.unshift(curTurntableThxData);
+%>
+<div class="main">
+	<%
+		var curTurntablePrizeDataLen = curTurntablePrizeData.length;
+
+		if (curTurntablePrizeDataLen > 0) {
+			for (var i = 0; i < curTurntablePrizeDataLen; i++) {
+				var data = curTurntablePrizeData[i],
+					id = data.id || '',
+					pic = data.pic || '',
+					name = data.name || '',
+					type = data.type || 0,
+					level = data.level || 0;
+	%>
+	<img src="<%= pic %>" id="turntable_prize_<%= id %>" style="display:none;" data-type="<%= type %>" data-level="<%= level %>" alt="<%= name %>">
+    <%
+    		}
+    	}
+    %>
+
+    <div class="turntable_tips">每天可有<%= curUserTotalFreeTimes %>次免费抽奖机会</div>
+
+    <div class="user_info">
+    	<%
+    		if (curUserIsLogin) {
+    	%>
+    	我的美美豆:&nbsp;<span id="j_total_beans"><%= curUserTotalBeans %></span>
+    	<i id="j_add_beans" class="add_beans">+0</i>
+    	<%
+    		} else {
+    	%>
+    	<div class="login_tips">登录后查看美美豆</div>
+    	<%
+    		}
+    	%>
+   	</div>
+
+    <div class="turntable_wrap">
+		<div class="turntable">
+			<canvas class="item" id="wheelcanvas" width="422px" height="422px"></canvas>
+			<%
+				var pointerClass = '',
+					pointerStyle = '';
+
+    			if (curUserIsLogin) {
+    				if (curUserLotteryFreeTimes > 0) {
+    					pointerClass = 'free';
+	    				pointerStyle = (curFreePointerImg != '') ? 'background-image: url(' + curFreePointerImg + ');' : '';
+    				} else {
+    					if (curUserTotalBeans < curTurntableThreshold) {
+    						pointerClass = 'inactive';
+	    					pointerStyle = (curUnavailablePointerImg != '') ? 'background-image: url(' + curUnavailablePointerImg + ');' : '';
+    					} else {
+    						pointerClass = '';
+	    					pointerStyle = (curAvailablePointerImg != '') ? 'background-image: url(' + curAvailablePointerImg + ');' : '';
+    					}
+    				}
+	    		} else {
+	    			pointerClass = 'login';
+	    			pointerStyle = (curNotLoginPointerImg != '') ? 'background-image: url(' + curNotLoginPointerImg + ');' : '';
+	    		}
+	    	%>
+	    	<div id="pointer" class="pointer <%= pointerClass %>" style="<%= pointerStyle %>"></div>
+		</div>
+	</div>
+
+	<div class="coupon_wrap">
+		<ul class="coupon_wall">
+			<%
+				var curCouponsLen = curCouponsData.length;
+
+				for (var i = 0; i < curCouponsLen; i++) {
+					var coupon = curCouponsData[i],
+						pic = coupon.pic || '',
+						code = coupon.code || '',
+						beans = coupon.beans || 0,
+						status = coupon.status || 0,
+						style = (pic != '') ? 'background-image: url(' + pic + ');' : '';
+			%>
+			<li>
+				<div class="coupon" data-code="<%= code %>" data-beans="<%= beans %>" data-status="<%= status %>" style="<%= style %>"></div>
+			</li>
+			<%
+				}
+			%>
+		</ul>
+	</div>
+
+	<div class="link_box" data-href="<%= curPromotionHref %>">去往大促主会场 ></div>
+
+	<div class="bottom_banner">
+		<div class="my_prize"></div>
+		<div class="activity_rule"></div>
+	</div>
+</div>
+
+<script type="text/html" id="j_prize_tpl">
+	<div class="layer_shade j_layer_shade"></div>
+	<div class="layer_main j_layer_main">
+		<div class="m">
+			<?
+				var picBg = '',
+					btnHtml = '',
+					descHtml = '',
+					titleHtml = '',
+					item = this.data,
+					extra = item.extra,
+					prizeId = item.id || 0,
+		            prizePic = item.pic || '',
+		            prizeName = item.name || '',
+		            prizeType = item.type || 0,
+		            prizeLevel = item.level || 0,
+		            recordId = item.record_id || 0;
+
+                switch (prizeType) {
+                    case 1:
+                    	var addrId = extra.id || 0;
+
+                    	if (addrId) {
+                    		var name = extra.name || '',
+                    			phone = extra.phone || '',
+                    			address = extra.address || '',
+                    			nameLen = name.length || 0,
+                    			name = (nameLen <= 4) ? name : name.substr(0, 4) + '...',
+                    			address = address.substr(0, 18) + '...';
+
+                    		picBg = 'http://d03.res.meilishuo.net/pic/_o/b7/d8/5ae55a413903ab25d883504e7633_640_824.cf.png';
+							btnHtml = '<div class="buttons"><div class="alter_btn"></div><div class="sure_btn" data-addrid="' + addrId + '" data-recoid="' + recordId + '"></div></div>';
+							descHtml = '<p class="address">商品将发往:<br>' + address + '<br>' + name + '&nbsp;&nbsp;' + phone + '</p>';
+							titleHtml = '<p class="title">抽中<i>' + prizeName + '</i></p>';
+                    	} else {
+                    		picBg = 'http://d03.res.meilishuo.net/pic/_o/c3/97/4f7fb3067cb5f2f4691c7c5d0952_640_824.cg.png';
+							btnHtml = '<div class="write_btn"></div>';
+							descHtml = '<p class="info">填写收货地址，奖品君火速向你奔来！</p>';
+							titleHtml = '<p class="title">抽中<i>' + prizeName + '</i></p>';
+                    	}
+
+                        break;
+                    case 2:
+                    	var shopName = extra.name || '',
+                    		shopAvater = extra.avater || '';
+
+                        picBg = 'http://d04.res.meilishuo.net/pic/_o/87/ad/5722f373de1ada9859512b9cdb41_640_832.cf.png';
+						btnHtml = '<div class="buttons"><div class="close_btn" data-type="2"></div><div class="looks_btn"></div></div>';
+						descHtml = '<p class="desc">已经duang~duang~<br>加到你的账户咯！</p>';
+
+						if (shopName != '') {
+							titleHtml = '<p class="title">抽中<i>' + prizeName + '</i></p><p class="sub_title"><span class="icon">' + shopName + '</span></p>';
+						} else {
+							titleHtml = '<p class="title">抽中<i>' + prizeName + '</i></p>';
+						}
+
+                        break;
+                    case 3:
+                    	var beans = extra.beans || 0;
+
+                        picBg = 'http://d04.res.meilishuo.net/pic/_o/87/ad/5722f373de1ada9859512b9cdb41_640_832.cf.png';
+						btnHtml = '<div class="buttons"><div class="close_btn" data-type="3" data-beans="' + beans + '"></div><div class="looks_btn"></div></div>';
+						descHtml = '<p class="desc">已经duang~duang~<br>加到你的账户咯！</p>';
+						titleHtml = '<p class="title">抽中<i>' + prizeName + '</i></p>';
+
+                        break;
+                }
+			?>
+			<img id="j_pic_bg" src="<?= picBg ?>" alt="">
+			<?= titleHtml ?>
+			<div id="j_prize_desc"><?= descHtml ?></div>
+			<div id="j_prize_btn" data-recoid="<?= recordId ?>"><?= btnHtml ?></div>
+		</div>
+	</div>
+</script>
+
+<script type="text/html" id="img_captcha_tpl">
+	<div class="checkBox">
+		<div class="shade j_layer_shade"></div>
+		<div class="captchaImgBox j_layer_main">
+			<div class="imgTop">
+				<input class="captchaInput" name="checkcode" type="text" value="" maxlength="10" placeholder="请输入验证码">
+				<img class="captchaImg" src="<?= this.picUrl ?>" width="40%" alt="">
+				<div class="newImg"></div>
+			</div>
+			<div class="imgCenter"></div>
+			<div class="imgBottom">
+				<div class="imgCaptchaClose"></div>
+				<div class="imgCaptchaCheck"></div>
+			</div>
+		</div>
+	</div>
+</script>
+
+<script type="text/html" id="sms_captcha_tpl">
+	<div class="checkBox">
+		<div class="shade j_layer_shade"></div>
+		<div class="captchasSmsBox j_layer_main">
+			<div class="smsTop">
+				<div class="getSmsCaptcha">点击发送</div>
+			</div>
+			<div class="smsCenter"></div>
+			<div class="smsBottom">
+				<input class="captchaInput" name="checkcode" type="text" value="" maxlength="10" placeholder="请输入验证码">
+				<div class="captchaCheck">验证</div>
+			</div>
+			<div class="smsClose"></div>
+		</div>
+	</div>
+</script>
+
+<script>
+	fml.vars.isLogin = <%= curUserIsLogin %>;
+	fml.vars.isNewest = <%= this.isNewest %>;
+	fml.vars.isAndroid = <%= this.isAndroid %>;
+	fml.vars.LotteryFreeTimes = <%= curUserLotteryFreeTimes %>;
+	fml.vars.notLoginPointerImg = '<%= curNotLoginPointerImg %>';
+	fml.vars.freePointerImg = '<%= curFreePointerImg %>';
+	fml.vars.availablePointerImg = '<%= curAvailablePointerImg %>';
+	fml.vars.unavailablePointerImg = '<%= curUnavailablePointerImg %>';
+	fml.vars.turntableThreshold = <%= curTurntableThreshold %>;
+	fml.vars.turntablePrizeData = <%= JSON.stringify(curTurntablePrizeData) %>;
+</script>
+
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/member/turntable2');
+_use:", this._JSstack, this._JSmods); %>
+
+<%#foot_simple.html%>

@@ -1,0 +1,167 @@
+<%# head.html%>
+<div class="main-content">
+	<div class="recom_wraper">
+		<div class="recom_title_bg"></div>
+		<div class="recom_title">回复我的</div>
+		<div class="article_sg">
+			<div class="reply_list">
+				<%if(!this.recommend.aInfo && this.recommend.aInfo.length == 0){%>
+					<div class="no_recommend">还没有人回复过你的晒单</div>
+				<%}%>
+				<%this.recommend.aInfo && this.recommend.aInfo.map(function(data, index){%>
+					<div class="reply_item">
+						<a class="replyer left_f"><img class="ava_r" src="<%=data.uinfo.avatar_a%>" width="40" height="40"></a>
+						<div class="reply_con">
+							<div class="reply_title"><a class="reply_name"><%=data.uinfo.nickname%></a> <%if(data.direct_reply){%>回复了你发布的社区晒单<a href="/club/single/<%=data.root_article_id%>" target="_blank"><%=data.root_article_title%></a><%} else {%>回复了你在社区晒单<a href="/club/single/<%=data.root_article_id%>" target="_blank"><%=data.root_article_title%></a>下的回复<%}%></div>
+							<%if (data.delete){%>
+								<div class="article_dellete">此内容涉及广告，已被管理员删除</div>
+							<%}else if(data.tinfo){%>
+								<div class="clearfix_f">
+									<div class="left_f"><span class="cl_i_lquote">&nbsp;</span></div>
+									<p class="cnt_r"><%=data.tinfo[0].twitter_htmlcontent%><em class="cl_i_rquote">&nbsp;</em></p>
+								</div>
+								<%if(data.tinfo[0].f_show_pic){%>
+									<div class="pic mt10_f">
+										<div class="pic_big">
+											<%if(data.tinfo[0].ginfo && data.tinfo[0].ginfo.goods_id>0){%>
+												<%
+													var goods_data = data.tinfo[0];
+													var pic_w = goods_data.n_pic_width;
+													var pic_h = goods_data.n_pic_height;
+													var wrap_w = 352;
+													var mt = ml = 0;
+													if(pic_h>400){
+														pic_w = pic_w * 400 / pic_h;
+														pic_h = 400;
+													} else if(pic_w<352){
+														mt = (400 - pic_h)/2;
+													}
+													if(pic_w<352){
+														ml = (352 - pic_w)/2;
+													} else {
+														 if (pic_w > 534) {
+															pic_h = 'auto';
+															pic_w = 534;
+														}
+														wrap_w = pic_w;
+													}
+													style = 'width:'+ pic_w+'px;height+' +pic_h+'px;margin-top:'+mt+'px;margin-bottom:'+mt+'px;margin-left:'+ ml+'px;'
+												%>
+												<div class="goods_sg pr_f">
+													<div class="goodsWrap clearfix_f" style="width:<%= wrap_w %>px">
+														<a class="imgWrap" href="/share/<%=goods_data.twitter_id%>" target="_blank">
+															<img class="img_sg" src="<%=goods_data.l_show_pic%>" style="<%= style %>">
+														</a>
+														<div class="titleWrap">
+															<a class="goodstitle" href="/share/<%=goods_data.twitter_id%>" target="_blank"><%=goods_data.ginfo.goods_title%></a>
+															<span>价格：<%=goods_data.ginfo.goods_price%></span>
+														</div>
+													</div>
+												</div>
+											<%} else {%>
+												<img src="<%=data.tinfo[0].l_show_pic%>">
+											<% } %>
+										</div>
+									</div>
+								<%}
+							}%>
+							<div class="clear_f"></div>
+							<div class="item_bar clearfix_f">
+								<span class="time"><%=data.article_create_time%>  <%=data.source%></span>
+								<%if (!data.delete){%>
+									<span class="item_reply" said="<%=data.root_article_id%>" paid="<%=data.article_id%>">回复</span>
+								<%}%>
+							</div>
+						</div>
+						<% if(index == 0){ %>
+							<div class="reply_block none_f">
+								<div class="separation"></div>
+								<div class="replay_triangle"><div class="inner"></div></div>
+								<div><textarea class="reply_sg editor" placeholder="在这里输入评论内容..."></textarea></div>
+								<div class="reply_bar mt10_f pr_f">
+									<span class="reply_btn" said="<%=data.root_article_id%>" paid="<%=data.article_id%>">立即回复</span>
+									<a class="share_smileys">&nbsp;</a>
+									<% if(this.clubTest.canReply){ %>
+										<div class="checkBox<%= this.clubTest.checkCode ? '' : ' none_f' %>" id="checkBox">
+											<label for="checkcode">验证码：<input class="l_ipt<%= this.clubTest.checkCode ? '' : ' noCheck' %>" id="checkcode" name="checkcode" type="text" value="" placeholder="验证码" maxlength="4" /></label>
+											<div class="checkImage" title="点击换一张">
+												<span id="checkcodeImage">
+													<img width="78" height="26" isblank="true" src="<%= this.PICTURE_URL %>images/register/blank.jpg">
+												</span>
+											</div>
+										</div>
+									<% } %>
+									<div class="img_wraper pa_f"></div>
+								</div>
+							</div>
+						<% } %>
+					</div>
+					<div class="separation"></div>
+				<%});%>
+			</div>
+			<div class="clear_f"></div>
+		</div>
+		<div class="paging_panel c_f">
+		<%#paging.html%>
+		</div>
+	</div>
+	<div class="corner-notic">
+		<%if(this.user_list && this.user_list.identity){%>
+			<%# userinfo.html%>
+		<%}%>
+		<%if(this.user_label && this.user_list){%>
+			<%# block/person_sidebar.html%>
+		<%}%>
+	</div>
+</div>
+<script type="text/html" id="beauty">
+<div class="beauty">
+	<h3><strong class="f14_f">说一句你的美丽宣言</strong><span class="limit">（最多40字）</span></h3>
+	<textarea class="area" id="contextDecl"></textarea>
+</div>
+</script>
+<script type="text/html" id="mytabs">
+<div class="mytabs">
+	<div class="ml40_f">
+		<ul class="sel_tab">
+		<%if(this.user_label.length > 0){%>
+		</ul>
+		<%}else{%>
+		</ul>
+			<p class="defaultText">从下方选择你的标签</p>	
+		<%}%>
+	<div class="clear_f"></div>
+		<h2 class="tips labelDesc">告诉大家自己最擅长的美丽技能吧</h2>
+		<p class="explain">点击进行选择，你可以给自己贴20个标签哦！<span class="labelerror red_f"></span></p>
+	</div>
+	<div class="tab_b">
+		<div class="before none_f">&lt;</div>
+		<div class="next">&gt;</div>
+		<div class="tab_list">
+			<ul class="tab_container">
+				<li class="tab_item">
+				<% 
+					var _typei; 
+					this.all_label && this.all_label.map(function(data){%>
+					<% if(_typei && data.type != _typei){%>
+					</li>
+					<li class="tab_item">
+					<%}%>
+						<span class="addLabel active" labelId="<%= data.label_id%>"><%= data.label_name%></span>
+						<% _typei = data.type;%>
+				<%});%>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="edit_box">
+		<span>或自己写标签：</span>
+		<span><input maxlength="10" class="newLabelName ipt searchKey" type="text" placeholder="自己写一个标签" /></span>
+		<span class="btn newLabel">贴上</span><span class="add_suc addLabelSucess none_f">添加成功!</span>
+	</div>
+</div>
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/club/recommend');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

@@ -1,0 +1,218 @@
+@import "../block.less";
+html,body{.hidden;}
+body{font-size:14px;}
+img{.w(100%);}
+body{
+	background:#ffe904 url("http://d01.res.meilishuo.net/pic/_o/8e/1e/c76c05cf45d15b3c67c986ecf716_640_1165.ch.png") top center no-repeat;
+	background-size:100% auto;
+
+}
+
+.fl{float: left;}.fr{float: right;}
+.step3{
+	.w(100%);
+	.hidden;
+	.love_txt{
+		.fc(#ffe904);.f(.27rem);.mt(3.54rem);.c;
+			.spot{.bgc(#ffe904);.border-r(50%);.w(4px);.h(4px);.i_block;.mb(2px);}
+			.txt{.mr(10*@px);.ml(10*@px);.i_block;}
+	}
+	.love_keyword{
+		background: url("http://d01.res.meilishuo.net/pic/_o/b2/94/fbba97647a26952858f86de273c8_448_165.cf.png");
+		.fc(#fff);.f(0.79rem);
+		margin:0.20rem auto 0.16rem auto;.h(1.64rem);.w(4.68rem);
+		background-size: 100%;
+		.hidden;
+		.keyword,.keyword1{
+			height:1.64rem;.l(1.64rem);.c;.w(1.07rem);.mr(.1rem);
+		}
+		#text_box0,#text_box1,#text_box2,#text_box3{.left;}
+	}
+	.love_info,.love_info1{
+		.c;
+		.hidden;
+		.auto;
+		.w(4.3rem);
+		.male_box,.female_box{.c;.fl;}
+		.male,.female{
+			.w(0.9rem);
+			.h(0.9rem);
+			border:1px solid #ffe904;
+			.border-r(50%);
+			box-sizing:border-box;
+		}
+
+
+		.male_min,.female_min{
+			.i_block;
+			.hidden;
+			.l(0.50rem);
+			.mb(.05rem);
+			img{.w(.50rem);.h(0.50rem);border:1px solid #fff;box-sizing: border-box;.border-r(50%);.fl;.mr(.12rem);}
+		}
+		.love_line{
+			background: url("http://d02.res.meilishuo.net/pic/_o/bf/8a/f2c563d3346c5c98d050781b665e_247_62.cf.png")no-repeat;
+			background-size:100%; 
+			.h(40px);
+			.w(2.45rem);
+			.fl;
+			.mt(6px);
+		}
+		p{.fc(#fff);.f(.23rem);.mt(0.1rem);}
+		span{.fc(#fff);.f(.23rem);}
+
+	}
+	.love_info_txt{
+		.c;
+		.w(100%);
+		.auto;
+			span{
+				.i_block;.fc(#fff);.f(.23rem);.w(49%);.mt(0.1rem);
+			}
+			
+		}
+	.shake{
+		.mt(1.14rem);
+		.auto;
+		.w(3.76rem);
+		.h(0.91rem);
+	}
+	.next{
+		.none;
+		.mt(1.14rem);
+		.c;
+		.show_love{.ml(.47rem);}
+		.play_again,.show_love,.play{
+			.w(2.25rem);
+			.h(.7rem);
+			.bgc(#6a4113);
+			.fc(#ffe904);
+			.f(0.3068rem);
+			border-radius: 40px;
+			box-shadow: 0px 5*@px 1px #5a3812;
+			border:none;
+
+		}
+		img{
+			.h(0.25rem);
+			.w(0.3rem);
+		}
+
+		.go-to,.C_go_to{
+			.fc(#ff0d5d);
+			.f(.25rem);
+			border-bottom:2px solid #ff0d5d;
+			background: url("http://d03.res.meilishuo.net/pic/_o/96/c2/3eb6ce19405fdf69603ff0e0fc9c_22_22.ch.png")no-repeat;
+			background-size: .25rem;
+			font-weight: bold;
+			.mt(.47rem);
+			.i_block;
+			.pl(.30rem);
+			.h(.3rem);
+			
+		}
+	}
+
+	.wait{
+		.fc(#5f3a10);.f(0.3322rem);.c;.mt(1.67rem);
+	}
+}
+
+/* 弹出框 */
+.mypopbox{
+	display:none;
+	position: fixed;
+	z-index: 999;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 160%;
+	overflow-x: hidden;
+
+	.dialog {
+		display:none;
+		position: absolute;
+		z-index: 100;
+		top: 1.65rem;
+		width: 5.7rem;
+		height: 7.65rem;
+		left: 50%;
+		transform: translateX(-50%);
+		-webkit-transform: translateX(-50%);
+	}
+
+	.dialog_appshare{
+		width: 4.5rem;
+		height: 2.91rem;
+		top:3rem;
+		background: #e2738d;
+		border-radius: .2rem;
+		text-align: center;
+		color: #fff;
+		.dialog_appshare_tit{
+			height: 1rem;
+			line-height: 1rem;
+			text-align: center;
+			font-size: .33rem;
+		}
+		.dialog_appshare_box{
+			float: left;
+			width: 50%;
+			overflow: hidden;
+			p{
+				line-height: .6rem;
+				font-size: .21rem;
+			}
+		}
+		.shareBut{
+			display: inline-block;
+			margin: 0   .6rem ;
+			width: .95rem;
+			height: .95rem;
+		}
+		.shareBut_wx{
+			background:url('http://d04.res.meilishuo.net/pic/_o/85/7a/aab5e12571cce8c326038468beb5_95_95.cg.png');
+			background-size:100% 100%;
+		}
+		.shareBut_pyq{
+			background:url('http://d03.res.meilishuo.net/pic/_o/ed/1e/c4b27c9150dfd8cf374366ffd883_95_95.ch.png');
+			background-size:100% 100%;
+		}
+
+		.shareBut_close{
+			position: absolute;
+			top: -0.18rem;
+			right: -0.22rem;
+			width: .62rem;
+			height: .62rem;
+			background:url('http://d02.res.meilishuo.net/pic/_o/91/e6/78f00dfccc1646ad3bf0067bb997_62_62.cg.png');
+			background-size:100% 100%;
+		}
+	}
+	
+	.dialog_wxshareguide{
+		width: 100%;
+		top: 0;
+		img{
+			width: 90%;
+			.block;
+			.auto;
+		}
+	}
+	.overlay{
+		display:;
+		position: absolute;
+		z-index: 90;
+		top: 0px;
+		left: 0px;
+		bottom: 0px;
+		right: 0px;
+		background-color: rgba(0, 0, 0, 0.6);
+	}
+}
+
+
+
+
+
+

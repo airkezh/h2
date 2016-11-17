@@ -1,0 +1,399 @@
+/**
+ * @fileoverview 会员特权－会员中心
+ * @requires
+ * @author kehuang@meilishuo.com
+ * @date 2015-10-26
+ */
+
+@import "../block.less";
+
+html{
+	.f(10*@f);
+}
+
+body{
+	.bgc(#fff);
+}
+
+img{
+	.block;
+	.w(100%);
+}
+
+a{
+	.block;
+	outline:none;
+}
+
+ul{
+	list-style:none;
+}
+
+i,em{
+	font-style:normal;
+}
+
+.banner_wrap{
+	.pr;
+	.w(100%);
+	.fc(#fff);
+	.pt(280*@w);
+	background:url("http://d02.res.meilishuo.net/pic/_o/86/90/439bf35b35c7d22008086ec742b2_640_280.cg.png") no-repeat;
+	background-size:100%;
+
+	.user_box{
+		.pa;
+		top:7%;
+		left:0;
+		right:0;
+		.hidden;
+		clear:both;
+
+		.user_level{
+			.c;
+			.l(1.4);
+			.f(1rem);
+			.fc(#fff);
+		}
+
+		.user_head{
+			.auto;
+			.hidden;
+			.w(38px);
+			.h(38px);
+			.border-r(50%);
+			border:2px solid #ffde42;
+
+			img{
+				border:0;
+				.border-r(50%);
+			}
+		}
+
+		.user_upgrade_text{
+			.c;
+			.l(1.6);
+			.f(1.1rem);
+			.fc(#fff);
+		}
+	}
+}
+
+.level_wrap{
+	.pr;
+	.hidden;
+
+	.level_iscroll{
+		.hidden;
+		.mb(4%);
+		.w(688px);
+
+		.outer_progress_bar{
+			.w(632px);
+			.h(3px);
+			.bgc(#fff);
+			margin:3px 0 3px 24px;
+		}
+
+		.inner_progress_bar{
+			.w(0);
+			.h(100%);
+			.bgc(#ffde42);
+			transition:width 2s ease 1s;
+			-webkit-transition:width 2s ease 1s;
+		}
+	}
+
+	.dot_box{
+    	.pa;
+    	.w(640px);
+    	left:20px;
+    	top:64px;
+
+    	li{
+    		.left;
+			.inline;
+			.hidden;
+			.mr(150px);
+    	}
+
+    	li:last-child{
+    		.mr(0);
+    	}
+
+    	.dot_0{
+    		.w(8px);
+    		.h(8px);
+    		.bgc(#fff);
+    		.border-r(50%);
+    	}
+
+    	.dot_1{
+    		.w(8px);
+    		.h(8px);
+    		.bgc(#ffde42);
+    		.border-r(50%);
+    	}
+    }
+
+    .blank_box{
+    	.pa;
+    	.w(680px);
+    	left:4px;
+    	top:0;
+
+    	li{
+    		.left;
+			.inline;
+			.hidden;
+			.mr(118px);
+    	}
+
+    	li:last-child{
+    		.mr(0);
+    	}
+
+    	.blank{
+    		.w(40px);
+    		.h(70px);
+    	}
+    }
+
+    .level_box{
+    	.w(670px);
+    	.mb(67px);
+    	.ml(14px);
+    	.f(1rem);
+		.fc(#3d1c30);
+
+    	li{
+    		.left;
+			.inline;
+			.hidden;
+			.mr(135px);
+    	}
+
+    	li:last-child{
+    		.mr(0);
+    	}
+
+    	.level_0,.level_1{
+    		.c;
+    		.l(20px);
+    		.w(20px);
+    		.h(20px);
+    		.border-r(50%);
+    	}
+
+    	.level_0{
+    		.bgc(#fff);
+    	}
+
+    	.level_1{
+    		.bgc(#ffde42);
+    	}
+
+    	.arrow{
+    		width:0;
+    		height:0;
+    		margin:-1px auto 0;
+    		border-left:3px solid transparent;
+    		border-right:3px solid transparent;
+    		border-top:3px solid #fff;
+    	}
+
+    	.arrow_0{
+    		border-top:3px solid #fff;
+    	}
+
+    	.arrow_1{
+    		border-top:3px solid #ffde42;
+    	}
+    }
+
+    .beauty_box{
+    	.w(650px);
+    	.mt(10px);
+    	.ml(20px);
+
+    	li{
+    		.left;
+			.inline;
+			.hidden;
+			.mr(122px);
+    	}
+
+    	li:last-child{
+    		.mr(0);
+    	}
+
+    	.value{
+    		.w(28px);
+    		.l(1.2);
+    		.f(1.1rem);
+			.fc(#fff);
+    	}
+    }
+}
+
+.title_wrap{
+	.w(580*@w);
+	.h(45px);
+	.bgc(#fff);
+	padding:0 30*@w;
+}
+
+.pro_title{
+	.pr;
+	.w(100%);
+	.pt(22px);
+	border-bottom:1px solid rgba(51,51,51,.1);
+
+	p{
+		.c;
+		.pa;
+		.w(7rem);
+		.fc(#333);
+		.f(1.3rem);
+		.l(1.3rem);
+		.ml(-3.5rem);
+		.bgc(#fff);
+		left:50%;
+		bottom:-.7rem;
+	}
+}
+
+.interests_swipe{
+	.hidden;
+	clear:both;
+
+	.interests_box{
+		margin:0 30*@w;
+
+		li{
+			.hidden;
+			clear:both;
+			padding:30*@w 0;
+			border-bottom:1px solid #e6e6e6;
+
+			&:first-child{
+				.pt(0);
+			}
+
+			&:last-child{
+				border:none;
+			}
+		}
+
+		.icon{
+			.left;
+			.i_block;
+			.w(22%);
+			.pt(50px);
+			background:url("http://d04.res.meilishuo.net/pic/_o/da/1c/4537421132ffb22d3efcd3f02716_100_100.ch.png") no-repeat;
+			background-size:50px auto;
+			background-position:left;
+		}
+
+		.info{
+			.tl;
+			.left;
+			.i_block;
+			.w(78%);
+			.fc(#666);
+
+			.title{
+				.fb;
+				.l(1.6);
+				.f(1.2rem);
+			}
+
+			.desc{
+				.hidden;
+				.l(1.4);
+				.f(1rem);
+				text-overflow:ellipsis;
+				display:-webkit-box;
+				-webkit-line-clamp:2;
+				-webkit-box-orient:vertical;
+				clear:both;
+			}
+		}
+	}
+}
+
+/* 返回顶部 */
+.gotop_wrap{
+	.pf;
+	.none;
+	.w(82*@w);
+	.pt(82*@w);
+	z-index:10;
+	right:10px;
+	bottom:40px;
+
+	.gotop{
+		.block;
+		.w(100%);
+	}
+
+	img{
+		.w(100%);
+	}
+}
+
+/* 组图 */
+.swipe{
+	.c;
+	.pr;
+	.hidden;
+}
+
+.swipe_wrap{
+	.pr;
+	.hidden;
+	-webkit-backface-visibility:hidden;
+	-moz-backface-visibility:hidden;
+	-ms-backface-visibility:hidden;
+	-o-backface-visibility:hidden;
+	backface-visibility:hidden;
+	/* Fix of Webkit flickering */
+	z-index:1;
+}
+
+.swipe_wrap > div{
+	.pr;
+	.left;
+	.w(100%);
+}
+
+.swipe_pic{
+	.pr;
+	.hidden;
+	.w(100%);
+	.bgc(#fff);
+}
+
+.swipe_pic img{
+	.w(100%);
+}
+
+@media screen and (min-width:360px){
+	.banner_wrap .user_box{
+		top:12%;
+	}
+
+	.level_wrap .level_iscroll{
+		margin-bottom:6%;
+	}
+}
+
+@media screen and (min-width:400px){
+	.banner_wrap .user_box{
+		top:14%;
+	}
+
+	.level_wrap .level_iscroll{
+		margin-bottom:8%;
+	}
+}

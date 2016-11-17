@@ -1,0 +1,68 @@
+<%#head.html%>
+<%var defaulttab=-1;%>
+<div class="main">
+    <%if(this.b_banner && this.b_banner["Mob_huodong_top_banner"+this.page]&&this.b_banner["Mob_huodong_top_banner"+this.page].length){
+			var bigbanners=this.b_banner["Mob_huodong_top_banner"+this.page];%>
+		<div id="topbanner">
+			<a href="<%= bigbanners[0].link%>">
+				<img src="<%= bigbanners[0].show_pic%>" alt="<%= bigbanners[0].tab_name%>" />
+			</a>
+		</div>
+    <%}%>
+    <%if(this.tablist&&this.tablist.tabs&&this.tablist.tabs.length){
+    	defaulttab=this.tablist.tabs[0].tab;%>
+    <section class="nav_wap" id="nav_wap">
+	    <div class="nav scrollout" id="m_ca">
+	    	<%
+	    	var wtab=this.tablist.tabs.length?(100/this.tablist.tabs.length-6):0;
+	    	this.tablist.tabs.forEach(function(data,i){%>
+	            <a style="width:<%=wtab%>%;margin-left:3%;margin-right:3%;" href="javascript:void(0);" <%=i==0 ? 'class=\'curr\'' : ''%> cata="<%=data.tab%>"><%=data.title%></a>
+	    	<%})%>		
+	    </div>
+    </section>
+    <%}%>
+    <!-- <div class="tmw_tip">明日10点准时上架，喜欢就准时来买哦～～</div> -->
+    <section id="container" class="container" style="padding-top:10px; min-height:700px;">
+		<div class="content">
+			<div class="goods_wall">
+			</div>
+			<div class="pullUp" status="loading"></div>
+		</div>
+    </section>
+</div> 
+<a class="gotop" style="bottom:<%if(this.isIphone){%>60<%}else{%>20<%}%>px">
+	<img src="http://i.meilishuo.net/css/images/wap/tuan/gotop.png" />
+</a>
+<script>
+	fml.vars.poster = {
+
+	};
+	fml.vars.isIphone='<%=this.isIphone%>';
+	fml.vars.isIpad='<%=this.isIpad%>';
+	<%= this.list? 'Meilishuo.config.poster0 = '+JSON.stringify(this.list)+';':'' ;%>
+	fml.vars.geturl='<%=this.geturl%>';
+	fml.vars.hostname='<%=this.hostnm%>';
+	fml.vars.is_lazyload_poster=true;
+	fml.vars.defaulttab = '<%=defaulttab%>';
+</script>
+<%= requireFn('tuan/tuan_list_new.html')({
+	'os' : this.os
+	, 'apk' : ''
+	,'_JSstack' : this._JSstack 
+	,'_JSmods' :  this._JSmods
+	,'_istomorrow' : true
+	,'_imgurlhead' : this.PICTURE_URL
+});%>
+<% if(this.share){ %>
+	<%= requireFn('wapShare.html')({
+		'share' : this.share 
+		, 'shareTitle' : '选择分享到'
+		, '_JSstack' : this._JSstack
+		, '_JSmods' : this._JSmods
+	}); %>
+<%}%>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/app/hackWeixin');
+	fml.use('wap/page/tuan/activity/db11');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html%>

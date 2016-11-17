@@ -1,0 +1,261 @@
+<%# frame/www/head_simple.html%>
+
+<%* for ipad %>
+	<%if(this.is_iPad){%>
+		<%# frame/www/head_ipad.html %>
+	<% } else { %>
+<%* for ipad %>
+
+<%
+var query = this._Request_query;
+var getLink = _extFn.getLink;
+var navFrm = 'frm=daeh';
+var mSubstr = _extFn.mSubstr;
+%>
+</head>
+<body>
+<div class="uinfo_bar">
+	<div class="header_top">
+		<% if (this.headerWelfare ){ %>
+		<div class="daily_mobile">
+			<div class="boxImg">
+				<ul class="_img">
+					<li><span class="i_notice">&nbsp;</span><a href="<%= this.headerWelfare.url%>" target="_blank" title="<%= this.headerWelfare.txt%>"><%= mSubstr(this.headerWelfare.txt, 22, '...')%></a></li>
+				</ul>
+			</div>
+		</div>
+		<% } %>
+		<ul class="menu_leo">
+	    <% if (this.user_id) { %>	
+			<li id="setting">
+				<a href="/person/u/<%= this.user_id%>?frm=headerprofile" title="<%= this.userInfo.nickname%>">
+					<% 
+					var avatar = this.userInfo.avatar_d
+					if (avatar && avatar.indexOf('http://') == -1 ){ 
+						avatar = this.avator_pic + avatar
+						}
+					%>
+					<span class="s_face"><img src="<%= avatar%>" /></span>
+					<%= mSubstr(this.userInfo.nickname,7,'...') %><em class="redarrow"></em>
+				</a>
+				<ul class="add_menu_leo hw76 none_f">
+					<% if (1 != this.userInfo.is_mall) {%>
+					<li><a href="/person/u/<%= this.user_id%>?type=editor" target="_blank">我的杂志</a></li>		
+					<li><a href="/person/u/<%= this.user_id%>?type=share" target="_blank">我的分享</a></li>
+					<li><a href="/person/u/<%= this.user_id%>?type=like" target="_blank">我喜欢的</a></li>
+					<%}%>
+					<li><a href="/findfs/invitation" target="_blank">邀请朋友</a></li>
+					<li class="b_line"><a href="/settings/setPersonal" target="_blank">设置账号</a></li>
+					<li><a id="headLogoutBtn" href="/user/logout">退出</a></li>
+				</ul>
+			</li>
+			<li id="message">
+				<a class="msg">消息<b class="mgsTotalNum red_f"></b><em class="redarrow"></em></a>
+				<ul class="add_menu_leo hw120 none_f" id="moreMessageBox">
+				</ul>
+			</li>
+           <% } else { %>
+			<li><a class="first" href="/connect/auth/weibo"><em class="i_sina">&nbsp;</em>微博登录</a></li>
+			<li><a href="/connect/auth/qzone"><em class="i_QQ">&nbsp;</em> QQ登录</a></li>
+			<li><a href="/user/login">登录</a></li>
+			<li><a href="/user/register">注册</a></li>
+           <% } %>
+           	<li><a href="/member/member" target="_blank" class="msg"><em class="i_member"></em>积分兑换</a></li>
+			<li><a class="last" href="/client/?<%= navFrm%>" target="_blank"><em class="i_mob">&nbsp;</em>手机版</a></li>
+		</ul>
+	</div>
+	<div class="clear_f"></div>
+</div>
+<div class="header_bg">
+	<% if(this.topbanner && this.topbanner.length){ %>
+		<div class="header_top pr_f">
+			<ul class="head_bnr">
+				<% this.topbanner.forEach(function(data , i){ %>
+				<li>
+					<% if (0 === i ) { %>
+					<a class="pic" href="<%= data.links%>" target="_blank" style="background:url(<%= data.img_url%>) repeat center top;"></a>
+					<% } else {%>
+					<a class="pic" href="<%= data.links%>" target="_blank" data-img ="<%= data.img_url%>" style="background: repeat center top;"></a>
+					<% } %>
+				</li>
+				<% }); %>
+			</ul>
+			<div class="adType1">
+				<% this.topbanner.length>1 &&  this.topbanner.forEach(function(data){ %>
+				<a></a>
+				<% }); %>
+			</div>
+			<div class="clear_f"></div>
+		</div>
+	<% } %>
+	<div class="clear_f"></div>
+	<div class="header_top logo_wrap">
+		<% if (this.user_id){%>
+			<a class="logo_new" href="/?frm=logoa"></a>
+			<% }else{%>
+			<a class="logo_new" href="/welcome"></a>
+			<%}
+			this.cart_num = 0
+			var cart_num = this.cart_number && this.cart_number.info && this.cart_number.info.count
+			this.cart_num = cart_num
+		%>
+		<% if(this.logo_act && this.logo_act.logo_src){ %>
+			<a class="logo_act_entrance left_f" href="<%= this.logo_act.logo_link %>" target="_blank"><img src="<%= this.logo_act.logo_src %>"></a>
+		<% } %>
+		<div class="ser_n">
+			<% var txt = "搜流行商品";
+			if(this.headTag == 'dict') txt = "搜宝贝、用户、杂志、商家";
+			%>
+			<form class="searchBox" action="/search" method="get" >
+				<span class="ipt1"><em class="i_search"></em><input class="searchKey" name="searchKey" type="text" autocomplete="off" value="" placeholder="<%= txt %>" /></span>
+				<input class="search_type" type="hidden" value="1" name="searchType"/>
+				<input class="filter" type="hidden" value="goods" name="filter"/>
+				<input class="search_frm" type="hidden" value="searchsuggestion" name="frm">
+				<input class="suggest_frm" type="hidden" value="" name="suggest_frm">
+				<span class="ipt2"><input type="submit" class="fm_hd_btm_shbx_bttn" value="搜 索"/></span>
+			</form>
+			<div class="clear_f"></div>
+			<ul class="searchType none_f"></ul>
+			<script type="text/html" id="searchList">
+				<?$.each(prompt , function(index , data){?>
+					<li class="searchKeyItem" stype="goods"><?= data?></li>
+				<?});?>
+			</script>
+		</div>
+		<ul class="cart_info">
+			<li><a href="/cart" target="_blank"><span class="carts_num <%= cart_num?'':'none_f'%>"><span><%= cart_num%></span></span><em class="i_cart">&nbsp;</em> 查看购物车</a></li>
+			<li><a href="/order" target="_blank"><em class="i_order">&nbsp;</em>我的订单</a></li>
+		</ul>
+	</div>
+</div>
+<div id="navbar">
+	<div class="wheader">
+		<div class="header_b">
+		<% if(this.user_id){%>
+			<div style="margin-left: auto; margin-right: auto; position: relative; width: 948px;">
+				<div class="h_ico none_f"><a href="/?frm=on_yellow_show"><span class="red_f"></span>个新分享，点击去看看!</a></div>
+			</div>
+		<%}
+		function tagHLight(tag){
+			return tag == this.headTag ? ['r_d' , '' , ''] : ['' , '' , '']; 
+			}
+		%>
+			<ul class="nav_new">
+				<% if (this.user_id) { %>
+				<li>
+					<% var tagH = tagHLight('welcome');%>
+					<a class="<%= tagH[0]%>" href="/welcome">首页</a>
+				</li>
+				<% } %>
+				<li class="home">			
+					<% var tagH = tagHLight('home');%>
+					<% if (this.user_id) { %>
+					<a class="<%= tagH[0]%>" href="/ihome?<%= navFrm%>">我的关注<span class="shining none_f"></span></a>
+					<% } else { %>
+					<% var tagH = tagHLight('welcome');%>
+					<a class="<%= tagH[0]%>" href="/welcome?<%= navFrm%>">首页<span class="shining none_f"></span></a>
+					<% } %>
+				</li>
+				<li class="guang">
+					<% var tagH = tagHLight('guang');%>
+					<% 
+					var guangWord = '今日最热';
+					if (new Date < new Date('2012/10/21')) {
+						var globalKey = this._Request_cookies.MEILISHUO_GLOBAL_KEY;
+						var percent = parseInt(globalKey.substr(0,2), 16) % 10;
+						var guangWords = ['最in女装','最in单品','最热女装','hot女装','女装热榜'];
+						guangWord = percent > 4 ? '今日最热' : guangWords[percent];
+					}
+					%>
+					<a class="<%= tagH[0]%>" href="/guang/hot?<%= navFrm%>"><%=guangWord%></a>
+				</li>
+				<li class="dress">
+					<% var tagH = tagHLight('dress');%>
+					<a class="<%= tagH[0]%>" href="/guang/catalog/dress?nid=11&cata_id=2000000000000&<%= navFrm%>">衣服<em class="white_arrow"></em></a>
+					<div class="header_list">
+						<div class="header_lcon">
+							<a class="<%if(query.cata_id == 2001000000000){%>active<%}%>" href="/guang/catalog/dress?nid=17&cata_id=2001000000000&<%= navFrm%>">上衣</a>
+							<a class="<%if(query.cata_id == 2004000000000){%>active<%}%>" href="/guang/catalog/dress?nid=19&cata_id=2004000000000&<%= navFrm%>">裙子</a>
+							<a class="<%if(query.cata_id == 2006000000000){%>active<%}%>" href="/guang/catalog/dress?nid=21&cata_id=2006000000000&<%= navFrm%>">裤子</a>
+							<a class="<%if(query.cata_id == 2009000000000){%>active<%}%>" href="/guang/catalog/dress?nid=23&cata_id=2009000000000&<%= navFrm%>">内衣</a>
+						</div>
+					</div>
+				</li>
+				<li>
+					<% var tagH = tagHLight('shoes');%>
+					<a class="<%= tagH[0]%>" href="/guang/catalog/shoes?nid=13&cata_id=6000000000000&<%= navFrm%>">鞋子</a>
+				</li>
+				<li>
+					<% var tagH = tagHLight('bag');%>
+					<a class="<%= tagH[0]%>" href="/guang/catalog/bag?nid=15&cata_id=5000000000000&<%= navFrm%>">包包</a>
+				</li>
+				<li>
+					<% var tagH = tagHLight('access');%>
+					<a class="<%= tagH[0]%>" href="/guang/catalog/access?nid=1097&cata_id=7000000000000&<%= navFrm%>">配饰</a>
+				</li>
+				<li>
+					<% var tagH = tagHLight('beauty');%>
+					<a class="r_r <%= tagH[0]%>" href="/beauty?<%= navFrm%>">美妆</a>
+				</li>
+				<li class="sale">
+					<% var tagH = tagHLight('sale');%>
+					<a class="<%= tagH[0]%>" href="/biz/shareact/list/?<%= navFrm%>">特卖</a>
+				</li>
+				<li>
+					<% var tagH = tagHLight('tuan');%>
+					<a class="<%= tagH[0]%>" href="/tuan/?<%= navFrm%>">团购<em class="new">&nbsp;</em></a>
+				</li>
+				<li>
+					<% var tagH = tagHLight('shop');%>
+					<a class="<%= tagH[0]%>" href="/shop/?<%= navFrm%>">好店</a>
+				</li>
+				<li class="group">
+					<% var tagH = tagHLight('magazine');%>
+					<a class="<%= tagH[0]%>" href="/magazine?<%= navFrm%>">杂志</a>
+				</li>
+				<li class="report">
+					<% var tagH = tagHLight('club');%>
+					<a class="<%= tagH[0]%>" href="/club?<%= navFrm%>">爱美丽Club<em class="white_arrow"></em></a>
+					<div class="header_list">
+						<div class="header_lcon">
+							<a href="/daren?<%= navFrm%>">达人</a>
+							<a href="/welfare?<%= navFrm%>">福利社</a>
+							<a href="/biz/exo/main/?joined=1">EXO-M粉丝专区</a>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+
+	<% if (this.secondNavHold){ %>
+	<div class="sec_nav">
+	</div>	
+	<%} else if(this.headTag === 'oldclub' && !this.notShowNav) {%>
+	<div class="sec_nav">
+		<div class="club_nav_bg"></div>
+		<div class="club_nav">
+			<h2>爱美丽Club</h2>
+			<ul class="club_nav_ul">
+				<li<%if(this.board_id == 0){%> class="club_select"<%}%>><a href="/club/">全部</a></li>
+				<%this.board_info && this.board_info.map(function(data){%>
+				<li<%if(this.board_id == data.board_id){%> class="club_select"<%}%>><a href="/club/?bid=<%=data.board_id%>"><%=data.board_title%></a></li>
+				<%});%>
+			</ul>
+			<a class="nav_create" <%= !this.clubTest.canWrite ? 'href="javascript:;"' : 'href="/club/newTopic" target="_blank"' %> >发&nbsp;&nbsp;帖<em class="cl_i_new">&nbsp;</em></a>
+			<div class="write_off">
+				<div class="tran_wrap"><div class="tran_bottom"></div><div class="tran_top"></div></div>
+				<p>社区内测中，发帖/回复暂未全部开放先去逛逛吧！<a class="red_f write_closed" href="javascript:void(0)">关闭<span class="i_close"></span></a></p></div>
+		</div>
+	</div>
+	<%}%>
+</div>
+<div class="clear_f"></div>
+<% if(this.user_id && !this.userInfo.mobile_is_actived && !this.isHideBindTip){ %>
+<div class="bind_tip"><strong>X</strong>亲，为了保障你购买商品的过程更安全，建议你绑定手机。绑定后还可以快速找回密码，并及时监控账号安全。<a href="/settings/bindMobile?frm=tobind" target="_blank">立即绑定手机>></a></div>
+<div class="clear_f"></div>
+<%}%>
+
+<%* for ipad %>
+	<%}%>
+<%* for ipad %>

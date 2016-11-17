@@ -1,0 +1,133 @@
+/**
+ * @fileoverview App发现-好店
+ * @requires
+ * @author jindaxi@meilishuo.com
+ * @date 2014-10-13
+ */
+
+@import "../block.less";
+html{.f(10*@f);}
+body{.bgc(#fff);}
+a{.block;outline:none;}
+img{.w(100%);.block;border: 0
+	;}
+
+.hdshop{background:#e6e6e7}
+//导航样式
+.nav_wap{.w(100%); min-height:47px;.mb(20*@px);.f(28*@px);}
+.nav{
+	display:-moz-box; 
+	display:-webkit-box; 
+	display:box;
+	//.w(100%);
+	max-width:640px;
+	.border-2b(#e6e6e6);
+	.bgc(#fff);
+	a{
+		-moz-box-flex:1; 
+		-webkit-box-flex:1;
+		box-flex:1;
+		//.w(10%);
+		.ml(3.3%);.mr(3.3%);.mt(15px);.mb(10px);.pb(5px);
+		//.left;
+		.c
+	}
+	.curr{.fc(#f69);border-bottom:solid 1px #f69;}
+	.hidden;
+}
+
+.scrollin{.pf;top:0;z-index: 100;}
+
+
+.gotop{
+	.w(12.5%);
+	.none;
+	right:20px;
+	position:fixed;
+}
+.list-item{background: #fff;
+	border-bottom:1px solid #e5e5e5;
+	border-top:1px solid #e5e5e5;
+	.mb(20*@px)
+}
+
+
+.item-box{
+	display: box; 
+	display: -webkit-box; 
+	display: -moz-box; 
+	// -moz-box-orient:horizontal;
+	// -webkit-box-orient:horizontal;
+	// box-orient:horizontal;
+	-webkit-box-pack:center; 
+	-moz-box-pack:center; 
+	-webkit-box-align:center; 
+	-moz-box-align:center; 
+	.pb(20*@px);
+	a{
+		.w(208*@w);
+		height:340/562*100%;
+		.pr;
+	}
+	.lazy_pic{background-size: cover;.w(100%);.pt(340/208*100%);.block;}
+	a:first-child{
+		.mr(4*@w);
+		.ml(4*@w);
+	}
+	a:last-child{
+		.mr(4*@w);
+		.ml(4*@w);
+	}
+	.price{.vm;.w(100%);.h(36*@px);.pl(3px);.l(36*@px);background:rgba(0,0,0,0.5);.pa;left:0;bottom: 0;.fc(#fff);box-sizing:border-box;-moz-box-sizing:border-box; -webkit-box-sizing:border-box; 
+		span{.f(24*@px);.i_block;.mr(3px);}
+		del{.i_block}
+
+	
+	}
+	.promotion{.pa;.w(60*@px);.h(60*@px);left:13*@w;top:13*@w;background:url("@{pic_url}/images/wap/hdstreet/newlogo1.png") no-repeat;background-size: 100%;}
+}
+.shop-info{
+	.sp-wrap{
+		display: box; 
+		display: -webkit-box; 
+		display: -moz-box; 
+		-webkit-box-pack:start; 
+		-moz-box-pack:start; 
+		-webkit-box-align:center; 
+		-moz-box-align:center; 
+		.pb(20*@px);
+		.pt(20*@px);
+		.ml(30*@w);
+	}
+	.shop-logo{.w(80*@px);.h(80*@px);border-radius: 20px;.mr(10px);border: 1px solid rgba(89, 80, 86, 0.15);
+		img{border-radius: 20px;.h(80*@px);};
+	}
+	.shop-word{
+		p:first-child{.mb(5px);.f(28*@px);.ellipsis;width: 238px;}
+		p:last-child{.fc(#ccc2c9);.f(20*@px);.ellipsis;width: 238px;}
+
+	}
+	.discount-info{.right;.w(80px);.h(80px);background:url("@{pic_url}/images/wap/hdstreet/discount.png") no-repeat;}
+}
+.shop-coupon{.vm;.f(26*@px);.pt(15*@px);.pb(15*@px);.pl(30*@w);
+	a{.i_block;.vm;.f(20*@px);.c;.mr(8*@w);.w(142*@px);.fc(#f23d3d);.h(52*@px);.l(52*@px);background:url("@{pic_url}/images/wap/hdstreet/mj.png") no-repeat;background-size:100%;}
+	a:first-child{.ml(10*@w);}
+}
+
+//弹窗样式重置
+.windowDrive .dialog{background: transparent;.w(510*@px);.h(640*@px)}
+.windowDrive .dialog-con{padding: 0;
+	.sureBtn img{border-radius: 3px;-webkit-border-radius:3px;}
+}
+.windowDrive .dialog-btn{.none;}
+.windowDrive .overlay{background-color:rgba(0, 0, 0, 0.85)}
+// @media (-webkit-min-device-pixel-ratio : 2) {
+// 	.windowDrive .dialog{.w(600*@px);.h(746*@px)}
+// }
+
+.cbtn{.i_block;.w(37px);.h(37px);.pa;right:-15px;top:-15px;background: url('http://d03.res.meilishuo.net/pic/_o/a4/54/03da00861f0deb7cf6bf2189f59e_60_60.ch.png') no-repeat;background-size:100%;}
+
+@media (device-width:414px) and (-webkit-min-device-pixel-ratio:3.0){/* 兼容iphone6 plus */
+	.windowDrive .dialog{.w(600*@px);.h(746*@px)}
+}
+@import "../footer.less";

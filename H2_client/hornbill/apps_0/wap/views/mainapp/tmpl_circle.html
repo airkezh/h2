@@ -1,0 +1,33 @@
+<script type="text/html" id="tmpl-circle">
+<?
+var circle = this.v,
+    maxNum = 4,
+    circleData = circle.msg_data,
+    url = 'meilishuo://circle.meilishuo/?json_params=' + encodeURIComponent(JSON.stringify({"circle_id" : circle.id,"r": "<%= this.r %>"})),
+    data, pt;
+?>
+<div class="circle" data-cid="<?= circle.id ?>">
+    <a class="circle-info-wrap" href="<?= url ?>">
+        <img class="avatar" src="<?= circle.img ?>"></img>
+        <p class="circle-info">
+            <span class="circle-name"><?= circle.name ?></span>
+            <span class="circle-data"><?= circle.hightlight_num?>分享|<?= circle.member_num ?>成员</span>
+        </p>
+    </a>
+    <a href="<?= url ?>">
+        <ul class="list">
+        <? for(var i = 0; i < maxNum; i++ ) {
+            data = circleData[ i ];
+            if ( data ) {
+                pt = data.height / data.width * 50;
+        ?>
+            <li class="item" style="background-image:url(<?= data.picurl ?>);padding-top:50%;">
+            </li>
+            <? } else {?>
+            <li class="item item-blank"></li>
+            <? } ?>
+        <? } ?>
+        </ul>
+    </a>
+</div>
+</script>

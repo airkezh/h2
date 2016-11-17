@@ -1,0 +1,351 @@
+<%# head.html%>
+<%
+var magItemRenderFn = requireFn('group/magitem.html');
+var attrItemRenderFn = requireFn('guang/attrItem.html');
+%>
+<% var goodsInfo = this.goods_info;%>
+
+<%if(this.isNewUser){%>
+	<div style="width:948px;margin:14px auto 0;">
+		<div class="cursor_f ban_add_fav" style="overflow:hidden;height:100px; background:url('<%=this.PICTURE_URL%>images/window/land_ban10.jpg') center top no-repeat;"></div>
+	</div>
+<%}%>
+<%if(this.isSite){%>
+	<%# block/top100.html%>
+<%}%>
+<div class="content">
+	<div class="twitter_l">
+		<div class="twitter twitter_box" twitter_id="<%= goodsInfo.twitter_id%>" twitter_author_uid="<%= goodsInfo.uinfo.user_id%>">
+			<div class="redline1"></div>
+			<%if(this.showPrice){%>
+				<%# twitter/pic_tui.html%>
+				<div class="detail">
+					<p class="dtl_l twitter_context"><%= goodsInfo.twitter_htmlcontent;%></p>
+					<p class="dtl_r">
+						<%if(this.user_id){%>
+							<%if(this.userInfo.isjb){%>
+								<a href="javascript:void(0)" id="twitter_report">举报</a>|
+							<%}%>
+						<%}%>
+						<%if(goodsInfo.showDelete || goodsInfo.super){%><a <%if(goodsInfo.super){%>isshow="1"<%}else if(goodsInfo.isPolice){%>isshow="2"<%}%> href="javascript:void(0)" class="twitter_del">删除</a>|<%}%>
+						<%*{ 418 %>
+						<a class="click_pl">评论 (<em class="twitter_comment_num"><%= goodsInfo.count_discuss%></em>)</a> 	
+						<%*} %>
+					</p>
+				</div>
+			<%}else if(this.showText){%>
+				<%# twitter/text_tui.html%>
+			<%}else{%>
+				<%# twitter/show_tui.html%>	
+			<%}%>
+			<%*{ 418 %>
+			<div class="clear_f"></div>
+			<%# block/comments.html %>
+			<%*} %>
+		</div>
+	</div>
+	<div class="twitter_r">
+		<%if(this.shop_info && this.shop_info.length != 0 ){%>
+			<%# block/shop_info.html%>
+		<%}else{%>
+		<div class="bar">
+			<div class="redline2"></div>
+			<% if (this.share_user){ %>
+				<div class="user_box">
+					<a class="avatar48_f" href="/person/u/<%= this.share_user.user_id%>" target="_blank"><img src="<%= this.share_user.avatar_e %>" /></a>
+					<h4>
+						<a href="/person/u/<%= this.share_user.user_id%>" target="_blank"><%= this.share_user.nickname %> 
+							<span class="identity_big_style">
+								<%
+								var identity = this.share_user.identity;
+								if (identity) {
+								if(identity.pinkV){%>
+									<span class="mls_special" title="<%= identity.pinkV%>">&nbsp;</span>
+								<%}if(identity.editorV){%>
+									<span class="mls_editor" title="<%= identity.editorV%>">&nbsp;</span>
+								<%}if(identity.blueV){%>
+									<span class="mls_lv" title="<%= identity.blueV%>">&nbsp;</span>
+								<%}if(identity.purpleV){%>
+									<span class="mls_zv" title="<%= identity.purpleV%>">&nbsp;</span>
+								<%}if(identity.heart_buyer){%>
+									<span class="mls_buyer" title="<%= identity.heart_buyer%>">&nbsp;</span>
+								<%}if(identity.diamond_buyer){%>
+									<span class="mls_diamond" title="<%= identity.diamond_buyer%>">&nbsp;</span>
+								<%}
+								}
+								%>
+							</span>
+						</a>
+					</h4>
+					<%if(this.share_user.self == 1) {%>
+						<p><span class="followed">我自己</span></p>
+					<%} else if(this.share_user.followbyme == 0){%>
+						<p><span class="btn addFollow" fuid='<%=this.share_user.user_id%>' following=<%= this.share_user.following%> followed="<%= this.share_user.followed%>">+ 加关注</span></p>
+					<%} else if(this.share_user.followbyme == 1){%>
+						 <p><span class="followed removeFollow" fuid='<%=this.share_user.user_id%>'>已关注</span></p>
+					<%} else if(this.share_user.followbyme == 2){%>
+						<p><span class="followed removeFollow" fuid='<%=this.share_user.user_id%>' followed="<%=this.share_user.followbyme%>">互相关注</span></p>
+					<% } %>
+				</div>
+				<%if (identity && identity.description){%>
+					<p class="mls_edit">
+						<%if(identity.description.pinkV){%>
+							<%=identity.description.pinkV%>
+						<%}else if(identity.description.editorV){%>
+							<%=identity.description.editorV%>
+						<%}else if(identity.description.blueV){%>
+							<%=identity.description.blueV%>
+						<%}else if(identity.description.purpleV){%>
+							<%=identity.description.purpleV%>
+						<%}%>
+					</p>
+				<% }%>
+			<% }%>
+			<%if(this.goods_group){%>
+				<% if(this.goods_group.is_group){%>
+				<h3 class="g_tle"><span>所在杂志｜</span><a href="/group/<%= this.goods_group.group_id%><%= this.frm || ''%>" target="_blank"><%= this.goods_group.name%></a></h3>
+				<a class="imgBox" href="/group/<%= this.goods_group.group_id%><%= this.frm || ''%>" target="_blank"><img class="maxpic" src="<%= this.goods_group.mixpic %>" /></a>
+				<p class="mt20_f">
+					<% if (this.goods_group.is_follower){ %>
+					<span class="removeGroupFollow pink_follow" groupid="<%= this.goods_group.group_id%>">已关注</span>
+					<% } else {%>
+					<span  class="addGroupFollow red_follow" groupid="<%= this.goods_group.group_id%>" >+ 加关注</span>
+					<% }%>
+				</p>
+				<% }%>
+			<% }%>
+		</div>
+		<%}%>
+		<%if(this.recommend && this.recommend.length){%>
+		<div class="cmn_title mt14_f">
+			<p><a target="_blank" href="/shop/">更多好店<samp>&gt;&gt;</samp></a></p>
+			<h3 class="f16_f"><span class="s_line"></span>推荐好店</h3>
+		</div>
+		<div class="groupBox_change">
+			<%# block/shop_recommend.html%>
+		</div>
+		<%}%>
+		<%if(this.adm15 && this.adm15.ad){%>
+			<div class="tr_bnr">
+				<div class="boxImg" style="width:228px;height:160px;">
+					<% var seclen = this.adm15.ad ? this.adm15.ad.length : 0; %>
+					<ul class="_img" style="position:absolute;left:0;width:<%= (seclen+1)*228 %>px;display:inline-block;">
+						<% this.adm15.ad && this.adm15.ad.map(function(data, index){ %>
+						<li class="left_f">
+							<a class="adm_mon" href="/api/adm/?spm=<%=data.ad_clickspm%>" target="_blank" monitor="<%=data.ad_click_monitor%>" show_mon="<%=data.ad_view_monitor%>">
+									<img src="<%=data.ad_filedata%>">
+							</a>
+						</li>
+						<% }); %>
+					</ul>
+				</div>
+				<div class="_num adType1 <% if(seclen == 1) { %>none_f<% } %>">
+					<% for (var i=1; i<=seclen; i++) { %>
+					<% var current = i==1 ? 'current' : ''; %>
+					<a class="<%= current %>"><span class="none_f"><%= i %></span></a>
+					<% } %>
+				</div>
+			</div>
+		<%}%>
+	</div>
+</div>
+<div class="clear_f"></div>
+<% if (this.share_volume && this.share_volume.length != 0){ %>
+<div class="element">
+	<div class="redline1"></div>
+	<h2>时尚元素</h2>
+	<ul class="ent_list">
+		<% this.share_volume && this.share_volume.forEach(function(data,i) {
+			var purl = '/pretty/' + data.vid 
+			if (data.eid) purl += '?eid=' + data.eid
+
+			%>
+		<li <%if(++i == this.share_volume.length){%>class="last"<%}%>>
+			<a class="pic" href="<%= purl%>" target="_blank"><img src="<%= data.pic_rectangle %>" /></a>
+			<div class="ent_info">
+				<h1 class="tle"><a href="<%= purl%>" target="_blank"><%= data.name %></a></h1>
+				<p class="red_f"><a href="<%= purl%>" target="_blank">查看专辑 >></a></p>
+				<p class="txt"><span class="mark_l">“</span><%= data.detail %><span class="mark_r">”</span></p>
+				<p class="sm_pic">
+					<a href="<%= purl%>" target="_blank">
+						<% data.pics && data.pics.forEach(function(pic){  %>
+							<img src="<%= pic %>" />
+						<% }); %>
+						<span>更多宝贝</span>
+					</a>
+				</p>
+			</div>
+		</li>
+		<% }); %>
+	</ul>
+	<div class="clear_f"></div>
+</div>
+<% } %>
+<% if (this.share_lite && this.share_lite.length != 0){ %>
+<div class="lite">
+	<ul>
+		<% this.share_lite && this.share_lite.forEach(function(data,i) {
+		%>
+		<li <%if(++i == this.share_lite.length){%>class="last"<%}%>>
+			<div class="lite_info">
+				<h2 class="lite_title redline3"><a href="<%= data.url %>" target="_blank"><%= data.title %></a></h2>
+				<p class="lite_prefix"><a href="<%= data.url %>" target="_blank"><%= data.prefix %></a></p>
+				<div class="clear_f"></div>
+				<p class="lite_content"><a href="<%= data.url %>" target="_blank"><%= data.content %></a></p>
+				<p class="sm_pic">
+					<a href="<%= data.url %>" target="_blank">
+						<% data.pics && data.pics.forEach(function(pic){  %>
+							<img src="<%= pic %>" />
+						<% }); %>
+						<span>更多宝贝</span>
+					</a>
+				</p>
+				<div class="clear_f"></div>
+			</div>
+		</li>
+		<% }); %>
+	</ul>
+	<div class="clear_f"></div>
+</div>
+<% } %>
+<div class="auto_box">
+	<%if(this.goods_like && this.goods_like.length){%>
+		<h3 class="t_tle">猜你喜欢</h3>
+		<%this.goods_like.map(function(attrs){%>
+			<%= attrItemRenderFn(attrs);%>
+		<%});%>
+	<%}%>
+</div>
+<div class="clear_f"></div>
+<%if(false && this.share_leftbanner && typeof this.share_leftbanner == 'object'){%>
+	<div class="tl_bnr">
+		<a href="<%= this.share_leftbanner[0].links%>" target="_blank"><img src="<%= this.share_leftbanner[0].img_url%>" /></a>
+	</div>
+<%}%>
+<%if(this.adm11 && this.adm11.ad){%>
+<div class="auto_f" style="width:960px;">
+	<%
+		this.adm11.admId = 'adm_mid';
+		this.adm11._JSstack = this._JSstack;
+		this.adm11._JSmods = this._JSmods;
+	%>
+	<%= requireFn('commerce/adm_banner.html')(this.adm11);%>
+</div>
+<%}%>
+
+<div class="clear_f"></div>
+<div class="auto_box">
+	<h3 class="t_tle">也许你还喜欢</h3>
+	<div class="clear_f"></div>
+	<div class="spinner midSpinner"></div>
+	<div class="content_fluid">
+		<div class="goods_wall" style="width:960px;">
+		</div>
+	</div>
+	<div class="spinner botSpinner none_f"></div>
+	<div class="space">
+		<%if(this.shop_info && this.shop_info.length != 0 ){%>
+			<a class="more" href="<%=this.shop_info.url %>">去<%=this.shop_info.shop_nick%>查看更多分享<samp>&gt;&gt;</samp></a>
+		<%}else{%>
+			<a class="more" href="/person/u/<%= goodsInfo.uinfo.user_id%>">去她的美丽空间查看更多分享<samp>&gt;&gt;</samp></a>
+		<%}%>
+	</div>
+	<div class="clear_f"></div>
+	<%if(this.adm13 && this.adm13.ad){%>
+	<div class="auto_f" style="width:960px;">
+		<%
+			this.adm13.admId = 'adm_bot';
+			this.adm13._JSstack = this._JSstack;
+			this.adm13._JSmods = this._JSmods;
+		%>
+		<%= requireFn('commerce/adm_banner.html')(this.adm13);%>
+	</div>
+	<%}%>
+</div>
+
+<script type="text/html" id="pagingNav">
+<div class="pageNav1">
+	<? if(page > 0){?>
+		<a index="-1" class="pagePrev" href="javascript:void(0)">&lt;上一页</a>
+	<?};?>
+	<?
+		var left_num = page >5 ? page - 5: 0 , right_num = left_num + 10;
+		if ( right_num > pageLen) right_num = pageLen;
+	?>
+	<?if (left_num >= 1){?>
+		<a index="1" href="javascript:void(0)" class="pageitem <?if(page == 1){?>currentpage<?}?>"><?= 1?></a>
+		<span>...</span>
+	<?}?>
+	<?for (var i = left_num ;i < right_num;i++ ){?>
+		<a index="<?= i?>" href="javascript:void(0)" class="pageitem <?if(page == i){?>currentpage<?}?>"><?= i+1?></a>
+	<?}?>
+	<?if (right_num < pageLen) {?>
+		<span>...</span>	
+		<a index="<?= pageLen?>" href="javascript:void(0)" class="pageitem <?if(page == pageLen){?>currentpage<?}?>"><?= pageLen?></a>
+	<?}?>
+	<? if(page != pageLen - 1){?>
+		<a class="pageNext" href="javascript:void(0)" index="1">下一页&gt;</a>
+	<?}?>
+</div>
+</script>
+<%if(goodsInfo.super){%>
+<script type="text/html" id="spamDialog">
+<div id="spam_pop" class="spam_pop">
+	<div class="f14_f">是否确认删除推，删除后的推将不能恢复？</div>
+	<div class="checkBox mt14_f">
+	<input class="delAllTwitter" id="checkedBox" type="checkbox"></input> <span>同时删除用户的所有推</span>
+	<a target="_blank" class="red_f ml6_f" href="http://work.meiliworks.com/twitter/getTwitterList?twitter_author_uid=<?= uid?>">查看该用户的所有推>></a>
+	</div>
+	<div class="checkBox"><input class="closureUser" id="checkedBox" type="checkbox"></input> <span>同时封禁该用户一周</span></div>
+	<div class="checkBox"><input class="deleteUser" id="checkedBox" type="checkbox"></input> <span>同时删除该用户</span></div>
+</div>
+</script>
+<%}%>
+<%if(this.user_id){%>
+	<%if(this.userInfo.isjb){%>
+<script type="text/html" id="alertDialog">
+<div id="report_pop" class="report_success">
+	<h3 class="red_f">举报成功</h3>	
+	<p>我们会尽快处理您的举报，谢谢！</p>
+</div>
+<div class="clear_f"></div>
+</script><script type="text/html" id="reportDialog">
+<div id="report_pop" class="report_pop">
+	<h3 class="title">感谢您对我们的支持，我们会尽快处理您的举报</h3>
+	<fieldset>
+		<form id="reportForm" method="post" onsubmit="return false" action="">
+			<legend>请选择举报的内容类型：</legend>
+			<p><input type="radio" id="guanggao" value="1" name="report" checked="true"></input><label for="guanggao">广告或者垃圾信息</label></p> 
+			<p><input type="radio" id="seqing" value="2" name="report"></input><label for="seqing">色情或污秽的内容</label></p>
+			<p><input type="radio" id="weihai" value="3" name="report"></input><label for="weihai">危害国家安全内容</label></p> 
+			<p><input type="radio" id="feibang" value="4" name="report"></input><label for="feibang">诽谤或人身攻击</label></p>
+		</form>
+	</fieldset>
+</div>
+<div class="clear_f"></div>
+</script>
+	<%}%>
+<%}%>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/twitter');
+	fml.use('page/poster_guang');
+	_use:", this._JSstack , this._JSmods ); %>
+
+<%# poster.html%>
+
+<script>
+fml.vars.isTaobaoPic = "<%=this.goods_info.taobao_original%>";
+fml.vars.user_id = "<%= this.goods_info.uinfo.user_id%>";
+fml.vars.count_discuss = "<%= goodsInfo.count_discuss%>";
+fml.vars.twitter_id = "<%= goodsInfo.twitter_id%>";
+</script>
+<%if(this.showPrice && goodsInfo.ginfo && goodsInfo.ginfo.price) {%>
+<script type="text/javascript">
+function DM_prepClient(csid,client) {
+client.DM_addEncToLoc("catalog", "<%=this.catlog_info.catalogId || ''%>");
+client.DM_addEncToLoc("productprice", "<%=goodsInfo.ginfo.price%>");
+client.DM_addEncToLoc("registered", "<%=this.userInfo.user_id%> || 0");
+}
+</script>
+<%}%>
+<%# foot.html%>

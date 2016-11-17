@@ -1,0 +1,176 @@
+@import "base.less";
+
+body {
+  background : #f7f7f7;
+}
+
+img { .block; .w(100%); }
+
+
+.info-wrap {
+  .bgc(#fff);
+}
+
+.circle-info {
+  margin : 0 5%;
+  .img-wrap {
+    .auto();
+    .w(145*@px);
+    .h(145*@px);
+    padding : 30*@px 0 0 0;
+    img {
+      .w(100%);
+      .h(100%);
+      .border-r(50%);
+    }
+  }
+  .title, .num, .desc {
+    .c();
+  }
+  .title {
+    .mt(1.7rem);
+    .f(2.4rem);
+    .l(3rem);
+  }
+  .num {
+    .mt(.8rem);
+    .f(2.2rem);
+    .l(3rem);
+  }
+  .desc {
+    .f(2.2rem);
+    .l(2.8rem);
+    .fc(#b6b6b6);
+    padding : 1.5rem 0;
+  }
+}
+
+.goods-wall {
+  .w(100%);
+  .bgc(#fff);
+  .f(0px);
+  .title, .empty {
+    .c();
+    .f(2.2rem);
+    .l(4rem);
+  }
+
+  .poster-wrap {
+    .w(49.99%);
+    .bgc(#fff);
+    .i_block();
+    .poster {
+      margin : 2rem 10*@px;
+      a {
+        .i_block();
+        .w(100%);
+        .c();
+        background-size : 100%;
+        overflow        : hidden;
+      }
+      p {
+        padding : 5px;
+      }
+      .clothes-title {
+        .w(100%);
+        .mt(1rem);
+        .f(3rem);
+        color              : #41403f;
+        .ellipsis();
+        -webkit-box-sizing : border-box;
+        box-sizing         : border-box;
+      }
+      .detail {
+        .f(2.4rem);
+        .price {
+          color : #ff6597;
+        }
+      }
+      .heart {
+        background      : url("http://d04.res.meilishuo.net/pic/_o/0b/af/01f834bdf72c210229a9d6277440_27_24.cg.jpg") no-repeat;
+        background-size : cover;
+        .w(14px);
+        .h(12px);
+        .ml(10px);
+        .i_block();
+        position        : relative;
+        top             : 2px;
+      }
+    }
+  }
+}
+
+.pullUp {
+  .w(100%); .c; .h(40px); .l(40px); .f(14px); color : #888; .pr; .auto;
+  background                                        : url("@{pic_url}/images/webwap/pull-icon@2x.png") 0 0 no-repeat;
+  -webkit-background-size                           : 40px 80px; background-size : 40px 80px;
+  -webkit-transition                                : -webkit-transition 0.25s ease-out 0;
+  .w(40px); .h(40px);
+  &[status="loading"] {
+    background-position               : 0 100%;
+    .transform(rotate(0deg) translateZ(0));
+    -webkit-transition-duration       : 0ms;
+    -webkit-animation-name            : loading;
+    -webkit-animation-duration        : 2s;
+    -webkit-animation-iteration-count : infinite;
+    -webkit-animation-timing-function : linear;
+  }
+  @-webkit-keyframes loading {
+    from { .transform(rotate(0deg) translateZ(0)); }
+    to { .transform(rotate(360deg) translateZ(0)); }
+  }
+  &[status="tap"], &[status="stop"] {
+    -webkit-animation-name : none;
+  }
+  &:before { .nowrap; .ml(-10px); }
+  &[status="tap"] { background : 0 none; }
+  &[status="stop"] {
+    background : 0 none; .h(2px);
+    &:before {
+      content : "木有了..."; .pb(2rem);
+    }
+  }
+}
+
+.weiquan {
+  height     : 257*@px;
+  width      : 100%;
+  background : #fff;
+  margin-top : 20*@px;
+  text-align : center;
+  img {
+    width   : 99*@px;
+    display : inline-block;
+    margin  : 30*@px 0;
+  }
+}
+
+.wei-btn {
+  display          : block;
+  position         : relative;
+  width            : 234*@px;
+  height           : 56*@px;
+  line-height      : 56*@px;
+  background-color: #fb7882;
+  background      : linear-gradient(to right, #fb7882, #b97abe) no-repeat;
+  background      : -webkit-linear-gradient(to right, #fb7882, #b97abe) no-repeat;
+  margin           : auto;
+  z-index          : 1;
+  text-align       : center;
+  color         : #fb7882;
+  font-size:  28*@px;
+  border-radius: 5px;
+
+  &::before {
+    content         : "";
+    position        : absolute;
+    left            : 4*@px;
+    top             : 4*@px;
+    width           : 226*@px;
+    height          : 48*@px;
+    background-color : #fff;
+    background-size : 100%;
+    z-index         : -1;
+    border-radius: 3px;
+  }
+}

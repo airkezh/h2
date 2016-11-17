@@ -1,0 +1,76 @@
+<%
+	var num = 2;
+%>
+<div class="wrap">
+<% if (0 && this.userInfo_wx && !this.userInfo_wx.release) { %>
+	<div class="binding">
+		<a href="/wx/bind">绑定已有美丽说账号</a>, 不用填写地址哦</div>
+<% }%>
+<% if (this.uInfo.data && this.uInfo.data.user_id){ 
+	var data = this.uInfo.data;
+	%>
+	<div class="user_head">
+		<span class="user_head_img" >
+			<em><img src="<%=data.avatar_b%>" alt=""></em>
+		</span>
+		
+		<p class="nikename"><%=data.nickname%><%if(data.identity.pinkV){%><span class="certify"></span><%}%>	</p>
+		<p class="link-class">
+			<a href="/wx/user_c/<%=data.user_id || 0 %>" class="a-re">群 <%if(data.circle_num > 0){%> <%=data.circle_num%> <%}%> </a>
+			<a href="/wx/user_c/<%=data.user_id || 0 %>?type=1" class="a-re">关注 <%if(data.follower_shops > 0){%> <%=data.follower_shops %> <%}%></a>
+			<a href="/wx/newcoupon/index/" class="a-re">优惠劵</a>
+		</p>
+	</div>
+	<% } %>
+
+<div class="order-list">
+	<div class="list">
+		<a class="<%if(this.orderStatus == 0){%> active <%}%>" href="/wx/user/index/?status=0&uid=<%=this.uInfo.data.user_id%>">
+			<div class="order">
+			<%var $data = this.order_status.data;%>
+			<%var numN = function(num){return num > 9 ? 'N' : num};%>	
+				<em class="icon-img order-all">
+				</em>
+			</div>
+			<p class="txt">全部订单</p>
+		</a>
+		<a class="<%if(this.orderStatus == 1){%> active <%}%>" href="/wx/user/index/?status=1&uid=<%=this.uInfo.data.user_id%>">
+			<div class="order">
+			<%if($data.wait_pay){%>
+				<i class="order-img">
+					<span class="order-num"><%= numN($data.wait_pay)%></span>
+				</i>
+			<%}%>
+				<em class="icon-img pay"></em>
+			</div>
+			<p class="txt">待付款</p>
+		</a>
+		<a class="<%if(this.orderStatus == 2){%> active <%}%>" href="/wx/user/index/?status=2&uid=<%=this.uInfo.data.user_id%>">
+			<div class="order">
+			<%if($data.wait_send){%>
+				<i class="order-img">
+					<span class="order-num"><%= numN($data.wait_send)%></span>
+				</i>
+			<%}%>
+				<em class="icon-img send"></em>
+			</div>
+			<p class="txt">待发货</p>
+		</a>
+		<a class="<%if(this.orderStatus == 3){%> active <%}%>" href="/wx/user/index/?status=3&uid=<%=this.uInfo.data.user_id%>">
+			<div class="order">
+			<%if($data.wait_receive){%>
+				<i class="order-img">
+					<span class="order-num"><%= numN($data.wait_receive)%></span>
+				</i>
+			<%}%>
+				<em class="icon-img receive"></em>
+			</div>
+			<p class="txt">待收货</p>
+		</a>
+	</div>
+
+	
+</div>
+<script>
+	fml.vars.orderStatus = <%= this.orderStatus%>;
+</script>

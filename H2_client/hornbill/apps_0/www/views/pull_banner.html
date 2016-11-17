@@ -1,0 +1,49 @@
+<% 
+var query =  this._Request_query
+var timeBegin = new Date(this.showTime[0])
+	,timeEnd =  new Date(this.showTime[1])
+	,timeNow
+if (query && query._ban_st)
+	timeNow = new Date(query._ban_st)
+else
+	timeNow = new Date()
+
+if( timeEnd > timeNow && timeNow >= timeBegin ){%>
+<div class="ads_banner brand_bnr showBanner hidden_f"
+ bigPic = "<%= this.pic_big%>" smPic="<%= this.pic_small%>" logid="<%= this.logId%>"
+style="background:url(<%= this.pic_small %>) center top no-repeat;width:<%= this.width || 'auto'%>">
+	<a href="<%= this.link%>" target="_blank" class="clickBanner" style="width:auto;display:block"></a>
+</div>
+<%}
+var jsLoaded = false
+if (!jsLoaded) {
+	jsLoaded = true
+%>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use(['jquery' , 'app/tracking'] , function(){
+		var $ = this.jquery;    
+		var defaultHeight = 100;
+		var animateHeight = 250;
+		var logTrack = this.tracking;
+		$('.showBanner').bind('mouseenter' , function(){
+			var banner = $(this);
+			var bigPic = banner.attr('bigPic')
+				,logid = banner.attr('logid');
+			banner.stop(true , true).animate({height : animateHeight} , 300)
+			.css({'background' : 'url('+bigPic+') center top no-repeat'})
+			.find('.clickBanner').height(animateHeight);
+			logTrack.cr(logid);
+		}); 
+		$('.showBanner').bind('mouseleave' , function(){
+			var mSelf = this;   
+			setTimeout(function(){
+				var smPic = $(mSelf).attr('smPic');
+				$(mSelf).stop(true , true).animate({'height' : defaultHeight} , 300 , function(){
+					$(mSelf).css({'background' : 'url('+smPic+') center top no-repeat'})
+						.find('.clickBanner').height(defaultHeight);
+				}); 
+			} , 300);
+		}); 
+	});
+_use:",  this._JSstack , this._JSmods ); %>
+<%}%>

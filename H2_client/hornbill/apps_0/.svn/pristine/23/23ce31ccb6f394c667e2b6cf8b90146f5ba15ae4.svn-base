@@ -1,0 +1,201 @@
+<%# head_simple.html%>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<% var fData = this.special_data;
+function decContent(str){
+return str
+}
+function changeIpad(url){return this.os.ipad ? url.replace('meilishuo://','meilishuohd://'):url;}
+%>
+</head>
+<body>
+<% if (fData.headImg || (fData.audio && fData.audio.audio_url) || (fData.banners && fData.banners.length) ){%>
+<div class="win_top">
+	<figure class="win_top_pic">
+		<%
+			var bannerTop = false;
+			if (fData.headImgSize) {
+				var bigPicW = +fData.headImgSize.width;
+				var bigPicH = +fData.headImgSize.height;
+				bannerTop = bigPicH/bigPicW;
+			}
+		%>
+		<span class="pic_load" <%if(bannerTop){%>style="padding-top:<%= bannerTop*100 + '%'%>"<%}%>>
+		<span class="bs_load_img" asrc="<%= fData.headImg %>"  ></span>
+		</span>
+	</figure>
+	<% if(fData.banners && fData.banners.length){ %>
+	<% fData.banners.forEach(function(b){  %>
+	<figure class="win_top_pic">
+		<%
+			var bannerTop = false;
+			var bigPicW = + b.width;
+			var bigPicH = + b.height;
+			bannerTop = bigPicH/bigPicW;
+		%>
+		<a href="<%= b.banner_url %>" class="pic_load" <%if(bannerTop){%>style="padding-top:<%= bannerTop*100 + '%'%>"<%}%>>
+		<span class="bs_load_img" asrc="<%= b.banner %>"  ></span>
+		</a>
+	</figure>
+	<% }); %>
+	<% } %>
+	<% if(fData.audio && fData.audio.audio_url){ %>
+	<div class="audio_box">
+		<%= requireFn('block/audio.html')({
+		'audio' :{
+		'audio' :{
+		'audio_url' : fData.audio.audio_url
+		,'audio_duration' : fData.audio.audio_duration
+		,'avatar_url': fData.audio.avatar_url
+		,'nickname': fData.audio.nickname
+		,'title': fData.audio.title
+		}
+		}
+		, 'id' : 'top0'
+		});%>
+	</div>
+	<% }%>
+</div>
+<%}%>
+<div class="main">
+	<article class="detail">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= decContent(fData.headDesc) %></article>
+	<% fData.content &&  fData.content.forEach(function(list){%>
+	<% if(list.title ){ %>
+	<div class="tle_bg">
+		<div class="title">
+			<div class="title_box">
+				<div class="text_tle1">
+					<h1 class="tle"><%= list.title%></h1>
+				</div>
+			</div>
+		</div>
+	</div>
+	<% } %>
+	<% for (var k=0; k<=2;k++){%>
+	<% if (list['image'+k]){ %>
+	<figure class="big_pic">
+		<%
+		var ptop = false;
+		if (list['width'+k] && list['height'+k]) {
+		var bigPicW = +list['width'+k];
+		var bigPicH = +list['height'+k];
+		var price = list['goods_price'+k];
+		var origin_price = list['origin_price'+k];
+		var twi_id =list['twitter_id'+k];
+		var remain_num = list['remain_num'+k];
+		ptop = bigPicH/bigPicW;
+		}
+
+		%>
+		<a class="pic_load" href="<%= changeIpad(list['link'+k])%>" <%if(ptop){%>style="padding-top:<%= ptop*100+'%' %>"<%}%>>
+		<span class="bs_load_img" asrc="<%= list['image'+k]%>"></span>
+		<% if(twi_id){ %>
+			<% if(remain_num == 0){ %><span class="soldout"></span><% } %>
+			<% if(21 > remain_num > 0 && remain_num){ %><span class="remain">还剩最后<%= list['remain_num'+k]%>件</span><% } %>
+		<% } %>
+		</a>
+		<% if(twi_id){ %>
+		<figcaption>
+			<span class="discount"><em><%= list['discount'+k]%>折抢</em><%= list['descript'+k]%></span>
+			<% if(price){ %><span class="price">￥<%= price %></span><% } %>
+			<% if(origin_price){ %><del class="oriprice">￥<%= origin_price %></del><% } %>
+		</figcaption>
+		<% } %>
+	</figure>
+	<%}%>
+	<% if (list['desc'+k].length){ %>
+	<article class="detail">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= decContent(list['desc'+k])%></article>
+	<% }
+	} %>
+	<div class="pic_box">
+		<%
+		var postNum = parseInt(list.postNum)
+		var posts = []
+		if (postNum) posts = fData.post.splice(0,postNum)
+		posts.length && posts.forEach(function(smp){
+		%>
+		<figure class="small_pic">
+			<a class="pic_load" href="<%= changeIpad(smp.link)%>">
+				<span class="bs_load_img" asrc="<%= smp.image%>"></span>
+			</a>
+			<figcaption><span class="like"><em class="heart"></em><%= smp.likeNum%></span><span class="red_f">￥</span><%= smp.price%></figcaption>
+		</figure>
+		<% });%>
+	</div>
+	<%if(list.moreTitle){%>
+	<div class="more"><a class="red_f" href="<%= changeIpad(list.moreLink)%>">更多<%= list.moreTitle%> &gt;</a></div>
+	<%}
+	var recNum = parseInt(list.recNum)
+	var recs = []
+	if (recNum >0 ){
+	%>
+	<h2 class="s_tle">更多热款推荐</h2>
+	<div class="keywords">
+		<%
+		if (recNum) recs = fData.recommend_hot.splice(0,recNum)
+		recs.length && recs.forEach(function(smp){
+		%>
+		<a href="<%= changeIpad(smp.link)%>"><%= smp.txt%></a>
+		<% });%>
+	</div>
+	<%}%>
+	<%});%>
+	<div class="clear_f"></div>
+</div>
+<div class="past_topic">
+	<% if(fData.past && fData.past.length > 0){ %>
+		<h2>往期专题</h2>
+		<% fData.past.forEach(function(v,k){ %>
+		<div>
+			<a class="topic<%= k%2 %>" href="<%= changeIpad(v.link)%>">
+				<span class="bs_load_img" asrc="<%= v.src %>"></span>
+			</a>		
+		</div>
+		<% }); %>
+	<% } %>
+</div>
+<div class="fw_bot">
+	<%if(fData.subTitle.pop){%>
+	<h2 class="s_tle"><%= fData.subTitle.pop%></h2>
+	<div class="keywords">
+		<%fData.recommend_pop && fData.recommend_pop.forEach(function( recommend){%>
+		<a href="<%= changeIpad(recommend.link)%>"><%= recommend.txt%></a>
+		<% });%>
+	</div>
+	<%}%>
+	<% if (fData.next && fData.next.link){ %>
+	<h2 class="s_tle"><%= fData.next.title%></h2>
+	<p class="pic_box">
+		<a href="<%= changeIpad(fData.next.link)%>">
+			<span class="bs_load_img" asrc="<%= fData.next.src %>"></span>
+		</a>
+	</p>
+	<% } %>
+	<% if (fData.pre && fData.pre.link){ %>
+	<h2 class="s_tle"><%= fData.pre.title%></h2>
+	<p class="pic_box">
+		<a href="<%= changeIpad(fData.pre.link)%>">
+			<span class="bs_load_img" asrc="<%= fData.pre.src %>"></span>
+		</a>
+	</p>
+	<% } %>
+</div>
+<span class="gotop" style="bottom:<%if(this.isIphone){%>60<%}else{%>20<%}%>px">
+	<img src="http://i.meilishuo.net/css/images/wap/tuan/gotop.png" />
+</span>
+<script type="text/javascript">
+	fml.vars.CONFIG_SHARE = <%= JSON.stringify(this.CONFIG_SHARE) || '{}' %>;
+</script>
+<%= requireFn('wapShare.html')({
+'share' : this.share
+, 'shareTitle' : '选择分享到'
+, '_JSstack' : this._JSstack
+, '_JSmods' : this._JSmods
+}); %>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use('wap/page/audio');
+fml.use('wap/app/hackWeixin');
+fml.use('wap/page/activity/fwindow');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot_simple.html%>

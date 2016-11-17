@@ -1,0 +1,139 @@
+<%#head.html%>
+<% var reportType = this.reportType;
+%>
+<div class="reportContain">
+	<div class="reportTitle">
+		您正在发起美丽说商品的违规举报
+	</div>
+	<div class="warmTipsContain">
+		<div class="warmTips">温馨提示</div>
+		<span class="warmTipsContent">
+			1.请提供充分的证据以确保举报成功，请珍惜您的会员权利，帮助美丽说更好地管理网站；<br/>
+			2.举报仅针对商品或会员本身，如需处理交易中产生的纠纷，请选择投诉；<br/>
+			3.一个用户ID对同一个商品72小时内只能举报一次；<br/>
+			4.“<span class="reportStar">*</span>” 号为必填项。<br/>
+		</span>
+	</div>
+	<div class="reportProcessContain">
+		<div class="reportProcess">
+			<div class="reporting">您正在发起举报</div>
+			<div class="reportType">
+				<div class="typeContain">
+					<span class="reportStar">* </span>
+					<span class="reportingType">举报类型:</span>
+				</div>
+				<div class="choiceContain">
+					<form>
+						<% reportType.report_type.forEach(function(data){ %>
+						<input class="inputChoice" type='radio' name="Type" value="<%= data.type %>"/><%= data.comment %><br/>
+						<% }); %>
+					</form>
+				</div>
+			</div>
+			<div class="remarkContain">
+				<div class="remarking">
+					<span class="reportStar">* </span>
+					<span class="remark">备注说明：</span>
+				</div>
+				<div class="remarkContent">
+					<textarea class="remarkDesc" cols="57" rows="8"></textarea>
+					<div class="textareaDesc">
+						描述您的举报理由，以便工作人员做出更好的判断。描述在500字以内
+					</div>
+				</div>
+			</div>
+			<div class="remarkContain">
+				<div class="remarking">
+					<span class="reportStar remarkStar">&nbsp;</span>
+					<span class="remark"> 上传凭证：</span>
+				</div>
+				<div class="remarkContent">
+					<!-- 文件上传相关 -->
+					<div class="addPic_con" id="addPic_con">
+						<a href="javascript:;" id="add_pic" class="add_pic" >
+							<span>
+								<span class="addAccessory">添加附件
+								</span>
+								<em class="cl_i_img">&nbsp;</em>
+							</span>
+							<span class="cl_i_hover"></span>
+						</a>
+						<span class="addPic_tips">
+							支持jpg、png和静态gif格式，每张不超过3M，最多支持8张。
+						</span>
+					</div>
+					<div class="article_post"></div>
+					<div class="article_post_error"></div>
+				</div>
+			</div>
+		</div>
+		<% if(reportType.goods_info.goods_title != undefined){ %>
+		<div class="reportedInfomation">
+			<div class="salerContain">
+				<div class="saler">被举报商家：</div>
+				<div class="salerName"><%= reportType.goods_info.shop_nick%></div>
+			</div>
+			<div class="salerContain">
+				<div class="saler">被举报商品：</div>
+				<div class="salerName">
+					<%= reportType.goods_info.goods_title%>
+				</div>
+			</div>
+			<div class="salerContain">
+				<div class="saler">商品主图：</div>
+				<div class="salerName">
+					<img src="<%= reportType.goods_info.goods_image%>"/>
+				</div>
+			</div>
+		</div>
+		<%};%>
+	</div>
+	<div class="subContain">
+		<div class="btnSub">提交</div>
+		<div class="ignoreChoice">&nbsp;</div>
+	</div>
+
+</div>
+<div class="sucContain"></div>
+<script id="successCon" type="text/html">
+	<div class="successContain">
+		<div class="successReport">
+			<img src="http://d02.res.meilishuo.net/pic/_o/db/4d/8ce344b315314207d6390a779893_32_32.cg.png"><span>举报成功</span></div>
+		<div class="sucDesc">您的举报内容已经成功提交，我们将会尽快处理，请注意查询相关信息</div>
+		<div class="viewMyreport">
+			<a href="/settings/myReport">查看我的举报内容</a>
+		</div>
+	</div>
+</script>
+<!-- 图片上传 -->
+<script type="text/html" id="addCon">
+	<div class="item pr_f">
+		<div class="item_con">
+			<div>
+				<div class="addPic">
+					<div class="uploading">
+						<span class="pic_title"><?= data.pic_title ?></span>
+						<div class="progress_bar"><div class="upload_percentage" id="<?= data.uppic_id ?>"></div></div>
+						<div class="upload_errormsg"></div>
+					</div>
+				</div>
+				<div class="cl_i_close"></div>
+			</div>
+			<div class="clear_f"></div>
+		</div>
+	</div>
+</script>
+<script type="text/html" id="addPicCon">
+	<div class="upload">
+		<img src="<?= pic_url ?>" pid="<?= pic_id ?>">	
+	</div>
+</script>
+<script>
+fml.vars.reportType = <%= JSON.stringify(this.reportType) %>;
+fml.vars.event_id = <%= this.event_id %>;
+fml.vars.reportCheck = <%= JSON.stringify(this.reportCheck) %>;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/reportGoods');
+_use:", this._JSstack, this._JSmods); %>
+<%#foot.html%>

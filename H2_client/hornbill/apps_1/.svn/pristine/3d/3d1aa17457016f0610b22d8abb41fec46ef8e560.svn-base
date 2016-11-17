@@ -1,0 +1,163 @@
+.voice-btn() {
+  .post-voice {
+    position          : absolute;
+    width             : 90*@px;
+    height            : 90*@px;
+    left              : 50%;
+    bottom            : -45*@px;
+    font-size         : 26*@px;
+    color             : #ff8db3;
+    -webkit-transform : translatex(-50%);
+    transform         : translatex(-50%);
+
+    .icon-play {
+      width           : 100%;
+      height          : 36*@px;
+      margin-top      : 8*@px;
+      background-size : contain;
+    }
+
+    .voice-bg {
+      position         : absolute;
+      left             : -10*@px;
+      top              : -10*@px;
+      width            : 110*@px;
+      height           : 110*@px;
+      background-color : rgba(51, 51, 51, .4);
+      border-radius    : 50%;
+    }
+
+    .voice-icons {
+      display    : none;
+      height     : 36*@px;
+      margin-top : 8*@px;
+      font-size  : 0;
+      overflow   : hidden;
+    }
+  }
+
+  .post-voice-wrap {
+    position         : relative;
+    width            : 100%;
+    height           : 100%;
+    padding-top      : 1px;
+    background-color : #fff;
+    border-radius    : 50%;
+    text-align       : center;
+    color            : #ff7a9a;
+  }
+
+  .post-voice-length {
+    margin : 8*@px 0 -8*@px 2px;
+  }
+
+  .is-playing {
+    .icon-play {
+      display : none;
+    }
+
+    .voice-icons {
+      display : block;
+    }
+
+    /*
+      这里模拟的是微信里的播放效果，之前对 icon-voice-1 也做了操作，这次修改把它删掉了。
+    */
+    .icon-voice-2 {
+      .animation(voiceInAndOut-2 1.2s steps(3, end) 0s infinite);
+    }
+
+    .icon-voice-3 {
+      .animation(voiceInAndOut-3 1.2s steps(3, end) 0s infinite);
+    }
+  }
+
+  @-webkit-keyframes voiceInAndOut-2 {
+    0% {
+      visibility : hidden;
+    }
+
+    50% {
+      visibility : visible;
+    }
+
+    100% {
+      visibility : visible;
+    }
+  }
+
+  @-webkit-keyframes voiceInAndOut-3 {
+    0% {
+      visibility : hidden;
+    }
+
+    90% {
+      visibility : visible;
+    }
+  }
+
+  @keyframes voiceInAndOut-2 {
+    0% {
+      visibility : hidden;
+    }
+
+    50% {
+      visibility : visible;
+    }
+
+    100% {
+      visibility : visible;
+    }
+  }
+
+  @keyframes voiceInAndOut-3 {
+    0% {
+      visibility : hidden;
+    }
+
+    90% {
+      visibility : visible;
+    }
+  }
+
+  .icon-loading {
+    display          : none;
+    height           : 36*@px;
+    width            : 36*@px;
+    background-image : url("http://d04.res.meilishuo.net/pic/_o/bc/79/94609860c2eb27fb0421d1630fd7_36_36.cg.png");
+    margin-top       : 8*@px;
+    background-size  : contain;
+    .animation(rotate .8s 0s linear infinite);
+  }
+
+  .is-loading {
+    .icon-play {
+      display : none;
+    }
+
+    .icon-loading {
+      display : inline-block;
+    }
+  }
+
+  @-webkit-keyframes rotate {
+    from {
+      -webkit-transform : rotate(0deg);
+      transform         : rotate(0deg);
+    }
+    to {
+      -webkit-transform : rotate(360deg);
+      transform         : rotate(360deg);
+    }
+  }
+
+  @keyframes rotate {
+    from {
+      transform : rotate(0deg);
+    }
+    to {
+      transform : rotate(360deg);
+    }
+  }
+
+}

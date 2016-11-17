@@ -1,0 +1,79 @@
+<%#head.html%>
+<div class="wrap">
+	<%if(this.userInfo.user_id != 0){%>
+		<div class="info_box">
+			<img class="tou" src="<%= this.userInfo.avatar_e%>" />
+			<div class="level">
+				<p><span class="level_name"><%= this.my_info.tip%></span><span class="nick"><%= this.userInfo.nickname%></span></p>
+				<div class="jindu">
+					<div class="jindutiao">
+						<div class="curr_jindu"></div>
+						<div class="e_num">
+							再答对<%= this.my_info.question_distance%>题升级为”<%= this.my_info.next_tip%>“
+						</div>
+					</div>
+				</div>	
+			</div>
+		</div>
+	<%}%>
+	<img class="top_pic" src="<%= this.baseData.head_pic_answer.pic_url%>">
+	<div class="cloth_box">
+		<% this.baseData && this.baseData.sub_answer && this.baseData.sub_answer.map(function(data){ %>
+			<div class="<%= data.answer%>_box">
+				<img class="<%= data.answer%>" src="<%= data.answer_pic_url.pic_url%>">
+			</div>
+		<%});%>	
+	</div>	
+	<div class="talk yes_pop">
+		<div class="text">
+			<span>恭喜你！</span><br />
+			选对了，果然是眼睛够毒的美少女！明天继续来挑战~
+		</div>
+	</div>
+	<div class="talk no_pop">
+		<div class="text">
+			<span>sorry!</span>你选错啦！<br />
+			<%= this.baseData.tip%> 那款更流行<br>
+			别灰心<br>
+			明天继续来培训~
+		</div>
+	</div>
+	<div class="point">
+		<h2>正确流行要点</h2>
+		<% this.baseData && this.baseData.sub_figure && this.baseData.sub_figure.map(function(data){ %>
+			<p><%= data.tips%></p>
+		<%});%>
+		
+	</div>
+	<a href="<%= this.baseData.sub_jump.url%>" class="btn" xr="<%= this.xr.r%>"><%= this.baseData.sub_jump.word%></a>
+</div>
+
+<script type="text/html" id="shengji">
+	<div class="shengji">
+		<p class="close closeDialog"></p>
+		<div class="content content<?= this.my_info.level?>">
+			<div class="text">
+				<span>恭喜你！选对啦！</span><br>
+				果然是眼光够毒的美少女<br>
+				毒眼指数<%= this.my_info.level %>级<br>
+				获得“<%= this.my_info.tip%>”头衔
+			</div>
+		</div>
+	</div>
+</script>
+<script>
+	fml.vars.isCorrect = '<%= this.isCorrect%>';
+	fml.vars.is_freshman = <%= this.my_info.if_freshaman%>;
+	fml.vars.my_info = <%= JSON.stringify(this.my_info)%>;
+	fml.vars.curr_val = <%= this.my_info.question_count%>;
+	fml.vars.curr_total_val = <%= this.my_info.question_max%>;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/popular_select');
+_use:", this._JSstack, this._JSmods); %>
+<%#foot.html%>
+
+
+
+
+

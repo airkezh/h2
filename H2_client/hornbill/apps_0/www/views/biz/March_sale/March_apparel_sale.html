@@ -1,0 +1,97 @@
+<%#head.html%>
+<%
+	var getTimeRemain = function(time){
+		if(time && time > this.cur_time){
+			return time - this.cur_time;
+		}else{
+			return '';
+		}
+	}
+%>
+<div class="main">
+	<% 	var pageData = this.pageData;
+		var apparelData = [];
+		pageData.sku.forEach(function(cat){
+		var apparelType = cat.type;
+		if(pageData[apparelType] && pageData[apparelType].length){
+				var apparelTmpe = {
+					type : cat.type,
+					content : pageData[cat.type],
+					morelink : cat.more_link,
+					title_bg : cat.title_bg,
+					prev_h : cat.prev,
+					start_h : cat.start
+				}
+				apparelData.push(apparelTmpe);
+			}
+		});
+	%>
+	<div class="head_bg" style="background-image:url('<%= pageData.head.img_src %>');height:<%= pageData.head.h %>px;">
+		<div class="inner">
+			<% if(this.start_time && this.end_time){ %>
+				<div class="down">
+					<% if(this.status == 'nostart'){ %>
+						距离热卖&nbsp;还有<span class="time" remain="<%= getTimeRemain(this.start_time)%>">-天--时--分</span>
+					<%}else if(this.status == 'saling'){%>
+						距离结束&nbsp;还有<span class="time" remain="<%= getTimeRemain(this.end_time)%>">-天--时--分</span>
+					<%}else{%>
+						活动已结束
+					<%}%>
+				</div>
+			<%}%>
+			<p id="coupon_herf" class="find"></p>
+		</div>
+	</div>
+
+	<%= requireFn("biz/sale420/coupon.html")({
+		'couponData': this.couponData,
+		'coupon_100': this.coupon_100,
+		'pageData': this.pageData,
+		'_JSstack': this._JSstack,
+		'_JSmods': this._JSmods
+	});%>
+
+	<div class="clear_f"></div>
+	<div class="apparel_wrap">
+		<div class="content">
+			<% apparelData.forEach(function(data){ %>
+				<div class="apparel_title <%= data.type %>">
+					<img src="<%= data.title_bg %>" alt="">
+					<span id="<%= data.type %>" class="fix_target"></span><a href="<%= data.morelink %>" target="_blank" class="apparel_title_more">更多</a>
+				</div>
+				<div class="apparel_con">
+					<% data.content.forEach(function(sec_data){ %>
+						<div class="apparel_box">
+							<a href="<%= sec_data.link %>" class="goods_img" target="_blank">
+								<img src="<%= sec_data.img_src %>" alt="">
+								<% if(data.start_h || data.prev_h){ %>
+									<img class="mask" src="<%= this.status == 'nostart' ? data.prev_h : data.start_h %>" alt="">
+								<% } %>
+							</a>
+							<div class="box_con">
+								<p><em></em><a href="<%= sec_data.link %>" class="goods_title" target="_blank"><%= sec_data.title %></a><em></em></p>
+								<% if(data.type == "type8"){ %>
+									<p class="tuan_goods_num red_f">￥<span class="tuan_price"><%= sec_data.num %></span><span class="o_price">原价￥：<%= sec_data.sale_num %></span></p>
+								<% } else { %>
+									<p class="goods_num">精选<span class="red_f"><%= sec_data.num %></span>款&nbsp;&nbsp;&nbsp;&nbsp;全场<span class="red_f"><%= sec_data.sale_num %></span>折起</p>
+								<% } %>
+								<a class="go_shop<%= this.status == 'saling' ? '' : ' pre_go_shop' %>" href="<%= sec_data.link %>" target="_blank">去抢购</a>
+							</div>
+						</div>
+					<% });%>
+				</div>
+			<% });%>
+		</div>
+	</div>
+	<div class="fix_nav" style="background-image:url('<%= pageData.right_nav_bg %>');">
+		<ul>
+			<% pageData.right_nav.forEach(function(data){ %>
+				<li><a href="<%= data.link %>" <%= data.height ? 'style="height:' + data.height + 'px;"' : '' %> <%= data.is_target ? 'target="_blank"' : '' %>><%= data.name %></a></li>
+			<% }); %>
+		</ul>
+	</div>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/huodong/sale420');
+_use:", this._JSstack , this._JSmods); %>
+<%#foot.html%>

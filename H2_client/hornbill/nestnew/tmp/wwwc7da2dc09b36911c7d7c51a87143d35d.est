@@ -1,0 +1,23 @@
+/*--/Users/MLS/Documents/H2/H2_client/hornbill/apps_0/www/views/wins/fixed_widget.html--*/ 
+     var est = require(config.path.lib + 'est/est.js'); 
+     var _extFn = require('/Users/MLS/Documents/H2/H2_client/hornbill/nestnew/server/lib/est/extFn.js'); 
+     function requireFn(tpl) { return est.renderFile('/Users/MLS/Documents/H2/H2_client/hornbill/apps_0/www/views/' ,tpl , null , null ,'www' ,true); } ; 
+     function __getHtml (_data) { 
+       function jsRender(tpl , id) { return est.jsRender(requireFn(tpl)(_data), id  ); } ; 
+       var __htm ='';
+__htm += '';
+ 	
+	if(!_data.reg_feedback || _data.reg_feedback.can_show == 0){
+		return ;
+	}
+;__htm += '\n<div id="fixWidget" class="reg_feedback_fw jfw_wrap" style="background-image:url(';
+__htm += _data.reg_feedback.pic_url ;
+__htm += ');_filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src=\'';
+__htm += _data.reg_feedback.pic_url ;
+__htm += '\', sizingMethod=\'scale\');\n_background-image: none;">\n	<a class="link_reg" target="_blank" href="';
+__htm += _data.reg_feedback.url ;
+__htm += '">查看</a>\n	<a class="link_close jfw_close" href="javascript:;">关闭</a>\n</div>\n';
+__htm += est.callFn("useModule")("fml.use(['jquery'], function(){\n		$('.jfw_close').click(function(){\n			$('.jfw_wrap').hide();\n			$.get('/aj/coupon/close_coupon_float_tips');\n		});\n	});",  _data._JSstack , _data._JSmods ) || '';
+ ;__htm += '';
+return __htm;} 
+ exports.html = __getHtml; 

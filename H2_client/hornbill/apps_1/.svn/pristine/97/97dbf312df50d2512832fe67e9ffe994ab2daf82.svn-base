@@ -1,0 +1,35 @@
+<%# head.html %>
+<div class="settingsWrap">
+	<h3><span class="failure_tip"></span>激活失败，请重新激活你的邮箱</h3>
+	<div>
+	您点击的激活链接由于种种原因已失效，请点击下方发送邮件按钮，重新获取激活链接。完成简单2步，继续你的美丽旅程
+	<a href="javascript:void(0);" id="sendemail">点击发送邮件</a>
+	</div>
+	<p>还没有收到确认邮件？</p>
+	<ul>
+		<!-- <li>邮箱地址写错了？<a href="/settings/setEmail">点击此处修改邮箱地址</a></li> -->
+		<li>如有问题？请发邮件到<span class="red_f">kefu@meilishuo.com</span></li>
+	</ul>
+</div>
+
+<%# user/windows.html%>
+<script>
+	Meilishuo.config.email = '<%= this.userInfo.email%>';
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use('jquery' , function($){
+	$('#sendemail').bind('click' , function(){
+		var url = '/aj/setEmail/';
+		var data = {'resend' : 1, 'email' : Meilishuo.config.email};
+		var callback = function(res){
+			if(res.info){
+				window.location.href = '/settings/emailSend';
+			} else {
+				alert('邮件发送失败');
+			}
+		};
+		$.get(url , data , callback ,'json');
+	});
+});
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html %>

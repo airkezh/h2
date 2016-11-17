@@ -1,0 +1,26 @@
+<%#head.html%>
+	<form class="setNewInfo" id="setNewInfo"  method="post" onsubmit="return false" action="">
+		<div>
+			<span class="input_title">邮箱</span>
+			<input class="r_ipt" id="mlsEmail" type="email" name="email" value="" placeholder="输入常用邮箱地址" />
+		</div>
+		<p class="msgshow none_f"></p>
+		<div>
+			<span class="input_title">昵称</span>
+			<input class="r_ipt" id="mlsName" type="text" name="nickname" value="" placeholder="设置新昵称"/>
+		</div>
+		<p class="msgshow none_f"></p>
+		<div>
+			<span class="input_title">密码</span>
+			<input class="r_ipt" id="mlsPass" name="password" type="password" value="" placeholder="设置新密码" autocomplete="off" />
+		</div>
+		<p class="msgshow none_f"></p>
+		<p class="submitWrap"><input class="submit" type="submit" value="完成"/></p>
+	</form>
+	<script>
+		Meilishuo.config.access_token = '<%= this.access_token %>';
+	</script>
+	<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+		fml.use('wap/page/activity/taobaoback');
+	_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

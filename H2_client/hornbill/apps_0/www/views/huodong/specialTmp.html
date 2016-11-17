@@ -1,0 +1,26 @@
+<%#head.html%>
+	<div class="wapper">
+		<div class="imgBox">
+			<img src="<%=this.magicBoxMain.boxInfo.toppic%>" width="950" />
+		</div>
+		<div class="goods_detail">
+		<% this.boxPage && this.boxPage.map(function(data){ %>
+			<% if(data.tmp_id == 1){ %>
+				<% data.data_json && data.data_json.map(function(data1){  %>
+					<img src="<%=data1.pic%>" />		
+				<%});%>
+			<%}else if(data.tmp_id == 2){%>
+				<% data.data_json && data.data_json.map(function(data1){  %>
+					<a href="<%=data1.weblink%>" target="_blank"><img src="<%=data1.pic%>" /></a>
+				<%});%>
+			<%}else if(data.tmp_id == 3){%>
+				<div class="clearfix_f">
+					<% data.data_json && data.data_json.map(function(data1){  %>
+						<a class="left_f" href="<%=data1.weblink%>" target="_blank"><img src="<%=data1.pic%>" /></a>
+					<%});%>
+				</div>
+			<%}%>
+		<%});%>
+		</div>
+	</div>
+<%#foot.html%>

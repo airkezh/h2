@@ -1,0 +1,96 @@
+@import "sq.less";
+
+@bgc: #f6f6f6;
+
+.bg_set() {
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: contain;
+}
+
+body { .bgc(@bgc); .f(12px); .fc(#999); }
+
+.tab {
+	.flexbox;
+	.pt(.15rem);
+	.pb(.15rem);
+	.f(.3rem);
+	.bgwhite;
+	.hidden;
+	.tab-item { 
+		.flex(1); 
+		.c;
+		span {
+			.i_block;
+			.pb(.1rem);
+			.mt(.09rem);
+			.mb(.09rem);
+		}
+	}
+	.tab-item:first-child {
+		border-right: 1px solid @bgc;
+	}
+	.selected {
+		.red;
+		span{ border-bottom: 1px solid @red; }
+	}
+}
+
+.collocation {
+	.none;
+	.pl(.1rem);
+	.pr(.1rem);
+	h2 { 
+		.block;
+		.mt(.15rem);
+		.mb(.12rem);
+		.f(.26rem); 
+		.black; 
+		i {
+			.ml(.1rem);
+			.fn;
+			.fc(#999);
+			.f(.22rem);
+			vertical-align: bottom;
+		}
+	}
+	a {
+		.left;
+		.w(2.066rem);
+		.mt(.1rem);
+		.mb(.3rem);
+		.bg_set;
+	}
+}
+
+.collocation-style {
+	.clearfix;
+	a {
+		/* 80x168 */
+		.pt(1.68rem);
+		backgruond-size: .8rem 1.68rem;
+	}
+}
+
+.collocation-color {
+	.clearfix;
+	a {
+		/* 120x158 */
+		.pt(1.58rem);
+		background-size: 1.2rem 1.58rem;
+	}
+}
+
+.hot {
+	margin: .025rem .075rem;
+	.f(0);
+	.clearfix;
+	a {
+		.left;
+		margin: .025rem;
+		.w(2.0333rem);
+		.pt(2.4623rem);
+		.bgwhite;
+		.bg_set;
+	}
+}

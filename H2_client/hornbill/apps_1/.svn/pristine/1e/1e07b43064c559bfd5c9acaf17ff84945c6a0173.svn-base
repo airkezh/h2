@@ -1,0 +1,333 @@
+/*common*/
+require('wap/zepto/fastclick')
+require('wap/app/dialog')
+var shareTo = require('wap/app/shareTo'),
+	Alert = require('wap/ui/alert'),
+	shareTmp = require('wap/component/shareTmp'),
+	Danmu = require('wap/component/danmu/index'),
+	openAppLink = require('wap/app/openAppLink'),
+	tracking = require('wap/app/tracking'),
+	shareWX = require('wx/share'),
+	openApp = require('wap/app/openApp');
+
+var weixinBrowser = navigator.userAgent.indexOf('MicroMessenger'),
+	$support = $('.support'),
+	$heart = $support.find('.heart'),
+	$shareBtn = $support.find('.share'),
+	$qunquan = $support.find('.qunquan'),
+	$comment = $('#comment'),
+	$send = $('#send'),
+	danmuData = fml.vars.danmu || {}
+if (weixinBrowser != -1) {
+	openApp('http://mapp.meilishuo.com/zulilyOld/detail/?style_id=' + fml.vars.styleId + '&trace_id=' + fml.vars.trace_id);
+}
+var lazy = require('wap/component/lazzyLoad');
+/* lazy load setting, 采用全屏扫点方式加载 */
+var lazy_pic = lazy.init({
+	'xpath': '.lazy_pic'
+});
+lazy_pic.scroll();
+lazy_pic.load();
+//Alert
+var a = function(msg) {
+	return new Alert({
+		content: msg
+	});
+};
+
+/*登陆成功后的回掉函数*/
+window.MLS = {
+	didLogin: function() {
+		// 成功登录，跳转到下一步
+		window.location.reload();
+	}
+};
+
+/*share*/
+// function share(style_id) {
+// 	var params = {
+// 		'title': {
+// 			'default': fml.vars.shareTitle
+// 		},
+// 		'text': {
+// 			'default': fml.vars.shareTitle
+// 		},
+// 		'pic': {
+// 			'default': fml.vars.sharePic
+// 		},
+// 		'url': 'http://mapp.meilishuo.com/zulilyOld/detail/?style_id=' + style_id + '&trace_id=' + fml.vars.trace_id
+// 	};
+// 	shareTo.shareToPengYouQuan(params);
+// }
+
+$shareBtn.on('click', function() {
+	tracking.cr('desire_share', {
+		'area': 'detail'
+	})
+	if (weixinBrowser != -1) {
+		var tpl = shareTmp('shareLead');
+		$.fn.dialog({
+			dialogContent: tpl,
+			dialogTitle: ''
+		});
+		$('.dialog_box').on('click', function() {
+			setTimeout(function() {
+				$('.closeDialog').trigger('tap');
+			}, 500);
+		});
+		return
+	}
+	//app里是否登录
+	// if(fml.vars.isLogin == 0 && weixinBrowser == -1) {
+	//     window.location.href = "meilishuo://login.meilishuo/";
+	// } else {
+	// share(fml.vars.styleId);
+	// }
+
+	$('#masking').show();
+	$('.starBox').show();
+
+})
+$qunquan.on('click', function() {
+	if (!Meilishuo.config.os.mlsApp) {
+		a('亲，需要下载客户端哦！');
+		return
+	}
+	//app里是否登录
+	// if(fml.vars.isLogin == 0 && weixinBrowser == -1) {
+	//     window.location.href = "meilishuo://login.meilishuo/";
+	// } else {
+	// share(fml.vars.styleId);
+	// }
+	var params = {
+		"circle_id": fml.vars.circle_id,
+		"r": $(this).data('xr')
+	};
+	window.location.href = "meilishuo://circle.meilishuo?json_params=" + encodeURIComponent(JSON.stringify(params));
+
+})
+
+// 微信浏览器分享 xudeming 20150304
+if (weixinBrowser != -1) {
+	shareWX.bind({
+		'link': 'http://mapp.meilishuo.com/zulilyOld/detail/?style_id=' + fml.vars.styleId + '&trace_id=' + fml.vars.trace_id,
+		'desc': fml.vars.shareTitle,
+		'imgUrl': fml.vars.sharePic,
+		'title': fml.vars.shareTitle
+	});
+}
+if ($('.danmu').length) {
+	var index = 0;
+	var danmu = Danmu({
+		el: ".danmu",
+		bulletHeight: 30,
+		bulletTmpl: '<div><i data-name="icon"></i><span data-name="content"></span></div>',
+		bulletClass: "bullet",
+		mode: 'auto',
+		initChannel: {
+			offset: 5,
+			height: 35,
+			size: 4
+		},
+		getMessage: function() {
+			danmuData.data = danmuData.data || [];
+			var len = danmuData.data.length;
+			if (index < len - 1) {
+				index++;
+			} else {
+				index = 0;
+				/** 接口一次丢100个弹幕数据，少于100个说明弹幕库里少于100，不重复请求 */
+				if (len > 99) {
+					$.post('/aj/zulilyOld/danmu', {
+						'style_id': fml.vars.styleId
+					}, function(res) {
+						danmuData = res.data || danmuData;
+						index = 0;
+					}, 'json');
+				}
+			}
+			return danmuData.data[index];
+		},
+		initBullet: function() {
+			this.bullet.speed = -.05;
+			var bullet = this.bullet,
+				type = this.type;
+			$(bullet.els.el).find('span').removeClass('me');
+			if (type == 'me') { //用户发送的信息
+				this.bullet.speed = -.15;
+				bullet.els.el.className = 'me';
+				bullet.els.content.innerHTML = this.content.html;
+				$(bullet.els.el).find('i').prepend("<img src='" + this.content.pic + "' alt=''>");
+			} else if (type == 'maishou') {
+				bullet.els.content.innerHTML = this.content.html;
+				bullet.els.el.className = 'maishou';
+				$(bullet.els.el).find('i').prepend("<img src='" + this.content.pic + "' alt=''>");
+			} else { //普通信息
+				this.bullet.speed = -.15;
+				/** hack code */
+				var str = bullet.els.content.innerHTML,
+					strArr = str.split('##'),
+					type = strArr[0];
+				if (type == 'me') {
+					bullet.els.el.className = 'me';
+					bullet.els.content.innerHTML = strArr[1];
+					$(bullet.els.el).find('i').prepend("<img src='" + strArr[2] + "' alt=''>");
+				} else if (type == 'common') {
+					bullet.els.content.innerHTML = strArr[1];
+					$(bullet.els.el).find('i').prepend("<img src='" + strArr[2] + "' alt=''>");
+				} else if (type == 'founder') {
+					bullet.els.content.innerHTML = strArr[1];
+					bullet.els.el.className = 'maishou';
+					$(bullet.els.el).find('i').prepend("<img src='" + strArr[2] + "' alt=''>");
+				}
+			}
+		}
+	});
+
+	function sendBullet(conf) {
+		danmu.load(function() {
+			this.type = conf.type || null //设置子弹类型，type 为自定义属性
+			this.content = conf.content || null
+		})
+	}
+
+	$comment[0].oninput = function() {
+		if ($(this).val() != "") {
+			$send.addClass('cancel-cur')
+		} else {
+			$send.removeClass('cancel-cur')
+		}
+	}
+
+	// 发射我的子弹
+	$send.on('click', function() {
+		var self = $(this);
+		if (!self.hasClass('cancel-cur')) {
+			return false;
+		}
+		var url = '/aj/zulilyOld/send'
+		var data = {
+			'style_id': danmuData.style_id,
+			'comment': $comment.val(),
+			"trace_id": fml.vars.trace_id
+		}
+		var callback = function(res) {
+			switch (res.error_code) {
+				case 0:
+					sendBullet({
+						'type': 'me',
+						'content': {
+							'pic': res.data[0],
+							'html': $comment.val()
+						}
+					});
+					// a('发射成功!');
+					$comment.val('');
+					self.removeClass('cancel-cur');
+					break;
+				case 401:
+					window.location.href = "meilishuo://login.meilishuo/";
+					break;
+				case -1:
+					a(res.message);
+					break;
+				default:
+					a('发射失败!!!');
+			}
+		}
+		$.post(url, data, callback, 'json');
+	})
+}
+
+$heart.on('click', function() {
+	if (fml.vars.isLogin == 0 && weixinBrowser == -1) {
+		window.location.href = "meilishuo://login.meilishuo/";
+		return;
+	}
+	support($(this))
+})
+
+/*埋点*/
+$('.link').on('click', function() {
+	tracking.cr('desire_more_style', {
+		'area': 'detail'
+	})
+})
+
+/*点赞*/
+function support(ele) {
+	var heart = ele,
+		$num = $('body').find('.num'),
+		num = parseInt($num.text());
+	if (heart.hasClass('heartRed')) {
+		heart.removeClass('heartRed');
+		num -= 1;
+		$num.html(num);
+		$.get('/aj/zulilyOld/style_want', {
+			'style_id': fml.vars.styleId,
+			'action': 'del',
+			"trace_id": fml.vars.trace_id,
+			"circle_id": fml.vars.circle_id || 0
+		}, function(res) {}, 'json');
+		tracking.cr('desire_love', {
+			'area': 'detail',
+			'action': 'cancel_love'
+		});
+	} else {
+		heart.addClass('heartRed');
+		num += 1;
+		$num.html(num);
+		$.get('/aj/zulilyOld/style_want', {
+			'style_id': fml.vars.styleId,
+			'action': 'add',
+			"trace_id": fml.vars.trace_id,
+			"circle_id": fml.vars.circle_id || 0
+		}, function(res) {}, 'json');
+		tracking.cr('desire_love', {
+			'area': 'detail',
+			'action': 'love'
+		});
+		//群圈
+		if (fml.vars.circle_id > 0) {
+			var params = {
+				"circle_id": fml.vars.circle_id,
+				"r": heart.data('xr')
+			};
+			window.location.href = "meilishuo://circle.meilishuo?json_params=" + encodeURIComponent(JSON.stringify(params));
+		}
+	}
+}
+
+/*获取单品页链接*/
+function getDoneUrl(ele) {
+
+	var style_id = parseInt(fml.vars.styleId),
+		twitter_id = parseInt(ele.attr('twitter_id')),
+		Url = Meilishuo.config.os.mlsApp ? openAppLink.getAppLink({
+			'protocol': 'twitter_single',
+			'param': {
+				"twitter_info": {
+					"twitter_id": twitter_id,
+					"is_doota": 1
+				}
+			}
+		}) : '/share/item/' + twitter_id;
+	/*if (isBtn) {
+		tracking.cr('desire_buy_btn_click', {
+			'area': 'list_done',
+			'twitter_id': twitter_id,
+			'style_id': style_id
+		});
+	} else {
+		tracking.cr('desire_done_twitter_click', {
+			'area': 'list_done',
+			'twitter_id': twitter_id,
+			'style_id': style_id
+		});
+	}*/
+	window.location.href = window.__get_r(Url, ele.data('xr'));
+}
+
+$('#buyNow').on('click', function() {
+	getDoneUrl($(this))
+})

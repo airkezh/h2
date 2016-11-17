@@ -1,0 +1,118 @@
+<%#head.html%>
+	<section class="wrapper">
+		<div class="wlf_box">
+			<p class="wlf_apply_t">第一步 关注店铺，完善申领信息</p>
+			<div class="wlf_hxm">
+				<a class="linkRegular" href="/m_welfare/regular/">活动规则</a>
+				<h2 id="shopNick"></h2>
+				<p>关注店铺 免费赢福利</p>
+				<a href="javascript:void(0)" class="btn_attention yellow" id="btnAttention">马上关注</a>
+			</div>
+		</div>
+		<div class="wlf_box">
+			<p class="wlf_apyTitle">确认您的收货地址</p>
+			<%if(this.apply_info.info){
+				%>
+				<div class="address">
+					<a href="javascript:void(0)" id="addrArea">
+						<script type="text/html" id="addressTmp">
+							<span class="icon_address"></span>
+							<div class="ads_desc">
+								<h3 class="ads_t">收件人：<span id="applyName"><?=this.nickname?></span> 电话：<span id="applyPhone"><?=this.phone?></span></h3>
+								<p>收货地址：
+									<span id="applyAddr"><?=this.street?></span>
+								</p>
+							</div>
+							<span class="icon_arrow" id="edit_address">
+							</span>
+						</script>
+						<!--<div class="ads_desc">
+							<h3 class="ads_t">收件人：<%=this.apply_info.info.realname%> 电话：<%=this.apply_info.info.mobile%></h3>
+							<p>收货地址：
+								<%=this.apply_info.info.shipping_address%>
+							</p>
+						</div>-->
+					</a>
+				</div>
+				<%}%>
+					<!--
+                    	作者：wangconghuei@sina.cn
+                    	时间：2015-07-22
+                    	描述：提交备注的功能暂时不开放
+                    	 -->
+					<div class="remarks">
+						<p class="wlf_apyTitle">备注：</p>
+						<textarea id="txt_remarks" placeholder="申请产品包含尺码和颜色时，可填写您需要的尺码和颜色需求 例如：白色 XL"></textarea>
+					</div>
+
+					<ul class="wlf_check">
+						<li>
+							<a href="javascript:void(0)">
+								<span class="check select"></span>已阅读福利社规则
+							</a>
+						</li>
+						<li>
+							<a href="javascript:void(0)">
+								<span class="check select"></span>关注福利花小美
+							</a>
+						</li>
+					</ul>
+		</div>
+		<div class="wlf_apply">
+			<%if(this.apply_info.info.apply=="0"){%>
+				<a class="apply_btn pink" id="applyBtn">下一步</a>
+				<%}else if(this.apply_info.info.apply=="1"){%>
+					<a class="apply_btn gray" href="javascript:void(0)">已申请</a>
+					<%}%>
+		</div>
+	</section>
+
+	<script type="text/html" id="dialogTips">
+		<div class="dialog_box">
+			<div class="dialog_con dia_style2">
+				<h2 class="tipsT"><?=this.title?></h2>
+				<p>
+					<?=this.con?>
+				</p>
+				<a href="javascript:void(0)" class="btnKnow" id="btnKnow">知道了</a>
+			</div>
+		</div>
+	</script>
+	<script type="text/html" id="edit_add_wrap">
+		<div class="dialog_box">
+			<div class="dialog_con address_wrap">
+				<div class="addr_new">
+					<h2 class="add_title">收货地址</h2>
+					<ul class="addr_details">
+						<li>
+							<input id="addressUser" type="text" name="nickname" value="<?=this.nickname?>" placeholder="收货人姓名" />
+						</li>
+						<li>
+							<input id="validatePhoneOrMobile" type="tel" name="phone" value="<?=this.phone?>" placeholder="手机号码" />
+						</li>
+						<li>
+							<textarea id="addressStreet" placeholder="详细地址"><?=this.street?></textarea>
+						</li>
+					</ul>
+					<div class="addressErrorMessage"></div>
+					<div class="submitBox">
+						<a href="javascript:void(0)" class="submitBtn" id="submitAdr">确定</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</script>
+	<script>
+		fml.vars.activity_id = '<%=this.active_id%>';
+		fml.vars.real_name = '<%=this.apply_info.info.realname%>';
+		fml.vars.telephone = '<%=this.apply_info.info.mobile%>';
+		fml.vars.address = '<%=this.apply_info.info.shipping_address%>';
+		fml.vars.shopId = '<%=this.apply_info.activity.circle_id%>';
+		fml.vars.address_str = <%= JSON.stringify(this.address) %> ;
+		fml.vars.productId = "<%=this.apply_info.activity.products_id%>";
+		fml.vars.apply_state="<%=this.apply_info.info.apply%>";
+	</script>
+	<%! $_ENGINE_SELF.callFn( "useModule")( "<<<_use:
+        fml.use('wap/page/welfare_new/wlf_apply');
+_use:", this._JSstack , this._JSmods ); %>
+		<%#foot.html%>

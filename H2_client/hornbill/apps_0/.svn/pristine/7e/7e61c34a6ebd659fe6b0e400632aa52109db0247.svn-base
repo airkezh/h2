@@ -1,0 +1,216 @@
+/*common*/
+require('wap/jquery');
+require('wap/component/lark/slotmachine');
+var openApp = require('wap/app/openApp');
+var tracking = require('wap/app/tracking');
+
+//app 登录
+if(Meilishuo.config.os.mlsApp && !Meilishuo.config.user_id ){
+		window.location.href = 'meilishuo://login.meilishuo/?json_params=';
+}
+window.MLS = {
+    didLogin : function(){  
+        //美丽说app 登录后回调  成功登录后，返回刷新页面。
+        window.location.reload();
+    }
+}
+//分享
+$(".show_love").on("click",function(){
+	var shareText =  '起初看到关键词的那一刻，其实我们是拒绝的，后来看了解读......';
+	var shareImg =  'http://d05.res.meilishuo.net/pic/_o/a2/35/42a7dd2333d0c4c23cc44197b8e8_200_200.cf.png';
+	var shareTitle =  '我们的爱情关键词居然是酱紫！';
+	var shareUrl =  window.location.href;
+	if(fml.vars.isWx){
+		//初始化加载分享的资源。
+	    var shareData;
+	    var signWX = require('wx/sign'),
+	        shareWX = require('wx/share');
+	        signWX();
+	    shareData = {
+	        'desc' : shareText ,
+	        'imgUrl' : shareImg ,
+	        'title' : shareTitle ,
+	        'url' : shareUrl
+	    };
+		shareWX.bind(shareData);
+	}
+	//埋点
+	tracking.cr('bilayer_game',{action:'click',page:'game_page',area:'game_page_share'});
+	if(Meilishuo.config.os.mlsApp){
+		var schemeJsonWx = {
+	        	type : 'weixin' , 
+	        	message_type : 'webpage' ,
+	        	title : shareTitle,
+	        	text : shareText,
+	        	url : shareUrl,
+	        	thumb_url : shareImg
+	        }
+	    	,schemeLinkWx = "meilishuo://share.meilishuo/?json_params=" + encodeURIComponent(JSON.stringify(schemeJsonWx));
+	    $('#shareBut_wx').attr('href',schemeLinkWx);
+		var schemeJsonPyq = {
+	        	type : 'weixin_timeline' , 
+	        	message_type : 'webpage' ,
+	        	title : shareTitle,
+	        	text : shareText,
+	        	url : shareUrl,
+	        	thumb_url : shareImg
+	        }
+	    	,schemeLinkPyq = "meilishuo://share.meilishuo/?json_params=" + encodeURIComponent(JSON.stringify(schemeJsonPyq));
+	    $('#shareBut_pyq').attr('href',schemeLinkPyq);
+		$(".mypopbox").show();
+		$("#dialog_appshare").show().on("click",function(){
+			$("#mypopbox").hide();
+		});
+		$(".shareBut_close").on("click",function(){
+			$("#mypopbox").hide();
+		})
+	};
+	if(fml.vars.isWx){	                   
+	    //初始化加载分享的资源。
+	    shareData = {
+	        'desc' : shareText ,
+	        'imgUrl' : shareImg ,
+	        'title' : shareTitle ,
+	        'url' : shareUrl
+	    };
+  		shareWX.bind(shareData);
+		$(".mypopbox").show();
+		$("#dialog_wxshareguide").show().on("click",function(){
+		$("#mypopbox").hide();
+		});
+	}
+
+});
+
+var clearShake,
+	machine = [];
+//电脑端测试
+/*$(".love_keyword").on("tap",function(){
+		$(".ready_shake").hide();
+		$(".result").show();
+		$(".keyword").show();
+		$(".keyword1").hide();
+		
+		for(var i = 0 ;i < 4;i++){
+			machine[i] =  $("#text_box"+i).slotMachine({
+				active	: 1,
+				delay	:2000,
+				randomize : function(activeElementIndex){
+					return fml.vars.random;
+				}});
+			machine[i].shuffle();
+		}
+		clearShake = setInterval(searchShake,2000);
+})*/
+//摇一摇
+fml.vars.shakeS = 1;
+var util = require('wap/page/ws/util-shake');
+util.shake(function(date){
+	if(fml.vars.shakeS){
+		$(".ready_shake").hide();
+		$(".result").show();
+		$(".keyword").show();
+		$(".keyword1").hide();
+		for(var i = 0 ;i < 4;i++){
+			machine[i] =  $("#text_box"+i).slotMachine({
+				active	: 1,
+				delay	:2000,
+				randomize : function(activeElementIndex){
+					return fml.vars.random;
+				}});
+			machine[i].shuffle();
+		}
+		clearShake = setInterval(searchShake,2000);
+		fml.vars.shakeS = 0
+	}
+});
+//轮询摇一摇
+var count = 0;
+function searchShake(){
+	//count = count + 1;
+	$.ajax({
+		type:"get",
+		url:"/aj/twoScreen/love_dec",
+		data : {
+			gid : fml.vars.gid
+		},
+		dataType:"json",
+		success : function(msg){
+			if(msg.data.flag == 0){
+				//alert("合体姿势不对，需与好友同时按才能创造奇迹");
+				/*if(count > 15){
+					alert("超时了")
+					clearInterval(clearShake);
+				}*/
+			}
+			if(msg.data.flag == 1){
+				alert('摇一摇成功');
+				setTimeout(function(){
+					$(".male_min span").html(msg.data.data.words[parseInt(msg.data.data.srand)].userA);
+					$(".female_min span").html(msg.data.data.words[parseInt(msg.data.data.srand)].userB);
+					$(".wait").hide();
+					$(".next").show();	
+				},1000);
+				for(var i = 0 ;i < 4;i++){
+					(function( i ) {
+						setTimeout(function(){
+							machine[i].stop();
+						}, 200 * i );
+					})( i )
+				}
+				clearInterval(clearShake);
+			}
+			
+		},
+		error : function(){
+			alert("摇一摇失败");		
+		}
+	});
+
+}
+//轮询是否扫过二维码
+$.ajax({
+		type:"get",
+		url:"/aj/twoScreen/player",
+		data : {
+			gid : fml.vars.gid
+		},
+		dataType:'json',
+		success : function(res){
+			if( res.data.flag == 1){
+				alert("sao guo 2");
+			};
+			if( res.data.flag == 0){
+				alert("wei sao 2");
+			}		
+		},
+		error : function(){
+			alert("扫描二维码失败！！！");			
+		}
+	});
+
+//我还要玩埋点
+$(".play_again").on("click",function(){
+	tracking.cr('bilayer_game',{action:'click',page:'game_page',area:'game_page_again'});
+});
+
+//818埋点
+$(".go-to").on("click",function(){
+	openApp('meilishuo://open.meilishuo');
+	tracking.cr('bilayer_game',{action:'click',page:'game_page',area:'game_page_promotion'});
+});
+//我也要玩埋点
+$(".play").on("click",function(){
+	tracking.cr('bilayer_game',{action:'click',page:'frishare_page',area:'frishare_page_again'});
+});
+//c 818大促 埋点
+$(".go-to").on("click",function(){
+	openApp('meilishuo://open.meilishuo');
+	tracking.cr('bilayer_game',{action:'click',page:'frishare_page',area:'frishare_page_promotion'});
+});
+
+	
+
+
+
+

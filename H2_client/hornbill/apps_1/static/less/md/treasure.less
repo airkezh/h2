@@ -1,0 +1,141 @@
+@import "md.less";
+@import "home.less";
+
+.goods_wrap {
+	.border-bd9; .mb(20*@px);
+	.goods_img { .w(640*@w); .c; .block; .border-bd9;}
+	.goods_info {
+		.mod_pd2_3; .clearfix; .bgwhite;
+		.goods_name { .break-all; .f(30*@px); .l(40*@px); .left; .fn;.fc(#262626);}
+		.price { .bred; .f(36*@px);
+			span { .i_block; }
+			ul{.l(60*@px);.h(60*@px);}
+			li{.i_block;}
+			del{.fc(#b6b6b6);.f(28*@px);}
+			.presell{.bgc(#ff80a9);.white;.f(28*@px);.pl(10*@px); .pr(10*@px);}
+		}
+		.now { .pb(10*@px); .block;}
+		.normal { .t-through; .block; .tr; .gray;}
+	}
+}
+.pre_goods_msg{
+	.none;
+	.goods_msg{
+		.pr(0px);.pl(0px);.mb(0px);border-top: 0;border-bottom: 0;
+		.info_list{border-bottom: 0;}
+		.info{.ml(0px);}
+		.type{float:none;}
+	}
+}
+.presale_acti_wrap{
+	.mod_info; .mod_pd2_3;.pr(0*@px);
+	.pre_head { .f(28*@px); .pb(20*@px);.fc(#262626);border-bottom:1px solid rgba(0, 0, 0, 0.05); 
+				h3{.i_block;font-weight: normal;}
+		 		span{.right;.mr(30*@px);}
+	}
+	.presale_acti_price_wrap{
+		.presale_acti_gray{
+			.pt(22*@px);.pb(24*@px);border-bottom: 1px solid rgba(0, 0, 0, 0.05);background: url("@{pic_url}/images/md/nocho@2x.png") no-repeat 0px 11px;background-size: 6%;
+			dd{.f(25*@px);.ml(60*@w);.fc(#d0d0d0);
+				.floa_r{.right;.mr(30*@px);.fc(24*@px);}
+				p{.i_block;
+					b{.f(34*@px);.mr(6*@px);.ml(-2px);}			
+					.pre_act_dis{.h(70*@px);.w(122*@px);.bgc(#ccc);.f(20*@px);padding:3px 8px;.fc(#fff);.ml(20*@px);}
+				}
+				&:nth-child(4){.pb(18*@px);}
+			}
+			.pad_tb{.pt(4*@px);.pb(24*@px);}
+			.pad{.pr(30*@px);.pb(30*@px);.l(32*@px);.f(23*@px);}
+			.pad_b{.pb(10*@px);font-weight: bold;}
+		}
+		.presale_acti_pingray{
+			.pt(22*@px);.pb(20*@px);border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+			&.black{background: url("@{pic_url}/images/md/cho@2x.png") no-repeat 0px 11px;background-size: 6%;}
+			&.on{background: url("@{pic_url}/images/md/uncho@2x.png") no-repeat 0px 11px;background-size: 6%;}
+			dd{.f(24*@px);.ml(60*@w);.fc(#262626);
+				.floa_r{.right;.mr(30*@px);.fc(#262626);.fc(24*@px);}
+				p{.i_block;
+					b{.f(34*@px);.mr(6*@px);.fc(#d61213);.ml(-2px);}			
+					.pre_act_dis{.h(70*@px);.w(122*@px);.bgc(#d61213);.f(24*@px);padding:3px 8px;.fc(#fff);.ml(20*@px);}
+				}
+				&:nth-child(4){.pb(18*@px);}
+			}
+			.pad_tb{.pt(4*@px);.pb(30*@px);
+				p{
+					del{.fc(#969696);.f(28*@px);}
+				}
+			}
+			.pad{.pr(30*@px);.pb(30*@px);.l(32*@px);.f(23*@px);}
+			.pad_b{.pb(10*@px);.fc(#272727);font-weight: bold;}
+		}
+		dl{
+			&:last-child{border: 0;.pb(0px);}
+		}
+	}		
+}
+
+.goods_msg {
+	.mod_pd_lr_30; .mod_info;
+	.type { .left; }
+	.info { .ml(70/560*100%);}
+	.info_list {
+		.border-bd9;
+	}
+	.pdtop { .mod_pd_tb_30; }
+	.info_list, .amount{.l(60*@px);}
+	li{
+		.i_block;
+		.mr(20*@px);.mb(30*@px);
+		span {
+			.block;.c; .break-word;min-width: 10px; .fc(#797979);
+			.pl(20*@px); .pr(20*@px);
+			.border-1(#262626);
+			.l(52*@px);
+			&.active{ .bgblack;.white;}
+			&.out_of_stock { .border-1(#d6d6d6); .fc(#d6d6d6);}
+		}
+	}
+	.colorShow{.none;.h(200*@px);.w(142*@px);background-size:100%;.ml(180/560*100%);background-repeat:no-repeat;}
+	.num {
+		.pt(30*@w);
+		.color { .mr(10*@w);}
+		.handle { .pl(20/560*100%); .pr(20/560*100%);}
+	}
+	.beauty_num { .pt(0);}
+
+	.amount{
+		.now_num {.gray;.ml(10*@px);}
+		.numBox {.left;.c;
+			.minus, .plus {
+				.hidden;.bred;.border-10;.w(60*@px); .f(30*@px);
+			}
+			.minus { .left;}
+			.plus { .right; }
+			.nums { .c; .left; .hidden; padding:0px;margin:0px 10*@px;.border-10;.l(60*@px);.w(100*@px); .h(60*@px); .fc(#797979);}
+		}
+	}
+	.predel{.f(30*@px);.border-td9;}
+}
+
+.goods_detail {
+	.mod_info; .mod_pd2_3;
+	h3 { .f(28*@px); .fc(#333); .pb(20*@px);}
+	.detail_cont {
+		.detail_img { .w(580/580*100%); .border-d9; .block; .mb(20*@px);}
+	}
+}
+
+.share_buy_wrap { .mod_pd2_3;.bgwhite;.pf; bottom: 0; .w(100%);.border-td9;
+	.share_col_wrap{.left;.w(63%);
+		div{.left;.mr(3%);
+			img{.w(21px);.ml(30*@px);.mb(4*@px);}
+			p{.f(20*@px)}
+		}
+	}
+	.buy_wrap{.w(160/600*100%);padding:0px;position: static;.right;.pr(30*@px);.mr(30*@px);border: 0;
+		.buy_btn{.w(100%);}
+	}
+}
+.col_80{color: rgba(38, 38, 38, 0.6)}
+
+

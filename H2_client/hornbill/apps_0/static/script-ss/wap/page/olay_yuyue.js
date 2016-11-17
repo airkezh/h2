@@ -1,0 +1,2935 @@
+/*common*/
+var $ = require('wap/zepto'),
+	swipe = require('cooper/component/swipe');
+var cityData = [{
+	"zimu": "A",
+	"city": "鞍山",
+	"code": "A-LN-ANS-0412-CT001",
+	"gui": "百盛"
+}, {
+	"zimu": "A",
+	"city": "安溪",
+	"code": "A-FJ-AX-0595-CT024",
+	"gui": "百汇-解放店"
+}, {
+	"zimu": "B",
+	"city": "百色",
+	"code": "A-GX-BS-0776-CT001",
+	"gui": "环球百货"
+}, {
+	"zimu": "B",
+	"city": "蚌埠",
+	"code": "A-AH-BB-0552-CT001",
+	"gui": "蚌埠百货大楼"
+}, {
+	"zimu": "B",
+	"city": "保定",
+	"code": "A-HB-BD-0312-CT005",
+	"gui": "保定百货大楼"
+}, {
+	"zimu": "B",
+	"city": "保定",
+	"code": "A-HB-BD-0312-CT014",
+	"gui": "保百购物广场(又名保百超市))"
+}, {
+	"zimu": "B",
+	"city": "保定",
+	"code": "A-HB-SJZH-0311-CT039",
+	"gui": "时代广场"
+}, {
+	"zimu": "B",
+	"city": "宝鸡",
+	"code": "A-SX-BJ-0917-CT004",
+	"gui": "开元商城-宝鸡店"
+}, {
+	"zimu": "B",
+	"city": "包头",
+	"code": "A-NMG-BT-0470-CT002",
+	"gui": "包百大楼"
+}, {
+	"zimu": "B",
+	"city": "北海",
+	"code": "B-GX-BH-0779-CT002",
+	"gui": "和安-商港店"
+}, {
+	"zimu": "B",
+	"city": "北京",
+	"code": "B-BJ-BJ-010-CT007",
+	"gui": "城乡华懋"
+}, {
+	"zimu": "B",
+	"city": "北京",
+	"code": "EX-BJ-BJ-PG-0095",
+	"gui": "平谷国泰和美购物中心一层"
+}, {
+	"zimu": "B",
+	"city": "北京",
+	"code": "A-BJ-BJ-010-CT049",
+	"gui": "怀柔京北"
+}, {
+	"zimu": "B",
+	"city": "北京",
+	"code": "A-BJ-BJ-010-CT052",
+	"gui": "大兴星城"
+}, {
+	"zimu": "B",
+	"city": "北京",
+	"code": "A-BJ-BJ-010-CT053",
+	"gui": "昌平新世纪"
+}, {
+	"zimu": "B",
+	"city": "北京",
+	"code": "A-BJ-BJ-010-CT058",
+	"gui": "王府井-百货大楼"
+}, {
+	"zimu": "B",
+	"city": "北京",
+	"code": "A-BJ-BJ-010-CT059",
+	"gui": "蓝岛"
+}, {
+	"zimu": "B",
+	"city": "北京",
+	"code": "A-BJ-BJ-010-CT060",
+	"gui": "王府井-双安店"
+}, {
+	"zimu": "B",
+	"city": "北京",
+	"code": "A-BJ-BJ-010-CT061",
+	"gui": "城乡贸易中心"
+}, {
+	"zimu": "B",
+	"city": "北京",
+	"code": "A-BJ-BJ-010-CT063",
+	"gui": "中友"
+}, {
+	"zimu": "B",
+	"city": "北京",
+	"code": "A-BJ-BJ-010-CT064",
+	"gui": "王府井-长安店"
+}, {
+	"zimu": "B",
+	"city": "北京",
+	"code": "A-BJ-BJ-010-CT068",
+	"gui": "华冠购物中心"
+}, {
+	"zimu": "B",
+	"city": "北京",
+	"code": "A-BJ-BJ-010-CT078",
+	"gui": "当代商城"
+}, {
+	"zimu": "B",
+	"city": "北京",
+	"code": "A-BJ-BJ-010-CT001",
+	"gui": "西单"
+}, {
+	"zimu": "B",
+	"city": "北京",
+	"code": "A-BJ-BJ-010-CT004",
+	"gui": "百盛购物中心"
+}, {
+	"zimu": "B",
+	"city": "北京",
+	"code": "A-BJ-BJ-010-CT005",
+	"gui": "北京华联-阜成门店"
+}, {
+	"zimu": "B",
+	"city": "北京",
+	"code": "A-BJ-BJ-010-CT006",
+	"gui": "新世界"
+}, {
+	"zimu": "B",
+	"city": "北京",
+	"code": "A-BJ-BJ-010-CT021",
+	"gui": "家乐福北京马连道店"
+}, {
+	"zimu": "B",
+	"city": "北京",
+	"code": "A-BJ-BJ-010-CT032",
+	"gui": "甘家口商场"
+}, {
+	"zimu": "B",
+	"city": "北京",
+	"code": "A-BJ-BJ-010-CT041",
+	"gui": "顺义西单"
+}, {
+	"zimu": "B",
+	"city": "北京",
+	"code": "A-BJ-BJ-010-CT042",
+	"gui": "顺义国泰"
+}, {
+	"zimu": "B",
+	"city": "北京",
+	"code": "A-BJ-BJ-010-CT117",
+	"gui": "翠微-牡丹园店"
+}, {
+	"zimu": "B",
+	"city": "北京",
+	"code": "A-BJ-BJ-010-CT162",
+	"gui": "家乐福北京通州店"
+}, {
+	"zimu": "B",
+	"city": "北京",
+	"code": "A-BJ-BJ-010-CT231",
+	"gui": "家乐福北京天通苑店"
+}, {
+	"zimu": "B",
+	"city": "北京",
+	"code": "A-BJ-BJ-010-CT249",
+	"gui": "翠微大厦-龙德店"
+}, {
+	"zimu": "B",
+	"city": "滨州",
+	"code": "EX-SD-BZ-BZ-3296",
+	"gui": "滨州银座-黄河店"
+}, {
+	"zimu": "B",
+	"city": "滨州",
+	"code": "B-SD-BZ-0543-CT001",
+	"gui": "济南银座-滨州购物中心"
+}, {
+	"zimu": "B",
+	"city": "泊头",
+	"code": "B-HB-CZ-0317-CT011",
+	"gui": "泊头信誉楼"
+}, {
+	"zimu": "C",
+	"city": "长春",
+	"code": "A-JL-CHCH-0431-CT002",
+	"gui": "长春欧亚店"
+}, {
+	"zimu": "C",
+	"city": "长春",
+	"code": "A-JL-CHCH-0431-CT030",
+	"gui": "欧亚卖场"
+}, {
+	"zimu": "C",
+	"city": "常德",
+	"code": "A-HN-CS-0731-CT034",
+	"gui": "友阿-春天百货"
+}, {
+	"zimu": "C",
+	"city": "长沙",
+	"code": "A-HN-CS-0731-CT026",
+	"gui": "通程-通程商业广场"
+}, {
+	"zimu": "C",
+	"city": "长沙",
+	"code": "A-HN-CS-0731-CT257",
+	"gui": "大润发长沙店"
+}, {
+	"zimu": "C",
+	"city": "长沙",
+	"code": "A-HN-CS-0731-CT295",
+	"gui": "天虹-长沙店"
+}, {
+	"zimu": "C",
+	"city": "长沙",
+	"code": "A-HN-CS-0731-CT311",
+	"gui": "通程-星沙店"
+}, {
+	"zimu": "C",
+	"city": "长沙",
+	"code": "A-HN-CS-0731-CT319",
+	"gui": "步步高-河西店"
+}, {
+	"zimu": "C",
+	"city": "长沙",
+	"code": "A-HN-CS-0731-CT048",
+	"gui": "王府井-长沙店"
+}, {
+	"zimu": "C",
+	"city": "长沙",
+	"code": "A-HN-CS-0731-CT001",
+	"gui": "平和堂-五一店"
+}, {
+	"zimu": "C",
+	"city": "长沙",
+	"code": "A-HN-CS-0731-CT004",
+	"gui": "友阿-阿波罗商业广场"
+}, {
+	"zimu": "C",
+	"city": "长沙",
+	"code": "A-HN-CS-0731-CT006",
+	"gui": "友阿-友谊商城"
+}, {
+	"zimu": "C",
+	"city": "长沙",
+	"code": "EX-HN-CS-CS-2540",
+	"gui": "通程-红星购物中心"
+}, {
+	"zimu": "C",
+	"city": "常熟",
+	"code": "A-JS-SZH-0512-CT037",
+	"gui": "华地"
+}, {
+	"zimu": "C",
+	"city": "常熟",
+	"code": "A-JS-WX-0510-CT011",
+	"gui": "华联"
+}, {
+	"zimu": "C",
+	"city": "常熟",
+	"code": "A-JS-SZH-0512-CT011",
+	"gui": "一百"
+}, {
+	"zimu": "C",
+	"city": "常熟",
+	"code": "A-JS-SZH-0512-CT013",
+	"gui": "大润发常熟店"
+}, {
+	"zimu": "C",
+	"city": "长兴",
+	"code": "A-ZJ-JX-0573-CT011",
+	"gui": "一百"
+}, {
+	"zimu": "C",
+	"city": "长治",
+	"code": "B-SX-CZ-0355-CT001",
+	"gui": "金威商城"
+}, {
+	"zimu": "C",
+	"city": "常州",
+	"code": "A-JS-CHZH-0519-CT002",
+	"gui": "泰富百货"
+}, {
+	"zimu": "C",
+	"city": "常州",
+	"code": "A-JS-CHZH-0519-CT003",
+	"gui": "新世纪"
+}, {
+	"zimu": "C",
+	"city": "常州",
+	"code": "A-JS-CHZH-0519-CT005",
+	"gui": "大润发常州店"
+}, {
+	"zimu": "C",
+	"city": "巢湖",
+	"code": "B-AH-CH-0565-CT002",
+	"gui": "安德利购物中心"
+}, {
+	"zimu": "C",
+	"city": "潮州",
+	"code": "A-GD-ST-0754-CT037",
+	"gui": "大润发潮州店"
+}, {
+	"zimu": "C",
+	"city": "成都",
+	"code": "B-SC-DJY-028-CT004",
+	"gui": "摩尔-华阳店"
+}, {
+	"zimu": "C",
+	"city": "成都",
+	"code": "A-SC-CD-028-CT001",
+	"gui": "茂业-盐市口店"
+}, {
+	"zimu": "C",
+	"city": "成都",
+	"code": "A-SC-CD-028-CT003",
+	"gui": "人商温江分场"
+}, {
+	"zimu": "C",
+	"city": "成都",
+	"code": "A-SC-CD-028-CT010",
+	"gui": "华联-华联商厦店"
+}, {
+	"zimu": "C",
+	"city": "成都",
+	"code": "A-SC-CD-028-CT012",
+	"gui": "王府井-成都店"
+}, {
+	"zimu": "C",
+	"city": "成都",
+	"code": "A-SC-CD-028-CT020",
+	"gui": "华联-盐市口店"
+}, {
+	"zimu": "C",
+	"city": "成都",
+	"code": "A-SC-CD-028-CT022",
+	"gui": "摩尔百盛"
+}, {
+	"zimu": "C",
+	"city": "成都",
+	"code": "A-SC-CD-028-CT024",
+	"gui": "家乐福成都大世界店"
+}, {
+	"zimu": "C",
+	"city": "成都",
+	"code": "A-SC-CD-028-CT028",
+	"gui": "华联-双桥店"
+}, {
+	"zimu": "C",
+	"city": "成都",
+	"code": "A-SC-CD-028-CT032",
+	"gui": "伊藤洋华堂-双楠店"
+}, {
+	"zimu": "C",
+	"city": "成都",
+	"code": "A-SC-CD-028-CT045",
+	"gui": "家乐福成都双子店"
+}, {
+	"zimu": "C",
+	"city": "成都",
+	"code": "A-SC-CD-028-CT048",
+	"gui": "摩尔百盛-会展店"
+}, {
+	"zimu": "C",
+	"city": "成都",
+	"code": "A-SC-CD-028-CT241",
+	"gui": "大商集团千盛百货"
+}, {
+	"zimu": "C",
+	"city": "成都",
+	"code": "A-SC-CD-028-CT242",
+	"gui": "伊藤洋华堂-锦华店"
+}, {
+	"zimu": "C",
+	"city": "成都",
+	"code": "A-SC-CD-028-CT243",
+	"gui": "新世界百货"
+}, {
+	"zimu": "C",
+	"city": "成都",
+	"code": "A-SC-CD-028-CT257",
+	"gui": "伊藤洋华堂-建设路店"
+}, {
+	"zimu": "C",
+	"city": "成都",
+	"code": "A-SC-CD-028-CT263",
+	"gui": "群光广场"
+}, {
+	"zimu": "C",
+	"city": "成都",
+	"code": "A-SC-CD-028-CT292",
+	"gui": "万千百货-金牛万达店"
+}, {
+	"zimu": "C",
+	"city": "郴州",
+	"code": "B-HN-CZ-0735-CT001",
+	"gui": "步步高-罗家井店"
+}, {
+	"zimu": "C",
+	"city": "郴州",
+	"code": "A-HN-CHZH-0735-CT001",
+	"gui": "友阿-友谊中皇城"
+}, {
+	"zimu": "C",
+	"city": "重庆",
+	"code": "A-CQ-YC-023-CT001",
+	"gui": "新世纪百货-永川商都"
+}, {
+	"zimu": "C",
+	"city": "重庆",
+	"code": "A-CQ-CQ-023-CT001",
+	"gui": "新世纪百货-解放碑商都"
+}, {
+	"zimu": "C",
+	"city": "重庆",
+	"code": "A-CQ-CQ-023-CT002",
+	"gui": "重百-沙坪商场"
+}, {
+	"zimu": "C",
+	"city": "重庆",
+	"code": "A-CQ-CQ-023-CT004",
+	"gui": "重百-杨家坪商厦"
+}, {
+	"zimu": "C",
+	"city": "重庆",
+	"code": "A-CQ-CQ-023-CT005",
+	"gui": "重百-江北商场"
+}, {
+	"zimu": "C",
+	"city": "重庆",
+	"code": "A-CQ-CQ-023-CT006",
+	"gui": "重百-南坪商场"
+}, {
+	"zimu": "C",
+	"city": "重庆",
+	"code": "A-CQ-CQ-023-CT007",
+	"gui": "重百-北碚商场"
+}, {
+	"zimu": "C",
+	"city": "重庆",
+	"code": "A-CQ-CQ-023-CT009",
+	"gui": "新世纪百货-世纪新都"
+}, {
+	"zimu": "C",
+	"city": "重庆",
+	"code": "A-CQ-CQ-023-CT015",
+	"gui": "新重百大楼"
+}, {
+	"zimu": "C",
+	"city": "重庆",
+	"code": "A-CQ-CQ-023-CT017",
+	"gui": "新世纪百货-江南商都"
+}, {
+	"zimu": "C",
+	"city": "重庆",
+	"code": "A-CQ-CQ-023-CT020",
+	"gui": "新世纪百货-凯瑞商都"
+}, {
+	"zimu": "C",
+	"city": "重庆",
+	"code": "A-CQ-CQ-023-CT027",
+	"gui": "重百-江津商场"
+}, {
+	"zimu": "C",
+	"city": "重庆",
+	"code": "A-CQ-CQ-023-CT033",
+	"gui": "王府井-解放碑店"
+}, {
+	"zimu": "C",
+	"city": "重庆",
+	"code": "A-CQ-CQ-023-CT038",
+	"gui": "新世纪百货-万州商都"
+}, {
+	"zimu": "C",
+	"city": "重庆",
+	"code": "A-CQ-CQ-023-CT050",
+	"gui": "重百-壁山商场"
+}, {
+	"zimu": "C",
+	"city": "重庆",
+	"code": "A-CQ-CQ-023-CT051",
+	"gui": "重百-合川商场"
+}, {
+	"zimu": "C",
+	"city": "重庆",
+	"code": "A-CQ-CQ-023-CT052",
+	"gui": "重百-涪陵商场"
+}, {
+	"zimu": "C",
+	"city": "重庆",
+	"code": "A-CQ-CQ-023-CT054",
+	"gui": "重百-万州商场"
+}, {
+	"zimu": "C",
+	"city": "重庆",
+	"code": "A-CQ-CQ-023-CT055",
+	"gui": "新世纪百货-涪陵商都"
+}, {
+	"zimu": "C",
+	"city": "重庆",
+	"code": "A-CQ-CQ-023-CT058",
+	"gui": "重百-渝北商场"
+}, {
+	"zimu": "C",
+	"city": "重庆",
+	"code": "A-CQ-CQ-023-CT065",
+	"gui": "新世纪百货-瑞成商都"
+}, {
+	"zimu": "C",
+	"city": "重庆",
+	"code": "A-CQ-CQ-023-CT077",
+	"gui": "王府井-沙坪坝店"
+}, {
+	"zimu": "C",
+	"city": "重庆",
+	"code": "A-CQ-CQ-023-CT080",
+	"gui": "新世界专柜"
+}, {
+	"zimu": "C",
+	"city": "重庆",
+	"code": "A-CQ-CQ-023-CT083",
+	"gui": "新世纪百货-长寿商都"
+}, {
+	"zimu": "C",
+	"city": "重庆",
+	"code": "A-CQ-CQ-023-CT084",
+	"gui": "重百-铜梁商场"
+}, {
+	"zimu": "C",
+	"city": "重庆",
+	"code": "A-CQ-CQ-023-CT247",
+	"gui": "新世纪百货-大渡口商都"
+}, {
+	"zimu": "C",
+	"city": "重庆",
+	"code": "A-CQ-CQ-023-CT261",
+	"gui": "新世纪百货-大坪商都"
+}, {
+	"zimu": "C",
+	"city": "重庆",
+	"code": "A-CQ-CQ-023-CT267",
+	"gui": "重百-巴南商场"
+}, {
+	"zimu": "C",
+	"city": "滁州",
+	"code": "B-AH-CZ-0550-CT001",
+	"gui": "白云商厦"
+}, {
+	"zimu": "C",
+	"city": "从化",
+	"code": "B-GD-GZ-020-CT003",
+	"gui": "广百"
+}, {
+	"zimu": "D",
+	"city": "大连",
+	"code": "A-LN-DL-0411-CT001",
+	"gui": "天河百盛购物中心"
+}, {
+	"zimu": "D",
+	"city": "大连",
+	"code": "A-LN-DL-0411-CT017",
+	"gui": "锦辉商城"
+}, {
+	"zimu": "D",
+	"city": "大连",
+	"code": "A-LN-DL-0411-CT049",
+	"gui": "友谊-西安路店"
+}, {
+	"zimu": "D",
+	"city": "大连",
+	"code": "A-LN-DL-0411-CT050",
+	"gui": "迈凯乐-开发区店"
+}, {
+	"zimu": "D",
+	"city": "大连",
+	"code": "A-LN-DL-0411-CT058",
+	"gui": "新玛特"
+}, {
+	"zimu": "D",
+	"city": "丹阳",
+	"code": "A-JS-CHZH-0519-CT013",
+	"gui": "华地百货"
+}, {
+	"zimu": "D",
+	"city": "大庆",
+	"code": "A-HLJ-DQ-0459-CT001",
+	"gui": "大庆百货大楼"
+}, {
+	"zimu": "D",
+	"city": "大庆",
+	"code": "A-HLJ-DQ-0459-CT005",
+	"gui": "新玛特"
+}, {
+	"zimu": "D",
+	"city": "大同",
+	"code": "A-SX-DT-0352-CT001",
+	"gui": "华林新天地"
+}, {
+	"zimu": "D",
+	"city": "德阳",
+	"code": "B-SC-DY-0838-CT002",
+	"gui": "洋洋百盛"
+}, {
+	"zimu": "D",
+	"city": "德州",
+	"code": "B-SD-DZ-0534-CT003",
+	"gui": "德州市百货大楼"
+}, {
+	"zimu": "D",
+	"city": "东莞",
+	"code": "B-GD-DG-0769-CT005",
+	"gui": "天和-大岭山店"
+}, {
+	"zimu": "D",
+	"city": "东莞",
+	"code": "A-GD-DG-0769-CT015",
+	"gui": "天和-樟木头店"
+}, {
+	"zimu": "D",
+	"city": "东莞",
+	"code": "A-GD-DG-0769-CT021",
+	"gui": "天和-石龙店"
+}, {
+	"zimu": "D",
+	"city": "东莞",
+	"code": "A-GD-DG-0769-CT038",
+	"gui": "天虹-莞城店"
+}, {
+	"zimu": "D",
+	"city": "东莞",
+	"code": "A-GD-DG-0769-CT042",
+	"gui": "海雅百货"
+}, {
+	"zimu": "D",
+	"city": "东莞",
+	"code": "A-GD-DG-0769-CT044",
+	"gui": "大润发大郎店"
+}, {
+	"zimu": "D",
+	"city": "东莞",
+	"code": "A-GD-DG-0769-CT045",
+	"gui": "沃尔玛购物广场东莞东湖分店3400"
+}, {
+	"zimu": "D",
+	"city": "东莞",
+	"code": "A-GD-DG-0769-CT048",
+	"gui": "天虹-常平店"
+}, {
+	"zimu": "D",
+	"city": "东莞",
+	"code": "A-GD-DG-0769-CT053",
+	"gui": "沃尔玛购物广场东莞长青路分店"
+}, {
+	"zimu": "D",
+	"city": "东莞",
+	"code": "A-GD-DG-0769-CT063",
+	"gui": "大润发长安店"
+}, {
+	"zimu": "D",
+	"city": "东莞",
+	"code": "A-GD-DG-0769-CT066",
+	"gui": "天虹-长安店"
+}, {
+	"zimu": "D",
+	"city": "东莞",
+	"code": "A-GD-DG-0769-CT068",
+	"gui": "莞城海雅百货-南城店"
+}, {
+	"zimu": "D",
+	"city": "东莞",
+	"code": "A-GD-DG-0769-CT082",
+	"gui": "天虹-黄江店"
+}, {
+	"zimu": "D",
+	"city": "东莞",
+	"code": "A-GD-DG-0769-CT084",
+	"gui": "天虹-厚街店"
+}, {
+	"zimu": "D",
+	"city": "东莞",
+	"code": "A-GD-DG-0769-CT101",
+	"gui": "天虹-虎门店"
+}, {
+	"zimu": "D",
+	"city": "东营",
+	"code": "A-SD-DY-0546-CT001",
+	"gui": "东营百货大楼"
+}, {
+	"zimu": "D",
+	"city": "东营",
+	"code": "A-SD-WF-0536-CT025",
+	"gui": "银座系统-东营三店"
+}, {
+	"zimu": "D",
+	"city": "都江堰",
+	"code": "A-SC-DJY-028-CT004",
+	"gui": "百伦广场"
+}, {
+	"zimu": "F",
+	"city": "佛山",
+	"code": "A-GD-FSH-0757-CT002",
+	"gui": "兴华商场"
+}, {
+	"zimu": "F",
+	"city": "佛山",
+	"code": "A-GD-FSH-0757-CT040",
+	"gui": "吉之岛-禅城店"
+}, {
+	"zimu": "F",
+	"city": "佛山",
+	"code": "A-GD-FSH-0757-CT041",
+	"gui": "大福源顺德店"
+}, {
+	"zimu": "F",
+	"city": "阜阳",
+	"code": "B-AH-FY-0558-CT001",
+	"gui": "阜阳商厦"
+}, {
+	"zimu": "F",
+	"city": "阜阳",
+	"code": "B-AH-FY-0558-CT003",
+	"gui": "和华千百意"
+}, {
+	"zimu": "F",
+	"city": "福州",
+	"code": "A-FJ-FZ-0591-CT001",
+	"gui": "新华都-东街店"
+}, {
+	"zimu": "F",
+	"city": "福州",
+	"code": "A-FJ-FZ-0591-CT006",
+	"gui": "东百-东街店"
+}, {
+	"zimu": "F",
+	"city": "福州",
+	"code": "A-FJ-FZ-0591-CT023",
+	"gui": "大洋-东街店"
+}, {
+	"zimu": "F",
+	"city": "福州",
+	"code": "A-FJ-FZ-0591-CT048",
+	"gui": "沃尔玛购物广场福州招贤路分店"
+}, {
+	"zimu": "F",
+	"city": "福州",
+	"code": "A-FJ-FZ-0591-CT049",
+	"gui": "天虹-万象店"
+}, {
+	"zimu": "F",
+	"city": "福州",
+	"code": "A-FJ-FZ-0591-CT052",
+	"gui": "东百-元洪店"
+}, {
+	"zimu": "F",
+	"city": "福州",
+	"code": "A-FJ-FZ-0591-CT248",
+	"gui": "新华都-宝龙店"
+}, {
+	"zimu": "F",
+	"city": "福州",
+	"code": "A-FJ-FZ-0591-CT260",
+	"gui": "万千百货-江滨店"
+}, {
+	"zimu": "G",
+	"city": "赣州",
+	"code": "B-JX-GZ-0797-CT001",
+	"gui": "国光平价超市"
+}, {
+	"zimu": "G",
+	"city": "广水",
+	"code": "A-HB-GS-0722-CT002",
+	"gui": "群兴购物广场"
+}, {
+	"zimu": "G",
+	"city": "广州",
+	"code": "A-GD-GZ-020-CT001",
+	"gui": "广百-北京路店"
+}, {
+	"zimu": "G",
+	"city": "广州",
+	"code": "A-GD-GZ-020-CT002",
+	"gui": "广百-新大新北京路店"
+}, {
+	"zimu": "G",
+	"city": "广州",
+	"code": "A-GD-GZ-020-CT004",
+	"gui": "天河城总店"
+}, {
+	"zimu": "G",
+	"city": "广州",
+	"code": "A-GD-GZ-020-CT009",
+	"gui": "王府井-农林下路店"
+}, {
+	"zimu": "G",
+	"city": "广州",
+	"code": "A-GD-GZ-020-CT011",
+	"gui": "广百-新大新东山广场店"
+}, {
+	"zimu": "G",
+	"city": "广州",
+	"code": "A-GD-GZ-020-CT014",
+	"gui": "吉之岛-天河店"
+}, {
+	"zimu": "G",
+	"city": "广州",
+	"code": "A-GD-GZ-020-CT025",
+	"gui": "东百-花地湾店"
+}, {
+	"zimu": "G",
+	"city": "广州",
+	"code": "A-GD-GZ-020-CT067",
+	"gui": "友谊-番禺店"
+}, {
+	"zimu": "G",
+	"city": "广州",
+	"code": "A-GD-GZ-020-CT072",
+	"gui": "摩登总店"
+}, {
+	"zimu": "G",
+	"city": "广州",
+	"code": "A-GD-GZ-020-CT081",
+	"gui": "友谊-环市东路店"
+}, {
+	"zimu": "G",
+	"city": "广州",
+	"code": "A-GD-GZ-020-CT096",
+	"gui": "沃尔玛购物广场广州南洲店（原好又多）"
+}, {
+	"zimu": "G",
+	"city": "广州",
+	"code": "A-GD-GZ-020-CT121",
+	"gui": "广百-百信店"
+}, {
+	"zimu": "G",
+	"city": "广州",
+	"code": "A-GD-GZ-020-CT128",
+	"gui": "家乐福广州百信店"
+}, {
+	"zimu": "G",
+	"city": "广州",
+	"code": "A-GD-GZ-020-CT145",
+	"gui": "广百-新大新番禺店"
+}, {
+	"zimu": "G",
+	"city": "广州",
+	"code": "A-GD-GZ-020-CT152",
+	"gui": "广百-中怡店"
+}, {
+	"zimu": "G",
+	"city": "广州",
+	"code": "A-GD-GZ-020-CT154",
+	"gui": "广百-新一城店"
+}, {
+	"zimu": "G",
+	"city": "广州",
+	"code": "A-GD-GZ-020-CT230",
+	"gui": "天河城-北京路店"
+}, {
+	"zimu": "G",
+	"city": "广州",
+	"code": "A-GD-GZ-020-CT235",
+	"gui": "广百-家润店"
+}, {
+	"zimu": "G",
+	"city": "广州",
+	"code": "A-GD-GZ-020-CT295",
+	"gui": "万千-机场路店"
+}, {
+	"zimu": "G",
+	"city": "广州",
+	"code": "A-GD-GZ-020-CT314",
+	"gui": "天河城-东圃店"
+}, {
+	"zimu": "G",
+	"city": "广州",
+	"code": "A-GD-GZ-020-CT316",
+	"gui": "广百-花都新一城店"
+}, {
+	"zimu": "G",
+	"city": "广州",
+	"code": "A-GD-GZ-020-CT324",
+	"gui": "广百-太阳城店"
+}, {
+	"zimu": "G",
+	"city": "贵港",
+	"code": "B-GX-GG-0775-CT003",
+	"gui": "梦之岛"
+}, {
+	"zimu": "G",
+	"city": "桂林",
+	"code": "B-GX-GL-0773-CT003",
+	"gui": "桂林百货大楼"
+}, {
+	"zimu": "G",
+	"city": "桂林",
+	"code": "A-GX-LZ-0772-CT009",
+	"gui": "微笑堂"
+}, {
+	"zimu": "G",
+	"city": "贵阳",
+	"code": "A-GZ-GY-0851-CT006",
+	"gui": "星力百货-瑞金店"
+}, {
+	"zimu": "G",
+	"city": "固始",
+	"code": "B-HN-GS-0376-CT001",
+	"gui": "西亚广场"
+}, {
+	"zimu": "H",
+	"city": "哈尔滨",
+	"code": "A-HLJ-HERB-0451-CT007",
+	"gui": "远大购物中心"
+}, {
+	"zimu": "H",
+	"city": "哈尔滨",
+	"code": "A-HLJ-HERB-0451-CT019",
+	"gui": "哈尔滨大福源"
+}, {
+	"zimu": "H",
+	"city": "哈尔滨",
+	"code": "A-HLJ-HERB-0451-CT034",
+	"gui": "百盛"
+}, {
+	"zimu": "H",
+	"city": "哈尔滨",
+	"code": "A-HLJ-HERB-0451-CT040",
+	"gui": "新一百"
+}, {
+	"zimu": "H",
+	"city": "海安",
+	"code": "A-JS-NT-0513-CT012",
+	"gui": "文峰大世界"
+}, {
+	"zimu": "H",
+	"city": "海口",
+	"code": "A-HN-HK-0898-CT002",
+	"gui": "望海国际购物中心"
+}, {
+	"zimu": "H",
+	"city": "海口",
+	"code": "A-HN-HK-0898-CT019",
+	"gui": "明珠广场"
+}, {
+	"zimu": "H",
+	"city": "海门",
+	"code": "A-JS-NT-0513-CT005",
+	"gui": "文峰大世界"
+}, {
+	"zimu": "H",
+	"city": "海宁",
+	"code": "A-ZJ-JX-0573-CT016",
+	"gui": "华联"
+}, {
+	"zimu": "H",
+	"city": "邯郸",
+	"code": "A-HB-HD-0310-CT003",
+	"gui": "新世纪"
+}, {
+	"zimu": "H",
+	"city": "邯郸",
+	"code": "A-HB-HD-0310-CT016",
+	"gui": "阳光世贸广场"
+}, {
+	"zimu": "H",
+	"city": "杭州",
+	"code": "A-ZJ-HZ-0571-CT285",
+	"gui": "萧山汇德隆银隆百货"
+}, {
+	"zimu": "H",
+	"city": "杭州",
+	"code": "A-ZJ-HZH-0571-CT003",
+	"gui": "解百"
+}, {
+	"zimu": "H",
+	"city": "杭州",
+	"code": "B-ZJ-HZ-0571-CT004",
+	"gui": "临平利群购物中心"
+}, {
+	"zimu": "H",
+	"city": "汉中",
+	"code": "B-SX-HZ-0916-CT003",
+	"gui": "世纪阳光"
+}, {
+	"zimu": "H",
+	"city": "合肥",
+	"code": "A-AH-HF-0551-CT001",
+	"gui": "商之都"
+}, {
+	"zimu": "H",
+	"city": "合肥",
+	"code": "A-AH-HF-0551-CT002",
+	"gui": "鼓楼商厦"
+}, {
+	"zimu": "H",
+	"city": "合肥",
+	"code": "A-AH-HF-0551-CT003",
+	"gui": "合肥百货大楼"
+}, {
+	"zimu": "H",
+	"city": "合肥",
+	"code": "A-AH-HF-0551-CT006",
+	"gui": "合肥商业大厦"
+}, {
+	"zimu": "H",
+	"city": "合肥",
+	"code": "A-AH-HF-0551-CT021",
+	"gui": "百大CBD"
+}, {
+	"zimu": "H",
+	"city": "合肥",
+	"code": "A-AH-HF-0551-CT282",
+	"gui": "鼓楼商厦-高新区店"
+}, {
+	"zimu": "H",
+	"city": "衡水",
+	"code": "A-HB-HS-0318-CT006",
+	"gui": "爱特购物广场"
+}, {
+	"zimu": "H",
+	"city": "衡水",
+	"code": "A-HB-SJZH-0311-CT046",
+	"gui": "衡水百货大楼"
+}, {
+	"zimu": "H",
+	"city": "衡阳",
+	"code": "A-HN-HY-0734-CT009",
+	"gui": "步步高-衡阳购物广场"
+}, {
+	"zimu": "H",
+	"city": "衡阳",
+	"code": "A-HN-CS-0731-CT042",
+	"gui": "友谊晶珠广场"
+}, {
+	"zimu": "H",
+	"city": "淮安",
+	"code": "A-JS-NJ-025-CT011",
+	"gui": "新亚商城"
+}, {
+	"zimu": "H",
+	"city": "怀化",
+	"code": "A-HN-HH-0745-CT006",
+	"gui": "通程-怀化商业广场"
+}, {
+	"zimu": "H",
+	"city": "怀化",
+	"code": "B-HN-HH-0745-CT004",
+	"gui": "飞达百货"
+}, {
+	"zimu": "H",
+	"city": "怀化",
+	"code": "B-HN-HH-0745-CT008",
+	"gui": "步步高-琼天府安购物广场"
+}, {
+	"zimu": "H",
+	"city": "淮南",
+	"code": "B-AH-HN-0554-CT001",
+	"gui": "华联商厦"
+}, {
+	"zimu": "H",
+	"city": "黄冈",
+	"code": "A-HB-WH-027-CT100",
+	"gui": "黄州购物中心"
+}, {
+	"zimu": "H",
+	"city": "黄骅",
+	"code": "B-HB-CZ-0317-CT004",
+	"gui": "信誉楼"
+}, {
+	"zimu": "H",
+	"city": "黄骅",
+	"code": "B-HB-CZ-0317-CT006",
+	"gui": "琨洋购物广场（原黄骅耀华商厦）"
+}, {
+	"zimu": "H",
+	"city": "呼和浩特",
+	"code": "A-NMG-HHHT-0471-CT012",
+	"gui": "维多利亚商厦"
+}, {
+	"zimu": "H",
+	"city": "惠安",
+	"code": "A-FJ-HA-0595-CT001",
+	"gui": "百汇-世纪君临店"
+}, {
+	"zimu": "H",
+	"city": "惠州",
+	"code": "A-GD-HZ-0752-CT002",
+	"gui": "丽日-江北店"
+}, {
+	"zimu": "H",
+	"city": "惠州",
+	"code": "A-GD-HZ-0752-CT003",
+	"gui": "天虹-惠城店"
+}, {
+	"zimu": "H",
+	"city": "惠州",
+	"code": "A-GD-HZ-0752-CT279",
+	"gui": "沃尔玛购物广场惠州国际商业分店1070"
+}, {
+	"zimu": "H",
+	"city": "惠州",
+	"code": "A-GD-ST-0754-CT038",
+	"gui": "丽日百货"
+}, {
+	"zimu": "H",
+	"city": "湖州",
+	"code": "A-ZJ-JX-0573-CT009",
+	"gui": "浙北大厦"
+}, {
+	"zimu": "J",
+	"city": "江门",
+	"code": "A-GD-JM-0750-CT011",
+	"gui": "江门益华店"
+}, {
+	"zimu": "J",
+	"city": "江阴",
+	"code": "A-JS-WX-0510-CT018",
+	"gui": "江阴国购"
+}, {
+	"zimu": "J",
+	"city": "江阴",
+	"code": "A-JS-WX-0510-CT038",
+	"gui": "华地百货"
+}, {
+	"zimu": "J",
+	"city": "焦作",
+	"code": "B-HN-JZ-0391-CT004",
+	"gui": "三维商业广场"
+}, {
+	"zimu": "J",
+	"city": "嘉兴",
+	"code": "A-ZJ-JX-0573-CT001",
+	"gui": "江南"
+}, {
+	"zimu": "J",
+	"city": "嘉兴",
+	"code": "A-ZJ-JX-0573-CT002",
+	"gui": "戴梦得"
+}, {
+	"zimu": "J",
+	"city": "即墨",
+	"code": "A-SD-QD-0532-CT017",
+	"gui": "即墨利群"
+}, {
+	"zimu": "J",
+	"city": "济南",
+	"code": "A-SD-JN-0531-CT019",
+	"gui": "银座-八一店"
+}, {
+	"zimu": "J",
+	"city": "济南",
+	"code": "A-SD-LY-0535-CT010",
+	"gui": "大润发贵华店"
+}, {
+	"zimu": "J",
+	"city": "济南",
+	"code": "A-SD-JN-0531-CT002",
+	"gui": "泉城广场店"
+}, {
+	"zimu": "J",
+	"city": "济南",
+	"code": "A-SD-JN-0531-CT008",
+	"gui": "大润发历城店"
+}, {
+	"zimu": "J",
+	"city": "晋城",
+	"code": "B-SX-JC-0356-CT002",
+	"gui": "凤展购物广场"
+}, {
+	"zimu": "J",
+	"city": "景德镇",
+	"code": "B-JX-JDZ-0798-CT004",
+	"gui": "华达百货"
+}, {
+	"zimu": "J",
+	"city": "荆门",
+	"code": "A-HB-YCH-0717-CT006",
+	"gui": "东方百货"
+}, {
+	"zimu": "J",
+	"city": "荆门",
+	"code": "A-HB-YCH-0717-CT016",
+	"gui": "武商联-中商"
+}, {
+	"zimu": "J",
+	"city": "荆州",
+	"code": "B-HB-JZ-0716-CT001",
+	"gui": "安良百货"
+}, {
+	"zimu": "J",
+	"city": "九江",
+	"code": "A-JX-JJ-0792-CT001",
+	"gui": "联盛购物广场"
+}, {
+	"zimu": "K",
+	"city": "开县",
+	"code": "A-CQ-KX-023-CT001",
+	"gui": "新世纪百货-开县商都"
+}, {
+	"zimu": "K",
+	"city": "库尔勒",
+	"code": "B-XJ-KEL-0996-CT005",
+	"gui": "巴洲大厦"
+}, {
+	"zimu": "K",
+	"city": "昆明",
+	"code": "A-YN-KM-0871-CT001",
+	"gui": "昆明百货大楼"
+}, {
+	"zimu": "K",
+	"city": "昆明",
+	"code": "A-YN-KM-0871-CT003",
+	"gui": "沃尔玛购物广场昆明大观分店3401"
+}, {
+	"zimu": "K",
+	"city": "昆明",
+	"code": "A-YN-KM-0871-CT026",
+	"gui": "沃尔玛购物广场昆明国贸中心分店"
+}, {
+	"zimu": "K",
+	"city": "昆明",
+	"code": "A-YN-KM-0871-CT032",
+	"gui": "百盛二店"
+}, {
+	"zimu": "K",
+	"city": "昆明",
+	"code": "A-YN-KM-0871-CT042",
+	"gui": "家乐福昆明中心城店"
+}, {
+	"zimu": "K",
+	"city": "昆山",
+	"code": "A-JS-SZ-0512-CT261",
+	"gui": "昆山商厦-北门店"
+}, {
+	"zimu": "K",
+	"city": "昆山",
+	"code": "A-JS-SZH-0512-CT017",
+	"gui": "昆山商厦"
+}, {
+	"zimu": "L",
+	"city": "来安",
+	"code": "A-AH-CZ-0550-CT004",
+	"gui": "白云商厦"
+}, {
+	"zimu": "L",
+	"city": "莱西",
+	"code": "B-SD-LX-0532-CT001",
+	"gui": "利客来"
+}, {
+	"zimu": "L",
+	"city": "廊坊",
+	"code": "A-BJ-BJ-010-CT048",
+	"gui": "廊坊明珠"
+}, {
+	"zimu": "L",
+	"city": "兰州",
+	"code": "A-GS-LZ-0931-CT002",
+	"gui": "时尚百盛"
+}, {
+	"zimu": "L",
+	"city": "兰州",
+	"code": "A-GS-LZ-0931-CT003",
+	"gui": "王府井"
+}, {
+	"zimu": "L",
+	"city": "兰州",
+	"code": "A-GS-LZH-0931-CT001",
+	"gui": "亚欧商厦"
+}, {
+	"zimu": "L",
+	"city": "兰州",
+	"code": "A-GS-LZH-0931-CT002",
+	"gui": "国芳百盛"
+}, {
+	"zimu": "L",
+	"city": "兰州",
+	"code": "A-GS-LZH-0931-CT013",
+	"gui": "西太华"
+}, {
+	"zimu": "L",
+	"city": "兰州",
+	"code": "A-GS-LZH-0931-CT015",
+	"gui": "弘盛商场"
+}, {
+	"zimu": "L",
+	"city": "兰州",
+	"code": "EX-GS-LZ-LZ-2010",
+	"gui": "华孚泰购物广场"
+}, {
+	"zimu": "L",
+	"city": "耒阳",
+	"code": "B-HN-LY-0734-CT001",
+	"gui": "步步高-耒阳店"
+}, {
+	"zimu": "L",
+	"city": "连云港",
+	"code": "B-JS-LYG-0518-CT010",
+	"gui": "九龙大世界"
+}, {
+	"zimu": "L",
+	"city": "临沂",
+	"code": "A-SD-LY-0539-CT268",
+	"gui": "九洲商场"
+}, {
+	"zimu": "L",
+	"city": "丽水",
+	"code": "B-ZJ-LS-0578-CT002",
+	"gui": "丽水百货大楼"
+}, {
+	"zimu": "L",
+	"city": "六安",
+	"code": "B-AH-LA-0564-CT002",
+	"gui": "金商都"
+}, {
+	"zimu": "L",
+	"city": "六安",
+	"code": "A-AH-LA-0564-CT003",
+	"gui": "百大金商都"
+}, {
+	"zimu": "L",
+	"city": "六安",
+	"code": "A-AH-LA-0564-CT004",
+	"gui": "白云商厦"
+}, {
+	"zimu": "L",
+	"city": "浏阳",
+	"code": "EX-HN-LY-LY-3283",
+	"gui": "通程-浏阳购物广场"
+}, {
+	"zimu": "L",
+	"city": "柳州",
+	"code": "A-GX-LZ-0772-CT001",
+	"gui": "五星大厦"
+}, {
+	"zimu": "L",
+	"city": "柳州",
+	"code": "A-GX-LZ-0772-CT002",
+	"gui": "工贸大厦"
+}, {
+	"zimu": "L",
+	"city": "龙岩",
+	"code": "A-FJ-XM-0592-CT007",
+	"gui": "小李百货"
+}, {
+	"zimu": "L",
+	"city": "娄底",
+	"code": "A-HN-LD-0738-CT264",
+	"gui": "天虹-娄底店"
+}, {
+	"zimu": "L",
+	"city": "娄底",
+	"code": "B-HN-LD-0738-CT003",
+	"gui": "步步高-银海店"
+}, {
+	"zimu": "L",
+	"city": "庐江",
+	"code": "B-AH-LJ-0565-CT001",
+	"gui": "安德利贸易中心"
+}, {
+	"zimu": "L",
+	"city": "洛阳",
+	"code": "A-HN-ZHZH-0371-CT024",
+	"gui": "王府井-洛阳店"
+}, {
+	"zimu": "L",
+	"city": "洛阳",
+	"code": "A-HN-ZHZH-0371-CT017",
+	"gui": "洛阳百货大楼"
+}, {
+	"zimu": "L",
+	"city": "洛阳",
+	"code": "A-HN-ZHZH-0371-CT018",
+	"gui": "丹尼斯-南昌店"
+}, {
+	"zimu": "L",
+	"city": "泸州",
+	"code": "B-CQ-LZ-0830-CT001",
+	"gui": "汇通百货"
+}, {
+	"zimu": "M",
+	"city": "茂名",
+	"code": "B-GD-MM-0668-CT001",
+	"gui": "茂名明湖"
+}, {
+	"zimu": "M",
+	"city": "眉山",
+	"code": "B-SC-LS-0833-CT004",
+	"gui": "宏远商场"
+}, {
+	"zimu": "M",
+	"city": "绵阳",
+	"code": "B-SC-MY-0816-CT001",
+	"gui": "富临百盛"
+}, {
+	"zimu": "M",
+	"city": "牡丹江",
+	"code": "B-HLJ-MDJ-0453-CT001",
+	"gui": "牡丹江百货大楼"
+}, {
+	"zimu": "N",
+	"city": "南昌",
+	"code": "A-JX-NC-0791-CT001",
+	"gui": "洪客隆-八一店"
+}, {
+	"zimu": "N",
+	"city": "南昌",
+	"code": "A-JX-NC-0791-CT002",
+	"gui": "百大-南昌百货大楼"
+}, {
+	"zimu": "N",
+	"city": "南昌",
+	"code": "A-JX-NC-0791-CT030",
+	"gui": "洪客隆-中山店"
+}, {
+	"zimu": "N",
+	"city": "南昌",
+	"code": "A-JX-NC-0791-CT059",
+	"gui": "万达百货"
+}, {
+	"zimu": "N",
+	"city": "南充",
+	"code": "B-SC-NC-0817-CT001",
+	"gui": "成都人民商场"
+}, {
+	"zimu": "N",
+	"city": "南京",
+	"code": "A-JS-NJ-025-CT002",
+	"gui": "南京商厦"
+}, {
+	"zimu": "N",
+	"city": "南京",
+	"code": "A-JS-NJ-025-CT003",
+	"gui": "中央商场"
+}, {
+	"zimu": "N",
+	"city": "南京",
+	"code": "A-JS-NJ-025-CT004",
+	"gui": "太平商场-太平南路店"
+}, {
+	"zimu": "N",
+	"city": "南京",
+	"code": "A-JS-NJ-025-CT005",
+	"gui": "南京金鹰"
+}, {
+	"zimu": "N",
+	"city": "南京",
+	"code": "A-JS-NJ-025-CT056",
+	"gui": "同曦假日百货"
+}, {
+	"zimu": "N",
+	"city": "南宁",
+	"code": "A-GX-NN-0771-CT001",
+	"gui": "新南宁百货大楼"
+}, {
+	"zimu": "N",
+	"city": "南宁",
+	"code": "A-GX-NN-0771-CT010",
+	"gui": "新梦之岛百货"
+}, {
+	"zimu": "N",
+	"city": "南宁",
+	"code": "A-GX-NN-0771-CT011",
+	"gui": "南城百货"
+}, {
+	"zimu": "N",
+	"city": "南宁",
+	"code": "A-GX-NN-0771-CT016",
+	"gui": "沃尔玛购物广场南宁朝阳路分店"
+}, {
+	"zimu": "N",
+	"city": "南宁",
+	"code": "A-GX-NN-0771-CT018",
+	"gui": "百盛"
+}, {
+	"zimu": "N",
+	"city": "南宁",
+	"code": "A-GX-NN-0771-CT026",
+	"gui": "梦之岛-南宁水晶城店"
+}, {
+	"zimu": "N",
+	"city": "南宁",
+	"code": "A-GX-NN-0771-CT037",
+	"gui": "百大新世界店"
+}, {
+	"zimu": "N",
+	"city": "南通",
+	"code": "A-JS-NT-0513-CT001",
+	"gui": "文峰大世界"
+}, {
+	"zimu": "N",
+	"city": "南通",
+	"code": "B-JS-NT-0513-CT001",
+	"gui": "南通百货大楼"
+}, {
+	"zimu": "N",
+	"city": "南通",
+	"code": "A-JS-NT-0513-CT022",
+	"gui": "通州文峰大世界"
+}, {
+	"zimu": "N",
+	"city": "南阳",
+	"code": "B-HN-NY-0377-CT001",
+	"gui": "大统百货"
+}, {
+	"zimu": "N",
+	"city": "宁波",
+	"code": "A-ZJ-NB-0574-CT032",
+	"gui": "天润发北仑店"
+}, {
+	"zimu": "N",
+	"city": "宁波",
+	"code": "A-ZJ-NB-0574-CT006",
+	"gui": "二百"
+}, {
+	"zimu": "N",
+	"city": "宁海",
+	"code": "B-ZJ-NB-0575-CT001",
+	"gui": "宁海太平洋"
+}, {
+	"zimu": "P",
+	"city": "盘锦",
+	"code": "B-LN-PJ-0427-CT001",
+	"gui": "兴隆大厦"
+}, {
+	"zimu": "P",
+	"city": "盘锦",
+	"code": "B-LN-PJ-0427-CT005",
+	"gui": "盘山董氏"
+}, {
+	"zimu": "P",
+	"city": "盘锦",
+	"code": "A-LN-PJ-0427-CT004",
+	"gui": "新玛特总店"
+}, {
+	"zimu": "P",
+	"city": "攀枝花",
+	"code": "B-SC-PZH-0812-CT002",
+	"gui": "德铭阳光"
+}, {
+	"zimu": "P",
+	"city": "平顶山",
+	"code": "A-HN-ZHZH-0371-CT021",
+	"gui": "中心商城"
+}, {
+	"zimu": "P",
+	"city": "平凉",
+	"code": "B-GS-PL-0933-CT001",
+	"gui": "新世纪"
+}, {
+	"zimu": "P",
+	"city": "萍乡",
+	"code": "A-JX-PX-0799-CT001",
+	"gui": "百大"
+}, {
+	"zimu": "P",
+	"city": "莆田",
+	"code": "A-FJ-QZ-0595-CT005",
+	"gui": "国货广场"
+}, {
+	"zimu": "P",
+	"city": "濮阳",
+	"code": "B-HN-PY-0393-CT002",
+	"gui": "联华名品百货"
+}, {
+	"zimu": "Q",
+	"city": "启东",
+	"code": "A-JS-NT-0513-CT006",
+	"gui": "文峰大世界"
+}, {
+	"zimu": "Q",
+	"city": "青岛",
+	"code": "A-SD-QD-0532-CT001",
+	"gui": "台东利群"
+}, {
+	"zimu": "Q",
+	"city": "青岛",
+	"code": "A-SD-QD-0532-CT003",
+	"gui": "佳世客东部店"
+}, {
+	"zimu": "Q",
+	"city": "青岛",
+	"code": "A-SD-QD-0532-CT005",
+	"gui": "崂百大楼"
+}, {
+	"zimu": "Q",
+	"city": "青岛",
+	"code": "A-SD-QD-0532-CT007",
+	"gui": "北方国贸"
+}, {
+	"zimu": "Q",
+	"city": "青岛",
+	"code": "A-SD-QD-0532-CT014",
+	"gui": "商贸中心"
+}, {
+	"zimu": "Q",
+	"city": "青岛",
+	"code": "A-SD-QD-0532-CT043",
+	"gui": "城阳国货"
+}, {
+	"zimu": "Q",
+	"city": "青岛",
+	"code": "A-SD-QD-0532-CT052",
+	"gui": "大商集团麦凯乐"
+}, {
+	"zimu": "Q",
+	"city": "青县",
+	"code": "A-HB-CZ-0317-CT001",
+	"gui": "信誉楼"
+}, {
+	"zimu": "Q",
+	"city": "清远",
+	"code": "A-GD-QY-0763-CT001",
+	"gui": "益华"
+}, {
+	"zimu": "Q",
+	"city": "秦皇岛",
+	"code": "A-HB-QHD-0335-CT002",
+	"gui": "华联商场"
+}, {
+	"zimu": "Q",
+	"city": "泉州",
+	"code": "A-FJ-QZ-0595-CT018",
+	"gui": "百汇-泉港店"
+}, {
+	"zimu": "Q",
+	"city": "泉州",
+	"code": "A-FJ-QZ-0595-CT002",
+	"gui": "百汇-涂门店"
+}, {
+	"zimu": "Q",
+	"city": "泉州",
+	"code": "A-FJ-QZ-0595-CT003",
+	"gui": "新华都-丰泽店"
+}, {
+	"zimu": "Q",
+	"city": "衢州",
+	"code": "B-ZJ-QZ-0579-CT001",
+	"gui": "东方商厦"
+}, {
+	"zimu": "Q",
+	"city": "衢州",
+	"code": "B-ZJ-QZ-0579-CT002",
+	"gui": "中百"
+}, {
+	"zimu": "R",
+	"city": "仁寿",
+	"code": "B-SC-RS-0833-CT001",
+	"gui": "宏远商场"
+}, {
+	"zimu": "R",
+	"city": "日照",
+	"code": "A-SD-QD-0532-CT023",
+	"gui": "日照百货大楼"
+}, {
+	"zimu": "R",
+	"city": "如东",
+	"code": "A-JS-NT-0513-CT011",
+	"gui": "文峰大世界"
+}, {
+	"zimu": "R",
+	"city": "如皋",
+	"code": "A-JS-NT-0513-CT013",
+	"gui": "文峰大世界"
+}, {
+	"zimu": "S",
+	"city": "三亚",
+	"code": "A-HN-SY-0899-CT001",
+	"gui": "三亚明珠广场"
+}, {
+	"zimu": "S",
+	"city": "上海",
+	"code": "A-SH-SH-021-CT004",
+	"gui": "家乐福上海古北店"
+}, {
+	"zimu": "S",
+	"city": "上海",
+	"code": "A-SH-SH-021-CT005",
+	"gui": "家乐福上海宝山店"
+}, {
+	"zimu": "S",
+	"city": "上海",
+	"code": "A-SH-SH-021-CT017",
+	"gui": "置地广场"
+}, {
+	"zimu": "S",
+	"city": "上海",
+	"code": "A-SH-SH-021-CT019",
+	"gui": "新世界百货"
+}, {
+	"zimu": "S",
+	"city": "上海",
+	"code": "A-SH-SH-021-CT020",
+	"gui": "六百"
+}, {
+	"zimu": "S",
+	"city": "上海",
+	"code": "A-SH-SH-021-CT034",
+	"gui": "黄金广场"
+}, {
+	"zimu": "S",
+	"city": "上海",
+	"code": "A-SH-SH-021-CT050",
+	"gui": "大润发闸北店"
+}, {
+	"zimu": "S",
+	"city": "上海",
+	"code": "A-SH-SH-021-CT106",
+	"gui": "市百一店-松江店"
+}, {
+	"zimu": "S",
+	"city": "上海",
+	"code": "A-SH-SH-021-CT127",
+	"gui": "家乐福上海万里店"
+}, {
+	"zimu": "S",
+	"city": "上海",
+	"code": "A-SH-SH-021-CT135",
+	"gui": "南方商城"
+}, {
+	"zimu": "S",
+	"city": "上海",
+	"code": "A-SH-SH-021-CT162",
+	"gui": "大润发春申店"
+}, {
+	"zimu": "S",
+	"city": "上海",
+	"code": "A-SH-SH-021-CT171",
+	"gui": "沃尔玛购物广场上海祁连店（原好又多）"
+}, {
+	"zimu": "S",
+	"city": "上海",
+	"code": "A-SH-SH-021-CT194",
+	"gui": "川沙现代购物"
+}, {
+	"zimu": "S",
+	"city": "上海",
+	"code": "A-SH-SH-021-CT209",
+	"gui": "青浦东方商厦"
+}, {
+	"zimu": "S",
+	"city": "上海",
+	"code": "A-SH-SH-021-CT223",
+	"gui": "大润发大宁店"
+}, {
+	"zimu": "S",
+	"city": "上海",
+	"code": "A-SH-SH-021-CT232",
+	"gui": "巴黎春天-五角场"
+}, {
+	"zimu": "S",
+	"city": "上海",
+	"code": "A-SH-SH-021-CT255",
+	"gui": "沃尔玛购物广场上海嘉莲华分店"
+}, {
+	"zimu": "S",
+	"city": "上海",
+	"code": "A-SH-SH-021-CT275",
+	"gui": "百联-南奉店"
+}, {
+	"zimu": "S",
+	"city": "上海",
+	"code": "A-SH-SH-021-CT298",
+	"gui": "汇宝商业广场"
+}, {
+	"zimu": "S",
+	"city": "上海",
+	"code": "A-SH-SH-021-CT364",
+	"gui": "东方商厦-金山店"
+}, {
+	"zimu": "S",
+	"city": "上海",
+	"code": "A-SH-SJ-021-CT001",
+	"gui": "松江商城"
+}, {
+	"zimu": "S",
+	"city": "上海",
+	"code": "B-SH-SH-021-CT020",
+	"gui": "浦东商场-南汇店"
+}, {
+	"zimu": "S",
+	"city": "商丘",
+	"code": "A-HN-SQ-0370-CT002",
+	"gui": "新玛特"
+}, {
+	"zimu": "S",
+	"city": "绍兴",
+	"code": "A-ZJ-SX-0575-CT003",
+	"gui": "国商大厦"
+}, {
+	"zimu": "S",
+	"city": "邵阳",
+	"code": "B-HN-SY-0739-CT001",
+	"gui": "佳惠衣行顺百货"
+}, {
+	"zimu": "S",
+	"city": "沈阳",
+	"code": "A-LN-SHY-024-CT020",
+	"gui": "兴隆大家庭"
+}, {
+	"zimu": "S",
+	"city": "沈阳",
+	"code": "A-LN-SHY-024-CT023",
+	"gui": "千盛百货"
+}, {
+	"zimu": "S",
+	"city": "沈阳",
+	"code": "A-LN-SHY-024-CT033",
+	"gui": "百盛-万达店"
+}, {
+	"zimu": "S",
+	"city": "沈阳",
+	"code": "A-LN-SHY-024-CT048",
+	"gui": "北京华联-太原街店"
+}, {
+	"zimu": "S",
+	"city": "深圳",
+	"code": "B-GD-SZ-0755-CT006",
+	"gui": "佳华-松岗店"
+}, {
+	"zimu": "S",
+	"city": "深圳",
+	"code": "B-GD-SZ-0755-CT014",
+	"gui": "佳华-龙华店"
+}, {
+	"zimu": "S",
+	"city": "深圳",
+	"code": "A-GD-SZ-0755-CT060",
+	"gui": "天虹-民治店"
+}, {
+	"zimu": "S",
+	"city": "深圳",
+	"code": "A-GD-SZ-0755-CT282",
+	"gui": "天虹-公明店"
+}, {
+	"zimu": "S",
+	"city": "深圳",
+	"code": "A-GD-SZ-0755-CT326",
+	"gui": "天虹-西乡店"
+}, {
+	"zimu": "S",
+	"city": "深圳",
+	"code": "A-GD-SZ-0755-CT328",
+	"gui": "海雅缤纷城"
+}, {
+	"zimu": "S",
+	"city": "深圳",
+	"code": "A-GD-SHZH-0755-CT002",
+	"gui": "天虹-东门店"
+}, {
+	"zimu": "S",
+	"city": "深圳",
+	"code": "A-GD-SHZH-0755-CT003",
+	"gui": "天虹-福民店"
+}, {
+	"zimu": "S",
+	"city": "深圳",
+	"code": "A-GD-SHZH-0755-CT009",
+	"gui": "茂业-东门店"
+}, {
+	"zimu": "S",
+	"city": "深圳",
+	"code": "A-GD-SHZH-0755-CT023",
+	"gui": "沃尔玛购物广场深圳蛇口分店3404"
+}, {
+	"zimu": "S",
+	"city": "深圳",
+	"code": "A-GD-SHZH-0755-CT037",
+	"gui": "岁宝-景田店"
+}, {
+	"zimu": "S",
+	"city": "深圳",
+	"code": "A-GD-SHZH-0755-CT044",
+	"gui": "天虹-宝安店"
+}, {
+	"zimu": "S",
+	"city": "深圳",
+	"code": "A-GD-SHZH-0755-CT050",
+	"gui": "佳华-公明店"
+}, {
+	"zimu": "S",
+	"city": "深圳",
+	"code": "A-GD-SHZH-0755-CT052",
+	"gui": "太阳广场"
+}, {
+	"zimu": "S",
+	"city": "深圳",
+	"code": "A-GD-SHZH-0755-CT071",
+	"gui": "海雅百货"
+}, {
+	"zimu": "S",
+	"city": "深圳",
+	"code": "A-GD-SHZH-0755-CT072",
+	"gui": "茂业-华强北店"
+}, {
+	"zimu": "S",
+	"city": "深圳",
+	"code": "A-GD-SHZH-0755-CT073",
+	"gui": "天虹-梅林店"
+}, {
+	"zimu": "S",
+	"city": "深圳",
+	"code": "A-GD-SHZH-0755-CT077",
+	"gui": "天虹-龙新店"
+}, {
+	"zimu": "S",
+	"city": "深圳",
+	"code": "A-GD-SHZH-0755-CT078",
+	"gui": "天虹-双龙店"
+}, {
+	"zimu": "S",
+	"city": "深圳",
+	"code": "A-GD-SHZH-0755-CT079",
+	"gui": "天虹-南山店"
+}, {
+	"zimu": "S",
+	"city": "深圳",
+	"code": "A-GD-SHZH-0755-CT081",
+	"gui": "沃尔玛购物广场深圳布吉大芬分店"
+}, {
+	"zimu": "S",
+	"city": "深圳",
+	"code": "A-GD-SHZH-0755-CT083",
+	"gui": "天虹-沙井店"
+}, {
+	"zimu": "S",
+	"city": "深圳",
+	"code": "A-GD-SHZH-0755-CT085",
+	"gui": "沃尔玛购物广场深圳宝安前进路分店3432"
+}, {
+	"zimu": "S",
+	"city": "深圳",
+	"code": "A-GD-SHZH-0755-CT087",
+	"gui": "天虹-布吉店"
+}, {
+	"zimu": "S",
+	"city": "深圳",
+	"code": "A-GD-SHZH-0755-CT093",
+	"gui": "天虹-前进店"
+}, {
+	"zimu": "S",
+	"city": "深圳",
+	"code": "A-GD-SHZH-0755-CT123",
+	"gui": "天虹-松岗店"
+}, {
+	"zimu": "S",
+	"city": "深圳",
+	"code": "A-GD-SHZH-0755-CT133",
+	"gui": "天虹-观澜店"
+}, {
+	"zimu": "S",
+	"city": "深圳",
+	"code": "A-GD-SHZH-0755-CT135",
+	"gui": "天虹-鼎城店"
+}, {
+	"zimu": "S",
+	"city": "石家庄",
+	"code": "A-HB-SJZ-0311-CT006",
+	"gui": "益东百货"
+}, {
+	"zimu": "S",
+	"city": "石家庄",
+	"code": "A-HB-SJZH-0311-CT003",
+	"gui": "北国商城"
+}, {
+	"zimu": "S",
+	"city": "石家庄",
+	"code": "A-HB-SJZH-0311-CT005",
+	"gui": "东方购物"
+}, {
+	"zimu": "S",
+	"city": "石家庄",
+	"code": "A-HB-SJZH-0311-CT015",
+	"gui": "人民商场"
+}, {
+	"zimu": "S",
+	"city": "石家庄",
+	"code": "A-HB-SJZH-0311-CT060",
+	"gui": "益元百货"
+}, {
+	"zimu": "S",
+	"city": "石狮",
+	"code": "A-FJ-SS-0595-CT004",
+	"gui": "德辉新华都百货"
+}, {
+	"zimu": "S",
+	"city": "十堰",
+	"code": "A-HB-SY-0719-CT003",
+	"gui": "人民商场-北京路店"
+}, {
+	"zimu": "S",
+	"city": "十堰",
+	"code": "A-HB-SY-0719-CT004",
+	"gui": "五堰商场"
+}, {
+	"zimu": "S",
+	"city": "十堰",
+	"code": "B-HB-SY-0719-CT003",
+	"gui": "人民商场"
+}, {
+	"zimu": "S",
+	"city": "遂宁",
+	"code": "B-SC-SN-0825-CT002",
+	"gui": "摩尔春天广场"
+}, {
+	"zimu": "S",
+	"city": "随州",
+	"code": "B-HB-SZ-0722-CT001",
+	"gui": "新世纪购物中心"
+}, {
+	"zimu": "S",
+	"city": "苏州",
+	"code": "A-JS-SZH-0512-CT048",
+	"gui": "大润发相城店"
+}, {
+	"zimu": "S",
+	"city": "苏州",
+	"code": "A-JS-WJ-0512-CT003",
+	"gui": "万亚购物中心"
+}, {
+	"zimu": "S",
+	"city": "苏州",
+	"code": "A-JS-SZH-0512-CT003",
+	"gui": "人民商场"
+}, {
+	"zimu": "S",
+	"city": "苏州",
+	"code": "A-JS-SZH-0512-CT007",
+	"gui": "石路国际"
+}, {
+	"zimu": "S",
+	"city": "苏州",
+	"code": "A-JS-SZH-0512-CT023",
+	"gui": "大润发苏福店"
+}, {
+	"zimu": "T",
+	"city": "泰安",
+	"code": "A-SD-JN-0531-CT018",
+	"gui": "银座商城-中心店"
+}, {
+	"zimu": "T",
+	"city": "太仓",
+	"code": "A-JS-SZH-0512-CT030",
+	"gui": "新世界百货"
+}, {
+	"zimu": "T",
+	"city": "太原",
+	"code": "A-SX-TY-0351-CT005",
+	"gui": "华宇购物广场"
+}, {
+	"zimu": "T",
+	"city": "太原",
+	"code": "A-SX-TY-0351-CT028",
+	"gui": "铜锣湾广场"
+}, {
+	"zimu": "T",
+	"city": "泰州",
+	"code": "A-JS-YZH-0514-CT009",
+	"gui": "中百一店"
+}, {
+	"zimu": "T",
+	"city": "泰州",
+	"code": "A-JS-YZH-0514-CT027",
+	"gui": "泰州金鹰"
+}, {
+	"zimu": "T",
+	"city": "泰州",
+	"code": "B-JS-JY-0523-CT004",
+	"gui": "姜堰人民商场"
+}, {
+	"zimu": "T",
+	"city": "唐山",
+	"code": "A-HB-TSH-0315-CT006",
+	"gui": "唐山百货大楼"
+}, {
+	"zimu": "T",
+	"city": "唐山",
+	"code": "A-HB-TSH-0315-CT009",
+	"gui": "八方购物广场"
+}, {
+	"zimu": "T",
+	"city": "天津",
+	"code": "A-TJ-TJ-022-CT011",
+	"gui": "金元宝"
+}, {
+	"zimu": "T",
+	"city": "天津",
+	"code": "A-TJ-TJ-022-CT020",
+	"gui": "月坛商厦"
+}, {
+	"zimu": "T",
+	"city": "天津",
+	"code": "A-TJ-TJ-022-CT030",
+	"gui": "华联商厦"
+}, {
+	"zimu": "T",
+	"city": "天津",
+	"code": "A-TJ-TJ-022-CT065",
+	"gui": "中原新百"
+}, {
+	"zimu": "T",
+	"city": "天津",
+	"code": "A-TJ-TJ-022-CT113",
+	"gui": "滨江商厦"
+}, {
+	"zimu": "T",
+	"city": "天津",
+	"code": "A-TJ-TJ-022-CT119",
+	"gui": "乐宾百货"
+}, {
+	"zimu": "T",
+	"city": "天津",
+	"code": "A-TJ-TJ-022-CT163",
+	"gui": "滨江道友谊新天地"
+}, {
+	"zimu": "T",
+	"city": "天水",
+	"code": "B-GS-TS-0938-CT002",
+	"gui": "兰天商厦"
+}, {
+	"zimu": "T",
+	"city": "铜陵",
+	"code": "B-AH-TL-0562-CT001",
+	"gui": "合百商厦"
+}, {
+	"zimu": "T",
+	"city": "桐乡",
+	"code": "A-ZJ-JX-0573-CT005",
+	"gui": "桐乡东兴"
+}, {
+	"zimu": "W",
+	"city": "潍坊",
+	"code": "A-SD-WF-0536-CT001",
+	"gui": "中百大厦"
+}, {
+	"zimu": "W",
+	"city": "渭南",
+	"code": "A-SX-XIAN-029-CT043",
+	"gui": "渭南国贸"
+}, {
+	"zimu": "W",
+	"city": "温州",
+	"code": "A-ZJ-NB-0574-CT025",
+	"gui": "开太百货"
+}, {
+	"zimu": "W",
+	"city": "武汉",
+	"code": "A-HB-WH-027-CT001",
+	"gui": "武商联-武商-武汉广场"
+}, {
+	"zimu": "W",
+	"city": "武汉",
+	"code": "A-HB-WH-027-CT005",
+	"gui": "21世纪购物广场"
+}, {
+	"zimu": "W",
+	"city": "武汉",
+	"code": "A-HB-WH-027-CT007",
+	"gui": "王府井-中山大道店"
+}, {
+	"zimu": "W",
+	"city": "武汉",
+	"code": "A-HB-WH-027-CT017",
+	"gui": "武商联-中商-徐东平价"
+}, {
+	"zimu": "W",
+	"city": "武汉",
+	"code": "A-HB-WH-027-CT018",
+	"gui": "武商联-中商-中南商业大楼"
+}, {
+	"zimu": "W",
+	"city": "武汉",
+	"code": "A-HB-WH-027-CT021",
+	"gui": "武商联-中百-青山店"
+}, {
+	"zimu": "W",
+	"city": "武汉",
+	"code": "A-HB-WH-027-CT022",
+	"gui": "武商联-中百-江汉路中心百货店"
+}, {
+	"zimu": "W",
+	"city": "武汉",
+	"code": "A-HB-WH-027-CT025",
+	"gui": "鲁巷广场"
+}, {
+	"zimu": "W",
+	"city": "武汉",
+	"code": "A-HB-WH-027-CT037",
+	"gui": "武商联-武商-青山建二店"
+}, {
+	"zimu": "W",
+	"city": "武汉",
+	"code": "A-HB-WH-027-CT071",
+	"gui": "武商联-中百-江夏店"
+}, {
+	"zimu": "W",
+	"city": "武汉",
+	"code": "A-HB-WH-027-CT088",
+	"gui": "大洋百货-中山店"
+}, {
+	"zimu": "W",
+	"city": "武汉",
+	"code": "A-HB-WH-027-CT099",
+	"gui": "武商联-中商-徐东路销品茂店"
+}, {
+	"zimu": "W",
+	"city": "武汉",
+	"code": "A-HB-WH-027-CT116",
+	"gui": "大洋百货-光谷店"
+}, {
+	"zimu": "W",
+	"city": "武汉",
+	"code": "A-HB-WH-027-CT282",
+	"gui": "大洋百货-龙阳店"
+}, {
+	"zimu": "W",
+	"city": "武汉",
+	"code": "A-HB-WH-027-CT299",
+	"gui": "武商联-中百-吴家山店"
+}, {
+	"zimu": "W",
+	"city": "芜湖",
+	"code": "A-AH-WH-0553-CT008",
+	"gui": "华亿国际北楼"
+}, {
+	"zimu": "W",
+	"city": "芜湖",
+	"code": "B-AH-WH-0553-CT001",
+	"gui": "新百大厦"
+}, {
+	"zimu": "W",
+	"city": "乌鲁木齐",
+	"code": "A-XJ-WLMQ-0991-CT001",
+	"gui": "友好商场"
+}, {
+	"zimu": "W",
+	"city": "乌鲁木齐",
+	"code": "A-XJ-WLMQ-0991-CT002",
+	"gui": "天百商场"
+}, {
+	"zimu": "W",
+	"city": "乌鲁木齐",
+	"code": "A-XJ-WLMQ-0991-CT003",
+	"gui": "五一商场"
+}, {
+	"zimu": "W",
+	"city": "乌鲁木齐",
+	"code": "A-XJ-WLMQ-0991-CT006",
+	"gui": "汇嘉时代"
+}, {
+	"zimu": "W",
+	"city": "乌鲁木齐",
+	"code": "A-XJ-WLMQ-0991-CT007",
+	"gui": "东方一百"
+}, {
+	"zimu": "W",
+	"city": "乌鲁木齐",
+	"code": "A-XJ-WLMQ-0991-CT010",
+	"gui": "百盛"
+}, {
+	"zimu": "W",
+	"city": "乌鲁木齐",
+	"code": "A-XJ-WLMQ-0991-CT014",
+	"gui": "七一综合购物中心"
+}, {
+	"zimu": "W",
+	"city": "乌鲁木齐",
+	"code": "A-XJ-WLMQ-0991-CT019",
+	"gui": "新疆太平洋百货"
+}, {
+	"zimu": "W",
+	"city": "乌鲁木齐",
+	"code": "A-XJ-WLMQ-0991-CT035",
+	"gui": "友好商场-长春路店"
+}, {
+	"zimu": "W",
+	"city": "武胜县",
+	"code": "EXTRC-CQBH-SC-SC-IS10088",
+	"gui": "重百武胜商场"
+}, {
+	"zimu": "W",
+	"city": "无锡",
+	"code": "A-JS-WX-0510-CT001",
+	"gui": "商业大厦"
+}, {
+	"zimu": "W",
+	"city": "无锡",
+	"code": "A-JS-WX-0510-CT002",
+	"gui": "八佰伴"
+}, {
+	"zimu": "W",
+	"city": "无锡",
+	"code": "A-JS-WX-0510-CT005",
+	"gui": "家乐福无锡永乐店"
+}, {
+	"zimu": "W",
+	"city": "无锡",
+	"code": "A-JS-WX-0510-CT008",
+	"gui": "大润发无锡店"
+}, {
+	"zimu": "X",
+	"city": "厦门",
+	"code": "A-FJ-XM-0592-CT001",
+	"gui": "中山华联"
+}, {
+	"zimu": "X",
+	"city": "厦门",
+	"code": "A-FJ-XM-0592-CT011",
+	"gui": "沃尔玛购物广场厦门SM分店"
+}, {
+	"zimu": "X",
+	"city": "厦门",
+	"code": "A-FJ-XM-0592-CT022",
+	"gui": "天虹-汇腾店"
+}, {
+	"zimu": "X",
+	"city": "厦门",
+	"code": "A-FJ-XM-0592-CT023",
+	"gui": "来雅-sm店"
+}, {
+	"zimu": "X",
+	"city": "厦门",
+	"code": "A-FJ-XM-0592-CT037",
+	"gui": "天虹-海景店"
+}, {
+	"zimu": "X",
+	"city": "厦门",
+	"code": "A-FJ-XM-0592-CT253",
+	"gui": "百汇-梧村店"
+}, {
+	"zimu": "X",
+	"city": "厦门",
+	"code": "A-FJ-XM-0592-CT264",
+	"gui": "天虹-海沧店"
+}, {
+	"zimu": "X",
+	"city": "湘潭",
+	"code": "A-HN-CS-0731-CT023",
+	"gui": "步步高-购物广场"
+}, {
+	"zimu": "X",
+	"city": "湘潭",
+	"code": "A-HN-CS-0731-CT071",
+	"gui": "大洋-大洋百货"
+}, {
+	"zimu": "X",
+	"city": "襄阳",
+	"code": "A-HB-YCH-0717-CT017",
+	"gui": "襄樊华洋堂"
+}, {
+	"zimu": "X",
+	"city": "襄阳",
+	"code": "A-HB-XY-0710-CT001",
+	"gui": "武商-襄阳购物中心"
+}, {
+	"zimu": "X",
+	"city": "仙桃",
+	"code": "B-HB-XT-0728-CT001",
+	"gui": "仙桃商城大厦"
+}, {
+	"zimu": "X",
+	"city": "咸阳",
+	"code": "A-SX-XIAN-029-CT056",
+	"gui": "民生二店"
+}, {
+	"zimu": "X",
+	"city": "西安",
+	"code": "A-SX-XIAN-029-CT061",
+	"gui": "西安金鹰"
+}, {
+	"zimu": "X",
+	"city": "西安",
+	"code": "A-SX-XIAN-029-CT063",
+	"gui": "人人乐-西安赛高国际"
+}, {
+	"zimu": "X",
+	"city": "西安",
+	"code": "A-SX-XIAN-029-CT068",
+	"gui": "百盛-东二环店"
+}, {
+	"zimu": "X",
+	"city": "西安",
+	"code": "A-SX-XIAN-029-CT047",
+	"gui": "世纪百盛"
+}, {
+	"zimu": "X",
+	"city": "西安",
+	"code": "A-SX-XA-029-CT289",
+	"gui": "万千"
+}, {
+	"zimu": "X",
+	"city": "西安",
+	"code": "A-SX-XA-029-CT317",
+	"gui": "开元商城-西稍门店"
+}, {
+	"zimu": "X",
+	"city": "西安",
+	"code": "A-SX-XA-029-CT336",
+	"gui": "赛格商业运营管理有限公司"
+}, {
+	"zimu": "X",
+	"city": "西安",
+	"code": "A-SX-XIAN-029-CT001",
+	"gui": "开元商城"
+}, {
+	"zimu": "X",
+	"city": "西安",
+	"code": "A-SX-XIAN-029-CT003",
+	"gui": "军人服务社"
+}, {
+	"zimu": "X",
+	"city": "西安",
+	"code": "A-SX-XIAN-029-CT033",
+	"gui": "民生百货大楼"
+}, {
+	"zimu": "X",
+	"city": "邢台",
+	"code": "A-HB-HD-0310-CT027",
+	"gui": "大洋百货"
+}, {
+	"zimu": "X",
+	"city": "西宁",
+	"code": "B-QH-XN-0971-CT001",
+	"gui": "省纺织品大楼"
+}, {
+	"zimu": "X",
+	"city": "西宁",
+	"code": "B-QH-XN-0971-CT002",
+	"gui": "大十字百货"
+}, {
+	"zimu": "X",
+	"city": "西宁",
+	"code": "B-QH-XN-0971-CT003",
+	"gui": "西大街百货"
+}, {
+	"zimu": "X",
+	"city": "西宁",
+	"code": "B-QH-XN-0971-CT007",
+	"gui": "王府井-西宁店"
+}, {
+	"zimu": "X",
+	"city": "新乡",
+	"code": "B-HN-XX-0373-CT002",
+	"gui": "胖东来-世贸购物广场"
+}, {
+	"zimu": "X",
+	"city": "信阳",
+	"code": "B-HN-XY-0376-CT002",
+	"gui": "西亚和美广场"
+}, {
+	"zimu": "X",
+	"city": "信阳",
+	"code": "A-HN-XY-0376-CT006",
+	"gui": "新玛特"
+}, {
+	"zimu": "X",
+	"city": "许昌",
+	"code": "A-HN-XC-0374-CT001",
+	"gui": "胖东来-时代广场"
+}, {
+	"zimu": "X",
+	"city": "徐州",
+	"code": "A-JS-XZH-0516-CT010",
+	"gui": "徐州百货大楼"
+}, {
+	"zimu": "X",
+	"city": "徐州",
+	"code": "A-JS-XZH-0516-CT016",
+	"gui": "金地商都"
+}, {
+	"zimu": "X",
+	"city": "徐州",
+	"code": "A-JS-XZH-0516-CT017",
+	"gui": "金鹰国际购物中心"
+}, {
+	"zimu": "Y",
+	"city": "延安",
+	"code": "B-SX-YA-0911-CT002",
+	"gui": "延安百货大楼"
+}, {
+	"zimu": "Y",
+	"city": "盐城",
+	"code": "B-JS-YC-0515-CT001",
+	"gui": "盐阜人民商场"
+}, {
+	"zimu": "Y",
+	"city": "盐城",
+	"code": "B-JS-YC-0515-CT002",
+	"gui": "盐城商业大厦"
+}, {
+	"zimu": "Y",
+	"city": "盐城",
+	"code": "A-JS-YC-0515-CT287",
+	"gui": "金鹰国际购物中心"
+}, {
+	"zimu": "Y",
+	"city": "扬州",
+	"code": "A-JS-YZH-0514-CT001",
+	"gui": "万家福商城"
+}, {
+	"zimu": "Y",
+	"city": "扬州",
+	"code": "A-JS-YZH-0514-CT002",
+	"gui": "江都商城"
+}, {
+	"zimu": "Y",
+	"city": "扬州",
+	"code": "A-JS-YZH-0514-CT006",
+	"gui": "大润发扬州店"
+}, {
+	"zimu": "Y",
+	"city": "扬州",
+	"code": "A-JS-YZH-0514-CT007",
+	"gui": "扬州金鹰"
+}, {
+	"zimu": "Y",
+	"city": "宜宾",
+	"code": "B-SC-YB-0831-CT003",
+	"gui": "叙府商城"
+}, {
+	"zimu": "Y",
+	"city": "宜昌",
+	"code": "A-HB-YCH-0717-CT001",
+	"gui": "国贸大厦"
+}, {
+	"zimu": "Y",
+	"city": "宜春",
+	"code": "B-JX-YC-0795-CT001",
+	"gui": "青龙商厦"
+}, {
+	"zimu": "Y",
+	"city": "银川",
+	"code": "B-NX-YC-0951-CT001",
+	"gui": "新华百货"
+}, {
+	"zimu": "Y",
+	"city": "银川",
+	"code": "B-NX-YC-0951-CT002",
+	"gui": "新华购物中心"
+}, {
+	"zimu": "Y",
+	"city": "银川",
+	"code": "B-NX-YC-0951-CT008",
+	"gui": "新华百货-东方红店"
+}, {
+	"zimu": "Y",
+	"city": "义乌",
+	"code": "B-ZJ-YW-0579-CT001",
+	"gui": "解百"
+}, {
+	"zimu": "Y",
+	"city": "宜兴",
+	"code": "A-JS-WX-0510-CT013",
+	"gui": "华地百货"
+}, {
+	"zimu": "Y",
+	"city": "益阳",
+	"code": "A-HN-YY-0737-CT002",
+	"gui": "步步高-朝阳购物广场"
+}, {
+	"zimu": "Y",
+	"city": "永康",
+	"code": "B-ZJ-YK-0579-CT001",
+	"gui": "永康华联"
+}, {
+	"zimu": "Y",
+	"city": "岳阳",
+	"code": "B-HN-YY-0730-CT005",
+	"gui": "康星百货"
+}, {
+	"zimu": "Y",
+	"city": "岳阳",
+	"code": "A-HN-YY-0730-CT007",
+	"gui": "天虹-中航店"
+}, {
+	"zimu": "Y",
+	"city": "岳阳",
+	"code": "A-HN-CS-0731-CT050",
+	"gui": "武商-岳阳购物中心"
+}, {
+	"zimu": "Y",
+	"city": "岳阳",
+	"code": "A-HN-CS-0731-CT036",
+	"gui": "百盛"
+}, {
+	"zimu": "Y",
+	"city": "榆林",
+	"code": "A-SX-YL-0912-CT002",
+	"gui": "国贸2街店"
+}, {
+	"zimu": "Y",
+	"city": "玉林",
+	"code": "A-GX-YL-0775-CT001",
+	"gui": "南城百货玉林店"
+}, {
+	"zimu": "Y",
+	"city": "玉林",
+	"code": "A-GX-YL-0775-CT002",
+	"gui": "玉林金城商厦有限责任公司"
+}, {
+	"zimu": "Y",
+	"city": "余姚",
+	"code": "A-ZJ-NB-0574-CT013",
+	"gui": "余姚华联"
+}, {
+	"zimu": "Z",
+	"city": "张家港",
+	"code": "A-JS-SZH-0512-CT014",
+	"gui": "人民商场"
+}, {
+	"zimu": "Z",
+	"city": "张家口",
+	"code": "A-BJ-BJ-010-CT051",
+	"gui": "帝达"
+}, {
+	"zimu": "Z",
+	"city": "张家口",
+	"code": "A-BJ-BJ-010-CT113",
+	"gui": "帝达购物中心"
+}, {
+	"zimu": "Z",
+	"city": "漳州",
+	"code": "A-FJ-QZ-0595-CT011",
+	"gui": "百汇-延安店"
+}, {
+	"zimu": "Z",
+	"city": "湛江",
+	"code": "A-GD-ZJ-0759-CT086",
+	"gui": "沃尔玛购物广场湛江南城市分店"
+}, {
+	"zimu": "Z",
+	"city": "郑州",
+	"code": "A-HN-ZHZH-0371-CT029",
+	"gui": "百盛"
+}, {
+	"zimu": "Z",
+	"city": "郑州",
+	"code": "A-HN-ZZ-0371-CT015",
+	"gui": "大商新玛特-福田太阳城店"
+}, {
+	"zimu": "Z",
+	"city": "郑州",
+	"code": "A-HN-ZHZH-0371-CT002",
+	"gui": "金博大"
+}, {
+	"zimu": "Z",
+	"city": "郑州",
+	"code": "A-HN-ZHZH-0371-CT009",
+	"gui": "丹尼斯-中原店"
+}, {
+	"zimu": "Z",
+	"city": "郑州",
+	"code": "A-HN-ZHZH-0371-CT011",
+	"gui": "北京华联"
+}, {
+	"zimu": "Z",
+	"city": "郑州",
+	"code": "B-HN-ZZ-0371-CT010",
+	"gui": "世纪联华-长江路店一楼"
+}, {
+	"zimu": "Z",
+	"city": "镇江",
+	"code": "A-JS-NJ-025-CT073",
+	"gui": "大润发镇江店"
+}, {
+	"zimu": "Z",
+	"city": "中山",
+	"code": "A-GD-ZS-0760-CT014",
+	"gui": "中山古镇益华百货"
+}, {
+	"zimu": "Z",
+	"city": "中山",
+	"code": "A-GD-ZHSH-0760-CT027",
+	"gui": "益华-中山总店"
+}, {
+	"zimu": "Z",
+	"city": "中山",
+	"code": "B-GD-ZS-0760-CT002",
+	"gui": "优越"
+}, {
+	"zimu": "Z",
+	"city": "诸城",
+	"code": "B-SD-WF-0536-CT002",
+	"gui": "百盛"
+}, {
+	"zimu": "Z",
+	"city": "珠海",
+	"code": "A-GD-ZHUHAI-0756-CT017",
+	"gui": "茂业-香洲店"
+}, {
+	"zimu": "Z",
+	"city": "诸暨",
+	"code": "B-ZJ-SX-0575-CT002",
+	"gui": "雄风时代"
+}, {
+	"zimu": "Z",
+	"city": "驻马店",
+	"code": "B-HN-ZMD-0396-CT002",
+	"gui": "乐山商场"
+}, {
+	"zimu": "Z",
+	"city": "株洲",
+	"code": "A-HN-CS-0731-CT013",
+	"gui": "株百-株洲百货大楼"
+}, {
+	"zimu": "Z",
+	"city": "株洲",
+	"code": "A-HN-CS-0731-CT015",
+	"gui": "株百-天元购物广场"
+}, {
+	"zimu": "Z",
+	"city": "淄博",
+	"code": "EX-SD-ZB-ZB-1400",
+	"gui": "中润新玛特"
+}, {
+	"zimu": "Z",
+	"city": "淄博",
+	"code": "A-SD-ZB-0533-CT001",
+	"gui": "淄博商厦"
+}, {
+	"zimu": "Z",
+	"city": "淄博",
+	"code": "A-SD-ZB-0533-CT014",
+	"gui": "博山特信商城"
+}, {
+	"zimu": "Z",
+	"city": "淄博",
+	"code": "A-SD-ZB-0533-CT020",
+	"gui": "新星商厦"
+}];
+var user = {},
+	newData = [];
+(function() {
+	var has = {},
+		cityHtml = '--选择--';
+	cityData.forEach(function(v, i) {
+		if (!has[v.city]) {
+			has[v.city] = true;
+			newData.push({
+				city: v.city,
+				gui: [v.gui],
+				code: [v.code],
+				zimu: v.zimu
+			});
+		} else {
+			newData.forEach(function(v2, i2) {
+				if (v.city == v2.city) {
+					newData[i2].gui.push(v.gui);
+					newData[i2].code.push(v.code);
+				}
+			});
+		}
+	});
+	var uHtmkl = '',
+		m = {},
+		ll = newData.length;
+	newData.forEach(function(v, i) {
+		if (m[v.zimu]) {
+			uHtmkl += '<input type="radio" name="citys" data-value="' + v.city + '" />';
+		} else {
+			m[v.zimu] = true;
+			if (i > 0 && i < ll - 2) {
+				uHtmkl += '</div></li><li><div class="l">' + v.zimu + '</div><div class="r"><input type="radio" name="citys" data-value="' + v.city + '" />';
+			} else if (i === 0) {
+				uHtmkl += '<li><div class="l">' + v.zimu + '</div><div class="r"><input type="radio" name="citys" data-value="' + v.city + '" />';
+			} else {
+				uHtmkl += '</div></li>';
+			}
+		}
+	});
+	$(".ul_city").html(uHtmkl);
+})();
+$(".ul_city input").on("click", function() {
+	user.city = $(this).attr("data-value");
+	$("#city").html(user.city);
+	$(".first_popwin").css("display", "none");
+	getShoppe();
+});
+
+function getShoppe() {
+	if (user.city == '--选择--') {
+		$("#shoppe").html('<option>--选择--</option>');
+		return;
+	}
+	for (var i = 0, l = newData.length; i < l; i++) {
+		if (newData[i].city == user.city) {
+			user.cityIndex = i;
+			break;
+		}
+	}
+	var shoppeHtml = '<option>--选择--</option>',
+		shoppes = newData[i].gui;
+	shoppes.forEach(function(v) {
+		shoppeHtml += '<option>' + v + '</option>';
+	});
+	$("#shoppe").html(shoppeHtml);
+}
+$("#city").on("click", function() {
+	$("#city_popwin").css("display", "block;");
+});
+/*预约*/
+$("#btn_yuyue").on("click", function() {
+	user.realname = $('#uname').val();
+	user.phone = $('#phone').val();
+	user.yzm = $('#yzm').val();
+	user.shoppe = $('#shoppe').val();
+	user.dates = $('#data_option').val();
+	if (user.realname == '') {
+		alert("请输入姓名。");
+		return;
+	}
+	if (user.phone == "") {
+		alert("请输入手机号码。");
+		return;
+	} else if (!/^(((13[0-9]{1})|(14[0-9]{1})|(15[0-9]{1})|(17[0-9]{1})|(18[0-9]{1})|(19[0-9]{1}))+\d{8})$/.test(user.phone)) {
+		alert("请输入正确的手机号码。");
+		return;
+	}
+	if (user.yzm == '') {
+		alert("请输入验证码。");
+		return;
+	}
+	if (user.city == '--选择--') {
+		alert("请选择城市。");
+		return;
+	}
+	if (user.shoppe == '--选择--') {
+		alert("请选择柜台。");
+		return;
+	}
+	if (user.dates == '') {
+		alert("请选择日期。");
+		return;
+	}
+	user.code = newData[user.cityIndex].code[document.getElementById('shoppe').selectedIndex - 1];
+	$.ajax({
+		type: 'post',
+		url: '/aj/single_aj/olay_yuyue/olay_yy',
+		data: {
+			"activity": "olay_record_2",
+			"name": user.realname,
+			"phone": user.phone,
+			"date": user.dates,
+			"shoppe": user.shoppe,
+			"storeCode": user.code,
+			"code": user.yzm,
+			"city": user.city
+		},
+		success: function(res) {
+			res = JSON.parse(res);
+			var error_code = res.error_code;
+			if (error_code == 0) {
+				alert("预约成功");
+				window.location.href = "/activity/olay/olay_yuyue_success/";
+			} else if (error_code == "400609") {
+				alert("您已经预约过，请不要重复预约");
+				window.location.href = "/activity/olay/olay_yuyue_success/";
+			} else {
+				alert("预约失败");
+			}
+		}
+	});
+});
+
+var isSending = false;
+$("#send").on("click", function() {
+	user.phone = $('#phone').val();
+	if (user.phone == "") {
+		alert("请输入手机号码。");
+		return;
+	} else if (!/^(((13[0-9]{1})|(14[0-9]{1})|(15[0-9]{1})|(17[0-9]{1})|(18[0-9]{1})|(19[0-9]{1}))+\d{8})$/.test(user.phone)) {
+		alert("请输入正确的手机号码。");
+		return;
+	}
+	if (isSending) {
+		return;
+	}
+	isSending = true;
+	var count = 60,
+		self = $(this);
+	$.ajax({
+		type: 'get',
+		url: '/aj/single_aj/olay_yuyue/olay_sms_op',
+		data: {
+			"op": "send",
+			"phone": user.phone
+		},
+		success: function(data) {
+			data = JSON.parse(data);
+			var error_code = data.error_code;
+			if (error_code == 0) {
+				alert('短信发送成功，请注意查收短信。60秒后可重新发送验证码');
+				self.html(count + '秒');
+				window.timeOut = setInterval(function() {
+					count--;
+					if (count < 0) {
+						clearInterval(window.timeOut);
+						self.html('获取验证码');
+						isSending = false;
+						return;
+					}
+					self.html(count + '秒');
+				}, 1000);
+			} else {
+				clearInterval(window.timeOut);
+				self.html('获取验证码');
+				isSending = false;
+				alert(data.message);
+			}
+		}
+	});
+});
+$(".first_rules").on("click", function() {
+	$("#yuyue_wrap").css("display", "block");
+});
+$("#gz_close").on("click", function() {
+	$(".first_popwin").css("display", "none");
+});
+$("#city_cose").on("click", function() {
+	$(".first_popwin").css("display", "none");
+});
+var wrapH=document.body.clientHeight;
+console.log(wrapH);
+if(wrapH<568){
+	$("body").css("height","568px");
+}

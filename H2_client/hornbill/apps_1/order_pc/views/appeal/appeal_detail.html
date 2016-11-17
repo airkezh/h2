@@ -1,0 +1,306 @@
+<%
+	var appeal_detail = this.appeal_detail.info,
+		refund_detail = this.refund_detail.info;
+	var order_detail = refund_detail.order_detail || {},
+		goods_infos = order_detail.goods_info,
+		order = order_detail.order || {},
+		refund_buyer_info = refund_detail.refund_buyer_info,
+		refund_seller_info = refund_detail.refund_seller_info,
+		express_seller_info = refund_detail.express_seller_info,
+		express_buyer_info = refund_detail.express_buyer_info,
+		contacts_info = refund_detail.contacts_info,
+		appeal_info = appeal_detail.appeal_info,
+		appeal_result = appeal_detail.appeal_result;
+%>
+<%
+function imgTmp(origUrl,thumbUrl){
+%>
+<div class="imgUpload">
+	<a href="<%=origUrl %>" target="_blank">
+		<img src="<%=thumbUrl %>" alt="">
+	</a>
+</div>
+<%
+}
+%>
+<div class="refund_main">
+	<% if(appeal_result){ %>
+	<div class="refund_item">
+		<h6 class="i_title">仲裁信息：</h6>
+		<div class="i_content">
+			<table class="i_content_table">
+				<tr>
+					<td class="name_td">仲裁结果：</td>
+					<td><%=appeal_result.result %></td>
+				</tr>
+				<%if(appeal_result.price){%>
+				<tr>
+					<td class="name_td">退款金额：</td>
+					<td>
+						<span class="red_f"><%=appeal_result.price %></span>元
+					</td>
+				</tr>
+				<%}%>
+				<%if(appeal_result.description){%>
+				<tr>
+					<td class="name_td">仲裁说明：</td>
+					<td><%=appeal_result.description %></td>
+				</tr>
+				<%}%>
+			</table>
+		</div>
+	</div>
+	<% } %>
+	<% if(appeal_info && (appeal_info.buyer || appeal_info.seller)){ %>
+	<div class="refund_item">
+		<h6 class="i_title">举证信息：</h6>
+		<% if(appeal_info.buyer){ %>
+		<div class="i_content">
+			<p class="c_title">顾客举证：<%=appeal_info.buyer.time %></p>
+			<table class="i_content_table">
+				<%if(appeal_info.buyer.description){%>
+				<tr>
+					<td class="name_td">申诉说明：</td>
+					<td><%=appeal_info.buyer.description %></td>
+				</tr>
+				<%}%>
+				<tr>
+					<td class="name_td">申诉凭证：</td>
+				</tr>
+			</table>
+			<div class="img_wrapper">
+				<% appeal_info.buyer.pics.forEach(function(item){
+					imgTmp(item.big,item.small);
+				}); %>
+				<div class="clear_f"></div>
+			</div>
+		</div>
+		<% } %>
+		<% if(appeal_info.seller){ %>
+		<div class="i_content">
+			<p class="c_title">商家举证：<%=appeal_info.seller.time %></p>
+			<table class="i_content_table">
+				<%if(appeal_info.seller.description){%>
+				<tr>
+					<td class="name_td">申诉说明：</td>
+					<td><%= appeal_info.seller.description %></td>
+				</tr>
+				<%}%>
+				<%if(appeal_info.seller.pics && appeal_info.seller.pics.length){%>
+				<tr>
+					<td class="name_td">申诉凭证：</td>
+				</tr>
+				<%}%>
+			</table>
+			<div class="img_wrapper">
+				<% appeal_info.seller.pics.forEach(function(item){
+					imgTmp(item.big,item.small);
+				}); %>
+				<div class="clear_f"></div>
+			</div>
+		</div>
+		<% } %>
+	</div>
+	<% } %>
+	<% if(refund_buyer_info){ %>
+	<div class="refund_item">
+		<h6 class="i_title">退款/退货信息：</h6>
+		<div class="i_content">
+			<p class="c_title">顾客申请：<%=refund_buyer_info.apply_time %></p>
+			<table class="i_content_table">
+				<tr>
+					<td class="name_td">退款金额：</td>
+					<td><%=refund_buyer_info.refund_total %>&nbsp;元
+					<%= 0 == refund_buyer_info.refund_freight 
+					? '' : ('(含'+ refund_buyer_info.refund_price 
+					+'元货款，'+ refund_buyer_info.refund_freight +'元运费)')%></td>
+				</tr>
+				<tr>
+					<td class="name_td">退款/退货原因：</td>
+					<td><%=refund_buyer_info.select_reason %></td>
+				</tr>
+				<% if(refund_buyer_info.refund_evidence && refund_buyer_info.refund_evidence.length){%>
+				<tr>
+					<td class="name_td">退款/退货凭证：</td>
+				</tr>
+				<%}%>
+			</table>
+			<div class="img_wrapper">
+				<% refund_buyer_info.refund_evidence && refund_buyer_info.refund_evidence.forEach(function(item){
+					imgTmp(item.orig,item.thumb);
+				}); %>
+				<div class="clear_f"></div>
+			</div>
+		</div>
+		<div class="i_content">
+			<p class="c_title">商家处理：<%=refund_seller_info.reply_time %></p>
+			<table class="i_content_table">
+				<%if(refund_seller_info.deny_reason){%>
+				<tr>
+					<td class="name_td">拒绝说明：</td>
+					<td><%=refund_seller_info.deny_reason %></td>
+				</tr>
+				<%}%>
+				<%if(refund_seller_info.deny_evidence && refund_seller_info.deny_evidence.length){%>
+				<tr>
+					<td class="name_td">拒绝凭证：</td>
+				</tr>
+				<%}%>
+			</table>
+			<div class="img_wrapper">
+				<% refund_seller_info.deny_evidence && refund_seller_info.deny_evidence.forEach(function(item){
+					imgTmp(item.orig,item.thumb);
+				}); %>
+				<div class="clear_f"></div>
+			</div>
+		</div>
+	</div>
+	<% } %>
+	<% if(express_buyer_info || express_seller_info){ %>
+	<div class="refund_item">
+		<h6 class="i_title">物流信息：</h6>
+		<% if(express_buyer_info){ %>
+		<div class="i_content">
+			<p class="c_title">退货信息：</p>
+			<table class="i_content_table">
+				<tr>
+					<td colspan="2">
+						<span class="mr30">物流公司：<%=express_buyer_info.express_company %></span>
+						<span>物流单号：<%=express_buyer_info.express_id %></span>
+					</td>
+				</tr>
+				<%if(express_buyer_info.express && express_buyer_info.express.length){%>
+				<tr>
+					<td class="name_td">物流状态：</td>
+					<td>
+						<% express_buyer_info.express.forEach(function(item){ %>
+						<%=item %><br>
+						<% }); %>
+					</td>
+				</tr>
+				<%}%>
+			</table>
+		</div>
+		<% } %>
+		<% if(express_seller_info){ %>
+		<div class="i_content">
+			<p class="c_title">发货信息：</p>
+			<table class="i_content_table">
+				<tr>
+					<td colspan="2">
+						<span class="mr30">物流公司：<%=express_seller_info.express_company %></span>
+						<span>物流单号：<%=express_seller_info.express_id %></span>
+					</td>
+				</tr>
+				<%if(express_seller_info.express && express_seller_info.express.length){%>
+				<tr>
+					<td class="name_td">物流状态：</td>
+					<td>
+						<% express_seller_info.express.forEach(function(item){ %>
+						<%=item %><br>
+						<% }); %>
+					</td>
+				</tr>
+				<%}%>
+			</table>
+		</div>
+		<% } %>
+	</div>
+	<% } %>
+	<% if(contacts_info && 0){ %>
+	<div class="refund_item">
+		<h6 class="i_title">联系方式：</h6>
+		<div class="i_content">
+			<p class="c_title">
+				<span class="mr30">顾客姓名：<%=contacts_info.buyer_nickname || '' %></span>
+				<span>联系电话：<%=contacts_info.buyer_phone || '' %></span>
+			</p>
+		</div>
+		<div class="i_content">
+			<p class="c_title">
+				<span class="mr30">商家姓名：<%=contacts_info.seller_nickname || '' %></span>
+				<span class="mr30">联系电话：<%=contacts_info.seller_phone || '' %></span>
+				<span>QQ：<%=contacts_info.seller_qq || '' %></span>
+			</p>
+		</div>
+	</div>
+	<% } %>
+</div>
+<div class="goods_info">
+	<table class="g_info_table">
+		<tr>
+			<th>商品信息</th>
+			<th>单价（元）</th>
+			<th>数量</th>
+			<th>售后</th>
+			<th>合计（元）</th>
+			<th>订单状态</th>
+		</tr>
+		<tr>
+			<td colspan="6" class="shop_info">
+				<span class="shop_name">商家：<a href="<%=this.DOMAIN.www%>/shop/<%=contacts_info.seller_shop_id%>" target="_blank" class="red_f"><%=contacts_info.seller_shopname%></a></span>
+				<% if (contacts_info.im || contacts_info.seller_qq){ %>
+				<div class="contact_service">
+					<a class="knilmi" href="<%= this.ViewTools.callIM(contacts_info.im , contacts_info.seller_qq) %>" target="_blank"></a>
+				</div>
+				<% } %>
+			</td>
+		</tr>
+		<% goods_infos && goods_infos.forEach(function(goods_info){ %>
+		<tr class="goods_detail">
+			<td class="goods_td">
+				<a href="<%=this.DOMAIN.www%>/share/item/<%=goods_info.twitter_id %>" target="_blank" class="img_a">
+					<img src="<%=goods_info.b_pic_url %>">
+				</a>
+				<div class="info_div">
+					<p class="goods_name">
+						<a href="<%=this.DOMAIN.www%>/share/item/<%=goods_info.twitter_id %>" target="_blank"><%= goods_info.goods_title.length > 30 ? goods_info.goods_title.substr(0,30)+'...' : goods_info.goods_title %></a>
+					</p>
+					<p class="goods_detail_info">
+						<% goods_info.prop.forEach(function(item){
+							if(item.is_show==1){
+						%>
+						<span><%=item.name+'：'+item.value %></span>
+						<% }
+						}); %>
+					</p>
+				</div>
+			</td>
+			<td><%=goods_info.price %></td>
+			<td><%=goods_info.amount %></td>
+			<td><%=goods_info.refund_status_text || '' %></td>
+			<td class="bl"><%=goods_info.real_price %></td>
+			<td class="bl"><%=order.status_text %></td>
+		</tr>
+		<% }); %>
+		<tr>
+			<td colspan="6" class="foot_info_td">
+				<span>订单号：<%=order.order_id %></span>
+				<span class="ml50">成交时间：<%=order.ctime %></span>
+				<span class="ml50">成功付款时间：<%=order.pay_time %></span>
+			</td>
+		</tr>
+		<%
+		function reMsg(o){
+			if(!o) return '未使用';
+			var msg = o.msg
+				,redmsg = o.redmsg || [];
+			redmsg.forEach(function(m){
+				msg = msg.replace('%s', '<span class="red_f">'+m+'</span>');
+			});
+			return msg;
+		}
+		var coupon = reMsg(order.coupon);
+		%>
+		<tr>
+			<td colspan="6" class="foot_info_td pr20">
+				<span>优惠券：<%=coupon %></span>
+				<span class="fr">
+					<span class="mr75">优惠券扣减：<%=order.coupon_deduct || 0 %>元</span>
+					<span>商品总价：</span>
+					<strong class="total_price"><%=goods_infos[0].real_price %></strong>&nbsp;&nbsp;元
+				</span>
+			</td>
+		</tr>
+	</table>
+</div>

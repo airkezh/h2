@@ -1,0 +1,42 @@
+<script type="text/html" id="shoppingshow_tmp">
+<? item && $.each(item , function(key , data){?>
+	<div class="cnt_item">
+		<a href="/person/u/<?= data.uinfo.user_id ?>" target="_blank" class="left_f"><img class="ava_r" src="<?= data.uinfo.avatar_a ?>" width="48" height="48"></a>
+		<div class="content_cl">
+			<p class="user_time">
+				<a href="/person/u/<?= data.uinfo.user_id ?>" target="_blank"><?= data.uinfo.nickname ?></a>
+				<span class="time"><?= data.article_create_time ?></span>
+			</p>
+			<? if(data.highlight){ ?>
+				<span class="best_title"></span>
+			<? } ?>
+			<h3><a href="/club/single/<?= data.article_id ?>" target="_blank"><?= data.article_title ?></a></h3>
+			<div class="clear_f"></div>
+			<div class="shop_detail">
+				<div class="clearfix_f mb20_f">
+					<p class="cnt_r"><?= data.article_htmlcontent ?></p>
+				</div>
+				<div class="cnt_imgs clearfix_f">
+					<? data.pinfo && $.each(data.pinfo, function(index , pic){?>
+						<? if(index < 3){ ?>
+							<a href="/club/single/<?= data.article_id ?>" target="_blank"<? if(index==3){?> style="margin-right: 0;" <?}?> ><img src="<?= pic.g_show_pic || pic.pic_url ?>" width="190" height="190"></a>
+						<? } ?>
+					<?});?>
+				</div>
+			</div>
+			<div class="bar">
+				<span class="pr_f">
+					<? var isLike = data.like == 1 ? 'cl_love' : 'cl_unlove';?>
+					<a class="btn_bar cl_like" uid="<?= data.uinfo.user_id ?>" aid="<?= data.article_id ?>" href="javascript:;"><em class="<?= isLike ?>">&nbsp;</em>喜欢<em><?= data.count_like||''?></em></a>
+					<a class="btn_bar cl_reply" href="/club/single/<?= data.article_id ?>#reply" target="_blank"><em class="cl_i_comment">&nbsp;</em>回复<?= data.count_reply || '' ?></a>
+					<?if (fml.vars.user_id == data.uinfo.user_id){?>
+						<a class="love_pro none_f">这是你自己的晒单哦！</a>
+					<?}?>
+				</span>
+			</div>
+		</div>
+		<div class="clear_f"></div>
+		<div class="separation"></div>
+	</div>
+<?});?>
+</script>

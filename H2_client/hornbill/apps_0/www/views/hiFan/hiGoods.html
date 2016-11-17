@@ -1,0 +1,183 @@
+<%# head.html%>
+<% var shop = this.shop; 
+	var floor = this.floor;
+	var banner = this.banner;
+	var addTrace = this.ViewTools.addTrace;
+	var classify = {
+		'data' : [
+			{'classifyName' : '上衣'
+				,'img' : 'http://d04.res.meilishuo.net/pic/_o/9d/0a/075638ed9190d0305a7a9c7d03ec_154_154.cj.png'
+			}
+			,{'classifyName' : '裙装'
+				,'img' : 'http://d01.res.meilishuo.net/pic/_o/b6/9e/9c9f96b07d968cffd63f6244ee32_154_154.cj.png'}
+			,{'classifyName' : '裤装'
+				,'img' : 'http://d01.res.meilishuo.net/pic/_o/54/53/f63cc3cd7c2ec849671983cce3f9_154_154.cj.png'}
+			,{'classifyName' : '包包'
+				,'img' : 'http://d05.res.meilishuo.net/pic/_o/47/b5/3fee4dacb8cc8c42f3e78a368b33_154_154.cj.png'}
+			,{'classifyName' : '鞋子'
+				,'img' : 'http://d01.res.meilishuo.net/pic/_o/2c/1d/8e60a98dd76a55e4ef6e18991751_154_154.cj.png'}
+			,{'classifyName' : '配饰'
+				,'img' : 'http://d01.res.meilishuo.net/pic/_o/aa/49/cb22ea1d370172fcdca24ff6d9ee_154_154.cj.png'}
+			,{'classifyName' : '男装'
+				,'img' : 'http://d05.res.meilishuo.net/pic/_o/e5/a1/9a032fd727176bb1cd9924f3cc57_154_154.cj.png'}
+		]
+	}
+	%>
+<div class="wrap">
+	<!-- banner -->
+	<% if( banner && banner.data && banner.data.banner ){ %>
+	<div class="bannerWrap">
+		<div class="top_bnr">
+			<ul class="banner">
+				<% for(var m=0 ; m<banner.data.banner.length ; m++){ %>
+				<% var ban = banner.data.banner[m];
+					var banLink = addTrace( ban.url , 'higoods_banner_1-'+(m+1))
+				%>
+				<li>
+					<a class="pic" href="<%= banLink %>" target="_blank" data-img ="<%= ban.img_url %>"></a>
+				</li>
+				<% } %>
+			</ul>
+		</div>
+		<div class="round">
+			<div class="adType">
+				<% for(var i = 0;i<banner.data.banner.length;i++){ %>
+				<a></a>
+				<% } %>
+			</div>
+		</div>
+	</div>
+	<% } %>
+	<% if( banner && banner.data && banner.data.small_banner ){ %>
+	<div class="placeHolder">
+		<% for(var n = 0 ; n < banner.data.small_banner.length ; n++){ %>
+		<% var small =   banner.data.small_banner[n];
+			var smallLink = addTrace(small.url,'higoods_banner_'+(n+2))
+		%>
+		<% if( n == 1 ){ %>
+		<div class="content secContent">
+			<a target="_blank" href="<%= smallLink %>"><img src="<%= small.img_url %>"></a>
+		</div>
+		<%} else{ %>
+			<div class="content">
+				<a target="_blank" href="<%= smallLink %>"><img src="<%= small.img_url %>"></a>
+			</div>
+		<% }} %>
+	</div>
+	<% } %>
+	<div class="excellentWrap">
+		<div class="border"></div>
+		<div class="exc">
+			<ul>
+				<li>
+					<img src="http://d05.res.meilishuo.net/pic/_o/18/a9/9bf6e3d1b4ef90768561a7321b80_26_26.cj.png">
+					<div>买手推荐</div>
+				</li>
+				<li>
+					<img src="http://d04.res.meilishuo.net/pic/_o/ab/e8/6491a22497a4d260f59cd5c17a2e_26_26.cj.png">
+					<div>实拍认证</div>
+				</li>
+				<li>
+					<img src="http://d05.res.meilishuo.net/pic/_o/b6/72/e3c89f27536976e6a13dc64d3f8d_26_26.cj.png">
+					<div>品质精选</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<!-- 分类 -->
+	<div class="classifyWrap">
+		<% for(var h = 0 ; h<7 ; h++ ){ %>
+			<% var classifyName = classify.data[h]; 
+				var link = addTrace('/hiGoods/classify/?category='+(h+1)+'&style=0&order=hot','higoods_category_'+encodeURIComponent(classifyName.classifyName))
+			%>
+			<% if( h==0 ){ %>
+				<a data-category="<%= h+1 %>" href="<%= link %>" target="_blank" class="classify" style="background:url(http://d04.res.meilishuo.net/pic/_o/9d/0a/075638ed9190d0305a7a9c7d03ec_154_154.cj.png) no-repeat;">
+					<%= classifyName.classifyName %>
+				</a>
+			<% }else{ %>
+				<a data-category="<%= h+1 %>" href="<%= link %>" target="_blank" class="classify other" style="background:url(<%= classifyName.img %>) no-repeat;">
+					<%= classifyName.classifyName %>
+				</a>
+			<% } %>
+		<% } %>
+	</div>
+	<!-- Hi店 -->
+	<div class="hiShopWrap">
+		<div class="title">
+			<div class="hiShop">Hi<span class="yellow"> / </span>店</div>
+			<img src="http://d04.res.meilishuo.net/pic/_o/05/62/2d841647181b0ea3fade72e13d8e_181_21.cj.jpg">
+		</div>
+		<div class="content">
+			<div class="styleWrap">
+				<div class="style onStyle" data-index="0">欧美</div>
+				<div class="style stylePadding" data-index="1">原创设计</div>
+				<div class="style stylePadding" data-index="2">日韩</div>
+				<div class="style stylePadding" data-index="3">甜美</div>
+			</div>
+			<div class="shopWrap">
+				<ul class="scrollDom" id="scrollDom">
+					<% if( shop && shop.data && shop.data.tInfo){ %>
+					<% for(var i = 0 ; i<shop.data.tInfo.length ; i++){ %>
+						<% var data=shop.data.tInfo[i] %>
+						<li class="shop" data-index="<%= i %>">
+							<% for(var j = 0 ; j< data.length ; j++){ %>
+								<% var res = data[j]; 
+									var shopLink = addTrace('/shop/'+res.shop_id , 'higoods_shop_'+(i+1)+'_'+(j+1))
+								%>
+							<a target="_blank" href="<%= shopLink %>"><img src="<%= res.banner_url %>"></a>
+							<% } %>
+						</li>
+					<% }} %>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<!-- Hi欧美 -->
+	<!-- floor && floor.data && floor.data.tInfo -->
+	<% for( var y = 0 ; y<floor.data.tInfo.length ; y++ ){ %>
+	<% var style = floor.data.tInfo[y] %>
+	<% var floorLink = addTrace( '/hiGoods/classify/?' + style.param + '&order=hot' , 'higoods_' + encodeURIComponent(style.title) + '_' + (y+1) ) %>
+	<div class="europeWrap">
+		<div class="title">
+			<a href="<%= floorLink %>" target="_blank"  class="hiShop">Hi<span class="yellow"> / </span><%= style.title %></a>
+			<a href="<%= floorLink %>" target="_blank"><img src="http://d03.res.meilishuo.net/pic/_o/9a/62/28bedbf6068c03538772a2585644_89_21.cj.png"></a>
+		</div >
+		<div class="goodsWrap">
+			<% for(var n =0 ; n<style.list.length ; n++ ){%>
+			<% var list = style.list[n];
+				var goodsLink = addTrace( list.url , 'higoods_' + encodeURIComponent(style.title) + '_' + (n+1) )
+			 %>
+				<% if(n == 0 || n ==5 ){
+					var name = 'goods'
+					}else{
+						var name = 'goods goodsPadding'
+					}
+				 %>
+				<div class="<%= name %>">
+					<a target="_blankgong" href="<%= goodsLink %>" class="goodsInfo">
+						<img alt="<%= list.ginfo.goods_title %>" asrc="<%= list.n_pic_file %>">
+					</a>
+					<div class="priceWrap">
+						<a class="goodsName">
+							<%= list.ginfo.goods_title.substring(0,8) %>
+						</a>
+						<div class="price"><%= list.ginfo.goods_price %></div>
+					</div>
+				</div>
+			<% } %>
+			<% var moreLink = addTrace('/hiGoods/classify/?' + style.param + '&order=hot' , 'higoods_' + encodeURIComponent(style.title) + '_' + 10 ) %>
+			<a href="<%= moreLink %>" target="_blank" class="more">
+				<span class="moreStyle"><%= style.title %></span>
+				<div class="moreBorder"></div>
+				<span class="viewMore">查看更多></span>
+			</a>
+		</div>
+	</div>
+	<% } %>
+	<a class="zhaoshang" target="_blank" href="http://zhaoshang.meilishuo.com/xbox#/index/2"><img src="http://d05.res.meilishuo.net/pic/_o/96/11/7d2cc2f0ac050cbc64bdda57ec08_2000_300.cj.jpg"></a>
+</div>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/hiFan/hiGoods');
+_use:", this._JSstack , this._JSmods); %>
+<%# foot.html%>

@@ -1,0 +1,96 @@
+<%# head.html%>
+<%
+	var pageData = this.pageData || {}
+		, questionLen = 0
+		, beginIndex = 0
+		, endIndex = 0;
+		
+%>
+<div class="wrap">
+	<div class="bnr">
+		<img src="<%= pageData.banner %>" />
+	</div>
+	<div class="content">
+		<div class="video">
+			<video width="100%" poster='<%= pageData.video.pic %>' controls>
+	  			<source src="<%= pageData.video.link %>" type="video/mp4">
+		  	</video>
+		</div>
+		<div class="info">
+			<div class="intro">
+				<%= pageData.intro %>
+			</div>
+			<p>活动说明：</p>
+			<ul>
+				<% pageData && pageData.explain && pageData.explain.map(function(data){ %>
+					<li><%= data %></li>
+				<%}); %>
+			</ul>
+		</div>
+		<div class="question">
+			<div class="top">
+				<img src="<%= pageData.question_pic.header %>" />				
+			</div>
+			<% pageData && pageData.question && pageData.question.map(function(data, index){ 
+				questionLen = parseInt(data.len);%>				
+			<div class="qstn_list">
+				<p len="<%= data.len %>"><%= data.title %></p>	
+				<ul class="qstn">
+					<%
+						if(index == 0){
+							endIndex = questionLen - 1;
+						}else{
+							beginIndex += questionLen;
+							endIndex = beginIndex + questionLen - 1;
+						}
+					%>
+					<% pageData && pageData.question_list && pageData.question_list.map(function(item, index){%>
+						<% if(index >= beginIndex && index <= endIndex){%>
+	 						<li>
+								<span class="cnt" Isright="<%= item.right %>"><%= item.list %></span>
+								<span class="normal" isSelected="0"></span>
+							</li>
+						<%}%>
+					<%}); %>
+				</ul>
+			</div>
+		<%}); %>
+			<a class="cartBtn">
+				<img src="<%=this.PICTURE_URL%>/images/wap/activity/exo/btn.png">
+			</a>
+			<p class="cartNum">本活动还可领取<span></span>张小卡</p>
+			<img src="<%= pageData.question_pic.footer %>" />
+		</div>
+	</div>
+</div>
+<script>
+	fml.vars.isLogin = '<%= this.userInfo.user_id%>';
+</script>
+<script type="text/html" id="Wrong">
+	<div class="dialog_box">
+		<span class="tips wrong"></span>
+		<span class="closeBtn"></span>
+	</div>
+</script>
+<script type="text/html" id="haveGet">
+	<div class="dialog_box">
+		<span class="tips have"></span>
+		<span class="closeBtn"></span>
+	</div>
+</script>
+<script type="text/html" id="noBuy">
+	<div class="dialog_box">
+		<span class="tips no"></span>
+		<span class="closeBtn"></span>
+	</div>
+</script>
+<script type="text/html" id="noRemain">
+	<div class="dialog_box">
+		<span class="tips nothing"></span>
+		<span class="closeBtn"></span>
+	</div>
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use('wap/page/activity/exo_cart');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

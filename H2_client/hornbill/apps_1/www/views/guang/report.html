@@ -1,0 +1,40 @@
+<%# head.html%>
+<div style="margin:0 auto;" class="report_ad_hack">
+<%if(this.adm5 && this.adm5.ad){%>
+	<%
+	this.adm5.admId = 'adm_top';
+	this.adm5._JSstack = this._JSstack;
+	this.adm5._JSmods = this._JSmods;
+	%>
+	<%= requireFn('commerce/adm_banner.html')(this.adm5);%>
+<%}%>
+</div>
+<div style="top: 250px;" class="spinner midSpinner pa_f"></div>
+<div class="content_fluid v_hidden">
+	<div class="cata_title">
+		<h2>搭配秀</h2>
+		<span class="gray_f">记录我漂亮的每一天！</span>
+	</div>
+	<div class="goods_wall">
+		<div class="corner_stamp">
+			<div class="toshow">
+				<a class="show_btn" id="reportShowShare" href="javascript:void(0)"></a>
+				<p class="show_word">辛勤的小编会审核每次晒货</br>以免广告出现在美丽的你的周围</p>
+			</div>
+		</div>
+	</div>
+	<div class="spinner botSpinner none_f"></div>
+	<div class="clear_f"></div>
+	<div class="paging_panel c_f none_f">
+		<%#paging.html%>
+	</div>
+	<div class="ads_banner ads_bottom none_f"></div>
+</div>
+
+<%# poster.html%>
+<% $_ENGINE_SELF.callFn("useModule")("fml.use('page/poster0');", this._JSstack , this._JSmodsFast ); %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+		fml.use('page/report');
+		fml.use('page/poster_guang');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

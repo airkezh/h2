@@ -1,0 +1,49 @@
+<%# head.html %>
+<%
+	var status = this.coupon_status.ret || 0;
+	var type = 0;
+	switch(status){
+		case -3:
+			type = 1;
+			break;
+		case -4:
+			type = 2;
+			break;
+		case -5:
+			type = 3;
+			break;
+	}
+%>
+<div class="main">
+	<div class="step1">
+	<%if(status!=-1){%>
+		<input class="code placeholder" type="text" value="输入兑换码">
+		<% if(status){ %>
+			<div class="vali_wrapper">
+				<input class="vali_code" id="vali_code" placeholder="验证码" />
+				<% if(status==-2){ %>
+				<button type="button" id="send_sms">发送短信</button>
+				<% } else { %>
+				<img src="<%=this.CAPTCHA_ULR %>Register/Captcha?token=asde39ad9&type=<%=type %>&session=" alt="验证码" data-baseurl="<%=this.CAPTCHA_ULR %>Register/Captcha?token=asde39ad9&type=<%=type %>&session=" id="captcha_img">
+				<% } %>
+			</div>
+		<% } %>
+		<span id="submit">确定</span>
+	<% } else { %>
+	<p class="warning_txt"><%=this.coupon_status.message %></p>
+	<% } %>
+	</div>
+	<section class="step2">
+		<div class="step2-coupon">
+			<p class="cost"><span class="threshold"></span><i class="price"></i><span class="cost-sign">￥</span></p>
+			<p class="desc"><span class="declare"></span><span class="num">1张<span></p>
+			<p class="time"></p>
+		</div>
+		<h1>优惠券到账啦！妥妥的~</h1>
+		<a href="<%if(this.from=='my_coupon'){%>meilishuo://close.meilishuo/<%}else{%>javascript:0;<%}%>">查看优惠券</a>
+	</section>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/coupon_exchange');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html %>

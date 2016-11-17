@@ -1,0 +1,136 @@
+<%# head_simple.html%>
+<%
+var posters = this.firstTabs;
+var picUrl = this.picRootUrl + "/images/wap/activity/promotion/1212/main_meet/";
+var banner1 = picUrl + "nbanner1.jpg";
+var banner2 = picUrl + "nbanner2.jpg";
+var bannerSrc = this.ViewTools.timeStuff({'2014/12/11 20:00:00' : banner2 } , banner1);
+%>
+<script>
+	//isPc();
+	function isPc() {
+		//平台、设备和操作系统
+		var system ={
+			win : false,
+			mac : false,
+			xll : false
+		};
+		//检测平台
+		var p = navigator.platform;
+
+		system.win = p.indexOf("Win") == 0;
+		system.mac = p.indexOf("Mac") == 0;
+		system.x11 = (p == "X11") || (p.indexOf("Linux") == 0);
+		//跳转语句
+		if(system.win||system.mac||system.xll){//转向后台登陆页面
+			window.location.href = "http://promotion.meilishuo.com/promotion/sale_1412/act12/&hdtrc=1212dacu_homeTopBanner?pstrc=fe_pos%3Awlc_banner_top_0"
+		}
+	}
+</script>
+</head>
+<body>
+<div class="banner loadingImg">
+	<div id="ban_rule" class="rule"></div>
+	<img src="<%=bannerSrc%>" >
+	<div class="countdown" >
+		<div class="bannerText"></div>
+		<div class="timerArea">
+			<dl class="timeStamp" end-date="" now="">
+				<dd id="day0"><span >-</span></dd>
+				<dd id="day1"><span>-</span></dd>
+				<dd id="hour0"><span >-</span></dd>
+				<dd id="hour1"><span >-</span></dd>
+				<!--<dt class="bigmao">：</dt>-->
+				<dd id="minute0"><span >-</span></dd>
+				<dd id="minute1"><span >-</span></dd>
+				<!--<dt class="bigmao">：</dt>-->
+				<dd id="seconds0"><span >-</span></dd>
+				<dd id="seconds1"><span >-</span></dd>
+			</dl>
+		</div>
+
+	</div>
+</div>
+
+<div class="center" >
+	<a class="intro_page" href=""></a>
+	<a class="coupon_page" href="/promotion/sale_141212/shopping_strategy/"></a>
+</div>
+
+<div class="postWall">
+	<%
+	if (posters) {
+	for (var i = 0; i < posters.length; i++) { var p = posters[i];
+	%>
+	<figure class="poster">
+		<a class="loadingImg" href="<%=p.tar_url%>" style="">
+			<span class="bs_load_img" asrc="<%=p.img_url%>"  ></span>
+		</a>
+	</figure>
+	<%}
+	}
+	%>
+</div>
+
+<%= requireFn('wapShare.html')({
+'share' : this.share
+, 'shareTitle' : '选择分享到'
+, '_JSstack' : this._JSstack
+, '_JSmods' : this._JSmods
+}); %>
+
+<div class="sidebar_btn">
+
+</div>
+<div class="sidebar_data">
+
+</div>
+
+<span class="gotop" style="bottom:<%if(this.isIphone){%>60<%}else{%>20<%}%>px">
+	<img src="http://i.meilishuo.net/css/images/wap/tuan/gotop.png" />
+</span>
+
+<script type="text/html" id="temp_poster">
+	<?for (var i = 0; i < this.posters.length; i++) { var poster = this.posters[i];?>
+	<figure class="poster">
+		<a class="loadingImg" href="<?=poster.tar_url?>" style="">
+			<span class="bs_load_img" asrc="<?=poster.img_url?>"  ></span>
+		</a>
+	</figure>
+	<?}?>
+</script>
+
+<script type="text/html" id="sidebar_tpl">
+	<?for (var i = 0; i < this.sidebars.length; i++) {
+		var s = this.sidebars[i];
+		var srcRoot = Meilishuo.config.picture_url + "images/wap/activity/promotion/1212/sidebar1/s" + (i+1);
+		var picUrl = this.pageIndex == i ? srcRoot + "_1.png" : srcRoot + "_0.png";
+	?>
+	<a href="<?=s.link?>">
+		<img src="<?=picUrl?>"/>
+	</a>
+	<?}?>
+</script>
+
+<script type="text/html" id="rule_tpl">
+	<div class="shade"></div>
+	<div class="rule_dialog">
+		<div class="rule_dialog_btn"></div>
+		<div class="rule_close_btn">
+			<img src="http://i.meilishuo.net/css/images/wap/activity/promotion/1212/main_meet/close.png" alt=""/>
+		</div>
+	</div>
+</script>
+
+<script>
+	fml.vars.tabsData = <%=JSON.stringify(this.tabsData.data)%>;
+</script>
+
+
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+
+fml.use('wap/page/activity/promotion/main_venue_141212');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot_simple.html%>

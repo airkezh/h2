@@ -1,0 +1,43 @@
+<%# sq/header.html%>
+<%
+	var typeTop = this.type_top ? this.type_top : [];
+%>
+<%if(this.pageName && this.banner[this.pageName]){%>
+<a <%if(this.banner[this.pageName].url){%>href="<%= this.banner[this.pageName].url%><%}%>">
+	<img src="<%= this.banner[this.pageName].img%>">
+</a>
+<%}%>
+<div class="wrap posterWall">
+
+	<div class="typeTop-new">
+		<p>
+			<% typeTop.map(function(data, index){%>
+				<%var url =  "/sq/search/?page_name=" + this.pageName + '&key=' + data.key%>
+				<a href=<%=url %> class='cosmetictap  <%= (this.key == data.key) ? 'type_select' : '' %>'><span class="<%= (this.key == data.key) ? 'type_select' : '' %>"><%= data.name%></span></a>
+			<%})%>
+		</p>
+	</div>
+
+   <ul class="new_goods goods_wall">
+   </ul>
+   <div class="pullUp" status="loading"></div>
+
+   <%# sq/posterSQ.html%>
+</div>
+<ul id="goTop">
+   <li class="none_f" id="go_top"><span class="icon-gotop"></span></li>
+</ul>
+
+<script>
+fml.vars.poster = {
+   'pageName' : '<%= this.pageName %>',
+   'cate_id' : <%= this.cate_id%>
+};
+fml.vars.key = '<%= this.key%>';
+fml.vars.shareInfo = {"title" :'<%= this.pageInfo.share_title || ""%>',"price" : '<%= this.pageInfo.share_con || "" %>',"img_url" : '<%= this.pageInfo.share_img || "" %>' , "url" : '<%= this.pageInfo.share_url || ""%>' };
+fml.vars.pageid = '<%= this.type_top ? 2 : 5%>'
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+   fml.use('wap/page/sq/search');
+_use:", this._JSstack , this._JSmods ); %>
+<%# sq/footer.html%>

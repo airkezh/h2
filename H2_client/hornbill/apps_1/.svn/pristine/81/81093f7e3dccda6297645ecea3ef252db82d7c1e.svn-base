@@ -1,0 +1,177 @@
+<%# head_simple.html%>
+<% var miaosha = this.miaosha.data.now_info,
+	tuan = this.tuan.data,
+	m_headinfo = miaosha && miaosha.normal_config,
+	m_link = getURL("http://"+this.host+"/activity/tuan/special/1065?hdtrc=tuan1065_sale", "惊喜秒杀"),
+	seckill = (miaosha && miaosha.goods_list && miaosha.goods_list.seckill) ? miaosha.goods_list.seckill : [],
+	bargainList = (miaosha && miaosha.goods_list && miaosha.goods_list.bargain) ? miaosha.goods_list.bargain : [],
+	foreshow = (miaosha && miaosha.goods_list && miaosha.goods_list.foreshow) ? miaosha.goods_list.foreshow : []; 
+
+	if(this.isWx){
+		m_link = '/wx/tuan_buy/1065';
+	}
+
+	function getURL(url,title){
+		return _extFn.getAppLink("openURL", {"url": url, "title": title, "inApp" : "1"}, this.os, null, url);
+	}
+	%>
+
+	<%if(seckill.length || bargainList.length || foreshow.length){%>
+<div class="seckillBox">
+	<div class="secregion">
+		<%if(m_headinfo){%>
+		<a href="<%= m_link%>" class="headInfo">
+			<div class="icon"></div>
+			<div class="tip">
+
+				<p class="title"><strong><%= m_headinfo.title%></strong></p>
+				<p class="content"><%= m_headinfo.desc%></p>
+				<!-- <p class="timetip">距下场开始<span class="dot"></span><span class="stime" data-stime="<%= miaosha.unix_time%>"><label id="hour">00</label>:<label id="minu">00</label>:<label id="sec">00</label></span></p> -->
+			</div>
+		</a>
+		<%}%>
+		<div class="lrboxs">
+			<%if(seckill.length){%>
+			<div class="leftm">
+				<% seckill.forEach(function(v, k){%>
+				<a href="<%= v.soldout ? getURL('http://'+this.host+'/activity/tuan/special/1065?hdtrc=tuan1065_sale' + (k+1), '惊喜秒杀') : v.url_mob%>">
+					<div <%= v.soldout ? "class='soldout'" : ""%>>
+						<img src="<%= v.goods_image%>"/>
+					</div>
+					<div class="infobox">
+						<span class="price">￥<big><%= parseInt(v.off_price)%></big></span>
+						<%if(v.is_tomorrow){%>
+						<span class="title"><label>明日<%= v.server_time%>点</label>准点开抢</span>
+						<%}else{%>
+						<span class="title cp"><%= v.goods_name%></span>
+						<%}%>
+					</div>
+				</a>
+				<%});%>
+			</div>
+			<%}%>
+			<%if(foreshow.length){%>
+			<div class="rightm">
+				<% foreshow.forEach(function(v, k){%>
+				<a href="<%= v.is_tomorrow ? v.url_mob : getURL('http://'+this.host+'/activity/tuan/special/1065?time='+v.server_time +'&hdtrc=tuan1065_sale' + (k + 2), '惊喜秒杀') %>">
+					<div <%= v.soldout ? "class='soldout'" : ""%>>
+						<img src="<%= v.goods_image%>"/>
+					</div>
+					<div class="infobox">
+						<span class="price">￥<big><%= parseInt(v.off_price)%></big></span>
+						<%if(v.is_tomorrow){%>
+						<span class="title"><label>明日<%= v.server_time%>点</label>准点开抢</span>
+						<%}else{%>
+						<span class="title"><label><%= v.server_time%>点场</label>即将开抢</span>
+						<%}%>
+					</div>
+				</a>
+				<%});%>
+			</div>
+			<%}%>
+		</div>
+	</div>
+	<%
+	if(bargainList.length){%>
+	<div class="goodsWall">
+		<%bargainList.forEach(function(v,k){%>
+		<div class="goodsInfo">
+			<a class="link_box" href="<%= v.url_mob%>">
+				<div class="imgwrap">
+					<span class="bs_load_img" asrc="<%= v.goods_image%>"></span>
+				</div>
+				<div class="desc">
+					<p class="title special"><%= v.goods_name%></p>
+					<p class="price">￥<span class="nowp"><%= v.off_price%></span><del>￥<%= v.origin_price%></del></p>
+				</div>
+			</a>
+		</div>
+		<%});%>
+	</div>
+	<%}%>
+
+</div>
+<%}%>
+<% var t_headinfo = tuan.normal_config;
+var t_link = getURL("http://"+this.host+"/tuan?position=tuan_region99_today", "团购");
+
+var t_morelink = getURL("http://"+this.host+"/tuan?position=tuan_region99_more", "团购");
+	if(this.isWx){
+		t_link = '/wx/tuan/';
+		t_morelink = '/wx/tuan/';
+	}
+
+	%>
+<%if(tuan.goods_list && tuan.goods_list.length){%>
+<div class="tuanBox">
+	<%if(t_headinfo){%>
+	<a href="<%= t_link%>" class="headInfo">
+		<div class="icon tm"></div>
+		<div class="tip">
+			<p class="title"><strong><%= t_headinfo.title%></strong></p>
+			<p class="content"><%= t_headinfo.desc%></p>
+		</div>
+	</a>
+	<%}%>
+	
+	<div class="goodsWall">
+		<% tuan.goods_list.forEach(function(v, k){%>
+		<div class="goodsInfo">
+			<a class="link_box" href="<%= v.url_mob%>">
+				<div class="imgwrap <%= v.soldout ? 'soldout' : ''%>">
+					<span class="bs_load_img" asrc="<%= v.goods_image%>"></span>
+					<p class="countdown">
+						<span class="progress rpbgc" style="width:43%;"></span>
+						<span class="progress gpbgc" style="width:57%;"></span>
+						<span class="content time" data-time="<%= v.unix_time%>">剩余0天0小时0分</span>
+					</p>
+
+				</div>
+				<div class="desc">
+					<p class="feature"><%= v.sale_point%></p>
+					<p class="title"><%= v.goods_name%></p>
+					<p class="price">￥<span class="nowp"><%= v.off_price%></span>
+						<span class="discount"><%= v.save_price > 100 ? v.discount : ('省'+ v.save_price + '元')%></span>
+					</p>
+				</div>
+			</a>
+		</div>
+		<%});%>
+	</div>
+	
+	<a href="<%= t_morelink%>" class="more">没逛着？这里有你想要的 ></a>
+</div>
+<%}%>
+
+<%if(this.qingcang && this.qingcang.length){
+	var q_link = getURL("http://mapp.meilishuo.com/clearance?pit_pos=n:pit_type=qing", "清仓");
+	var q_morelink = q_link = getURL("http://mapp.meilishuo.com/clearance?pit_pos=n:pit_type=qing", "清仓");
+	%>
+<div class="qingcangBox">
+	<a href="<%= q_link%>" class="headInfo">
+		<div class="icon qing"></div>
+		<div class="tip">
+			<p class="title"><strong>品牌特惠</strong></p>
+			<p class="content">品质尾货低价甩卖</p>
+		</div>
+	</a>
+	<div class="goodsWall">
+	<%this.qingcang.forEach(function(v, k){
+		var shopurl = _extFn.getAppLink('shop' , {'shop_id': v.shopid} , this.os, null, 'http://'+this.host+'/shop/' + v.shopid);%>
+		<div class="item">
+			<a href="<%= shopurl%>"><img src="<%= v.shopbanner%>" /></a>
+		</div>
+	<%})%>
+	</div>
+	<a href="<%= q_morelink%>" class="more">宝贝太少了？这里有很多 ></a>
+</div>
+<%}%>
+<a class="gotop">
+	<img src="http://d04.res.meilishuo.net/pic/_o/40/ac/e563a4bcc7f63281818cfd1420b4_80_80.ch.png" />
+</a>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/region99');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot_simple.html%>

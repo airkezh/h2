@@ -1,0 +1,82 @@
+<%#head.html%>
+<%
+	var userInfo = this.userInfo || {};
+	var recommend = (this.recommend && this.recommend.data.big) || [];
+%>
+<div class="wrap" id="wrap">
+	<%# desire/header.html%>
+	<% if(recommend.length){ %>
+		<ul class="recommend">
+			<% recommend.forEach(function(v, index){ %>
+				<li class="salelUrl" styleId="<%= v.id %>" twitter_id="<%= v.twitter_id %>" data-status="<%= v.status %>">
+					<div class="goods_info">
+						<div class="most">
+							<img src="<%= v.main_img%>" alt="">
+						</div>
+						<p class="most_intro sale-title"><%= v.title %></p>
+						<p class="price">
+							<span><%= v.sale_price %></span>
+							<del><%= v.price %></del>
+						</p>
+					</div>
+				</li>
+			<% }); %>
+		</ul>
+	<% } %>
+	<div class="posterWall wall" id="content">
+		<ul class="goods_wall goods"></ul>
+		<div class="pullUp" status="loading"></div>
+	</div>
+</div>
+<%= requireFn('wapShare.html')({
+	'share' : this.share 
+    , 'shareTitle' : '选择分享到'
+    , '_JSstack' : this._JSstack
+	, '_JSmods' : this._JSmods
+}); %>
+<script type="text/html" id="posterWall">
+	<li class="salelUrl" styleId="<?= this.v.id ?>" twitter_id="<?= this.v.twitter_id ?>" data-status="<?= this.v.status ?>">
+		<? var imgBoxHeight=parseInt($(window).width()/2)* 400 / 320 +'px'; ?>
+		<div class="goods_info">
+			<div class="most" style="height:<?= imgBoxHeight ?>">
+				<img src="<?= this.v.main_img?>" alt="">
+			</div>
+			<p class="most_intro sale-title"><?= this.v.title ?></p>
+			<p class="price">
+				<span><?= this.v.sale_price ?></span>
+				<del><?= this.v.price ?></del>
+			</p>
+		</div>
+	</li>
+</script>
+<!--
+如果改用瀑布流的方式,用下面得模板
+<script type="text/html" id="posterWall">
+	<li class="most_wrap salelUrl" styleId="<?= this.v.id ?>" twitter_id="<?= this.v.twitter_id ?>" data-status="<?= this.v.status ?>">
+		<? var imgBoxHeight=parseInt($(window).width()/2)* parseInt(this.v.main_img_height) / parseInt(this.v.main_img_width) +'px'; ?>
+		<div class="goods_info">
+			<div class="most">
+				<img src="<?= this.v.main_img?>" alt="" style="height:<?= imgBoxHeight ?>">
+			</div>
+			<p class="most_intro sale-title"><?= this.v.title ?></p>
+			<p class="price">
+				<span><?= this.v.sale_price ?></span>
+				<del><?= this.v.price ?></del>
+			</p>
+			<? if(parseInt(this.v.status)==5){ ?>
+				<a href="javascript:;" class="btn btn-none">售完欣赏</a>
+			<?} else {?>
+				<a href="javascript:;" class="btn btn-buy">立即购买</a>
+			<?}?>
+		</div>
+	</li>
+</script>
+-->
+<script>
+	fml.vars.trace_id = '<%= this.desireTraceId %>'; 
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/desire/doneSmall');
+_use:", this._JSstack, this._JSmods); %>
+
+<%# foot.html%>

@@ -1,0 +1,75 @@
+<div class="mini_userinfo">
+	<div class="clear_f"></div>
+	<div class="avatar showChangeHead">
+		<a href="/minisite/<%= this.brand_name%>" target="_blank" >
+			<img src="<%= this.mini_userinfo.avatar_a%>"/>
+		</a>
+		<% if(this.mini_userinfo.user_id == this.userInfo.user_id){%>
+			<a class="change" target="_blank" href="/settings/setAvatar"></a>
+		<%}%>
+	</div>
+	<div class="nickname">
+		<a href="/minisite/<%= this.brand_name%>" class="<%if(this.mini_userinfo.online_status){%>onlone<%}else{%>notonline<%}%>" target="_blank" ><span><%= this.mini_userinfo.nickname%></span></a>
+		<span class="identity_big_style">
+			<%= jsRender('identity.html')(this.mini_userinfo) ;%>
+		</span>
+	</div>
+	<%if(this.mini_userinfo.identity && this.mini_userinfo.identity.description){%>
+		<p class="speclial">
+			<%if(this.mini_userinfo.identity.description.pinkV){%>
+				<%=this.mini_userinfo.identity.description.pinkV%>
+			<%}else if(this.mini_userinfo.identity.description.editorV){%>
+				<%=this.mini_userinfo.identity.description.editorV%>
+			<%}else if(this.mini_userinfo.identity.description.blueV){%>
+				<%=this.mini_userinfo.identity.description.blueV%>
+			<%}else if(this.mini_userinfo.identity.description.purpleV){%>
+				<%=this.mini_userinfo.identity.description.purpleV%>
+			<%}%>
+		</p>
+	<%}%>
+	<% 
+		var statusClass = 'big';
+		if(this.mini_userinfo.follower_num >= 100000 || this.mini_userinfo.following_num >= 100000 || this.mini_userinfo.heart_num >= 100000){
+			statusClass ='';
+		}
+	%>
+	<ul class="status <%= statusClass%>">
+		<li><a href="/ur/fans/<%= this.mini_userinfo.user_id%>/" target="_blank"><span>粉丝</span><span class="nums"><%= this.mini_userinfo.follower_num%></span></a></li>
+		<li><a href="/ur/follow/<%= this.mini_userinfo.user_id%>/" target="_blank"><span>关注</span><span class="nums"><%= this.mini_userinfo.following_num%></span></a></li>
+		<li class="last"><a href="/atme/recommend/<%= this.mini_userinfo.user_id%>/" target="_blank"><span><img style="margin-top:2px;" alt="红心" src="<%= this.PICTURE_URL%>images/twitter/ILikeit.gif" /></span><span class="nums"><%= this.mini_userinfo.heart_num%></span></a></li>
+	</ul>
+	<div class="clear_f"></div>
+	<% if(this.userInfo.user_id != this.mini_userinfo.user_id){%>
+	<div class="flw_msg">
+		<% if(this.mini_userinfo.followed == 0){%>
+			<span class="red_follow addUserFollow" fuid="<%= this.mini_userinfo.user_id%>" following=<%= this.mini_userinfo.following%> followed="<%= this.mini_userinfo.followed%>">+ 加关注</span>
+		<%}%>
+		<% if(this.mini_userinfo.followed == 1){%>
+			<span class="pink_follow removeUserFollow" fuid="<%= this.mini_userinfo.user_id%>"  >已关注</span>
+		<%}%>
+		<% if(this.mini_userinfo.followed == 2){%>
+			<span class="pink_follow removeUserFollow" fuid="<%= this.mini_userinfo.user_id%>" following=<%= this.mini_userinfo.following%> followed="<%= this.mini_userinfo.followed%>">互相关注</span>
+		<%}%>
+		<span class="msg" id="sendPrivateLetter" name="<%= this.mini_userinfo.nickname%>">发私信</span>
+	</div>
+	<%}%>
+	<%if(this.mini_userinfo.weibo_url){%>
+		<%
+			var weibo_url = this.mini_userinfo.weibo_url;
+			if(this.mini_userinfo.weibo_url.indexOf('http') == -1){
+				weibo_url = 'http://' + this.mini_userinfo.weibo_url;
+			}
+		%>
+		<p class="weibo_url"><a class="red_f" href="<%= weibo_url%>" target="_blank"><span class="i_sina">&nbsp;</span>去<% if(this.mini_userinfo.user_id != this.mini_userinfo.user_id){%>她<%}else{%>我<%}%>的新浪微博</a></p>
+	<%}%>
+	<div class="clear_f"></div>
+	<div class="dashedline"></div>
+	<div class="sharegroup">
+		<p>推荐给我的朋友</p>
+		<ul>
+			<li><span class="i_qzone"></span></li>
+			<li><span class="i_sina"></span></li>
+			<li><span class="i_tx"></span></li>
+		</ul>
+	</div>
+</div>

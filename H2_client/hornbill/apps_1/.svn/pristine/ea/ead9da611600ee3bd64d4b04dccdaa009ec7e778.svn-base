@@ -1,0 +1,18 @@
+<%# head.html%>
+<div class="container">
+	<%# refund/no_icon_head.html%>
+	<div class="msg">
+		<div class="order_c">
+			<span class="ico">&nbsp;</span>
+			<span class="txt"><%= (this.order&&this.order.msg) ? this.order.msg : "订单提交失败" %></span>
+		</div>
+		<a class="button b" id="closeBtn"  href="javascript:window.close();">知道了</a>
+	</div>
+</div>
+<script>
+var errCode = <%= this.order && this.order.code%>;
+if (window.opener && window.opener.__callOnFail && errCode != 400004) {
+	window.opener.__callOnFail(errCode,'<%= this.order && this.order.msg%>')
+}
+</script>
+<%# foot.html%>

@@ -1,0 +1,64 @@
+<script type="text/html" id="posterWall">
+<?
+$.each(this.data.tInfo , function(k , v){ 
+    
+    var progress = Math.floor(v.time_unix / v.time_total * 100);
+?>
+<div class="productBox">
+<?if(!v.is_hjf){?>			
+	<a class="link_box" href="<?= v.url_mob?>">
+		<figure>
+		    <?if(v.horizontal_mark.length){?>
+				<div class="new-png">
+				 	<?var _l = 0;?>
+					<? $.each(v.horizontal_mark , function(k1 , v1){ ?>
+						<div style="left:<?=2 + _l?>px"><img src="<?= v1.img_url?>" /></div>
+						<?_l += (+v1.img_width + 2);?>
+					<?});?>
+				</div>
+			<?}?>
+			<?if(v.soldout){?>
+				<img class="zeroflag" src="http://i.meilishuo.net/css/images/wap/activity/all/bs_over.png" width="40" />
+			<?}?>
+		    <?if(fml.vars.is_lazyload_poster){?><span class="bs_load_img" asrc="<?= v.show_pic_mob?>"></span>
+		    <?}else{?>
+		    	<img src="<?= v.show_pic_mob?>" alt="">
+		    	<?}?>
+
+		    <?if(!fml.vars.istomorrow && v.soldout==0){?>
+		    <p class="countdown"><span class="time" time="<?=v.time_unix?>"></span></p>
+		    <!--进度条-->
+			<span class="progress rpbgc" style="width:<?=100-progress?>%;"></span>
+			<span class="progress gpbgc" style="width:<?=progress?>%; left:<?=100-progress?>%;"></span>
+			<?}?>
+		</figure>
+		<figcaption>
+			<div class="proTitle"><?= v.ginfo.goods_title?></div>
+			
+			<div class="proPrice">
+				<span class="price"><i>￥</i><?= (v.ginfo.discount_goods_price + '').replace(/\.[0]*$/,'').replace(/[.]$/,'')?>
+				</span>
+				<?if(v.ginfo.goods_price){?>
+				<del class="orig_price">¥<?= (v.ginfo.goods_price + '').replace(/\.[0]*$/,'').replace(/[.]$/,'')?></del>
+				<?}?>
+				<?if(v.ginfo.discount){?>
+				<span class="discount<?=v.soldout==1?' graydct':''?>"><?= v.ginfo.discount?></span>
+				<?}?>
+			</div>
+
+			<div class="proStatis">
+				<span class="num"><?= v.count_participants?></span><?=fml.vars.istomorrow?'人已关注':'人已参团'?>
+			</div>
+
+		</figcaption>
+	</a>
+<?}else{?>
+	<a class="link_box hjfpos" href="<?= v.hjf_jump_url?>">
+        <img src="<%=this._imgurlhead%>/images/huodong/tuan/prebg.png" />
+        <figcaption class="ownh"></figcaption>
+        <img class="adenter" src="<?=v.hjf_pic_url?>" /> 
+	</a>
+<?}?>
+</div>
+<?});?>
+</script>

@@ -1,0 +1,53 @@
+<%# head_simple.html%>
+</head>
+<%
+var gene = this.gene ;
+%>
+<div class="wrap">
+    <%if(gene && gene.data && gene.data.goods){%>
+	<div class="scrollWrap">
+		<div class="title">以下商品是<%if( gene.data.is_self == 1 ) {%>你<% }else{ %>她<% } %>购买和喜好过的<%= gene.data.style %>风格商品 </div>
+		<div class="likeGoodsWrap">
+			<div class="likeGoods">
+				<ul>
+					<%  gene && gene.data && gene.data.goods && gene.data.goods.forEach(function(data){ %>
+						<li>
+							<a><img data-tid="<%= data.twitter_id %>" src="<%= data.img %>"></a>
+						</li>
+					<%})%>
+				</ul>
+			</div>
+		</div>
+	</div>
+    <%}%>
+    <div class="goodsWrap">
+        <div class="recGoods">其他<%= gene.data.style %>风格商品</div>
+        <div class="pullUp loading" status="loading"></div>
+        <div class="goods_wall">
+        </div>
+        <div class="pullUp more" status="tap"></div>
+    </div>
+</div>
+<script type="text/html" id="posterWall">
+    <? var data = this.v ?>
+    <div class="waterFall">
+        <div class="goodsInfo">
+            <div class="goodsImg lazy_pic_big" data-tid="<?= data.twitter_id ?>" asrc="<?= data.img ?>" style="background:no-repeat center;background-size:100%" ></div>
+            <div class="goodsName"><?= data.goods_title ?></div>
+            <div class="priceWrap">
+                <div class="price"><?= data.goods_price ?></div>
+                <div class="like"><?= data.like_count ?></div>
+            </div>
+        </div>
+    </div>
+</script>
+<script>
+    fml.vars.gene = <%= JSON.stringify( gene.data.goods.length) %>;
+    fml.vars.geneid = <%= this.geneid %>;
+    fml.vars.uid = <%= JSON.stringify(this.uid) %>;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+    fml.use('wap/page/fashionGene');
+_use:", this._JSstack , this._JSmods); %>
+
+<%#foot_simple.html%>

@@ -1,0 +1,58 @@
+<%# wx_new/header.html%>
+<%
+	var couponInfo = this.coupon
+	    ,availableBg = ["yellow", "red", "yellow" ]
+	    ,expiredBg = ["gray-mls", "gray-store", "gray-mls" ]
+	    
+%>
+
+<!-- ,showInfo = ["平台券","商家券","平台券"] -->
+<!-- 黄色：平台卷； 红色：店铺卷s -->
+
+<%if( couponInfo.available && couponInfo.available.length ){%>
+	<ul class="warp">
+		<% couponInfo.available.map(function(data){ %>
+		<% if(data.coupon_type != 2) data.remark = '平台券'; %>
+		<li class="cp-item <%=availableBg[data.coupon_type - 1] %>">
+			<a href="<%=data.shop_id ? '/wx/shop/index/?shop_id='+data.shop_id : 'javascript:;' %>">
+			<div class="cp-top">
+				<span class="name"><%=data.threshold %></span>
+				<span class="price">￥<em class="num"><%=data.credit %></em></span>
+			</div>
+		
+			<p class="c-gray">
+				<!-- coupon_type == 2 商家券 -->
+				<em class="shop-name"><%=data.remark %></em>
+				1张
+			</p>
+			<p class="tc c-gray"><%=data.start_time %>-<%=data.expire_time %></p>
+			</a>
+		</li>
+		<% }); %>
+	</ul>
+
+	<%if( couponInfo.expired && couponInfo.expired.length ){%>
+	<div class="over-date">
+		<span class="title">失效优惠劵</span>
+	</div>
+
+	<ul class="warp">
+		<% couponInfo.expired.map(function(data){ %>
+		<li class="cp-item <%=expiredBg[data.coupon_type - 1] %>">
+			<div class="cp-top">
+				<span class="name"><%=data.threshold %></span>
+				<span class="price">￥<em class="num"><%=data.credit %></em></span>
+			</div>
+			<p class="c-gray">
+				<em class="shop-name <%= data.coupon_type != 2 ? '' : 'c-left' %>" ><%=data.remark %></em>
+				1张</p>
+			<p class="tc c-gray"><%=data.start_time %>-<%=data.expire_time %></p>
+		</li>
+		<% }); %>
+	</ul>
+	<%}%>
+
+<%}else{%>
+	<div class="quanshow"></div>
+<%}%>
+<%# wx_new/footer.html%>

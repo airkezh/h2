@@ -1,0 +1,126 @@
+/*common*/
+require('wap/zepto')
+require('wap/page/sq/search_md')
+
+var WaterFall = require( 'circle/component/waterfall' )
+var lazy      = require( 'm/component/lazyLoad' )
+
+var lazyLoad  = lazy.init({ xpath : '.pic_load' })
+
+var $wd             = $(window)
+var $title          = $('.title')
+var $search         = $('.search')
+var pageId          = fml.vars.pageId
+var section         = fml.vars.section
+var key             = fml.vars.key
+var DR              = fml.vars.DR
+var url             = '/aj/sq/search'
+var justOne         = true
+var flag            = false
+var windowScrollTop = 0
+
+/** main code */
+
+// 调用瀑布流组件
+lazyLoad.scroll()
+
+WaterFall.init({
+	el: '.goods_wall',
+	colNum: 2,
+	data: { 
+		key_word: key,
+		pageid: pageId,
+		section: section,
+		d_r: DR 
+	},
+	url: url,
+	colGap : 0,
+	onFetchSuccess: function (data){
+		if(data.length < 10){
+			$('.pullUp').attr('status','stop')
+			this.lock()
+		}
+	},
+	onFetchFinished: function (data){
+		lazyLoad.load()
+	},
+	onFetchError: function (jqXHR, textStatus, errorThrown){
+		// @hack 超时请求模拟滚动一次
+		if(justOne){
+			this.triggerScroll()
+			justOne = false
+		}else{
+			if(textStatus === 'timeout'){
+				alert('请求超时了,接口待优化');
+			}
+		}
+	}
+
+}).start()
+
+// 调用 QQ api，支持 refer 页位置记录
+$('body').on('click','.li_border a',function (e){
+	var $t = $('title')
+	var link =  'http://' + location.host + $(this).attr('href') + '&_wv=5123'
+		
+	$t.html('返回')
+	mqq.ui.refreshTitle()
+	mqq.ui.openUrl({
+		url: link,
+		target: 1,
+		style: 0
+	})
+
+	setTimeout(function (){
+		$t.html('美丽说')
+	},0)
+
+	e.preventDefault()
+})
+
+// hack 解决唤起键盘时固定定位bug
+if($search[0]){
+	var flag1 = true
+	var fz = $('html').css('fontSize')
+	var nb = +fz.slice(0, -2)*.84
+
+	var $i = $search.find('#input')
+
+	if(Meilishuo.config.os.ios){
+		function imitateFixed($e){
+			$e.css({
+				position: 'absolute',
+				top: windowScrollTop + 'px'
+			})
+		}
+		$i.on('focus', function (){
+			imitateFixed($search)
+			$wd.scrollTop(windowScrollTop)
+			flag = true
+		}).on('blur', function (){
+			$search.css({
+				position: 'fixed',
+				top: 0
+			})
+
+			flag = false
+		})
+	}
+
+	$wd.on('scroll', function (e){
+		windowScrollTop = $wd.scrollTop()
+		if(flag){
+			imitateFixed($search)
+		}
+
+		if(windowScrollTop > nb && flag1){
+			flag1 = false
+			$search.css('boxShadow', '1px 0 7px #efefef')
+		}
+
+		if(windowScrollTop < nb){
+			flag1 = true
+			$search.css('boxShadow', 'none')
+		}
+	})
+}

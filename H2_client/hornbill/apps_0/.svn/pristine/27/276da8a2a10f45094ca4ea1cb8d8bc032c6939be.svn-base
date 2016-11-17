@@ -1,0 +1,94 @@
+<%# head.html %>
+
+<%
+    var hour    = (new Date).getHours(),
+        noBonus = this.ViewTools.timeStuff( { '2014/12/26 00:00:00' : 1 }, 0 )
+
+    if ( hour >= 6 && hour < 20 ) {
+        className = 'danmu-day'
+    } else {
+        className = 'danmu-night'
+    }
+%>
+<div id="danmu" class="<%=className%>" data-nobonus="<%=noBonus%>">
+    <div id="stage">
+        <div id="bullet-signal" class="bullet"></div>
+    </div>
+    <div class="ft">
+        <div class="wrap">
+            <p id="error-msg"></p>
+            <div class="btns">
+                <span class="btn" data-action="showRule">活动规则</span>
+                <div class="invite">
+                    <span class="btn" data-action="share">呼唤朋友来哔哔</span>
+                    <p>邀请逗比朋友一起来哔哔!</p>
+                </div>
+            </div>
+            <div class="inputs">
+                <input id="input" type="text" maxlength="30" placeholder="弹幕一级准备！">
+                <span  id="shoot" class="btn" data-action="shoot">发射</span>
+            </div>
+        </div>
+    </div>
+    <div id="rule">
+        <div class="bd">
+            <div class="content">
+                <h3>活动规则</h3>
+                <p>通过手机美丽说 for iOS 和 for Android,或者通过微信分享的链接参与活动。</p>
+
+                <h4>圣诞弹幕:</h4>
+                <ol>
+                    <li>活动时间:2014 年 12 月 22 日 20:00——2014 年 12 月 25 日 24:00</li>
+                    <li>在活动期间,用户可发射弹幕,弹幕全站可见。每人发射弹幕的次数不限制,每条弹幕最多支持 30 个汉字</li>
+                    <li>弹幕的内容严禁黄赌毒及违反国家政策,一经查出立即封号</li>
+                </ol>
+
+                <h4>抓红包:</h4>
+                <ol>
+                    <li>活动时间:2014 年 12 月 22 日 20:00——2014 年 12 月 25 日 24:00</li>
+                    <li>在弹幕页的屏幕中,在弹幕中会随机出现红包,在红包消失前点中红包,有机会获得美丽说无门槛直接减券,中奖率超高。</li>
+                    <li>优惠券的金额为 1 元、3 元、5 元、10 元、50 元、100 元以及 1225 元超大红包,其中超大红包仅在平安夜 20:00—24:00 整点发放</li>
+                    <li>中奖的全场直接减券可以在美丽说 app,“我---我的优惠券”中查看</li>
+                    <li>如果在微信抓红包获得全场直接减券,则可用微信登陆美丽说 app,在 “我---我的优惠券”中查看</li>
+                    <li>活动中中奖的全场直接减券使用时间:12 月 22 日-12 月 25 日</li>
+                    <li>活动中中奖的全场直接减券使用方式:可用于美丽说全部商品无门槛立减,可与店铺优惠券叠加使用,但不能同平台优惠券同时使用</li>
+                    <li>若订单的金额小于优惠券的金额,多出部分不予退回</li>
+                    <li>全场直接减券一经使用,不可退回。如产生退货,所退款项只限您实际支付的金额,优惠券不退</li>
+                    <li>全场直接减券不能提现、不能转增、不能为他人付款</li>
+                    <li>凡作弊用户,美丽说有权作废结果,最终解释权归美丽说所有</li>
+                </ol>
+            </div>
+            <div class="btn" data-action="closeRule">朕知道了</div>
+        </div>
+    </div>
+    <div id="panel-mask"></div>
+    <div id="panel">
+        <div class="bd">
+            <h3 id="panel-title"></h3>
+            <h3 id="panel-desc"></h3>
+            <div class="btns">
+                <span id="hide-panel-btn" class="btn" data-action="hidePanel"></span>
+                <span id="share-panel-btn" class="btn" data-action="sharePanel"></span>
+            </div>
+        </div>
+    </div>
+    <div id="wx-tips" data-action="hideWxTip"></div>
+</div>
+<script>
+    fml.vars.isLogin = <%= this.userInfo.user_id %>;
+    fml.vars.danmakuDatas = <%= JSON.stringify( this.danmu.data.info ) %>;
+
+    /*var imgUrl      = 'http://i.meilishuo.net/css/images/activity/danmu/wxBarrageShare.jpg',
+        lineLink    = 'http://' + location.host + '/wx/christmas2014/',
+        customAppId = 'wxd00a5f16e02bed58',
+        descContent,
+        shareTitle,
+        shareTimelineText;
+
+    descContent = shareTitle = shareTimelineText = '美丽说圣诞弹幕来啦!更有 1225 元直接减券等你来抓~'*/
+</script>
+<!--script src="<%= this.JCSTATIC_BASE  %>/js/open/shareCollect.js?<%= this.SVERSION%>"></script-->
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+    fml.use('wap/page/activity/christmas2014');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html %>

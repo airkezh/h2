@@ -1,0 +1,77 @@
+<%# head.html%>
+<div class="comment_title">
+	<div class="comment_icon"></div>
+</div>
+<div class="comment_nav">
+	<a href="/">美丽说</a>
+	&nbsp;&gt;&nbsp;
+	<a href="/order/list/">我的美丽说订单</a>
+	&nbsp;&gt;&nbsp;
+	<a href="#">
+		<span class="red_f">购买评价</span>
+	</a>
+</div>
+<div class="comment_div">
+	<div class="c_info">
+		<span class="j-order" data="<%= this.comment.order.order_id%>">订单号：<%= this.comment.order.order_id%></span>
+		<span>商家：<%= this.comment.order.shop_name%></span>
+		<span class="shop_online">
+			<% if(this._serviceIM){%>
+				<a class="getserviceqq knilmi" href="<%= this.ViewTools.callIM ( this._serviceIM) %>" target="_blank">&nbsp;</a>
+			<% } %>
+		</span>
+		<span>成交时间：<%= this.comment.order.ctime%></span>
+	</div>
+	<div class="c_goods">
+		
+    <dl class="goods_side left_f">
+       <dt>
+           <img src="<%= this.comment.goods.goods_img%>"/>
+       </dt>
+        <dd class="goodsTit"><a href="/share/item/<%= this.comment.goods.twitter_id%>"><%= this.comment.goods.goods_title%></a></dd>
+        <dd class="goodsAttr">
+            <p><%= this.comment.goods.prop[0].name%>：<%= this.comment.goods.prop[0].value%></p>
+            <p><%= this.comment.goods.prop[1].name%>：<%= this.comment.goods.prop[1].value%></p>
+        </dd>
+    </dl>
+
+    <div class="goods_comment right_f">
+      <form class="j-form-service">
+        <dl>
+          <dt>初次评价：</dt>
+          <dd><%= this.comment.goods.comment_content%></dd>
+          <dd class="gray"><%= this.comment.goods.comment_time%></dd>
+        </dl>
+        <% if(this.comment.goods.partner_reply != '') {%>
+        <dl class="reply">
+          <dt>商家回复：</dt>
+          <dd><%= this.comment.goods.partner_reply%></dd>
+          <dd class="gray"><%= this.comment.goods.partner_reply_time%></dd>
+        </dl>
+        <% } %>
+        <% if(this.comment.goods.append_commented == 1 && this.comment.goods.has_commented == 1) {%>
+        <dl>
+          <dt>追加评论：</dt>
+          <% if(this.comment.goods.append_content != '') {%>
+          <dd><%= this.comment.goods.append_content%></dd>
+          <dd class="gray"><%= this.comment.goods.append_time%></dd>
+          <% } else {%>
+          <dd><textarea placeholder="输入追加评论内容" id="comment-text"></textarea></dd>
+          <dd><input type="button" class="com_btn" value="发表评论" title="发表评论" data-rule="1" data-id="<%= this.comment.goods.mid%>" /></dd>
+          <% } %>
+        </dl>
+        <% } %>
+      </form>
+    </div>
+
+    <div class="clear"></div>
+
+  </div>
+
+</div>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+  fml.use('page/shop_comment_append');
+_use:", this._JSstack , this._JSmods); %>
+<%# foot.html%>
+ 

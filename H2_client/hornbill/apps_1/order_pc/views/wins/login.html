@@ -1,0 +1,113 @@
+<script type="text/html" id="loginTpl" >
+<%*登录弹窗改版%>
+<div class="login_wrap">
+	<div class="login_normal">
+		<h3>
+			<a href="<%=this.DOMAIN.www%>/user/register?frm=tk_reg" target="_BLANK">注册</a>
+			登录美丽说
+		</h3>
+		<fieldset>
+			<form method="post" onsubmit="return false" action="" id="loginForm">
+				<div class="l_list">
+					<p class="l_box">
+						<input type="text" class="l_txt" id="mlsUser" name="mlsUser" placeholder="手机号/邮箱/用户名" />
+						<span></span>
+						<span class="user_icon"></span>
+					</p>
+				</div>
+				<div class="l_list">
+					<p class="l_box">
+						<input type="password" class="l_txt" id="password" name="password" placeholder="密码" />
+						<span></span>
+						<span class="pwd_icon"></span>
+					</p>
+				</div>
+				<div class="l_list authcode none_f">
+					<div class="l_box">
+						<input class="l_txt" id="checkcode" name="checkcode" type="text" placeholder="请输入验证码" maxlength="4" />
+						<span></span>
+						<span class="code_icon"></span>
+						<div class="checkImage" onselectstart="return false;">
+							<img width="90" height="36" src="<%= this.PICTURE_URL %>images/register/blank.jpg"><span class="refresh"></span>
+						</div>
+					</div>
+				</div>
+				<div class="loginErrorMessage none_f"></div>
+				<div class="login_btn_wrap">
+					<input type="submit" class="login_btn" value="立即登录"/>
+				</div>
+				<div class="remember">
+					<input type="checkbox" name="savestate" id="savestate" checked="checked" />
+					<label for="savestate">记住我</label>
+				</div>
+				<a href="<%=this.DOMAIN.www%>/user/findPwd?frm=pop_fpwd" target="_blank" class="forget_pwd">忘记密码？</a>
+			</form>
+		</fieldset>
+	</div>
+	<div class="login_fast">
+		<h3>无需注册，即可登录</h3>
+		<div class="fast_way">
+			<a href="<%=this.DOMAIN.www%>/connect/auth/qzone?frm=tk_qq1" class="qq_way"></a>
+			<a href="<%=this.DOMAIN.www%>/connect/auth/weibo?frm=tk_sina1" class="weibo_way"></a>
+			<a href="<%=this.DOMAIN.www%>/connect/auth/weixin?frm=tk_weixin" class="weixin_way"></a>
+		</div>
+		<h4 class="more_tip">更多登录方式<span> &gt;&gt;</span></h4>
+		<div class="more_way none_f">
+			<a href="<%=this.DOMAIN.www%>/connect/auth/txweibo?frm=tk_txweibo" class="txweibo"></a>
+			<a href="<%=this.DOMAIN.www%>/connect/auth/douban?frm=tk_douban" class="douban">
+				<span class="msg"><em class="arrow1">◆</em><em class="arrow2">◆</em>维护期间暂停新用户登录，老用户不受影响</span>
+			</a>
+			<a href="<%=this.DOMAIN.www%>/connect/auth/renren?frm=tk_renren" class="renren"></a>
+			<a href="<%=this.DOMAIN.www%>/connect/auth/baidu?frm=tk_baidu" class="baidu">
+				<span class="msg"><em class="arrow1">◆</em><em class="arrow2">◆</em>维护期间暂停新用户登录，老用户不受影响</span>
+			</a>
+		</div>
+	</div>
+	<div class="clear_f"></div>
+</div>
+</script>
+<script type="text/html" id="loginSina" >
+<div class="pop_login">
+	<div class="l_ico">
+		<a class="big_sina" href="<%=this.DOMAIN.www%>/connect/auth/weibo?frm=tk_sina1"></a>
+	</div>
+	<h4><%=this.lang.window.login_sina%></h4>
+	<div class="mt30_f c_f">已有帐号，直接<a class="red_f" href="<%=this.DOMAIN.www%>/user/login?frm=tk_denglu2">登录</a></div>
+</div>
+</script>
+<script type="text/html" id="loginQQ" >
+<div class="pop_login">
+	<div class="l_ico">
+		<a class="big_qq" href="<%=this.DOMAIN.www%>/connect/auth/qzone?frm=tk_qq1"></a>
+	</div>
+	<h4><%=this.lang.window.login_qq%></h4>
+	<div class="mt30_f c_f">已有帐号，直接<a class="red_f" href="<%=this.DOMAIN.www%>/user/login?frm=tk_denglu1">登录</a></div>
+</div>
+</script>
+<script type="text/html" id="loginRenren" >
+<div class="pop_login">
+	<div class="l_ico">
+		<a class="big_ren" href="<%=this.DOMAIN.www%>/connect/auth/renren?frm=tk_rr"></a>
+	</div>
+	<h4><%=this.lang.window.login_renren%></h4>
+	<div class="mt30_f c_f">已有帐号，直接<a class="red_f" href="<%=this.DOMAIN.www%>/user/login?frm=tk_dengl3">登录</a></div>
+</div>
+</script>
+<script type="text/html" id="checkCodeTpl">
+<%*获取短信校验码%>
+<div class="checkCodeWrap">
+	<form id="checkCodeForm" method="post" onsubmit="return false" action="" >
+		<div class="checkBox" id="checkBox">
+			验证码
+			<input class="checkTxt" id="checkcode" name="checkcode" type="text" value="" placeholder="验证码" maxlength="4" autocomplete="off" />
+			<span class="checkImage checkCodeCont">
+				<span id="checkcodeImage">
+					<img width="90" height="36" isblank="true" src="<%= this.PICTURE_URL %>images/register/blank.jpg">
+				</span>
+				<span class="red_f">看不清楚，换一张</span>
+			</span>
+		</div>
+		<input type="submit" class="submitCode" value="提交"/>
+	</form>
+</div>
+</script>

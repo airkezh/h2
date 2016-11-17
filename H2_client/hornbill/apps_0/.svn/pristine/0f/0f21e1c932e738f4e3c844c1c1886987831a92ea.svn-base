@@ -1,0 +1,70 @@
+<%# head.html%>
+<%
+var query = this._Request_query;
+var getLink = _extFn.getLink;
+var mSubstr = _extFn.mSubstr;
+%>
+<div style="<%if( this.volume_head ){%>background: url('<%= this.volume_head.picLogo%>') no-repeat center top;<%}%>">
+	<div class="spinner midSpinner pa_f" style="top:600px;"></div>
+	<div class="content_fluid">
+		<div class="bnr_top"></div>
+		<div class="ptyMargin"></div>
+		<div class="ptyNav">
+			<div class="pty_nav">
+				<% if(this.volume_keywords) { %>
+					<div class="styles">
+						<strong>款式：</strong>
+						<a <%if( '' == query.cid || !query.cid ){%> class="active"<%}%> href="<%=getLink({'cid' : 'all', 'page' : 0}, query)%>">所有</a>
+						<% this.volume_keywords.cinfos && this.volume_keywords.cinfos.map(function(data,i){ %>
+						<a <%if( data.catalog_id == query.cid ){%> class="active"<%}%> href="<%=getLink({'cid' : data.catalog_id, 'page' : 0}, query)%>"><%= data.catalog_name %></a>
+						<% }); %>
+					</div>
+					<div class="styles">
+						<strong>元素：</strong>
+						<a <%if( '' == query.eid || !query.eid ){%> class="active"<%}%> href="<%=getLink({'eid' : 'all', 'page' : 0}, query)%>">所有</a>
+						<% this.volume_keywords.einfos && this.volume_keywords.einfos.map(function(data,i){ %>
+						<a <%if( data.element_id == query.eid ){%> class="active"<%}%> href="<%=getLink({'eid' : data.element_id, 'page' : 0}, query)%>"><%= data.element_name %></a>
+						<% }); %>
+					</div>
+				<% } %>
+			</div>
+		</div>
+		<div class="goods_wall">
+			<div class="corner_notic">
+				<% this.volume_lite && this.volume_lite.map(function(data) { %>
+				<div class="elements">
+					<% var pic_count = 0; %>
+					<a class="pic" href="<%=getLink({'eid' : data.element_id}, query)%>" target="_blank"><img alt="<%=data.detail%>" title="<%=data.detail%>" src="<%=data.pic_rectangle%>" /></a>
+					<a class="pic_list" href="<%=getLink({'eid' : data.element_id}, query)%>" target="_blank">
+					<% data.pics && data.pics.map(function(pic){  %>
+						<% var style = ++pic_count % 3 ? '' : 'style="margin-right:0"' ; %>
+						<img class="avatar64_f" <%= style %> src="<%= pic %>" />
+					<% }); %>
+					</a>
+					<h3><a href="<%=getLink({'eid' : data.element_id}, query)%>" target="_blank"><%=data.element_name%></a></h3>
+					<p class="l18_f"><%=data.detail%></p>
+				</div>
+				<% }); %>
+			</div>
+		</div>
+		<%if (this.poster0.totalNum == 0) { %>
+			<h3 class="dianji">抱歉，这里还没有宝贝，<a class="red_f" href="<%=getLink({'cid' : 'all','eid' : 'all','page' : 0}, query)%>">点击跳转到所有宝贝</a></h3>
+		<% } %>
+		<div class="paging_panel c_f none_f">
+		<%#paging.html%>
+		</div>
+		<div class="spinner botSpinner none_f"></div>
+
+	</div>
+</div>
+<%#poster.html%>
+<%# user/windows.html%>
+<script>
+<%= this.poster0? 'Meilishuo.config.poster0 = '+JSON.stringify(this.poster0)+';':'' ;%>
+</script>
+<% $_ENGINE_SELF.callFn("useModule")("fml.use('page/poster0');", this._JSstack , this._JSmodsFast ); %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/pretty');
+	fml.use('page/poster_guang');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

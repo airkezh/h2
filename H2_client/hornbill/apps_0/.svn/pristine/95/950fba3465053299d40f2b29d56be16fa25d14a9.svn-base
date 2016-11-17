@@ -1,0 +1,361 @@
+<%
+	/**
+ 	 * @fileoverview 美美豆每日抢券－会员中心
+     * @requires zepto
+     * @author kehuang@meilishuo.com
+     * @date 2015-09-18
+     */
+%>
+
+<%#head.html%>
+<%
+	var curUserIsLogin = this.isLogin;
+	var curUserInfo = this.userInfo;
+	var curPageData = this.pageData;
+	var curSignData = this.signData;
+	var curServerDate = this.serverDate;
+	var curIsNormalGetData = this.isNormalGetData;
+	var curServerTime = curServerDate.getTime();
+	var curServerHours = curServerDate.getHours();
+	var curUserSignData = (curSignData && curSignData.data) ? curSignData.data : {};
+	var curUserName = (curUserInfo && curUserInfo.nickname) ? curUserInfo.nickname : '- -';
+	var curUserLevel = curUserSignData.level || 0;
+	var curUserBeans = curUserSignData.beans_available || '- -';
+	var topBannerBgPic = curPageData.top_pic || '';
+	var couponRuleTextArr = curPageData.rule_text || [];
+%>
+
+<div class="main">
+	<%
+		if (topBannerBgPic != '') {
+	%>
+	<div class="banner_wrap">
+		<img src="<%= topBannerBgPic %>" alt="">
+	</div>
+	<%
+		}
+	%>
+
+	<div class="user_wrap">
+		<%
+			if (curUserIsLogin) {
+		%>
+		<div class="user_box j_main_box">
+			<div class="info_box">
+				<p><span class="level" id="j_user_level" data-level="<%= curUserLevel %>">我的会员等级：</span><i>V<%= curUserLevel %></i></p>
+				<p><span class="beans">我的美美豆：</span><i id="j_user_beans"><%= curUserBeans %></i></p>
+			</div>
+			<div class="more_box">更多<br>福利</div>
+		</div>
+		<%
+			} else {
+		%>
+		<div class="user_box">
+			<div class="info_box j_login_box">
+				<p><span class="login_text">登录后查看会员等级与美美豆</span></p>
+				<p><span class="login_btn">登录</span></p>
+			</div>
+			<div class="more_box j_main_box">更多<br>福利</div>
+		</div>
+		<%
+			}
+		%>
+	</div>
+
+	<div id="plat_coupon_box">
+		<div class="pullUp" status="loading"></div>
+	</div>
+
+	<div id="shop_coupon_box">
+		<div class="pullUp" status="loading"></div>
+	</div>
+
+	<div class="gotop_wrap">
+		<a class="gotop">
+			<img src="http://d03.res.meilishuo.net/pic/_o/d0/68/f89d059f09d440f4ee7a37669383_80_80.cg.png" alt="">
+		</a>
+	</div>
+</div>
+
+<script type="text/html" id="error_prompt_tpl">
+	<div id="error_prompt_layer" class="prompt_main">
+		<div class="prompt_text"><?= this.text ?></div>
+	</div>
+</script>
+
+<script type="text/html" id="img_captcha_tpl">
+	<div class="checkBox">
+		<div class="shade j_layer_shade"></div>
+		<div class="captchaImgBox j_layer_main">
+			<div class="imgTop">
+				<input class="captchaInput" name="checkcode" type="text" value="" maxlength="10" placeholder="请输入验证码">
+				<img class="captchaImg" src="<?= this.picUrl ?>" width="40%" alt="">
+				<div class="newImg"></div>
+			</div>
+			<div class="imgCenter"></div>
+			<div class="imgBottom">
+				<div class="imgCaptchaClose"></div>
+				<div class="imgCaptchaCheck"></div>
+			</div>
+		</div>
+	</div>
+</script>
+
+<script type="text/html" id="sms_captcha_tpl">
+	<div class="checkBox">
+		<div class="shade j_layer_shade"></div>
+		<div class="captchaSmsBox j_layer_main">
+			<div class="smsTop">
+				<div class="getSmsCaptcha">点击发送</div>
+			</div>
+			<div class="smsCenter"></div>
+			<div class="smsBottom">
+				<input class="captchaInput" name="checkcode" type="text" value="" maxlength="10" placeholder="请输入验证码">
+				<div class="captchaCheck">验证</div>
+			</div>
+			<div class="smsClose"></div>
+		</div>
+	</div>
+</script>
+
+<script type="text/html" id="plat_coupon_tpl">
+	<?
+		var curHours = this.hours,
+			curPlatCouponArr = this.couponData || [],
+			curPlatCouponArrLen = curPlatCouponArr.length || 0;
+
+		if (curPlatCouponArrLen > 0) {
+	?>
+	<p class="plat_coupon_title"></p>
+
+	<ul class="coupon_wrap plat_coupon_wrap">
+		<?
+			for (var i = 0; i < curPlatCouponArrLen; i++) {
+				var data = curPlatCouponArr[i],
+					id = data.id || '0',
+					code = data.coupon_code || '',
+					sid = data.shop_id || '0',
+					url = data.shop_url || '',
+					img = data.coupon_img || '',
+					state = data.state || '',
+					beans = data.beans || 0,
+					credit = data.credit || 0,
+					threshold = data.threshold || 0,
+					level = data.grade_range || 0,
+					left = data.left_amount || 0,
+					total = data.total_amount || 0;
+
+				if ((code != '') && (img != '')) {
+					var beans_text = '',
+						convert_text = '',
+						type = threshold + ':' + credit + ':' + id,
+						style = 'background:url(' + img + ') no-repeat;background-size:100%;';
+
+					switch (state) {
+						case 'can_apply':
+						case 'apply_once_more':
+						case 'grade_not_enough':
+							beans_text = beans + '美美豆';
+							convert_text = '立即兑换';
+
+							break;
+						case 'not_start':
+							beans_text = '未开始';
+							convert_text = '敬请期待';
+
+							break;
+						case 'applied':
+							beans_text = '明日再来';
+							convert_text = '已兑换';
+
+							break;
+						case 'tomorrow':
+							beans_text = '明日再来';
+							convert_text = '已抢光';
+
+							break;
+						case 'empty':
+							beans_text = '明日再来';
+							convert_text = '已抢光';
+
+							break;
+						default:
+							var str = Number(state);
+
+							if (!isNaN(str)) {
+								var hours = parseInt(str) || 0,
+									day_text = (hours < curHours) ? '明日' : '今日';
+
+								beans_text = day_text + hours + ':00';
+								convert_text = '再来兑换';
+							} else {
+								beans_text = beans + '美美豆';
+								convert_text = '立即兑换';
+							}
+
+							break;
+					}
+		?>
+		<li class="coupon" style="<?= style ?>" data-code="<?= code ?>" data-type="<?= type ?>" data-flag="plat" data-sid="<?= sid ?>" data-url="<?= url ?>" data-level="<?= level ?>" data-beans="<?= beans ?>" data-state="<?= state ?>">
+			<p class="lave_text">本时段还剩<span class="lave_coupon_amount"><?= left ?></span>/<?= total ?></p>
+			<p class="beans_text"><?= beans_text ?></p>
+			<p class="convert_text"><?= convert_text ?></p>
+		</li>
+		<?
+				}
+			}
+		?>
+	</ul>
+	<?
+		}
+	?>
+</script>
+
+<script type="text/html" id="shop_coupon_tpl">
+	<?
+		var curHours = this.hours,
+			curShopCouponArr = this.couponData || [],
+			curShopCouponArrLen = curShopCouponArr.length || 0;
+
+		if (curShopCouponArrLen > 0) {
+	?>
+	<p class="shop_coupon_title"></p>
+
+	<ul class="coupon_wrap shop_coupon_wrap">
+		<?
+			for (var j = 0; j < curShopCouponArrLen; j++) {
+				var data = curShopCouponArr[j],
+					id = data.id || '0',
+					code = data.coupon_code || '',
+					sid = data.shop_id || '0',
+					url = data.shop_url || '',
+					img = data.coupon_img || '',
+					state = data.state || '',
+					beans = data.beans || 0,
+					credit = data.credit || 0,
+					threshold = data.threshold || 0,
+					level = data.grade_range || 0,
+					shop_name = data.shop_name || '',
+					goods_desc = data.description || '',
+					goods_img = data.shop_hot_goods_img || '';
+
+				if ((code != '') && (img != '')) {
+					var beans_text = '',
+						convert_text = '',
+						type = threshold + ':' + credit + ':' + id,
+						style = 'background:url(' + img + ') no-repeat;background-size:100%;';
+
+					switch (state) {
+						case 'can_apply':
+						case 'apply_once_more':
+						case 'grade_not_enough':
+							beans_text = beans + '美美豆';
+							convert_text = '立即兑换';
+
+							break;
+						case 'not_start':
+							beans_text = '未开始';
+							convert_text = '敬请期待';
+
+							break;
+						case 'applied':
+							beans_text = '明日再来';
+							convert_text = '已兑换';
+
+							break;
+						case 'tomorrow':
+							beans_text = '明日再来';
+							convert_text = '已抢光';
+
+							break;
+						case 'empty':
+							beans_text = '明日再来';
+							convert_text = '已抢光';
+
+							break;
+						default:
+							var str = Number(state);
+
+							if (!isNaN(str)) {
+								var hours = parseInt(str) || 0,
+									day_text = (hours < curHours) ? '明日' : '今日';
+
+								beans_text = day_text + hours + ':00';
+								convert_text = '再来兑换';
+							} else {
+								beans_text = beans + '美美豆';
+								convert_text = '立即兑换';
+							}
+
+							break;
+					}
+		?>
+		<li>
+			<?
+				if (goods_img != '') {
+			?>
+			<div class="shop_wrap" data-href="<?= url ?>">
+				<div class="img_box">
+					<img src="<?= goods_img ?>" alt="">
+				</div>
+				<div class="shop_box">
+					<p class="title"><?= shop_name ?></p>
+					<p class="desc"><?= goods_desc ?></p>
+				</div>
+			</div>
+			<?
+				}
+			?>
+			<div class="coupon" style="<?= style ?>" data-code="<?= code ?>" data-type="<?= type ?>" data-flag="shop" data-sid="<?= sid ?>" data-url="<?= url ?>" data-level="<?= level ?>" data-beans="<?= beans ?>" data-state="<?= state ?>">
+				<p class="beans_text"><?= beans_text ?></p>
+				<p class="convert_text"><?= convert_text ?></p>
+			</div>
+		</li>
+		<?
+				}
+			}
+		?>
+	</ul>
+	<?
+		}
+
+		var couponRuleTextArr = this.ruleData || [],
+			couponRuleTextArrLen = couponRuleTextArr.length || 0;
+
+		if (couponRuleTextArrLen > 0) {
+	?>
+	<p class="rule_title"></p>
+
+	<div class="rule_wrap">
+		<?
+			for (var i = 0; i < couponRuleTextArrLen; i++) {
+				var text = couponRuleTextArr[i].text || '';
+
+				if (text != '') {
+		?>
+		<p><?= text ?></p>
+		<?
+				}
+			}
+		?>
+	</div>
+	<?
+		}
+	?>
+</script>
+
+<script>
+	fml.vars.r = '<%= this.xr.r || '' %>';
+	fml.vars.hours = <%= curServerHours %>;
+	fml.vars.isLogin = <%= curUserIsLogin %>;
+	fml.vars.isNormalGetData = <%= curIsNormalGetData %>;
+	fml.vars.couponRuleTextArr = <%= JSON.stringify(couponRuleTextArr) %>;
+</script>
+
+<!-- <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script> -->
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/member/beans_coupon');
+_use:", this._JSstack, this._JSmods); %>
+
+<%#foot_simple.html%>

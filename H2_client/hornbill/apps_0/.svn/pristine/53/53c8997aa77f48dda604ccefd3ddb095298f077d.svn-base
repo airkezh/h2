@@ -1,0 +1,44 @@
+Bridge.prototype.ajax = function(url,data,callback,targe){
+	var mSelf = this
+	var action = 'ajax|'+url+'|'+(new Date()).valueOf()
+
+	var cbk = function(res){
+		mSelf.removeIframe(action)
+
+		if('string' == typeof res)
+			try{
+				res = $.parseJSON(res) || {}
+			}catch(e){
+				console.log(e)
+			}
+
+		callback(res)
+		mSelf.watch.call(targe, res)
+	}
+
+	switch(this.bridge_type){
+		case 0:
+			$.post(mSelf.hosts.domain+'/passport/aw' + url, data, cbk)
+			break;
+
+		case 1:
+			this.setDomain()
+
+		case 2:
+
+			var src = this.hosts.domain + '/passport/blank'+url
+
+			data.bridge_type = this.bridge_type
+			data.bridge_src = this.blank
+			data.action = action
+
+			this.addIframe(action, src, {data:data, callback:cbk})
+			break;
+
+		default:
+			break;
+	}
+
+	return this;
+};
+

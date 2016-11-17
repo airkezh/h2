@@ -1,0 +1,63 @@
+<%
+	this.groupPg = {
+		total_num : this.help_list.total_num | 0
+		,current_page : this.help_list.current_page | 0
+		,page_size : this.help_list.page_size | 0
+	};
+	var query = this._Request_query;
+	var cid = query.cid | 0;
+	var search_word = '';
+%>
+<div class="help_list">
+	<% if(this.help_list.breadcrumb && this.help_list.breadcrumb.search){ %>
+		<% if(this.help_list.total_num){ %>
+		<% search_word = this.help_list.breadcrumb.search.title;%>
+		<p class="search_tle">搜索”<span class="red_f"><%=this.help_list.breadcrumb.search.title %></span>“共找到<%=this.help_list.total_num %>条相关记录</p>
+		<% } else {%>
+		<p class="search_tle">非常抱歉，未找到”<span class="red_f"><%=this.help_list.breadcrumb.search.title %></span>“相关记录</p>
+		<p class="contact_info">
+			您可以调整关键词重新搜索 或者 联系商家客服。
+			<%
+				var connect_info = this.connect_info.info;
+                var callQQFunc = this.lang.callQQ;
+			%>
+			<br>客服电话：<%=(function(tels){
+                return (tels && tels.map(function(tel){
+                    return tel.name + '：' + tel.tel.join(',')
+                })).join('&nbsp;&nbsp;') || '4000800588转0'
+            })(connect_info.tel) %>
+			<br>客服QQ：<%=(function(qqs){
+                return (qqs && qqs.map(function(qq){
+                    return qq.name + '：' + qq.qq.map(function(q){
+                        return '<a href="' + callQQFunc(q) + '" target="_blank">' + q + '</a>';
+                    }).join(',')
+                })).join('&nbsp;&nbsp;') || '2833223720'
+            })(connect_info.qq) %>
+			<br>服务时间：周一到周五 9:00-20:00
+		</p>
+		<% } %>
+	<% } %>
+	<% if(this.help_list.list && this.help_list.list.length){%>
+	<ul class="q_ul">
+	<% if(search_word){
+		var search_reg = new RegExp(search_word,'g');
+	} %>
+	<% this.help_list.list.forEach(function(item){%>
+	<% if(search_word){
+		item.title = item.title.replace(search_reg,'<span class="red_f">'+search_word+'</span>')
+	} %>
+		<li class="q_li">
+			<a href="?qid=<%=item.id %>">
+				<span class="q_title"><%=item.title %></span><br>
+				<span class="q_content"><%=item.content %></span>
+			</a>
+		</li>
+	<%}); %>
+	</ul>
+	<%#paging.html%>
+	<%} else {%>
+		<% if(cid){ %>
+		<p class="w_tip">此分类下暂时没有内容</p>
+		<% } %>
+	<% } %>
+</div>

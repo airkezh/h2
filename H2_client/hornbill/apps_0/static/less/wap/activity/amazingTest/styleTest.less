@@ -1,0 +1,129 @@
+@import '../../block.less';
+body {
+	background: #fff;
+}
+
+* {
+	padding: 0;
+	margin: 0;
+	-webkit-user-select: none;
+	user-select: none;
+	-webkit-touch-callout:none;
+	touch-callout:none;
+}
+
+img {
+	width: 100%;
+	display: block;
+}
+
+.wrap, .main{.w(6.4rem);.h(100%);.auto;}
+.wrap { .pa; }
+.main{ .pr; .hidden; }
+.cur, &.prev, &.next{
+	&[transition="translateX"]{ -webkit-transition:-webkit-transform 100ms ease-out 0s; }
+}
+
+.page {
+	background-size: 100% 100%;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+.option_wrap {
+	width: 80%;
+    margin: auto;
+    height: 100%;
+	.item {
+		width: 240/500*100%;
+		height: 322/1026*100%;
+		font-size: .24rem;
+		color:#000;
+		float: left;
+		p {
+			margin-top: .1rem;
+			text-align: center;
+		}
+		span {
+			margin-right: .06rem;
+		}
+	}
+	.item:nth-child(2n) {
+		margin-left: 20/500*100%;
+	}
+}
+
+
+.option_wrap .img {
+	position: relative;
+	width: 100%;
+	height: 240/322*100%;
+	background-size: 100% 100%;
+	background-color: pink;
+	.mask {
+		position: absolute;
+	    left: 0;
+	    top: 0;
+	    text-align: center;
+	    width: 100%;
+	    height: 100%;
+	    img {
+			position: relative;
+		    width: .64rem;
+		    margin: auto;
+		    display: inline-block;
+		    top: 50%;
+    		margin-top: -0.32rem;
+		}
+	}
+}
+
+.p0 .mask {
+	background: rgba(254,98,125,.6);
+}
+
+.p1 .mask {
+	background: rgba(170,106,235,.6);
+}
+
+.p2 .mask {
+	background: rgba(108,161,61,.6);
+}
+
+.p3 .mask {
+	background: rgba(251,215,15,.6);
+}
+
+.p4 .mask {
+	background: rgba(81,179,203,.6);
+}
+
+.p5 .mask {
+	background: rgba(249,94,25,.6);
+}
+
+.empty {
+	width: 100%;
+	height: 300/1026*100%;
+}
+
+//覆盖引入的默认alert的样式
+.windowDrive {
+  .dialog {
+    font-size   : .32rem;
+    line-height : 1;
+    width       : 70%;
+  }
+  .dialog-con {
+    padding : .3rem 0;
+  }
+  .dialog-btn {
+    line-height : 1;
+    span {
+      padding : .24rem 0;
+    }
+  }
+}

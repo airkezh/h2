@@ -1,0 +1,72 @@
+<%# head.html%>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+
+    <div class="bd">
+        <img src="http://d02.res.meilishuo.net/pic/_o/cd/4b/568a708dd5427ac74d5ea72daa58_640_1139.cg.jpg"/>
+        <div class="rule">
+            活动规则 >
+        </div>
+        <div class="cont">
+            <form>
+                <div class="item">
+                    <input id="email" class="js-ipt" type="text" placeholder="填写邮箱,收图" value="">
+                    <span id="submit">确定</a>
+                </div>
+            </form>
+            <div class="share-buy">
+                <a href="###" class="share_btn">告诉鹿粉</a>
+                <%if(this.mlsApp){%>
+                    <a href="http://m-promotion.meilishuo.com/promotion/sale_1505/mv/?frm=luhanbag" class="to-hc">420元!买买买</a>
+                <%}else{%>
+                     <a id="gomai" href="javascript:void(0)" class="to-hc">420元!买买买</a>
+                <%}%>
+            </div>
+        </div>
+    </div>
+    
+
+    <script type="text/html" id="share_wx">
+    <div rel="closeMask"> 
+        <div class="bg"></div>
+        <div class="wx_tip" ><img src="http://d03.res.meilishuo.net/pic/_o/b1/63/790d31be8fca39812e9bdd0a6bb3_640_1136.cf.png"></div>
+    </div>
+    </script>
+
+
+    <script type="text/html" id="share_app">
+    <div rel="closeMask"> 
+    <div class="shade"></div>
+        <div class="dialog_box" rel="dialog_box" style="background:#fff; top:40%">
+            <div class="share_box">
+                <div class="shareBar">
+                    <img src="http://d04.res.meilishuo.net/pic/_o/e3/9d/a3a5af4bb857e80f4ec31dec9530_118_168.cf.png" id="share_pyq">
+                </div>
+                <div class="shareBar">
+                    <img src="http://d02.res.meilishuo.net/pic/_o/06/7a/23852fb9f0605620f7a0faf3369b_120_166.cf.png"  id="share_wx">
+                </div>
+            </div>
+            <div class="conlso">
+                <a class="close_dialog">取消</a>
+            </div>
+        </div>
+        </div>
+    </script>
+
+
+
+    <script type="text/html" id="gz">
+        <div class="bglh">
+            <div class="gbgz"> 
+                <img src="http://d03.res.meilishuo.net/pic/_o/a8/ff/26628efcf91e913fcacb8209f927_563_682.ch.png"/>
+            </div>
+        </div>
+    </script>
+
+
+    <script>
+        fml.vars.isWx = <%= this.isWx%>;
+    </script>
+    <%! $_ENGINE_SELF.callFn( "useModule")( "<<<_use:
+fml.use('wap/page/activity/lh515');
+_use:", this._JSstack , this._JSmods ); %>
+        <%# foot.html%>

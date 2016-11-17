@@ -1,0 +1,54 @@
+<%#head.html%>
+<% if(!this.catelog_id){ %>
+	<%= requireFn('block/banner.html')({
+		'banner' :this.hdshop.banner 
+		,'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+	});%>
+<%}%>
+<%if(0){%>
+<div class="goods_wall">
+	<div class="pullUp" status="loading"></div>
+</div>
+<%}%>
+
+<% this.hdshop &&  this.hdshop.shop_list && this.hdshop.shop_list.map(function(data){ %>
+	<% if(data.type == 'shop'){ %>
+		<%
+			var shop_url = _extFn.getAppLink('shop', {'shop_id' : data.shop_id}, this.os, this.r , '/shop/'+data.shop_id);
+		%>
+		<a class="shop_box only" href="<%= shop_url%>">
+			<span class="lazy_pic" asrc="<%= data.shop_image%>"></span>
+			<div class="shop_info">
+				<img src="<%= data.shop_logo%>" />
+				<p><%= data.shop_desc%></p>
+				<div class="num">
+					<span class="sale">销量<%= data.sale_num%></span>
+					<span class="shop_icon"><img src="<%= this.PICTURE_URL%>images/wap/new_hdstreet/shop_icon1.png" /></span>
+					<span class="new">上新<%= data.new_num%></span>
+				</div>
+			</div>
+		</a>
+	<%}else if(data.type == 'catelog'){ %>
+		<%
+			var new_webview = _extFn.getAppLink('openURL', {'url' : 'http://mapp.meilishuo.com/hdstreet/new/'+data.catelog_id , 'inApp' : '1' , 'require_app_info' : '1', 'title' : '店铺街' }, this.os, this.r , '/hdstreet/new/'+data.catelog_id);
+		%>
+		<a class="shop_box" href="<%= new_webview%>" >
+			<!-- <img class="shop_img" src="<%= data.catelog_image%>"> -->
+			<span class="lazy_pic" asrc="<%= data.catelog_image%>"></span>
+			<div class="wrap">
+				<p class="tag"><%= data.catelog_tag%></p>	
+				<span class="shop_btn"><%= data.catelog_shop_num%>个店铺</span>			
+			</div>
+		</a>
+	<%}%>
+<% }); %> 
+
+<a class="gotop" style="bottom:<%if(this.isIphone){%>60<%}else{%>20<%}%>px">
+	<img class="img100" src="<%= this.PICTURE_URL%>/images/wap/tuan/gotop.png" />
+</a>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use("wap/page/hdstreet/new");
+_use:", this._JSstack , this._JSmods); %>
+
+<%#foot_simple.html%>

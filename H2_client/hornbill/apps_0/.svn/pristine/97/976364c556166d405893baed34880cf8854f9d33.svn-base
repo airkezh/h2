@@ -1,0 +1,193 @@
+<%#head.html%>
+	<script> 
+            (function(win,doc){
+                var docel = doc.documentElement;
+                var meta = doc.querySelectorAll('meta[name=viewport]');
+                meta[0].setAttribute('content','width=device-width,user-scalable=no,initial-scale=1');
+                function recalc(){
+                    var width = docel.clientWidth;
+                    docel.style.fontSize = 100 * width/640+'px';
+                }
+                if(doc){
+                    recalc();
+                    win.addEventListener('orientationchange',recalc,false);
+                }else if (doc.addEventListener){
+                    doc.addEventListener('DOMContentLoaded', recalc, false);
+                }
+            })(window,document)
+     </script>
+</head>
+<%var classify = this.classify;
+var hiGoods = this.hiGoods.data;
+var spike = this.spike.data;
+var category = this.category;
+%>
+<!-- 搜索 -->
+<div class="searchPlaceholder">
+    <div class="searchWrap">
+        <% var val = this.search || this.category.data.search_default_word  %>
+        <div class="search"><%= val %></div>
+    </div>
+</div>
+<%= requireFn('block/banner.html')({
+        'banner' :this.banner.data 
+        ,'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+        ,'banner_r_fun' : function(index){
+            return this.banner.r+':_page_area=banner:_pos_id='+(index+1);
+        }
+    });%>
+<!-- Hi抢鲜 -->
+<% if( spike.list.length != 0){ %>
+<div class="title">
+    <span>Hi<em>/</em>抢鲜</span>
+    <img src="http://d02.res.meilishuo.net/pic/_o/65/0b/582ce27a24060d793651d180524d_511_57.cj.png">
+</div>
+<% } %>
+<div class="wrap">
+    <div class="preRelease">
+        <div id='slider' class='swipe'>
+            <div class='swipe-wrap'>
+                <% spike && spike.list && spike.list.forEach(function(data,i){%>
+                <div class="imageSlide index<%=i%>">
+                    <div class="goodsOverage">
+                        <div class="goods">
+                            <img class="newGoods" data-xr="<%= data.r %>" data-tid="<%= data.twitter_id %>" src="<%= data.img %>">
+                        </div>
+                        <div class="overage">剩余 <%= data.seckill_repertory %> 件 </div>
+                    </div>
+                    <div class="dec">
+                        <div class="readding"> <%= data.description %></div>
+                        <div class="time" data-stime="<%= data.end_time %>">
+                            <label class="hour">00</label>
+                            <img src="http://d04.res.meilishuo.net/pic/_o/f5/f4/9a7f770ca03347bb86d693b0d832_12_94.cj.png">
+                            <label class="mimute">00</label>
+                            <img src="http://d04.res.meilishuo.net/pic/_o/f5/f4/9a7f770ca03347bb86d693b0d832_12_94.cj.png">
+                            <label class="second">00</label>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="price"><span>￥</span><%= data.campaign_price_min %></div>
+                        <div class="orginalPrice">原价<%= data.origin_price %></div>
+                        <div class="buy" data-tid="<%= data.twitter_id %>">
+                            <%if(data.seckill_repertory!=0){%>
+                            <img class="buyGoods" data-xr="<%= data.r %>" data-tid="<%= data.twitter_id %>" src="http://d01.res.meilishuo.net/pic/_o/09/60/2f3428ff3333f9d7aab8a6c6b919_326_116.cj.png">
+                            <%}else{%>
+                            <img src = "http://d02.res.meilishuo.net/pic/_o/83/8e/da23d3aa9fffac6fd4ea2ecce6e0_326_116.cj.png">
+                            <%}%>
+                        </div>
+                    </div>
+                </div>
+                <%})%>
+            </div>
+                <div class="spotWrap"><ul></ul></div>
+        </div>
+    </div>
+</div>
+
+<!-- HI/货 -->
+<% if(hiGoods.list !=0 ){ %>
+<div class="segment"></div>
+<div class="title">
+    <span>Hi<em>/</em>货</span>
+    <img src="http://d01.res.meilishuo.net/pic/_o/2a/13/585dc867ce017a62e661d47c670e_491_57.cj.png">
+</div>
+<% } %>
+<% if( hiGoods && hiGoods.list ){ %>
+<div class="higood">
+    <div class="goodsWrapHeight">
+        <div class="goodsWrap">
+            <ul>
+                <% hiGoods && hiGoods.list && hiGoods.list.forEach(function(data,index){
+                    var link =  data.url ? data.url : 'javascript:void(0)'%>
+                <li>
+                    <a href="<%= link %>" data-xr="<%= data.r %>" data-index="<%= index %>">
+                        <img src="<%= data.image_url %>" src="<%= data.image_url %>">
+                    </a>
+                </li>
+                <%})%>
+            </ul>
+        </div>
+    </div>
+</div>
+<% } %>
+<div class="segment"></div>
+<!-- Hi品 -->
+<div class="title">
+    <span>Hi<em>/</em>品</span>
+    <img src="http://d02.res.meilishuo.net/pic/_o/af/f9/7c2d27488141048dfe34fff0bc0d_236_28.cj.png">
+</div>
+<div class="pinWrap">
+    <% category && category.data && category.data.data && category.data.data.forEach(function(data){ %>
+    <div class="pin">
+        <div class="pinImg" data-href="/hiGoods/classify/?keyword=<%= encodeURI(data.category) %>&category=<%= encodeURI(data.category) %>" data-xr="<%= data.r %>" class="pinImg">
+            <img src="<%= data.entrance_pic %>">
+        </div>
+        <div class="pinName"><%= data.category %></div>
+        <div class="borderDiv"></div>
+        <div class="desc"><%= data.copywriter.substring(0,7) %></div>
+    </div>
+    <% }) %>
+</div>
+<div class="segment"></div>
+<!-- Hi店 -->
+<div class="title">
+    <span>Hi<em>/</em>店</span>
+    <img src="http://d05.res.meilishuo.net/pic/_o/50/21/6df8f2717230322fa530ac4fde6a_471_57.cj.png">
+</div>
+<div class="hiShop">
+    <div class="classWrap">
+        <div class="classification">
+            <div class="selectWrap">
+            <% classify && classify.forEach(function(data,index){
+                if(index==0){%>
+                    <span class="classficationInfo select<%= index %> active1" data-key="<%= data.key %>"><%= data.class %></span>
+                <%}else{%>
+                    <span class="classficationInfo select<%= index %>" data-key="<%= data.key %>"><%= data.class %></span>
+            <% }}) %>
+            </div>
+        </div>
+    </div>
+    <div class="pullUp loading" status="loading"></div>
+    <div class="waterFall goods_wall"> </div>
+    <div class="pullUp more" status="tap"></div>
+</div>
+<a class="gotop" style="bottom:<%if(this.isIphone){%>60<%}else{%>20<%}%>px">
+    <img class="img100" src="<%= this.PICTURE_URL%>/images/wap/tuan/gotop.png" />
+</a>
+<%# hiGoods/search.html %>
+<script type="text/html" id="posterWall">
+    <?var data = this.v; ?>
+    <div class="goodsList">
+        <div class="shop">
+            <img src="<?= data.bannerUrl ?>" data-xr="<?= data.r ?>" asrc="<?= data.bannerUrl ?>" data-shop="<?= data.shop_id ?>">
+        </div>
+        <div class="waterGoods">
+            <? data.goods && data.goods.forEach(function(res){ ?>
+                <div class="goodsInfo" data-tid="<?= res.tid ?>" data-xr="<?= res.r ?>">
+                    <img class="goodsLazy" src="<?= res.pic ?>" asrc="<?= res.pic ?>">
+                    <div class="goodsName"><?= res.goods_title ?></div>
+                    <div class="goodsPrice">￥<?= res.goods_price ?></div>
+                </div>
+            <? }) ?>
+        </div>
+        <div class="segWrap"><img class="seg" src="http://d02.res.meilishuo.net/pic/_o/e4/63/571efaa049eb9c5dccbf807562d2_546_18.cj.png"></div>
+    </div>
+</script>
+<script>
+    fml.vars.hiGoods = <%= JSON.stringify(hiGoods.list.length )%>;
+    fml.vars.appShare = <%= this.appShare %>;
+    fml.vars.params = <%= JSON.stringify(this.params) %>;
+    fml.vars.host = <%= JSON.stringify(this.host) %>;
+    fml.vars.val = <%= JSON.stringify( this.search || this.category.data.search_default_word ) %>;
+</script>
+<%= requireFn('wapShare.html')({
+    'share' : this.share 
+    , 'shareTitle' : '选择分享到'
+    , '_JSstack' : this._JSstack
+    , '_JSmods' : this._JSmods
+}); %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+    fml.use('wap/page/hiGoods');
+    fml.use('wap/page/hiGoods/search');
+_use:", this._JSstack , this._JSmods); %>
+
+<%#foot_simple.html%>

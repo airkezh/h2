@@ -1,0 +1,157 @@
+<%#head.html%>
+
+<%
+	var pageData = this.pageData;
+	var poster_nav = [{'name' : '品牌街', 'go_pos' : 'hot'}, {'name' : '功效区', 'go_pos' : 'rec'}, {'name' : '单品榜', 'go_pos' : 'goods'}];
+%>
+
+<div class="main">
+	<a href="<%= pageData.bannar.link || '###'%>" class="top_bannar"><img src="<%= pageData.bannar.pic %>"></a>
+	<div class="poster_tab">
+		<div class="inner">
+			<% poster_nav.forEach(function(data, index){ %>
+				<div class="js_tab tab_<%= index %> <%= index == 0 ? 'p_tab_active' : '' %>" go="<%= data.go_pos %>"><span class="line"></span><span class="word"><%= data.name %></span></div>
+			<% }); %>
+		</div>
+	</div>
+	<div class="hot">
+		<div class="title"></div>
+		<%
+			pageData.hot.forEach(function(shop, index){
+				if(shop.link){
+					var r_name = (this.r || '') +':hdtrc=mz'+ shop.link.replace(/.*id=/, '') +'_pinpai';
+					r_name = encodeURIComponent(r_name);
+					var shop_link = _extFn.getAppLink('openURL', {"url": shop.link+'&r='+r_name,"inApp":1, "require_app_info":1, "title": shop.name || "美妆"}, this.os, '', shop.link);
+				} else {
+					var shop_link = '###';
+				}
+		%>
+			<a href="<%= shop_link %>"><span class="bs_load_img" asrc="<%= shop.pic %>"></a>
+		<% }); %>
+	</div>
+	<div class="rec">
+		<div class="title"></div>
+		<%
+			pageData.rec.forEach(function(shop, index){
+				if(shop.link){
+					var r_name = (this.r || '') +':hdtrc=mz'+ shop.link.replace(/.*id=/, '') +'_gongxiao';
+					r_name = encodeURIComponent(r_name);
+					var shop_link = _extFn.getAppLink('openURL', {"url": shop.link+'&r='+r_name, "inApp":1, "require_app_info":1, "title": shop.name || "美妆"}, this.os, '', shop.link);
+				} else {
+					var shop_link = '###';
+				}
+		%>
+			<a class="rec_<%= index+1 %>" href="<%= shop_link %>"><span class="bs_load_img" asrc="<%= shop.pic %>"></a>
+		<% }); %>
+	</div>
+	<div class="goods">
+		<div class="pullUp" status="loading"></div>
+	</div>
+	<div class="foot_bannar">
+		<% pageData.foot_bannar.forEach(function(bannar, index){ %>
+			<a href="<%= _extFn.getAppLink('openURL', {"url": bannar.link,"inApp":1, "require_app_info":1}, this.os, this.r, bannar.link) %>"><img src="<%= bannar.pic %>"></a>
+		<% }); %>
+	</div>
+	<div class="fix_tab">
+		<div class="inner">
+			<% poster_nav.forEach(function(data, index){ %>
+				<div class="js_tab tab_<%= index %> <%= index == 0 ? 'p_tab_active' : '' %>" go="<%= data.go_pos %>"><span class="line"></span><span class="word"><%= data.name %></span></div>
+			<% }); %>
+		</div>
+	</div>
+</div>
+
+<script type="text/html" id="posterWall">
+<div class="goods_units">
+	<?
+		function getStringLengthArr(s , len){
+			var w = 0;
+			var time = 0;
+			for(length=s.length; time<length; ){
+				if(/[^\x00-\xff]/.test(s[time])){
+					w+=2;
+				}else{
+					w+=1;
+				}	
+				time ++;
+				if(w >= (len*2)){
+					break;
+				}
+			}
+			return time;
+		}
+		function mSubstr(str , len , pad){
+			if (!str || 0 == str.length) return '';
+			if (undefined == pad ) pad = '...';
+			len = getStringLengthArr(str , len);
+			return str.substr( 0 , len) + ((pad && str.length> len) ? pad : '');
+		}
+		function getAppLink(protocol,param , os , r ,wapHref ,extra){
+			if (!protocol || !param) return false;
+			if (!os) return wapHref || '###noapp';
+			if (r) param.r = r;
+			var link = 'meilishuo';
+			if (os && os.ipad) link = 'meilishuohd';
+			link += '://'+ protocol +'.meilishuo?json_params='+ encodeURIComponent(JSON.stringify(param));
+			if(extra) link += '&source=' + extra;
+
+			return link;
+		}
+		var r = this.r;
+
+		this.data && this.data.forEach(function(data){
+			var stutas_class = '';
+			var goods_url = getAppLink('twitter_single', {'twitter_info' : {'twitter_id' : data.twitter_id, 'is_doota' : 1}}, <%= this.os && this.os.mlsApp %>, r, '/share/item/'+data.twitter_id);
+	?>
+		<div class="goods_box">
+			<a class="goods_img" href="<?= goods_url ?>">
+				<span class="bs_load_img" asrc="<?= data.image ?>"></span>
+				<? if(stutas_class){ ?>
+					<span class="goods_status <?= stutas_class ?>"></span>
+				<? } else if(data.marks && data.marks[0]){
+						var _l = 0; var style = '';
+						data.marks.forEach(function(marks_data, index){
+							if(index > 1) return;
+					?>
+							<div class="Farm" style="<?= style ?>">
+								<img class="Standard" src="<?= marks_data.img_url?>" style="width:<?= marks_data.img_width/1.3 ?>px;"/>
+							</div>
+					<?		style = 'left: ' + (parseInt(marks_data.img_width/1.3) + 6) + 'px;';
+					});
+				} ?>
+			</a>
+			<div class="desc_box">
+				<p class="desc"><a href="<?= goods_url ?>"><?= mSubstr(data.goods_title, 20, '...') ?></a></p>
+				<?
+					var discount_num = Math.round(data.price/data.original_price*100)/10;
+					if(discount_num > 10 || data.original_price > 1000){
+						discount_num = '';
+					} else {
+						if(discount_num.toString().indexOf('.')<0){
+							discount_num += '.0';
+						}
+						discount_num += '折';
+					}
+				?>
+				<p class="price"><span class="red_f now_price">¥<?= data.price ?></span><? if(data.original_price && discount_num != '10.0'){ ?><span class="sequence">￥<del><?= data.original_price ?></del></span><span class="discount_num"><?= discount_num ?></span><? } ?></p>
+				<a href="<?= goods_url ?>"><div class="cart">立即抢购</div></a>
+			</div>
+		</div>
+	<? }); ?>
+</div>
+</script>
+
+
+
+<script>
+	fml.vars.tab = '<%= pageData.poster.tab || "分会场" %>';
+	fml.vars.acid = '<%= pageData.poster.acid %>';
+	fml.vars.huodong_code = '<%= pageData.poster.huodong_code || "mztx_common" %>';
+	fml.vars.r = '<%== this.r+":cid="+pageData.poster.acid %>';
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/biz/beauty_sales_pro_main');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot_simple.html%>

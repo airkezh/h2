@@ -1,0 +1,38 @@
+<%
+	var steps = this.steps
+	, needTime=this.needTime
+	, cur = this.current_step
+	, dis = this.distance
+	, BALL_WIDTH = 18
+	, TEXT_MAX_WIDTH = 70
+	, total_width = steps.length*(BALL_WIDTH+dis) - dis + (TEXT_MAX_WIDTH - BALL_WIDTH)
+	, n = steps.length;
+	if(needTime){var times=this.times;}
+%>
+
+
+<div class="flowStep" style="width:<%= total_width %>px;display:<%= steps.length >0 ? 'block' : 'none'%>">
+	<div class="chart" style="margin-left:<%= (TEXT_MAX_WIDTH - BALL_WIDTH)/2 %>px">
+
+		<%if(steps.length >0){%>
+		<% steps.forEach(function(s,i){ %>
+		<div style="margin-left:<%= i== 0 ? 0 : dis %>px;" class="ball <%= (i <= cur) ? "" : "empty" %>"><%=i+1%></div>
+		<%if(i != n - 1){%><div class="line <%= (i <= cur - 1) ? "" : "empty" %>" style="width:<%=(dis+BALL_WIDTH)%>px;left:<%=BALL_WIDTH/2 + i*(dis+BALL_WIDTH)%>px"></div><%}%>
+		<% }); %>
+		<%}%>
+	</div>
+	<div class="text">
+		<%if(steps.length >0){%>
+		<% steps.forEach(function(s,i){ %>
+		<div <%if(i<=cur){%>class="active"<%}%> style="width:<%= TEXT_MAX_WIDTH %>px;<%= i == 0 ? "" : ("margin-left:"+(dis+BALL_WIDTH-TEXT_MAX_WIDTH)+"px;")%>"><%= s %></div>
+		<% }); %>
+		<%}%>
+
+		<%if(times&&times.length>0){%>
+		<% times.forEach(function(t,i){ %>
+		<div <%if(i<=cur){%>class="active"<%}%> style="width:<%= TEXT_MAX_WIDTH %>px;<%= i == 0 ? "" : ("margin-left:"+(dis+BALL_WIDTH-TEXT_MAX_WIDTH)+"px;")%><%if(i>cur){%>display:none;<%}%>"><%= t %></div>
+		<% }); %>
+		<%}%>
+
+	</div>
+</div>

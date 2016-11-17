@@ -1,0 +1,66 @@
+<% var data = this.hdshop;%>
+	<%
+	for(var v in data){
+		var shop_url = _extFn.getAppLink('shop', {'shop_id' : data[v].shop_id}, this.os, this.r);
+	%>
+	<section class="list-item">
+		<div class="shop-intro">
+			<div class="shop-info">
+				<%
+					var a;
+					data[v].coupon_list.length==0 ? a=0 : a=1;
+				%>
+				<%if(a==0){%><div class="sp-wrap" style="border:none;"><%}else{%>
+				<div class="sp-wrap">
+				<%}%>
+					<div class="shop-logo">
+						<a href="<%=shop_url%>"><img src="<%= data[v].shop_face_img%>"/></a>
+					</div>
+					<div class="shop-word">
+						<p><%=data[v].shop_nick%></p>
+						<p><%=data[v].shop_desc%></p>
+					</div>
+				</div>
+
+			</div>
+			<!-- <div class="discount-info">限时全场6折</div> -->
+		</div>
+		<%if(data[v].coupon_list.length==0){%>
+			<div class="shop-coupon" style="display:none">
+			</div>
+		<%}else{%>
+			<div class="shop-coupon">
+				店铺优惠:
+				<% var coupon_array=data[v].coupon_list.slice(0,3);%>
+			<% data[v] && data[v].coupon_list && coupon_array.map(function(i){%>
+		<a href="<%=shop_url%>">满<span><%=i.threshold%></span>减<span><%=i.credit%></span></a>
+			<%});%>
+			</div>
+		<%}%>
+		<div class="shop-item">
+			<div class="item-box"> 
+				<% data[v] && data[v].twitter_list && data[v].twitter_list.map(function(i){%>
+<%var db_url= _extFn.getAppLink('twitter_single', {'twitter_info' : {'twitter_id' : i.twitter_id, 'is_doota' : 1}}, this.os, this.r);%>
+					<a href="<%=db_url%>">
+						<span class="lazy_pic" asrc ="<%=i.twitter_img%>"></span>	
+						<%if(i.twitter_id==3257830579 || i.twitter_id==3214857653 || i.twitter_id==3327022287  || i.twitter_id==3330240937  || i.twitter_id==3325768107 || i.twitter_id==3330181705 || i.twitter_id==3326933271 || i.twitter_id==3192991195 || i.twitter_id==3235131573 || i.twitter_id==3292001107 || i.twitter_id==3303872069 || i.twitter_id==3317378099 || i.twitter_id==3215586961 || i.twitter_id==3263468017 || i.twitter_id==3047666253 || i.twitter_id==3274538787 || i.twitter_id==3234879817 || i.twitter_id==3318323573 || i.twitter_id==3300083629 || i.twitter_id==3266497223 || i.twitter_id==3224629565 || i.twitter_id==3291850803 || i.twitter_id==3216243977 || i.twitter_id==3116277475 || i.twitter_id==3209054283 || i.twitter_id==3296419149 || i.twitter_id==3299115385 || i.twitter_id==3297047675 || i.twitter_id==3287035529 || i.twitter_id==3272261661 || i.twitter_id==3104548015 || i.twitter_id==3203499285 || i.twitter_id==3327073587 || i.twitter_id==3231723833 || i.twitter_id==3247223647 || i.twitter_id==3271294325 || i.twitter_id==2992753067 || i.twitter_id==3121629827 || i.twitter_id==3330056531 || i.twitter_id==3302414631){%>
+							<div class="promotion"></div>
+							<%}%>	
+							<%if(i.campaign_price==''){%>
+								<div class="price"><span>￥<%=i.twitter_price%></span></div>
+							<%}else if(!i.campaign_price){%>
+							<%}else{%>	
+								<div class="price"><span>￥<%=i.campaign_price%></span><del>￥<%=i.twitter_price%></del></div>
+							<%}%>
+					</a>
+				<%});%>
+			</div>	
+		</div>
+
+</section>
+<%}%>
+
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use("wap/page/hdstreet/index");
+_use:", this._JSstack , this._JSmods ); %>

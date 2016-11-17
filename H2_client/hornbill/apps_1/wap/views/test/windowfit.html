@@ -1,0 +1,24 @@
+<%#head.html%>
+<%
+	var EfnSubstr = _extFn.mSubstr;
+%>
+
+<section class="items_area">
+	<h3>今日必备单品</h3>
+	<div class="items_box">
+		<% this.essential && this.essential.map(function(data){ %>
+			<figure class="picBox">
+				<a href="<%=data.link%>" target="_blank">
+					<img src="<%=data.img%>">
+					<figcaption><%=data.title%></figcaption>
+				</a>
+			</figure>
+		<% }); %>
+		<div style="clear:both;">
+	</div>
+</section>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/test/windowfit');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

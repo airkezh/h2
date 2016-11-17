@@ -1,0 +1,16 @@
+<% this.March_sale_goods && this.March_sale_goods.map(function(data){ %>
+	<div class="goodsCon">
+		<a href="/prom/item/<%=data.twitter_id%>?d_r=<%=data.d_r%>" target="_blank" class="pic"><img src="<%= data.image%>" /></a>
+		<a href="/prom/item/<%=data.twitter_id%>?d_r=<%=data.d_r%>" target="_blank" class="goods_tit"><%= data.goods_title%></a>
+		<div class="goods_price">
+			<span class="red_f">￥<%= data.price%></span><del>￥<%= data.original_price%></del>
+		</div>
+		<div class="likebuy">
+			<p class="likenum left_f">
+				<img class="left_f" src="http://i.meilishuo.net/css/images/twitter/ILikeit.gif" />
+				<span class="left_f"><%= data.count_like%>人已喜欢</span>
+			</p>
+			<%if(data.sell_num){%><p class="right_f"><span class="red_f"><%= data.sell_num%></span>人已购买</p><%}%>
+		</div>
+	</div>
+<% }); %>

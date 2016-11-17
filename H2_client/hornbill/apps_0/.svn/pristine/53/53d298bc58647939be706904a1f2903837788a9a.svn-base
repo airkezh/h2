@@ -1,0 +1,141 @@
+<%# head_simple.html%>
+
+	<script> 
+            (function(win,doc){
+                var docel = doc.documentElement;
+                var meta = doc.querySelectorAll('meta[name=viewport]');
+                meta[0].setAttribute('content','width=device-width,user-scalable=no,initial-scale=1');
+                function recalc(){
+                    var width = docel.clientWidth;
+                    docel.style.fontSize = 100 * width/640+'px';
+                }
+                if(doc){
+                    recalc();
+                    win.addEventListener('orientationchange',recalc,false);
+                }else if (doc.addEventListener){
+                    doc.addEventListener('DOMContentLoaded', recalc, false);
+                }
+            })(window,document)
+     </script>
+</head>
+<body>
+<div id="warp" class="warp"  >
+    <section class="index">
+    	<a class="startBut" id="startBut" href="javascript:;"></a>
+    	<div class="linkBox">
+    		<span class="linkUnit fl">
+    			<a id="indexRule" href="javascript:;">游戏规则</a>
+    		</span>
+    		<span class="linkUnit fr">
+    			<a id="indexShare" href="javascript:;">分享</a>
+    		</span>
+
+    	</div>
+    	<!-- <h1 class="logo"></h1> -->
+    </section>
+
+    <section class="guide">
+    </section>
+    
+    <section class="game" >
+		<div class="container" id="container"></div>
+		<div class="game_nub" id="game_nub"></div>
+    </section>
+</div>
+
+
+<div class="mypopbox" id="mypopbox" >
+	
+
+
+	<div class="dialog dialog_wxshareguide" id="dialog_wxshareguide" >
+		<img src="http://d03.res.meilishuo.net/pic/_o/77/e9/d5baa51146392336e91ca339009f_640_802.cf.png">
+	</div>
+
+	<!-- <div class="dialog dialog_applogin" id="dialog_applogin" >
+		<a class="loginBut" id="loginBut" href="meilishuo://login.meilishuo/?json_params=">登  录</a>
+	</div> -->
+
+	<div class="dialog dialog_appshare" id="dialog_appshare" >
+		<a class="shareBut shareBut_wx" id="shareBut_wx" href=""><!-- weixin --></a>
+		<a class="shareBut shareBut_pyq" id="shareBut_pyq" href=""><!-- pyq --></a>
+	</div>
+
+	<div class="dialog dialog_rule" id="dialog_rule">
+		<article class="rule_text">
+<p>1.活动时间：2015年8月18日0:00—8月20日 24:00</p>
+<p>2.活动条件：通过手机美丽说for iOS或for Android，或者通过微信分享的链接参与活动</p>
+<p>3.活动期间用户可多次游戏，且有一定几率获得美丽说优惠券。单身狗拯救越多，获得优惠券几率越高，面额越大</p>
+<p>4.如果在微信内游戏得券，可用微信登陆美丽说APP，在“我—我的优惠券”中查看</p>
+<p>5.优惠券的使用时间：2015年8月18日00:00:00—8月20日23:59:59。</p>
+<p>6.活动中中奖的优惠券使用方式：可用于美丽说全部商品，可与店铺优惠券叠加使用，但不能与平台优惠券同时使用。</p>
+<p>7.若订单的金额小于优惠券的金额，多出部分不予退回。</p>
+<p>8.优惠券一经使用，不可退回。如产生退货，所退款项只限您实际支付的金额，优惠券不退。</p>
+<p>9.优惠券不能提现、不能转赠、不能为他人付款。</p>
+<p>10.用户一旦选择参加本活动，即同意接受活动涉及到的所有规则。</p>
+<p>11.美丽说在法律允许的范围内保留对本活动的最终解释权。</p>
+		</article>
+		<div class="rule_next">
+			<img src="http://d03.res.meilishuo.net/pic/_o/ae/3d/0f53ec2192d526191fc47720b92e_26_28.cf.png">
+		</div>
+		<a class="dialog_but dialog_rule_but" href="javascript:;"></a>
+	</div>
+	
+	<div class="dialog dialog_success" id="dialog_success" >
+		<div class="success_result">
+			<p class="tit1">成功拯救 <!-- <img class="success_nub" src="http://d02.res.meilishuo.net/pic/_o/e1/c2/98493fd2182215ff42b5b6f82893_51_56.ch.png">  --><span id="success_n"></span>   只单身狗！</p>
+			<p class="tit2">拯救这么多也是不容易吖！继续加油～</p>
+			<img class="success_img" src="http://d01.res.meilishuo.net/pic/_o/5e/f5/30c0ab7cae605850fa3139f52f54_344_187.cg.png">
+			<br /><a class="link" href="">到美丽说818会场花券去></a>
+		</div>
+		<div class="success_but">
+			<a class="dialog_but dialog_play_but fl" href="javascript:;"></a>
+			<a class="dialog_but dialog_share_but fr" href="javascript:;"></a>
+		</div>
+	</div>
+
+	<div class="dialog dialog_win" id="dialog_win" >
+		<div class="win_result">
+			<p class="tit1">成功拯救 <!-- <img class="success_nub" src="http://d02.res.meilishuo.net/pic/_o/e1/c2/98493fd2182215ff42b5b6f82893_51_56.ch.png"> --> <span id="win_n"></span>  只单身狗！</p>
+			<p class="tit2">太棒辣！你就是传说中的爱神丘比特~</p>
+			<div class="quan" id="quan"></div>
+			<a class="link" href="">到美丽说818会场花券去></a>
+		</div>
+		<div class="win_but">
+			<a class="dialog_but dialog_play_but fl" href="javascript:;"></a>
+			<a class="dialog_but dialog_share_but fr" href="javascript:;"></a>
+		</div>
+	</div>
+
+	<div class="dialog dialog_fail" id="dialog_fail">
+		<div class="fail_result">
+			<p class="tit1">拯救失败！</p>
+			<p class="tit2">单身狗多拯救拯救就熟悉了！你也可以哒～</p>
+			<img class="fail_img" src="http://d01.res.meilishuo.net/pic/_o/f3/06/eb512ab2d2a6ed00c3bdeb0364e9_278_180.cf.png">
+			<br /><a class="link" href="">到美丽说818会场花券去></a>
+		</div>
+		<div class="fail_but">
+			<a class="dialog_but dialog_play_but fl" href="javascript:;"></a>
+			<a class="dialog_but dialog_share_but fr" href="javascript:;"></a>
+		</div>
+	</div>
+
+
+	<div class="overlay">
+	</div>
+</div>
+
+<script>
+    fml.vars.isWxLogin= <%= this.isWxLogin || false %>   ;
+
+    fml.vars.isWx = <%= this.isWx %>;
+
+</script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use('wap/page/activity/singleDog');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot.html%>
+

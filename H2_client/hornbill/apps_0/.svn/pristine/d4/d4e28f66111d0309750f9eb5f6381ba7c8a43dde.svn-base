@@ -1,0 +1,119 @@
+<%# head_simple.html %>
+</head>
+<body>
+<div class="header">
+	<a class="logo_new" href="/welcome"></a>
+</div>
+<div class="content">
+	<div class="slider_tab">
+		<ul>
+			<li class="mob_reg_li active"><span class="s_mobile"></span><a href="#mob_reg">手机注册</a></li>
+			<li class="email_reg_li"><span class="s_mail"></span><a href="#email_reg">邮箱注册</a></li>
+			<div class="clear_f"></div>
+		</ul>
+	</div>
+	<div class="registerForm">
+		<div class="reg_mls mob_reg">
+			<form id="registerForm" method="post" action="">
+				<fieldset>
+					<div class="reg_box">
+						<div class="item">
+							<input type="text" placeholder="手机号">
+							<span class="msg_error">
+								<i></i>
+								<span class="msg_cnt">手机号已存在</span>
+							</span>
+							<span class="msg_error">
+								<i></i>
+								<span class="msg_cnt">手机号格式不正确，请填写正确的11位手机号</span>
+							</span>
+							<span class="msg_ok">
+								<i></i>
+							</span>
+						</div>
+						<div class="item">
+							<input type="text" placeholder="昵称">
+						</div>
+						<div class="item">
+							<input type="text" placeholder="密码">
+							<span class="msg_error">
+								<i></i>
+								<span class="msg_cnt">6-20位字符，可使用字母、数字或符号的组合</span>
+							</span>
+							<div class="pw_safe">
+								<span class="txt">安全程度</span>
+								<div class="pw_strength pw_weak pw_medium pw_strong">
+									<div class="pw_bar"></div>
+									<div class="pw_letter">
+										<span class="tsl">弱</span>
+										<span class="tsl">中</span>
+										<span class="tsl">强</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="item">
+							<input type="text" placeholder="确认密码">
+						</div>
+						<div class="item">
+							<input class="enter_code"  type="text" placeholder="短信验证码">
+							<span class="get_code">获取短信验证码</span>
+							<div class="clear_f"></div>
+						</div>
+						<div class="big_btn">
+							<em class="big_btnr"></em>
+							<input type="submit" value="立即注册">
+						</div>
+						<div class="agree">
+							<input type="checkbox" checked="checked" value="agreement" name="agreement">
+							<label for="agreement">同意</label><a target="_blank" href="/agree">美丽说注册条款</a>
+						</div>
+					</div>
+					<div class="reg_box hide">
+						<div class="item">
+							<input type="text" placeholder="手机号">
+						</div>
+						<div class="item">
+							<input type="text" placeholder="昵称">
+						</div>
+						<div class="item">
+							<input type="text" placeholder="密码">
+						</div>
+						<div class="big_btn">
+							<em class="big_btnr"></em>
+							<input type="submit" value="立即注册">
+						</div>
+						<div class="agree">
+							<input type="checkbox" name="agreement" value="agreement" checked="checked">
+							<label for="agreement">同意</label><a href="/agree" target="_blank">美丽说注册条款</a>
+						</div>
+					</div>
+				</fieldset>
+			</form>
+		</div>
+		<div class="reg_mls email_reg">
+			
+		</div>
+		<div class="other_login">
+			<div class="mls_login">
+				用美丽说账号<a class="red_f" href="/user/login">登录</a>
+			</div>
+			<p>你还可以用以下方式直接登录：</p>
+			<div>
+				<a class="l_sinaweibo" href="/connect/auth/weibo"></a>
+				<a class="l_qq" href="/connect/auth/qzone"></a>
+				<span id="login_more">更多<samp>>></samp></span>
+				<a class="l_renren none_f" href="/connect/auth/renren"></a>
+				<a class="l_wangyi none_f" href="/connect/auth/wangyi"></a>
+				<a class="l_txweibo none_f" href="/connect/auth/txweibo"></a>
+				<a class="l_douban none_f" href="/connect/auth/douban"></a>
+				<a class="l_baidu none_f" href="/connect/auth/baidu"></a>
+			</div>
+		</div>
+		<div class="clear_f"></div>
+	</div>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/register');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html %>

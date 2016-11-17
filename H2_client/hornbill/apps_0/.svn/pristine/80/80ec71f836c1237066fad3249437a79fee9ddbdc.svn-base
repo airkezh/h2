@@ -1,0 +1,56 @@
+<%*
+ * @fileoverview 微信一级分类页面
+ * @author qindai@meilishuo.com
+ * @date 2015-08-26
+%>
+<%# wx_new/header.html%>
+
+<!-- 搜索模块 -->
+<%= requireFn('wx_new/mdl_search.html')({
+	'data' : (this.hotList && this.hotList.search_default_word) || '立即搜索你想要的商品'
+});%>
+
+<%if(this.hotList && this.hotList.info && this.hotList.rootnav){%>
+<% 
+	var info = this.hotList.info; 
+	var list = this.hotList.rootnav;
+%>
+<section class="hot toggle-con">
+	<div class="t-box">
+		<h2><%=info.word_name%></h2> <i class="red"><%=info.english_name%></i> <span class="detail"><%=info.wording%></span>
+	</div>
+	<% list.map(function(data){%>
+		<a href="/wx/newclass/secClassify/?firstClass=<%=data.query_word %>&nid=<%=data.nid%>" style="background-image:url(<%= data.pic %>);"></a>
+	<% }); %>
+</section>
+<%};%>
+
+
+<% this.partList && this.partList.map(function(list){%>
+<% 
+	var info = list.info; 
+	var children = list.children;
+%>
+<section class="part toggle-con">
+	<div class="t-box">
+		<h2><%=info.word_name%></h2> <i class="red"><%=info.english_name%></i> <span class="detail"><%=info.wording%></span>
+	</div>
+	<div class="list ohide">
+		<% children.map(function(data){%>
+			<a href="/wx/search?key=<%=data.query_word %>" style="background-image:url(<%= data.pic %>);">
+				<p class="name"><%=data.word_name %></p>
+			</a>
+		<% }); %>
+	</div>
+	<%if(children.length > 8){%>
+	<div class="btn">更多流行 <span class="icon"></span></div>
+	<%};%>
+</section>
+<%});%>
+
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/wx_new/nclass');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# wx_new/footer.html%>

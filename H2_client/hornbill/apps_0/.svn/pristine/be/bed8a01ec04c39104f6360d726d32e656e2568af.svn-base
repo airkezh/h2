@@ -1,0 +1,22 @@
+<% if(this.ads_bot_banner && typeof this.ads_bot_banner == 'object') {%>
+<div class="ads_banner ads_bottom">
+	<div class="boxImg">
+		<% var seclen = this.ads_bot_banner.length; %>
+		<ul class="_img banner">
+			<% this.ads_bot_banner.map(function(data, index){ %>
+			<li>
+				<div class="pic" <%if(index==0){%>style="background:url(<%=data.img_url%>) center top no-repeat;"<%}else{%>p_url="<%=data.img_url%>"<%}%>>
+					<a href="<%=data.links%>" target="_blank"></a>
+				</div>	
+			</li>
+			<% }); %>
+		</ul>
+	</div>
+	<div class="_num adType1 <% if(seclen == 1) { %>none_f<% } %>">
+		<% for (var i=1; i<=seclen; i++) { %>
+		<% var current = i==1 ? 'current' : ''; %>
+		<a class="<%= current %>"><span class="none_f"><%= i %></span></a>
+		<% } %>
+	</div>
+</div>
+<% } %>

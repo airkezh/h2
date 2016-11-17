@@ -1,0 +1,58 @@
+<script type="text/html" id="posterWall">
+<?
+function getStringLengthArr(s , len){
+	var w = 0;
+	var time = 0;
+	for(length=s.length; time<length; ){
+		if(/[^\x00-\xff]/.test(s[time])){
+			w+=2;
+		}else{
+			w+=1;
+		}	
+		time ++;
+		if(w >= (len*2)){
+			break;
+		}
+	}
+	return time;
+}
+function mSubstr(str , len , pad){
+	if (!str || 0 == str.length) return '';
+	if (undefined == pad ) pad = '...';
+	len = getStringLengthArr(str , len);
+	return str.substr( 0 , len) + ((pad && str.length> len) ? pad : '');
+}
+
+$.each(this.tInfo , function(k , v){ 
+	var pic_height = v.pic_height * fml.vars.poster.scale;
+	var user_desc =  mSubstr(v.user_desc , 20 , '...');
+	if(v.pic_url == '') return;
+?>
+<div class="poster_grid poster_wall" style="width:<?= fml.vars.poster.colWidth?>px;" poster_height="<?= pic_height + 106?>">
+	<figure>
+		<a class="pic_load" href="<?=v.share_url?>" style="padding-top:<?= pic_height ?>px;">
+			<img src="<?=v.pic_url?>" style="-webkit-transform: none;"/>
+		</a>
+		<figcaption>
+			<div class="user_info">
+				<span class="face"><img src="<?=v.avatar_url?>" /></span>
+				<ul class="txt_info">
+					<li><?=v.nickname?></li>
+					<li style="color:#F69;" class="user_desc"><?=user_desc?></li>
+					<li>票数：<span class="vote_num"><?=v.score?></span></li>
+					<li>排名：<?=v.rank?></li>
+				</ul>
+				<p class="btnBox">
+					<?if(!v.is_vote){?>
+					<a class="btn vote_girl" uid="<?=v.user_id?>">支持她！</a>
+					<?}else{?>
+					<a class="voted">谢谢支持！</a>
+					<?}?>
+				</p>
+				<div class="clear_f"></div>
+			</div>
+		</figcaption>
+	</figure>
+</div>
+<? }); ?>
+</script>

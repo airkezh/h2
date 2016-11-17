@@ -1,0 +1,272 @@
+/*common*/
+require('wap/zepto/fastclick')
+require('wap/app/dialog')
+var shareTo = require('wap/app/shareTo'),
+	appShare = require('wap/app/appShare'),
+	Alert = require('wap/ui/alert'),
+	Danmu = require('wap/component/danmu/index'),
+	openAppLink = require('wap/app/openAppLink'),
+	shareWX = require('wx/share'),
+	poster = require('wap/app/posterPa'),
+	posterWall = require('wap/app/posterWalls6'),
+	lazyLoad = require('m/component/lazyLoad'),
+	openApp = require('wap/app/openApp');
+
+var weixinBrowser = navigator.userAgent.indexOf('MicroMessenger'),
+	$support = $('.support'),
+	content = $('#content'),
+	$heart = $support.find('.heart'),
+	$shareBtn = $support.find('.share'),
+	$qunquan = $support.find('.qunquan'),
+	$comment = $('#comment'),
+	$send = $('#send'),
+	danmuData = fml.vars.danmu || {},
+	limit = 6,
+	status = "done";
+if (weixinBrowser != -1) {
+	openApp('http://mapp.meilishuo.com/zulily/detail2/?style_id=' + fml.vars.styleId + '&trace_id=' + fml.vars.trace_id + '&twitter_id=' + fml.vars.twitter_id);
+}
+// 客户端类型的分享（客户端右上角）
+if (fml.vars.appShare) {
+	appShare(fml.vars.params, ['weixin', 'weixin_timeline']);
+}
+
+//Alert
+var a = function(msg) {
+	return new Alert({
+		content: msg
+	});
+};
+
+//一进页面加载数据
+getWall(2, '/aj/zulily/index_style_list?&limit=' + limit + '&status=' + status + '&tag=new', 'posterWall', false);
+
+//拉取瀑布流
+function getWall(colNum, url, tmp, showBtn) {
+	var lazy_pic = colNum == 1 ? '.lazy_pic_big' : '.lazy_pic';
+	poster.set({
+		colNum: colNum
+	});
+	var date = {
+		url: url,
+		poster: poster,
+		tmp: tmp,
+		showBtn: showBtn,
+		posterMargin: $('#content').offset().top,
+		marginOffset: 0,
+		lazyLoad: lazyLoad.init({
+			xpath: lazy_pic
+		})
+	}
+	posterWall.scroll(date);
+};
+
+
+/*登陆成功后的回掉函数*/
+window.MLS = {
+	didLogin: function() {
+		// 成功登录，跳转到下一步
+		window.location.reload();
+	}
+};
+
+$heart.on('click', function() {
+		if (fml.vars.isLogin == 0 && weixinBrowser == -1) {
+			window.location.href = "meilishuo://login.meilishuo/";
+			return;
+		}
+		support($(this))
+	})
+	/*点赞*/
+function support(ele) {
+	var heart = ele,
+		$num = $('body').find('.num'),
+		num = parseInt($num.text());
+	if (heart.hasClass('heartRed')) {
+		heart.removeClass('heartRed');
+		num -= 1;
+		$num.html(num);
+		$.get('/aj/zulily/style_want', {
+			'style_id': fml.vars.styleId,
+			'action': 'del',
+			"trace_id": fml.vars.trace_id,
+			"circle_id": fml.vars.circle_id || 0
+		}, function(res) {}, 'json');
+	} else {
+		heart.addClass('heartRed');
+		num += 1;
+		$num.html(num);
+		$.get('/aj/zulily/style_want', {
+			'style_id': fml.vars.styleId,
+			'action': 'add',
+			"trace_id": fml.vars.trace_id,
+			"circle_id": fml.vars.circle_id || 0
+		}, function(res) {}, 'json');
+		//群圈
+		if (fml.vars.circle_id > 0) {
+			var params = {
+				"circle_id": fml.vars.circle_id,
+				"r": heart.data('xr')
+			};
+			window.location.href = "meilishuo://circle.meilishuo?json_params=" + encodeURIComponent(JSON.stringify(params));
+		}
+	}
+}
+
+// 微信浏览器分享 xudeming 20150304
+if (weixinBrowser != -1) {
+	shareWX.bind({
+		'link': 'http://mapp.meilishuo.com/zulily/detail2/?style_id=' + fml.vars.styleId + '&trace_id=' + fml.vars.trace_id,
+		'desc': fml.vars.shareTitle,
+		'imgUrl': fml.vars.sharePic,
+		'title': fml.vars.shareTitle
+	});
+}
+if ($('.danmu').length) {
+	var index = 0;
+	var danmu = Danmu({
+		el: ".danmu",
+		bulletHeight: 30,
+		bulletTmpl: '<div><i data-name="icon"></i><span data-name="content"></span></div>',
+		bulletClass: "bullet",
+		mode: 'auto',
+		initChannel: {
+			offset: 5,
+			height: 35,
+			size: 4
+		},
+		getMessage: function() {
+			danmuData.data = danmuData.data || [];
+			var len = danmuData.data.length;
+			if (index < len - 1) {
+				index++;
+			} else {
+				index = 0;
+				/** 接口一次丢100个弹幕数据，少于100个说明弹幕库里少于100，不重复请求 */
+				if (len > 99) {
+					$.post('/aj/zulily/danmu', {
+						'style_id': fml.vars.styleId,
+						'twitter_id': fml.vars.twitter_id
+					}, function(res) {
+						danmuData = res.data || danmuData;
+						index = 0;
+					}, 'json');
+				}
+			}
+			return danmuData.data[index];
+		},
+		initBullet: function() {
+			this.bullet.speed = -.05;
+			var bullet = this.bullet,
+				type = this.type;
+			$(bullet.els.el).find('span').removeClass('me');
+			if (type == 'me') { //用户发送的信息
+				this.bullet.speed = -.15;
+				bullet.els.el.className = 'me';
+				bullet.els.content.innerHTML = this.content.html;
+				$(bullet.els.el).find('i').prepend("<img src='" + this.content.pic + "' alt=''>");
+			} else if (type == 'maishou') {
+				bullet.els.content.innerHTML = this.content.html;
+				bullet.els.el.className = 'maishou';
+				$(bullet.els.el).find('i').prepend("<img src='" + this.content.pic + "' alt=''>");
+			} else { //普通信息
+				this.bullet.speed = -.15;
+				/** hack code */
+				var str = bullet.els.content.innerHTML,
+					strArr = str.split('##'),
+					type = strArr[0];
+				if (type == 'me') {
+					bullet.els.el.className = 'me';
+					bullet.els.content.innerHTML = strArr[1];
+					$(bullet.els.el).find('i').prepend("<img src='" + strArr[2] + "' alt=''>");
+				} else if (type == 'common') {
+					bullet.els.content.innerHTML = strArr[1];
+					$(bullet.els.el).find('i').prepend("<img src='" + strArr[2] + "' alt=''>");
+				} else if (type == 'founder') {
+					bullet.els.content.innerHTML = strArr[1];
+					bullet.els.el.className = 'maishou';
+					$(bullet.els.el).find('i').prepend("<img src='" + strArr[2] + "' alt=''>");
+				}
+			}
+		}
+	});
+
+	function sendBullet(conf) {
+		danmu.load(function() {
+			this.type = conf.type || null //设置子弹类型，type 为自定义属性
+			this.content = conf.content || null
+		})
+	}
+
+	$comment[0].oninput = function() {
+		if ($(this).val() != "") {
+			$send.addClass('cancel-cur')
+		} else {
+			$send.removeClass('cancel-cur')
+		}
+	}
+
+	// 发射我的子弹
+	$send.on('click', function() {
+		var self = $(this);
+		if (!self.hasClass('cancel-cur')) {
+			return false;
+		}
+		var url = '/aj/zulily/send'
+		var data = {
+			'style_id': danmuData.style_id,
+			'comment': $comment.val(),
+			"trace_id": fml.vars.trace_id,
+			'twitter_id': fml.vars.twitter_id
+		}
+		var callback = function(res) {
+			switch (res.error_code) {
+				case 0:
+					sendBullet({
+						'type': 'me',
+						'content': {
+							'pic': res.data[0],
+							'html': $comment.val()
+						}
+					});
+					// a('发射成功!');
+					$comment.val('');
+					self.removeClass('cancel-cur');
+					break;
+				case 401:
+					window.location.href = "meilishuo://login.meilishuo/";
+					break;
+				case -1:
+					a(res.message);
+					break;
+				default:
+					a('发射失败!!!');
+			}
+		}
+		$.post(url, data, callback, 'json');
+	})
+}
+
+/*获取单品页链接*/
+function getDoneUrl(ele, isWall) {
+	var twitter_id = parseInt(ele.data('twitter_id')),
+		r = '',
+		Url = Meilishuo.config.os.mlsApp ? openAppLink.getAppLink({
+			'protocol': 'twitter_single',
+			'param': {
+				"twitter_info": {
+					"twitter_id": twitter_id,
+					"is_doota": 1
+				}
+			}
+		}) : '/share/item/' + twitter_id;
+	isWall ? (r = ele.parents('.frame').data('xr')) : (r = ele.data('xr'));
+	window.location.href = window.__get_r(Url, r);
+}
+
+$('.saleBtn').on('click', function() {
+	getDoneUrl($(this), 0)
+})
+content.on('click', '.salelUrl', function() {
+	getDoneUrl($(this), 1);
+})

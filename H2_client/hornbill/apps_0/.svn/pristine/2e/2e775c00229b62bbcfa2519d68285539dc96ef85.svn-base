@@ -1,0 +1,141 @@
+<%# head.html%>
+<%
+var query = this._Request_query;
+var getLink = _extFn.getLink;
+var mSubstr = _extFn.mSubstr;
+var html_encode = _extFn.html_encode;
+var tip = this.promotionData.promoTip;
+%>
+<script>
+	fml.vars.hasFilter = <%= this.hasFilter%>;
+	fml.vars.search_totalNum = {
+		goods : <%= this.groupPg.total_num %>
+	}
+</script>
+
+<div class="spinner midSpinner pa_f" style="top:450px;"></div>
+<div class="content_fluid v_hidden">
+	<%if(this.adm35 && this.adm35.ad){%>
+		<%
+		this.adm35.admId = 'adm_top';
+		this.adm35._JSstack = this._JSstack;
+		this.adm35._JSmods = this._JSmods;
+		%>
+		<%= requireFn('commerce/adm_banner.html')(this.adm35);%>
+	<%}%>
+
+	<%if(this.groupPg.total_num != 0 || (this.groupPg.total_num == 0 && this.hasFilter)){%>
+		<%= requireFn('guang/filter.html')({
+			'section' : this.section,
+			'showTotalNum' : this.showTotalNum,
+			'pricebt' : this.pricebt,
+			'search_types' : this.search_types,
+			'query' : query,
+			'getLink' : getLink
+		});%>
+	<%}%>
+	<%if(query.searchKey != '' && this.goods_classify && this.goods_classify.length){%>
+		<div class="tipcontent">
+			<p>
+			您好<%if(this.userInfo.user_id != 0){%><span class="username"><%= this.userInfo.nickname%></span><%}%>，“<%= html_encode(mSubstr(query.searchKey , 6 , '...')) %>” 相关的宝贝：
+			<%this.goods_classify.forEach(function(data, i){%>
+				<span class="split<%= (i+1 == this.goods_classify.length ? '\&nbsp;last' : '')%>"><%= data.title%><a href="<%= data.url%>"><%= data.showNum%></a>件</span>
+			<%})%>
+			</p>
+		</div>
+	<%}%>
+	<%if(this.groupPg.total_num == 0 && !this.hasFilter){%>
+		<div class="friendly_tip">
+			<div class="imgwraper"><img src="http://d02.res.meilishuo.net/pic/_o/9f/6c/4d4215e6b0876e5ec79c360e57e5_90_91.ch.png" /></div>
+			<% if(query.searchKey != ''){ %>
+			<p class="content1">抱歉哦！没有找到“<span class="keyword"><%= html_encode(mSubstr(query.searchKey , 6 , '...')) %></span>”相关商品</p>
+			<p class="content2">为您推荐以下结果</p>
+			<% } else{ %>
+			<p class="content1">抱歉哦！要输入想要找到的宝贝哦</p>
+			<%}%>
+		</div>
+	<%}%>
+	<div class="goods_wall" style="height:1000px;">
+		<div class="corner_stamp">
+			<div class="cata_brands"></div>
+			<div class="poster_p4p"></div>
+		</div>
+	</div>
+	<div class="spinner botSpinner none_f"></div>
+	<div class="clear_f"></div>
+	<div class="paging_panel c_f pr_f none_f">
+	<%# paging.html%>
+	</div>
+
+	<%if(this.adm37 && this.adm37.ad){%>
+		<%
+		this.adm37.admId = 'adm_bot';
+		this.adm37._JSstack = this._JSstack;
+		this.adm37._JSmods = this._JSmods;
+		%>
+		<%= requireFn('commerce/adm_banner.html')(this.adm37);%>
+	<%}%>
+</div>
+
+<%# posternew.html %>
+<script type="text/javascript">
+	fml.vars.colWidth = 244;
+	fml.vars.posterWallWidth = 1220;
+</script>
+<script type="text/html" id="tmp_brand">
+ <? $.each(commerce ,function(key , data){ ?>
+ <div class="cata_brand">
+        <h3 class="f14_f">合作品牌</h3>
+        <div class="mt10_f">
+            <a class="avatar64_f" href="<?= data.mall_url ?>" target="_blank"><img src="<?= data.avatar_c ?>" /></a>
+            <p class="cb_t"><a href="<?= data.mall_url ?>" target="_blank"><?= data.nickname ?> <span class="i_zv" title="美丽说认证品牌">&nbsp;</span></a></p>
+            <? if(!data.isFollow){ ?>
+                <p class="ml74_f mt14_f clearfix_f"><span  class="red_follow addBrand" fuid="<?= data.user_id ?>">+ 加关注</span></p>
+            <?}else{?>
+                <p class="ml74_f mt14_f clearfix_f"><span class="pink_follow removeBrand" fuid="<?= data.user_id ?>">已关注</span></p>
+            <?}?>
+        </div>
+        <div class="clear_f"></div>
+    </div>
+<?});?>
+</script>
+
+<script type="text/html" id="tmp_ads">
+<? $.each(cpt ,function( index ,data ){?>
+<div class="poster_grid alpha omega">
+	<div class="new_poster">
+		<? if(index <= 2){ ?>
+		<span class="cpt"></span>
+		<?}else{?>
+		<span class="p4p"></span>
+		<?}?>
+		<div class="ads_pic">
+			<div class="ads_pic_top"></div>
+			<a href="<?=data.url ?>" target="_blank"><img title="<?= data.intro ?>" width="200" height="270px" src="<?= data.pic_url ?>"><span class="ads_shadow"></span></a>
+			<div class="ads_pic_bottom"></div>
+		</div>
+		<p class="ads_share"><a href="<?=data.url ?>" target="_blank"><?= data.intro ?></a></p>
+		<div class="ads_user">
+			<? if(data.is_followed){ ?>
+			<span class="removeAds pink_sbtn" fuid="<?= data.extid ?>">已关注</span>
+			<?}else{?>
+			<span class="addAds red_sbtn" fuid="<?= data.extid ?>">+ 加关注</span>
+			<?}?>
+			<a class="identity_small_style" href="/person/u/<?= data.extid ?>" target="_blank"><?= regString.cutstrX(data.nickname , 6 , '..')?><?if(data.purpleV){?>&nbsp;<span class="mls_zv" title="美丽说认证商家">&nbsp;</span><?}?></a>
+		</div>
+	</div>
+</div>
+<?});?>
+</script>
+<script>
+<%= this.p4p? 'Meilishuo.config.p4p = { tInfo : '+JSON.stringify(this.p4p)+'};':'' ;%>
+</script>
+<% if (this.bdZhiShu && this.bdZhiShu.res) {%>
+<iframe style="display:none;" src="http://www.baidu.com/s?wd=%E7%BE%8E%E4%B8%BD%E8%AF%B4&rsv_bp=0&ch=&tn=baidu&bar=&rsv_spt=3&ie=utf-8&rsv_sug3=6&rsv_sug4=58&rsv_sug1=6&rsv_sug2=0&inputT=9"></iframe>
+<% }%>
+<% $_ENGINE_SELF.callFn("useModule")("fml.use('page/poster0');", this._JSstack , this._JSmodsFast ); %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/searchbaobei');
+	fml.use('page/poster_guang');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

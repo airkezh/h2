@@ -1,0 +1,21 @@
+<%#head.html%>
+<style>
+	body{background-color: #fbf1f1;}
+</style>
+<div class="main">
+	<img class="user_pic" src="<%= this.shareData.s_pic %>">
+	<div class="love_eclaration">
+		<p>我在美丽说抽中了【<%= this.shareData.text %>】，小伙伴快来试试手气吧~</p>
+	</div>
+</div>
+<div class="share_con">
+	<% if(this.share){ %>
+		<%= requireFn('wapShare.html')({
+			'share' : this.share 
+			, 'shareTitle' : '选择分享到'
+			, '_JSstack' : this._JSstack
+			, '_JSmods' : this._JSmods
+		}); %>
+	<%}%>
+</div>
+<%# foot_simple.html%>

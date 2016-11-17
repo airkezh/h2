@@ -1,0 +1,49 @@
+<%#head.html%>
+<%
+	var pageData = this.pageData;
+%>
+<div class="top">
+	<% pageData.head.forEach(function(data){ %>
+		<a href="javascript:;" <%= data.link ? 'class="' + data.link + '"' : '' %>><img src="<%= data.img_src %>" /></a>
+	<% }); %>
+</div>
+<% if(this.share){ %>
+	<%= requireFn('wapShare.html')({
+		'share' : this.share 
+		, 'shareTitle' : '选择分享到'
+		, '_JSstack' : this._JSstack
+		, '_JSmods' : this._JSmods
+	}); %>
+<%}%>
+
+<script>
+	fml.vars.isNewest = "<%=this.isNewest%>";
+	fml.vars.isLogin = <%=this.isLogin%>;
+	fml.vars.coupon_code = '<%= this.coupon_100.coupon_apply_code || 0 %>';
+</script>
+
+
+<script type="text/html" id="toupdate">
+	<div class="toupdate">
+		<p>只有最新版美丽说客户端才可以享受优惠喔，亲快去升级吧。</p>
+		<a class="btn3zi delayclose" href="/goto/download/">去升级</a>
+	</div>
+</script>
+<script type="text/html" id="result">
+<div class="dialog_box">
+	<p><%= pageData.settings.alert_text %></p>
+	<p><%= pageData.settings.alert_text_1 || '' %></p>
+	<a class="btn3zi delayclose" href="javascript:;">确定</a>
+</div>
+</script>
+<script type="text/html" id="alertMsg">
+	<div class="dialog_box">
+		<p style="text-align: center;"><?= this.msg?></p>
+		<a class="btn3zi delayclose" href="javascript:;">确定</a>
+	</div>
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/ncoupon618');
+_use:", this._JSstack , this._JSmods); %>
+<%# foot_simple.html%>

@@ -1,0 +1,53 @@
+<%# wx/header.html %>
+<%
+	var data = this.pageData;
+	var goodsList = data.goodsList || [];
+	var goodsNum  = goodsList.length;
+%>
+<div class="goods_list">
+	<% goodsList.forEach(function (g, goodsIndex){ %>
+	<div class="goods" data-g_index="<%= goodsIndex %>">
+		<figure class="basic_info" style="background-image:url(<%= g.goods_image %>);">
+			<figcaption>
+				<p class="goods_desc"><%= g.goods_title %></p>
+				<p class="goods_price"><span class="price">￥<%= g.price %></span>（库存<span class="stock"><%= g.repertory %></span>件）</p>
+				<p class="selected_info"></p>
+			</figcaption>
+		</figure>
+		<dl class="select">
+		<% g.stock && g.stock.forEach(function (stockItem, selectItemIndex){ %>
+			<% if(stockItem.is_show){ %>
+			<dt><%= stockItem.name %></dt>
+			<dd class="select_item_type<%= selectItemIndex %>">
+				<ul>
+				<% stockItem = stockItem.value; %>
+				<% stockItem.forEach(function (selectItem){ %>
+				<li class="item <% if(stockItem.length == 1){ %>need_trigger_click<% } %>" data-g_index="<%= goodsIndex %>" data-action="<% if(selectItemIndex){ %>sizeItemClick<% }else{ %>colorItemClick<% } %>" data-con="<%= selectItem%>"><%= _extFn.mSubstr(selectItem, 4, '') %></li>
+				<% }); %>
+				</ul>
+			</dd>
+			<% } %>
+		<% }); %>
+			<dt>数量</dt>
+			<dd class="item">1</dd>
+		</dl>
+		<span class="checkbox checked" data-action="checkboxClick"></span>
+	</div>
+	<% }); %>
+	<div class="layer_wrap" id="notice"></div>
+</div>
+<div class="buy">
+	<p class="total_price"><i>￥<%= data.suit_price %></i><span><%= goodsNum %>件搭配节省 ￥<%= data.suit_disc_price %></span></p>
+	<span id="confirm_btn" data-action="confirmOrder">确定</span>
+</div>
+<script>
+	fml.vars.pageData = <%= JSON.stringify(data) %>;
+</script>
+<%! 
+	$_ENGINE_SELF.callFn("useModule")(
+		"<<<_use:fml.use('wap/page/wx/dapei_buy');_use:", 
+		this._JSstack, 
+		this._JSmods 
+	); 
+%>
+<%# wx/footer.html %>

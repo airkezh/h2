@@ -1,0 +1,92 @@
+@import "block.less";
+@import "tuan/category.import.less";
+img {.w(100%);.block;}
+.bannerbox{	
+	figure{.w(50%);.left;}
+	.clearfix;
+	a{
+		.block;.ml(10*@w);.mr(10*@w);.mt(24*@w);border:1px solid #d9d9d9;
+		border-radius:4px;
+		img{border-radius:4px;}
+	}
+}
+i{
+	font-style: normal;
+}
+.goods_wall{
+	.clearfix;
+	.auto;
+}
+.container {
+	hgroup {padding:16*@px 10*@w;
+		h3 {.left;.w(145*@w);}
+		span {.right;.gray;.f(24*@px);.pt(1%);}
+		}
+}
+.productBox {.left;.w(50%);
+	.link_box {.block;.border-1(#d9d9d9);.border-r(4px);margin:0 10*@w 12*@w;}
+	.juhe{
+		img{.h(100%);
+			border-radius: 4px;}
+		}
+	figure {.pr;
+		img {.border-r(3px 3px 0 0);}
+		span.bs_load_img{.block;opacity: .75;.w(100%);.pt(100%);background-image: url("@{pic_url}/images/huodong/tuan/prebg.png");background-size: 100%;}
+		div.new-png{
+			.pa;
+			.w(100%);
+			div{
+				.left;
+				.ml(6/290*100%);
+				img{
+					.border-r(0 0 0 0);
+				}
+			}
+		}
+		.zeroflag{ .pa; top:0; left:0; z-index: 1000; .w(40%); border-top-left-radius:6px; }
+	}
+	figcaption {padding:10px;.bgwhite;
+		-webkit-border-radius: 0 0 4px 4px;
+		border-radius: 0 0 4px 4px;
+		.h(95px);
+		overflow: hidden;
+	}
+}
+.pro {
+	&Title {.f(22*@px);.h(11px);.hidden;}
+	&Price {padding:10px 0;
+		.price {.f(42*@px);.red;
+			i {.f(28*@px);font-style:normal;.mr(-2px);}
+		}
+		.orig_price {.f(22*@px);.gray;}
+		.discount {.h(13px);.l(13px);.mt(2px);.bgc(#ff76a4);.right;.f(22*@px);.white;.border-r(2px);padding:3px;}
+	}
+	&Statis{.f(20*@px);.gray;.h(20px);.pl(2px);
+		i.like {.w(22*@px);.h(20*@px);.left;.mr(2px);background:url("@{pic_url}/images/wap/activity/project/fw_xin.png") no-repeat;background-size:100%;}
+		.num {.right;}
+		b {.red;}
+		border-bottom:1px solid #d9d9d9;
+	}
+	&Clock{.pt(10px);.f(20*@px);.gray;.c;
+		i.clock {.mt(1px);.w(16*@px);.h(16*@px);.left;.mr(2px);background:url("@{pic_url}/images/wap/tuan/clock.png") no-repeat;background-size:100%;}
+	}
+}
+.pullUp{
+	.pullUpDown > .common;.pullUpDown > .loading;
+	&:before{
+		.nowrap;
+		.ml(-10px);
+	}
+	&[status="tap"]{
+		background:0 none;	
+	}
+	&[status="stop"]{
+		background:0 none;	
+	}
+}
+.gotop{
+	.w(12.5%);
+	.none;
+	right:20px;
+	position:fixed;
+}

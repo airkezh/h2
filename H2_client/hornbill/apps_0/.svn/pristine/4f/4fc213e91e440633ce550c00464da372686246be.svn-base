@@ -1,0 +1,281 @@
+@import "../block.less";
+img{.w(100%);}
+body{
+	background-image: url("http://i.meilishuo.net/css/images/staticbed/bg2.png");
+	background-repeat: no-repeat;
+	background-size: 100%;
+}
+.result_wrap{
+	.f(0.26rem);
+	.c;
+	.pics{
+		.pr;
+		.mt(5.33rem);
+		bottom: -0.19rem;
+		.peo-pic{
+			.pa;
+			.w(50%);
+			bottom: 0rem;
+			left:0;
+			.user_head{
+				.w(1.36rem);
+				.h(1.36rem);
+				.pr;
+				z-index: 10;
+				left: 1.17rem;
+				top:-0.6rem;
+				border-radius: 50% 50%;
+				-webkit-animation:shake infinite linear .5s alternate;
+				-webkit-transform-style:preserve-3d;
+				-webkit-transform-origin:50% 80%;
+			}
+			.user_head_n{
+				.w(1.14rem);
+				.h(1.42rem);
+				z-index: 10;
+				.pr;
+				left: 1.17rem;
+				top:-0.6rem;
+				-webkit-animation:shake infinite linear .5s alternate;
+				-webkit-transform-style:preserve-3d;
+				-webkit-transform-origin:50% 80%;
+
+			}
+			.user_body{
+				.w(1rem);
+				.h(.85rem);
+			}
+		}
+		.run-pic{
+			.pa;
+			.w(50%);
+			right:0rem;
+			bottom: 0rem;
+			.run_head{
+				.animation(shake .5s linear 0s infinite alternate);
+				-webkit-transform-style:preserve-3d;
+				-webkit-transform-origin:50% 80%;
+				.pr;
+
+			}
+			.head0{
+				.w(2rem);
+				.ml(-1.2rem);
+				top:0.5rem;
+			}
+			.head1{
+				.w(2.22rem);
+				.ml(-0.7rem);
+				top:0.5rem;
+			}
+			.head2{
+				.w(2.19rem);
+				.ml(-0.75rem);
+				top:0.2rem;
+			}
+			.head3{
+				.w(2.19rem);
+				.ml(-0.7rem);
+				top:0.3rem;
+			}
+			.head4{
+				.w(2.19rem);
+				.ml(-1.1rem);
+				top:0.19rem;
+			}
+			.head5{
+				.w(2.19rem);
+				.ml(-0.7rem);
+				top:0.25rem;
+			}
+			.head6{
+				.w(1.7rem);
+				.ml(-0.8rem);
+				top:0.3rem;
+			}
+			.run_body{
+				.w(1.10rem);
+				.h(0.7rem);
+				.mr(1.3rem);
+
+			}
+		}
+
+	}
+
+	.name_box{
+		.hidden;
+		.f(.26rem);
+		.auto;
+		.fc(#e53e17);
+		.w(5.15rem);
+		.h(2.07rem);
+		
+		background-image: url("http://i.meilishuo.net/css/images/staticbed/tb.png");
+		background-repeat: no-repeat;
+		background-size: 100%;
+		.name_info{
+			.pt(0.45rem);
+			.f(.36rem);
+			.fc(#e53e17);
+			.l(.7rem);
+		}
+		
+		.event_info{
+			.f(.36rem);
+			.fc(#eb3738);
+		}	
+	}
+	.btn{
+		.f(0);
+		.restartBtn,.restartBtnC,.shareBtn{
+			.i_block;
+			.f(.3rem);
+			.w(2.92rem);
+			.h(.77rem);
+			.l(.77rem);
+			.mt(.38rem);
+		    border-radius: 5px;
+		    color: #fff;
+		    box-shadow: 0 3px 0 #b43013;
+		}
+		.restartBtn,.restartBtnC{
+			 border-radius: 50px 10px 10px 50px;
+			 background:#ea421b url("http://i.meilishuo.net/css/images/staticbed/go.png")no-repeat .3rem center;
+		     background-size: 18%;
+		     span{
+		     	.ml(.3rem);
+		     }
+		}
+		.shareBtn{
+			 border-radius: 10px 50px 50px 10px;
+			 background:#ea421b url("http://i.meilishuo.net/css/images/staticbed/wxicon.png")no-repeat 2.1rem center;
+			 background-size: 18%;
+			 .ml(.2rem);
+			 span{
+			 	.mr(0.3rem);
+			 }
+		}
+	}
+	
+	.go-to img{
+		.mt(0.4rem);
+		.w(1.87rem);
+		.h(1.2rem);
+	}
+}
+@-webkit-keyframes shake{
+	from{
+		-webkit-transform:rotate(-10deg);
+	}
+	to{
+		-webkit-transform:rotate(10deg);
+	}
+}
+@-webkit-keyframes shake1{
+	10%{
+		-webkit-transform:rotate(-10deg);
+	}
+	50%{
+		-webkit-transform:rotate(0deg);
+	}
+	80%{
+		-webkit-transform:rotate(20deg);
+	}
+	100%{
+		-webkit-transform:rotate(0deg);
+	}
+}
+
+/* 弹出框 */
+.mypopbox{
+	display:none;
+	position: fixed;
+	z-index: 999;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 160%;
+	overflow-x: hidden;
+
+	.dialog {
+		display:none;
+		position: absolute;
+		z-index: 100;
+		top: 1.65rem;
+		width: 5.7rem;
+		height: 7.65rem;
+		left: 50%;
+		transform: translateX(-50%);
+		-webkit-transform: translateX(-50%);
+	}
+
+	.dialog_appshare{
+		width: 4.5rem;
+		height: 2.91rem;
+		top:3rem;
+		background: #fff;
+		border-radius: .2rem;
+		text-align: center;
+		color: #eb3738;
+		border:2px solid #eb3738;
+		.dialog_appshare_tit{
+			height: 1rem;
+			line-height: 1rem;
+			text-align: center;
+			font-size: .33rem;
+		}
+		.dialog_appshare_box{
+			float: left;
+			width: 50%;
+			overflow: hidden;
+			p{
+				line-height: .6rem;
+				font-size: .21rem;
+			}
+		}
+		.shareBut{
+			display: inline-block;
+			margin: 0   .6rem ;
+			width: .95rem;
+			height: .95rem;
+		}
+		.shareBut_wx{
+			background:url('http://i.meilishuo.net/css/images/staticbed/wxp.png');
+			background-size:100% 100%;
+		}
+		.shareBut_pyq{
+			background:url('http://i.meilishuo.net/css/images/staticbed/wxq.png');
+			background-size:100% 100%;
+		}
+
+		.shareBut_close{
+			position: absolute;
+			top: -0.18rem;
+			right: -0.22rem;
+			width: .62rem;
+			height: .62rem;
+			background:url('http://i.meilishuo.net/css/images/staticbed/close.png');
+			background-size:100% 100%;
+		}
+	}
+	
+	.dialog_wxshareguide{
+		width: 100%;
+		top: 0;
+		img{
+			width: 70%;
+			.block;
+			margin-left: 1.2rem;
+		}
+	}
+	.overlay{
+		position: absolute;
+		z-index: 90;
+		top: 0px;
+		left: 0px;
+		bottom: 0px;
+		right: 0px;
+		background-color: rgba(0, 0, 0, 0.85);
+	}
+}

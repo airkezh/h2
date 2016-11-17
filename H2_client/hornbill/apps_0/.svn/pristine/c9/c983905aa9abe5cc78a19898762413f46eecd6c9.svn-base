@@ -1,0 +1,124 @@
+<%# head_simple.html%>
+<% var miaosha = this.miaosha.data.now_info;
+	var tuan = this.tuan.data;
+	var m_headinfo = miaosha && miaosha.normal_config;
+	var m_param = {"url" : "http://mapp.meilishuo.com/activity/tuan/special/1065?r=" + this.r +"&hdtrc=tuan1065_sale" ,"inApp" : "1","title" : "惊喜秒杀"},
+		m_link= "meilishuo://openURL.meilishuo?json_params="+ encodeURIComponent(JSON.stringify(m_param));
+	var m_more = {"url" : "http://mapp.meilishuo.com/activity/tuan/special/1065?r=" + this.r + "&hdtrc=tuan1065_sale1" ,"inApp" : "1","title" : "惊喜秒杀"},
+		m_morelink= "meilishuo://openURL.meilishuo?json_params="+ encodeURIComponent(JSON.stringify(m_more));
+	var seckill = (miaosha && miaosha.goods_list && miaosha.goods_list.seckill) ? miaosha.goods_list.seckill : [];
+	var bargainList = (miaosha && miaosha.goods_list && miaosha.goods_list.bargain) ? miaosha.goods_list.bargain : [];
+
+	if(this.isWx){
+		m_link = '/wx/tuan_buy/1065';
+		m_morelink = '/wx/tuan_buy/1065';
+	}
+	%>
+	<%if(seckill.length || bargainList.length){%>
+<div class="seckillBox">
+	<div class="secregion">
+		<%if(m_headinfo){%>
+		<a href="<%= m_link%>" class="headInfo">
+			<div class="icon"></div>
+			<div class="tip">
+				<p class="title"><strong><%= m_headinfo.title%></strong><%= m_headinfo.desc%></p>
+				<p class="content">距离本场结束<span class="dot"></span><span class="time" data-time="<%= miaosha.unix_time%>"><label id="hour">00</label>:<label id="minu">00</label>:<label id="sec">00</label></label></span></p>
+			</div>
+		</a>
+		<%}%>
+		<%
+		if(seckill.length){%>
+		<div class="goodsInfo">
+			<% seckill.forEach(function(v, k){%>
+			<a href="<%= v.url_mob%>">
+				<div class="imgwrap<%= v.soldout ? ' soldout' : ''%>">
+					<span class="bs_load_img" asrc="<%= v.goods_image%>"></span>
+				</div>
+				<div class="desc">
+					<!--这里先用图片代替了，要改的话就用下面的这段-->
+					<!-- <span class="qiqiu">￥<strong>1</strong></span> -->
+					<p class="feature"><%= v.sale_point%></p>
+					<p class="title"><%= v.goods_name%></p>
+					<p class="price">￥<span><%= v.off_price%></span><del>￥<%= v.origin_price%></del></p>
+				</div>
+			</a>
+			<%})%>
+		</div>
+		<%}%>
+	</div>
+	<%
+	if(bargainList.length){%>
+	<div class="goodsWall">
+		<%bargainList.forEach(function(v,k){%>
+		<div class="goodsInfo">
+			<a class="link_box" href="<%= v.url_mob%>">
+				<div class="imgwrap<%= v.soldout ? ' soldout' : ''%>">
+					<span class="bs_load_img" asrc="<%= v.goods_image%>"></span>
+				</div>
+				<div class="desc">
+					<p class="feature"><%= v.sale_point%></p>
+					<p class="title"><%= v.goods_name%></p>
+					<p class="price">￥<span><%= v.off_price%></span><del>￥<%= v.origin_price%></del></p>
+				</div>
+			</a>
+		</div>
+		<%})%>
+	</div>
+	<%}%>
+
+	<a href="<%= m_morelink%>" class="more">更多秒杀</a>
+</div>
+<%}%>
+<% var t_headinfo = tuan.normal_config;
+var t_param = {"url" : "http://mapp.meilishuo.com/tuan?r=" + this.r + "&hdtrc=tuan_region99_today" ,"inApp" : "1","title" : "团购"};
+	t_link = 'meilishuo://openURL.meilishuo?json_params='+ encodeURIComponent(JSON.stringify(t_param));
+var t_more = {"url" : "http://mapp.meilishuo.com/tuan?r=" + this.r + "&hdtrc=tuan_region99_more" ,"inApp" : "1","title" : "团购"};
+	t_morelink = 'meilishuo://openURL.meilishuo?json_params='+ encodeURIComponent(JSON.stringify(t_more));
+
+	if(this.isWx){
+		t_link = '/wx/tuan/';
+		t_morelink = '/wx/tuan/';
+	}
+
+	%>
+<%if(tuan.goods_list && tuan.goods_list.length){%>
+<div class="tuanBox">
+	<%if(t_headinfo){%>
+	<a href="<%= t_link%>" class="headInfo">
+		<div class="icon tm"></div>
+		<div class="tip">
+			<p class="title"><strong><%= t_headinfo.title%></strong></p>
+			<p class="content"><%= t_headinfo.desc%></p>
+		</div>
+	</a>
+	<%}%>
+	
+	<div class="goodsWall">
+		<% tuan.goods_list.forEach(function(v, k){%>
+		<div class="goodsInfo">
+			<a class="link_box" href="<%= v.url_mob%>">
+				<div <%= v.soldout ? 'class="soldout"' : ''%>>
+					<span class="bs_load_img" asrc="<%= v.goods_image%>"></span>
+				</div>
+				<div class="desc">
+					<p class="feature"><%= v.sale_point%></p>
+					<p class="title"><%= v.goods_name%></p>
+					<p class="price">￥<span><%= v.off_price%></span><del>￥<%= v.goods_price%></del></p>
+				</div>
+			</a>
+		</div>
+		<%})%>
+	</div>
+	
+	<a href="<%= t_link%>" class="more">更多团购</a>
+</div>
+<%}%>
+<a class="gotop">
+	<img src="http://d04.res.meilishuo.net/pic/_o/40/ac/e563a4bcc7f63281818cfd1420b4_80_80.ch.png" />
+</a>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/region99');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot_simple.html%>

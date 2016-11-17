@@ -1,0 +1,49 @@
+<script type="text/html" id="posterWall">
+<?
+$.each(this.data.tInfo , function(k , v){ 
+	var progress = Math.floor(v.time_unix / v.time_total * 100);
+?>
+<div class="productBox">
+<?if(!v.is_hjf){?>			
+	<a class="link_box" href="<?= v.url_mob?>">
+		<figure>
+			<?if(!<%=this._isstart%>){?>
+				<img class="zeroflag" src="<%=this._imgurlhead%>/images/wap/activity/all/bs_prevy.png" width="40" />
+			<?}else {
+				if(v.soldout){?>
+				<img class="zeroflag" src="<%=this._imgurlhead%>/images/wap/activity/all/bs_over.png" width="40" />
+			<?}}?>
+		    <?if(fml.vars.is_lazyload_poster){?><span class="bs_load_img" asrc="<?= v.show_pic_mob?>"></span>
+		    <?}else{?>
+		    	<img src="<?= v.show_pic_mob?>" alt="">
+	    	<?}?>
+
+		    <p class="countdown"><span class="time" time="<?=v.time_unix?>"></span></p>
+		    <!--进度条-->
+			<span class="progress rpbgc" style="width:<?=100-progress?>%;"></span>
+			<span class="progress gpbgc" style="width:<?=progress?>%; left:<?=100-progress?>%;"></span>	    	
+		</figure>
+		<figcaption>
+			<div class="proTitle"><?= v.ginfo.goods_title?></div>
+			<div class="proPrice">
+				<span class="new"><i>￥</i><?= v.ginfo.discount_goods_price?>
+				</span>
+				<?if(v.ginfo.goods_price){?>
+				<del class="old">¥<?= v.ginfo.goods_price ?></del>
+				<?}?>
+			</div>
+			<div class="proStatis">
+				<span><?= v.sale_num?>人已购买</span>
+			</div>
+		</figcaption>
+	</a>
+<?}else{?>
+	<a class="link_box hjfpos" href="<?= v.hjf_jump_url?>">
+        <img src="<%=this._imgurlhead%>/images/huodong/tuan/prebg.png" />
+        <figcaption class="ownh"></figcaption>
+        <img class="adenter" src="<?=v.hjf_pic_url?>" /> 
+	</a>
+<?}?>
+</div>
+<?});?>
+</script>

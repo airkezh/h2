@@ -1,0 +1,129 @@
+<%# frame/www/head_simple.html%>
+</head>
+<% function userListTmp(list,utype){ %>
+	<% list && list.data && list.data.map(function(v, k){ %>
+		<div class="user_info" uid="<%= v.uid %>" <%if(utype){%>utype="<%=utype %>"<%}%>>
+			<span class="user_img"><img src="<%= v.avatar_b %>"></span>
+			<p class="user_name">
+				<span><%= v.nickname %></span>
+				<% v.icons && v.icons.length && v.icons.forEach(function(item){ %>
+				<img src="<%=item.img_url %>" width="<%=item.img_width %>" height="<%=item.img_height %>">
+				<% });%>
+			</p>
+
+			<span class="closeBtn">×</span>
+			<span class="num"></span>
+			<span class="read"></span>
+		</div>
+	<%});%>
+<% } %>
+<body>
+<div id="im_body" class="user_model">
+	<div class="im_left" id="im_left">
+		<div class="im_tab" id="im_tab">
+			<div class="io_status" id="io_status"></div>
+			<div class="user_info">
+				<%if(this.userInfo.user_id){%>
+				<span class="user_img"></span>
+				<p class="user_name white_f"><%= this.userInfo.nickname %></p>
+				<%}%>
+				<div class="status">
+					<div class="user_status"><span class="big_offline">&nbsp;</span>离线</div><span class="shap"></span>
+					<ul class="all_status">
+						<li><a href="javascript:void(0)" status="1"><span class="big_online">&nbsp;</span>在线</a></li>
+						<li><a href="javascript:void(0)" status="2"><span class="big_leave">&nbsp;</span>离开</a></li>
+						<li><a href="javascript:void(0)" status="0"><span class="big_offline">&nbsp;</span>离线</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="im_userlist">
+			<ul class="user_tab" id="user_tab">
+				<li class="tab_now act">
+					<span class="i_now"></span><em class="tab_line"></em>
+					<p class="unread_tip"></p>
+				</li>
+				<li class="tab_history"><span class="i_history"></span><em class="tab_line"></em></li>
+				<li class="tab_history"><span class="i_public"></span></li>
+			</ul>
+			<div class="user_list" id="user_list">
+				<div class="list_now" id="list_now">
+				</div>
+				<div class="list_history" id="list_history">
+					<div class="list_history_box">
+						<% userListTmp(this.historyUser); %>
+					</div>
+				</div>
+				<div class="list_public" id="list_public">
+					<div class="list_public_box">
+						<% userListTmp(this.publicUser,'public'); %>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="im_search" id="im_search">
+			<div class="search_result">
+				<div class="ser_rlt"></div>
+				<span class="shap"></span><span class="shapb"></span>
+			</div>
+			<form class="search" method="post" onsubmit="return false" action>
+				<input class="search_input l_ipt" id="mlsSearchId" type="text" name="searchId" value="" placeholder="搜索用户"/>
+				<input class="searchBtn btn" type="submit" value="" />
+			</form>
+		</div>
+	</div>
+	<div class="im_main" id="im_main">
+	</div>
+	<div class="layout" id="im_layout">
+		<div class="im_info_init">
+			<p><img src="<%= this.PICTURE_URL %>images/wap/web/im/leben.gif" /><span>正在连接中...</span></p>
+		</div>
+	</div>
+</div>
+
+<%# www/fastReply.html%>
+<%# www/dialog.html%>
+<%# www/intro.html%>
+<%# www/sound.html%>
+
+<%# frame/www/wins/windows.html %>
+
+<script type="text/html" id="im_info_offline">
+<div class="im_info_offline">
+	<p><?= msg ?></p>
+	<div>
+		<span class="reloadIM">重新登录</span>
+		<%if(this.ua != 'MLS-IMclient'){%>
+		<span class="closeIM">关闭窗口</span>
+		<%}%>
+	</div>
+</div>
+</script>
+<script type="text/html" id="im_reasons">
+</script>
+
+<script>
+fml.vars.im = {
+	fromid : <%= this.user_id %>
+	, toid : <%= this.toid || 0 %>
+	, type : "<%= this.type || 0 %>"
+	, offset : <%= this.recently.offset || '0' %>
+	, source : 'web'
+	, imClient : <%= (this.ua == 'MLS-IMclient')|0 %>
+	, imPCClient : <%= (this.ua == 'MLS-PC-IMclient')|0 %>
+	, recently : <%= JSON.stringify(this.recently.datas) || '[]' %>
+	, transfer : <%= JSON.stringify(this.transfer.datas) %>
+	, udr : <%= JSON.stringify(this.udr.datas) %>
+};
+<% if(this.publicUser && this.publicUser.data){%>
+fml.vars.im.publicUserList = <%=JSON.stringify(this.publicUser.data) || ''%>
+<% } %>
+</script>
+
+
+<script src="<%=this.IM_URL2 || '/' %>socket.io/socket.io.js"></script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/im/im');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# frame/www/foot_simple.html%>

@@ -1,0 +1,48 @@
+@import "bs_base.less";
+
+.main{
+	.images{
+		margin: 0 auto;.hidden;
+		.content{ 
+			.w(1.5rem);.left;.ml(0.04rem);.c;
+			.image{ .w(1.5rem);.h(1.5rem);background-size: 100%;background-repeat: no-repeat; }
+			p{ .f(0.22rem);.fc(#595056);.mt(0.06rem);.mb(0.33rem); }
+		}
+		.content:nth-child(4n+1){ .ml(0.14rem); }
+	}
+	.load{
+		.good_content{
+			.mb(0.3rem);.pr;
+			.poster{ 
+				.pa; 
+				a{ .block; }
+				.goods{ .w(100%);background-size: 100%;background-repeat: no-repeat; }
+				p{ .c; }
+				.title{ .f(0.22rem);.fc(#666);.mt(0.2rem); }
+				.price{ .f(0.22rem);.fc(#999);.mt(0.1rem); }
+				.vip_price{ .fc(#ff7a9a);display: inline-block;.mr(0.26rem); }
+				img{ .w(0.22rem);.h(0.22rem);display: inline-block;.mb(-0.02rem); }
+			}
+		}
+	}
+}
+// 加载
+.pullUp{
+	.pullUpDown > .common;.pullUpDown > .loading;
+	&:before{
+		.nowrap;
+		.ml(-10px);
+	}
+	&[status="tap"]{
+		background:0 none;	
+		&:before{
+			content:"上拉看更多..."	
+		}
+	}
+	&[status="stop"]{
+		background:0 none;	
+		&:before{
+			content:"木有了...";	
+		}
+	}
+}

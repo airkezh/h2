@@ -1,0 +1,97 @@
+@import "block.less";
+
+.passport{
+	&-form{
+		//外框宽度
+		.w(320px);
+		.pr;
+		
+		//注册
+		.btn-register {
+			.tunder; .pa; top:0px;right:0px; .fn; .pr(3px);.l(20px);
+			a{.red;}
+		}
+
+		//记住我
+		.btn-remember{
+			.left; .pr(16px); .cursor; .l(30px);
+			input{ vertical-align: middle\9; }
+		}
+
+		//找回密码
+		.btn-find{
+			.l(30px); .tunder; .pb(5px);
+			a{ .tunder; .red; }
+		}
+
+
+
+
+		//标题
+		h3 { 
+			.f(14px); .pb(15px);
+			.l(20px);
+		}
+
+		//每一行
+		&-list{
+			min-height: 68px;
+			p { .l(30px);}
+		}
+
+		//每一行内部
+		&-item{.pr;
+
+		}
+
+		//每一行内部输入框
+		&-input{
+			padding:0px;margin:0px;
+			.w(280px); .h(36px); line-height:36px\9; .border-1(#ddd); .fc(#999); .pl(38px);
+			&:focus{
+				border-color:#f69;
+			}
+		}
+
+		//最终错误提示
+		&-message {
+			.none;
+			.mb(12px);
+			.fc(#ff6699);
+		}
+		
+		//提交按钮
+		&-submit {
+			input { .white; .block; .f(16px); .c; .border-n;.w(320px);.h(46px); .bgred; .l(46px); .cursor;padding:0px;margin:0px;}
+		}
+
+		//验证码
+		.captchaImage{
+			.cursor;.pa; right: 1px; top: 1px;
+		}
+
+		//图标
+		.icon-user, .icon-pwd, .icon-code, .icon-tel, .msg_err{
+			.pa;.i_block; .w(25px); .h(25px);
+			background: url("@{pic_url}/images/window/login_icon-4.png") no-repeat; 
+		}	
+		.icon-user{.bp(0,0); top: 6px; left: 5px;}	
+		.icon-pwd{.bp(-25px,0); top: 5px; left: 5px;}
+		.icon-code { .bp(-50px,0); top: 5px; left: 4px;}
+		.icon-tel { .bp(-75px,0); top: 6px; left: 5px;}
+		.icon-refresh{
+			background: url("@{pic_url}/images/register/reload_m.png") no-repeat center;
+			border-left: 1px solid #ddd;
+			.h(36px); .w(36px); .il-block;
+		}
+
+		//错误图标
+		.msg_err {top: 6px; right: -30px; .bp(-25px,-25px);}
+
+		//每行错误提示
+		.msg_error{ .fc(#f69); .l(30px); }
+		
+
+	}	
+}
+

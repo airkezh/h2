@@ -1,0 +1,88 @@
+<%#head.html%>
+<%
+	var pageData = this.pageData;
+	var mSubstr = _extFn.mSubstr;
+%>
+
+<% pageData.top_banner && pageData.top_banner.forEach(function(data, index){ %>
+	<a class="top_img" href="<%= data.link || '###' %>"><img src="<%= data.img_src %>" alt="pic_<%= index+1 %>"></a>
+<% }); %>
+
+<div class="top_rank">
+	<% this.top_rank && this.top_rank.length && this.top_rank.forEach(function(data, index){ %>
+		<div class="t_rank">
+			<div class="img_wrap"><a href="<%= 'meilishuo://club_article.meilishuo/?json_params='+encodeURIComponent('{\"article_id\":\"'+ data.article_id +'\"}') %>"><img src="<%= data.pinfo[0].pic_url %>" alt=""><span class="mz_icon"></span></a></div>
+			<div class="tr_con">
+				<p class="title">明星Show Gril：</p>
+				<p class="name"><a href="<%= 'meilishuo://person.meilishuo/?json_params='+encodeURIComponent('{\"user_id\":\"'+ data.uinfo.user_id +'\"}') %>"><%= data.uinfo.nickname %></a></p>
+				<p class="text_t">对小美盒的评价：</p>
+				<p class="text"><a href="<%= 'meilishuo://club_article.meilishuo/?json_params='+encodeURIComponent('{\"article_id\":\"'+ data.article_id +'\"}') %>"><%== mSubstr(data.article_htmlcontent+data.article_htmlcontent, 70, '...')%></a></p>
+				<p class="rank_like"><a href="<%= 'meilishuo://club_article.meilishuo/?json_params='+encodeURIComponent('{\"article_id\":\"'+ data.article_id +'\"}') %>"><i class="like"></i><%= data.count_like %> <span>回复(<%= data.count_like %>)</span></a></p>
+			</div>
+		</div>
+	<% }); %>
+</div>
+<img src="<%= pageData.rank_title %>">
+
+<div class="goods_wall pic_box">
+</div>
+<div class="pullUp" status="loading"></div>
+
+<script type="text/html" id="posterWall">
+<?
+var colWidth = fml.vars.poster.colWidth;
+function getStringLengthArr(s , len){
+	var w = 0;
+	var time = 0;
+	for(length=s.length; time<length; ){
+		if(/[^\x00-\xff]/.test(s[time])){
+			w+=2;
+		}else{
+			w+=1;
+		}	
+		time ++;
+		if(w >= (len*2)){
+			break;
+		}
+	}
+	return time;
+}
+function mSubstr(str , len , pad){
+	if (!str || 0 == str.length) return '';
+	if (undefined == pad ) pad = '...';
+	len = getStringLengthArr(str , len);
+	return str.substr( 0 , len) + ((pad && str.length> len) ? pad : '');
+}
+$.each(this.tInfo , function(k , v){
+	var pic = v.pinfo[0];
+	var pic_height = parseInt(pic.n_pic_height*colWidth/pic.n_pic_width);
+?>
+	<figure class="small_pic" style="width:<?= colWidth-12?>px;" poster_height="<?= pic_height + 54?>">
+		<a class="pic_load" href="<?= 'meilishuo://club_article.meilishuo/?json_params='+encodeURIComponent('{\"article_id\":\"'+ v.article_id +'\"}') ?>" style="padding-top: <?= pic_height ?>px;"><img src="<?= pic.pic_url ?>" /></a>
+		<p class="rank_like"><i class="like"></i><?= v.count_like ?> <span>回复(<?= v.count_like ?>)</span></p>
+		<p class="rank_con"><a href="<?= 'meilishuo://club_article.meilishuo/?json_params='+encodeURIComponent('{\"article_id\":\"'+ v.article_id +'\"}') ?>"><?= mSubstr(v.article_htmlcontent, 28, '...') ?></a></p>
+	</figure>
+<? }); ?>
+</script>
+<script>
+fml.vars.poster = {};
+fml.vars.page_is = true;
+<%= this.nor_rank? 'Meilishuo.config.poster0 = '+JSON.stringify(this.nor_rank)+';':'' ;%>
+</script>
+
+<% $_ENGINE_SELF.callFn("useModule")("fml.use('wap/page/poster0');", this._JSstack , this._JSmodsFast ); %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use(['wap/app/posterWalls'] , function(){
+		var posterWall = this.posterWalls;
+
+		var urlData = { 'page' : 0 };
+		var pullUpAction = function(){
+			posterWall.ajaxPoster('/aj/huodong/mz_boxShow')
+		}
+
+		posterWall.testPoster0(urlData ,pullUpAction);
+		posterWall.scrollPoster(true);
+	});
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot_simple.html%>

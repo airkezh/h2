@@ -1,0 +1,26 @@
+<% if(this.service) {
+		var serviceData = this.service.data;
+		var isHaitaoService = this.service.is_haitao;
+%>
+<div class="promise <%if(isHaitaoService){%>promise-haitao<%}%>">
+	<ul>
+	<% if(isHaitaoService) {
+		serviceData.length && serviceData.forEach(function(data,k) {
+	%>
+		<li>
+			<a href="/help/korea_shop" target="_blank"><img src="<%=data.icon_pc%>"></a>
+			<p class="pro_tle"><a href="/help/korea_shop" target="_blank"><%=data.text%></a></p>
+		</li>
+	<%
+		});
+	} else {this.service.length && this.service.forEach(function(data,k) {%>
+		<li <%if(k == this.service.length - 1){%>class="last"<%}%>>
+			<a href="/help/return/" target="_blank" class="pro_ico"><img src="<%=data.icon_pc%>" /></a>
+			<p class="pro_tle"><a href="/help/return/" target="_blank"><%=data.text%></a></p>
+			<p><a href="/help/return/" target="_blank"><%=data.mini_text%></a></p>
+		</li>
+		<% }); %>
+	<%}%>
+	</ul>
+</div>
+<%}%>

@@ -1,0 +1,18 @@
+<%# head.html%>
+<%
+	var data = this.dataInfo || {}
+%>
+<section>
+	<% data && data.goods && data.goods.map(function(data){ %>
+		<img src="<%= data.image_src%>" />
+	<%}); %>
+</section>
+
+<script>
+	fml.vars.jump_link = '<%= this.dataInfo.jump_link%>';
+	fml.vars.alert = '<%= this.dataInfo.alert%>';
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/download318');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

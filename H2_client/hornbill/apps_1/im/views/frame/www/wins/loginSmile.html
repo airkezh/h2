@@ -1,0 +1,15 @@
+<script type="text/html" id="loginSmile" >
+<%*表情%>
+<div class="smileysbox clearfix_f">
+	<div class="line"></div>
+    <ul>
+    	<? for(var s in smileys){ ?>
+        <? $.each(smileys[s].data , function(k , v){ ?>
+            <li class="smiley" id="<?= v?>" title="<?= k ?>">
+                <img emotion="[<?= k ?>]" title="<?= k ?>" src="<%= this.PICTURE_URL%>images/face/<?=smileys[s].path?><?= v ?>" />
+            </li>
+        <? });?>
+        <? } ?>
+    </ul>
+</div>
+</script>

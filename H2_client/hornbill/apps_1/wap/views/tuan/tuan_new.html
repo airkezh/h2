@@ -1,0 +1,134 @@
+<%#head.html%>
+<div class="main">
+	<section id="bannerBox">
+	    <%if(this.b_banner&&this.b_banner.data.mob_tuan_big_banner&&this.b_banner.data.mob_tuan_big_banner.length){
+	    	var t_banner = this.b_banner.data.mob_tuan_big_banner;%>
+			<!--轮播-->
+			<%= requireFn('tuan/imgSlide.html')({
+				't_banner' : t_banner
+				,'_JSstack' : this._JSstack
+				,'_JSmods' : this._JSmods
+			});%>
+		<%}%>
+		<%if(this.mid_banner&&this.mid_banner.data.mob_double11_big_banner&&this.mid_banner.data.mob_double11_big_banner.length){
+			var midbanners=this.mid_banner.data.mob_double11_big_banner;%>
+			<div class="midbanner">	
+			    <%midbanners.forEach(function(data){%>		
+				<a href="<%= data.link%>">
+					<img src="<%= data.show_pic%>" alt="<%= data.tab_name%>" />
+				</a>
+				<%});%>
+			</div>
+		<%}%>
+		<%
+		if(this.q8_banner&&this.q8_banner.data.banners&&this.q8_banner.data.banners.length){
+				var _q8banner=this.q8_banner.data;%>
+			<div class="pin_banner">		
+			    	<div class="tbl_cell q8_special">
+			        	<a href="<%=_q8banner.banners[0].link%>">
+			            	<img src="<%=_q8banner.banners[0].show_pic%>">
+			            	<!-- <img src="http://d03.res.meilishuo.net/pic/_o/cd/a7/5828f993aca2d1bc831db7314199_305_360.ch.png"> -->
+			                <div class="q8_enter">
+				            	<div class="ctl">
+					            	<p class="q8_tit">惊喜秒杀</p>
+					            	<p class="time_tit"><%=_q8banner.time_tip%></p>
+						            <dl class="q8_ltime" stime="<%=_q8banner.time_value%>">
+						            	<dd id="hour"></dd><strong>:</strong>
+						            	<dd id="minu"></dd><strong>:</strong>
+						            	<dd id="sec" class="last"></dd>
+						            </dl> 
+					            </div>
+			                </div>
+			            </a>                
+			        </div>
+
+				<%if(this.s_banner&&this.s_banner.data.mob_tuan_right_banners_new&&this.s_banner.data.mob_tuan_right_banners_new.length){%>
+			        <div class="tbl_cell">
+			        	<div class="pin_right">
+							<%this.s_banner.data.mob_tuan_right_banners_new.forEach(function(data,i){%>
+									<a href="<%=data.link%>" class="pin_right_top">
+										<img src="<%=data.show_pic%>" alt="img">
+										<!-- <img src="http://d03.res.meilishuo.net/pic/_o/9e/b9/51f438a1a8ed677974cf15319be5_305_175.cf.png" alt="img"> -->
+									</a>
+							<%});%>
+						</div>
+					</div>
+					<%}%>
+			</div>
+			
+		<%}%>
+	</section>
+	<section class="nav_wap" id="nav_wap">
+		
+		<div class="nav" id="m_ca">
+			<ul>
+				<li class ="curr">
+					<a href="javascript:void(0);"><span>全部</span></a>
+				</li>
+				<li data-cata="1">
+					<a href="javascript:void(0);"><span>女装</span></a>
+				</li>
+				<li data-cata="2">
+					<a href="javascript:void(0);"><span>男装</span></a>
+				</li>
+				<li data-cata="3">
+					<a href="javascript:void(0);"><span>童装</span></a>
+				</li>
+				<li data-cata="4">
+					<a href="javascript:void(0);"><span>鞋子</span></a>
+				</li>
+				<li data-cata="5">
+					<a href="javascript:void(0);"><span>包包</span></a>
+				</li>
+				<li data-cata="7">
+					<a href="javascript:void(0);"><span>家居</span></a>
+				</li>
+				<li data-cata="6">
+					<a href="javascript:void(0);"><span>配饰</span></a>
+				</li>
+				<li data-cata="8">
+					<a href="javascript:void(0);"><span>美妆</span></a>
+				</li>
+				<li data-cata="9">
+					<a href="javascript:void(0);"><span>食品</span></a>
+				</li>
+			</ul>
+		</div>
+<!-- 		<div class="lhp100"></div> -->
+	</section>
+	<div id="tip-box">
+		<div class="content_tip">
+			<img src="http://d05.res.meilishuo.net/pic/_o/5c/b3/a2414c584a4ae27a0ad3472cb86c_290_45.cf.png" />
+		</div>
+	    <div class="tmw_tip">明日10点准时上架，喜欢就准时来买哦～～</div>
+	</div>
+    <section id="container" class="container" style="padding-top:10px; min-height:700px;">
+		<div class="content">
+			<div class="goods_wall">
+			</div>
+			<div class="pullUp" status="loading"></div>
+		</div>
+    </section>
+</div> 
+<a class="gotop" style="bottom:<%if(this.isIphone){%>60<%}else{%>20<%}%>px">
+	<img src="<%= this.PICTURE_URL%>/images/wap/tuan/gotop.png" />
+</a>
+<script>
+	fml.vars.poster = {
+
+	};
+	<%= this.list? 'Meilishuo.config.poster0 = '+JSON.stringify(this.list)+';':'' ;%>
+	fml.vars.geturl='<%=this.geturl%>';
+	fml.vars.hostname='<%=this.hostnm%>';
+	fml.vars.is_lazyload_poster=true;
+</script>
+<%= requireFn('tuan/tuan_list_new.html')({
+	'os' : this.os
+	, 'apk' : ''
+	,'_JSstack' : this._JSstack
+	,'_JSmods' : this._JSmods
+});%>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/tuan/tuan_new');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html%>

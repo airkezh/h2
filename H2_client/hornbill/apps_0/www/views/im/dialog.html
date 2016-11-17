@@ -1,0 +1,150 @@
+<script type="text/html" id="im_transfer_item">
+<div class="im_transfer" id="im_transfer">
+	<p>转接客服</p>
+	<ul>
+	<? $.each(transfer , function(k , v){ ?> 
+		<li uid="<?= v.uid ?>"><a href="javascript:void(0)"><?= v.nickname ?></a></li>
+	<? });?>
+	</ul>
+</div>
+</script>
+
+<script type="text/html" id="im_intro_tab_item">
+	<li class="tab_<?= tag?>"><span><?= title ?></span></li>
+</script>
+<script type="text/html" id="im_intro_list_item">
+	<div class="list_<?= tag?>" intro_id="<?= intro_id ?>"><?= tpl ?></div>
+</script>
+
+<script type="text/html" id="im_inputbox_picbox_item">
+	<li pic_url="<?= pic_url?>" pic_id="<?= pic_id?>">
+		<a target="_blank" href="<?= o_pic_url?>"></a>
+		<span class="cleanPicBtn"></span>
+	</li>
+</script>
+
+<script type="text/html" id="im_main_item">
+<div class="im_mainitem <?if(fml.vars.im.isShop){?>rightShow<?}else{?>rightHide<?}?>" uid="<?= uid ?>">
+	<div class="im_top">
+		<div class="user_info" uid="<?= uid ?>">
+			<span class="user_img"><img src="<?= avatar_b ?>"/></span>
+			<p class="user_name"><?= nickname ?></p>
+		</div>
+		<?if(fml.vars.im.isShop){?>
+		<div class="im_user_tools" uid="<?= uid ?>">
+			<ul>
+				<li class="im_black"><a href="javascript:void(0)">加入黑名单</a></li>
+				<li class="im_reporter"><a href="javascript:void(0)">举报</a></li>
+			</ul>
+		</div>
+		<?}?>
+	</div>
+	<div class="im_right">
+		<div class="introBox <?if(!fml.vars.im.isShop){?>none_f<?}?>">
+			<ul class="intro_tab">
+				<li class="tab_order act <?if(!fml.vars.im.isShop){?>none_f<?}?>"><span>订单信息</span></li>
+			</ul>
+			<div class="intro_list">
+				<div class="list_order <?if(!fml.vars.im.isShop){?>none_f<?}?>">
+					<div class="order_box">
+						<form method="post" onsubmit="return false" action>
+							<input class="order_input l_ipt" id="mlsOrderId" type="text" name="orderId" value="" placeholder="输入订单号"/>
+							<input class="orderBtn btn" type="submit" value="前往" />
+						</form>
+						<p class="order_all"><a href="https://shop.meilishuo.com/order/?buyer_nickname=<?= nickname ?>" target="_blank">查看买家所有订单<samp>&gt;</samp></a></p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<%if(0){%>
+		<div class="promiseBox">
+			<h4>美丽说服务保障</h4>
+			<%# doota/promise.html%>
+		</div>
+		<%}%>
+
+		<?if(fml.vars.im.isShop){?>
+		<div class="feedback">
+			<h4>客服工具使用帮助</h4>
+			<p>1.建议一直开启此聊天窗口，保证用户咨询信息及声音提醒的及时性</p>
+			<p>2.使用control＋tab键快速切换聊天窗口</p>
+			<p><a target="_blank" href="<%= this.PICTURE_URL %>images/wap/web/im/shangjiashezhiduozhanghaogonglue.docx">商家设置多客服账号攻略</a></p>
+			<p><span>美丽说客服工具问题反馈群：QQ：376295358</span></p>
+		</div>
+		<?}?>
+
+	</div>
+	<div class="im_mainbox">
+		<div class="im_dialogbox">
+			<div class="im_dialog" uid="<?= uid ?>">
+				<div class="history hide">
+					<div toid="<?= uid?>" class="historyBtn">查看历史聊天记录</div>
+					<div class="history_intro"><span>以上是聊天记录</span></div>
+				</div>
+			</div>
+		</div>
+		<div class="im_inputbox">
+			<div class="im_inputbox_tools">
+				<span class="smile"></span>
+				<span class="uploadImg">&nbsp;</span>
+				<?if(fml.vars.im.isShop){?>
+				<span class="fastReply"></span>
+				<?}?>
+			</div>
+			<form method="post" onsubmit="return false" action uid="<?= uid ?>">
+				<%if(0){%>
+				<textarea class="im_inputbox_input"></textarea>
+				<%}%>
+				<div class="im_inputbox_input" contenteditable="true"></div>
+				<ul class="im_inputbox_picbox"></ul>
+				<p class="button">
+					<span>按Enter键</span>
+					<input class="sentBtn" type="submit" value="发送" />
+				</p>
+			</form>
+		</div>
+	</div>
+</div>
+</script>
+
+<script type="text/html" id="im_userlist_item">
+<li class="user_info" uid="<?= uid ?>">
+	<span class="user_img"><img src="<?= avatar_b ?>"/></span>
+	<p class="user_name"><?= nickname ?></p>
+	<span class="closeBtn"></span>
+	<%if(0){%>
+	<p class="status <?if(status == 3){?>online<?}else{?>offline<?}?>"><span class="icon"></span><span class="online">上线</span><span class="offline">离线</span></p>
+	<%}%>
+</li>
+</script>
+
+<script type="text/html" id="im_userlist_num">
+	<span class="num"><?= msg_num ?></span>
+</script>
+
+<script type="text/html" id="im_dialog_item">
+<div class="<?if(msgStyle == 'sys'){?>d_a <?}?><?= who?> d_<?= type?>">
+	<? if(ctime){?>
+	<div class="ctime"><?= ctime ?></div>
+	<?}?>
+	<div class="user_info">
+		<span class="user_img"><img src="<?= avatar ?>" /></span>
+	</div>
+	<div class="con">
+		<span class="user_name"><?= name ?></span>
+		<p <?if(send){?>class="wait"<?}?> id="mid_<?= messageId?>">
+			<?if(type == 'text'){?>
+			<?= content ?>
+			<?}else if(type == 'img'){?>
+			<a class="imgUpload" href="<?= content.o_pic_url ?>" target="_blank">
+				<img src="<?= content.pic_url ?>" />
+			</a>
+			<?}?>
+			<span class="shap"></span><span class="shapb"></span>
+		</p>
+		<div class="clear_f"></div>
+	</div>
+	<div class="clear_f"></div>
+</div>
+</script>
+

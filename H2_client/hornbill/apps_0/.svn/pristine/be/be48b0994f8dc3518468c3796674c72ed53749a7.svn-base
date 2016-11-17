@@ -1,0 +1,41 @@
+/* 对应的模板文件在： */
+.pullUpRem(){
+	.pullUp{
+		.pr;left: 50%;.w(.7rem);.h(.7rem);.hidden;.ml(-.35rem);
+
+		&:before{
+			content:"木有了";.pa;.l(.7rem);transform: translateX(-3em);-webkit-transition: all .3s linear;
+		}
+
+		&[status="end"] {
+			&:before{ transform: translateX(0); }
+			div{ opacity: 0; }
+		}
+
+		div{ .pa;top: .29rem;left: .06rem;border: .06rem solid #999;.border-r(50%);-webkit-transform-origin: .29rem .06rem;-webkit-transition: all .3s linear;opacity: 0; }
+
+		&[status="loading"]{
+			.transform(rotate(0deg) translateZ(0));
+			-webkit-animation: loading 2s infinite linear .3s;
+		}
+		@-webkit-keyframes loading{
+			from { .transform(rotate(0deg) translateZ(0)); }
+			to { .transform(rotate(360deg) translateZ(0)); }
+		}
+
+		&[status="loading"] div{ opacity: 1; }
+		&[status="loading"] div:nth-child(1){ -webkit-transform: rotate(45deg);transform: rotate(45deg); }
+		&[status="loading"] div:nth-child(2){ -webkit-transform: rotate(90deg);transform: rotate(90deg); }
+		&[status="loading"] div:nth-child(3){ -webkit-transform: rotate(135deg);transform: rotate(135deg); }
+		&[status="loading"] div:nth-child(4){ -webkit-transform: rotate(180deg);transform: rotate(180deg); }
+		&[status="loading"] div:nth-child(5){ -webkit-transform: rotate(225deg);transform: rotate(225deg); }
+		&[status="loading"] div:nth-child(6){ -webkit-transform: rotate(270deg);transform: rotate(270deg); }
+		&[status="loading"] div:nth-child(7){ -webkit-transform: rotate(315deg);transform: rotate(315deg); }
+
+		&[status="tap"] div:nth-child(1){ left: .06rem;opacity: 1; }
+		&[status="tap"] div:nth-child(2){ left: .30rem;opacity: 1; }
+		&[status="tap"] div:nth-child(4){ left: .54rem;opacity: 1; }
+
+		&[status="stop"]{ .none; }
+	}
+}

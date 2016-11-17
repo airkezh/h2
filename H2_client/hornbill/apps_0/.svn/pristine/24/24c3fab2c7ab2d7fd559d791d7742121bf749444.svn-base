@@ -1,0 +1,67 @@
+<script type="text/html" id="posterWall">
+	<? var nowTime=Date.parse(new Date)/1000; var status=0,sTime=0,desc="" ; $.each(this.list,function(i,item){ ?>
+	<div class="welfareBox poster_wall">
+		<a class="link_box" href="javascript:void(0)" data_id='<?=item.activity_id?>'>
+			<figure>
+				<?if(fml.vars.is_lazyload_poster){?>
+					<span class="bs_load_img" asrc='<?=item.index_banner?>'></span>
+					<?}?>
+						<div class="wlf_apply">
+							<? var status=item.status; if(status==3){?>
+							<p class="timeOver">已结束</p>
+							<?}else{ switch(status){ case 0: desc="距离活动开始" ; sTime=item.begin_time-nowTime; break; case 1: desc="距离活动结束" ; sTime=item.end_time-nowTime; break; case 2: desc="距离名单公布" ; sTime=item.announce_time-nowTime; break; } ?>
+								<p class="time timeOver" stime="<?=sTime?>">
+									<?=desc?>：
+										<span class="day"></span><strong>天</strong>
+										<span class="hour"></span><strong>小时</strong>
+										<span class="minu"></span><strong>分</strong>
+										<span class="sec" class="last"></span><strong>秒</strong>
+								</p>
+								<?}?>
+
+						</div>
+			</figure>
+		</a>
+		<div class="wlf_applyNo">
+			<h3><?=item.title?></h3>
+			<span>免费<?=item.trynumber?>份</span>&nbsp;&nbsp;<span>已有<?=item.apply_num?>人申请</span>
+			<?var style="";var desc="";var urlStr="http://mapp.meilishuo.com/m_welfare/item/"+item.activity_id;
+			var pcUrl="/m_welfare/item/"+item.activity_id;
+			var hasReport=item.hasReport;
+			 		switch (status) {
+						case 0:
+							style="gray";
+							desc="即将开始";
+							break;
+						case 1:
+							style="yellow";
+							desc="立即申请";
+							if(item.final_status&&item.final_status==1){
+								style="gray";
+								desc="已申请";
+							}
+							break;
+						case 2:
+							style="gray";
+							desc="即将公布";
+							break;
+						case 3:
+						default:
+							if (hasReport == 0) {
+								style="gray";
+								desc="名单已公布";
+							} else {
+								style="yellow";
+								desc="试用报告";
+								urlStr="http://mapp.meilishuo.com/m_welfare/reprotList/"+item.activity_id;
+								pcUrl="/m_welfare/reprotList/"+item.activity_id;
+							}
+							break;
+						}
+			?>
+			<a class= "<?=style?> nowApply " href="javascript:void(0)"  data_url="<?=urlStr?>" data_pc_url="<?=pcUrl?>" ><?=desc?></a>
+		</div>
+
+	</div>
+	<?});?>
+</script>

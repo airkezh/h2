@@ -1,0 +1,51 @@
+<section>
+<?
+  if(this.item.length){?>
+<ul class="y_ul">
+  <?for(var k=0;k<this.item.length;k++){
+  data=this.item[k];?>
+       <li class="yugao_box">
+          <div class="datetip"><i class="circle"></i>
+          <span class="date"><?=data.date?></span></div>
+          <ul class="q_week">
+            <?for(var i=0;i<data.goods_info.length;i++){
+              v=data.goods_info[i];
+              var detail_url=fml.vars.joinurl('twitter_single', {'twitter_info' : {'twitter_id' : v.twitter_id , 'is_doota' : 1}}, fml.vars._os, fml.vars._r, '/share/item/'+v.twitter_id);
+              if(fml.vars.isexit(fml.vars.tids,v.twitter_id)){
+                  var btn_content="<i class='clock'></i>已设提醒",
+                 btn_class="reminded_btn";
+              }else{
+              if(data.unix_time<=600){
+              var btn_content="<i class='clock'></i>即将开抢",
+                  btn_class="reminded_btn";
+              }else{
+                  var btn_content="<i class='clock'></i>开抢提醒",
+                  btn_class="remind_btn";
+                }
+    }?>
+               <li class="good_box" twid="<?=v.twitter_id?>" stime="<?=v.start_time?>">
+                    <p><?=v.time?></p>
+                    <div class="w_bg">
+                         <a href="<?=detail_url?>">
+                          <figure>
+                              <img src="<?=v.goods_image?>" />
+                              <p><?=v.goods_name?></p>
+                         </figure></a>
+                         <div class="desc_box">
+                              <span class="p_miao"><i class="red_f f_25">￥<?=v.off_price?></i><s class="old_price">￥<?=v.origin_price?></s></span>
+                              <span class="<?= btn_class?> status_btn"><?= btn_content?></span>
+                         </div>
+
+                    </div>
+               </li>               
+          <?}?>
+         </ul>
+    </li>
+    <?}?>  
+</ul>
+<!--开启/关闭开抢提醒-->
+<!-- <div class="on-off">
+     <span class="f_l">每场提醒我来抢购</span><span class="f_r"></span>
+</div> -->
+<?}?>
+</section>

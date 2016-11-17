@@ -1,0 +1,317 @@
+<%
+	/**
+ 	 * @fileoverview 会员特权－会员中心
+     * @requires zepto
+     * @author kehuang@meilishuo.com
+     * @date 2015-10-26
+     */
+%>
+
+<%#head.html%>
+<%
+	var userMaxLevel = 4;
+	var curPageData = this.pageData || {};
+	var curUserInfo = this.userInfo || {};
+	var curUserData = this.userInfoData.data || {};
+	var curUserBeautyData = this.percentData.data || {};
+	var curUserLevel = curUserData.grade || 0;
+	var curUserUpgradeLevel = (curUserLevel < 4) ? (curUserLevel + 1) : 4;
+	var curUserBeauty = curUserBeautyData.score || 0;
+	var curUserRemainBeauty = curUserBeautyData.remaind_score || 0;
+	var tempUserPercent = curUserBeautyData.left_percent || 0;
+	var curUserPercent = parseInt((curUserLevel +  tempUserPercent / 100) * 25) + '%';
+	var curUserName = (curUserInfo && curUserInfo.nickname) ? curUserInfo.nickname : '- -';
+	var curUserAvatar = (curUserInfo && curUserInfo.avatar_c) ? curUserInfo.avatar_c.replace('/c/', '/b/') : 'http://d06.res.meilishuo.net/ap/a/78/32/59c5fb29fb8ea04deddb2ad0ff42_256_256.cf.png';
+%>
+
+<div class="main">
+	<%
+		var head_bg_img = (curPageData && curPageData.top_bg_pic) ? curPageData.top_bg_pic : '',
+			top_head_style = (head_bg_img != '') ? 'background: url(' + head_bg_img + ') no-repeat;background-size: 100%;' : '';
+	%>
+	<div class="banner_wrap" style="<%= top_head_style %>">
+		<div class="user_box">
+			<div class="level_wrap" id="level_wrap">
+				<div class="level_iscroll" id="level_iscroll">
+					<%
+						var dotHtml = '',
+							blankHtml = '',
+							levelHtml = '',
+							beautyHtml = '',
+							levelBoxStyle = (curUserLevel == 0) ? 'margin-left: 3px;' : '';
+
+						for (var i = 0; i <= userMaxLevel; i++) {
+							var dotStyle = '',
+								blankStyle = '',
+								levelStyle = '',
+								beautyStyle = '',
+								beautyValue = 0,
+								levelState = (i > curUserLevel) ? 0 : 1,
+								mtStyle = (i == curUserLevel) ? '' : 'margin-top: 38px;';
+
+							switch (i) {
+								case 0:
+									beautyValue = 0;
+
+									break;
+								case 1:
+									beautyValue = 10;
+
+									break;
+								case 2:
+									beautyValue = 500;
+
+									break;
+								case 3:
+									beautyValue = 2000;
+
+									break;
+								case 4:
+									beautyValue = 6000;
+
+									break;
+								default:
+									break;
+							}
+
+							switch (curUserLevel) {
+								case 0:
+									if (i < 4) {
+										dotStyle = 'margin-right: 150px;';
+										blankStyle = 'margin-right: 118px;';
+										beautyStyle = 'margin-right: 127px;';
+									} else {
+										dotStyle = 'margin-right: 0;';
+										blankStyle = 'margin-right: 0;';
+										beautyStyle = 'margin-right: 0;';
+									}
+
+									if (i == curUserLevel) {
+										levelStyle = 'margin-right: 127px;';
+									} else {
+										if (i < 4) {
+											levelStyle = 'margin-right: 138px;';
+										} else {
+											levelStyle = 'margin-right: 0px;';
+										}
+									}
+
+									break;
+								case 1:
+									if (i < 4) {
+										dotStyle = 'margin-right: 150px;';
+										blankStyle = 'margin-right: 118px;';
+										beautyStyle = 'margin-right: 127px;';
+									} else {
+										dotStyle = 'margin-right: 0;';
+										blankStyle = 'margin-right: 0;';
+										beautyStyle = 'margin-right: 0;';
+									}
+
+									if ((i == curUserLevel) || (i == 0)) {
+										levelStyle = 'margin-right: 127px;';
+									} else {
+										if (i < 4) {
+											levelStyle = 'margin-right: 138px;';
+										} else {
+											levelStyle = 'margin-right: 0px;';
+										}
+									}
+
+									break;
+								case 2:
+									if (i < 4) {
+										dotStyle = 'margin-right: 150px;';
+										blankStyle = 'margin-right: 118px;';
+										beautyStyle = 'margin-right: 127px;';
+									} else {
+										dotStyle = 'margin-right: 0;';
+										blankStyle = 'margin-right: 0;';
+										beautyStyle = 'margin-right: 0;';
+									}
+
+									if ((i == curUserLevel) || (i == 1)) {
+										levelStyle = 'margin-right: 127px;';
+									} else {
+										if (i < 4) {
+											levelStyle = 'margin-right: 138px;';
+										} else {
+											levelStyle = 'margin-right: 0px;';
+										}
+									}
+
+									break;
+								case 3:
+									if (i < 4) {
+										dotStyle = 'margin-right: 150px;';
+										blankStyle = 'margin-right: 118px;';
+										beautyStyle = 'margin-right: 127px;';
+									} else {
+										dotStyle = 'margin-right: 0;';
+										blankStyle = 'margin-right: 0;';
+										beautyStyle = 'margin-right: 0;';
+									}
+
+									if ((i == curUserLevel) || (i == 2)) {
+										levelStyle = 'margin-right: 127px;';
+									} else {
+										if (i < 4) {
+											levelStyle = 'margin-right: 138px;';
+										} else {
+											levelStyle = 'margin-right: 0px;';
+										}
+									}
+
+									break;
+								case 4:
+									if (i == curUserLevel) {
+										dotStyle = 'margin-right: 0;';
+										blankStyle = 'margin-right: 0;';
+										beautyStyle = 'margin-right: 0;';
+									} else {
+										dotStyle = 'margin-right: 150px;';
+										blankStyle = 'margin-right: 118px;';
+										beautyStyle = 'margin-right: 127px;';
+									}
+
+									if (i == curUserLevel) {
+										levelStyle = 'margin-right: 0px;';
+									} else if (i == 3) {
+										levelStyle = 'margin-right: 127px;';
+									} else {
+										levelStyle = 'margin-right: 138px;';
+									}
+
+									break;
+								default:
+									break;
+							}
+
+							var levelStr = (curUserLevel == i) ? '<div class="user_level">V' + curUserLevel + '</div><div class="user_head"><img src="' + curUserAvatar + '" alt="' + curUserName + '"></div><div class="arrow arrow_' + levelState + '">' : '<div class="level_' + levelState + '">V' + i + '</div><div class="arrow arrow_' + levelState + '"></div>';
+
+							dotHtml += '<li style="' + dotStyle + '"><div class="dot_' + levelState + '"></div></li>';
+
+							blankHtml += '<li style="' + blankStyle + '"><div class="blank" data-index="' + i + '"></div></li>';
+
+							levelHtml += '<li style="' + levelStyle + mtStyle + '">' + levelStr + '</li>';
+
+							beautyHtml += '<li style="' + beautyStyle + '"><div class="value">' + beautyValue + '</div></li>';
+						}
+
+						dotHtml = '<ul class="dot_box">' + dotHtml + '</ul>';
+						blankHtml = '<ul class="blank_box">' + blankHtml + '</ul>';
+						levelHtml = '<ul class="level_box" style="' + levelBoxStyle + '">' + levelHtml + '</ul>';
+						beautyHtml = '<ul class="beauty_box">' + beautyHtml + '</ul>';
+					%>
+
+					<%= levelHtml %>
+
+					<div class="outer_progress_bar">
+						<div class="inner_progress_bar"></div>
+					</div>
+					
+					<%= dotHtml %>
+					<%= blankHtml %>
+					<%= beautyHtml %>
+				</div>
+			</div>
+
+			<%
+				var user_upgrade_text = '';
+
+				switch (curUserLevel) {
+					case 0:
+						user_upgrade_text = '还差一单购物即可升级到V1会员';
+
+						break;
+					case 1:
+					case 2:
+					case 3:
+						user_upgrade_text = '还差' + curUserRemainBeauty + '美丽值升级到V' + curUserUpgradeLevel + '会员';
+
+						break;
+					case 4:
+						user_upgrade_text = '恭喜你已成为尊贵的V4会员';
+						break;
+					default:
+						break;
+				}
+			%>
+			<div class="user_upgrade_text"><%= user_upgrade_text %></div>
+		</div>
+	</div>
+
+	<div class="body_wrap">
+		<div class="interests_swipe">
+			<div id="j_interests_swipe" class="swipe">
+				<div class="swipe_wrap" style="width: 32000px;">
+					<%
+						for (var j = 0; j <= userMaxLevel; j++) {
+							var curInterestsArr = (curPageData && curPageData['interests_level_' + j]) ? curPageData['interests_level_' + j] : [],
+								curInterestsArrLen = curInterestsArr.length || 0;
+					%>
+					<div class="swipe_pic">
+						<%
+							var interestsText = '';
+
+							if (j == curUserLevel) {
+								interestsText = '我的特权';
+							} else {
+								interestsText = 'V' + j + '特权';
+							}
+						%>
+						<div class="title_wrap">
+							<div class="pro_title"><p><%= interestsText %></p></div>
+						</div>
+
+						<ul class="interests_box">
+							<%
+								for (var k = 0; k < curInterestsArrLen; k++) {
+									var interestsObj = curInterestsArr[k],
+										pic = interestsObj.pic || '',
+										text = interestsObj.text || '',
+										title = interestsObj.title || '',
+										style = (pic != '') ? 'background: url(' + pic + ') no-repeat;background-size:50px auto;' : '';
+							%>
+							<li>
+								<div class="icon" style="<%= style %>"></div>
+								<div class="info">
+									<p class="title"><%= title %></p>
+									<p class="desc"><%= text %></p>
+								</div>
+							</li>
+							<%
+								}
+							%>
+						</ul>
+					</div>
+					<%
+						}
+					%>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="gotop_wrap">
+		<a class="gotop">
+			<img src="http://d03.res.meilishuo.net/pic/_o/d0/68/f89d059f09d440f4ee7a37669383_80_80.cg.png" alt="">
+		</a>
+	</div>
+</div>
+
+<script>
+	fml.vars.r = '<%= this.xr.r || '' %>';
+	fml.vars.isLogin = <%= this.isLogin %>;
+	fml.vars.isNewest = <%= this.isNewest %>;
+	fml.vars.userLevel = <%= curUserLevel %>;
+	fml.vars.userPercent = '<%= curUserPercent %>';
+</script>
+
+<!-- <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script> -->
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/member/interests2');
+_use:", this._JSstack, this._JSmods); %>
+
+<%#foot_simple.html%>

@@ -1,0 +1,64 @@
+<%#head.html%>
+<%
+	var sem = this.sem || {};
+	var semData = sem.data || {};
+	var banner = semData.banner || {};
+	var title = semData.title || '';
+	var download_img = semData.download_img || '';
+	var poster = semData.poster || [];
+	var channel = this.channel || '';
+%>
+<div class="wrap" id="wrap">
+	<section class="banner">
+		<a href="<%= banner.url ? banner.url : 'javascript:;' %>">
+			<img src="<%= banner.img %>" alt="">
+		</a>
+	</section>
+	<h3 class="title">
+		<img src="http://d05.res.meilishuo.net/img/_o/76/c3/fdb99c4494977171a047de6d33e9_84_27.cf.png" alt="">
+		<%= title %>
+	</h3>
+	<% if(poster.length){ %>
+		<section class="postwall" id="postwall">
+			<ul>
+				<% poster.forEach(function(data, index){ %>
+					<li>
+						<a href="/share/item/<%= data.twitter_id %>?channel=<%= channel %>">
+							<div class="lazy_pic" asrc="<%= data.goods_pic_url %>"></div>
+							<p class="goods_title"><%= data.goods_title %></p>
+							<div class="price-box">
+								<p class="price"><%= data.goods_price %></p>
+								<p class="tips"><%= data.tips %><b></b></p>
+							</div>
+						</a>
+					</li>
+				<% }); %>
+			</ul>
+		</section>
+	<% } %>
+	<a href="javascript:;" id="download" class="download">
+		<img src="<%= download_img %>" alt="">
+	</a>
+</div>
+<script>
+	fml.vars.appUrl = '<%= this.appUrl %>';
+	fml.vars.refer = '<%= this.refer %>';
+</script>
+<script type='text/javascript'>
+	var _fxcmd=_fxcmd||[];
+	_fxcmd.sid='f13cc91387963845156f4c204bc63e9a';
+	_fxcmd.trackAll= false;
+	(function () {
+	   var _pzfx=document['createElement']('script');
+	   _pzfx.type='text/javascript';
+	   _pzfx.async=true;
+	   _pzfx.src='//static.w3t.cn/fx/1/1/fx.js';
+	  var sc=document.getElementsByTagName('script')[0];
+	  sc.parentNode.insertBefore(_pzfx,sc);
+	  })();
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/sem/index');
+_use:", this._JSstack, this._JSmods); %>
+
+<%# foot.html%>

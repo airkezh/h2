@@ -1,0 +1,30 @@
+<%#head.html%>
+<div class="medal">
+<div class="medal-all">
+<%#medal/sidebar.html%>
+<div class="findfs-rightpart mls-medal mt14">
+	<div class="box_shadow p13">
+		<div class="medal-wrapper">
+			<%if(this.person){%>
+				<%for (var i in this.person){%>
+			<div class="medal-icon" style="margin: 10px 6px 0 6px;">
+				<a class="pic_medal" href="/medal/detail/<%= this.person[i].medal_id %>" target="_blank">
+					<span style="background:url(http://img.meilishuo.net//css/images/medal/icons/<%= this.person[i].medal_icon %>);"></span>
+				</a>
+				<span class="medalTitle"><%= this.person[i].medal_title %></span>
+				
+				<div style="clear:both"></div>
+			</div>
+			<% }} %>
+			<div style="clear:both"></div>
+		</div>
+	</div>
+</div>
+</div>
+</div>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/medal/my_medal');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot.html%>

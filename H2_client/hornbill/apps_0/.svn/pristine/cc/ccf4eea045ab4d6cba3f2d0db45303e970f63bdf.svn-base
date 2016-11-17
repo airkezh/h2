@@ -1,0 +1,90 @@
+<%# sq/header.html %>
+
+<%
+	var basicD = this.basic;
+
+%>
+
+<div class="storefront">
+	<section class="sec1" style="background-image: url(<%= basicD.shop_focus_img %>);">
+		<figure class="shop">
+			<a class="shop-logo"><img src="<%= basicD.shop_face_img %>" alt="shop logo"></a>
+			<figcaption>
+				<p class="shop-name"><%= _extFn.mSubstr(basicD.shop_nick, 8, '') %></p>
+				<ul class="shop-performance">
+					<li>宝贝数量：<i><%= basicD.shop_goods_num %></i></li>
+					<li>总销量：<i><%= basicD.total_sale_num %></i></li>
+				</ul>
+			</figcaption>
+			<%	
+				var followStatus = 'follow-no';
+
+				if(basicD.isfollow){
+					followStatus = 'follow-yes'
+				}
+			%>
+			<span class="js-follow-btn follow-btn <%= followStatus %>"></span>
+		</figure>
+	</section>
+
+	<% 
+		var couponD = basicD.shop_coupon_apply; 
+		if(couponD){ 
+	%>
+	<section class="sec2">
+		<% 
+			couponD.forEach(function (cp){ 
+		 		var applyStatus = 'get';
+		 		var threshold = cp.threshold;
+
+				if(cp.can_apply_status == 2){
+					applyStatus = 'got';
+				}
+		%>
+		<div class="coupon <%= applyStatus %>" data-id="<%= cp.coupon_apply_code %>">
+			<div class="action">
+				<% if(applyStatus == 'got'){ %>
+				<span class="status">已领</span>
+				<% }else{ %>
+				<span class="status">立即<br>领取</span>
+				<% } %>
+			</div>
+			<div class="denomination">
+				<p class="credit">¥<%= cp.credit %></p>
+				<% if(threshold != 0){ %>
+				<p class="threshold">消费满<%= threshold %>使用</p>
+				<% }else{ %>
+				<p class="threshold">无门槛使用</p>
+				<% } %>
+			</div>
+		</div>
+		<% }); %>
+	</section>
+	<% } %>
+
+	<section class="sec3">
+		<ul class="js-goods-was-sort-by tab">
+			<li class="s_item active" data-id="0">默认</li>
+			<li class="s_item" data-id="1">最新</li>
+			<li class="s_item" data-id="2">热销</li>
+			<li class="s_item" data-id="3">价格<i class="price-icon"></i></li>
+		</ul>
+		<div class="js-goods-shelf goods-shelf"></div>
+		<div class="js-pull-up pull-up" data-status="loading"></div>
+	</section>
+</div>
+
+<%# sq/goods_tpl.html %>
+
+<script src="http://pub.idqqimg.com/qqmobile/qqapi.js?_bid=152"></script>
+
+<%! 
+	$_ENGINE_SELF.callFn("useModule")(
+		"<<<_use:fml.use('wap/page/sq/shop');_use:", 
+		this._JSstack, 
+		this._JSmods 
+	); 
+%>
+
+<%# block/dialog.html %>
+<%# sq/footer.html %>

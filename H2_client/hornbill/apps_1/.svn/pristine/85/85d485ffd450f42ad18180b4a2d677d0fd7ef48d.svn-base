@@ -1,0 +1,94 @@
+<%# head.html%>
+<form action="/order/pay/" method="post" id="pay_form">
+	<input type="hidden" name="order_id" value="<%== this.order_id || ''%>"/>
+	<input type="hidden" name="total_price" value="<%== this.total_price || ''%>"/>
+	<input type="hidden" name="total_id" value="<%== this.total_id || ''%>"/>
+	<input type="hidden" name="pay_channel" id="pay_channel" value=""/>
+	<input type="hidden" name="bank_name" id="bank_name" value=""/>
+</form>
+<div class="container">
+	<p class="select_bank_title">
+		<span class="left">您将支付的订单编号：<%== this.order_id %></span>
+		<span class="right">
+			<span>商品总价（不含运费和优惠扣减）：<%== this.total_price %>元</span>
+			<a href="javascript:;" class="charge_btn">立即支付&gt;&gt;</a>
+		</span>
+	</p>
+	<div class="bank">
+		<div class="label">选择支付方式</div>
+		<div class="platform">
+			<% if(this.bank.data.platform.length){ %>
+			<div class="list">
+				<% this.bank.data.platform.forEach(function(p,i){ %>
+				<div class="b">
+					<div class="input">
+						<input type="radio" name="pay_id" data-name="<%= p.bankName %>" <%= i===0 ? 'checked' : '' %> value="<%= p.bankCode %>__<%= p.pmCode %>"/>
+					</div>
+					<div class="image">
+						<img src="<%= p.picUrl %>" width="130px" height="40px"/>
+						<p><a href="<%= p.help_link %>" target="_blank">使用帮助</a></p>
+					</div>
+				</div>
+				<% }); %>
+				<div class="clear"></div>
+			</div>
+			<% } %>
+		</div>
+		
+		<div class="debit">
+			<div class="t"><span>使用储蓄卡支付</span><span class="ico"></span></div>
+			<div class="list" style="display:none">
+				<% this.bank.data.debit.length && this.bank.data.debit.forEach(function(d){ %>
+				<div class="b short-b">
+					<div class="input">
+						<input type="radio" name="pay_id" data-name="<%= d.bankName %>" value="<%= d.bankCode %>__<%= d.pmCode %>" id=""/>
+					</div>
+					<div class="image">
+						<img src="<%= d.picUrl %>" width="130px" height="40px"/>
+					</div>
+				</div>
+				<% }); %>
+				<div class="clear"></div>
+			</div>
+		</div>
+		<div class="credit">
+			<div class="t"><span>使用信用卡支付</span><span class="ico"></span></div>
+			<div class="list" style="display:none">
+				<% this.bank.data.credit.length && this.bank.data.credit.forEach(function(d){ %>
+				<div class="b short-b">
+					<div class="input">
+						<input type="radio" name="pay_id" data-name="<%= d.bankName %>" value="<%= d.bankCode %>__<%= d.pmCode %>" id=""/>
+					</div>
+					<div class="image">
+						<img src="<%= d.picUrl %>" width="130px" height="40px"/>
+					</div>
+				</div>
+				<% }); %>
+				<div class="clear"></div>
+			</div>
+		</div>
+	</div>
+	<div class="order">
+		<table cellpadding="0" cellspacing="0">
+			<tfoot>
+				<tr>
+					<td class="first">&nbsp;</td>
+					<td colspan="5" class="last">
+						<span class="ie6_left">
+						<a href="<%= this.DOMAIN.order%>/order/detail/?order_id=<%== this.order_id%>">&lt;&lt;查看订单详情</a>
+						</span>
+						<span class="right">
+							<span>商品总价（不含运费和优惠扣减）：</span>
+							<span class="price">￥<span id="total_price"><%== this.total_price %></span></span>
+							<a href="javascript:;" class="go_charge charge_btn" id="charge"></a>
+						</span>
+					</td>
+				</tr>
+			</tfoot>
+		</table>
+	</div>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+		fml.use('order_pc/order/select_bank');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

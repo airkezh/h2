@@ -1,0 +1,75 @@
+<%#head_simple.html%>
+<% 
+    var game = this.game ;
+%>
+	<script type="text/javascript" >
+        (function (doc, win) {
+            var resizeEvt = "onorientationchange" in win ? "orientationchange" : "resize",
+                base_size = 750,
+                docE = doc.documentElement,
+                ua = navigator.userAgent,
+                recalc = function () {
+                    var triggerRepaints = docE.clientWidth;
+                    var clientWidth = win.innerWidth;
+                    var _fontSize = 100 * (clientWidth / base_size);
+                    if(ua.indexOf("iphone") == -1 && ua.indexOf("android") == -1 && ua.indexOf("Windows Phone")){
+                        _fontSize > 125 && ( _fontSize = 125 )
+                    }
+                    docE.style.fontSize = _fontSize + "px";
+                };
+            recalc();
+            win.addEventListener( resizeEvt , recalc, false );
+        })(document, window);
+    </script>
+</head>
+<body>
+<div class="game">
+	<div class="game-box">
+		<canvas id="cvs" ></canvas>
+	</div>
+	<div class="game-select ">
+		<a class="game-but0" href="javascript:;"></a>
+		<a class="game-but1" href="javascript:;"></a>
+	</div>
+
+	<h1 class="game-title">选择你喜欢的风格，测试你的时尚基因</h1>
+	<div class="game-answer">
+		<span class="answer-show"></span>
+		<span class="answer-show"></span>
+		<span class="answer-show"></span>
+		<span class="answer-show"></span>
+		<span class="answer-show"></span>
+		<span class="answer-show"></span>
+		<span class="answer-show"></span>
+		<span class="answer-show"></span>
+		<span class="answer-show"></span>
+		<span class="answer-show"></span>
+		<span class="answer-show"></span>
+		<span class="answer-show"></span>
+		<span class="answer-show"></span>
+	</div>
+</div>
+<div class="result0">
+	<div class="result-msg">
+		<img src="http://d05.res.meilishuo.net/pic/_o/38/50/343e3eccc1633a72ffeff67d222d_260_260.cj.png" alt="没有喜欢的风格">
+	</div>
+	<a class="result-but again again0" href="javascript:;"></a>
+</div>
+<div class="result1">
+	<div class="result-msg">
+		<img src="http://d05.res.meilishuo.net/pic/_o/b4/6e/daf7d1d95858110101a64974ecf1_260_260.cj.png" alt="没有喜欢的风格">
+	</div>
+	<a class="result-but view" href="/fashion_gene/mine/?action=click&_location=<%=encodeURIComponent(this.xr.r +':_page_area=done_style:_pos_name=see_end')%>"  xr="<%=this.xr.r%>" ></a>
+	<a class="result-but again again1" href="javascript:;"></a>
+</div>
+
+<img style="display: none;" id="bg" src="http://d03.res.meilishuo.net/pic/_o/c7/97/a2b7a39fdf28f6baba038d9fcf75_601_770.cj.png">
+
+<script>
+    fml.vars.game = <%= JSON.stringify(this.game) %> ;
+    fml.vars.r = '<%= this.xr.r %>';
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/fashion_gene_game');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

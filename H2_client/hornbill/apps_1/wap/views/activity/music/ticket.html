@@ -1,0 +1,68 @@
+<%# head.html%>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<%
+	var circleUrl = 'meilishuo://circle.meilishuo?json_params=' + encodeURIComponent(JSON.stringify({'circle_id':'469835'}))
+%>
+<div class="wrap">
+	<header>
+		<img src="http://d05.res.meilishuo.net/pic/_o/3b/61/5a4dce5c2c5eb974d301cd99ab5b_217_61.ch.png" class="icon"/>
+		<h1>草莓音乐节—西安站</h1>
+		<p>Strawberry music festival—xian STATION</p>
+	</header>
+	<section>
+		<a href="/activity/four_years/prepare/?cid=8807" class="link_icon xian_icon">
+			<img src="http://d03.res.meilishuo.net/pic/_o/76/1c/321f2933f20683e074855b0615e0_149_158.ch.png"/>
+		</a>
+		<div class="ticket_icon get_ticket">
+			<img src="http://d05.res.meilishuo.net/pic/_o/6b/fd/5af2ce2ed183a6c5db8e5ce85e59_122_116.cf.png"/>
+		</div>
+		<a href="/activity/four_years/prepare/?cid=8813" class="link_icon mls_icon">
+			<img src="http://d05.res.meilishuo.net/pic/_o/fa/76/204e0daa32a981a37130198cc2f3_114_114.cg.png" />
+		</a>
+		<a href="/activity/four_years/prepare/?cid=8809" class="link_icon caomei_icon">
+			<img src="http://d05.res.meilishuo.net/pic/_o/ea/20/525cf66c004b7961b2e8f0cb7284_138_147.ch.png" />
+		</a>
+		<a href="/activity/four_years/prepare/?cid=8811" class="link_icon love_icon">
+			<img src="http://d02.res.meilishuo.net/pic/_o/01/7f/527b5ecaabe283083fd1b7a831c5_118_126.cf.png" />
+		</a>
+		<a href="<%= circleUrl%>" class="ticket_icon get_prize">
+			<img src="http://d03.res.meilishuo.net/pic/_o/87/26/ca9de784c60da7cf5bdcdbc11666_127_114.cf.png" />
+		</a>
+		<%if(this.weixinBrowser){%>
+			<div class="shareBtn">
+				<img src="http://d03.res.meilishuo.net/pic/_o/76/09/8ad2adc45f1c2db354e6fd9f1cce_199_51.cf.png" />
+			</div>
+		<%}%>
+	</section>
+</div>
+
+<%= requireFn('wapShare.html')({
+	'share' : this.share 
+    , 'shareTitle' : '选择分享到'
+    , '_JSstack' : this._JSstack
+	, '_JSmods' : this._JSmods
+}); %>
+
+<script type="text/html" id="userInfo">
+	<div class="dialog_box">
+		<span class="close" id="closeIcon"></span>
+		<p><label>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</label><input type="text" value="" maxLength="10" class="txt" id="userName"/></p>
+		<p><label>联系电话：</label><input type="tel" value="" maxLength="11" class="txt" id="userTel"/></p>
+		<p><label>所在城市：</label><input type="text" value="" class="txt" id="userAddress"/></p>
+		<p id="errorTips" class="errorTips"></p>
+		<h4 class="tips">抢票时间：5/13 10:00 — 5/14 24:00</h4>
+		<input type="submit" value="提交" id="submit" class="submit"/>
+	</div>
+</script>
+<script type="text/html" id="shareLead">
+	<div class="dialog_share">
+		<span class="share_pic"></span>
+	</div>
+</script>
+<script>
+	fml.vars.mlsHost = '<%=this.mlsHost%>';
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/music/ticket');
+_use:", this._JSstack, this._JSmods); %>
+<%# foot.html%>

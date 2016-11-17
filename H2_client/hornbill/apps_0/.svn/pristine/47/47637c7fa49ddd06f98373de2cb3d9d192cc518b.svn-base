@@ -1,0 +1,46 @@
+@import "block.less";
+
+.frame;
+.navBan;
+.slide;
+.header;
+.foot;
+
+figure{
+	// .mt(@header_top);
+	.share_pic;
+}
+.price_go{
+	.mt(28*@px);
+	.block;.auto;.w(420*@px);.border-r-a(80*@px);.h(80*@px);.l(80*@px);.f(36*@px);	
+	.bannerStyle;.c;.nowrap;	
+	.pr(80*@px/2);.pl(80*@px/2);
+	span{.left;.w(50%);
+		&:nth-child(1){
+			.lineStyle;
+		}
+	}
+}
+
+.share_recommend{
+	.mt(40*@px);.ml(10*@px);.mr(10*@px);
+	h3{.f(28*@px);.fc(@wap_f5e);.ml(10*@px);.mb(20*@px);}
+	.groupBox;
+}
+.setGroupBox(4);
+
+.setGroupBox(@a:2){
+	.share_recommend{
+		.groupBox{ .w(100% / @a); }
+	}
+}
+@media all and (max-width:980px){
+	.setGroupBox(4);
+}
+@media all and (max-width:760px){
+	.setGroupBox(3);
+}
+@media all and (max-width:480px){
+	.setGroupBox(2);
+}
+

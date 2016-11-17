@@ -1,0 +1,36 @@
+<%#head.html%>
+<%
+	my_shop = this.my_shop;
+%>
+<div class="main">
+	<% my_shop.top.length > 0 && my_shop.top.map(function(data){ %>
+		<div class="top_banner" style="background:url('<%= data.top_bg %>') no-repeat center;height: <%= data.height %>px;"></div>
+	<% }); %>
+	<div class="buyers_wrap">
+		<%
+			var pic_data = my_shop.rec_item_pic;
+			var _buyers_bg = pic_data.buyers_bg;
+			var _shops_bg = pic_data.shops_bg;
+			var _cover_bg = pic_data.cover_bg;
+			var _pic_type = pic_data.pic_type;
+			my_shop.rec_item.length > 0 && my_shop.rec_item.map(function(data, index){
+				var buyers_bg = _buyers_bg + index + '.' + _pic_type;
+				var shops_bg = _shops_bg + index + '.' + _pic_type;
+				var cover_bg = _cover_bg + (index%6) + '.' + _pic_type;
+		%>
+			<div class="items<%= index%2 != 0 ? ' odd' : '' %>">
+				<div class="buyers_recommend">
+					<div class="buyers"><% if(data.buyers_link != ''){ %><a href="<%= data.buyers_link %>" target="_blank"></a><% } %><img src="<%= buyers_bg %>"></div>
+					<div class="shops"><a href="<%= data.shops_link %>" target="_blank"><img src="<%= shops_bg %>"><div class="cover none_f" style="background: url('<%= cover_bg%>') no-repeat center;"></div></a></div>
+				</div>
+			</div>
+		<% }); %>
+	</div>
+	<% my_shop.ad.length > 0 && my_shop.ad.map(function(data){ %>
+		<a href="<%= data.link %>" class="shop_ad" style="width: <%= data.width || '1093' %>px" target="_blank"><img src="<%= data.src %>"></a>
+	<% }); %>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/huodong/myShop');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

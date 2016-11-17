@@ -1,0 +1,18 @@
+function member(){
+	return this;
+}
+
+var controlFns = {
+	interfaces : function (params){
+		var php = {
+            'getCoupon' : 'vip::/coupon/venue',
+            'applyCoupon' : 'vip::/coupon/apply',
+			'draw' : 'vip::/wheel/draw',
+			'saveContactInfo' : 'vip::/wheel/saveContactInfo'
+        };
+
+		this.ajaxTo(php[params]);
+	}
+}
+
+exports.__create = controller.__create(member, controlFns);

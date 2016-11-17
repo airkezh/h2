@@ -1,0 +1,106 @@
+fml.define('wap/client/page/appeal', ['wap/zepto','wap/zepto/touch','wap/component/callQQ','wap/component/uploadBtn','wap/app/alert', 'wap/client/component/common', 'wap/app/loading', 'wap/client/component/clientUse'], function(require, exports){
+	var callQQ = require('wap/component/callQQ')
+		, uploadBtn = require('wap/component/uploadBtn')
+		, m_alert = require('wap/app/alert')
+		, common = require('wap/client/component/common')
+		, loading = require('wap/app/loading')
+		, clientUse = require('wap/client/component/clientUse')
+	var uploadButton = $('.pic_upload');
+	if(!Meilishuo.config.isNewest){
+		var uploadFn = {
+			'behind' : '/imageupload/pic_upload'
+			,'success' : function(data,obj){
+				if (typeof data.code != 'number') {
+					var imgWrapper = $('#img_wrapper')
+						,nowUpBtn = $(obj);
+					if(nowUpBtn.hasClass('addBtn')){
+						if(imgWrapper.children().length < 6){
+							uploadBtn.bind($('<a class="pic pic_upload addBtn" href="javascript:;"></a>').insertAfter(nowUpBtn), uploadFn);
+						}
+						nowUpBtn.removeClass('addBtn').prepend('<img class="imgUpload" width="100%" height="100%" src="' + data.H_pic_url + '" data="' + data.o_pic_url + '"/>')
+					} else {
+						nowUpBtn.find('.imgUpload').attr({'src': data.H_pic_url, 'data': data.o_pic_url });
+					}
+				} else {
+					m_alert({ dialogContent :data.msg });
+				}
+			}
+			,'error' : function(p){m_alert({dialogContent : p.description});}
+			,plusData:{'big': 1}
+			,start : function(){loading.start();}
+			,final : function(){loading.stop();}
+		};
+		uploadBtn.bind(uploadButton , uploadFn);
+	} else {
+		//4.2调用客户端
+		function bindUploadParam(data,btn){
+			var imgWrapper = $('#img_wrapper')
+				,nowUpBtn = $(btn);
+			if(nowUpBtn.hasClass('addBtn')){
+				if(imgWrapper.children().length < 6){
+					clientUse.callClient.bindUpload($('<a class="pic pic_upload addBtn" href="javascript:;"></a>').insertAfter(nowUpBtn), bindUploadParam);
+				}
+				nowUpBtn.removeClass('addBtn').prepend('<img class="imgUpload" width="100%" height="100%" src="' + data.H_pic_url + '" data="' + data.o_pic_url + '"/>')
+			} else {
+				nowUpBtn.find('.imgUpload').attr({'src': data.H_pic_url, 'data': data.o_pic_url });
+			}
+		}
+		clientUse.callClient.bindUpload(uploadButton,bindUploadParam);
+	}
+
+	callQQ($('.qq'));
+	
+	//提交举证
+	$('.js_submit_appeal').on('tap',function(){
+		var wrapper = $('.js_prove_info')
+
+		//验证非空
+		var notNulls = [
+			{name:'description',tip:'请填写申诉说明'}
+			,{name:'concact',tip:'请填写联系人'}
+			,{name:'phone',tip:'请填写手机号'}
+		]
+		for (var i = 0; i < notNulls.length; i++) {
+			var name = notNulls[i].name
+				,tip = notNulls[i].tip
+			var $name = wrapper.find('[name='+name+']')
+			if(!$.trim($name.val())){
+				return m_alert({ dialogContent :tip  });
+			}
+		}
+		if(!common.isLowVersion() && !wrapper.find('.imgUpload').length){
+			m_alert({ dialogContent : '请上传申诉凭证' });
+			return;
+		}
+
+		//手机号
+		if(!/^0?(13|15|18|14)[0-9]{9}$/.test(wrapper.find('[name=phone]').val())){
+			return m_alert({ dialogContent : '手机号格式不正确' });
+		}
+
+		postForm();
+
+		function postForm(){
+			var pics = []
+				,as = wrapper.find('.imgUpload')
+			for (var i = 0; i < as.length; i++) {
+				pics.push(as.eq(i).attr('data'));
+			}
+			var data = {
+				description : wrapper.find('[name=description]').val()
+				,concact : wrapper.find('[name=concact]').val()
+				,phone : wrapper.find('[name=phone]').val()
+				,pics : pics
+				,refund_id : Meilishuo.config.refundId
+			}
+			$.post('/aj/doota/appeal_initiate', data, function(data, textStatus, xhr) {
+				m_alert({ 
+					dialogContent :'提交成功',
+					onClose : function(){
+						window.location.reload();
+					}
+				});
+			},'json');
+		}
+	});
+});

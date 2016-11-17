@@ -1,0 +1,20 @@
+  <%
+		var safehelp=this.safehelp.tInfo;
+ %>
+ <strong class="title">安全贴士</strong>
+<fieldset>
+	<div class="safe-help">
+		<ul class="help-title">
+			<% safehelp&&safehelp.map(function(items,index){%>
+				<span><%=items.ctime%></span>
+			<li>
+				<a href="/settings/helpCon?id=<%=items.id%>"><%=items.title%></a>
+			</li>
+
+			<%});%>
+		</ul>	
+	
+	</div>
+	
+</fieldset>
+ 

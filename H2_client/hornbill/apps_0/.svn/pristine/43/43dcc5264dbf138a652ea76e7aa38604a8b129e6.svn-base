@@ -1,0 +1,83 @@
+<%# head_simple.html%>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+</head>
+<body style="background:<%= this.CONFIG_BACKGROUND %>;">
+
+
+<%if(this.CONFIG_SHARE){%>
+<div class="shareInfo">
+<%if(this.CONFIG_SHARE.icon){%>
+	<img class="share_icon" src="<%= this.CONFIG_SHARE.icon %>" />
+<%}%>
+<%if(this.CONFIG_SHARE.notic){%>
+	<strong><%= this.CONFIG_SHARE.notic %></strong>
+<%}%>
+</div>
+<%}%>
+<div class="mask"></div>
+
+<div class="wrap">
+	<%# h5/animation.html %>
+	<div class="main" dragMove="1">
+	<%
+	var pages = this.CONFIG_PAGES
+		, len = pages.length
+
+	pages && pages.map(function(page,k){
+	%>
+		<div class="page" id="page<%= k %>">
+	<%
+		var items = page.items
+		items && items.map(function(item, k){
+	%>
+			<div class="<%= item.id || '' %> <%= item.item_id %><%if(item.hide){%> hide<%}%>"><%if(item.link){%><a href="<%= item.link %>"></a><%}%></div>
+	<% }); %>
+		</div>
+	<% }); %>
+	
+	<%if(0){%>
+	<%if(this.CONFIG_SHARE){%>
+		<div class="page" id="page<%= len %>">
+		<%= requireFn('h5/wapShare.html')({
+			'share' : this.share,
+			'shareTitle' : '选择分享到',
+			'_JSstack' : this._JSstack,
+			'_JSmods' : this._JSmods
+		}); %>
+		</div>
+	<% }%>
+	<% }%>
+
+	</div>
+</div>
+
+
+<%if(this.CONFIG_MUSIC){%>
+<audio hidden="true" preload="auto" autobuffer><source src="<%= this.CONFIG_MUSIC %>"/></audio>
+<% }%>
+
+<script>
+fml.vars.CONFIG_SHARE = <%= JSON.stringify(this.CONFIG_SHARE) || '{}' %>;
+</script>
+
+<%
+function mkjs(jss){
+    var str = "";
+    if(jss){
+        str += " fml.use('h5/pages/" + jss + "');";
+    }
+    return str;
+}
+var jss = mkjs(this.CONFIG_SHARE.jss);
+%>
+
+<%if(0){%>
+<% $_ENGINE_SELF.callFn("useModule")("fml.use('h5/page/h5');", this._JSstack , this._JSmodsFast ); %>
+<%}%>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('h5/page/h5');
+	%s
+_use:", this._JSstack , this._JSmods, jss); %>
+
+<%# foot_simple.html%>

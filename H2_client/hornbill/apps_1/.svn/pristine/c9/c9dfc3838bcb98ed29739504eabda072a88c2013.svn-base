@@ -1,0 +1,17 @@
+<script type="text/html" id="goods">
+<div id="goodsObj" class="goodsObj">
+<section>
+	<div class="goods_body">
+	<? $.each(tInfo , function(k , v){ ?>
+		<figure z="<?= k ?>">
+			<img src="<?= v.big_show_pic?>">
+			<figcaption>
+				<a<? if(v.is_taobao){ ?> class="isTaobao"<? } ?> target="_blank" href="/<?= v.url?>"><?= v.ginfo.goods_title?></a>
+			</figcaption>
+			<a target="_blank" href="/<?= v.url?>"><span><?= v.ginfo.goods_price ?></span><span>查看详情</span></a>
+		</figure>
+	<?});?>
+	</div>
+</section>
+</div>
+</script>

@@ -1,0 +1,28 @@
+<script type="text/html" id="posterWall">
+<? $.each(tInfo , function(k , v){?>
+<div class="poster_grid poster_wall">
+	<div class="vote_box">
+		<a href="/share/<?= v.twitter_id?>" target="_blank" class="pic_load">
+			<img class="goods_pic" src="<?= v.show_pic?>" pid="<?= v.pid?>" width="228" height="<?= v.pic_height?>" />
+	    </a>
+		<div class="info">
+			<div class="userInfo" uid="<?= v.uinfo.user_id?>">
+				<div class="person">
+					<a href="/person/u/<?= v.uinfo.user_id?>" target="_blank" class="face"><img src="<?= v.uinfo.avatar_c?>" width="48" height="48" /></a>
+					<span class="name"><?= v.uinfo.nickname?></span>
+				</div>
+				<ul class="txt_info">
+				    <li>票数：<span class="red_f vote_num"><?= v.score?></span></li>
+					<li>排名：<span class="red_f"><?= v.rank?></span></li>
+				</ul>
+			</div>
+			<? if(v.is_vote == 0){ ?>
+				<p class="btnBox auto_f act_vote">投票</p>
+			<?}else{?>
+				<p class="btnBox auto_f voted">已投票</p>
+			<?}?>
+		</div>
+	</div>
+</div>
+<?});?>
+</script>

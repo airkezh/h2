@@ -1,0 +1,24 @@
+<%#head.html%>
+<div class="bd">
+	<div class="m-title"><%= this.h5_video.mtitle%></div>
+	<div class="guidepic"><img src="<%= this.h5_video.guidepic %>"/></div>
+	<div class="guideword"><%= this.h5_video.guideword%></div>
+
+<% if ( this.h5_video && this.h5_video.src ) { %>
+	<video width="100%" height="35%"autoplay controls <% if (this.h5_video.poster){ %> poster="<%= this.h5_video.poster%>" <%}%>>
+	  <source src="<%= this.h5_video.src%>" type="video/mp4">
+	  Your browser does not support the video tag.
+	</video>
+	<% } else { %>
+		video not input 
+	<% } %>
+	<div class="tip"><%= this.h5_video.tip%></div>
+
+</div>
+	<a class="downapp" href="<%= this.h5_video.dappsrc%>"><img src="<%= this.h5_video.dappimg%>"/></a>
+
+
+
+
+
+<%#foot.html%>

@@ -1,0 +1,29 @@
+<%# head_simple.html%>
+<div class="show-top">
+	<img src="http://img.meilishuo.net/css/images/wap/activity/znm/top.png" />
+	<div id="left">
+		<img src="http://img.meilishuo.net/css/images/wap/activity/znm/5.png" />
+	</div>
+	<div id="right">
+		<img src="http://img.meilishuo.net/css/images/wap/activity/znm/3.png" />
+	</div>
+</div>
+<div id="start">
+	<img src="http://img.meilishuo.net/css/images/wap/activity/znm/start.png" />
+</div>
+<div id="error">
+	<img src="http://img.meilishuo.net/css/images/wap/activity/znm/sorry.png" />
+</div>
+<div class="main-change">
+	<div class="main-inner">
+		<% for(var i = 0; i < this.pic.length; i++){%>
+		<div class="float-l">
+			<img src="http://img.meilishuo.net/css/images/wap/activity/znm/<%= this.pic[i].num %>.jpg" num="<%= this.pic[i].at%>" />
+		</div>
+		<%}%>
+	</div>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/znm');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html%>

@@ -1,0 +1,15 @@
+<%#head.html%>
+<% var item = this.rapid.data;%>
+<% 
+var pageWidth = item.pageWidth || 640;
+var baseWidth = 6.4;
+%>
+<div class="container" style="width:6.4rem;">
+	<% item.picArr && item.picArr.forEach(function(o){ %>
+	<img src="<%=o.o_pic_url %>" style="width:<%=o.width/pageWidth*baseWidth %>rem;">
+	<% }); %>
+	<% item.hotArr && item.hotArr.forEach(function(o){ %>
+	<a class="hotarea"<%if(o.opennew){%> target="_blank"<%}%> xr="<%=this.xr.r %>" href="<%=o.link || '###' %>" style="left:<%=o.left/pageWidth*baseWidth %>rem;top:<%=o.top/pageWidth*baseWidth %>rem;width:<%=o.width/pageWidth*baseWidth %>rem;height:<%=o.height/pageWidth*baseWidth %>rem;"></a>
+	<% }); %>
+</div>
+<%#foot.html%>

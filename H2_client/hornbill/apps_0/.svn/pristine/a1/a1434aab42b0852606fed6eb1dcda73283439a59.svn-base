@@ -1,0 +1,112 @@
+<%# head.html%>
+<%# tuan/tuan_head.html%>
+<% var getLink = _extFn.getLink;%>
+<!--编辑推荐 开始-->   
+<div class="editorrecom">
+  <div class="er_l"><span class="r_title">编辑<label class="red">推荐</label></span><span class="r_dec">时尚买手精选，官方验货</span></div>
+  <div class="recom_tab"><span id="weekessence" class="tab_span tab_active">本周精选</span><span id="lashrush" class="tab_span">最后疯抢</span></div>
+</div>
+<!--编辑推荐 结束--> 
+<!--本周精选 开始-->
+<div class="wraper">
+    <ul class="weekessence rec_sku">
+      <%
+      var addTrace = this.ViewTools.addTrace,
+      rec_week=this.rec_week.data,
+      rec_last=this.rec_last.data;
+  for(var i=0;i<rec_week.length;i++)
+  { var link = '/' + (1 == rec_week[i].is_cosmetic ? 'prom':'share') +'/item/' + addTrace(rec_week[i].twitter_id,'tuan_week_rec_'+i);%>
+    <li <%= !((i+1) % 6) ? 'class=\'last\'':'' %>>
+      <div class="s_picBox">
+        <a class="s_pic" href="<%= link%>" target="_blank" title="<%= rec_week[i].item_title%>"><img src="<%= rec_week[i].item_image%>" /></a>
+      </div>
+      <p class="txt"><a href="<%= link%>" target="_blank"><%= rec_week[i].item_title%></a></p>
+      <p class="price_box">
+        <span class="price_red">¥<%= rec_week[i].price%></span>
+        <%if(rec_week[i].discount > 0){%>
+        <span class="price">¥<%= rec_week[i].original_price%></span>
+        <%}%>
+      </p>
+      <p><%= rec_week[i].sales%>人已购买</p>
+    </li>
+    <%}%>
+  </ul>
+<!--本周精选 结束-->
+<!--最后疯抢 开始-->
+    <ul class="lashrush rec_sku" style="display:none;">
+      <%
+   for(var i=0;i<rec_last.length;i++)
+  { var link = '/' + (1 == rec_last[i].is_cosmetic ? 'prom':'share') +'/item/' + addTrace(rec_last[i].twitter_id,'tuan_crazy_rec_'+i);%>
+    <li <%= !((i+1) % 6) ? 'class=\'last\'':'' %>>
+      <div class="s_picBox">
+        <a class="s_pic" href="<%= link%>" target="_blank" title="<%= rec_last[i].item_title%>"><img src="<%= rec_last[i].item_image%>" /></a>
+      </div>
+      <p class="txt"><a href="<%= link%>" target="_blank"><%= rec_last[i].item_title%></a></p>
+      <p class="price_box">
+        <span class="price_red">¥<%= rec_last[i].price%></span>
+        <%if(rec_last[i].discount > 0){%>
+        <span class="price">¥<%= rec_last[i].original_price%></span>
+        <%}%>
+      </p>
+      <p><span><label class="time" time=<%= rec_last[i].time_unix%>>-天-小时-分-秒</label></span></p>
+    </li>
+    <%}%>
+  </ul>
+</div>
+<!--最后疯抢 结束-->
+<!-- 分类开始-->
+<div id="m_ca">
+<div class="f_container">
+<div class="c_content scrollout">
+    <div class="classify">
+        <ul class="c_menu">
+            <li <%= (!this.cata||this.cata <=0||this.cata>8 ||isNaN(this.cata))? 'class=\'tab_active\'' : ''%>><a class="link cicon <%= (!this.cata||this.cata <= 0|| this.cata>8 ||isNaN(this.cata))? 'light_all' : 'all';%>" href="
+           /tuan/<%=getLink({'cata':0,'sbase':this.sbase,'sort':this.sort})%>#m_ca"><span class="ctitle">全部</span></a></li>
+           <li class="split"><span></span></li>
+            <li <%= (this.cata === "1")? 'class=\'tab_active\'' : '';%>><a class="link cicon <%= (this.cata === "1")? 'light_cloth' : 'cloth';%>" href="/tuan/<%=getLink({'cata':1,'sbase':this.sbase,'sort':this.sort})%>#m_ca"><span class="ctitle">衣服</span></a></li>
+            <li class="split"><span></span></li>
+            <li <%= (this.cata === "4")? 'class=\'tab_active\'' : '';%>><a class="link cicon <%= (this.cata === "4")? 'light_shoes' : 'shoes';%>" href="/tuan/<%=getLink({'cata':4,'sbase':this.sbase,'sort':this.sort})%>#m_ca"><span class="ctitle">鞋子</span></a></li>
+            <li class="split"><span></span></li>
+            <li <%= (this.cata === "5")? 'class=\'tab_active\'' : '';%>><a class="link cicon <%= (this.cata === "5")? 'light_baobao' : 'baobao';%>" href="/tuan/<%=getLink({'cata':5,'sbase':this.sbase,'sort':this.sort})%>#m_ca"><span class="ctitle">包包</span></a></li>
+            <li class="split"><span></span></li>
+            <li <%= (this.cata === "7")? 'class=\'tab_active\'' : '';%>><a class="link cicon <%= (this.cata === "7")? 'light_jiaju' : 'jiaju';%>" href="/tuan/<%=getLink({'cata':7,'sbase':this.sbase,'sort':this.sort})%>#m_ca"><span class="ctitle">家居</span></a></li>
+            <li class="split"><span></span></li>
+            <li <%= (this.cata === "6")? 'class=\'tab_active\'' : '';%>><a class="link cicon <%= (this.cata === "6")? 'light_peishi' : 'peishi';%>" href="/tuan/<%=getLink({'cata':6,'sbase':this.sbase,'sort':this.sort})%>#m_ca"><span class="ctitle">配饰</span></a></li>
+            <li class="split"><span></span></li>
+            <li <%= (this.cata === "8")? 'class=\'tab_active\'' : '';%>><a class="link cicon <%= (this.cata === "8")? 'light_beauty' : 'beauty';%>" href="/tuan/<%=getLink({'cata':8,'sbase':this.sbase,'sort':this.sort})%>#m_ca"><span class="ctitle">美妆</span></a></li>
+        </ul>
+    </div>
+</div>
+
+<!--排序开始-->  
+ <div class="range">
+  <div class="er_l t_tuan"><span class="r_title">今日<label class="red">团购</label></span><span class="r_dec">共有<lable class="p_total"><%= this.tuan.data.totalNum%></lable>件优质商品，每天10点上新</span></div>
+      <ul>
+        <li <%if(this.sbase === "0"||!this.sbase){%> class="active"<%}%>><a href="/tuan/<%=getLink({'cata': this.cata})%>#m_ca">默认</a><span class="special">|</span></li>
+        <li<%if(this.sbase === "1"){%> class="active"<%}%>>
+          <a href="/tuan/<%=getLink({'cata': this.cata,'sbase':1,'sort':0})%>#m_ca">人气<i class="arrow_d">&nbsp;</i></a><span class="special">|</span>
+        </li>
+        <li<%if(this.sbase === "2"){%> class="active"<%}%>>
+          <a href="/tuan/<%=getLink({'cata': this.cata,'sbase':2,'sort':(this.sbase === "2"&&this.sort === "1")? 0 : 1})%>#m_ca">折扣<i class="<%= (this.sbase === "2"&&this.sort === "1")? 'arrow_t' : 'arrow_d';%>">&nbsp;</i></a><span class="special">|</span>
+        </li>
+        <li<%if(this.sbase === "3" || this.od === 'pcd'){%> class="active"<%}%>>
+          <a href="/tuan/<%=getLink({'cata': this.cata,'sbase':3,'sort':(this.sbase === "3" && this.sort === "1")? '0' : '1'})%>#m_ca">价格<i class="<%= (this.sbase === "3"&&this.sort === "1")? 'arrow_t' : 'arrow_d';%>">&nbsp;</i></a><span class="special">|</span>
+        </li>
+        <li<%if(this.sbase === "4"){%> class="active"<%}%>>
+          <a href="/tuan/<%=getLink({'cata': this.cata,'sbase':4,'sort':0})%>#m_ca">销量<i class="arrow_d">&nbsp;</i></a>
+        </li>
+      </ul>
+    </div> 
+        <div class="clear_f"></div>
+    <!--排序结束-->
+</div>
+</div>
+<!-- 分类结束-->
+<div class="main">
+	<%# tuan/tuan_body.html%>
+</div>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/tuan');
+_use:", this._JSstack , this._JSmods); %>
+<%# foot.html%>

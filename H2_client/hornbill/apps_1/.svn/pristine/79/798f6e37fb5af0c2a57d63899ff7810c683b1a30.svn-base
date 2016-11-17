@@ -1,0 +1,70 @@
+/**
+ * @fileoverview 首页 － 个性化推荐
+ * @requires zepto
+ * @author kehuang@meilishuo.com
+ * @date 2014-12-12
+ */
+
+@import "block.less";
+
+.frame;
+//.ios;
+
+.wrapper{
+	&.normal{
+		.mt(0);
+	}
+}
+
+.poster;
+.poster > ._pa;
+.poster_pa;
+
+.goods_wall{ 
+	figcaption{
+		.h(40*@px);
+		.pt(16*@px);
+		.price{
+			.left;
+			.fc(#f69);
+		}
+		.like{
+			.right;
+		}
+		.icon-heart{
+			.icon >.heart;
+		}
+	}
+	.goods_title{
+		.hidden;
+		.f(1.4rem);
+		.l(1.8rem);
+		.fc(#cacaca);
+		margin:0 5px 10px;
+		text-overflow:ellipsis;
+		display:-webkit-box;
+		-webkit-line-clamp:2;
+		-webkit-box-orient:vertical;
+		clear:both;
+	}
+}
+
+.pullUp{
+	.pullUpDown > .common;.pullUpDown > .loading;
+	&:before{
+		.nowrap;
+		.ml(-10px);
+	}
+	&[status="tap"]{
+		background:0 none;	
+		&:before{
+			content:"上拉查看更多..."	
+		}
+	}
+	&[status="stop"]{
+		background:0 none;	
+		&:before{
+			content:"木有了...";	
+		}
+	}
+}

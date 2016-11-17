@@ -1,0 +1,314 @@
+<%#head.html%>
+<%
+	var pageData = this.pageData || {};
+	pageData.bgNext=pageData.bgNext || {};
+	pageData.bgNext.time=pageData.bgNext.time || "";
+	pageData.rules=pageData.rules || {};
+	pageData.sale_text=pageData.sale_text|| "";
+	var slide_head_img = pageData.slideBannar || [];
+	var nav_tab = this.tab.data || {};
+	var discount_num = pageData.sale || 1;
+%>
+
+<div class="main">
+	<div class="header">
+		<div class="imageSlide" id="imageSlide">
+		 	<ul>
+			  	<% slide_head_img && slide_head_img.forEach(function(img, index){%>
+					<li><a href="javascript:;"><img src="<%=img.image_url%>"></a></li>
+				<% }); %>
+		  	</ul>
+		  	<div class="num"></div>
+		</div>
+	</div>
+	<% if(nav_tab.curr){ %>
+		<div class="free_msg">
+			<span class="dot">&bull;</span><%= pageData.sale_text %><div class="act_info_btn">卖场须知</div>
+		</div>
+		<% if(this.shop.data.length){ %>
+			<div class="coupon_wrap">
+				<span class="dot">&bull;</span>
+				<%
+					this.shop.data.forEach(function(coupons, index){
+				%>
+					<div class="coupons" type="<%= coupons.title %>" code="<%= coupons.coupon_apply_code %>"><%= coupons.title %><span>领取</span></div>
+				<% }); %>
+			</div>
+		<% } %>
+	<% } %>
+	<div class="nav_space"></div>
+	<div class="units_title mua_units_title">
+		<div class="countdown"> 
+			<%if(nav_tab.curr){
+				var now_time = new Date();
+				var lastDate = (new Date(nav_tab.curr.end_time) - now_time)/1000;
+				var isStart = new Date(nav_tab.curr.start_time) < now_time;
+				if(!isStart){ 
+			%>
+				<span>10点准时开售</span>
+				<% } else { %>
+					<p class="timeStamp_wrap" time="<%= lastDate %>"></p>
+				<% } %>
+			<% } else {
+				isStart = false;
+			%>
+				<span>下次抢购时间：<%= pageData.bgNext.time %></span>
+			<% } %>
+		</div>
+	</div>
+	<div class="nav">
+		<div class="nav_inner <%=  nav_tab.curr ? '' : 'nav_two' %>">
+			<% if(nav_tab.prev){ %>
+				<div class="nav_prev <%= nav_tab.curr ? '' : 'nav_active' %>" data="past_box">往期回顾</div>
+			<% } %>
+			<% if(nav_tab.curr){ %>
+				<div class="<%= nav_tab.prev ? 'tab_lb' : ''%> nav_active" data="current_box">本期上新</div>
+			<% } %>
+			<% if(nav_tab.next){ %>
+				<div class="tab_lb tab_next" data="next_box">下期预告</div>
+			<% } %>
+		</div>
+	</div>
+	<% if(nav_tab.prev){ %>
+		<div class="past_box <%= nav_tab.curr ? '' : 'active_box' %>">
+			<div id="prevBox9"></div>
+			<div class="scroll-btn-box">
+				<a href="javascript:;" class="btn"></a>
+				<a href="javascript:;" class="btn2"></a>
+			</div>
+			<div id="prevNormal"></div>
+			<div id="prevList"></div>
+		</div>
+	<% } %>
+	<% if(nav_tab.curr){ %>
+		<div class="current_box <%= nav_tab.curr ? 'active_box' : '' %>">
+			<%
+				var current_tab = nav_tab.curr;
+			%>
+			<div id="currBox9"></div>
+			<div class="scroll-btn-box">
+				<a href="javascript:;" class="btn3"></a>
+				<a href="javascript:;" class="btn4"></a>
+			</div>
+			<div id="currList"></div>
+			<div id="currNormal"></div>
+			<%= requireFn('wapShare.html')({
+				'share' : this.share 
+				, 'shareTitle' : '选择分享到'
+				, '_JSstack' : this._JSstack
+				, '_JSmods' : this._JSmods
+			}); %>
+		</div>
+	<% } %>
+	<% if(nav_tab.next){ %>
+		<div class="next_box">
+			<img src="<%= pageData.bgNext.bg %>">
+			<div class="remind_box">
+				<div class="remind_time mua_remind_time"><%= pageData.bgNext.time %></div>
+				<div class="remind_btn mua_remind_btn">提醒我</div>
+			</div>
+			<div id="nextNormal"></div>
+		</div>
+	<% } %>
+	<div class="act_info">
+		<div class="content">
+			<div class="close"><img src="http://d01.res.meilishuo.net/img/_o/72/39/4ab92a375f371f5dce6318c7f640_50_50.cc.png" alt="关闭"></div>
+			<h3>MUA卖场须知</h3>
+			<% pageData.rules.length && pageData.rules.forEach(function(rule, index){ %>
+				<p><%= rule.text %></p>
+			<% }); %>
+		</div>
+	</div>
+	<div class="gotop_wrap" style="bottom:40px">
+		<a class="gotop">
+			<img src="http://d06.res.meilishuo.net/img/_o/7e/72/241db918f700b1b3c6c33c5701a8_80_80.cf.png" />
+		</a>
+	</div>
+</div>
+<%
+	var now_time = new Date();
+	if(current_tab){
+		var curr_start = new Date(current_tab.start_time);
+		var curr_end = new Date(current_tab.end_time);
+		var box_title_text =
+				(curr_start.getMonth() + 1) + '/' + curr_start.getDate() + '<span> 10:00</span>';
+		if(curr_end - curr_start > 24*3600*1000){
+			if(curr_end.getHours() == 0){
+				curr_end.setDate(curr_end.getDate()-1);
+			}
+			box_title_text += ' - ' + (curr_end.getMonth() + 1) + '/' + curr_end.getDate() + '<span> 24:00</span>';
+		} else {
+			box_title_text += '<span> - 24:00</span>';
+		}
+	} else {
+		box_title_text = '01/01<span> 10:00</span> - 01/01<span> 24:00</span>'
+	}
+	var past_tab = nav_tab.prev;
+	if(past_tab){
+		var past_day = past_tab.end_time.split(' ')[0].replace('-', '/').replace('-', '/');
+	} else {
+		var past_day = '2014/01/01';
+	}
+%>
+<script type="text/html" id="nine_box">
+	<div class="nine_box">
+		<div class="box_inner">
+			<? var isPrev = this.isPrev; ?>
+			<? $.each(this.goods, function(index, goods){ ?>
+				<div class="goods" data="<?= goods.id ?>">
+					<? if(!goods.stock){ ?>
+						<div class="soldout"></div>
+					<? } else if(goods.stock < <%=pageData.stock%>){ ?>
+						<div class="last"><span><?= goods.stock ?>件</span></div>
+					<? } ?>
+					<div class="lazy_pic" asrc="<?= goods.cover ?>"></div>
+				</div>
+				<? if(index == 3){ ?><div class="goods"></div><? } ?>
+			<? }); ?>
+		</div>
+		<div class="box_title" data="10">
+			<div class="act_time">
+				<? if(!isPrev){ ?>
+					<%= box_title_text %>
+				<? } else { ?>
+					<%= past_day %>
+				<? } ?>
+			</div>
+		</div>
+	</div>
+</script>
+<script id="goods_units" type="text/html">
+	<div class="pro-title">
+		<p><?= this.isPrev?'往期回顾':'MUA首发最新款' ?></p>
+	</div>
+	<p class="pro-des"><?= this.isPrev?'当季新款·售完即止·时尚首发':'设计师推荐·当季新款·拒绝撞衫' ?></p>
+	<div class="goods_units">
+		<? $.each(this.goods, function(index, goods){ ?>
+			<a class="goods_item go_<?= goods.id ?>" href="<?= getAppLink(goods.id) ?>">
+				<? if(goods.stock == 0 || this.isPrev){ ?><div class="soldout"></div><? } else{ ?>
+					<div class="new_goods" style="background-image:url(<%= pageData.new_goods %>);"></div>
+				<? } ?>
+				<div class="lazy_pic" asrc="<?= goods.cover ?>"></div>
+				<? if(!this.isPrev && goods.stock && goods.stock < <%=pageData.stock%>){ ?><div class="sale_status">库存紧张 最后<?= goods.stock ?>件</div><? } ?>
+				<div class="goods_info">
+					<span class="goods_title"><?= mSubstr(goods.title, 8, '...') ?></span>
+					<? if(goods.sale_price){ ?>
+						<span class="price">￥<?= goods.sale_price ?></span>
+					<? } ?>
+					<? if(goods.price){ ?>
+						<del class="o_price">￥<?= goods.price ?></del>
+					<? } ?>
+					<? if(!this.isPrev){ ?>
+						<% if(!isStart){ %>
+							<span class="sale_time">10:00开售</span>
+						<% } %>
+					<? } ?>
+				</div>
+			</a>
+		<? }); ?>
+	</div>
+</script>
+<script type="text/html" id="normalBox">
+	<div class="pro-title">
+		<p>MUA精选热销款</p>
+	</div>
+	<p class="pro-des">随心百搭·做工精细·面料优质</p>
+	<div class="normal-box">
+		<ul class="<?= (this.goods.length%2)==0? 'even' : 'odd' ?>">
+			<? if(this.goods.length%2!=0){ ?>
+				<li style="margin-right:1%">
+					<img src="<%= pageData.normal %>" alt="">
+				</li>
+			<? } ?>
+			<? $.each(this.goods, function(index, goods){ ?>
+				<li class="go_<?= goods.id ?>">
+					<a href="<?= getAppLink(goods.id) ?>">
+						<img class="lazy_pic" asrc="<?= goods.pic ?>" alt="">
+						<p class="price">
+							<? if(goods.sale_price){ ?>
+								<span>￥<?= goods.sale_price ?></span>
+							<? } ?>
+							<? if(goods.price){ ?>
+								<del>￥<?= goods.price ?></del>
+							<? } ?>
+						</p>
+						<p class="goods_title"><?= mSubstr(goods.title, 8, '...') ?></p>
+						<p class="goods_sales">总销量：<?= goods.sales ?></p>
+					</a>
+				</li>
+			<? }); ?>
+		</ul>
+	</div>
+</script>
+<script type="text/html" id="coupon_alert">
+	<div class="mask">
+		<div class="coupon_alert">
+			<h3>领取成功</h3>
+			<p><?= this.type ?>在MUA品牌卖场通用哦，<span><img src="http://d05.res.meilishuo.net/img/_o/7c/63/417462e2d0d49342422e59b708ac_32_26.cc.png"></span>一个~</p>
+			<p class="use_time"><?= this.use_time ?></p>
+			<div class="close_btn"><span>知道了</span></div>
+		</div>
+	</div>
+</script>
+
+<script type="text/html" id="redmin_alert">
+	<div class="mask">
+		<div class="redmin_alert">
+			<p>设置成功啦，您将在MUA卖场每一场上新货前收到提醒噢，么么哒</p>
+			<div class="close_btn"><span>知道了</span></div>
+		</div>
+	</div>
+</script>
+
+<script type="text/html" id="coupon_error">
+	<div class="mask">
+		<div class="redmin_alert">
+			<p><?= this.msg ?></p>
+			<div class="close_btn"><span>知道了</span></div>
+		</div>
+	</div>
+</script>
+
+<script>
+	<%= current_tab ? 'fml.vars.curr_id="'+ current_tab.id + '";' : '' %>
+	<%= current_tab ? 'fml.vars.act_time_diff="'+ (new Date(current_tab.start_time) - new Date()) +'";' : '' %>
+	<%= nav_tab.prev ? 'fml.vars.prev_id="'+ nav_tab.prev.id +'";' : '' %>
+	<%= nav_tab.next ? 'fml.vars.next_id="'+ nav_tab.next.id +'";' : '' %>
+	fml.vars.out_url = '<%= pageData.out_url %>';
+	fml.vars.show_type = <%= this.show_type || 1 %>;
+	function getAppLink(tid){
+		if(!Meilishuo.config.os.mlsApp){
+			return '/share/item/'+tid;
+		} else {
+			return 'meilishuo://twitter_single.meilishuo?json_params='+encodeURIComponent(JSON.stringify({"twitter_info" : {"twitter_id":tid, "is_doota":1}, "r":Meilishuo.config.r}));
+		}
+	}
+	function getStringLengthArr(s , len){
+		var w = 0;
+		var time = 0;
+		for(length=s.length; time<length; ){
+			if(/[^\x00-\xff]/.test(s[time])){
+				w+=2;
+			}else{
+				w+=1;
+			}	
+			time ++;
+			if(w >= (len*2)){
+				break;
+			}
+		}
+		return time;
+	}
+	function mSubstr(str , len , pad){
+		if (!str || 0 == str.length) return '';
+		if (undefined == pad ) pad = '...';
+		len = getStringLengthArr(str , len);
+		return str.substr( 0 , len) + ((pad && str.length> len) ? pad : '');
+	}
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/mua/main');
+_use:", this._JSstack, this._JSmods); %>
+
+<%#foot_simple.html%>

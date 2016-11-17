@@ -1,0 +1,80 @@
+<%#head.html%>
+	<section class="wrapper">
+		<div class="r_box">
+			<label for="r_title" class="lbl">报告标题：</label>
+			<div class="txt_wrap">
+				<input type="text" class="r_txt" id="txtTitle" placeholder="产品名称(不能超过20个字)" />
+			</div>
+		</div>
+		<div class="r_box">
+			<h2 class="r_title">详细描述：
+			</h2>
+			<textarea id="txtCon" class="txt_area" placeholder="请详细描述产品的功能、样式、试用效果以及自己的使用心得。"></textarea>
+			<p class="r_subT">添加图片</p>
+			<ul class="imgList">
+				<li class="img_item" id="btnAddImg">
+					<img src="<%=this.PICTURE_URL%>images/m_welfare/wlf_icon_addImg.jpg" alt="添加图片" title="添加图片" class="" />
+				</li>
+			</ul>
+		</div>
+		<div class="r_box">
+			<h2 class="r_title">试用评分</h2>
+			<ul class="r_score" id="rScore">
+				<li>
+					<span class="r_st">外观评分</span><span class="star" id="appearance">
+						<b class="shut"></b>
+						<b class="shut"></b>
+						<b class="shut"></b>
+						<b class="shut"></b>
+						<b class="shut"></b>
+					</span>
+				</li>
+				<li>
+					<span class="r_st">功效评分</span><span class="star" id="effect">
+						<b class="shut"></b>
+						<b class="shut"></b>
+						<b class="shut"></b>
+						<b class="shut"></b>
+						<b class="shut"></b>
+					</span>
+				</li>
+				<li>
+					<span class="r_st">推荐程度</span><span class="star" id="recommentd">
+						<b class="shut"></b>
+						<b class="shut"></b>
+						<b class="shut"></b>
+						<b class="shut"></b>
+						<b class="shut"></b>
+					</span>
+				</li>
+			</ul>
+		</div>
+		<div class="wlf_apply">
+			<a class="apply_btn pink" href="javascript:void(0)" id="btnAddReport">确认提交</a>
+		</div>
+	</section>
+	<script type="text/html" id="dTips">
+		<div class="smallTips">
+			<?=this.tip?>
+		</div>
+	</script>
+	<script type="text/html" id="dialogTips">
+		<div class="dialog_box">
+			<div class="dialog_con dia_style3">
+				<p>
+					确定删除吗？
+				</p>
+				<span id="btnCancle">取消</span><span id="btnOk">确定</span>
+			</div>
+		</div>
+	</script>
+	<script>
+		fml.vars.isLogin = "<%= this.userInfo.user_id%>";
+		fml.vars.activity_id = '<%=this.active_id%>';
+	</script>
+	<%! $_ENGINE_SELF.callFn( "useModule")( "<<<_use:
+
+	fml.use('wap/page/welfare_new/wlf_subReport');
+
+_use:", this._JSstack , this._JSmods ); %>
+		<%#foot.html%>

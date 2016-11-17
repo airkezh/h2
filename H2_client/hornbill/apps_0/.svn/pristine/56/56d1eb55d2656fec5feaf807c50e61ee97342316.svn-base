@@ -1,0 +1,102 @@
+<%#head.html%>
+	<script> 
+            (function(win,doc){
+                var docel = doc.documentElement;
+                var meta = doc.querySelectorAll('meta[name=viewport]');
+                meta[0].setAttribute('content','width=device-width,user-scalable=no,initial-scale=1');
+                function recalc(){
+                    var width = docel.clientWidth;
+                    docel.style.fontSize = 100 * width/640+'px';
+                }
+                if(doc){
+                    recalc();
+                    win.addEventListener('orientationchange',recalc,false);
+                }else if (doc.addEventListener){
+                    doc.addEventListener('DOMContentLoaded', recalc, false);
+                }
+            })(window,document)
+     </script>
+</head>
+<%  
+    var classify = this.classify;
+    var shopNew = this.shopNew.data;
+    var banner = this.banner;
+%>
+<div class="wrap">
+    <div class="qualityWrap">
+        <div class="saler">
+            <span class="icon"  style="background-image:url('http://d02.res.meilishuo.net/pic/_o/09/9a/d60390afcdc486afee1d3f71fd60_38_36.ch.png');"></span>
+            <span>精选好店</span>
+        </div>
+        <div class="saler">
+            <span class="icon"  style="background-image:url('http://d02.res.meilishuo.net/pic/_o/2f/c9/9bc7534f30097c317e66747fbed3_39_37.ch.png');"></span>
+            <span>买手推荐</span>
+        </div>
+        <div class="saler">
+            <span class="icon"  style="background-image:url('http://d03.res.meilishuo.net/pic/_o/14/03/974fa8c2c46ccddb2db502d3bf6e_39_37.cf.png');"></span>
+            <span>专柜品质</span>
+        </div>
+    </div>
+    <%if( banner.data[0] ){%>
+    <div class="bannerwrap">
+        <img class="banner" data-xr="<%= banner.r %>" data-url="<%= banner.data[0].link %>" src="<%= banner.data[0].pic_url%>">
+    </div> 
+    <%}%>
+    <div class="contentWrap">
+        <div class="segmentation"></div>
+        <div class="designerShop">
+            <div class="classification">
+                <div class="selectWrap">
+                <% classify && classify.forEach(function(data,index){%>
+                <span class="classficationInfo select<%= index %>" data-key="<%= data.key %>" data-key="<%=data.key%>"><%= data.class %></span>
+                <% }) %>
+                </div>
+            </div>
+            <div class="goods_wall designerGoods" data-xr = "<%= this.class_list.r %>"></div>
+        </div>
+    </div>
+</div>
+
+<a class="gotop" style="bottom:<%if(this.isIphone){%>60<%}else{%>20<%}%>px">
+    <img class="img100" src="<%= this.PICTURE_URL%>/images/wap/tuan/gotop.png" />
+</a>
+<script type="text/html" id="posterWall">
+    <?  var data = this.v;
+    ?>
+
+    <div class="shopWrap" data-shopindex="<?= this.index ?>">
+        <div class="shopInfo">
+            <div class="desigerWrap">
+                <img class="designPortrait" data-shopid= "<?= data.shop_id ?>" src="<?= data.shop_face_img ?>"/>
+                <div class="designerInfo">
+                    <? if(data.shop_nick){ ?>
+                        <div class="designerNameWrap">
+                            <?= data.shop_nick ?>
+                        </div>
+                    <? } ?>
+                </div>
+            </div>
+            <div class="goodsWrap">
+                <? data.newest_goods && data.newest_goods.forEach(function(res ,index){ ?>
+                    <a class="goodsLink" data-tid="<?=  res.twitter_id ?>" data-posid=<?= index ?> >
+                        <img class="goods" src="<?= res.goods_img ?>"/>
+                        <div class="goodsInfo">
+                            <div class="goodsName"><?= res.goods_title.substring( 0 , 7) ?></div>
+                            <div class="goodsPrice">￥<?= res.goods_price.substring(0,res.goods_price.indexOf('.')) ?></div>
+                        </div>
+                    </a>
+                <? }); ?>
+            </div>
+            <div data-shopid="<?= data.shop_id ?>" class="visitShop">
+                <span>进店逛逛&nbsp;</span>
+                <img class="visitBig" src="http://d03.res.meilishuo.net/pic/_o/2b/d2/3eef528fcf7449b27137b12e2031_12_22.ch.png">
+            </div>
+            <div class="segmentation"></div>
+        </div>
+   </div>
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/wx_new/excellentShop');
+_use:", this._JSstack , this._JSmods); %>
+
+<%#foot_simple.html%>

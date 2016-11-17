@@ -1,0 +1,100 @@
+@import "common.import.less";
+body{.hidden;}
+.Icon(){.w(34px);.h(34px);background:url("@{pic_url}/images/im/win/login_icon.png") no-repeat;}
+.LoginBtn(){.w(260px);border: none;.h(44px);.l(44px);padding: 0;margin: 0;.bgred;.white;.f(18px);.cursor;}
+.InputWrapperCommon(){.border-1(@borderColor);.mt(15px);background-color: #fff;.hidden;
+	.icon{.left;.Icon();}
+	.err_tip{.right;.Icon();.bp(0,-34px);}
+	input{border: none;margin: 0;.l(14px);padding: 10px 0;.pl(3px);.left;}
+	&.warn{
+		.border-1(@red);
+		.err_tip{.bp(-142px,0);}
+	}
+}
+.main{.w(330px);.auto;background:url("@{pic_url}/images/im/win/login_bg.png") no-repeat 0 -30px #fdf1f1;.hidden;.h(471px);
+	.logo_wrapper{.h(186px);.pr;
+		.logo{.w(119px);.h(98px);.ml(113px);.mt(5px);.mb(5px); background:url("@{pic_url}/images/im/win/logo2.2.png") no-repeat;
+			background-size: 100%; /*.Animate(mymove,1s,ease-out);*/.pr;
+			@-webkit-keyframes mymove
+			{
+				0%{transform:scale(0);}
+				100%{transform:scale(1);}
+			}
+		}
+		.user_avatar{.none;.mt(5px);.mb(5px);.auto;.w(98px);.h(98px);.pr;.c;.l(96px);
+			img{border:none;.border-r(50%);.w(84px);.h(84px);vertical-align: middle;}
+			.ani_border{.w(96px);.h(96px);.border-1(#f69);.border-r(50%);.pa;top:50%;left:50%;margin-top: -50%;margin-left: -50%;opacity:0.5;.none;
+				.Animate(userHeadAni,1s,ease-in,0s,infinite,alternate);
+			}
+			@-webkit-keyframes userHeadAni
+			{
+				0%{.Transform(scale(1));}
+				100%{.Transform(scale(0.9));}
+			}
+		}
+		.title{.w(44px);.h(21px);.auto;background:url("@{pic_url}/images/im/win/title.png") no-repeat;.Animate(titleAnimate,1.5s);background-size: 100%;
+			@-webkit-keyframes titleAnimate
+			{
+				0%{opacity: 0;}
+				66%{opacity: 0;}
+				100%{opacity: 1;}
+			}
+		}
+	}
+	.input_wrapper{padding: 0 34px;.Animate(formAnimate,0.5s);
+		.username_wrap{.InputWrapperCommon();.mt(0px);.pr;
+			.icon{.bp(0,0);}
+			input{.w(188px);}
+			.userlist_btn{.pa;.w(8px);.h(8px);right: 30px;top: 10px;.cursor;.none;padding: 5px;
+				.btn_icon{border: 4px solid transparent;border-top-color: #ccc;}
+			}
+		}
+		.password_wrap{.InputWrapperCommon();
+			.icon{.bp(-35px,0);}
+			input{.w(188px);}
+		}
+		.checkcode_wrap{.InputWrapperCommon();
+			.icon{.bp(-70px,0);}
+			input{.w(95px);}
+			.fresh_check_code{.right;.Icon();.bp(-106px,1px);.cursor;.Transition();
+				&:hover{.Transform(rotate(180deg));}
+			}
+			.check_code_wrapper{.left;.w(93px);.h(34px);border-right: 1px solid @borderColor;}
+		}
+		.err_wrapper{.h(28px);
+			.error_txt{.l(28px);.red;}
+		}
+		.btn_wrap{.c;
+			input[type=submit]{.LoginBtn();}
+		}
+		.save_wrap{.mb(18px);
+			label{.l(20px);
+				input{.left;}
+				span{.left;.ml(3px);}
+			}
+		}
+		.other_wrap{.l(32px;);
+			.forgot_pass{.fc(#ccc);}
+		}
+		@-webkit-keyframes formAnimate
+		{
+			0% {opacity: 0;}
+			50%{opacity: 0;}
+			100% {opacity: 1;}
+		}
+	}
+	.on_login,.on_timeout{.c;.pb(32px);.none;
+		.img_wrapper{.l(157px);}
+		input[type=button]{.LoginBtn();}
+	}
+}
+#user_list{.none;.pa;.w(260px);border: 1px solid #e6e6e6;.bgwhite;z-index: 10;
+	li{border-top: 1px solid #e6e6e6;.mt(-1px);.l(36px);.cursor;
+		img{.w(24px);.h(24px);.border-r(2px);vertical-align: middle;.ml(5px);.mr(10px);}
+		.del_btn{.right;.fc(#999);.mr(10px);.none;}
+		&:hover{.red;
+			.del_btn{.block;}
+		}
+	}
+}
+

@@ -1,0 +1,84 @@
+@import "../block.less";
+@im_gray : #f2f0f0;
+body{.bgc(#fff);}
+.im_right{.auto;
+	// border-left:1px solid #e6e6e6;
+	// border-right:1px solid #e6e6e6;
+	.w(240px);right:0px;.bgwhite;overflow:auto;
+}
+.introBox{.hidden;.h(420px);
+	.Box(){.pl(10px);.pr(10px);}
+	.intro{
+		&_tab{
+			.bgwhite; .border-bc(solid); .h(40px); .l(40px);
+			li{ .c; .left; .cursor; .f(14px); .fb; .w(79px); }
+			.act{ .gradient-linear(#f8f1f4,0%, #fbf8f9,40%, #fff,100%); .h(41px); .ml(-1px); 
+				border-right: 1px solid #e6e6e6; border-left: 1px solid #e6e6e6;
+			}
+		}
+		&_list{.w(300%);
+			.list{
+				&_goods, &_shop, &_order{
+					.w(100% / 3);.left;
+					.pt(10px);.pb(10px);
+				}	
+			}
+			.def{.pl(10px);.pr(10px);}
+		}
+	}
+	.goods_box { padding: 20px 30px 0 30px;
+		.goods_img { .c; .block; .hidden; .h(255px); .w(180px); }
+		.price { .red; .f(18px); .fb; .pt(5px); }
+		.title { .pt(10px); .l(18px); }
+	}
+
+	.order_box,.shop_box{.Box();}
+	.order_all{.l(36px);
+		samp{.ml(4px);}
+	}
+	.list_order{
+		h4{.ml(10px);}
+		.goods_img{.w(70px);.h(70px);}
+		li{.border-1(#e6e6e6);.ml(10px);.mr(10px);.mt(6px);
+			.order_header,.order_footer{.bgc(#f5f2f2);.pl(10px);}
+			.order_header{.l(24px);
+				.order_num{.red;text-decoration: underline;}
+			}
+			.order_footer{.l(22px);}
+			.order_content{.hidden;.pt(6px);.pb(6px);
+				.o_img_wrapper{.left;.w(70px);.ml(10px);}
+				.o_txt_wrapper{.right;.w(120px);.mr(10px);.l(18px);
+					.goods_title{.h(36px);}
+					.goods_sku{.fc(#bdbdbd);white-space: nowrap;.hidden;text-overflow:ellipsis;.w(120px);}
+				}
+			}
+		}
+		.has_no_order{.pt(180px);.pb(100px);.f(14px);.fb;.c;background: url("@{pic_url}/images/wap/web/im/no_order.png") no-repeat center 40px;}
+	}
+	.shop_name{
+		background: url("@{pic_url}/images/shop/shop_tle.png") no-repeat left center;
+		.pl(25px);.l(20px);.h(20px);
+		.f(16px);.fb;
+		.ellipsis;
+	}
+
+	.star_wrapper{
+		.shopStar;	
+	}
+	.shop_con{
+		.mt(10px);.l(23px);
+		.shop_con_l{.pr(45px);.left;
+			span{ .fc(#f69); .fb;}
+		}
+		.shop_con_m{.left; 
+			.redlevbtn, .grenlevbtn, .yellevbtn{.white; .left; .h(19px); .l(19px); .ml(0); .pl(4px); .pr(4px); .mr(10px); .common_button; .common_button > .common;cursor:auto;}
+			.redlevbtn{ .bgc(#ff4040);}
+			.grenlevbtn{ .bgc(#b6cc00);}
+			.yellevbtn{ .bgc(#f93);}
+		}
+		.shop_con_r{
+			.border-tc(dotted);
+			.pt(10px);.mt(10px);
+		}
+	}
+}

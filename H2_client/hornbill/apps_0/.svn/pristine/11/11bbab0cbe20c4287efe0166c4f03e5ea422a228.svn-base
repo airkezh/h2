@@ -1,0 +1,130 @@
+@import "../block";
+
+html {
+  font-size : 62.5%; /* 10/16 = 62.5% */
+}
+
+@media (-webkit-min-device-pixel-ratio : 1.5), (min-resolution : 1.5dppx) {
+  html {
+    font-size : 33.33333333%;
+  }
+
+  @media (max-width : 500px) {
+    html {
+      font-size : 31.25%;
+    }
+  }
+}
+
+@media (-webkit-min-device-pixel-ratio : 2), (min-resolution : 2dppx) {
+  html {
+    font-size : 31.25%; /* 5/16 = 31.25% */
+  }
+}
+
+@media (-webkit-min-device-pixel-ratio : 3), (min-resolution : 3dppx) {
+  html {
+    font-size : 20.8333333333%; /* 10/48 = 20.8333333% */
+  }
+}
+
+body {
+  background-color : #f8f8f8;
+}
+
+.main {
+  overflow : hidden;
+}
+
+.is-empty {
+  margin-top  : 3rem;
+  font-size   : 3rem;
+  line-height : 2;
+  text-align  : center;
+}
+
+.circle {
+  -webkit-box-sizing : border-box;
+  -moz-box-sizing    : border-box;
+  box-sizing         : border-box;
+  display            : inline-block;
+  width              : 49%;
+  margin-bottom      : 1.4rem;
+  padding            : 1.6rem;
+  background-color   : #fff;
+}
+
+.left {
+  float : left;
+}
+
+.right {
+  float : right;
+}
+
+.avatar {
+  display       : inline-block;
+  width         : 5rem;
+  height        : 5rem;
+  border-radius : 50%;
+  vertical-align: middle;
+}
+
+.circle-info-wrap {
+  display       : block;
+  margin-bottom : 1.4rem;
+}
+
+.circle-info {
+  width         : 65%;
+  display       : inline-block;
+  vertical-align: middle;
+  margin-left   : 10*@px;
+}
+
+.circle-name {
+  display       : block;
+  padding       : 0 0 .6rem;
+  color         : #635a60;
+  font-size     : 2.4rem;
+  .ellipsis;
+}
+
+.circle-data {
+  display   : inline-block;
+  padding   : .4rem 0 0;
+  font-size : 1.8rem;
+  color     : #ccc2c9;
+  .ellipsis;
+}
+
+.list { .f(0); }
+
+.item {
+  display             : inline-block;
+  width               : 48%;
+  margin-bottom       : 2%;
+  background-position : 50%;
+  background-size     : cover;
+
+  &:nth-child(even) {
+    margin-left : 2%;
+  }
+
+  &:nth-child(odd) {
+    margin-right : 2%;
+  }
+}
+
+.blank {
+  padding-top      : 50%;
+  background-color : #f8f8f8;
+}
+
+@import "../component/loading";
+@import "../component/gotop";
+
+.gotop-wrap {
+  bottom:100*@px;
+}
+

@@ -1,0 +1,92 @@
+<%# head_wap.html%>
+<% 
+	this.headName = '绑定手机号'; 
+	var headTag = this.headTag;
+	var isNewest = !this.os.iphone || this.appVersion;
+	var userInfo = this.userInfo || ''
+%>
+
+<fieldset class="bindMobile">
+	<% if(headTag == 'bind_mobile_bind' || headTag == ''){%>
+		<form id="bindMobileForm" method="post" onsubmit="return false" action="">
+			<legend>美丽说绑定手机表单</legend>
+			<%if(!userInfo.mobile_is_actived > 0 || userInfo.mobile == 0){%>
+				<h2 class="title">请先绑定手机号</h2>
+			<%}%>
+			<div class="form-wrap">
+				<p class="form-list">
+					<label for="mobile">手机号</label>
+					<input class="lipt l_ipt" placeholder="请输入手机号" maxlength="11" autocomplete="off" id="mobile" name="mobile" type="tel" value="<%=(userInfo.mobile_is_actived > 0 && userInfo.mobile != 0) ? userInfo.mobile.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2'):""%>" <%=(userInfo.mobile_is_actived > 0 && userInfo.mobile != 0) ? "disabled":""%> />
+					<%if(userInfo.mobile_is_actived > 0 || userInfo.mobile == 0){%>
+						<a class="change" id="changeBtn">
+							<input type="submit" value="更  换" class="s_button s_button_change" />
+						</a>
+					<%}%>
+				</p>
+				<% if(!userInfo.mobile_is_actived > 0  || userInfo.mobile == 0){%>
+					<p class="form-list">
+						<label for="code">验证码</label>
+						<input class="lipt l_ipt" autocomplete="off" id="code" name="code" type="text" value=""  placeholder="请输入验证码"/>
+						<% if(!userInfo.mobile_is_actived > 0 || userInfo.mobile == 0){%>
+							<input class="s_button" type="submit" name="send_code" id="send_code" value="发送验证码" />
+						<%}%>
+					</p>
+					<div class="setPasswordErrorMessageLine"></div>
+				<%}%>
+			</div>
+			<% if(!userInfo.mobile_is_actived > 0  || userInfo.mobile == 0){%>
+				<div class="submitBox">
+					<span class="bindErrorMessage" style="display:none;"></span>
+					<input id="send_bind" name="send_bind" class="ext_submit" type="submit" value="立即绑定"/>
+				</div>
+			<%}%>
+		</form>
+	<%} else if(headTag == 'bind_mobile_change'){%>
+		<div class="current">
+	 		<h2>当前手机号：<%= userInfo.mobile.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2')%></h2>
+	 		<p class="changeTips" id="changeTips">换绑前，为确保帐号安全，需验证原手机号</p>
+		</div>
+		<form id="bindMobileForm" method="post" onsubmit="return false" action="">
+			<div class="form-wrap">
+				<p class="form-list">
+					<label id="protel" for="mobile">原手机号</label>
+					<input class="lipt l_ipt lipt_length" autocomplete="off" id="mobile" name="mobile" type="tel"  placeholder="输入要更换的手机号码" value="<%=(userInfo.mobile_is_actived > 0 && userInfo.mobile != 0) ? userInfo.mobile.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2'):""%>" <%=(userInfo.mobile_is_actived > 0 && userInfo.mobile != 0) ? "disabled":""%> />
+				</p>
+				<p class="form-list">
+					<label for="code">验证码</label>
+					<input class="lipt l_ipt" autocomplete="off" id="code" name="code" type="text" value="" placeholder="输入验证码"/>
+					<input class="s_button" type="submit" name="s_code" id="s_code" style="" value="发送验证码" />
+					<input class="s_button2" type="submit" name="s_code2" id="s_code2" style="display:none" value="发送验证码" />	
+				</p>
+			</div>
+			<div class="setPasswordErrorMessageLine"></div>
+			<div class="submitBox">
+					<span class="bindErrorMessage" style="display:none;"></span>
+					<input id="send_next" name="s_bind" class="ext_submit" type="submit" value="下一步"/>
+					<input id="change_bind" name="change_bind" class="ext_submit" type="submit" style="display:none;" value="下一步"/>
+				</div>
+		</from>
+		<div class="declaration">
+			<p>
+				说明：
+			</p>
+			<p>
+				1、修改绑定手机后，原手机号不能用于登录。</br>你可以使用更换后的手机号进行登录。
+			</p>
+			<p>
+				2、若因手机号丢失无法进行验证，请联系美丽说客服
+			</p>
+			<p>
+				<a href="tel:4000-800-577">
+					美丽说客服电话：<span>4000 - 800 - 577</span>
+				</a>
+			</p>
+		</div>	
+	<%}%>
+</fieldset>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/bindMobile');
+	fml.use('wap/page/global');
+_use:", this._JSstack , this._JSmods); %>
+<%# foot_simple.html%>

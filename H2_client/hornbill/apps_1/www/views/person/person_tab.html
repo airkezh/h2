@@ -1,0 +1,22 @@
+<%
+var query = this._Request_query;
+var getLink = _extFn.getLink;
+%>
+<div class="s_p_tabs">
+	<div class="tabs_con">
+		<ul class="list">
+			<li <%if(query.type == 'book' || !query.type){%>class="red_f"<%}%>><a href="<%=getLink({'type' : 'book' , 'page' : '0'} , query)%>"><%= this.userInfo.user_id == this.uid ? '我' : this.user_list.nickname %>的美丽说</a></li>
+			<li <%if(query.type == 'editor'){%>class="red_f"<%}%>>
+				<a href="<%=getLink({'type' : 'editor' , 'page' : '0'} , query)%>" target="_self"><%= this.second_menu.editorNum%>杂志</a>
+			</li>
+			<li <%if(query.type == 'share'){%>class="red_f"<%}%>><a href="<%=getLink({'type' : 'share' , 'page' : '0'} , query)%>"><%= this.second_menu.shareNum%>分享</a></li>
+			<li <%if(query.type == 'like'){%>class="red_f"<%}%>><a href="<%=getLink({'type' : 'like' , 'page' : '0'} , query)%>"><%= this.second_menu.likeNum%>喜欢</a></li>
+			<li <%if(query.type == 'follow'){%>class="red_f"<%}%>><a href="<%=getLink({'type' : 'follow' , 'page' : '0'} , query)%>"><%= this.second_menu.followNum%>关注杂志</a></li>
+			<%if(this.clubTest && this.clubTest.canAccess == 1){%>
+			<li><a href="<%=getLink({'type': 'topic', 'page': '0'}, query)%>"><%=this.club_total.totalNum||0%>晒单</a></li>
+			<%}%>
+			<li class="<%if(query.type == 'shop'){%>red_f<%}%> last"><a href="<%=getLink({'type': 'shop', 'page': '0', 'user_id' : this.uid}, query)%>"><%= this.person_shop.totalNum||0%>关注店铺</a></li>
+		</ul>
+		<div class="clear_f"></div>
+	</div>
+</div>

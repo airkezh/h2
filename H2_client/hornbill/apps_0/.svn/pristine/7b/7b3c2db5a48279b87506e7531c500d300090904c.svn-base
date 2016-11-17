@@ -1,0 +1,139 @@
+@import "../block.less";
+body{
+	.bgc(#FFFFFF);
+	.f(0.26rem);
+}
+.wrap{
+	.scrollWrap{
+		background: url('http://d05.res.meilishuo.net/pic/_o/00/82/da447e5133265f7867000ead9632_750_220.cj.png') no-repeat;
+		background-size: 100%;
+		background-color:#FF416B;
+		.title{
+			.pt(0.3rem);
+			.fc(#FFFFFF);
+			.c;
+		}
+		.likeGoodsWrap{
+			overflow: hidden;
+			.w(100%);
+			.h(1.7rem);
+		}
+		.likeGoods{
+			.w(100%);
+			overflow: scroll;
+			-webkit-overflow-scrolling: touch;
+			-moz-overflow-scrolling: touch;
+			-o-overflow-scrolling: touch;
+			-ms-overflow-scrolling: touch;
+			overflow-scrolling: touch;
+			overflow: scroll;
+			.pl(0.3rem);
+			.pt(0.3rem);
+			.pb(0.35rem);
+			ul{
+				.w(5000px);
+				overflow: visible;
+				li{
+					.left;
+					.w(1.35rem);
+					a{
+						clear: both;
+					}
+					img{
+						.w(1.15rem);
+						.h(1.15rem);
+					}
+				}
+			}
+		}
+	}
+	.goodsWrap{
+		.recGoods{
+			padding: 0.3rem 0;
+			.c;
+			.f(0.3rem);
+			.fc(#333333);
+		}
+		.waterFall{
+			overflow: hidden;
+			// .pl(0.1rem);
+			.recGoods{
+				.c;
+			}
+			.goodsInfo{
+				.left;
+				.w(3.6rem);
+				.pr(0.1rem);
+				img{
+					.block;
+					.w(3.6rem);
+					.h(4.65rem);
+					opacity: 0;
+				}
+				.goodsName{
+					.pt(0.35rem);
+					.pb(0.2rem);
+					.c;
+					.fc(#666666);
+				}
+				.priceWrap{
+					overflow: hidden;
+					margin: 0 auto;
+					.pb(0.45rem);
+					.w(2.4rem);
+					.price{
+						.left;
+						.fc(#FF799A);
+					}
+					.like{
+						.ml(0.32rem);
+						.pl(0.28rem);
+						.left;
+						background: url('http://d05.res.meilishuo.net/pic/_o/89/a0/91b080e4b4f83d34b12402a5adb1_38_35.cj.png') no-repeat;
+						background-size: 0.22rem;
+						background-position: center left;
+						.fc(#666666);
+					}
+				}
+			}
+		}
+	}
+}
+.loading{
+	.pullUpDown > .common;.pullUpDown > .loading;
+	.w(.4rem);
+	.h(.4rem);
+	background-size: 100%;
+	&:before{
+		.nowrap;
+		.ml(-.1rem);
+	}
+	&[status="tap"]{
+		background:0 none;	
+	}
+	&[status="stop"]{
+		background:0 none;	
+	}
+}
+.more{
+	.pullUp > .pullUp;
+	.l(20px);
+	.w(2rem);
+	.h(0.4rem);
+	margin: 0 auto;
+	background-size: 100%;
+	&[status="tap"]{
+		background:0 none;	
+		&:before{
+			content:"上拉看更多...";	
+		}
+	}
+	&[status="stop"]{
+		background:url('http://d04.res.meilishuo.net/pic/_o/86/4f/4ac3de09751d53b935b1b047ef17_350_236.cj.png') no-repeat;
+		background-size: 100%;
+		padding: 0.7rem 0;
+		&:before{
+			content:"";	
+		}
+	}
+}

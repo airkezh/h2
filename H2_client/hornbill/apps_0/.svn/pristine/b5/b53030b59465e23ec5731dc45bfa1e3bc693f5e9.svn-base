@@ -1,0 +1,41 @@
+<%# head.html %>
+
+<%= requireFn('block/page_head.html')({
+	'pageTitle' : '我的优惠券'
+	, 'right_type' : 'coupon'
+	, 'xr' : this.xr
+	, '_JSstack' : this._JSstack
+	, '_JSmods' :  this._JSmods
+}); %>
+
+<div class="coupon_tabs">
+	<a data-type="0" class="active" href="javascript:void(0);">全部</a>
+	<a data-type="2" href="javascript:void(0);">店铺券</a>
+	<a data-type="1" href="javascript:void(0);">全场券</a>
+</div>
+<div class="coupon_list">
+</div>
+
+<%# block/wap_foot.html %>
+
+<script type="text/html" id="coupons">
+<?
+$.each(this, function(k, v){
+	var type = (v.coupon_type == 1 || v.coupon_type == 3) ? 'platform' : 'shop';
+	var status = v.status == 'expired' ? 'expired' : (v.status == 'used' ? 'used' : 'available');
+	?>
+	<div class="item <?= type?>">
+		<div class="<?= status?>">
+			<div class="info"><span class="flex"><?= v.show_title?></span><span class="price">￥<strong><?= v.credit?></strong></span></div>
+			<p class="desc"><?= v.remark.length >8 ? v.remark.substring(0,8) + '...' : v.remark?><span><?= v.count?>张</span></p>
+			<p class="date"><?= v.start_time?>~<?= v.expire_time?></p>
+		</div>
+	</div>
+<?});?>
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/coupon_list');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot.html %>

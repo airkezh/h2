@@ -1,0 +1,58 @@
+<%#head.html%>
+	<div class="main">
+		<div class="punch_top" style="background-image:url(<%= this.punch_work && this.punch_work.topSrc %>)">
+		</div>
+		<div class="punch_num" style="background-image:url(<%= this.punch_work && this.punch_work.signBgSrc %>)">
+			<% if(this.user_name != ''){ %>
+				<div class="user_msg">亲爱的<span class="punch_username"><%= this.user_name %></span>，你已签到<span><%= this.punch_num %></span>天！</div>
+			<% } else { %>
+				<div class="user_msg">每日签到版</div>
+			<% } %>
+			<div class="punch_wrap_h"><div class="punch_preS_wrap" style="width:<%= this.prev_width || 0 %>"><div class="punch_preS" style="background-image:url(<%= this.punch_work && this.punch_work.signSrc %>)"></div></div></div>
+		</div>
+		<div class="punch_log" style="background-image:url(<%= this.punch_work && this.punch_work.loginSrc %>)">
+			<a class="punch_msg punch_login" href="javascript:void(0)"><%= this.punch_msg.msg%></a>
+		</div>
+		<div class="clear"></div>
+		<div class="punch_goods_recommend">
+			<div class="punch_goods_title" style="background-image:url(<%= this.punch_work && this.punch_work.goodsTSrc %>)"></div>
+		<% this.punch_work && this.punch_work.goods.length && this.punch_work.goods.forEach(function(goods){%>
+			<a class="outer" >
+				<% 
+				var date = goods.date,
+					isOut = false
+				if (date && new Date() > new Date(date)) isOut = true
+				
+				var src = isOut ? goods.nImg : goods.pImg
+				var showLink = isOut && goods.link
+				%>
+				<% if (showLink) {%>
+					<a href="<%= goods.link%>">
+				<%}%>
+				<img src="<%= src %>" alt="">
+				<% if (showLink) {%>
+					</a>
+				<%}%>
+			</a>
+		<%});%>
+		</div>
+	</div>
+
+	<script>
+		Meilishuo.config.punch_num = <%= this.punch_num %>;
+		Meilishuo.config.isPunch = <%= this.isPunch %>;
+		Meilishuo.config.isLogin = <%= this.isLogin %>;
+		Meilishuo.config.access_token = '<%= this.access_token %>';
+	</script>
+	<%= requireFn('wapShare.html')({
+		'share' : this.share
+		,'shareID' : 'punch'
+		, 'shareTitle' : '选择分享到：'
+		, '_JSstack' : this._JSstack
+		, '_JSmods' : this._JSmods
+	}); %>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/punch');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

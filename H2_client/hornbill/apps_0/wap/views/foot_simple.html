@@ -1,0 +1,40 @@
+<%# block/dialog.html %>
+
+<%= (function(link, jsmods){
+		var str = '';
+		var SVERSION = this.SVERSION;
+		var base = this.M_JCSTATIC_BASE;
+
+		link && link.map(function(src){
+			str += '<script src="' + src + '?' + SVERSION + '"></script>';
+		});
+		if(jsmods.length){
+			jsmods = '~' + jsmods.join('+');
+			str += '<script src="' + base + jsmods + '?' + SVERSION + '"></script>';
+		}
+		return str;
+	})(this._JSLinks, this._JSmods);
+%>
+
+<script>
+	<%= this._JSstack && this._JSstack.length ? this._JSstack.join(";\n") : '' %>
+	<%= this.JS_Defer ? ';fml.iLoad();' : '' %>
+</script>
+
+<% if(this.isMainSite){ %>
+	<%
+		var ga_id = 'UA-65796235-1';
+		var ga_os = this.os;
+		if(ga_os.mlsApp || ga_os.weixinBrowser || ga_os.mobileQQ){
+			ga_id = 'UA-66656481-1';
+		}
+	%>
+	<script type="text/javascript">
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+		ga('create', '<%= ga_id %>', 'auto');
+		ga('send', 'pageview');
+	</script>
+<% } %>
+
+</body>
+</html>

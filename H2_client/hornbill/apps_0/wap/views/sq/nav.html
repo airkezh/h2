@@ -1,0 +1,26 @@
+<%
+	var navData = [
+		{ txt: '精选', link: '/sq/handpick/' },
+		{ txt: '团购', link: '/sq/tuan/' },
+		{ txt: '分类', link: '/sq/category/' },
+		{ txt: '个人', link: '/sq/userCen/'}
+	];
+%>
+
+<nav class="nav-of-mall">
+	<% 
+		navData.forEach(function (item, index){
+			var classname = 'nav-item';
+
+			if(index == this.index){
+				classname += ' active-' + index; 
+			}
+	%>
+	
+	<a href="<%= item.link %>" class="<%= classname %>">
+		<span class="nav-item-icon"></span>
+		<h1 class="nav-item-text"><%= item.txt %></h1>
+	</a>
+	<% }); %>
+</nav>
+<div class="nav-placeholder"></div>

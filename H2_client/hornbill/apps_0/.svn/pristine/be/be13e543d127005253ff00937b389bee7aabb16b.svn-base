@@ -1,0 +1,32 @@
+<%* 优惠券模块，需要引用对应的less文件 *%>
+<%* 测试页面： 'http://m.meilishuo.com/share/item/2919202374' *%>
+
+<div class="fix_coupon slide_bottom_out">
+	<div class="black_mask"></div>
+	<div class="fix_coupon_wrap">
+		<div class="title">店铺优惠券<span class="close">&nbsp;</span></div>
+		<div class="coupons">
+			<% this._coupons.forEach(function(coupon){ %>
+				<%
+					var get_btn_text = '领取';
+					var status_class = 'can_get';
+					if(coupon.can_apply_status == 1 || coupon.can_apply_status == -1){
+						get_btn_text = '已抢光';
+						status_class = 'has_over'
+					} else if(coupon.can_apply_status == 2){
+						get_btn_text = '已领取';
+						status_class = 'has_get'
+					}
+				%>
+				<div class="coupon"><span class="desc"><%= coupon.title %></span><span class="get_btn <%= status_class %>" data-code="<%= coupon.coupon_apply_code %>"><%= get_btn_text %></span></div>
+			<% }); %>
+			<div class="ps"><span>注：店铺优惠券可与平台优惠券叠加使用</span></div>
+		</div>
+		<div class="get_all">
+			<a href="/coupon/list/" xr="<%= this.xr.r %>"><div class="get_all_btn">查看我的券</div></a>
+		</div>
+	</div>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/block/coupon');
+_use:", this._JSstack , this._JSmods);%>

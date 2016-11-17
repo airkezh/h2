@@ -1,0 +1,43 @@
+
+<script type="text/html" id="posterWall">
+<?
+var pt = this.pt * 100;
+if(!pt){
+	pt = (this.v.pic_height / this.v.pic_width) * 100;
+}
+?>
+<li class="goods_li poster_grid">
+	<div class="li_border">
+		<a style="padding-top:130%; background-repeat: no-repeat;" asrc="<?=this.v.goods_img?>" href="<?if(this.v.show_type){?> <?=this.v.direct_open_url || '' ?> <?}else{?>/wx/detail?tid=<?= this.v.twitter_id?>&d_r=<?= this.v.d_r?><?};?>&ad_tag=<?= this.v.ad_tag || ''?>" class="list_img pic_load">
+		</a>
+		<span class="goods_type">
+			<? this.v.mark && this.v.mark.map(function(data, idx){?>
+				<img style="width:<?= data.img_width/100 ?>rem" src="<?= data.img_url?>"/>
+			<?});?>
+		</span>
+
+		<?if(!this.v.show_type){?>
+			<div class="list_info">
+				<?if(this.v.buying_point){?>
+					<p class="sell_title"><?= this.v.buying_point?></p>
+				<?};?>
+				<p class="list_title"><?= this.v.goods_title?></p>
+				<?if(1){?>
+				<p class="list_cost">
+					<span class="money_now"><?= this.v.discount_price?></span>
+					<span class="sell-num">已出售2000件</span>
+				</p>
+				<?}else{?>
+				<p class="list_cost">
+					<span class="money_now"><?= this.v.discount_price?></span>
+					<span class="money_old"><?= this.v.original_price?></span>
+					<span class="discount">3.8折</span>
+					<a class="go-buy" href="/wx/detail?tid=<?= this.v.twitter_id?>&d_r=<?= this.v.d_r?>">立即购买</a>
+				</p>
+				<?};?>
+			</div>
+		<?};?>
+	</div>
+</li>
+
+</script>

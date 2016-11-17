@@ -1,0 +1,156 @@
+<%# head_simple.html%>
+	<%	
+	var welcome = this.welcome || {};
+	var error_code = welcome.error_code;
+
+if(error_code == 0){
+	var arrFriend = welcome.data.assistant;
+	var role = welcome.data.role;
+	var status = welcome.data.originator.fin_status;
+	var have_origed = welcome.data.have_origed;
+	var originatorId = welcome.data.originator.user_id;
+	var extra = welcome.data.extra;
+	var award_id=welcome.data.extra[0].award_id
+	var is_app=welcome.data.originator.is_app;
+	if(award_id==489){
+		var discount=50;
+	}else if(award_id==487){
+		var discount=25;
+	}else if(award_id==485){
+		var discount=10;
+	}else if(award_id==477){
+		var discount=10;
+	}else if(award_id==475){
+		var discount=5;
+	}
+}else{
+	var arrFriend = [];
+	var role = '';
+	var status = '';
+	var have_origed = '';
+	var originatorId = '';
+	var extra = [];
+	var award_id=0;
+	var is_app=-1;
+	var discount=0;
+}
+%>
+		</head>
+
+		<body>
+			<div class="award_main">
+				<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/out.png" class="lh_out" />
+				<%if(award_id==0){%>
+					<div class="award_no">
+						<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/icon_no_award.png" class="icon_no_award" />
+						<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/award_no_bg_01.jpg" class="bg_imgs" />
+						<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/award_no_bg_02.jpg" class="bg_imgs" />
+						<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/award_no_bg_03.jpg" class="bg_imgs" />
+						<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/award_no_bg_04.jpg" class="bg_imgs" />
+						<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/award_no_bg_05.jpg" class="bg_imgs" />
+					</div>
+					<div class="award_no_tips">
+						<a href="" class="btn_guan btn_own_guang"><img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/btn_guangguang.png" /></a>
+						<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/btn_yaoqinghaoyou.png" class="btn_share" />
+					</div>
+					<%}else{%>
+						<div class="awarding">
+							<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/icon_award.png" class="icon_award" />
+							<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/awarding_bg_01.jpg" class="bg_imgs" />
+							<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/awarding_bg_02.jpg" class="bg_imgs" />
+							<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/awarding_bg_03.jpg" class="bg_imgs" />
+							<%if(award_id==477){%>
+								<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/awarding_new_quan_5.jpg" class="bg_imgs" />
+							<%}else if(award_id==475){%>
+								<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/awarding_new_quan_10.jpg" class="bg_imgs" />
+							<%}else if(award_id==489){%>
+								<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/awarding_quan_50.jpg" class="bg_imgs" />
+							<%}else if(award_id==487){%>
+								<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/awarding_new_quan_25.jpg" class="bg_imgs" />
+							<%}else if(award_id==485){%>
+								<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/awarding_new_quan_10.jpg" class="bg_imgs" />
+							<%}else if(award_id==477){%>
+								<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/awarding_new_quan_10_1.jpg" class="bg_imgs" />
+							<%}else{%>
+								<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/awarding_new_quan_5.jpg" class="bg_imgs" />
+							<%}%>
+						</div>
+						<div class="award_tips">
+							<%if(is_app==0){%>
+								<!--微信发起-->
+								<p class="award_p">优惠券已发放至美丽说账户,请微信登陆App并查看!</p>
+								<%}else{%>
+									<p class="award_p">优惠券已发放至美丽说账户,请在App中查看!</p>
+									<%}%>
+										<div class="btn_wrap">
+											<a href="javascript:void(0);" class="btn_guan"><img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/btn_guangguang.png" /></a>
+											<a href="javascript:void(0);" class="btn_share" id="btn_find_friend"><img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/btn_yaoqinghaoyou.png"  /></a>
+										</div>
+						</div>
+						<%}%>
+
+			</div>
+			<!--好友列表-->
+			<div class="friend_list">
+				<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/start_icon_01.jpg" class="friend_img" />
+				<!--描述：没有好友-->
+				<% if(arrFriend.length == 0){ %>
+					<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/start_icon_02.jpg" class="friend_img" />
+					<%}else{%>
+						<!--描述：好友列表-->
+						<div class="friends-list">
+							<% arrFriend.forEach(function(item,index){%>
+								<div class="friends-msg">
+									<img class="friend-img" src="<%=item.user_pic%>">
+									<span class="friend-name"><%=item.nick_name%></span>
+									<span class="friend-desc">&nbsp;&nbsp;&nbsp;<%= item.ass_desc %></span>
+								</div>
+								<% }) %>
+						</div>
+						<%}%>
+			</div>
+			<!--游戏规则-->
+			<div class="first_rules"></div>
+			<div class="first_popwin">
+				<img class="first-popwin-rules" src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/cb_rules.png" />
+				<div class="rules-content">
+					<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/guize_bg_01.jpg" />
+					<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/guize_bg_02.jpg" />
+					<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/guize_bg_03.jpg" />
+				</div>
+				<img class="first-popwin-know" src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/cb_rules_btn.png" />
+			</div>
+			<!--分享样式-->
+			<div class="share-popwin">
+				<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/wx_share.png">
+			</div>
+		</body>
+		<script>
+			fml.vars.isWxLogin = <%= this.isWxLogin || false %> ;
+			fml.vars.isWx = <%= this.isWx %> ;
+			fml.vars.originatorId = "<%= originatorId %>";
+			fml.vars.role = "<%= role %>";
+			fml.vars.status = "<%= status %>";
+			fml.vars.ass_gid = '<%== this.ass_gid %>';
+			fml.vars.error_code = "<%= error_code %>";
+			fml.vars.discount="<%=discount%>";
+			frm = fml.vars.isWx ? '&frm=isWx' : '&frm=isMLS';
+			fml.vars.award_id = "<%=award_id%>";
+			
+			if (fml.vars.role != "1" && fml.vars.status != "1") {
+				/*没有完成撕名牌*/
+				window.location.href = '/activity/crackbrand/friendBefore/?ass_gid=' + fml.vars.ass_gid + frm;
+			}
+			if (fml.vars.status == "1") {
+				/*已完成撕名牌*/
+				if (fml.vars.role != "1") {
+					/* 好友，看奖品页面*/
+					window.location.href = '/activity/crackbrand/awardFriend/?ass_gid=' + fml.vars.ass_gid + frm;
+				}
+			}
+		</script>
+		<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+		<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/crackbrand/award');
+_use:", this._JSstack, this._JSmods); %>
+			<%# foot.html%>

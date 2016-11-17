@@ -1,0 +1,83 @@
+/*common*/
+
+/**
+ * @fileoverview 我的大转盘奖品 － 会员中心
+ * @requires zepto
+ * @author kehuang@meilishuo.com
+ * @date 2015-07-01
+ */
+
+require('wap/zepto/touch');
+require('wap/zepto/fastclick');
+
+var $ = require('wap/zepto');
+var shareTmp = require('wap/component/shareTmp');
+var scroll = require('wap/component/windowScroll');
+
+window.MLS = {
+    didLogin: function(){
+        // 成功登录，跳转到下一步
+        window.location.reload();
+    },
+
+    onPickAddress: function(res){
+        /*var data = {
+            'code': 0,
+            'info': {
+                'addr_id': '',
+                'address': '',
+                'nickname': '',
+                'phone': ''
+            }
+        };*/
+
+        var data = res.info || {},
+            phone = data.phone || '',
+            address = data.address || '',
+            nickname = data.nickname || '';
+
+        $('.j_user_address').text(address);
+    }
+};
+
+var turntablePrize = {
+	oPrizeWrap: $('#prize_wrap'),
+
+	init: function(){
+		this.renderHtml();
+		this.bindEvent();
+	},
+
+	bindEvent: function(){
+		var self = this;
+
+		window.onload = function(){
+			
+        };
+
+        $('body').on('click', '.j_add_address', function(){
+            if (!fml.vars.isNewest && fml.vars.isAndroid) {
+                var c = new confirm({
+                    content: '当前版本不支持编辑地址，请升级最新版本后，在“会员签到－抽奖大转盘－我的奖品”中继续填写地址。',
+                    onSure: function(){
+                        window.location.href = '/download/latest/wap';
+                    },
+                    onCancel: function(){
+                        return;
+                    }
+                });
+            } else {
+                window.location.href = 'meilishuo://pick_address.meilishuo';
+            }
+        });
+	},
+
+	renderHtml: function(){
+		var self = this,
+			prizeTpl = shareTmp('prize_list_tpl', {'data': {}});
+
+        self.oPrizeWrap.append(prizeTpl);
+	}
+}
+
+turntablePrize.init();

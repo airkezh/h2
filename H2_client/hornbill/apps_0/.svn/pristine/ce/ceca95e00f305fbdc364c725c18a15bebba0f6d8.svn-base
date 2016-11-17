@@ -1,0 +1,49 @@
+<%# head_simple.html%>
+	<script> 
+            (function(win,doc){
+                var docel = doc.documentElement;
+                var meta = doc.querySelectorAll('meta[name=viewport]');
+                meta[0].setAttribute('content','width=device-width,user-scalable=no,initial-scale=1');
+                function recalc(){
+                    var width = docel.clientWidth;
+                    docel.style.fontSize = 100 * width/640+'px';
+                }
+                if(doc){
+                    recalc();
+                    win.addEventListener('orientationchange',recalc,false);
+                }else if (doc.addEventListener){
+                    doc.addEventListener('DOMContentLoaded', recalc, false);
+                }
+            })(window,document)
+     </script>
+</head>
+<div class="wrap">
+	<div class="inviteFriend">
+		<img src = "http://d02.res.meilishuo.net/pic/_o/83/87/6331bd09ed46b792859301e07b09_640_626.ch.png"/>
+	</div>
+	<div class="shareWrap">
+		<div class="shareText">
+			<ul>
+				<li>将此优惠分享给朋友们，你的好友即可凭手机号领取<span class="coupon">30元优惠券</span>！（仅限美丽说全新用户领取）</li>
+				<li><span class="friRegister">好友成功注册并使用后，</span>你就可以得到<span class="coupon">10元无门槛优惠劵</span>哦</li>
+				<li>邀请多个好友可以得到多张，最多可领5张哦！赶紧分享吧！</li>
+			</ul>
+		</div>
+		<div class="shareBtn">
+			<a class="wxFriends">
+				<img src="http://d01.res.meilishuo.net/pic/_o/04/09/35cc6671d1fc2f8d4da61a96d925_201_72.ch.png"/>
+			</a>
+			<a class="friendCircle">
+				<img src="http://d05.res.meilishuo.net/pic/_o/b0/00/f34b02f83161df31b97dcc67abcc_201_72.ch.png"/>
+			</a>
+		</div>
+	</div>
+</div>
+<script>
+	fml.vars.uid = <%= this.uid %>
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use('wap/page/activity/inviteFriends');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot.html%>

@@ -1,0 +1,133 @@
+<%# wx/header.html%>
+<div class="wrap">
+<%if(this.order_list && this.order_list.info){%>
+	<% if(this.order_list.info.length != 0){%>
+	<ul class="order_info_wrap">
+	<%
+		this.order_list.info && this.order_list.info.map(function(data){
+		var order = data.order
+			, len = data.goods.length
+	%>
+		<li class="order_info">
+			<div class="goods">
+				<a href="/wx/orderDetail?is_weixin=1&order_id=<%= order.order_id%>">
+					<div class="order_status">
+						<img src="<%=this.PICTURE_URL%>/images/wap/web/wx/status.png" alt="" class="status_icon">
+						订单状态：<span class="ml_color"><%= order.status_text %></span>
+					</div>
+					<div class="goods_info_wrap">
+						<span class="wx_right">共<%= len %>件</span>
+						<div class="shop_name">
+							<img src="<%=this.PICTURE_URL%>/images/wap/web/wx/shop_icon.png" class="shop_icon">
+							店铺：<span class="ml_color"><%= order.shop_name%></span>
+						</div>
+						<% data.goods && data.goods.map(function(item,idx){
+							var len = item.length
+						%>
+						<div class="goods_info_btm">
+							<span class="goods_img">
+								<img src="<%= item.b_pic_url%>"/>
+							</span>
+							<div class="goods_info goods_list_info">
+								<p class="goods_title"><%= item.goods_title%></p>
+								<p class="shop_cost wx_grey">价格：
+									<span>￥<%= item.price%></span>
+									<span class="wx_right">数量：<%= item.amount %></span>
+								</p>
+							</div>
+						</div>
+						<%}); %>
+					</div>
+				</a>
+				<div class="check">
+					<div class="total_money">
+						<span class="all">合计：<span class="ml_color">¥<%= order.total_price%></span></span>
+						<span class="coupon_msg"><%= order.coupon_msg %></span>
+					</div>
+					<%if(order.express_id){%>
+					<a href="/wx/expressInfo/?order_id=<%=order.order_id%>&express_id=<%=order.express_id%>&express_company=<%= order.express_company%>" class="ml_color check_btn mt_20_btn">查看物流</a>
+					<%}%>
+					<%if(order.receive_allow_weixin){%>
+					<a href="/wx/orderDetail?is_weixin=1&order_id=<%= order.order_id %>" class="receipt_btn mt_20_btn">确认收货</a>
+					<%}%>
+				</div>
+			</div>
+			<div class="order_bt"></div>
+		</li>
+		<%});%>
+	</ul>
+	<% if(this.order_list.info.length < this.order_list.total_num ){%>
+	<p class="more eva_more">
+		查看更多订单
+		<span class="xiala_icon">
+			<img src="<%= this.PICTURE_URL%>/images/wap/web/wx/xiala.png">
+		</span>
+	</p>
+	<%}%>
+	<%}else{ %>
+	<div class="order_empty">
+		<div class="empty_icon">
+			<img src="<%=this.PICTURE_URL%>/images/wap/web/wx/nothing.png">
+		</div>
+		<h3>你还没有相关的订单</h3>
+		<p>你还没有购买过任何宝贝，快去逛逛吧</p>
+		<a href="/wx/mall/" class="btn">去逛逛</a>
+	</div>
+	<% }%>
+<% } %>
+</div>
+<script type="text/html" id="orderListTpl">
+<? item && $.each(item , function(key , data){
+	var len = data.goods.length
+		, order = data.order;
+?>
+	<li class="order_info">
+		<div class="goods">
+			<a href="/wx/orderDetail?is_weixin=1&order_id=<?= order.order_id?>">
+				<div class="order_status">
+					<img src="<?= Meilishuo.config.picture_url?>images/wap/web/wx/status.png" class="status_icon">
+					订单状态：<span class="ml_color"><?= order.status_text ?></span>
+				</div>
+				<div class="goods_info_wrap">
+					<span class="wx_right">共<?= len ?>件</span>
+					<div class="shop_name">
+						<img src="<?= Meilishuo.config.picture_url?>images/wap/web/wx/shop_icon.png" class="shop_icon">
+						店铺：<span class="ml_color"><?= order.shop_name?></span>
+					</div>
+					<? data.goods && data.goods.map(function(item,idx){?>
+					<div class="goods_info_btm">
+						<span class="goods_img">
+							<img src="<?= item.b_pic_url?>"/>
+						</span>
+						<div class="goods_info goods_list_info">
+							<p class="goods_title"><?= item.goods_title?></p>
+							<p class="shop_cost wx_grey">价格：
+								<span>￥<?= item.price?></span>
+								<span class="wx_right">数量：<?= item.amount?></span>
+							</p>
+						</div>
+					</div>
+					<?});?>
+				</div>
+			</a>
+			<div class="check">
+				<div class="total_money">
+					<span class="all">合计：<span class="ml_color">¥<?= order.total_price?></span></span>
+					<span class="coupon_msg"><?= order.coupon_msg ?></span>
+				</div>
+				<?if(order.express_id){?>
+				<a href="/wx/expressInfo/?express_id=<?=order.express_id?>&express_company=<?= order.express_company?>" class="ml_color check_btn">查看物流</a>
+				<?}?>
+				<?if(order.receive_allow_weixin){?>
+				<a href="/wx/orderDetail?is_weixin=1&order_id=<?= order.order_id ?>" class="receipt_btn">确认收货</a>
+				<?}?>
+			</div>
+		</div>
+		<div class="order_bt"></div>
+	</li>
+<?});?>
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/wx/orderList');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html%>

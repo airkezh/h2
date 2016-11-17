@@ -1,0 +1,26 @@
+<%# head_simple.html%>
+</head>
+<body style="background:#fff;">
+<div >
+<%
+if (this.weixinBrowser){%>
+	<% if(this.android){ %>
+		<img src="<%= this.PICTURE_URL%>images/wap/weixin/anguide1.png" />
+	<% } else {%>
+		<img src="<%= this.PICTURE_URL%>images/wap/weixin/iosguide1.jpg" />
+	<% } %>
+<%}else{%>
+<a href='<%= this.appUrl%>?frm=wap_link_download'> <img src="<%= this.PICTURE_URL%>images/wap/activity/mario/iphone_down2.jpg" />
+ <img src="<%= this.PICTURE_URL%>images/wap/activity/mario/iphone_down1.png" />
+</a>
+<%}%>
+</div>
+<% if (this.weixinBrowser && this.android){%>
+<iframe src='<%= this.appUrl%>?frm=wap_link_download'></iframe>
+<%}else{%>
+<script>
+window.location.href = '<%= this.appUrl%>?frm=wap_link_download'
+</script>
+<%}%>
+<%# foot_simple.html%>
+

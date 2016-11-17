@@ -1,0 +1,135 @@
+<%#head.html%>
+<%
+	var banner = this.banner;
+	var slide_banner = banner && banner.data.banner;
+	var initshopList = this.initshopList && this.initshopList.data
+		, totalPage = initshopList && initshopList.page.total;
+%>
+<div class="main">
+	<section id="banner">
+		<% if(slide_banner && slide_banner.length){ %>
+			<div class="slide_banner">
+				<div class="imageSlide" id="imageSlide">
+					<ul>
+						<% slide_banner.forEach(function(banner, index){ %>
+							<li>
+								<a class="top_banner swipe js_track" href="<%= banner.url %>"><img src="<%= banner.image_url %>"></a>
+							</li>
+						<% }); %>
+					</ul>
+					<div class="num"></div>
+				</div>
+			</div>
+		<% } %>
+		<ul class="desc_banner">
+			<li><i></i>品质尾货</li>
+			<li><i></i>全年最低价</li>
+			<li><i></i>4折封顶</li>
+		</ul>
+	</section>
+	<section class="nav_wrap" id="nav_wrap">
+		<div class="sec_nav">
+			<ul>
+				<li class="tab_item active" status="1">今日上新</li>
+				<li class="tab_item" status="2">往日热销</li>
+				<li class="tab_item" status="3">最后疯抢</li>
+				<li class="tab_item" status="4">明日预告</li>
+			</ul>
+		</div>
+	</section>
+	<section id="posterWrap" class="posterWrap"></section>
+	<div class="pullUp" <%if(totalPage == 0){%>status="stop"<%}else{%>status="loading"<%}%>></div>
+	<div class="fixed_area" style="bottom:<%if(this.isIphone){%>1.2<%}else{%>1.8<%}%>rem">
+		<a class="floor">
+			<span class="floor_num"><%= totalPage == 0 ? 0 : 1 %></span>/<span class="floor_sum"><%= this.initshopList && this.initshopList.data.page.count%></span>
+		</a>
+		<a class="gotop">
+			<img src="http://i.meilishuo.net/css/images/wap/tuan/gotop.png" />
+		</a>
+	</div>
+</div>
+<% if(this.toast.data){%>
+	<div class="toast">
+		<p><img /><span></span></p>
+	</div>
+<% }%>
+<script id="posterWall" type="text/html">
+	<?
+		function end_down(endTime){
+			var t = new Date(endTime.replace('-', '/').replace('-', '/')) - new Date();
+			var d = Math.floor(t / (60 * 60 * 24 * 1000));
+			t = t - d * (60 * 60 * 24 * 1000);
+			var h = Math.floor(t / (60 * 60 * 1000));
+			t = t - h * (60 * 60  * 1000);
+			var m = Math.floor(t / (60 * 1000));
+			t = t - m * (60 * 1000);
+			var s = Math.floor(t / 1000);
+			return {
+				d : d < 10 ? '0' + d : d,	
+				h : h < 10 ? '0' + h : h,	
+				m : m < 10 ? '0' + m : m,	
+				s : s < 10 ? '0' + s : s	
+			}
+		}
+	?>
+
+	<?if(this.shop){?>
+		<? for(var i = 0; i< this.shop.length; i++){
+			var cur = this.page.current - 1
+				, floor = cur * 10 + i + 1;
+			var shop = this.shop[i];
+		?>
+		<div class="shopitem" data-floor="<?= floor ?>">
+			<a class="banner" href="<?= shop.link ?>"><img src="<?= shop.bg_img?>"></a>
+			<div class="shop_txt">
+				<p class="right_f">共<span class="d_red"><?= shop.goods_total?></span>款清仓中</p>
+				<div class="time_box">
+					<?if(shop.time_flag == 1){?>离活动结束还剩
+						<span class="time js_timeStamp">
+							<i class="t_day"><?= end_down(shop.end_time).d ?></i> 天 <i class="t_hour"><?= end_down(shop.end_time).h ?></i> 时 <i class="t_minute"><?= end_down(shop.end_time).m ?></i> 分
+						</span>	
+					<?}?>
+					<?if(shop.time_flag == 0){?>离活动开始还剩
+						<span class="time js_timeStamp">
+							<i class="t_day"><?= end_down(shop.start_time).d ?></i> 天 <i class="t_hour"><?= end_down(shop.start_time).h ?></i> 时 <i class="t_minute"><?= end_down(shop.start_time).m ?></i> 分
+						</span>	
+					<?}?>
+				</div>
+			</div>
+			<div class="goods">
+			<?for(var s = 0; s < shop.goods.length; s++){
+				var goods = shop.goods[s]
+					, flag = s%2;
+			?>
+				<a href="<?= goods.link ?>" class="gooditem <?= flag ? '' : 'odd' ?>">
+					<figure>
+						<span class="bs_load_img" asrc="<?= goods.ginfo && goods.ginfo.goods_pic_url ?>"></span>
+						<div class="mark"></div>
+					</figure>
+					<figcaption>
+						<div class="price">
+							<span class="now_price d_red"><?= goods.ginfo.goods_price?></span>
+							<del class="origin_price"><?= goods.ginfo.origin_price?></del>
+							<?if(goods.ginfo.gold_discount != 0){?>
+							<span class="meid"><i></i>抵<?= goods.ginfo.gold_discount?></span>
+							<?}?>
+						</div>
+						<div class="sale_num">已售<span class="d_red"><?= goods.ginfo.sale_nums ?></span>件</div>
+					</figcaption>
+				</a>
+			<?}?>
+			</div>
+		</div>
+		<?}?>
+	<?}?>
+</script>
+<script>
+	fml.vars.totalPage = <%= this.initshopList && this.initshopList.data.page.total %>;
+	fml.vars.foretotalPage = <%= this.foreShopList && this.foreShopList.data.page.total%>;
+	fml.vars.r = '<%= this.xr.r %>';
+	fml.vars.toast = <%= JSON.stringify(this.toast) %>;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/clearance/channel');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

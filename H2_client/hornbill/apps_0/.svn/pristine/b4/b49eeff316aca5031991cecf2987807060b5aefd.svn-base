@@ -1,0 +1,33 @@
+<%# sq/header.html%>
+<%if(this.info){%>
+<div class="wrap">
+	<div class="friend-title">
+		<%if(this.info.ret == -4){%>
+		<p>抱歉，该好友发的优惠券已被抢光！</p>
+		<%}else if(this.info.ret == -3){%>
+		<p>听说您已经领过一张券了，把机会留给别人吧！</p>
+		<%}else if(this.info.ret == 0){%>
+		<p>您的好友“<%= this.info.from.user_info.nickname%>”</p>
+		<p>送您双十二“10元优惠券”大礼包！</p>
+		<%}else{%>
+		<p>抱歉，优惠券已失效！</p>
+		<%}%>
+	</div>
+	<div class="friend-btn" <%if(this.info.ret != 0){%> style="display:none;" <%}%>>
+		<img src="<%=this.PICTURE_URL%>/images/wap/sq/btn.png" />
+	</div>
+	<div class="friend-link" <%if(this.info.ret == 0){%> style="display:none;" <%}%>>
+		<a href="/sq/mall">去逛逛></a>
+	</div>
+</div>
+<%}%>
+<script>
+fml.vars.coupon_id = "<%=this.coupon_id%>";
+fml.vars.shareInfo = {};
+fml.vars.shareInfo.price = "一起领双十二好友券！";
+fml.vars.shareInfo.url = window.location.href;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/sq/friend');
+_use:", this._JSstack , this._JSmods ); %>
+<%# sq/footer.html%>

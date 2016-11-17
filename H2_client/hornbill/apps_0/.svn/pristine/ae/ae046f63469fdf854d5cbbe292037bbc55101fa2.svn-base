@@ -1,0 +1,99 @@
+/* @group general styles
+--------------------------------------------------*/
+@import "sq.less";
+@import "search_md.less";
+
+body{
+	.f(12*@f);
+	.bgc(#efefef);
+}
+
+/* @group page structure
+--------------------------------------------------*/
+.search {
+	.pf; top: 0; left: 0;
+	width: 100%;
+	z-index: 1;
+}
+
+.section_wrap {
+	.mt(.7rem);
+}
+
+.sec1-ctn { 
+	.f(.26rem);
+	 .c;
+	.bgwhite;
+	.flexbox; 
+	.hidden;
+	li { 
+		.flex(1); 
+		.pt(.2rem);
+		.pb(.2rem);
+	}
+	.selected { 
+		.red; 
+		.f(.28rem);
+	}
+	span { 
+		.block;
+		border-left: 1px solid #d9d9d9; 
+	}
+	li:first-child { 
+		span {
+			.border-n; 
+		}
+	}
+}
+
+.sec2-ctn {
+	.pr;
+	.mt(.2rem);
+	figure {
+		.bgwhite;
+	}
+	.g-entrance {
+		opacity: 0;
+	}
+}
+
+/* @group page components
+--------------------------------------------------*/
+.pullUp {
+	.pullUpDown > .common;
+	.pullUpDown > .loading;
+	&:before{
+		.nowrap;
+		.ml(-.64rem);
+	}
+	&[status="tap"] {
+		background: 0 none;	
+	}
+	&[status="stop"] {
+		background: 0 none;
+		.h(.04rem);
+		&:before {
+			.i_block;
+			content: "未能找到更多商品";
+		}
+	}
+}
+
+// 右下角的挂件
+.pendant {
+	.pf;
+	bottom: .2rem; 
+	right: 0;  
+	.mr(.08rem);
+	z-index: 450;
+	li {
+		.w(.80rem);
+		.h(.80rem); 
+		.mb(.16rem);
+		.c;
+	}
+	.pendant-b {
+		.icon > .gotop;
+		opacity: 0;
+	}
+}

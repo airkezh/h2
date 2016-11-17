@@ -1,0 +1,33 @@
+<%# head.html%>
+<% var pageData = this.pageData; %>
+<div class="main" style="background-color:<%= pageData.body_bgc || '#ff667c' %>;">
+	<% pageData.head && pageData.head.length > 0 && pageData.head.map(function(data, index){ %>
+		<div class="head_bg" style="background-image:url('<%= data.img_src %>');height:<%= data.h %>px;"></div>
+	<% }); %>
+	<% pageData.rule && pageData.rule.length > 0 && pageData.rule.map(function(data, index){ %>
+		<div class="intro" style="background-image:url('<%= data.img_src %>');height:<%= data.h %>px;"></div>
+	<% }); %>
+	<a href="javascript:;" class="rule get_coupon_btn"  style="background-image:url('<%= pageData.coupon_btn.img_src %>');height:<%= pageData.coupon_btn.h %>px;"></a>
+	<% pageData.foot && pageData.foot.length > 0 && pageData.foot.map(function(data, index){ %>
+		<!-- <div class="head_bg" style="background-image:url('<%= data.img_src %>');height:<%= data.h %>px;"></div> -->
+	<% }); %>
+	<%if(pageData.classify_title){%>
+		<div class="classify_title"  style="background-image:url('<%= pageData.classify_title.img_src %>');height:<%= pageData.classify_title.h %>px;"></div>
+	<%}%>
+	<%if(pageData.classify){%>
+	<div class="classify">
+		<% pageData.classify && pageData.classify.length > 0 && pageData.classify.map(function(data, index){ %>
+		<a href="<%= data.goods_link%>" target="_blank">
+			<img src="<%= data.img_src%>" />
+		</a>
+		<% }); %>
+	</div>
+	<%}%>
+</div>
+<script>
+	fml.vars.applyCode = '<%= pageData.coupon_btn.type || "" %>';
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/huodong/reg_feedback');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

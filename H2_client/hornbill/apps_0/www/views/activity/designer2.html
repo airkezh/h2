@@ -1,0 +1,39 @@
+<%#head.html%>
+<% 
+    var data  = this.main.data;
+%>
+<img class="top" src="<%= data.top_banner_pc[0].banner%>">
+<div class="main">
+	<% data.items && data.items.map(function(data){ %>
+	<div class="box">
+		<div class="design_img">
+			<a href="/activity/designer/vote_sub/<%= data.designer_id%>" target="_blank"><img src="<%= data.item_img%>"></a>
+			<div class="vote_box">
+				<p class="vote_btn" did="<%= data.designer_id%>" lottery="<%= data.lottery%>" sid="<%= data.shop_id%>">
+					<% if(data.is_voted == 0){ %>
+						<img src="http://d01.res.meilishuo.net/pic/_o/f8/25/23d8f465a3c5aee3170089d925c1_90_90.ch.png">
+					<%}else{%>
+						<img src="http://d05.res.meilishuo.net/pic/_o/b8/7f/a507d953132c62d134c3d81c2d96_90_90.cg.png">
+					<%}%>
+				</p>
+				<p class="vote_num"><%= data.votes%></p>
+			</div>
+		</div>
+		<img class="detail" src="<%= data.designer_info%>">
+	</div>
+	<% }); %>
+
+
+</div>
+
+<script type="text/html" id="getAward">
+    <div class="dialog_award">
+            <h2>投票成功<h2/>
+            <h3 class="result">恭喜您获得 10元无门槛优惠券<h3/>
+    </div>
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use("page/huodong/designer2");
+_use:", this._JSstack , this._JSmods); %>
+<%#foot.html%>

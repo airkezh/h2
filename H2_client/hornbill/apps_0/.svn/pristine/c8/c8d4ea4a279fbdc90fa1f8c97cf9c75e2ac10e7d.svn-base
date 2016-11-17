@@ -1,0 +1,62 @@
+<%*
+ * @fileoverview 微信搜索模块
+ * @author qindai@meilishuo.com
+ * @date 2015-08
+%>
+<header class="search">
+<form action="" id="form_search" method="post">
+	<input class="ipt" type="search" autocomplete="off" placeholder="<%= this.data %>" value="<%== this.value || '' %>">
+	<div id="ipt-rig-box" class="im-btn">
+		<span class="rigs cancel">取消</span>
+		<a class="rigs im" href="/wx/connectCircle?goback=<%= encodeURIComponent('http://im.meilishuo.com/wap/msgList/?button_stat_area=personal_message')%>">
+		<% var msgNum = this.message_code == 0 ? (this.message.data && this.message.data.msg_num) : -1;
+			if(msgNum > 0){ %>
+				<i class="red"></i>
+			<%}%>
+		</a>
+		<button class="rigs submit">搜索</button>
+	</div>
+</form>
+</header>
+<%* 搜索面板 %>
+<div id="search-mark" class="search-mark"></div>
+
+<script type="text/html" id="words-list-tpl">
+<ul class="ul-box">
+<? var channel = '&channel=weixin_search';?>
+<? this.forEach(function (item){ ?>
+	<li class="item" data-url="<?= item.url + channel ?>">
+		<a class="left" href="<?= item.url + channel ?>"><?= item.key_word ?></a>
+		<span class="right">
+			<? item.tags.forEach(function (tag){ ?>
+				<a class="small-list" href="<?= tag.url + channel ?>"><?= tag.name ?></a>
+			<? }); ?>
+		</span> 
+	</li>
+<? }); ?>
+</ul>
+</script>
+
+<script type="text/html" id="hot-search-tpl">
+<div class="init-box">
+	<span class="tit-icon"></span>
+		<h3 class="title">热门搜索</h3>
+		<ul class="list">
+			<? var channel = '&channel=weixin_search';?>
+			<? this.forEach(function(item){
+				var name = item.words;
+				var url = '/wx/search?key=' + name + channel;
+			 	?>
+				<li><a href="<?= url ?>" class="a-list <?= item.is_red==1 ? 'red' : '' ?> "><?= name ?></a></li>
+			<?});?>
+		</ul>
+</div>
+</script>
+
+
+<script>
+	fml.vars.defaultKey = '<%== this.data %>';
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/wx_new/mdl_search');
+_use:", this._JSstack , this._JSmods ); %>

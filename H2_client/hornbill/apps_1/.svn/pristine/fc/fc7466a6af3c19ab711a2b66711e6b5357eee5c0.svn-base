@@ -1,0 +1,68 @@
+<%#head.html%>
+<div class="t_main">
+	<div class="mp_top">
+		<div class="clock_main">
+			<div class="clock"><em></em><span class="time"></span></div>
+		</div>
+	</div>
+	<div class="rule">
+		<div class="main">
+			<div class="rule_btn"></div>
+		</div>
+	</div>
+
+
+</div>
+<div class="nav_content nav_main">
+	<div class="block_main">
+		<% if(this.featured_area11){ %>
+		<% for(var i in this.featured_area11.data) {
+			var area = this.featured_area11.data[i].falls;
+		%>
+			<div id='a_li<%= i%>_main' class="a_li_main">
+				<div class="a_main<%= i%>">
+				<% area && area.map(function(data,j){ %>
+					<a href="<%= data.tar_url%>" class="a_li_img" target="_blank">
+						<img src="<%= data.img_url%>" alt="">
+					</a>
+				<%});%>
+				</div>
+			</div>
+		<%}%>
+		<%}%>
+		<div class="rc"></div>
+	</div>
+
+</div>
+<%#biz/promotion/rightNav_dc.html%>
+<script type="text/html" id="coupon_wrap">
+		<? for (var i = 0; i < coupons.length; i++){ var c_li = coupons[i]; ?>
+			<div class="couponLi couponBox<?= (i+1) ?>">
+				<a class="btn <? if( c_li.ing ){?><?= c_li.ing?><?}?>" data-code="<?= c_li.code ?>" data-key="<?= c_li.key?>" data-type="<?= c_li.couponType?>" >
+					<img src="<?= c_li.pic ?>" alt="">
+				</a>
+				<? if( c_li.left_amount > 0){?>
+					<p class="text">还剩<span><?= c_li.left_amount ?></span>张</p>
+				<?}?>
+			</div>
+		<?}?>
+</script>
+
+
+<script type="text/html" id="activity_main">
+	<div class="ac_main">
+		<div class="ac_close"></div>
+	</div>
+</script>
+<script>
+	fml.vars.picHost = "<%= this.PICTURE_URL %>";
+	fml.vars.venueMain = '1';    
+</script>
+<% this.hideGoTop = true; %>
+<% this.onlyShowGoTop = true; %>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/huodong/promotion/act150120');
+_use:", this._JSstack , this._JSmods); %>
+
+<%#foot.html%>

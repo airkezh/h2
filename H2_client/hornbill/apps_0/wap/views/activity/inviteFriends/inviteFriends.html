@@ -1,0 +1,70 @@
+<%# head_simple.html%>
+	<script> 
+            (function(win,doc){
+                var docel = doc.documentElement;
+                var meta = doc.querySelectorAll('meta[name=viewport]');
+                meta[0].setAttribute('content','width=device-width,user-scalable=no,initial-scale=1');
+                function recalc(){
+                    var width = docel.clientWidth;
+                    docel.style.fontSize = 100 * width/640+'px';
+                }
+                if(doc){
+                    recalc();
+                    win.addEventListener('orientationchange',recalc,false);
+                }else if (doc.addEventListener){
+                    doc.addEventListener('DOMContentLoaded', recalc, false);
+                }
+            })(window,document)
+     </script>
+</head>
+<div class="wrap">
+	<div class="inviteFriend">
+		<div class="inviteDesc">邀请新朋友<br/>和闺蜜们一起享优惠!</div>
+		<div class="activityRull">活动<br/>规则</div>
+	</div>
+	<div class="shareWrap">
+		<div class="shareText">
+			<ul>
+				<li>将此优惠分享给好友，你的好友可凭手机号领取<span class="coupon">满59-30直减优惠</span>！(仅限美丽说全新用户领取)</li>
+				<li><span class="friRegister">好友注册并成功使用优惠下单，该订单商品发货后，</span>你就可以得到<span class="coupon">10元无门槛优惠劵</span>哦!</li>
+				<li>邀请多个好友可以得到多张，最多可领5张哦！赶紧分享吧！</li>
+			</ul>
+			<div class="shareBtn">
+				<a class="wxFriends">
+					<img src="http://d01.res.meilishuo.net/pic/_o/04/09/35cc6671d1fc2f8d4da61a96d925_201_72.ch.png"/>
+				</a>
+				<a class="friendCircle">
+					<img src="http://d05.res.meilishuo.net/pic/_o/b0/00/f34b02f83161df31b97dcc67abcc_201_72.ch.png"/>
+				</a>
+			</div>
+		</div>
+
+	</div>
+</div>
+<div class="rulewrap">
+	<div class="mask"></div>
+	<div class="ruleInfo">
+		<div class="ruleTitle">活动规则</div>
+		<div class="ruleDesc">
+			1. 即日起,美丽说已注册用户通过分享该活动可邀请未使用过的用户参与新人优惠活动。<br/>
+			2. 新用户是指此手机和此设备从未下载激活过美丽说APP的全新用户，符合条件的新用户可使用满59-30的优惠。<br/>
+			3. 新人满优惠仅限第一单使用，每人每单只享受一次。取消或退货则不再享受此优惠。<br/>
+			4. 当邀请的新人使用优惠券下单并商品发货，老用户可以得到一张10元直减优惠券，一个工作日内发放，有效期为发放之日起3天。<br/>
+			5. 使用他人手机号、地址等信息注册，或以非正常手段注册、一人注册多个账号等视为违规注册，同一手机、同一IP地址、同一设备号或其他可以合理显示为同一用户的情形，均视为同一用户。美丽说有权根据自身掌握的情况独立判断参与活动的用户是否实施了违规行为，违反本规则美丽说有权利收回已享受的优惠及对注册用户进行进一步处罚甚至冻结其账号的权利。<br/>
+			6. 用户一旦选择参加本活动，即同意接受活动涉及到的所有规则，任何对活动规则或者其他相应规则有异议的，不得参加活动，否则美丽说有权取消其参与资格，如作弊行为给美丽说平台造成损失的，美丽说保留追究赔偿的权利，针对违反行为将采取法律措施。<br/>
+			7. 美丽说在法律允许的范围内保留对本活动的最终解释权。<br/>
+		</div>
+		<div class="logo">
+			<img class="logoImg" src="http://d03.res.meilishuo.net/pic/_o/99/16/5871015ea78a0e6d4af189e290af_127_44.ch.png"/>
+		</div>
+	</div>
+	<img class="closeImg" src="http://d02.res.meilishuo.net/pic/_o/77/a6/455a75275daada68ebf0d731722e_50_50.cf.png"/>
+</div>
+<script>
+	fml.vars.uid = <%= this.uid %>
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use('wap/page/activity/inviteFriends');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot.html%>

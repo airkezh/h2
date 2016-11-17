@@ -1,0 +1,65 @@
+/*common*/
+var $ = require('wap/zepto')
+
+var params;
+
+$('.get-coupon').click(function(){
+	if(Meilishuo.config.os.mlsApp && !Meilishuo.config.user_id){
+		window.MLS = {
+			didLogin : function() {
+				window.location.reload();
+				$.ajax({
+			        type: 'get',
+			        url: '/aj/coupon/coupon_xiaomi',
+			        data: {
+			        	imei : fml.vars.imei
+			        },
+			        async: false,
+			        dataType: 'json',
+			        success: function( data ){
+			            if( data.code == 0 || data.code == -9){
+			            	params = '{"url":"http://syxm.fedevot.meilishuo.com/activity/xmcoupon/result/1", "inApp":"1"}';
+			                window.location.href = "meilishuo://openURL.meilishuo/?json_params=" + encodeURIComponent(params);
+			            }else{
+			            	params = '{"url":"http://syxm.fedevot.meilishuo.com/activity/xmcoupon/result/0", "inApp":"1"}';
+			            	window.location.href = "meilishuo://openURL.meilishuo/?json_params=" + encodeURIComponent(params);
+			            }
+			        }
+			    });
+			}
+		}
+		window.location.href = "meilishuo://login.meilishuo/"
+	}else{
+		$.ajax({
+	        type: 'get',
+	        url: '/aj/coupon/coupon_xiaomi',
+	        data: {
+	        	imei : fml.vars.imei
+	        },
+	        async: false,
+	        dataType: 'json',
+	        success: function( data ){
+	            if( data.code == 0 || data.code == -9){
+	            	params = '{"url":"http://syxm.fedevot.meilishuo.com/activity/xmcoupon/result/1", "inApp":"1"}';
+	                window.location.href = "meilishuo://openURL.meilishuo/?json_params=" + encodeURIComponent(params);
+	            }else{
+	            	params = '{"url":"http://syxm.fedevot.meilishuo.com/activity/xmcoupon/result/0", "inApp":"1"}';
+	            	window.location.href = "meilishuo://openURL.meilishuo/?json_params=" + encodeURIComponent(params);
+	            }
+	        }
+	    })
+	}
+});
+
+$('.coupon-btn').click(function(){
+	if(Meilishuo.config.os.mlsApp && !Meilishuo.config.user_id){
+		window.MLS = {
+			didLogin : function() {
+				window.location.reload();
+			}
+		}
+		window.location.href = "meilishuo://login.meilishuo/"
+	}else{
+		window.location.href = "meilishuo://coupons.meilishuo/"
+	}
+})

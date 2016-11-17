@@ -1,0 +1,14 @@
+<% if(this.is_start){ %>
+	<% if(this.lastDate > 0){ %>
+		<p class="time_wrap">仅剩 <span class="red_f timeStamp" time="<%= this.lastDate %>">0天00:00:00.0</span></p>
+	<% } else{ %>
+		<p class="time_wrap">本活动已结束</span></p>
+	<% } %>
+	<p class="join_wrap"><span class="red_f"><%= this.join_num %></span></%>人正在抢购</p>
+<% } else { %>
+	<p class="time_wrap" style="width: 100%"><%= this.timewords %> <span class="red_f timeStamp" time="<%= this.lastDate %>">0天00:00:00.0</span></p>
+<% } %>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/app/countdown_bs' , function(){});
+_use:", this._JSstack , this._JSmods);%>

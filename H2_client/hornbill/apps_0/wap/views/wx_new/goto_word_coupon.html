@@ -1,0 +1,30 @@
+<%# wx_new/header.html%>
+<script> 
+        (function(win,doc){
+            var docel = doc.documentElement;
+            var meta = doc.querySelectorAll('meta[name=viewport]');
+            meta[0].setAttribute('content','width=device-width,user-scalable=no,initial-scale=1');
+            function recalc(){
+                var width = docel.clientWidth;
+                docel.style.fontSize = 100 * width/640+'px';
+            }
+            if(doc){
+                recalc();
+                win.addEventListener('orientationchange',recalc,false);
+            }else if (doc.addEventListener){
+                doc.addEventListener('DOMContentLoaded', recalc, false);
+            }
+        })(window,document)
+ </script>
+<!-- 红包口令领卷页 -->
+<div class="goto_coupon_box" style="background-image: url('http://i.meilishuo.net/css/images/staticbed/run_bg.png')">
+	<button class="btn_win_coupon btn_click">点击领取优惠劵</button>
+</div>
+<script>
+    fml.vars.isShare = <%= this.share || false %>;
+    fml.vars.shareData = {'title': '跑男团1亿红包免费送，奔跑吧伐木累！手快有手慢无！','imgUrl' : 'http://i.meilishuo.net/css/images/staticbed/wx_share_cou.jpg' , 'desc' : '奔跑吧美丽说，跑男嘉年华长沙武汉两站等你来HIGH！', 'link' : 'http://m.meilishuo.com/wx/win_word_coupon/index/?frm=wx_share' };
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/wx_new/win_coupon');
+_use:", this._JSstack , this._JSmods ); %>
+<%# wx_new/footer.html%>

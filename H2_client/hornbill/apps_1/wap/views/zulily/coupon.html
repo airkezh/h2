@@ -1,0 +1,63 @@
+<%#head.html%>
+<%
+	var coupon = this.coupon || {},
+		couponData = coupon.data || [],
+		rules = this.rules || {},
+		rulesData = rules.data || [];
+%>
+<% if(couponData.length){ %>
+	<div class="coupon_wrap <%= couponData.length==1 ? 'coupon_wrap_one' : 'coupon_wrap_two' %>">
+		<ul>
+		<% couponData.forEach(function(coupons, index){ %>
+			<li class="coupons <%= coupons.status ? '' : 'btnCoupons' %>" data-code="<%= coupons.coupon_apply_code %>">
+				<p class="amount"><%= coupons.credit %><b>元</b></p>
+				<div class="des">
+					<p class="title"><%= coupons.condition %></p>
+					<% if(coupons.status==1){ %>
+						<span class="no">已经领取</span>
+					<% }else if(coupons.status==2){ %>
+						<span class="no">已被抢光</span>
+					<% }else{ %>
+						<span class="yes">立即领取</span>
+					<% } %>
+				</div>
+				<p class="date">有效期:<%= coupons.begin_time %> - <%= coupons.end_time %></p>
+			</li>
+		<% }); %>
+		</ul>
+	</div>
+<% } %>
+<% if(rulesData.length){ %>
+	<div class="rules-box">
+		<h3><p>大卖场24小时守则</p></h3>
+		<ul>
+		<% rulesData.forEach(function(rule, index){ %>
+			<li>
+				<strong><b></b><%= rule.title %></strong>
+				<p><%= rule.des %></p>
+			</li>
+		<% }); %>
+		</ul>
+	</div>
+<% } %>
+<!-- <a href="/zulily" data-xr="<%= this.common_r_XR %>" class="btn-index">进入大卖场</a> -->
+<script type="text/html" id="coupon_alert">
+	<div class="mask">
+		<div class="coupon_alert">
+			<h3>领取<?= this.isSuccess ? '成功' : '失败' ?></h3>
+			<p class="<?= this.isSuccess ? '' : 'fail' ?>"><?= this.text ?></p>
+			<? if(this.use_time){ ?>
+				<p class="use_time"><?= this.use_time ?></p>
+			<? } ?>
+			<div class="close_btn"><span>知道了</span></div>
+		</div>
+	</div>
+</script>
+<script>
+	fml.vars.isLogin = <%= this.userInfo.user_id %>;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/zulily/coupon');
+_use:", this._JSstack, this._JSmods); %>
+
+<%# foot.html%>

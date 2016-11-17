@@ -1,0 +1,88 @@
+@import "../block.less";
+@import "../doota/shareact_bs_goods.less";
+
+@nav_bg : 'http://d06.res.meilishuo.net/img/_o/7b/70/8772c1fe5068754888d4bafef759_1144_74.cg.jpg';
+@nav_active_bg : 'http://d02.res.meilishuo.net/img/_o/c7/0f/646a3340ff4a3700fc3bf22c8a0e_1144_74.cg.jpg';
+
+
+.main{.bgc(#fff);.mb(-14px);}
+
+.head_bg{background-position: center;background-repeat: no-repeat;}
+.top_bannar, .seckill{.w(946px);.auto;}
+
+
+/* 浮动bannar */
+.sec_nav_wrap, .sec_nav{
+	.h(90px);.mt(20px);.bgc(#fff);
+
+	.inner{ .w(1144px);.auto;.h(90px);background: url(@nav_bg) no-repeat center; }
+	.inner div{ .w(378px);.left;.l(90px);.c;.fc(#fff);.pr;.f(18px);.indent; }
+	.p_tab_active{ background: url(@nav_active_bg) no-repeat left center; }
+	.inner .tab1{ .w(384px); }
+	.inner .tab2{ .w(382px); }
+	.tab1.p_tab_active{ background-position: -381px center; }
+	.tab2.p_tab_active{ background-position: -762px center; }
+}
+.sec_nav{ .mt(0);.none; }
+
+.hot{
+	.poster_page{ background: no-repeat;.left;.w(367px);.h(520px);.ml(20px); }
+	.w(1140px);.auto;.mt(20px);.hidden;
+	.title{.mb(20px);}
+	.shop_wrap{.w(1161px);.ml(-20px);}
+	a{
+		.ml(20px);.mb(20px);.left;.w(367px);.h(200px);
+		span{.w(367px);.h(250px);.i_block;}
+	}
+}
+.rec{
+	.w(1134px);.auto;.pr;.hidden;.mb(20px);
+
+	a img{ .block; }
+	.poster_page{ background: no-repeat;.left;.w(367px);.h(598px);.mr(20px); }
+	.func_{
+		&0{.left; }
+		&1{.left; }
+		&2{.left; }
+		&3{.left; }
+		&4{.left; }
+		&5{.left; }
+	}
+}
+
+.poster{
+	.hidden;.w(970px);.auto;.pb(20px);min-height: 350px;
+	.bs_tab{.ml(22px);.w(960px);}
+	.fx_hidden{.none;.h(52px);.w(100%);}
+	.fx_tab{
+		.pf;top: 30px;left: 0;.bgc(rgba(0,0,0,.2));z-index: 100;.w(100%);
+		.bs_tab{.pr;left: 50%;.ml(-463px);}
+	}
+	.spinner{.mt(50px);}
+}
+.goods_unit_fuzhuang();
+.productCon{.bgc(#fff);}
+.productCon .proImg{
+	span{.w(220px);.h(200px);}
+	img{.w(220px);}
+}
+
+.footer_bannar{.w(950px);.auto;.hidden;.pb(20px);}
+
+
+// 右侧浮栏
+.nav_right{.pf;z-index:999;display:none;top:45px;right:0;
+	.nav_a{.block;.w(100%);.h(100%);
+		img{.w(100%);.h(100%);}
+	}
+	.menu_main{.pr;.w(100%);.clearfix;
+		div{.left;}
+	}
+	.go_top,.code_m{.cursor}
+}
+// double rightmenu
+.d-nav{right:0;
+	.menu_main{.clearfix;
+		div{background: red;.left;}
+	}
+}

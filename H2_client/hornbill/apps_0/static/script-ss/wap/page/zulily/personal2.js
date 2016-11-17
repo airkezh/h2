@@ -1,0 +1,169 @@
+/*common*/
+require('wap/zepto/fastclick');
+require('wap/app/dialog');
+var lazyLoad = require('m/component/lazyLoad'),
+	// appShare = require('wap/app/appShare'),
+	appIcon = require('wap/app/appIcon'),
+	onscroll = require('wap/component/windowScroll'),
+	openAppLink = require('wap/app/openAppLink'),
+	storage = require('wap/component/storage'),
+	poster = require('wap/app/posterPa'),
+	posterWall = require('wap/app/posterWalls6'),
+	openApp = require('wap/app/openApp');
+
+
+//缓存变量
+var weixinBrowser = navigator.userAgent.indexOf('MicroMessenger'),
+	tabA = $("#tab2").find("a"),
+	prevTab = $('.prev'),
+	nextTab = $('.next'),
+	gotopObj = $('.top-box').find('.gotop'),
+	wrap = $('.wrap'),
+	content = $('#content'),
+	limit = 6,
+	status = "my";
+
+var openAppCon = location.search.match(/openApp=\d+/gi);
+if (!!openAppCon && weixinBrowser != -1) {
+	openApp('http://mapp.meilishuo.com/zulily');
+}
+// 客户端类型的分享（客户端右上角）
+// if (fml.vars.appShare) {
+// 	appShare(fml.vars.params, ['weixin', 'weixin_timeline']);
+// }
+if (fml.vars.appShare) {
+	var appOpts = {
+		'share': {
+			'param': fml.vars.params,
+			'channels': ['weixin', 'weixin_timeline']
+		},
+		'cart': true
+	}
+	appIcon(appOpts);
+}
+//一进页面加载数据
+getWall(1, '/aj/zulily/style_want_list?&limit=' + limit + '&status=' + status, 'posterWall', false);
+//重置瀑布流
+function resetPostwall() {
+	content.find('.pullUp').remove();
+	content.find('#btnAll').remove();
+	content.append('<div class="pullUp" status="loading"></div>');
+	content.find('.goods_wall').height('0px').html('');
+}
+//拉取瀑布流
+function getWall(colNum, url, tmp, showBtn) {
+	// var lazy_pic = colNum == 1 ? '.lazy_pic_big' : '.lazy_pic';
+	poster.set({
+		colNum: colNum
+	});
+	var date = {
+		url: url,
+		poster: poster,
+		tmp: tmp,
+		showBtn: showBtn,
+		filterFun: function(res) {
+			return res.data;
+		},
+		posterMargin: $('#content').offset().top,
+		marginOffset: 0,
+		lazyLoad: lazyLoad.init({
+			xpath: '.lazy_pic'
+		})
+	}
+	posterWall.scroll(date);
+};
+
+
+/*gotop*/
+gotopObj.on("click", function(e) {
+	document.body.scrollTop = 0
+});
+onscroll.bind(gotop, 'gotop');
+
+function gotop(pos, isDown) {
+	if (pos < 30) {
+		// btnPersonal.css('bottom', '20px');
+		gotopObj.hide()
+	} else {
+		// btnPersonal.css('bottom', '70px');
+		gotopObj.show()
+	}
+};
+
+// 用户发表
+var jsonParams = '{"action":"desire", "max":9, "source":"photo"}';
+var publishXR = '';
+$("#publish").on("click", function() {
+	publishXR = $(this).data('xr');
+	// $("body").append("<div class='publish-loading'><div class='pullUp' status='loading'></div></div>");
+	window.location.href = window.__get_r('meilishuo://upload.meilishuo?json_params=' + encodeURIComponent(jsonParams), publishXR);
+});
+// isSingle是为了兼容老版本只能传一张图片
+//http://redmine.meilishuo.com/projects/meilishuo-mob/wiki/Meilishuo_URL_Scheme-upload
+//http://192.168.136.29/app/upload.html
+window.MLS = {
+	onUploadComplete: function(json) {
+		// 成功上传图片，回调
+		var obj = JSON.parse(json);
+		var val;
+		if (obj) {
+			if (obj.pictures) {
+				val = {
+					'isSingle': false,
+					'picObj': obj
+				};
+				// alert(obj.pictures.length + '张图上传成功\n' + json);
+			} else {
+				var str = '{\"pictures\":[' + json + ']}';
+				val = {
+					'isSingle': true,
+					'picObj': JSON.parse(str)
+				};
+				// alert('得到老版本数据格式:\n' + json);
+			}
+			var inAppTabbarArg = "";
+			if (fml.vars.inAppTabbar && fml.vars.inAppTabbar == 1) {
+				inAppTabbarArg = "?inAppTabbar=1";
+			}
+			storage.setSession("desirePublish", JSON.stringify(val));
+			// $("body").find('.publish-loading').remove();
+			window.location.href = window.__get_r('/zulily/publish2' + inAppTabbarArg, publishXR);
+		} else {
+			alert('数据解析失败，请重试！');
+		}
+	}
+};
+/*链接*/
+function getIngUrl(ele) {
+	var style_id = parseInt(ele.parents('li').data('id')),
+		twitter_id = parseInt(ele.parents('li').data('tid')),
+		detailURL = 'http://' + fml.vars.mlsHost + '/zulily/detail2/?style_id=' + style_id + '&twitter_id=' + twitter_id + '&frm=profile_want_ing',
+		Url = Meilishuo.config.os.mlsApp ? openAppLink.getAppLink({
+			'protocol': 'openURL',
+			'param': {
+				"url": detailURL
+			}
+		}) : '/zulily/detail2/?style_id=' + style_id + '&twitter_id=' + twitter_id + '&frm=profile_want_ing';
+	window.location.href = window.__get_r(Url, ele.parents('ul').data('xr'));
+}
+
+function getDoneUrl(ele) {
+	var style_id = parseInt(ele.parents('li').data('id')),
+		twitter_id = parseInt(ele.parents('li').data('tid')),
+		Url = Meilishuo.config.os.mlsApp ? openAppLink.getAppLink({
+			'protocol': 'twitter_single',
+			'param': {
+				"twitter_info": {
+					"twitter_id": twitter_id,
+					"is_doota": 1
+				}
+			}
+		}) : '/share/item/' + twitter_id;
+	window.location.href = window.__get_r(Url, ele.parents('.frame').data('xr'));
+}
+wrap.on('click', '.ing-link', function() {
+	getIngUrl($(this));
+});
+wrap.on('click', '.done-link', function() {
+	getDoneUrl($(this));
+});

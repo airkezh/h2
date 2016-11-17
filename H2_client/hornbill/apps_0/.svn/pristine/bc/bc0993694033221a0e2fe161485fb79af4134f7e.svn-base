@@ -1,0 +1,35 @@
+<%# head.html%>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+
+<div class="wrap">
+	<div class="circle">
+		<%if(!this.mlsApp){%>
+			<img src="http://d03.res.meilishuo.net/pic/_o/01/11/efb778eb912578df80cffd80b09d_477_655.cf.png" id="downloadApp"/>
+		<%} else {%>
+			<img src="http://d03.res.meilishuo.net/pic/_o/64/c0/fd97fa4b2811eb9ac435d7703d67_477_655.ch.png" />
+		<%}%>
+	</div>
+	<img src="http://d02.res.meilishuo.net/pic/_o/89/5b/09738b9a2a9dc9781a3f3631b7fd_462_79.ch.png" class="shareBtn"/>
+</div>
+
+<script type="text/html" id="shareLead">
+	<div class="dialog_share">
+		<span class="share_pic"></span>
+	</div>
+</script>
+
+<div class="appshare">
+	<%= requireFn('wapShare.html')({
+		'share' : this.share 
+	    , 'shareTitle' : '选择分享到'
+	    , '_JSstack' : this._JSstack
+		, '_JSmods' : this._JSmods
+	}); %>
+</div>
+<script>
+	fml.vars.mlsHost = '<%=this.mlsHost%>';
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/music/index');
+_use:", this._JSstack, this._JSmods); %>
+<%# foot.html%>

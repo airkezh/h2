@@ -1,0 +1,174 @@
+<%#csrobot/head.html%>
+
+
+<table class="body">
+	<tr>
+		<td class="header" colspan="2">
+			<img src="<%= this.PICTURE_URL%>images/robot/h.png" class="robot-head"/>
+
+			<div class="head-text">
+				<div class="robot-name">MIXI智能客服机器人</div>
+				<div class="robot-hi">24小时竭诚为您服务</div>
+			</div>
+			<div class="head-label">在线客服</div>
+			<img class="head-close" src="<%= this.PICTURE_URL%>images/robot/close.png"/>
+		</td>
+	</tr>
+	<tr>
+		<td class="left">
+			<div class="msg-container">
+			</div>
+			<div class="msg-control">
+				<textarea id="text-in" class="msg" autocomplete="off"
+				          style="color: rgb(153, 153, 153); width: 100%;"></textarea>
+
+				<div class="auto-cur"></div>
+				<div class="msg-toolbar">
+					<div class="btn comment">满意度评价</div>
+					<div class="btn training">训练机器人</div>
+					<div class="btn send">发送</div>
+					<div class="btn close">关闭</div>
+				</div>
+			</div>
+		</td>
+		<td class="right">
+			<div class="tab-bar">
+				<div class="bar tab-selected" data-index="1">热门问答</div>
+				<div class="bar" data-index="2">
+					<div class="mes-info"></div>
+					人工回复列表
+				</div>
+			</div>
+			<div class="tab-body">
+				<div class="tab-content" data-index="1">
+					<% this.top10 && this.top10.data && this.top10.data.forEach(function(item,i){ %>
+					<div class="list-item">
+						<div class="list-question collapse">
+							<pre><%=item['question']%></pre>
+						</div>
+						<div class="list-answer">
+							<pre><%= item['answer']%></pre>
+						</div>
+					</div>
+					<%})%>
+				</div>
+				<div class="tab-content manual_reply" style="display: none" data-index="2">
+
+				</div>
+			</div>
+		</td>
+	</tr>
+</table>
+
+
+<%if (!this.user_id){%>
+<script type="text/html" id="loginTpl">
+	<%*登录弹窗改版%>
+	<div class="login_wrap">
+		<div class="login_normal">
+			<h3>
+				<a href="/user/register?frm=tk_reg" target="_BLANK">注册</a>
+				登录美丽说
+			</h3>
+			<fieldset>
+				<form method="post" onsubmit="return false" action="" id="loginForm">
+					<div class="l_list">
+						<p class="l_box">
+							<input type="text" class="l_txt" id="mlsUser" name="mlsUser" placeholder="手机号/邮箱/用户名"/>
+							<span></span>
+							<span class="user_icon"></span>
+						</p>
+					</div>
+					<div class="l_list">
+						<p class="l_box">
+							<input type="password" class="l_txt" id="password" name="password" placeholder="密码"/>
+							<span></span>
+							<span class="pwd_icon"></span>
+						</p>
+					</div>
+					<div class="l_list authcode none_f">
+						<div class="l_box">
+							<input class="l_txt" id="checkcode" name="checkcode" type="text" placeholder="请输入验证码"
+							       maxlength="4"/>
+							<span></span>
+							<span class="code_icon"></span>
+
+							<div class="checkImage" onselectstart="return false;">
+								<img width="90" height="36" src="<%=this.PICTURE_URL%>images/register/blank.jpg"><span
+									class="refresh"></span>
+							</div>
+						</div>
+					</div>
+					<div class="loginErrorMessage none_f"></div>
+					<div class="login_btn_wrap">
+						<input type="submit" class="login_btn" value="立即登录"/>
+					</div>
+					<div class="remember">
+						<input type="checkbox" name="savestate" id="savestate" checked="checked"/>
+						<label for="savestate">记住我</label>
+					</div>
+					<a href="/user/findPwd?frm=pop_fpwd" target="_blank" class="forget_pwd">忘记密码？</a>
+				</form>
+			</fieldset>
+		</div>
+		<div class="login_fast">
+			<h3>无需注册，即可登录</h3>
+
+			<div class="fast_way">
+				<a href="/connect/auth/qzone?frm=tk_qq1" class="qq_way"></a>
+				<a href="/connect/auth/weibo?frm=tk_sina1" class="weibo_way"></a>
+				<a href="/connect/auth/weixin?frm=tk_weixin" class="weixin_way"></a>
+			</div>
+			<h4 class="more_tip">更多登录方式<span> &gt;&gt;</span></h4>
+
+			<div class="more_way none_f">
+				<a href="/connect/auth/txweibo?frm=tk_txweibo" class="txweibo"></a>
+				<a href="/connect/auth/douban?frm=tk_douban" class="douban">
+					<span class="msg"><em class="arrow1">◆</em><em class="arrow2">◆</em>维护期间暂停新用户登录，老用户不受影响</span>
+				</a>
+				<a href="/connect/auth/renren?frm=tk_renren" class="renren"></a>
+				<a href="/connect/auth/baidu?frm=tk_baidu" class="baidu">
+					<span class="msg"><em class="arrow1">◆</em><em class="arrow2">◆</em>维护期间暂停新用户登录，老用户不受影响</span>
+				</a>
+			</div>
+		</div>
+		<div class="clear_f"></div>
+	</div>
+</script>
+<script type="text/html" id="loginSina">
+	<div class="pop_login">
+		<div class="l_ico">
+			<a class="big_sina" href="/connect/auth/weibo?frm=tk_sina1"></a>
+		</div>
+		<h4><%=this.lang.window.login_sina%></h4>
+
+		<div class="mt30_f c_f">已有帐号，直接<a class="red_f" href="/user/login?frm=tk_denglu2">登录</a></div>
+	</div>
+</script>
+<script type="text/html" id="loginQQ">
+	<div class="pop_login">
+		<div class="l_ico">
+			<a class="big_qq" href="/connect/auth/qzone?frm=tk_qq1"></a>
+		</div>
+		<h4><%=this.lang.window.login_qq%></h4>
+
+		<div class="mt30_f c_f">已有帐号，直接<a class="red_f" href="/user/login?frm=tk_denglu1">登录</a></div>
+	</div>
+</script>
+<script type="text/html" id="loginRenren">
+	<div class="pop_login">
+		<div class="l_ico">
+			<a class="big_ren" href="/connect/auth/renren?frm=tk_rr"></a>
+		</div>
+		<h4><%=this.lang.window.login_renren%></h4>
+
+		<div class="mt30_f c_f">已有帐号，直接<a class="red_f" href="/user/login?frm=tk_dengl3">登录</a></div>
+	</div>
+</script>
+<%}%>
+
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+		fml.use('page/csrobot/csrobot');
+_use:", this._JSstack , this._JSmods ); %>
+<%#csrobot/footter.html%>

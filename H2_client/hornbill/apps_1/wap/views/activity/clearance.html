@@ -1,0 +1,403 @@
+<%# head.html%>
+<div class="bannerBox">
+<%= requireFn('block/banner.html')({
+	'banner' : this.banner.data.banner,
+	'hide_btn':false,
+	'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+});%>
+</div>
+
+<div class="banner-wrapper">
+	<div class="focus">
+	<%this.banner.data && this.banner.data.focus && this.banner.data.focus.forEach(function(v, k){ %>
+		<% if(v.link){ %>
+			<a href="<%= v.link%>">
+		<%} else{ %>
+			<a href="javascript:;">
+		<% }%>
+			<img src="<%= v.img_url%>" class="sub-banner" >
+		</a>
+	<% })%>
+	</div>
+	<% if(this.banner.data.button.length >= 2 ){%>
+		<ul class="mask" >
+			<% this.banner.data.button.forEach(function(v, k){ %>
+				<li>
+					<% if(v.link){%>
+						<a href="<%= v.link%>"><img src="<%= v.icon%>"/></a>
+					<% }%>
+				</li>
+			<% });%>
+		</ul>
+	<% }%>
+</div>
+
+<div class="goods_wall">
+	<% this.shop_list.data && this.shop_list.data.shop && this.shop_list.data.shop.forEach(function(v, k){ %>
+	<div class="shop">
+		<div class="title">
+				<% if(v.bg_img){%>
+					<% if(v.link){%>
+						<a href="<%= v.link%>">
+					<%} else{%>
+						<a href="javascript:;">
+					<% }%>
+							<img src="<%= v.bg_img%>" />
+						</a>
+				<% }%>
+				<dl data-id="<%= v.shop_id%>">
+					<% if(v.link){%>
+						<a href="<%= v.link %>">
+					<%} else{%>
+						<a href="/shop/<%= v.shop_id%>">
+					<% }%>
+						<dt class="image">
+							<img src="<%= v.logo%>" style="<%if(v.bg_img){%>margin: -25px auto 5px auto;<%}else{%>margin: 5px auto 5px auto;<%}%>">
+						</dt>
+						<dd class="name"><%= v.name%></dd>
+						<dd class="info"><%= v.title%></dd>
+					</a>
+				</dl>
+
+				<ul class="delivery-time">
+					<li>
+						<span class="weight"><%= v.sale_nums%></span>
+						<span>累计销量</span>
+					</li>
+					<li>
+						<span class="weight"><%= v.points%></span>
+						<span>平均店铺评分</span>
+					</li>
+					<li>
+						<span class="weight"><%= v.delivery_time%></span>
+						<span>平均发货时间</span>
+					</li>
+				</ul>
+		</div>
+
+		<ul class="coupon">
+			<% v.coupon && v.coupon.forEach(function(v, k){ %>
+
+					<% if(parseInt(v.can_apply_status) == 0 || parseInt(v.can_apply_status) == 3){%>
+						<li class="can" data-status="<%= v.can_apply_status %>">
+							<p class="credit credit0">
+								¥&nbsp;<span><%= v.credit%></span>
+							</p>
+							<span class="threshold status0" data-coupon="<%= v.coupon_apply_code%>" data-current="<%= v.current%>">
+								<% if(parseInt(v.threshold) == 0 ){%>
+									无门槛使用
+								<% }else{%>
+									消费满&nbsp;<%= v.threshold%>&nbsp;使用
+								<% }%>
+							</span>
+						</li>
+
+					<% }%>
+
+					<% if(parseInt(v.can_apply_status) == 1){ %>
+						<li class="out">
+							<p class="credit credit1">
+								¥<span><%= v.credit%></span>
+							</p>
+							<span class="threshold status1" data-coupon="<%= v.coupon_apply_code%>" data-current="<%= v.current%>">
+								<% if(parseInt(v.threshold) == 0 ){%>
+									无门槛使用
+								<% }else{%>
+									消费满&nbsp;<%= v.threshold%>&nbsp;使用
+								<% }%>
+							</span>
+						</li>
+
+					<% }%>
+
+					<% if(parseInt(v.can_apply_status) == 2){%>
+						<li class="get">
+							<p class="credit credit2">
+								¥&nbsp;<span><%= v.credit%></span>
+							</p>
+							<span class="threshold status2" data-coupon="<%= v.coupon_apply_code%>" data-current="<%= v.current%>">
+								<% if(parseInt(v.threshold) == 0 ){%>
+									无门槛使用
+								<% }else{%>
+									消费满&nbsp;<%= v.threshold%>&nbsp;使用
+								<% }%>
+							</span>
+						</li>
+
+					<% }%>
+
+			<%});%>
+		</ul>
+
+		<ul class="goods">
+			<% v.goods && v.goods.forEach(function(item, k){
+				var link = item.link || '/share/item/' + item.twitter_id + '%d_r=' + item.d_r;
+				if(k > 3){
+			%>
+					<li class="dis">
+				<%}else{%>
+					<li>
+				<% }%>
+					<a href="<%= link%>">
+							<div class="detail">
+								<%
+								var hours = '',
+									repertory = '',
+									_last = item.mark.last ? parseInt(item.mark.last) : '',
+									rest = item.repertory;
+
+
+									if(parseInt(rest) <= 10){ repertory = 'num'+rest;}
+
+									if(_last && _last <= 1){
+										hours = "one";
+									}else if(_last && _last <= 2){
+										hours = "two";
+									}else if(_last && _last <= 3){
+										hours = "three";
+									}else if(_last && _last <= 6){
+										hours = "six";
+									}else if(_last && _last <= 12){
+										hours = "twelve";
+									}
+								%>
+
+								<% if( repertory ){%>
+									<div  class = "common <%= repertory%> "></div>
+								<% }else if( hours ){%>
+									<div  class = "common <%= hours%> "></div>
+								<%};%>
+
+								<%if(item.mark.img){%>
+									<img src="<%= item.mark.img%>" class="corner sub">
+								<%}%>
+
+							<div class="img-wrapper" style="background-image: url(<%= item.ginfo.goods_pic_url%>);">
+							</div>
+
+							<div class="intro">
+								<p class="describe"><%= item.ginfo.goods_title%></p>
+								<p class="price">
+									<span class="now"><%= item.ginfo.goods_price%></span>
+									<% if(item.ginfo.origin_price){%>
+										<span class="old"><%= item.ginfo.origin_price%></span>
+									<% }%>
+									<% if(item.ginfo.discount){%>
+										<span class="discount"><%= item.ginfo.discount%></span>
+									<% }%>
+								</p>
+							</div>
+
+						</div>
+					</a>
+				</li>
+
+
+			<% });%>
+		</ul>
+
+		<%if(v.nest){%>
+			<div class="more" data-nest="<%= v.nest%>"><%= v.nest%></div>
+		<%}%>
+	</div>
+	<% });%>
+</div>
+<% if(this.toast.data){%>
+<div class="toast">
+	<p><img /><span></span></p>
+</div>
+<% }%>
+<span class="gotop" style="bottom:<%if(this.isIphone){%>60<%}else{%>20<%}%>px;">
+  <img src="http://i.meilishuo.net/css/images/wap/tuan/gotop.png" />
+</span>
+<div class="pullUp" status="loading"></div>
+
+<%= requireFn('wapShare.html')({
+'share' : this.share
+    , 'shareTitle' : '选择分享到'
+    , '_JSstack' : this._JSstack
+, '_JSmods' : this._JSmods
+}); %>
+
+<script id="posterWall" type="text/html">
+	<?
+		$.each(this.data.shop , function(k , v){
+	?>
+		<div class="shop">
+			<div class="title">
+				<? if(v.bg_img){?>
+					<? if(v.link){?>
+						<a href="<?= v.link?>">
+					<?} else{?>
+						<a href="javascript:;">
+					<? }?>
+							<img src="<?= v.bg_img?>" />
+						</a>
+				<? }?>
+				<dl data-id="<?= v.shop_id?>">
+					<? if(v.link){?>
+						<a href="<?= v.link ?>">
+					<?} else{?>
+						<a href="/shop/<?= v.shop_id?>">
+					<? }?>
+						<dt class="image">
+							<img src="<?= v.logo?>" style="<?if(v.bg_img){?>margin: -25px auto 5px auto;<?}else{?>margin: 5px auto 5px auto;<?}?>">
+						</dt>
+						<dd class="name"><?= v.name?></dd>
+						<dd class="info"><?= v.title?></dd>
+					</a>
+				</dl>
+
+				<ul class="delivery-time">
+					<li>
+						<span class="weight"><?= v.sale_nums?></span>
+						<span>累计销量</span>
+					</li>
+					<li>
+						<span class="weight"><?= v.points?></span>
+						<span>平均店铺评分</span>
+					</li>
+					<li>
+						<span class="weight"><?= v.delivery_time?></span>
+						<span>平均发货时间</span>
+					</li>
+				</ul>
+			</div>
+			<ul class="coupon">
+				<? v.coupon && v.coupon.forEach(function(v, k){ ?>
+
+						<? if(parseInt(v.can_apply_status) == 0 || parseInt(v.can_apply_status) == 3){?>
+							<li class="can" data-status="<?= v.can_apply_status ?>">
+								<p class="credit credit0">
+									¥&nbsp;<span><?= v.credit?></span>
+								</p>
+								<span class="threshold status0" data-coupon="<?= v.coupon_apply_code?>" data-current="<?= v.current?>">
+									<? if(parseInt(v.threshold) == 0 ){?>
+										无门槛使用
+									<? }else{?>
+										消费满&nbsp;<?= v.threshold?>&nbsp;使用
+									<? }?>
+								</span>
+							</li>
+
+						<? }?>
+
+						<? if(parseInt(v.can_apply_status) == 1){ ?>
+							<li class="out">
+								<p class="credit credit1">
+									¥<span><?= v.credit?></span>
+								</p>
+								<span class="threshold status1" data-coupon="<?= v.coupon_apply_code?>" data-current="<?= v.current?>">
+									<? if(parseInt(v.threshold) == 0 ){?>
+										无门槛使用
+									<? }else{?>
+										消费满&nbsp;<?= v.threshold?>&nbsp;使用
+									<? }?>
+								</span>
+							</li>
+
+						<? }?>
+
+						<? if(parseInt(v.can_apply_status) == 2){?>
+							<li class="get">
+								<p class="credit credit2">
+									¥&nbsp;<span><?= v.credit?></span>
+								</p>
+								<span class="threshold status2" data-coupon="<?= v.coupon_apply_code?>" data-current="<?= v.current?>">
+									<? if(parseInt(v.threshold) == 0 ){?>
+										无门槛使用
+									<? }else{?>
+										消费满&nbsp;<?= v.threshold?>&nbsp;使用
+									<? }?>
+								</span>
+							</li>
+
+						<? }?>
+
+				<?});?>
+			</ul>
+
+			<ul class="goods">
+				<? $.each(v.goods , function(k , v){
+					var link = v.link || '/share/item/' + v.twitter_id + '?d_r=' + v.d_r;
+					if(k > 3){
+				?>
+						<li class="dis">
+					<?}else{?>
+						<li>
+					<? }?>
+						<a href="<?= link?>">
+							<div class="detail">
+								<?
+								var hours = '',
+									repertory = '',
+									_last = v.mark.last ? parseInt(v.mark.last) : '',
+									rest = v.repertory;
+
+									if(parseInt(rest) <= 10){ repertory = 'num'+rest;}
+
+									if(_last && _last <= 1){
+										hours = "one";
+									}else if(_last && _last <= 2){
+										hours = "two";
+									}else if(_last && _last <= 3){
+										hours = "three";
+									}else if(_last && _last <= 6){
+										hours = "six";
+									}else if(_last && _last <= 12){
+										hours = "twelve";
+									}
+								?>
+
+								<? if( repertory ){?>
+									<div  class = "common <?= repertory?> "></div>
+								<? }else if( hours ){?>
+									<div  class = "common <?= hours?> "></div>
+								<?};?>
+
+								<?if(v.mark.img){?>
+									<img src="<?= v.mark.img?>" class="corner sub">
+								<?}?>
+
+								<div class="img-wrapper" style="background-image: url(<?= v.ginfo.goods_pic_url ?>);">
+								</div>
+
+								<div class="intro">
+									<p class="describe"><?= v.ginfo.goods_title?></p>
+									<p class="price">
+										<span class="now"><?= v.ginfo.goods_price?></span>
+										<? if(v.ginfo.origin_price){?>
+											<span class="old"><?= v.ginfo.origin_price?></span>
+										<? }?>
+										<? if(v.ginfo.discount){?>
+											<span class="discount"><?= v.ginfo.discount?></span>
+										<? }?>
+									</p>
+								</div>
+
+							</div>
+						</a>
+					</li>
+
+
+				<? });?>
+			</ul>
+			<?if(v.nest){?>
+				<div class="more" data-nest="<?= v.nest?>"><?= v.nest?></div>
+			<?}?>
+		</div>
+	<? }); ?>
+
+</script>
+
+<script>
+fml.vars.toast = <%= JSON.stringify(this.toast) %>;
+fml.vars.total = <%= JSON.stringify(this.shop_list.data.page.total);%>;
+fml.vars.isLogin = <%= this.isLogin%>;
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use('wap/page/activity/clearance');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot.html%>

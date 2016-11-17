@@ -1,0 +1,100 @@
+@import "block.less";
+
+.frame;
+.slide;
+.header;
+.wrapper{
+	.mt(@header_top + @header_nav);
+	&.normal{
+		.mt(@header_top);
+	}
+}
+.scroller{
+	overflow:scroll;
+	overflow-x:hidden;
+	-webkit-overflow-scrolling: touch;
+	height:1000px;
+}
+.mls_frame{.hidden;}
+.nav_bread{.navBread;}
+.navRoute;
+.navTop;
+.search;
+.search{
+	.input{
+		&[status="normal"]{
+			&:before{
+				content:'搜索宝贝';
+			}
+		}
+	}
+}
+
+.pullUp{.pullUpDown > .common;.pullUpDown > .loading;
+	&:before{
+		.nowrap;
+		.ml(-10px);
+	}
+	&[status="tap"]{
+		background:0 none;	
+		&:before{
+			content:"上拉看更多..."	
+		}
+	}
+	&[status="stop"]{
+		background:0 none;	
+		&:before{
+			content:"木有了...";	
+		}
+	}
+}
+
+.poster;
+.goods_wall{
+	.poster_grid{.gpu;
+		img{ .gpu; }
+	}
+	figcaption{
+		.h(45*@px);.pt(15*@px);
+		.price{
+			.h(26*@px);.left;.pr;
+		}
+		.like{
+			.right;
+		}
+		.icon-heart{ .icon >.heart; }
+	}
+	&_box{.pr;}
+}
+
+@colWidth:640px/3 - 6;
+@mw7:@colWidth * 7;
+@mw6:@colWidth * 6;
+@mw5:@colWidth * 5;
+@mw4:@colWidth * 4;
+@mw3:@colWidth * 3;
+@mw2:@colWidth * 2;
+@media all and (min-width:@mw6){
+	@col:7;
+	.colFlag{z-index:@col;}
+}
+@media all and (max-width:@mw6){
+	@col:6;
+	.colFlag{z-index:@col;}
+}
+@media all and (max-width:@mw5){
+	@col:5;
+	.colFlag{z-index:@col;}
+}
+@media all and (max-width:@mw4){
+	@col:4;
+	.colFlag{z-index:@col;}
+}
+@media all and (max-width:@mw3){
+	@col:3;
+	.colFlag{z-index:@col;}
+}
+@media all and (max-width:@mw2){
+	@col:3;
+	.colFlag{z-index:@col;}
+}

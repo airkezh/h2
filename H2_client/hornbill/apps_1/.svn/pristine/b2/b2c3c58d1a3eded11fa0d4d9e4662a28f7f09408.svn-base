@@ -1,0 +1,51 @@
+<%# head.html%>
+<%
+var query = this._Request_query;
+var getLink = _extFn.getLink;
+var mSubstr = _extFn.mSubstr;
+%>
+<div class="spinner midSpinner pa_f" style="top:450px;"></div>
+<div class="content_fluid">
+	<div class="bnr_top" style="<%if( this.top ){%>background: url('<%= this.top.pic_url%>') no-repeat center top;<%}%>"></div>
+	<div class="ptyMargin"></div>
+	<div class="ptyNav">
+		<div class="pty_nav">
+			<div class="styles">
+				<strong>本期主题：</strong>
+				<% this.catalogs && this.catalogs.map(function(data) { %>
+					<a <%if( data.catalog_id == query.cid ){%> class="active"<%}%> href="<%=data.link_url%>"><%=data.catalog_name%></a>
+				<%});%>
+			</div>
+		</div>
+	</div>
+	<div class="goods_wall">
+		<%if(this.detail && this.detail.length !=0) {%>
+		<div class="corner_notic">
+			<div class="edit_attr">
+				<h2 class="tle"><%=this.detail.catalog_name%></h2>
+				<a class="pic"><img alt="<%=this.detail.desc%>" src="<%=this.detail.pic_url%>" /></a>
+				<p><%=this.detail.desc%></p>
+				<div class="clear_f"></div>
+	    	</div>
+		</div>
+		<%}%>
+	</div>
+</div>
+<div class="clear_f"></div>
+<div class="shop_logo">
+	<% this.botLogo && this.botLogo.map(function(data) { %>
+		<a href="<%=data.link_url%>" target="_blank"><img src="<%=data.pic_url%>" /></a>
+	<%});%>
+</div>
+<%#poster.html%>
+<%# user/windows.html%>
+
+<script>
+<%= this.poster0? 'Meilishuo.config.poster0 = '+JSON.stringify(this.poster0)+';':'' ;%>
+</script>
+<% $_ENGINE_SELF.callFn("useModule")("fml.use('page/poster0');", this._JSstack , this._JSmodsFast ); %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/edition');
+	fml.use('page/poster_guang');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

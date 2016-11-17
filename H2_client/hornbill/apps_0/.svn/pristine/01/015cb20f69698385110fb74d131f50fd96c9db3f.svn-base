@@ -1,0 +1,30 @@
+function coupon(){
+	return this;
+}
+var controlFns = {
+	out : function(coupon_apply_code){
+		var	php = {
+			'coupon_get' : '/coupon/outspread_apply?coupon_apply_code='+coupon_apply_code
+		};
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			data.pageTitle = '优惠券领取 - 美丽说';
+			data._CSSLinks = ['coupon_get'];
+			this.render('coupon_get.html' , data);
+		});
+	},
+	list : function(){
+		var	php = {};
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			data.pageTitle = '我的优惠券';
+			data.use_rem_screen = true;
+			data.headName = '我的优惠券';
+			data._CSSLinks = ['coupon_list'];
+			this.render('coupon_list.html' , data);
+		});
+	}
+}
+exports.__create = controller.__create(coupon , controlFns);

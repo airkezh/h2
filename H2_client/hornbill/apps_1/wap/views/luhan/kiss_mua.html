@@ -1,0 +1,24 @@
+<%#head.html%>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+	<div class="mua_box">
+		<img class="pic1" src="http://d05.res.meilishuo.net/pic/_o/19/8e/4e418513f90f214300b95d09491d_429_439.cf.png">
+		<img class="pic2" src="http://d04.res.meilishuo.net/pic/_o/92/91/4a6d316ac05a95f0c171f946ee62_44_94.cg.png">
+		<div class="pic3" ><img src="http://d01.res.meilishuo.net/pic/_o/d0/27/aa3f93e2449baaa5a6e5063454f6_117_96.cf.png"></div>
+	</div>
+<script>
+	fml.vars.r = "<%= this.xr.r%>"
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use("wap/page/luhan_kiss");
+	fml.use("m/zepto" , function(){
+		setTimeout(function(){
+			$('.pic1 , .pic2').addClass('opa');
+			$('.pic3 img').addClass('ani');
+			$('.pic3').on('touchstart' , function(){
+				window.location.href = window.__get_r('/luhan/kiss/gift' , fml.vars.r);
+			});
+		} , '10');
+		
+	});
+_use:", this._JSstack , this._JSmods); %>
+<%#foot.html%>

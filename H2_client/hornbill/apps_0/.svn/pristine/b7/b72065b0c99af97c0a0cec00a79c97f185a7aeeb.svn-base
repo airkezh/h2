@@ -1,0 +1,338 @@
+<!--
+/**
+ * @fileoverview 会员半价购 － 会员中心
+ * @requires zepto
+ * @author kehuang@meilishuo.com
+ * @date 2015-06-24
+ */
+-->
+
+<%#head.html%>
+<%
+	var curPageData = this.pageData || {};
+	var curServerDate = this.serverDate;
+	var curServerTime = curServerDate.getTime();
+	var curServerHours = curServerDate.getHours();
+%>
+
+<div class="main">
+	<div class="top_wrap"></div>
+
+	<section class="goods_wrap">
+		<ul class="goods_wall"></ul>
+		<div class="pullUp" status="loading"></div>
+	</section>
+
+	<div class="gotop_wrap">
+		<a class="gotop">
+			<img src="http://d03.res.meilishuo.net/pic/_o/d0/68/f89d059f09d440f4ee7a37669383_80_80.cg.png" alt="">
+		</a>
+	</div>
+</div>
+
+<script type="text/html" id="j_recommend_tpl">
+	<?
+		var jsonData = this.data,
+			topBannerData = jsonData.top_banner || [],
+			topBannerLen = topBannerData.length;
+
+		if (topBannerLen > 0) {
+	?>
+	<div id="j_img_swipe" class="swipe">
+		<div class="swipe_wrap" style="width: 32000px;">
+			<?
+				for (var i = 0; i < topBannerLen; i++) {
+					var data = topBannerData[i],
+						imgSrc = data.img_src || '',
+						imgTitle = data.img_title || '',
+						imgLink = data.img_link || 'javascript:void(0);';
+			?>
+			<div class="swipe_pic">
+				<a href="<?= imgLink ?>">
+					<img src="<?= imgSrc ?>" alt="<?= imgTitle ?>">
+				</a>
+			</div>
+			<?
+				}
+			?>
+		</div>
+		<?
+			if (topBannerLen > 1) {
+		?>
+		<ul class="swipe_num">
+			<?
+				for (var j = 0; j < topBannerLen; j++) {
+					var className = (j == 0) ? 'active' : '';
+			?>
+			<li class="<?= className ?>"></li>
+			<?
+				}
+			?>
+		</ul>
+		<?
+			}
+		?>
+	</div>
+	<?
+		}
+
+		var tabListData = jsonData.cate_list || [],
+			tabListLen = tabListData.length;
+
+		if (tabListLen > 0) {
+	?>
+	<section class="nav_wrap" id="nav_wrap">
+		<div class="lhp100"></div>
+		<section class="nav_box">
+			<div class="points">
+				<s></s>
+				<ul>
+					<?
+						var serverHours = parseInt(this.serverHours);
+
+						for (var k = 0; k < tabListLen; k++) {
+							var status = 0,
+								prevHours = '',
+								nextHours = '',
+								className = '',
+								sText = '已结束',
+								data = tabListData[k],
+								curTid = data.tid || '',
+								curHours = data.name || '';
+
+							if ((curTid != '') && (curHours != '')) {
+								var tempHours = curHours,
+									prevData = tabListData[k - 1],
+									nextData = tabListData[k + 1];
+
+								curHours = parseInt(curHours);
+								prevData && (prevHours = parseInt(prevData.name));
+								nextData && (nextHours = parseInt(nextData.name));
+
+								if ((prevHours == '') && (nextHours == '')) {
+									if ((curHours != 0) && (serverHours < curHours)) {
+										status = 2;
+										className = 'curr';
+										sText = '即将开始';
+									} else {
+										status = 1;
+										className = 'curr';
+										sText = '抢购中';
+									}
+								} else if ((prevHours == '') && (nextHours != '')) {
+									if ((serverHours < curHours) && (serverHours >= 0)) {
+										status = 2;
+										className = (k == 0) ? 'curr' : '';
+										sText = '即将开始';
+									} else if ((serverHours < nextHours) && (serverHours >=curHours)) {
+										status = 1;
+										className = 'curr';
+										sText = '抢购中';
+									} else {
+										status = 0;
+										className = '';
+										sText = '已结束';
+									}
+								} else if ((prevHours != '') && (nextHours == '')) {
+									if (serverHours < curHours) {
+										status = 2;
+										className = '';
+										sText = '即将开始';
+									} else {
+										status = 1;
+										className = 'curr';
+										sText = '抢购中';
+									}
+								} else {
+									if (serverHours < curHours) {
+										status = 2;
+										className = '';
+										sText = '即将开始';
+									} else if (serverHours >= nextHours) {
+										status = 0;
+										className = '';
+										sText = '已结束';
+									} else {
+										status = 1;
+										className = 'curr';
+										sText = '抢购中';
+									}
+								}
+					?>
+					<li name="tab_<?= k ?>" data-tid="<?= curTid ?>" data-hour="<?= curHours ?>" data-status="<?= status ?>" class="<?= className ?>">
+						<a href="javascript:void(0);">
+							<span><?= tempHours ?>:00<label><?= sText ?></label></span>
+						</a>
+					</li>
+					<?
+							}
+						}
+					?> 
+				</ul>
+			</div>
+			<div class="lhp100 navbl"></div>
+		</section>
+	</section>
+	<?
+		}
+	?>
+</script>
+
+<script type="text/html" id="j_goods_tpl">
+	<?
+		var curMoveTabStatus = parseInt(this.curMoveTabStatus) || 0;
+
+		$.each(this.data.data.list, function(index, data){
+	    	var btnText= '',
+	    		btnClass = '',
+	    		img = data.img || '',
+	    		price = data.price || 0,
+	    		stock = data.stock || 0,
+	    		sales = data.sales || 0,
+	    		offset = data.offset || 0,
+	    		title = data.title || '',
+	    		oprice = data.origin_price || 0,
+	    		href = data.url || 'javascript:void(0);';
+
+	    	if (stock < 1) {
+	    		btnText = '已抢光';
+	    		btnClass = 'empty_btn';
+	    		href = 'javascript:void(0);';
+	    	} else {
+	    		switch (curMoveTabStatus) {
+	                case 0:
+				    	btnText = '<a href="' + href + '">现价购买</a>';
+				    	btnClass = 'over_btn';
+	                    break;
+	                case 1:
+	                    btnText = '<a href="' + href + '">马上抢</a>';
+				    	btnClass = 'buy_btn';
+	                    break;
+	                case 2:
+	                    btnText = '<a href="' + href + '">即将开抢</a>';
+	    				btnClass = 'empty_btn';
+	                    break;
+	            }
+	    	}
+	?>
+	<li class="goods_item">
+        <figure>            
+            <a href="<?= href ?>">
+            	<?
+			    	if (fml.vars.is_lazyload_poster) {
+			    		if (index < 4) {
+			    ?>
+			    <span class="df_show_img" style="opacity: 1;background-image: url(<?= img ?>);"></span>
+			    <?
+			    		} else {
+			    ?>
+			    <span class="bs_load_img" asrc="<?= img ?>"></span>
+			    <?
+			    		}
+					} else {
+				?>
+			    <img src="<?= img ?>" alt="">
+			    <?
+					}
+			    ?>       
+            </a>
+        </figure>
+
+        <ul class="desc">
+            <li>
+                <a href="<?= href ?>"><?= title ?></a>
+            </li>
+            <li>
+                <span class="now_price">￥<?= price ?></span>
+                <span class="gcata">
+                    <i class="ded_bg">美美豆抵<?= offset ?></i>
+                    <s class="old_price">￥<?= oprice ?></s>
+                </span>
+            </li>
+            <li class="sale_info">
+                <p class="sale"><?= sales ?>人已抢</p>
+                <p class="level">V1及以上会员</p>
+            </li>
+            <li class="<?= btnClass ?> status_btn"><?= btnText ?></li>
+        </ul>
+    </li>
+	<?
+		});
+	?>
+</script>
+
+<script>
+	var curServerTime = <%=curServerTime%>;
+	var curPageData = <%=JSON.stringify(curPageData)%>;
+
+	var tempTabListArr = [];
+	var tempSwipeBannerArr = [];
+	var curTabListArr = curPageData.cate_list || [];
+    var curSwipeBannerArr = curPageData.top_banner || [];
+    var curTabListLen = curTabListArr.length;
+	var curSwipeBannerLen = curSwipeBannerArr.length;
+	var cur_server_time = parseInt(curServerTime / 1000);
+
+	for (var i = 0; i < curTabListLen; i++) {
+		var tab_status = true,
+			curTabListData = curTabListArr[i],
+			tab_begin_time = Date.parse(curTabListData.begin_time || '') / 1000,
+			tab_end_time = Date.parse(curTabListData.end_time || '') / 1000;
+
+		if (tab_begin_time) {
+			if (!tab_end_time || (tab_end_time && (cur_server_time >= tab_begin_time) && (cur_server_time <= tab_end_time))) {
+				tab_status = true;
+			} else {
+				tab_status = false;
+			}
+		} else {
+			console.log(curTabListData.name);
+			if (!tab_end_time || (tab_end_time && (cur_server_time <= tab_end_time))) {
+				tab_status = true;
+			} else {
+				tab_status = false;
+			}
+		}
+
+		tab_status && tempTabListArr.push(curTabListData);
+	}
+
+	for (var j = 0; j < curSwipeBannerLen; j++) {
+		var banner_status = true,
+			curSwipeBannerData = curSwipeBannerArr[j],
+			banner_begin_time = Date.parse(curSwipeBannerData.begin_time || '') / 1000,
+			banner_end_time = Date.parse(curSwipeBannerData.end_time || '') / 1000;
+
+		if (banner_begin_time) {
+			if (!banner_end_time || (banner_end_time && (cur_server_time >= banner_begin_time) && (cur_server_time <= banner_end_time))) {
+				banner_status = true;
+			} else {
+				banner_status = false;
+			}
+		} else {
+			if (!banner_end_time || (banner_end_time && (cur_server_time <= banner_end_time))) {
+				banner_status = true;
+			} else {
+				banner_status = false;
+			}
+		}
+
+		banner_status && tempSwipeBannerArr.push(curSwipeBannerData);
+	}
+
+	tempTabListArr = tempTabListArr.sort(function(a, b){return parseInt(a.name) - parseInt(b.name);});
+
+	curPageData.cate_list = tempTabListArr;
+	curPageData.top_banner = tempSwipeBannerArr;
+
+	fml.vars.isLogin = <%=this.isLogin%>;
+	fml.vars.serverHours = <%=curServerHours%>;
+	fml.vars.is_lazyload_poster = true;
+</script>
+
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/member/trade');
+_use:", this._JSstack, this._JSmods); %>
+<%#foot_simple.html%>

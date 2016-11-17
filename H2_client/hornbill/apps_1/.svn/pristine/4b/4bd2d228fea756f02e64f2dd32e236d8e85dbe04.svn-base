@@ -1,0 +1,11 @@
+<%# sq/header.html %>
+<div class="wall">
+<% var data = this.pageData; %>
+<% data && data.forEach(function (item, index){%>
+	<figure>
+		<a href="<%= item.url %>" style="background-image: url(<%= item.img %>);"></a>
+		<figcaption><%= _extFn.mSubstr(item.navi_name, 4, '') %></figcaption>
+	</figure>
+<% }); %>
+</div>
+<%# sq/footer.html %>

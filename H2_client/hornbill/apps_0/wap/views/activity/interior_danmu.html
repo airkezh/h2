@@ -1,0 +1,24 @@
+<%# head.html %>
+<div id="danmu">
+    <div id="stage">
+        <div id="bullet-signal" class="bullet"></div>
+    </div>
+    <div class="ft">
+        <div class="wrap">
+            <p id="error-msg"></p>
+        </div>
+        <div class="inputs">
+            <textarea placeholder="吐槽模式开启！" id="input"></textarea>
+            <span id="shoot" class="btn" data-action="shoot">发射</span>
+            <span id="fresh" class="btn" data-action="refresh"></span>
+        </div>
+    </div>
+</div>
+<script>
+    fml.vars.isLogin = <%= this.userInfo.user_id %>;
+    fml.vars.danmakuDatas = <%= JSON.stringify( this.danmu.data.info ) %>;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+        fml.use('wap/page/activity/interior_danmu');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html %>

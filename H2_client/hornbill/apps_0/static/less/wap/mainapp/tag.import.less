@@ -1,0 +1,86 @@
+@from: rotate(20deg);
+@to: rotate(-65deg);
+
+.tag() {
+  .price-tags {
+    color          : #fff;
+    pointer-events : none;
+  }
+
+  .price-tag {
+    .flexbox();
+    position : absolute;
+    .gpu();
+  }
+
+  .icon-tag {
+    -ms-transform-origin     : 25*@px 7*@px;
+    -webkit-transform-origin : 25*@px 7*@px;
+    transform-origin         : 25*@px 7*@px;
+    .animation(swing 1s ease-in-out 0s infinite alternate);
+  }
+
+  .tag-text {
+    position         : relative;
+    height           : 40*@px;
+    line-height      : 40*@px;
+    padding          : 0 10*@px;
+    font-size        : 22*@px;
+    font-weight      : bolder;
+    background-color : rgba(51, 51, 51, .8);
+    white-space      : nowrap;
+    border-radius    : 3px;
+
+    &::before {
+      content  : "";
+      position : absolute;
+      top      : 0;
+      border   : 8*@px solid rgba(51, 51, 51, .8);
+    }
+  }
+
+  .dir-left .tag-text {
+    margin-left            : 16*@px;
+    border-top-left-radius : 0;
+
+    &::before {
+      left                      : -16*@px;
+      border-bottom-color       : transparent;
+      border-right-color        : transparent;
+      border-bottom-left-radius : 4px;
+      .transform(rotate(90deg));
+    }
+  }
+
+  .dir-right .tag-text {
+    margin-right            : 10*@px;
+    border-top-right-radius : 0;
+
+    &::before {
+      right                   : -15.5*@px;
+      border-bottom-color     : transparent;
+      border-right-color      : transparent;
+      border-top-right-radius : 4px;
+    }
+  }
+}
+
+@-webkit-keyframes swing {
+  from {
+    -webkit-transform : @from;
+  }
+
+  to {
+    -webkit-transform : @to;
+  }
+}
+
+@keyframes swing {
+  from {
+    transform : @from;
+  }
+
+  to {
+    transform : @to;
+  }
+}

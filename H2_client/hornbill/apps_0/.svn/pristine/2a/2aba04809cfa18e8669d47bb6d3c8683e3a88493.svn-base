@@ -1,0 +1,24 @@
+function myCenter(){
+	return this;
+}
+var controlFns = {
+	index : function(coupon_apply_code){
+		var	php = {
+			'order_list' : 'doota::/order/list_info'
+		};
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			if (!data.userInfo || !data.userInfo.user_id){
+				this.redirectTo('/user/login' ,false ,{"r": "/order/"});		
+				return;	
+			}
+
+			data.use_rem_screen = true;
+			data.pageTitle = '个人中心';
+			data._CSSLinks = ['myCenter'];
+			this.render('myCenter.html' , data);
+		});
+	}
+}
+exports.__create = controller.__create(myCenter , controlFns);

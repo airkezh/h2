@@ -1,0 +1,32 @@
+<div class="coupon_bannar"><img src="<%= this.bannar %>"></div>
+<div class="fix_coupon slide_bottom_out">
+	<div class="black_mask"></div>
+	<div class="fix_coupon_wrap">
+		<div class="title">店铺优惠券<span class="close">&nbsp;</span></div>
+		<div class="coupons">
+			<% this.coupon.forEach(function(coupon){ %>
+				<%
+					var get_btn_text = '领取';
+					var status_class = 'can_get';
+					if(coupon.can_apply_status == 1 || coupon.can_apply_status == -1){
+						get_btn_text = '已抢光';
+						status_class = 'has_over'
+					}
+				%>
+				<div class="coupon"><span class="desc"><%= coupon.title %></span><span class="get_btn <%= status_class %>" data-code="<%= coupon.coupon_apply_code %>"><%= get_btn_text %></span></div>
+			<% }); %>
+			<div class="ps"><span>注：店铺优惠券可与平台优惠券叠加使用</span></div>
+		</div>
+		<div class="get_all">
+			<div class="get_all_btn">一键领取</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	fml.vars.isLogin = '<%= this.isLogin %>';
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/biz/beauty_coupon');
+_use:", this._JSstack , this._JSmods);%>

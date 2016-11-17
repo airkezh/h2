@@ -1,0 +1,75 @@
+<%#head.html%>
+<%
+	var addTrace = this.ViewTools.addTrace
+%>
+
+<div class="slide">
+	<ul class="slide_img">
+		<% this.top && this.top.forEach(function(v,k){ %>
+			<li>
+				<a class="pic" href="<%= v.link %>" target="_blank" data-img="<%= v.show_pic %>" title="<%= v.tab_name %>"></a>
+			</li>
+		<% }); %>
+	</ul>
+</div>
+<div class="top_wrap">
+	<%# guang/catalogNav.html %>
+	<div class="round">
+		<div class="adType">
+			<% this.top && this.top.length>1 && this.top.forEach(function(data){ %>
+				<a></a>
+			<% }); %>
+		</div>
+	</div>
+	<div class="bnr_box">
+		<ul class="pic_attr">
+			<%
+				this.bnr_ct && this.bnr_ct.map(function(data, i){
+				data.link = addTrace(data.link , 'mz_bnr_ct_'+i);
+			%>
+				<li><a href="<%= data.link %>" target="_blank"><img src="<%= data.pic %>" /></a></li>
+			<% }); %>
+		</ul>
+	</div>
+</div>
+
+<% var specials = this.act_info.specials; %>
+<div class="show_box_wrap">
+	<div class="show_box_inner">
+		<% specials && specials.length && specials.map(function(data){ %>
+			<div class="show_box bs_<%= data.color %>">
+				<div class="box_title"><%= data.text %></div>
+				<a class="box_bannar" href="<%= data.banner_url || 'javascript:void(0)" style="cursor: default;' %>" target="_blank"><img src="<%= data.banner_pic %>" alt=""></a>
+				<div class="goods_wrap <%= data.template == '2' ? '' : 'goods_single' %>">
+					<% data.goods.map(function(item){ %>
+						<a class="goods_link" href="<%= item.url%>" target="_blank">
+							<div class="img_box"><img src="<%= item.pic_path%>"></div>
+							<div class="goods_con">
+								<p class="goods_title"><%= item.desc%></p>
+								<p class="goods_desc"><%= _extFn.mSubstr(item.title, 24, '...') %></p>
+								<p class="goods_price"><span class="original">￥<%= item.price%></span><del><%= item.origin_price ? '￥'+item.origin_price : '' %></del></p>
+							</div>	
+						</a>
+					<% }); %>
+				</div>
+			</div>
+		<%});%>
+		<div class="clear_f"></div>
+		<%#paging.html%>
+	</div>
+</div>
+
+<div class="promise-foot">
+	<%# doota/promise.html%>
+</div>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('app/focus_banner' , function(){
+		this.bind({
+			'unit' : '.slide_img li'
+			,'btn': '.round .adType a'
+			,'transition' : 'fade'
+		})
+	});
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

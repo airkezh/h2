@@ -1,0 +1,45 @@
+<%# head.html %>
+<div class="topPic">
+  <img src="<%= this.PICTURE_URL%>/images/mlslm/wap/top_pic_wap.jpg">
+</div>
+<div class="main">
+  <div class="goods_wall"></div>
+  <div class="pullUp" status="loading"></div>
+</div>
+<span class="gotop" style="bottom:<%if(this.os.iphone){%>60<%}else{%>20<%}%>px">
+  <img src="<%= this.PICTURE_URL%>/images/wap/tuan/gotop.png" />
+</span>
+<script>
+  fml.vars.poster = {};
+  <%= this.poster0? 'Meilishuo.config.poster0 = '+JSON.stringify(this.poster0)+';':'' ;%>
+</script>
+<script type="text/html" id="posterWall">
+  <? $.each(this.tInfo, function (k, v){ ?>
+  <?
+    var pic_height = (v.img_height / v.img_width) * (fml.vars.poster.colWidth - 8);
+  ?>
+    <div class="poster-container" poster_height="<?= pic_height + 65?>" style="width:<?= fml.vars.poster.colWidth?>px;">
+	  <figure>
+      <?if(v.horizontal_mark.length){?>
+        <div class="new-png" style="position:absolute;top:0;left:7px;">
+          <?var _l = 0;?>
+          <? $.each(v.horizontal_mark , function(k1 , v1){ ?>
+            <div style="left:<?=2 + _l?>px"><img src="<?= v1.img_url?>" style="max-width:3rem;width:<?= v1.img_height ?>px;height: auto;" /></div>
+            <?_l += (+v1.img_width + 2);?>
+          <?});?>
+        </div>
+      <?}?>
+	    <a class="link" href="<?= v.link ?>" style="height:<?= pic_height ?>px;z-index:999;"><span class="bs_load_img" data-src="<?= v.image ?>" alt="twitter" style="display:block;height:<?= pic_height ?>px;"></span></a>
+	    <p class="title"><?= v.goods_title ?></p>
+	    <figcaption>
+	      <span class="price">￥</span><?= v.price ?>
+	      <span class="sale">销量&nbsp;<?= v.sale_num ?></span>
+	    </figcaption>
+	  </figure>
+	</div>
+  <? }); ?>
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+  fml.use('wap/page/biz/mlslm_act');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html %>

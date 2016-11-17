@@ -1,0 +1,40 @@
+<%#head_simple.html%>
+</head>
+<body <%if(this.os.ios){%>class="ios"<%}%>>
+	<div class="top_bnr">
+		<img src="<%= this.PICTURE_URL%>images/wap/activity/sale_vote/top.jpg" />
+	</div>
+	<div class="nav_top">
+		<nav class="nav_box">
+			<ul class="goods">
+				<li <%if(this.type=='dress'){%>class="active"<%}%> >
+					<a href="/activity/sale_vote/vote/?type=dress&<%=this.tokeninfo%>">衣服</a>
+				</li>
+				<li <%if(this.type=='beauty'){%>class="active"<%}%>>
+					<a href="/activity/sale_vote/vote/?type=beauty&<%=this.tokeninfo%>">美妆</a>
+				</li>
+			</ul>
+		<nav>
+	</div>
+	<section id="wrapper_main" class="wrapper">
+		<div class="scroller">
+			<span class="colFlag"></span>
+			<div class="goods_wall"></div>
+			<div class="pullUp" status="loading"></div>
+		</div>
+	</section>
+	<%# activity/sale_vote/poster.html%>
+	<div class="share">
+		<a href="/activity/sale_vote/share/?mac=<%=this.sale_vote_haibao.mac%>&app_verision=<%=this.app_version%>" class="share"><img src="<%= this.PICTURE_URL%>images/wap/activity/sale_vote/share1.png" /></a>
+	</div>
+
+<script>
+	fml.vars.poster = {};
+	fml.vars.type = '<%=this.type%>';
+	fml.vars.access_token = '<%=this.access_token%>';
+</script>
+<% $_ENGINE_SELF.callFn("useModule")("fml.use('wap/page/poster0');", this._JSstack , this._JSmodsFast ); %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/sale_vote/sale_vote');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

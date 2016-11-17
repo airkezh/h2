@@ -1,0 +1,52 @@
+<%# head_simple.html%>
+<div class="wrap">
+	<section>
+		<% var tid = this.tid;
+	        if(tid == 3){%>
+				<img src="http://d03.res.meilishuo.net/pic/_o/70/3b/a62f17908fe8d26e271d39bb9bec_640_716.cj.png">
+	        <%}else if(tid == 5){%>
+				<img src="http://d03.res.meilishuo.net/pic/_o/62/0d/7b7ebea2adb7afd6b091317a7f70_640_716.cj.png">
+			<%}else if(tid == 20){%>
+				<img src="http://d04.res.meilishuo.net/pic/_o/78/1d/1f79b3f793bdae1df8cd784f89a7_640_716.cj.png">
+			<%}else if(tid == 60){%>
+				<img src="http://d01.res.meilishuo.net/pic/_o/f0/45/f6c866e72caa90a183df4bd11646_640_716.cj.png">
+			<%}else if(tid == 100){%>
+				<img src="http://d02.res.meilishuo.net/pic/_o/bc/3c/1f0e2a8eda55ab20077384168049_640_716.cj.png">
+			<%}%>
+	</section>
+	<section class="shareno-wrap">
+		<img src="http://d03.res.meilishuo.net/pic/_o/5a/8d/28087d071cbe344a0cd86339847f_640_106.cj.png" alt="">
+		<a class="invite share"></a>
+		<a class="main" href="http://pages.w.meilishuo.com/cooper/169403"></a>
+		<!-- <span class="share">一起分享喜悦</span> -->
+	</section>
+	<section>
+		<img src="http://d02.res.meilishuo.net/pic/_o/1f/35/e50f4bf5844fff09062316a229df_640_465.cj.png">
+	</section>
+</div>
+<script type="text/html" id="share_md">
+</script>
+<script>
+	fml.vars.useId = <%= JSON.stringify(this.user_id)%>;
+	var imgUrl = 'http://i.meilishuo.net/css/images/wap/web/wx/stitle.jpg';
+	var lineLink = 'http://m.meilishuo.com/wx/stove?uid=' + fml.vars.useId + '&page_name=xmas_fire&suid=' + fml.vars.useId;
+	var descContent = '【美丽说】圣诞有钱，壁炉点火够任性！每天N次拿礼物，无上限！';
+	var shareTitle = '【美丽说】圣诞炉火大转盘';
+	var shareTimelineText = '【美丽说】圣诞有钱，壁炉点火够任性！每天N次拿礼物，无上限！';
+
+	fml.vars.isWx = <%= this.isWx %>;
+	fml.vars.appShare = <%= this.appShare %>;
+	fml.vars.imgUrl = imgUrl;
+	fml.vars.lineLink = lineLink;
+	fml.vars.descContent = descContent;
+	fml.vars.shareTitle = shareTitle;
+	fml.vars.shareTimelineText = shareTimelineText;
+</script>
+
+<!-- <script src="<%= this.JCSTATIC_BASE  %>/js/open/shareCollect.js?<%= this.SVERSION%>"></script> -->
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/wx/stove');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

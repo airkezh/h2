@@ -1,0 +1,200 @@
+<%#head.html%>
+<%
+	var EfnSubstr = _extFn.mSubstr;
+%>
+<%if(this.wlc_topbanner && typeof this.wlc_topbanner == 'object'){%>
+	<div class="ads_banner brand_bnr">
+		<a href="<%= this.wlc_topbanner[0].links%>" target="_blank"><img src="<%= this.wlc_topbanner[0].img_url%>" /></a>
+	</div>
+<%}%>
+
+<div class="wlc_top">
+	<div class="wlc_bnr"> 
+		<div class="boxImg" style="width:640px;height:240px;">
+			<% var seclen = this.headSec ? this.headSec.length : 0; %>
+			<ul class="_img" style="position:absolute;left:0;width:<%= (seclen+1)*640 %>px;display:inline-block;">
+				<% this.headSec && this.headSec.map(function(data, index){ %>
+				<li class="left_f"><a target="_blank" href="<%= data.links%>"><img width="640" height="240" src="<%= data.img_url%>"></a></li>
+				<% }); %>
+			</ul>
+		</div>
+		<div class="_num adType1 <% if(seclen == 1) { %>none_f<% } %>">
+			<% for (var i=1; i<=seclen; i++) { %>
+			<% var current = i==1 ? 'current' : ''; %>
+			<a class="<%= current %>"><span class="none_f"><%= i %></span></a>
+			<% } %>
+		</div>
+	</div>
+	<div class="rec_attr">
+		<div class="cmn_title">
+			<p><a href="/guang/hot" target="_blank">更多<samp>&gt;&gt;</samp></a></p>
+			<h2 class="f14_f">社区热荐</h2>
+		</div>
+		<ul class="rec_list">
+			<% this.comm_recommend && this.comm_recommend.map(function(data){ %>
+				<li>
+					<a class="followed" href="<%=data.link%>" target="_blank"><%= data.title %></a>
+					<span>
+						<% data.words && data.words.map(function(data){  %>
+							<a href="/attr/direct?searchKey=<%= encodeURIComponent(data.word)%>" <% if(data.red == 1){%> class="red_f"<%}%> target="_blank"><%=data.word%></a>
+						<% }) ;%>
+					</span>
+				</li>
+			<% }); %>
+		</ul>
+	</div>
+</div>
+<div class="clear_f"></div>
+<div class="cmn_title w948_f mt14_f">
+	<h3 class="f16_f">今日编辑精选</h3>
+</div>
+<div class="edit_sel">
+	<ul>
+		<% this.editor_choice && this.editor_choice.map(function(data){ %>
+			<li asrc="<%=data.img%>">
+				<% data.links && data.links.map(function(data){ %>
+					<a class="a<%=data.pos%>" href="<%=data.url%>" target="_blank"></a>
+				<% }); %>
+			</li>
+		<% }); %>
+	</ul>
+	<div class="clear_f"></div>
+</div>
+<div class="cmn_title w948_f mt14_f">
+	<h3 class="f16_f">今日必备单品</h3>
+</div>
+<div class="wlc_auto">
+	<% this.essential && this.essential.map(function(data){ %>
+		<div class="groupBox">
+			<div class="groupCon">
+				<a class="picBox" href="<%=data.link%>" target="_blank"><img src="<%=data.img%>"></a>
+				<div class="gc_title">
+					<h4><a target="_blank" href="<%=data.link%>"><%=data.title%></a></h4>
+					<p><span class="wlc_heart">&nbsp;</span><%=data.heart%></p>
+				</div>
+				<p class="detail"><%=data.contents%></p>
+				<div class="clear_f"></div>
+			</div>
+		</div>
+	<% }); %>
+</div>
+<div class="clear_f"></div>
+<% 
+var imgIndex = 0;
+this.section && this.section.forEach(function(data){%>
+	<%if(data.title == '包包' && this.wlc_centralbanner && typeof this.wlc_centralbanner == 'object'){%>
+		<div class="ads_banner brand_bnr">
+			<a href="<%= this.wlc_centralbanner[0].links%>" target="_blank"><img src="<%= this.wlc_centralbanner[0].img_url%>" /></a>
+		</div>
+	<%}%>
+<div class="cmn_title w948_f mt14_f" id="wlcomdress">
+	<p><a href="<%= data.link_url%>" target="_blank">更多<samp>&gt;&gt;</samp></a></p>
+	<h3 class="f16_f">爱美丽们分享的<a class="red_f" href="<%= data.link_url%>" target="_blank"><%= data.title%></a></h3>
+	<div class="words_link">
+		<% data.words.map(function(words){%>
+			<a href="<%=words.link%>" target="_blank"><%= words.name%></a>
+		<%});%>
+	</div>
+</div>
+<div class="wlc_auto">
+	<%
+	data.attrs && data.attrs.forEach(function(attrs){%>
+	<div class="groupBox">
+		<div class="groupCon">
+			<div class="gc_title">
+				<h4><a href="<%= attrs.link%>" target="_blank"><%= attrs.name%></a></h4>
+			</div>
+			<a href="<%= attrs.link%>" target="_blank" class="imgBox">
+				<%if(attrs.mix_pic){
+						if (imgIndex++ < 8 ){ %>
+						<img class="maxpic" src="<%= attrs.mix_pic%>">
+						<% } else { %>
+						 <span asrc="<%= attrs.mix_pic%>" class="maxpic" ></span>
+				<%
+						}
+				}else{%>
+						<% attrs.pics && attrs.pics.map(function(pic , index){%>
+								<img class="minpic" src="<%= pic%>" style="<%if((index + 1) % 3 == 0){%>margin-right:0px;<%}%>">
+						<%});%>
+				<%};%>
+			</a>
+			<div class="lookBox">
+				<a class="btn" href="<%= attrs.link%>" target="_blank">去看看</a>
+				<span class="tex"><%= attrs.number%>个分享</span>
+			</div>
+		</div>
+	</div>
+	<%});%>
+</div>
+<div class="clear_f"></div>
+<%});%>
+<div class="brand_pic">
+	<h3 class="f16_f"><a class="red_f" href="/goods" target="_blank">更多精彩分享</a>等你来发现</h3>
+	<div>
+		<% this.brand && this.brand.forEach(function(data){%>
+			<a href="<%= data.link%>" target="_blank"><span asrc="<%= data.pic_url%>" ></span></a>
+		<%});%>
+		<div class="clear_f"></div>
+	</div>
+</div>
+<div class="clear_f"></div>
+<div class="wlc_auto">
+	<div class="ads_banner ads_bottom none_f"></div>
+</div>
+
+<% if(this.userInfo.user_id == 0){%>
+<div class="wlc_bot">
+	<ul>
+		<li class="login"><a href="/user/register?frm=_wzzhuce">1500万爱美丽MM，每天都有新分享！<span class="red_f">现在注册&gt;&gt;</span></a></li>
+		<li>
+			<a href="/connect/auth/weibo"><em class="i_sina">&nbsp;&nbsp;</em> 微博登录</a>
+			<a class="ml14_f" href="/connect/auth/qzone"><em class="i_QQ">&nbsp;</em> QQ登录</a>
+		</li>
+		<li class="detail">现在注册，跟朋友一起修炼美丽，每天分享怎样搭配，怎样化妆，哪里去买；记录我漂亮的每一天，让改变发生！</li>
+	</ul>
+	<div><a class="big_btn" href="/goods" target="_blank"><span class="big_btnr"></span>更多精彩分享&gt;&gt;</a></div>
+</div>
+<%}%>
+
+<%# user/windows.html%>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/welcome');
+_use:", this._JSstack , this._JSmods ); %>
+<% if (this.isMedalSignIn) {
+	var isQ = this.isMedalSignIn.frm.indexOf('qzone') > -1;
+	var ico_c = isQ ? 'big_qq' : 'big_sina';
+	var href_c = isQ ? '/connect/auth/qzone?frm=fall' : '/connect/auth/weibo?frm=fall';
+	var words = {'74':'登录后即可领取“奔月勋章”', '75':'登录后即可领取“玉兔勋章”', '76':'登录后即可领取“月饼勋章”'};
+	var pics = {'74':'images/medal/icons/benyue.png', '75':'images/medal/icons/yutu.png', '76':'images/medal/icons/yuebing.png'};
+	var medalId = this.isMedalSignIn.medal;
+%>
+<script type="text/html" id="loginMedal">
+<div class="pop_login medal_login" style="text-align:center;padding:12px;">
+	<img src="<%= this.PICTURE_URL%><%=pics[medalId]%>" width="57" height="57"/>
+	<p class="mt10_f f14_f fb_f"><%=words[medalId]%></p>
+	<%if(this.isMedalSignIn.frm != 'edm_xunzhang') {%>
+	<div class="l_ico mt14_f">
+		<a class="<%=ico_c%>" href="<%=href_c%>"></a>
+	</div>
+	<div class="mt14_f c_f">已有帐号，直接<a class="red_f" href="/user/login?frm=tk_denglu1">登录</a></div>
+	<% } else { %>
+	<fieldset>
+		<form method="post" onsubmit="return false" action="">
+		<legend>美丽说登录表单</legend>
+		<p><input class="l_ipt" id="mlsUser" type="text" name="mlsUser" value="" placeholder="用户名或邮箱"/></p>
+		<p>
+			<input class="l_ipt" id="vmPass" type="text" value="密码" />
+			<input class="l_ipt none_f" id="mlsPass" name="password"  type="password" value="" />
+		</p>
+		<p class="loginErrorMessage red_f none_f"></p>
+		<div><input class="loginBtn button left_f" type="submit" value="登录"/><a class="left_f red_f" href="/user/register" target="_BLANK" >注册</a></div>
+		</form>
+	</fieldset>
+	<% } %>
+</div>
+</script>
+<% } %>
+<%#foot.html%>
+
+

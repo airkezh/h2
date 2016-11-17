@@ -1,0 +1,54 @@
+<%#head.html%>
+<div class="main">
+	<div class="m_box">
+		<img src="<%=this.mobUserInfo.data.avatar_b%>" alt="" class='sign_img'>
+		<div class="sign_dialog">
+			<p class="text">美丽说发钱咯~每天都能领1元，我已经领了<%= this.totalMoney%>元。一般人我不告诉她~</p>
+		</div>
+	</div>
+	<div class="share_pig">
+		<div class="t">
+			<p>我的奖金：<span class="bonus"><%= this.totalMoney%></span>元</p>
+		</div>
+		<div class="m">
+			<p>打败了全国<span><%= this.core.user_rank.percent%>%</span>的姑娘<br>排名第<span><%= this.core.user_rank.rank%></span>名</p>
+		</div>
+	</div>
+	<!-- <div class="share_pig"></div>
+	<div class="num_box">
+		<p>我的奖金：<span class="num"><%= this.totalMoney%></span>元</p>
+	</div> -->
+</div>
+<div class="m_t1"></div>
+<div class="m_pic1"></div>
+<div class="m_t2"></div>
+<div class="m_pic2"></div>
+
+
+<% if (!this.fromShare) {%>
+<div class="space"></div>
+<div class="share_con">
+	<% if(this.share){ %>
+		<%= requireFn('wapShare.html')({
+			'share' : this.share
+			, 'shareTitle' : '选择分享到'
+			, '_JSstack' : this._JSstack
+			, '_JSmods' : this._JSmods
+		}); %>
+	<%}%>
+</div>
+<%} else {%>
+	<%if(this.isMobile) {%>
+	<div class="space1"></div>
+		<a class="top_bnr" href="http://a.app.qq.com/o/simple.jsp?pkgname=com.meilishuo"></a>
+		
+	
+	<%} else {%>
+	<div class="space1"></div>
+		<a class="top_bnr" href="http://www.meilishuo.com/client/?frm=daeh"></a>
+		
+	<%}%>
+<% }%>
+
+
+<%# foot_simple.html%>

@@ -1,0 +1,16 @@
+<%#head.html%>
+	<div class="appWelcome">
+		<div class="top_bnr" down_url="<%= this.appUrl%>">
+			<% this.leadApp && this.leadApp.appWelcome.map(function(data){%>
+				<img src="<%= data.image_src%>">
+			<%})%>
+		</div>
+		<span class="closeApp">跳过&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;</span>
+	</div>
+<script>
+	fml.vars.refer = '<%= this.refer%>'
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('m/page/appwel');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

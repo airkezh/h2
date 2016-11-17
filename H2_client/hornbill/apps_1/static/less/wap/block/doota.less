@@ -1,0 +1,123 @@
+.share_pic(){
+	.pt(32*@px);
+	.c;
+	.pic{.i_block;.border-1(#999999);.h(500*@px);
+		img{.h(100%);}
+	}
+	figcaption{
+		h2{.fn;}
+		.ml(20*@px);.mr(20*@px);.tl;
+		.title{.block;.f(28*@px);.l(30*@px);.mt(20*@px);}
+		.user{.left;.mt(20*@px);
+			span{
+				&:nth-child(1){.avatar48-w;.border-1(#807c7e);}	
+				&:nth-child(2){.pr;.left;.l(24*@px);.pt(14*@px);.ml(6*@px);.red;.f(24*@px);
+					&:after{
+						.nowrap;.pa;.ml(6*@px);
+						content:"推荐";
+						color:#333333;
+					}
+				}	
+			}
+		}
+		.like{.right;.mt(20*@px);.pt(14*@px);.red;.f(24*@px);
+			&:before{.pr(8*@px);}
+		}
+		.icon-heart{ .icon >.heart; }
+		.clearfix;
+	}
+}
+
+.doota(){
+	table{
+		border-collapse: collapse;
+		border-spacing: 0;
+		.w(100%);
+		.l(18px);
+	}
+	.btn, .btnG, .list_btn{.common_button;}
+	.btn, .list_btn{.common_button > .redBtn;}
+	.btnG{.common_button > .grayBtn;.l(2);.i_block;.pl(20*@px);.pr(20*@px);}
+	.list_btn{
+		.pl(12*@px);.pr(12*@px);.mr(20*@px);.l(30px);.i_block;.f(140%);
+		.mb(20*@px);
+	}
+	.list(){
+		.order_info, .order_foot{
+			padding:16*@px 20*@px;
+			.f(1.4rem);
+		}
+		.order_info{
+			border-bottom:1px solid #ddd;
+		}
+		.order_foot{
+			border-top:1px solid #ddd;
+		}
+		.order_list_list{
+			.hidden;.pb(20*@px);
+			&>li{
+				.common_box;.common_box > .lra;
+				.mt(20*@px);
+			}
+			.btn_box{.ml(130*@px);.mr(20*@px);}
+		}
+		.order_goods_list{
+			.ml(20*@px);.mr(20*@px); .clearfix;.f(1.4rem);
+			&>li{
+				.clearfix;
+				.border-bc; .l(1.4); .pt(20*@px);.pb(20*@px); .tl;min-height:96*@px;
+				.pic{.left;.w(86*@px);.h(86*@px);border:1px solid #ddd;padding:4*@px;}
+				.prop, .price, .num{.gray;}
+				.prop{.f(1.3rem);}
+				.statue{.red;}
+				.select_goods{.left;}
+				.main{.ml(50*@px);}
+				.middle{.ml(110*@px);.fc(#666);
+					strong{.fc(#000);.fn;}
+				}
+				.last{.right;.tr;.ml(20*@px);}
+				&:nth-last-child(1){.border-n;}	
+			}
+		}
+		.none{ .hidden;
+			&_info{.mt(100*@px);.c;
+				p{.f(180%);.l(1.4);}
+			}
+			.btn{
+				.f(140%);.block;.auto;.mt(30*@w);.w(200*@px);
+				.l(2);
+			}
+		}
+	}
+	.icon(){
+		.status_icon{
+			&1, &2, &3, &4{
+				.pa;
+				background: url("@{pic_url}/images/doota/status_icon0.jpg") no-repeat;	
+			}
+			&1, &2, &3{
+				.w(42px);.h(42px);
+			}
+			&1{.bp(0px,0px);}	
+			&2{.bp(0px,-104px);}	
+			&3{.bp(0px,-52px);}	
+			&4{.bp(0px,-148px);.w(49px);.h(48px);}	
+		}
+		.qq_btn{
+			background: url("@{pic_url}/images/doota/order_logo2.png") no-repeat 0px -42px;	
+			.w(92px);.h(28px);.i_block;.border-1c;
+			.indent;
+		}
+		.payOrder, .recvOrder{.common_btn;}
+	}
+	.numBox(){
+		
+		.numBox { .border-1(#d2d2d2); .left; .h(20px);.w(76px);.c;
+			.minus, .plus {.h(20px); .w(20px); .hidden;.l(20px); }
+			.minus { .left; border-right: 1px solid #d2d2d2; }
+			.plus { .right; border-left: 1px solid #d2d2d2; }
+			.nums { .border-1(#fff); .c; .dgray; .left; .hidden; .h(12px); .l(14px); .w(32px); padding:3px 0 0;  }
+		}
+		
+	}
+}

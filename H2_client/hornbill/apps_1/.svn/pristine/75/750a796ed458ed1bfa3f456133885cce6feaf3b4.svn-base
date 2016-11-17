@@ -1,0 +1,66 @@
+<%
+	var couponData = this.couponData;
+	var pageDataCoupon = this.pageData.coupon;
+	if(couponData.length == 0 || !this.coupon_100) return '';
+%>
+<div class="coupon_wrap">
+	<div class="coupon_con">
+		<% couponData.forEach(function(data, index){
+			var coupon_st = 'zero';
+			if(data.can_use == 2){
+				coupon_st = 'has_get';
+			} else if(data.left_amount != 0){
+				coupon_st = 'can_get';
+			}
+			var total_amount = 10000;
+			for(var i = 0;i < 2;i++){
+				if(pageDataCoupon[i] && pageDataCoupon[i].type == data.type){
+					total_amount = pageDataCoupon[i].tatol;
+					break;
+				}
+			}
+		%>
+			<div class="coupon_now">
+				<div class="btn_status <%= coupon_st %>" type_coupon="0" code="<%= data.coupon_apply_code %>" coupon="<%= data.type %>"></div>
+				<p class="coupon_num left_zero <%= data.left_amount == 0 ? '' : 'none_f' %>">今天<%= total_amount %>张已领完</p>
+				<p class="coupon_num left_num <%= data.left_amount > 0  ? '' : 'none_f' %>"><%= data.left_amount > 0 ? ('今天还剩<span>' + data.left_amount + '</span>张') : '' %></p>
+			</div>
+		<% }); %>
+		<div class="coupon_time">
+			<% 
+				var date_now = new Date();
+				var couponS = 'no_start';
+				startTime = new Date(Date.parse(this.coupon_100.begin_time));
+				var no_time = false;
+				if(this.coupon_100.left_amount != 0 && startTime < date_now){
+					no_time = true;
+					couponS = 'can_get';
+				}
+				startTime.setMinutes(30);
+				if(this.coupon_100.left_amount == 0 && startTime > date_now){ 
+					couponS = 'zero';
+					no_time = true;
+				}
+				if(this.coupon_100.can_use == 2){
+					couponS = 'has_get';
+				}
+				var end_time_100 = new Date(Date.parse(this.coupon_100.end_time));
+				if(end_time_100.getHours() == 23){
+					end_time_100.setHours(9);
+					end_time_100.setDate(end_time_100.getDate()+1);
+				} else if(date_now.getHours() < 10){
+					end_time_100.setHours(9);
+				}
+				var lastDate = (end_time_100 - date_now)/1000+1;
+				if(isNaN(lastDate)) lastDate = 0;
+			%>
+			<div class="btn_status <%= couponS %>" type_coupon="1" code="<%= this.coupon_100.coupon_id || 0 %>" coupon="<%= this.coupon_100.type %>"></div>
+			<div class="time_wrap">
+				<p class="timeStamp_wrap timeStamp <%= no_time ? '' : 'no_timeStamp'%>" time="<%= lastDate %>"><span id="hour">00</span>: <span id="sec">00</span>: <span id="min">00</span></p>
+			</div>
+		</div>
+	</div>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/huodong/coupon_sale');
+_use:", this._JSstack , this._JSmods); %>

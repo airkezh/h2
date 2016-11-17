@@ -1,0 +1,56 @@
+<div class="addToCartPanel-bg"></div>
+<div class="addToCartPanel-hd">
+    <span class="addToCartPanel-title"><i class="addToCartPanel-msg-ico"></i>请选择您要的商品信息</span><span class="addToCartPanel-close js-close" title="关闭">X</span>
+</div>
+<div class="addToCartPanel-bd">
+    <?
+       if(color && color.is_show) { ?>
+    <dl class="addToCartPanel-item js-panel-color">
+        <dt><?= color.name ?></dt>
+        <dd>
+            <ul>
+                <?
+                  var colorImages = color.color_image,
+                      hasImage    = colorImages && colorImages.length;
+
+                  $.each(color.value, function(i, v) {
+                     if(hasImage) {
+                ?>
+                <li class="addToCartPanel-image-item"><a href="###" class="js-item" data-type="color" data-index="<?= i+1?>"><img src="<?=colorImages[i]?>" width="44" height="44" title="<?=v?>" alt="<?=v?>"></a></li>
+                <? } else {?>
+                <li class="addToCartPanel-color-item"><a href="###" class="js-item" data-type="color" data-index="<?= i+1?>" title="<?=v?>"><?= v ?></a></li>
+                <?}});?>
+            </ul>
+        </dd>
+    </dl>
+    <?}?>
+    <?if(size && size.is_show) { ?>
+    <dl class="addToCartPanel-item js-panel-size">
+        <dt><?=size.name?></dt>
+        <dd>
+            <ul class="addToCartPanel-size-list">
+                <? $.each(size.value, function(i, v) {?>
+                <li>
+                    <a href="###" class="js-item" data-type="size" data-index="<?=i+1?>"><?=v?></a>
+                </li>
+                <?});?>
+            </ul>
+        </dd>
+    </dl>
+    <?}?>
+    <dl class="addToCartPanel-item">
+        <dt>数量</dt>
+        <dd>
+            <div class="addToCartPanel-stock">
+                <span class="addToCartPanel-minus js-minus"></span>
+                <input class="addToCartPanel-nums js-nums" title="请输入购买数量" type="text" value="1"> <span class="addToCartPanel-plus js-plus"></span>
+            </div>
+            <span class="addToCartPanel-stock-num">  (库存<span class="js-stocknum"></span>件)  </span>
+        </dd>
+    </dl>
+    <div class="addToCartPanel-msgbox">
+        <p class="addToCartPanel-msg-limit js-msg-limit"><span class="addToCartPanel-msg-ico"></span>对不起！每人最多限购100件！</p>
+        <p class="addToCartPanel-msg-zero js-msg-zero"><span class="addToCartPanel-msg-ico"></span>对不起，这件宝贝已经卖光啦！</p>
+        <p class="addToCartPanel-msg-over js-msg-over"><span class="addToCartPanel-msg-ico"></span>您所填写的宝贝数量超过库存！</p>
+    </div>
+</div>

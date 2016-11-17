@@ -1,0 +1,82 @@
+<div class="free_box">
+	<div class="begin_bg"><%= this.date%>开始</div>
+	<%
+		var banner_url = typeof this.begin == 'undefined' ? '/welfare/activity/' + this.activity_id : '/click/welfare/' + this.activity_id + '?type=1&frm=activityclick' + this.activity_id;
+		var banner_img = typeof this.begin == 'undefined' ? this.index_banner : this.activity_banner;
+	%>
+	<a class="pic" href="<%=banner_url%>" target="_blank"><img src="<%=banner_img%>" /></a>
+	<div class="bewrite">
+		<h3 class="bw_tle red_f">
+			<%if(this.is_editor == 1){%><a class="e_ico1" href="/super_editor" target="_blank"></a><%}%>
+			<%if(typeof this.begin != 'undefined'){%>
+			<%=this.title%>
+			<%}else{%>
+			<a href="/welfare/activity/<%=this.activity_id%>" target="_blank"><%= this.title%></a>
+			<%}%>
+		</h3>
+		<p class="time"><span>共</span><strong class="red_f f20_f"><%= this.trynumber%></strong><span>份</span>
+		<%if(this.products_price){%>
+		<span class="ml10_f">价值：</span><strong class="red_f f20_f">￥<del><%= this.products_price%></del></strong>
+		<%}%>
+		<%if(typeof this.begin != 'undefined'){%>
+		<strong class="red_f f20_f ml10_f"><%=this.participate_num%></strong><span>人申请</span>
+		<%}%>
+		</p>
+		<%if (this.end_time>0 && (this.open || this.begin==1 || this.begin==2) && this.begin_time * 1000 <= Date.parse(new Date())) {%>
+		<p class="time timeStamp" end-date="<%= this.end_time%>"><span>剩余时间：</span><strong class="f20_f" id="day">0</strong><span>天</span><strong class="f20_f" id="hour">0</strong><span>时</span><strong class="f20_f" id="minute">0</strong><span>分</span><strong class="f20_f" id="seconds">0</strong><span>秒</span></p>
+		<%}%>
+		<%if(typeof this.begin == 'undefined'){%>
+			<%if(this.open){%>
+				<p><a class="wf_apply" href="/welfare/activity/<%=this.activity_id%>" target="_blank"></a></p>
+			<%}else{%>
+				<p class="time"><span>剩余时间：</span><strong class="f14_f">已结束</strong></p>
+				<p><a class="wf_detail" href="/welfare/activity/<%=this.activity_id%>" target="_blank"></a></p>
+			<%}%>
+		<%} else {%>
+			<div class="btn_apply clearfix_f">
+			<% if(this.begin == 1 && this.begin_time * 1000 <= Date.parse(new Date())){%>
+				<div class="wf_ico1 cursor_f wf_apply"></div>
+			<%} else if(this.begin == 2){%>
+				<div class="wf_ico2 cursor_f wf_apply left_f"></div>
+				<div class="wf_msg">我们将私信通知获奖结果，请注意查收您的私信^-^</div>
+			<%} else if(this.begin == 3){%>
+				<div class="wf_ico4 cursor_f wf_apply left_f"></div>
+				<div class="wf_msg">恭喜您申请成功！<br />拿到福利后记得汇报哦^-^</div>
+			<%} else if(this.begin == 4){%>
+				<div class="wf_ico3 cursor_f wf_apply left_f"></div>
+				<div class="wf_msg">申请已结束，你可以看看 <a href="/welfare" class="red_f">正在进行的福利>></a></div>
+			<%}%>
+			</div>
+		<%}%>
+		<%if(this.user && this.user.length > 0){%>
+		<p><b class="f14_f red_f"><%= this.num%></b>人申请</p>
+		<p class="face">
+			<% this.user.map(function(item){%><a href="/person/u/<%= item.user_id%>" target="_blank"><img src="<%= item.avatar_c%>" /></a><%});%>
+		</p>
+		<%}%>
+		<%if(this.products_introduction) {%>
+			<div class="pro_intro">产品介绍：<%=this.products_introduction%><a href="/click/welfare/<%=this.activity_id%>?frm=activityclick<%=this.activity_id%>" class="red_f" target="_blank">详细介绍>></a></div>
+		<%}%>
+		<%if(this.is_editor==1) {%>
+			<div class="edit_prompt none_f">
+			    <p>这是超级主编的专属福利哦！</p>
+				<p class="red_f"><a href="/super_editor" target="_blank">我要做【超级主编】<samp>&gt;&gt;</samp></a></p>
+			</div>
+		<%}%>
+	</div>
+	<div class="clear_f"></div>
+	<%if(this.products_introduction){%>
+		<!-- Weibo Button BEGIN  -->	
+		<%var desp = encodeURIComponent('#美丽说福利社#期期都精彩，这期我最喜欢！嘿嘿~~也推荐 @美丽说 福利社的这期免费试用活动给你，想申请点击进入>>'); %>
+		<%
+			var wb_url = encodeURIComponent('http://'+this.host+'/welfare/activity/'+this.activity_id+'?frm=huiliu_newfulishe');
+			if (this.activity_id >= 175 && this.activity_id <= 183) 
+				wb_url = 'http://meilishuo.com/welfare/activity/'+this.activity_id+'?frm=huiliu_newfulishe';
+		%>
+		<script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js" type="text/javascript" charset="utf-8"></script>
+		<div class="t_sina mt8_f">
+			<wb:share-button social="text" width="400" height="25" url="<%=wb_url%>" pic="<%=this.activity_banner%>" appkey="463778370" title="<%=desp%>"></wb:share-button>
+		</div>
+		<!-- Weibo BUtton END -->
+	<%}%>
+</div>

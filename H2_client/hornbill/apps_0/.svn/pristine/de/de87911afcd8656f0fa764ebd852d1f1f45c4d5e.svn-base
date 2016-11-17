@@ -1,0 +1,145 @@
+<%# sq/header.html %>
+<%# sq/search_md.html %>
+<%
+	var pageD     = this.pageData || {};
+	var bannerD   = pageD.banner || [];
+	var handpickD = pageD.everyDayChoice;
+	var popD      = pageD.inFashion;
+	var newD      = pageD.dailyNew;
+	var eggD      = this.kickEgg;
+%>
+<div class="content_wrap">
+	<% if(bannerD){ %>
+	<section class="banner">
+		<%= requireFn('block/banner.html')({
+			'banner'   : bannerD,
+			'hide_btn' : false,
+			'_JSstack' : this._JSstack,
+			'_JSmods'  :  this._JSmods
+		});%>
+	</section>
+	<% } %>
+
+	<% if(handpickD){ %>
+	<section class="handpick">
+		<h2>每日精选<i>聪明之选 精心百变</i></h2>
+		<div class="end-box">
+			<div class="end">
+				<a href="/sq/tuan_buy/1065?goods_type=2">
+					<div class="end-time" style="background-image:url('<%= this.tuan_enter.data.bg_img%>');">
+						<div class="s-content">
+							<p class="s-title">惊喜秒杀</p>
+							<p class="s-txt">距离本场结束还有</p>
+							 <dl class="s-ltime" stime="<%= this.tuan_enter.data.unix_time%>">
+				            	<dd id="hour"></dd><strong>:</strong>
+				            	<dd id="minu"></dd><strong>:</strong>
+				            	<dd id="sec" class="last"></dd>
+				            </dl> 				
+						</div>
+					</div>
+				</a>
+
+				<div class="end-show">
+					<a class="banner_top" href="<%= handpickD.url2%>" style="background-image: url(<%=handpickD.img2%>);"></a>
+					<a class="banner_bot" href="<%= handpickD.url3%>" style="background-image: url(<%=handpickD.img3%>);"></a>
+				</div>
+			</div>
+		</div>
+	</section>
+	<% } %>
+
+	<div class="category">
+		<% if(popD){ %>
+		<section class="pop">
+			<h2>正在流行<i>流行元素 权威榜单</i></h2>
+			<div class="category-pop-content">
+			<% var pop = popD || []; %>
+			<% pop.forEach(function (item, index){ %>
+				<a href="<%= item.url %>" style="background-image: url(<%= item.img %>);"></a>
+			<% }); %>
+			</div>
+		</section>
+		<% } %>
+		<% if(newD){ %>
+		<section class="new">
+			<h2>今日新款<i>精选首发 现货直邮</i></h2>
+			<div class="category-new-content">
+			<% var n = newD || []; %>
+			<% n.forEach(function (item, index){ %>
+				<a href="<%= item.url %>" style="background-image: url(<%= item.img %>);"></a>
+			<% }); %>
+			</div>
+		</section>
+		<% } %>
+	</div>
+
+	<%
+		var day       = "";
+		var time      = new Date();
+		var month     = time.getMonth() + 1;
+		var date      = time.getDate();
+		var hour      = time.getHours();
+		var numOfWeek = time.getDay();
+		
+		month         = month < 10 ? '0' + month : month;
+		date          = date < 10 ? '0' + date : date;
+
+	    switch (numOfWeek){
+	        case 0:
+	            day = "星期日";
+	            break;
+	        case 1:
+	            day = "星期一";
+	            break;
+	        case 2:
+	            day = "星期二";
+	            break;
+	        case 3:
+	            day = "星期三";
+	            break;
+	        case 4:
+	            day = "星期四";
+	            break;
+	        case 5:
+	            day = "星期五";
+	            break;
+	        case 6:
+	            day = "星期六";
+	            break;
+	    }
+	%>
+	<section class="goods">
+		<div class="goods-content">
+			<div class="goods-content-time">
+				<span class="hour"><%= hour %>:00更新</span>
+				<div class="date">
+					<p class="date-m"><%= date %>/<%= month %></p>
+					<p class="date-d"><%= day %></p>
+				</div>
+			</div>
+			<div id="goods_shelf" class="goods-content-g_shelf"></div>
+			<div class="pullUp" status="loading"></div>
+		</div>
+	</section>
+
+	<ul id="goTop">
+		<li class="none_f" id="go_top"><span class="icon-gotop"></span></li>
+	</ul>
+</div>
+<%# sq/goods_tpl.html %>
+
+<script>
+	fml.vars.time_space = 3000;
+	fml.vars.pid        = "<%= this.pid %>";
+</script>
+
+<script src="http://pub.idqqimg.com/qqmobile/qqapi.js?_bid=152"></script>
+
+<%! 
+	$_ENGINE_SELF.callFn("useModule")(
+		"<<<_use:fml.use('wap/page/sq/handpick');_use:", 
+		this._JSstack, 
+		this._JSmods 
+	); 
+%>
+<%# sq/footer.html %>

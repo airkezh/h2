@@ -1,0 +1,188 @@
+<script type="text/html" id="orderInitTpl">
+<? 
+	function mSubstr(str , len , pad){
+		if (!str || 0 == str.length) return '';
+		if (undefined == pad ) pad = '...';
+		len = getStringLengthArr(str , len);
+		return str.substr( 0 , len) + ((pad && str.length> len) ? pad : '');
+	}
+
+	function getStringLengthArr(s , len){
+		var w = 0;
+		var time = 0;
+		for(length=s.length; time<length; ){
+			if(/[^\x00-\xff]/.test(s[time])){
+				w+=2;
+			}else{
+				w+=1;
+			}	
+			time ++;
+			if(w >= (len*2)){
+				break;	
+			}
+		}
+		return time;
+	}
+
+	var order_list = this.order_list; 
+	if (order_list && order_list.info && order_list.info.length != 0) { 
+?>
+	<ul class="order_info_wrap">
+	<?
+		order_list.info && order_list.info.map(function(data) {
+		var order = data.order, 
+			len = data.goods.length;
+	?>
+		<li class="order_info">
+			<div class="goods">
+				<a href="/wx/orderDetail?is_weixin=1&order_id=<?= order.order_id ?>">
+					<div class="goods_info_wrap">
+						<div class="goods_info_top">
+							<div class="shop_name">商家：<span><?= mSubstr(order.shop_name, 9, '') ?></span></div>
+							<span class="order_status_text ml_color"><?= order.status_text ?></span>
+						</div>
+						<? data.goods && data.goods.map(function(item) {
+						?>
+						<div class="goods_info_btm">
+							<span class="goods_img">
+								<img src="<?= item.b_pic_url ?>"/>
+							</span>
+							<div class="goods_info goods_list_info">
+								<p class="goods_title"><?= mSubstr(item.goods_title, 12, '...') ?></p>
+								<p class="goods_prop">
+									<span class="wx_grey">数量：<?= item.amount ?>&nbsp;</span>
+									<?var prop = item.prop;?>
+									<?prop && prop.forEach(function (v){?>
+										<?if(v.is_show == 1){?>
+										<span class="wx_grey"><?= v.name ?>:<?= v.value ?></span>
+										<?}?>
+									<?});?>
+								</p>
+								<p class="shop_cost">￥<?= item.price ?></span>
+								</p>
+							</div>
+						</div>
+						<? }); ?>
+					</div>
+				</a>
+				<div class="check">
+					<div class="total_money">
+						<span class="total_num">共<?= len ?>件商品</span>
+						<span class="total_price">实付：￥<?= order.total_price ?></span>
+					</div>
+					<div class="order_status">
+						<?if(order.status == 0){?>
+						<a href="/wx/orderDetail?is_weixin=1&order_id=<?= order.order_id ?>" class="receipt_btn mt_20_btn">去付款</a>
+						<? }else if (order.receive_allow_weixin) { ?>
+						<a href="/wx/orderDetail?is_weixin=1&order_id=<?= order.order_id ?>" class="receipt_btn mt_20_btn">确认收货</a>
+						<? } if (order.express_id) { ?>
+						<a href="/wx/expressInfo/?order_id=<?= order.order_id ?>&express_id=<?= order.express_id ?>&express_company=<?= order.express_company ?>" class="check_btn mt_20_btn">查看物流</a>
+						<? } ?>
+					</div>
+				</div>
+			</div>
+		</li>
+		<? }); ?>
+	</ul>
+	<? if (order_list.info.length < order_list.total_num ) { ?>
+	<p class="more eva_more">
+		查看更多订单
+		<span class="xiala_icon">
+			<img src="<%= this.PICTURE_URL%>/images/wap/web/wx/xiala.png">
+		</span>
+	</p>
+	<? }
+	} else { ?>
+	<div class="order_empty">
+		<div class="empty_icon">
+			<img src="<%=this.PICTURE_URL%>/images/wap/web/wx/nothing.png">
+		</div>
+		<h3>你还没有相关的订单</h3>
+		<p>你还没有购买过任何宝贝，快去逛逛吧</p>
+		<a href="/wx/mall/daily" class="btn">去逛逛</a>
+	</div>
+<? } ?>
+</script>
+<script type="text/html" id="orderListTpl">
+<? 
+	function mSubstr(str , len , pad){
+		if (!str || 0 == str.length) return '';
+		if (undefined == pad ) pad = '...';
+		len = getStringLengthArr(str , len);
+		return str.substr( 0 , len) + ((pad && str.length> len) ? pad : '');
+	}
+
+	function getStringLengthArr(s , len){
+		var w = 0;
+		var time = 0;
+		for(length=s.length; time<length; ){
+			if(/[^\x00-\xff]/.test(s[time])){
+				w+=2;
+			}else{
+				w+=1;
+			}	
+			time ++;
+			if(w >= (len*2)){
+				break;	
+			}
+		}
+		return time;
+	}
+
+	item && $.each(item, function(key, data){
+		var len = data.goods.length,
+			order = data.order;
+?>
+	<li class="order_info">
+		<div class="goods">
+			<a href="/wx/orderDetail?is_weixin=1&order_id=<?= order.order_id?>">
+				<div class="goods_info_wrap">
+					<div class="goods_info_top">
+						<div class="shop_name">商家：<span><?= mSubstr(order.shop_name, 9, '') ?></span></div>
+						<span class="order_status_text ml_color"><?= order.status_text ?></span>
+					</div>
+					<? data.goods && data.goods.map(function(item) { ?>
+					<div class="goods_info_btm">
+						<span class="goods_img">
+							<img src="<?= item.b_pic_url?>"/>
+						</span>
+						<div class="goods_info goods_list_info">
+							<p class="goods_title"><?= mSubstr(item.goods_title, 13, '...') ?></p>
+								<p class="goods_prop">
+									<span class="wx_grey">数量：<?= item.amount ?>&nbsp;</span>
+									<?var prop = item.prop;?>
+									<?prop && prop.forEach(function (v){?>
+										<?if(v.is_show == 1){?>
+										<span class="wx_grey"><?= v.name ?>:<?= v.value ?></span>
+										<?}?>
+									<?});?>
+								</p>
+								<p class="shop_cost">￥<?= item.price ?></span>
+							</p>
+						</div>
+					</div>
+					<?});?>
+				</div>
+			</a>
+			<div class="check">
+				<div class="total_money">
+					<span class="total_num">共<?= len ?>件商品</span>
+					<span class="total_price">实付：￥<?= order.total_price ?></span>
+				</div>
+				<div class="order_status">
+					<?if(order.status == 0){?>
+						<a href="/wx/orderDetail?is_weixin=1&order_id=<?= order.order_id ?>" class="receipt_btn mt_20_btn">去付款</a>
+					<? }else if (order.receive_allow_weixin) { ?>
+						<a href="/wx/orderDetail?is_weixin=1&order_id=<?= order.order_id ?>" class="receipt_btn mt_20_btn">确认收货</a>
+					<? } if (order.express_id) { ?>
+						<a href="/wx/expressInfo/?order_id=<?= order.order_id ?>&express_id=<?= order.express_id ?>&express_company=<?= order.express_company ?>" class="check_btn mt_20_btn">查看物流</a>
+					<? } ?>
+				</div>
+			</div>
+		</div>
+	</li>
+<? }); ?>
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/wx_new/orderList');
+_use:", this._JSstack , this._JSmods ); %>

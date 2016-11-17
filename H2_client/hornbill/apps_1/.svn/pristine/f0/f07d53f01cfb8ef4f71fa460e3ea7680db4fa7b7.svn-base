@@ -1,0 +1,32 @@
+<%# head.html%>
+<% var list = this.list %>
+<ul class="select">
+	<li class="item contacts">通讯录好友</li>
+	<li class="item wx-friends">微信朋友</li>
+	<li class="item wx-circle">朋友圈</li>
+</ul>
+
+<ul class="discover">
+	<% list.forEach( function ( item ){ 
+		userList = item.user;
+	%>
+	<li class="normal">
+		<div class="cat">
+			<span class="cat-name"><%= item.category.tag %></span>
+			<a href="/mainapp/discover_list/?cid=<%= item.category.content_id %>" class="more-btn"><span class="more">更多</span><span class="go-icon"></span></a>
+		</div>
+ 	<%= requireFn('mainapp/recommend_list.html')({
+		'list' : userList,
+		'os'   : this.os,
+	}); %>
+	</li>
+	<% } ) %>
+</ul>
+<script>
+	fml.vars.avatar = "<%= this.userInfo.avatar_e %>";
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/mainapp/recommend')
+	fml.use('wap/page/mainapp/invite')
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html%>

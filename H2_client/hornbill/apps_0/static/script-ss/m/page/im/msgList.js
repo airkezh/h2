@@ -1,0 +1,163 @@
+/*common*/
+require('m/zepto/touch')
+require('m/zepto/detect')
+require('m/zepto/form')
+require('m/zepto/ajax')
+require('wap/zepto')
+require('wap/zepto/fastclick')
+var openApp = require('wap/app/openApp');
+
+var uploadPic = require('m/app/im/uploadPic')
+    , shareTmp = require('component/shareTmp')
+    , init = require('app/im/init')
+    , message = require('app/im/messageNew')
+//	, Dialog = require('wap/ui/dialog')
+
+    , $mainBox = $('#im_main')
+    , $goodsBox = $('#im_goods')
+    , urlHandle = require("wap/component/urlHandle")
+
+var items = fml.vars.im.msgReceive.data.datas || [];
+//console.log(fml.vars.im.msgReceive, Meilishuo.config.im_url);
+
+var socket = io.connect(fml.vars.im.im_url+"?source="+fml.vars.im.source);//Meilishuo.config.im_url    http://im.weiwang.rdlab.meilishuo.com
+
+var $msgList = $("#msgList");
+var len = 0;
+
+//if(items.length){
+    $.each(items, function(i, v){
+        if(Object.prototype.toString.call(v.msg) == "[object Array]") return;
+        len++;
+        console.log(v.msg.msg);
+        //if(!v.uid) return;
+        console.log(v.msg.msg.indexOf("</br>"));
+        while (v.msg.msg.indexOf("</br>") >= 0){
+            v.msg.msg = v.msg.msg.replace(/<\/br>/, " ");
+        }
+        while (v.msg.msg.indexOf("<br>") >= 0){
+            v.msg.msg = v.msg.msg.replace(/<br>/, " ");
+        }
+        $msgList.append(shareTmp("msgItem", v));
+        //$msgList.last().find(".time").html(formatDate(v.msg.timestamp));
+        $msgList.children().last().find(".time").html(comptime(v.msg.timestamp, (new Date()).getTime()));
+        (function(user, index){
+            $msgList.children().eq(index).on("tap", function(){
+                var url = Meilishuo.config.im_url+"wap/dchat/?";
+                //var url = "http://lyhim.fedevot.meilishuo.com/wap/dchat?";
+                url += "toid="+user.uid;
+                url += "&chat=1";
+                $(this).find(".unreadNum").css({"visibility": "hidden"});
+                location.href = url;
+            });
+        })(v, i);
+    });
+//} else {
+    if(!len){
+        $msgList.append(shareTmp("msgNull", null));
+    }
+
+//}
+
+
+window.changeUser = function(toid, data){
+
+}
+
+
+init(socket);
+//message.init(socket);
+socket.on("connectPush", function(data){
+    console.log("connectPush", data);
+    //data.toid = 0;
+    socket.emit('changeUser', {toid: 0});
+});
+socket.on("changeUserPush", function(data){
+    console.log("changeUserPush", data);
+});
+//socket.on("talkListNewPush", function(data){
+//    console.log("talkListNewPush", data);
+//    var news = data.req["new"];
+//    for(var i = 0; i < news.length; i++){
+//        var item = $("[uid='" + news[i].uid + "']");
+//        item.find(".unreadNum").html(news[i].msg_num).css({"visibility": ""});
+//        var color;
+//        switch (news[i].status){
+//            case 0:
+//                color = '#ccc';
+//                break;
+//            //case 1:
+//            //    color = '#78e000';
+//            //    break;
+//            //case 2:
+//            //    color = '#ffd700';
+//            default :
+//                color = '#78e000';
+//                break;
+//        }
+//        item.find(".status").css("background-color", color);
+//        item.find(".msg").html(news[i].last_msg.msg);
+//        item.find(".time").html(comptime(news[i].last_msg.timestamp, (new Date()).getTime()));
+//    }
+//});
+
+socket.on('unReadMsgPush', function(data){
+    console.log('unReadMsgPush', data);
+
+    if(data.data && data.data.length){
+        for(var i = 0; i < data.data.length; i++){
+            var toid = data.data[i].chatfrom;
+            var $user = $('#msgList').find('[uid="' + toid + '"]');
+            var unreadNum = new Number($user.find('.unreadNum').text()) + 1;
+            unreadNum = unreadNum > 99 ? '99+' : unreadNum;
+            $user.find('.unreadNum').html(unreadNum).css('visibility', 'visible');
+            $user.find('.msg').html(data.data[i].msg);
+            $user.find('.time').html(comptime(data.data[i].timestamp, (new Date()).getTime()));
+
+            $('#msgList').prepend($user);
+
+            socket.emit("receivedmsg", {
+                "event": "receivedmsg",
+                "data": {
+                    "toid": toid,
+                    "type": "unreadmsg",//要清除的队列类型，客户端先固定传死
+                    "msgIds": [
+                        data.data[i].msg_id
+                    ]
+                }
+            });
+        }
+    }
+});
+
+function comptime(beginTime,endTime){
+    beginTime = parseInt(beginTime, 10);
+    endTime = parseInt(endTime, 10);
+    if(!beginTime) return "";
+    if(beginTime > endTime) return "";
+    var secondNum = parseInt((endTime-beginTime*1000)/1000);//计算时间戳差值
+    //alert('beginTime: ' + beginTime + ', endTime: ' + endTime + ',secondNum: ' + secondNum + ", type: " + typeof secondNum);
+
+    if(secondNum>=0&&secondNum<60){
+        return '刚刚';
+        //return secondNum+'秒前';
+    }
+    else if (secondNum>=60&&secondNum<3600){
+        var nTime=parseInt(secondNum/60);
+        return nTime+'分钟前';
+    }
+    else if (secondNum>=3600&&secondNum<3600*24){
+        var nTime=parseInt(secondNum/3600);
+        return nTime+'小时前';
+    }
+    else if (secondNum >= 86400){
+        var nTime = parseInt(secondNum/86400);
+        return nTime+'天前';
+    } else {
+        return '刚刚';
+    }
+}
+
+window.MLS.onStop = function(){
+    socket.io.disconnect();
+}

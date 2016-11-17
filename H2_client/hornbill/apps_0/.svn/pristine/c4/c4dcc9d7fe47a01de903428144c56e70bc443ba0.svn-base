@@ -1,0 +1,158 @@
+@import "block.less";
+@import "window.less";
+@import "image.less";
+.fluid;
+.group_top{
+	.auto; .w(948px);
+	.g_pic { .h(250px); .w(948px); .hidden; }
+	.group_bar {
+		.box-inset; .h(54px);
+		.info {
+			.box-inset; .p8_0; .pr; .h(32px); margin: 2px 0;
+			.members { left: 0; .pa; 
+				li { .left; .mr(4px); }
+			}
+			.fans { .c; .l(16px); .pa; right: 0;
+				li { .left; .ml(10px); .pl(10px); }
+			}
+			.name { .c; .l(28px);
+				.quality { background: url("@{pic_url}/images/group/quality1.gif") no-repeat; .h(23px); padding: 6px 10px; }
+				.font { .f(24px); .fb; .pr; top: 3px; }
+				.show_edit { .border-1c; .box-linear; .i_block; .ml(10px); .w(76px); .pr; top: -3px; 
+					&:hover { background: #f2f0f0; color: #666; }
+				}
+			}
+			.small_btn { .w(88px); }
+		}
+	}
+	.notes { 
+		.left; .l(18px); .mt(10px); .w(720px);
+		pre { 
+			a { .red; .tunder;
+				&:hover { .red; .tunder; }
+			}
+		}
+	}
+	.switch { .right; .mt(10px); .tr; .w(200px);
+		a { .gray; 
+			&:hover { .red; }
+		}
+	}
+	.click { .gray; .cursor; }
+}
+
+
+.poster;
+.poster_icons;
+.face_pop{.window > .head_float; }
+
+.solidbtn;
+.solidbtn > .small;
+.solidbtn > .small_red;
+.solidbtn > .small_pink;
+.solidbtn > .big;
+.lookmore { .look_more; }
+
+.page;
+.pageNav {.page > .pageRed; }
+
+.share_group { .share_group_btn;}
+
+//推荐关注杂志弹窗
+.rec_layout { .window > .group_tj; }
+
+//编辑杂志页面
+.set_box { .common_shadowBox; .auto; .mt(14px); .w(948px);
+    fieldset { padding: 25px 80px;
+        ul { .mt(8px); width: 100%;
+            li { .f(14px); .p8_0; 
+                span { .left; .l(26px); .tr; margin: 3px 5px 0 0; .w(90px); }
+               .ipt1,textarea { .border-1; .f(16px); .l(20px); color: #666; padding: 5px; } 
+			   .ipt1 { .h(20px); width: 260px; }
+			   textarea { height: 120px; width: 410px; }
+			   .delete { .border-1; .box-linear; .cursor; .left; _margin-left: 3px; padding: 7px 20px; }
+            }
+			.red_follow { .border-n; .pb(4px); }
+        } 
+    } 
+}
+.group_main { .w(948px); .auto; 
+	.group_l { .w(708px); .left;}
+	h3 { .f(16px); .fb; }
+	.topic_info, .new_topics, .g_topic, #group_twitter_list, .create_mag, .rec_mag, .sen_editors, .bg_w { background:#FFF; .box-shadow; .border-r; .mt(14px); .p13; } 
+	.new_topics {
+		li { .h(28px); .l(28px); .w(190px); .ellipsis; border-bottom: 1px dashed #DDD; }
+	}
+	.g_topic {
+		ul { .pt(8px); .l(22px);
+			li { .left; .h(22px); .pl(10px); .w(320px); .ellipsis; } 
+			.gt_j { .mr(6px); .gray; }
+		}
+	}
+	.t_elite { .pl(20px); .inline; .left; }
+	.t_tabtwo { .right; .c; .inline; .w(150px);
+		a { .left; .h(20px); .l(19px); .mr(5px); .w(70px); }
+		a.active { color:#FFF; background:url("@{pic_url}/images/group/view2.png") no-repeat scroll 0 -62px transparent; }
+	}
+	.group_r { .right; .w(228px); .inline;}
+	.create_mag {.f(14px); .c;}
+	.rec_mag ul{ .mt(10px);
+		li {border-bottom:1px solid #DDD; .hidden; .w(100%);
+			a {.h(28px); .l(28px); .w(100%); .i_block; padding: 3px 0;
+			 &:hover {background:#F1F1F1;}
+			}
+			img {.h(28px); .mr(8px); .w(28px);}
+			.g_rc_name { .w(140px); .ellipsis; }
+			.g_more {background:url("@{pic_url}/images/group/more_button.gif") no-repeat scroll 0 0 transparent; .h(14px); margin:6px 0 0 5px; .w(14px);}
+		}
+	}
+	.edi_lists { 
+		a { margin: 3px 4px 5px 3px; }
+	}
+	.window > .replyBox;
+	
+	/*成员页*/
+	.mg_tab { .h(27px); .l(26px); .pt(5px); background: url("@{pic_url}/images/findfs/line.gif") repeat-x bottom; 
+		ul { .left; .h(27px); }
+		li { .left; .h(26px); .cursor; .f(14px); padding: 0 10px; .ml(5px); .i_block; }
+		.active { background:#f0f2f2; .border-1; border-bottom:none; .fb; }
+	}
+	.members { .w(100%); .hidden;
+		li {
+			.w(96px); .h(100px); .left; .pr; 
+		}
+		.m_name { .w(70px); .h(16px); .l(16px); .ellipsis; .left; .pt(8px); .c;}
+		.m_ico { .w(12px); .h(12px); background:url("@{pic_url}/images/group/g_ico1.gif") no-repeat; .cursor; .block; .pa; right:12px; }
+		.m_ico1 { .bp(0, 0); top:0; }
+		.m_ico2 { .bp(0, -52px); top:50px; }
+		.m_ico3 { .bp(0, -26px); top:25px; }
+		.m_ico4 { .bp(0, -71px); top:0; }
+	}
+	.border { border-bottom:1px solid #DDD; }
+	.r_bar { .ml(8px); .left;
+		h3 { .l(22px); .w(120px); .ellipsis; }
+		p { .l(20px); }
+		a { .l(20px); }
+	}
+	h4 { .f(14px); .fb; }
+
+	/*设置背景*/
+	.set_ava { .pr; _display: inline-block;
+		p { .l(17px); }
+		a { .l(30px); .ml(20px); .left; .red; .f(14px); .fb; }
+	}
+	.upload_pic { .h(28px); .pr; .pb(20px); }
+	.ava { .f(14px); .h(28px); .l(28px); .cursor; .white; background: #f69; .c; border-radius: 3px; }
+	.upload_ava { .w(108px); }
+	#upload_ava { .w(108px); .h(28px); .hidden; .left; }
+	.save_ava { .w(97px); }
+	.attach { .pa; .h(40px); left:-40px; top: 0; .w(150px); filter:alpha(opacity=0); opacity:0; .cursor; }
+	#thumbn { cursor: crosshair; border: 1px #B9B9B9 solid; .mt(14px); .w(920px); }
+	.crop { .mt(14px); .w(922px); .h(243px); .hidden; }
+	
+	/* imgAreaSelect style to be used with deprecated options. */
+	.imgareaselect;
+}
+.pageNav1{ .page > .pageGray; }
+.groupCon{ .group > .9GG; }
+.editorbg { .window > .publishor; }

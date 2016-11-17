@@ -1,0 +1,54 @@
+<div class="goods_box_wrap">
+	<%var mSubstr = _extFn.mSubstr;
+	this.goods && this.goods.forEach(function(data){
+    if(data.item_status == 0){
+        var stutas_class = 'act_prev';
+    }else if(data.item_status== 3){
+        var stutas_class = 'goods_end';
+    }else if(data.item_status==2){
+        var stutas_class ='act_over';
+    }else {
+         var stutas_class = '';
+    }%>
+	<div class="goods_box">
+		<% if(data.marks){ %>
+		<div class="Farm">
+			<% data.marks.forEach(function(marks_data, index){
+                var style = '';
+                if(index == 1){
+                style = 'left: '+ (parseInt(data.marks[0].img_width) + 15)+'px;';}
+                if(index >1) return;%>
+			<img class="Standard" src="<%= marks_data.img_url%>" style="<%= style %>"/><% }); %>
+		</div><% } %>
+		<a href="<%= _extFn.getAppLink('twitter_single', {'twitter_info' : {'twitter_id' : data.twitter_id, 'is_doota' : 1}}, this.os, this.r, '/share/item/'+data.twitter_id); %>" class="goods_img">
+			<%if(this.is_lazyload){%>
+			<span class="bs_load_img" asrc="<%= data.goods_img%>"></span>
+			<%}else{%>
+			<img src="<%= data.goods_img%>" alt=""><%}%>
+			<% if(stutas_class){ %>
+			<span class="goods_status <%= stutas_class %>"></span>
+			<% } %></a>
+		<div class="desc_box">
+			<p class="desc">
+				<a href="<%= _extFn.getAppLink('twitter_single', {'twitter_info' : {'twitter_id' : data.twitter_id, 'is_doota' : 1}}, this.os, this.r+':gr_id='+data.groupon_id, '/share/item/'+data.twitter_id+'?gr_id='+data.groupon_id); %>
+					"><%= mSubstr(data.goods_name, 22, '...') %></a>
+			</p>
+			<p class="price">
+				<span class="red_f now_price">¥<%= data.off_price %></span>
+				<% if(data.origin_price){ %>
+				<span class="sequence">
+					￥ <del><%= data.origin_price %></del>
+				</span><% } %></p>
+			<div class="like_buy">
+				<p class="buy_num">
+                    <span class="red_f"><%=data.count_like%></span>人在抢购
+				</p>
+			</div>
+		</div>
+	</div>
+<% }); %></div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/component/lazyLoad' , function(){
+		this.load('.bs_load_img' , 'asrc');	
+	});
+_use:", this._JSstack , this._JSmods);%>

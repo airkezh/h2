@@ -1,0 +1,144 @@
+<%# header.html%>
+<%
+	var goodsInfo = this.goods_detail.data || {}
+%>
+<div class="wrap">
+	<h2 class="wd_title">商品详情</h2>
+	<div class="layer_wrap" id="propNotice"></div>
+	<figure class="goods_wrap"  goods_id="<%= goodsInfo.goods_id || ''%>" share_id="<%= goodsInfo.share_id || ''%>" shop_id="<%= goodsInfo.shop_id%>" category_id="<%= goodsInfo.category_id || 0%>">
+		<span class="goods_img">
+			<img src="<%= goodsInfo.goods_image[0].image_middle%>" image_thumbnail="<%= goodsInfo.goods_image[0].image_thumbnail %>" image_id="<%= goodsInfo.goods_image[0].image_id %>"/>
+		</span>
+		<div class="goods_info">
+			<div class="price">
+				<ul>
+					<% if(goodsInfo.goods_type == 1){ %>
+						<li>
+							<span class="presell">预售价：</span>
+						</li>
+						<li>
+							<span>¥</span><span class="now"><%= (goodsInfo.goods_type == 1) ? goodsInfo.goods_display_price_presale : goodsInfo.goods_display_price%></span>
+						</li>
+						<% if(goodsInfo.goods_display_price_presale != goodsInfo.goods_display_price){ %>
+							<li>
+								<del class="del">￥<%= goodsInfo.goods_display_price%></del>
+							</li>
+						<%}%>
+				    <%}else{%> 
+				    	<li>
+							<span>¥</span><span class="now"><%= (goodsInfo.goods_type == 1) ? goodsInfo.goods_display_price_presale : goodsInfo.goods_display_price%></span>
+						</li>
+				    <%}%>						
+				</ul>
+			</div>
+			<div class="goods_name"><%= goodsInfo.goods_desc%></div>
+		</div>
+	</figure>
+	<div class="goods_msg" id="goods_msg">
+		<% if (goodsInfo && goodsInfo.goods_sku) { %>
+		<dl class="prop info_list">
+			<dt class="type">型 号：</dt>
+			<dd class="info">
+				<ul id="colorList">
+					<% goodsInfo.goods_sku.forEach(function(item , key){%>
+						<li><span sku_id="<%= item.sku_id%>" sku_rep="<%= item.sku_repertory%>" sku_o_price="<%= item.sku_price%>" sku_price="<%= (goodsInfo.goods_type == 1) ? item.sku_price_presale : item.sku_price %>"><%= item.sku_name%></span></li>
+					<%});%>
+				</ul>
+				<div class="colorShow"></div>
+			</dd>
+		</dl>
+		<%}%>
+		<dl class="amount pdtop">
+			<dt class="type">数 量：</dt>
+			<dd class="info">
+				<div class="numBox">
+					<span class="minus">-</span>
+					<input class="nums" title="请输入购买数量" type="text" value="1" readonly="readonly" />
+					<span class="plus">+</span>
+				</div>
+				<% if(goodsInfo.goods_type == 0){ %>
+					<span class="stock now_num">(库存<span><%=goodsInfo.goods_total_repertory%></span>件)</span>
+				<%}%>	
+			</dd>
+		</dl>
+
+		<% if(goodsInfo.goods_type == 1){ %>
+			<p class="amount pdtop predel">
+				预计发货时间：<span><%=goodsInfo.goods_express_delay%></span>
+			</p>						
+	    <%}%>
+	</div>
+	<figure class="store_wrap">
+		<a href="/md/home/?shop_id=<%=goodsInfo.shop_id%>" class="guang_btn">进店逛逛</a>
+		<a href="/md/home/?shop_id=<%=goodsInfo.shop_id%>" class="store_pic detail_store_pic">
+			<img src="<%= goodsInfo.goods_shop.shop_logo%>">
+		</a>
+		<div class="store_info store_cont">
+			<p class="store_name"><span><%= goodsInfo.goods_shop.shop_name%></span></p>
+			<p class="goods_num">微信号：<b><%= goodsInfo.goods_shop.shop_weixin%></b></p>
+			<p class="goods_num">商品数量：<span><%= goodsInfo.goods_shop.goods_total ? goodsInfo.goods_shop.goods_total : 0%>件</span></p>
+		</div>
+	</figure>
+	<figure class="goods_detail">
+		<h3>商品详情</h3>	
+		<% if (goodsInfo && goodsInfo.goods_image) { %>
+		<div class="detail_cont">
+			<% goodsInfo.goods_image.forEach(function(item , key){%>
+			<span class="detail_img">
+				<img src="<%= item.image_middle%>" image_id="<%= item.image_id%>"/>
+			</span>
+			<%});%>
+		</div>	
+		<%}%>
+	</figure>
+	<figure class="after_sale_wrap">
+		<h3>关于售后与退款：</h3>	
+		<p>本次交易款项将直接支付给设计师的蜜店，如有售后问题或需要退款请直接通过微信与设计师蜜店客服联系。</p>
+		<p><b>客服微信号：<%= goodsInfo.goods_shop.shop_weixin%></b></p>
+	</figure>
+	<figure class="instal_md">
+		<a href="http://www.mikecrm.com/f.php?t=r41KlJ">注册我的蜜店</a>
+	</figure>
+	<%if(this.is_mls){%>
+		<div class="register_wrap mag_bot"></div>
+		<div class="share_buy_wrap">
+			<div class="share_col_wrap">
+				<div onclick="shareToWeixin('weixin')">
+					<img src="<%=this.PICTURE_URL%>/images/wap/wd/wx_share@2x.png"><p>分享到微信</p>
+				</div>
+				<div onclick="shareToWeixin('weixin_timeline')">
+					<img src="<%=this.PICTURE_URL%>/images/wap/wd/friends@2x.png"><p>分享到朋友圈</p>
+				</div>
+				<div onclick="shareToWeixin('weixin_favorite')">
+					<img src="<%=this.PICTURE_URL%>/images/wap/wd/col@2x.png"><p>收藏到微信</p>
+				</div>
+			</div>
+			<div class="buy_wrap">
+				<a class="buy_btn <%if(goodsInfo.goods_status == 1){%>non_buy eventnone<%}%>"><%= goodsInfo.goods_status == 1 ?'已下架':'立即购买'%></a>
+			</div>
+		</div>
+	<%}else{%>
+		<div class="register_wrap"></div>
+		<div class="buy_wrap">
+			<a class="buy_btn <%if(goodsInfo.goods_status == 1){%>non_buy eventnone<%}%>"><%= goodsInfo.goods_status == 1 ?'已下架':'立即购买'%></a>
+		</div>
+	<%}%>
+</div>
+
+<script>
+fml.vars.goods_sku = <%= JSON.stringify(goodsInfo.goods_sku)%>;
+fml.vars.goods_total_repertory = '<%=goodsInfo.goods_total_repertory%>';
+fml.vars.goods_o_current_price = '<%= goodsInfo.goods_display_price%>';
+fml.vars.goods_current_price = '<%= (goodsInfo.goods_type == 1) ? goodsInfo.goods_display_price_presale : goodsInfo.goods_display_price%>';
+
+	var imgUrl = '<%= goodsInfo.goods_image[0].image_middle%>';
+	var lineLink = location.href;
+	var descContent = '<%= goodsInfo.goods_desc%>';
+	var shareTitle = '蜜店 - <%= goodsInfo.goods_shop.shop_name%>';
+	var shareTimelineText = '蜜店【<%= goodsInfo.goods_shop.shop_name%>】<%= goodsInfo.goods_desc%>';
+</script>
+<script src="<%= this.JCSTATIC_BASE  %>/js/open/shareCollect.js?<%= this.SVERSION%>"></script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('md/page/detail');
+_use:", this._JSstack , this._JSmods ); %>
+<%# footer.html%>

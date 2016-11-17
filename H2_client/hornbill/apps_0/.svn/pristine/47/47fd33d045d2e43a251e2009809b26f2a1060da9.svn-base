@@ -1,0 +1,89 @@
+<%# win/win_header.html%>
+<div class="offline_tip">
+	<!--<img  class="offline-tips-icon" src="http://i.meilishuo.net/css/images/wap/web/im/offline_tips_icon.png" alt=""/>-->
+	<div>当前用户不在线，可能无法立即回复您的消息</div>
+	<img class="offline-tips-close js_offline_tips_close" src="http://i.meilishuo.net/css/images/im/win/friend_offline_close.png" />
+</div>
+<div class="main">
+	<div class="history_btn">
+		<span>&#xe65c;</span>
+	</div>
+	<div class="d_history">
+		<div class="history_list"></div>
+		<div class="history_line"><span>以上是聊天记录</span></div>
+	</div>
+	<div class="message_wrapper"></div>
+</div>
+
+
+<script type="text/html" id="tmp_msg">
+	<?if(data.isNewSender==1 && data.consultant_info!=undefined){?>
+		<div class="history_line">
+		<span style="position: absolute;right: 0px;"><?=data.consultant_info.nickname ?></span>
+		</div>
+	<?}?>
+	<?var noAvatarClass = ['','']; if (!(data.avatar || (data.consultant_info && data.consultant_info.avatar))) {noAvatarClass = ['bubble-no-avatar','svg-no-avatar']}; ?>
+	<div class="<?=data.msg_type=='send'?'d_m':'d_u' ?>">
+		<?if(data.isShowTime===undefined || data.isShowTime==1){?>
+			<div class="ctime"><?=data.time ?></div>	
+		<?}?>
+		<div class="con" <?if(data.message_id){?>data-mid="<?=data.message_id ?>"<?}?>>
+			<? if (data.avatar || (data.consultant_info && data.consultant_info.avatar)) {?>
+			<img style="width: 30px; position: absolute" src="<?=data.avatar || data.consultant_info.avatar?>" alt=""/>
+			<? } ?>
+			<div class="bubble<?=data.send_status?' '+data.send_status:'' ?> <?=(data.dataType == 'img' || data.dataType == 'file' ? 'file_bubble' : '')?> <?=noAvatarClass[0]?>"><?=data.content ?><span class="status_wrapper"></span>
+			</div>
+			<div class="shap <?=data.chatfrom_info ? 'shap1' : 'shap2'?> <?=noAvatarClass[1]?>">
+				<svg width="100%" height="100%">
+					<polyline  points="0,0.5 6.8,0.5 0,8 " class="shap_path <?=(data.dataType == 'img' || data.dataType == 'file' ? 'shap_path_file' : '')?>"/>
+				</svg>
+			</div>
+		</div>
+		<div class="clear_f"></div>
+	</div>
+	
+</script>
+<script type="text/html" id="tmp_trans">
+	<div class="d_trans">
+		<div class="line_start"><span>来自客服 <?=data.transfrom ?> 的转接记录开始</span></div>
+		<div class="con">
+			<? data.history.forEach(function(item){?>
+			<div class="trans_msg">
+				<span class="<?=(data.transfrom==item.chatfrom_nick)?'t_service':'t_user' ?>"><?=item.chatfrom_nick?></span>
+				<span class="t_time"><?=item.ctime ?></span>
+				<p><?if(item.type=='text'){?><?= item.msg ?><?}else if(item.type=='img'){?><?for(var i=0; i<item.picInfo.length; i++){?><img src="<?= item.picInfo[i].pic_url ?>" /><?}}?></p>
+			</div>	
+			<?});?>
+		</div>
+		<div class="line_end"><span>来自客服 <?=data.transfrom ?> 的转接记录结束</span></div>
+	</div>
+</script>
+<script type="text/html" id="tmp_sys">
+	<div class="d_sys">
+		<div class="sys_msg"><?=data.content || '' ?></div>
+	</div>
+</script>
+<script type="text/html" id="tmp_pic">
+	<a href="<?=data.o_pic_url ?>" target="_img">
+		<img src="<?=data.pic_url ?>" />
+	</a>
+</script>
+<script type="text/html" id="file_tmp">
+	<div class="file_left">
+		<img src="<?=data.icon ?>" alt="">
+	</div>
+	<div class="file_middle">
+		<p class="file_name"><?=data.name ?></p>
+		<p class="file_size"><?=data.size ?></p>
+	</div>
+	<div class="file_right" data-msgid="<?=data.msg_id || ''?>">
+		<p class="file_status"><?=data.tip || '' ?></p>
+		<p class="file_btn" data-fid="<?=data.id ?>"><?=data.btn_content || '' ?></p>
+	</div>
+	<div class="clear_f"></div>
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('im_win/chat');
+_use:", this._JSstack , this._JSmods); %>
+<%# win/win_footer.html%>

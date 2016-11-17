@@ -1,0 +1,302 @@
+<%# head.html%>
+<%
+var curSelectedReason = '';
+if(this.refund && this.refund.info){
+var refund = this.refund.info,
+refund_detail = refund.refund_detail ? refund.refund_detail : '',
+order = refund.order_detail.order;
+%>
+
+<% var bothCanRefund = order.can_refund_goods && order.can_refund_money; //是否都能申请
+var onlyCanRefundGoods = order.can_refund_goods && !order.can_refund_money; //只能申请退货
+var onlyCanRefundMoney = order.can_refund_money && !order.can_refund_goods; //只能申请退款
+var reRefundGoods = refund_detail.refund_type=="5"||refund_detail.refund_type=="3";//是否为重新退货
+var curType = (function(){
+if(this.refund_id){
+return reRefundGoods?'goods':'cash';
+}else{
+return bothCanRefund?'goods':(onlyCanRefundGoods?'goods':'cash'); //当前选择的类型
+}
+})();
+%>
+
+<%
+function refundGoods(nocheck){
+%>
+<div>
+    <input type="radio" class="mls-input-radio" id="radio-refund-goods" name="is_refund_goods" value="1" <%=nocheck?'':'checked'%>
+    <%=onlyCanRefundGoods?'checked':''%>
+    />
+    <label class="mls-input-label mls-input-radio-label" for="radio-refund-goods" >
+					<span>退款且退货
+						<!--<span class="more-desc">-->
+							<!--(收货后需退还已收到商品)-->
+						<!--</span>-->
+					</span>
+    </label>
+    <ul class="desclist">
+        <li>已签收商品，需退还已收到的商品</li>
+    </ul>
+</div>
+<%
+}
+function refundMoney(nocheck){
+%>
+<div>
+    <input type="radio" class="mls-input-radio" name="is_refund_goods" value="0" id="radio-refund-money" <%=nocheck?'':'checked'%> <%=onlyCanRefundMoney?'checked':''%>/>
+    <label class="mls-input-label mls-input-radio-label" for="radio-refund-money" >
+				<span>仅退款
+					<!--<span class="more-desc">-->
+					<!--(已与商家协商一致，无需退货即可退款)-->
+					<!--</span>-->
+				</span>
+    </label>
+    <ul class="desclist">
+        <li>1、与商家协商一致，无需退货即可退款</li>
+        <li>2、商品已拒签，要求退款</li>
+        <li>3、未收到商品，要求退款</li>
+    </ul>
+</div>
+<%
+}
+
+function refundGoodsSelect(){
+%>
+<select class="mls-select" id="refund_goods_reason">
+    <option data-id="-1">请选择退货原因</option>
+    <%refund && refund.reasons && refund.reasons.goods.forEach(function(item,index){
+    if(item.val==refund_detail.select_reason_id){
+    curSelectedReason = index;
+    }
+    %>
+    <option data-id="<%=index%>" value="<%=item.val == 100 ? -1 : item.option%>" must="<%=item.e%>" <%=item.val==refund_detail.select_reason_id?'selected':''%>><%=item.option%></option>
+    <%});%>
+</select>
+<%
+}
+function refundMoneySelect(){
+%>
+<select class="mls-select <%=(!this.refund_id && bothCanRefund)? 'none_f':''%>" id="refund_reason">
+    <option data-id="-1">请选择退款原因</option>
+    <%refund && refund.reasons && refund.reasons.cash.forEach(function(item,index){
+    if(item.val==refund_detail.select_reason_id){
+    curSelectedReason = index;
+    }
+    %>
+    <option data-id="<%=index%>" value="<%=item.val == 100 ? -1 : item.option%>" must="<%=item.e%>" <%=item.val==refund_detail.select_reason_id?'selected':''%>><%=item.option%></option><!--val==100表示选择了其它-->
+    <%});%>
+</select>
+<%
+}
+%>
+
+<div class="formTop">
+    <span class="icon order"></span>
+</div>
+<div class="route_bread">
+    <a href="<%=this.DOMAIN.www%>/">美丽说</a>
+    <samp>&gt;</samp>
+    <a href="<%= this.DOMAIN.order%>/order/list/">我的美丽说订单</a>
+    <samp>&gt;</samp>
+    <span class="red_f">退货申请</span>
+</div>
+<%this.status="退货申请";%>
+
+<div class="container">
+    <div class="main">
+        <%if(refund.appeal_times==0){%>
+        <div class="no-need-appeal">
+            <img src="http://i.meilishuo.net/css/images/hirra/no-data-01.png"/>
+            <div>
+                此商品5次退款申请次数已经用完，不能再次申请或修改。如有问题，请联系美丽说客服：400-080-0577
+            </div>
+        </div>
+        <%}else{%>
+        <%# refund/order_detail.html%>
+        <div class="refund_info">
+            <div class="wrap-top">
+                <p class="tips">
+                    <span>温馨提示：</span>
+                    <%if(refund.appeal_times==5){%>
+                    每件商品最多只能申请退款<span class="red_f">5</span>次，请谨慎填写信息
+                    <%}else{%>
+                    此商品还能申请退款<span class="red_f"><%=refund.appeal_times||0%></span>次,请谨慎填写相关信息
+                    <%}%>
+                </p>
+            </div>
+            <ul>
+                <li class="lh-28">
+                    <label><b class="must">*</b>退款类型：</label>
+                    <div class="chooseRefund">
+                        <%if(!this.refund_id){
+                        if(order.can_refund_goods){
+                        refundGoods('nocheck')
+                        }
+                        if(order.can_refund_money){
+                        refundMoney('nocheck')
+                        }
+                        %>
+                        <%}else{
+                        if(reRefundGoods){
+                        refundGoods()
+                        }else{
+                        refundMoney()
+                        }
+                        }%>
+                    </div>
+                </li>
+                <li class="choosereasonli">
+                    <label class="has-select"><b class="must">*</b>退货原因：</label>
+                    <div class="content-wrap">
+                        <%if(!this.refund_id){
+                        if(order.can_refund_goods){
+                        refundGoodsSelect('show')
+                        }
+                        if(order.can_refund_money){
+                        refundMoneySelect('show')
+                        }
+                        %>
+                        <%}else{
+                        if(reRefundGoods){
+                        refundGoodsSelect()
+                        }else{
+                        refundMoneySelect()
+                        }
+                        }%>
+                    </div>
+
+                    <div class="other-reason-wrap">
+                        <textarea class="txt" type="text" id="refund_reason_text" style="<%= (refund_detail.select_reason_id!=100)? 'display:none' : '' %>"><%= refund_detail.select_reason_id==100 ? (refund_detail.select_reason||'').trim():'' %> </textarea>
+                    </div>
+                    <div class="reason-tip" style="display:none" id="reasonTipText">
+                    </div>
+                    <div id="maskforFirst"></div>
+                </li>
+                <li>
+                    <label><b id="evidenceStar" style="display:none;" class="must optional">*</b>上传凭证：</label>
+
+                    <div class="upload-wrap">
+                        <%if(refund_detail){%>
+                        <%refund_detail.refund_evidence && refund_detail.refund_evidence.forEach(function(e){ %>
+                        <a class="pic" href="javascript:void(0)">
+                            <img src="<%=e.thumb%>" width="100%" asrc="<%=e.orig%>" />
+                        </a>
+                        <%});%>
+                        <%}%>
+
+                        <%if(refund_detail.refund_evidence && refund_detail.refund_evidence.length==5){%>
+                        <%}else{%>
+                        <a class="pic addBtn" href="javascript:void(0)"></a>
+                        <%}%>
+                        <div class="clear_f"></div>
+                    </div>
+
+                    <div class="tips">
+                        <ul>
+                            <li>如：商品破损图，客服聊天记录截屏，快递单照片等</li>
+                            <li>最多5张，每张不超过5M，支持GIF,JPEG,JPG,PNG,BMP格式</li>
+                        </ul>
+                    </div>
+                </li>
+                <li>
+                    <label>补充说明：</label>
+                    <div class="content-wrap">
+                        <textarea class="description-textarea" id="description"><%= refund_detail && refund_detail.reason%></textarea>
+                    </div>
+                </li>
+                <li>
+                    <label class="has-select"><b class="must">*</b>退款金额：</label>
+                    <div class="content-wrap">
+                        <%if(this.refund_id){%>
+                        <input class="txt" type="text" id="refund_price_apply" value="<%= refund_detail.refund_price_apply %>">
+                        <input class="txt" type="text" id="refund_price_apply_no_freight" value="<%= refund_detail.refund_price_apply %>" style="display:none;">
+                        <%}else{%>
+                        <input class="txt" type="text" id="refund_price_apply" value="<%= order.max_refund_with_freight %>">
+                        <input class="txt" type="text" id="refund_price_apply_no_freight" value="<%= order.max_refund_cash %>" style="display:none;">
+                        <%}%>
+                        <span class="yuan">元</span>
+						<span class="money-max">
+							最多<span id="max_refund_money">
+							<%= 0 == order.refund_freight ?
+							order.max_refund_cash + '元' : order.max_refund_with_freight + "元(商品"
+							+ order.max_refund_cash + "元+运费"+ order.refund_freight + "元)"%></span>
+							<span id="max_refund_except_fretight" style="display:none;"><%=order.max_refund_cash + "元"%></span>
+							<span  id="max_refund_money_all" style="display:none;">
+								<%= 0 == order.refund_freight ?
+								order.max_refund_cash : order.max_refund_with_freight %></span>
+							</span>
+							<span  id="max_refund_money_no_freight" style="display:none;">
+								<%= order.max_refund_cash %></span>
+                        </span>
+						<span>
+                    </div>
+                </li>
+                <% if(order.refund_coin && +order.refund_coin){ %>
+                <li class="lh-27">
+                    <label class="has-select"><%=order.refund_name%>：</label>
+                    <span><%= order.refund_coin %>元<%= this.refund.info.send_goods != '0' ? '（如果商品金额部分退款，则不'+order.refund_name+'）': '' %></span>
+                </li>
+                <% } %>
+
+                <div class="clear_f"></div>
+            </ul>
+
+            <div class="wrap-desc none_f refund-bottom-tips bottom-tips" id="bottom-tip">
+                <p>
+                    <span>1、发货违约补偿:</span>
+                    无特殊约定,商家确认未在<%=refund.bottom_time||'72小时'%>内发货,你可以获得额外的发货违约赔偿
+                    <a class="rules" href="http://www.meilishuo.com/helpcenter/detail/2035" target="_blank">
+                        查看规则详情&gt;&gt;
+                    </a>
+                </p>
+            </div>
+            <div class="wrap-desc none_f refund-bottom-tips bottom-tips-sec" id="bottom-tips-sec">
+                <p>
+                    <span>2、退货运费补偿:</span>
+                    退货成功后,运费将以平台券的形式补偿给您(省内或同在江苏、浙江、上海:补贴5元；其他情况:补贴10元)
+                </p>
+            </div>
+            <div class="wrap-desc none_f refund-bottom-tips compensate">
+                <p>
+                    <span>1、退货运费补偿:</span>
+                    退货成功后,运费将以平台券的形式补偿给您(省内或同在江苏、浙江、上海:补贴5元；其他情况:补贴10元)
+                </p>
+            </div>
+
+            <div class="wrap-btn">
+                <input type="button" class="submit" value="提交申请" id="submit">
+                <input type="button" class="cancel" value="取  消" onclick="window.location.href='<%=this.DOMAIN.order%>/order/'">
+            </div>
+        </div>
+        <%}%>
+    </div>
+</div>
+<%}%>
+
+<script type="text/html" id="img_upload">
+    <img src="<?=H_pic_url ?>" width="100%" height="100%" asrc="<?=o_pic_url ?>" />
+</script>
+
+<script type="text/javascript">
+    var CONSTANT = CONSTANT || {};
+    CONSTANT.currentType = '<%=this.current_type%>';
+    CONSTANT.curSelectedReason = '<%=curSelectedReason%>';
+    CONSTANT.curType = '<%=curType%>';
+    CONSTANT.refundReason = <%=(refund.reasons?JSON.stringify(refund.reasons):'[]')%>;
+    CONSTANT.freightPrice = '<%= order.refund_freight||0 %>';
+    CONSTANT.goodsPrice = '<%= order.max_refund_cash||0 %>';
+    CONSTANT.maxRefundPrice = '<%=order.max_refund_with_freight||0%>';
+
+    CONSTANT.hiddenData = {
+        mid:"<%=this.mid%>",
+        order_id:"<%=this.order_id || ''%>",
+        refund_id:"<%=this.refund_id || ''%>",
+        with_goods:1,
+        plat : '<%= this.is_iPad?"3":"4"%>'
+    };
+    CONSTANT.sendGoods = <%= this.refund.info.send_goods%>;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+		fml.use('order_pc/refund/apply');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

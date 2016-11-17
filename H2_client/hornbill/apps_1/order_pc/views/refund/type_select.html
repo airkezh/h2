@@ -1,0 +1,45 @@
+<%# head.html%>
+<%  var refund=this.refund
+		,order = refund.info.order_detail.order
+		,can_refund_goods = order.can_refund_goods
+		,can_refund_money = order.can_refund_money
+%>
+<div class="route_bread">
+	<a href="<%=this.DOMAIN.www%>/">美丽说</a>
+	<samp>&gt;</samp>
+	<a href="<%= this.DOMAIN.order%>/order/list/">我的美丽说订单</a>
+	<samp>&gt;</samp>
+	<span class="red_f">选择服务类型</span>
+</div>
+<div class="container">
+	<div class="type_select">
+		<div class="t_left">
+            <a class="select_btn" <%if(!can_refund_goods){%>title=" 退货退款只能申请一次，此订单您已经申请过退货退款，请选择仅退款或与客服联系退货退款问题。" <%}%>>退货退款</a>
+            <p class="title">特别提醒：</p>
+			<p><span>• 商家已发货，您已收到货；</span>如果对商品不满意，可申请“退款且退货”；</p>
+			<p><span>• 商家已发货，您未收到货；</span>如果不想要该商品了，可选择“退款且退货”，商家审核通过后系统会提示您退货，请耐心等待收货，并在收到货后将商品快递给商家，并务必系统中<span>填写物流单号</span>，否则商家无法准确跟踪到该退货订单。</p>
+			<p class="title">退货流程：</p>
+			<p>1.申请退货 > 2.商家同意退货申请 > 3.买家退货并填写退货物流信息，并在7天内上传快递单号 > 4.商家确认收货，退款成功</p>
+		</div>
+		<div class="t_right">
+			<a class="select_btn" <%if(!can_refund_money){%>title="仅退款只能申请一次，此订单您已经申请过仅退款，请选择退货退款或与客服联系仅退款问题。"<%}%> >仅退款</a>
+			<p class="title">特别提醒：</p>
+			<p><span>• 商家已发货，您已收到货，商品存在严重质量问题，商家同意不需要退货就可以退款时，</span>可选择“只退款不退货”选项。</p>
+			<p><span>特别提醒：请务必与商家协商达成一致，否则商家在没有收货退回的商品时，一定会拒绝“只退款不退货”的申请，</span>请慎重选择；</p>
+			<p class="title">退款流程：</p>
+			<p>1.申请退款 > 2. 商家同意退款申请 > 3.退款成功</p>
+		</div>
+		<div class="clear_f"></div>
+	</div>
+	<%# refund/refund_goods.html %>
+</div>
+<% var query = this._Request_query; %>
+<input type="text" class="none_f" id="order_id" value="<%=query.order_id %>" />
+<input type="text" class="none_f" id="mid" value="<%=query.mid %>" />
+<input type="text" class="none_f" id="can_refund_goods" value="<%=can_refund_goods%>"/>
+<input type="text" class="none_f" id="can_refund_money" value="<%=can_refund_money%>"/>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+		fml.use('order_pc/refund/refund_select');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

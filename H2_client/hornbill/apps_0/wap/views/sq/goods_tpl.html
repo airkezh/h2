@@ -1,0 +1,26 @@
+<script type="text/html" id="goods_tpl">
+	<? 
+		var data = this.v; 
+
+		data.goodsUrl = "/sq/detail?twitter_id=" + data.twitter_id;
+
+		if(data.d_r){ data.goodsUrl += "&d_r=" + data.d_r; }
+		if(data.ad_tag){ data.goodsUrl += "&ad_tag=" + data.ad_tag; }
+	?>
+	<div class="g_wrap">
+		<figure class="g" style="margin-left:.05rem;margin-right:.05rem;font-size:.24rem;">
+			<a class="g-entrance" href="<?= data.goodsUrl ?>" style="display:block;padding-top:<?= (data.pic_height/data.pic_width)*100 ?>%;background-position:center center;background-repeat:no-repeat;background-size:cover;" asrc="<?= data.goods_img ?>"></a>
+			<figcaption class="g-info" style="padding:.2rem;">
+				<p class="g-info-title" style="font-size:.24rem;color:black;"><?= data.goods_title ?></p>
+				<p class="g-info-price" style="margin-top:.2rem;">
+					<span class="current" style="font-size:.3rem;color:#f69;">¥<?= data.discount_price ?></span>
+					<del class="original" style="margin-left:.1rem;color:#666;"><?= data.original_price ?></del>
+				</p>
+				<div class="g-info-extra" style="position:relative;margin-top:.1rem;">
+					<p class="sale_num" style="color:#999;">已有<?= data.sale_num ?>人购买</p>
+					<? if(data.similarLink){ ?><a href="<?= data.similarLink ?>" style="position:absolute;top:-.2rem;right:-.48rem;width:1.6rem;line-height:.58rem;font-size:.4rem;color:#999;text-align:center;border:1px solid #999;border-radius: .12rem;-webkit-transform:scale3d(.48,.48,.48);">找相似</a><? } ?>
+				</div>
+			</figcaption>
+		</figure>
+	</div>
+</script>

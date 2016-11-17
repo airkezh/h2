@@ -1,0 +1,126 @@
+<%#head_simple.html%>
+<%
+var getLink = _extFn.getLink;
+var query = this._Request_query;
+%>
+<%if(1==0){%>
+<meta name="apple-itunes-app" content="app-id=id431023686">
+<%}%>
+</head>
+<body <%if(this.os.ios){%>class="ios"<%}%>>
+
+<div class="mls_orient"></div>
+<div class="mls_body" id="layout">
+
+<% if(this.route && this.route.data && this.route.data.length != 0){
+		var header_class = 'head_higher';
+	}else{
+		var header_class = 'head_normal';
+	}
+%>
+<div class="<%= header_class %>">
+	<header class="header" id="header">
+		<!-- 搜索词 -->
+		<%if(this.bread.data && this.bread.data.length && this.ptype != 'goods'){
+			var len = this.bread.data.length
+			var search_words = this.bread.data[len-1].word_name
+		}%>
+		<% var pro_spec_banner = this.pro_spec_banner || {}; %>
+		<%= requireFn('block/wap_head.html')({
+			'xr' : this.xr
+			, 'search_words' : search_words
+			, 'default_navigate' : this.default_navigate && this.default_navigate.root_category
+			, 'cat_banner' : pro_spec_banner.cat_bar
+			, '_JSstack' : this._JSstack
+			, '_JSmods' :  this._JSmods
+		});%>
+
+
+		<%if(this.headTag == 'goods'){%>
+		<div class="nav_top" id="navTop">
+			<nav class="nav_box">
+			<ul class="goods">
+				<li><a href="/welcome" xr="<%= this.xr.r%>">首页</a></li>
+				<li <%if(this.ptype == 'selected'){%>class="active"<%}%>><a href="/guang/selected" xr="<%= this.xr.r%>">流行</a></li>
+				<li <%if(this.ptype == 'hot'){%>class="active"<%}%>><a href="/guang/hot" xr="<%= this.xr.r%>">最热</a></li>
+				<li <%if(this.ptype == 'new'){%>class="active"<%}%>><a href="/guang/new" xr="<%= this.xr.r%>">最新</a></li>
+			</ul>
+			</nav>
+		</div>
+		<%}else{%>
+			<% var isRoute = this.route && this.route.data && this.route.data.length != 0; %>
+				<%if(isRoute){
+					var pnid = this.route.data[0].nid;
+					var breadLen = this.bread.data.length;
+				%>
+				<div class="nav_top" id="navTop">
+					<nav class="nav_box">
+						<ul class="catalog">
+						<%this.route.data.map(function(v,k){%>
+							<li <%if(((query.nid || this.bread.data[breadLen - 1].nid ) == v.nid && this.ptype != 'search') || query.keyword == v.word_name){%>class="active"<%}%>><a href="/guang/catalog/?nid=<%=v.nid%>&pnid=<%=pnid%>" xr="<%= this.route.r%>"><%= v.word_name %></a></li>
+						<%});%>
+						</ul>
+						<span class="openClosed" id="openClosed">
+					</nav>
+				</div>
+				<%}%>
+		<%}%>
+	</header>
+</div>
+
+<section id="wrapper_main" class="wrapper<%if(!isRoute && this.headTag != 'goods'){%> normal<%}%>">
+	<div class="scroller">
+	<%
+	var nowTime = new Date
+	if(this.banner && this.banner.data
+		&& (this.banner.data.startTime ?  nowTime > new Date(this.banner.data.startTime) : true)
+		&& (this.banner.data.endTime ? nowTime < new Date(this.banner.data.endTime) : true )
+		) {
+		%>
+		<a class="adBanner2" href="<%= this.banner.data.link%>" xr="<%= this.banner.r%>">
+			<img src="<%= this.banner.data.src%>"/>
+		</a>
+	<%}%>
+		<span class="colFlag"></span>
+		<div class="poster_wrap">
+			<div class="goods_wall"></div>
+			<div class="pullUp" status="loading"></div>
+		</div>
+	</div>
+</section>
+</div>
+
+<%# block/wap_foot.html %>
+
+<script type="text/html" id="posterWall">
+<div class="poster_grid poster_wall" twitter_id="<?= this.v.twitter_id?>">
+	<figure>
+		<div class="pic_load">
+			<a xr="<?= fml.vars.poster_r?>" asrc="<?= this.v.pic_url ?>" class="bs_load_img" href="/share/<?if(this.v.is_doota == '1'){?>item/<?}?><?= this.v.twitter_id?><?if(this.v.url_query){?>?<?= this.v.url_query?><?}?>">
+			</a>
+		</div>
+		<? if(this.v.title){?>
+			<p class="clothesTitle"><?=this.v.title?></p>
+		<?}?>
+		<figcaption>
+			<? if(this.v.price){?>
+			<span class="price"><?= this.v.price?></span>
+			<? }?>
+			<span class="like icon-heart"><?= this.v.count_like?></span>
+		</figcaption>
+	</figure>
+</div>
+</script>
+
+<script>
+fml.vars.frm = '<%== this.frm %>';
+fml.vars.poster = {
+	'ptype' : '<%= this.ptype%>'
+	, 'pid' : '<%== this.pid%>'
+};
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/guang_new');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

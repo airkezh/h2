@@ -1,0 +1,474 @@
+<%
+	/**
+ 	 * @fileoverview 首页－会员俱乐部
+     * @requires zepto
+     * @author kehuang@meilishuo.com
+     * @date 2015-10-20
+     */
+%>
+
+<%#head.html%>
+<%
+	var userMaxLevel = 4;
+	var curUserIsLogin = this.isLogin;
+	var curServerDate = this.serverDate;
+	var curUserInfo = this.userInfo;
+	var curPageData = this.pageData;
+	var curSignData = this.signData;
+	var curGiftData = this.giftData;
+	var curScoreData = this.scoreData;
+	var curBeautyData = this.percentData;
+	var curRecordData = this.recordData;
+	var curGiftPageData = this.giftPageData;
+	var curServerTime = curServerDate.getTime();
+	var curIsNormalGetData = this.isNormalGetData;
+	var curUserSignData = (curSignData && curSignData.data) ? curSignData.data : {};
+	var curUserGiftData = (curGiftData && curGiftData.data) ? curGiftData.data : {};
+	var curUserScoreData = (curScoreData && curScoreData.data) ? curScoreData.data : {};
+	var curUserBeautyData = (curBeautyData && curBeautyData.data) ? curBeautyData.data : {};
+	var curUserRecordData = (curRecordData && curRecordData.data) ? curRecordData.data : {};
+	var curGoodsEventId = (curPageData && curPageData.event_id) ? curPageData.event_id : '2425';
+	var curUserLevel = curUserSignData.level || 0;
+	var curUserUpgradeLevel = (curUserLevel < 4) ? (curUserLevel + 1) : 4;
+	var curUserBeauty = curUserBeautyData.score || '- -';
+	var curUserStep = curUserRecordData.step || 1;
+	var curUserRecord = curUserRecordData.percent || 0;
+	var curBeautyTipsIsShow = curUserScoreData.is_show || 0;
+	var curUserRemainBeauty = curUserBeautyData.remaind_score || 0;
+	var tempUserPercent = curUserBeautyData.left_percent || 0;
+	var curUserPercent = parseInt((curUserLevel +  tempUserPercent / 100) * 25) + '%';
+	var curUserName = (curUserInfo && curUserInfo.nickname) ? curUserInfo.nickname : '- -';
+	var curUserAvatar = (curUserInfo && curUserInfo.avatar_c) ? curUserInfo.avatar_c.replace('/c/', '/a/') : 'http://d06.res.meilishuo.net/ap/a/78/32/59c5fb29fb8ea04deddb2ad0ff42_256_256.cf.png';
+%>
+
+<div class="main">
+	<%
+		var head_bg_img = (curPageData && curPageData.head_bg) ? curPageData.head_bg : '',
+			top_head_style = (head_bg_img == '') ? '' : 'background: url(' + head_bg_img + ') no-repeat; background-size:100%;';
+	%>
+	<div class="banner_wrap" style="<%= top_head_style %>">
+		<%
+			if (curUserIsLogin) {
+		%>
+		<div class="user_box">
+			<div class="user_head j_member_interest">
+				<img src="<%= curUserAvatar %>" alt="<%= curUserName %>">
+			</div>
+
+			<div class="user_level_box">
+				<div class="user_level level<%= curUserLevel %>"></div>
+			</div>
+
+			<div class="user_name"><%= curUserName %></div>
+
+			<div class="level_wrap" id="level_wrap">
+				<div class="level_iscroll" id="level_iscroll">
+					<%
+						var dotHtml = '',
+							levelHtml = '';
+
+						for (var i = 0; i <= userMaxLevel; i++) {
+							var dotState = (i > curUserLevel) ? 0 : 1,
+								levelState = (i == curUserLevel) ? 1 : 0;
+
+							dotHtml += '<li><div class="dot_' + dotState + '"></div></li>';
+							levelHtml += '<li><div class="level_' + levelState + '">V' + i + '</div></li>';
+						}
+
+						dotHtml = '<ul class="dot_box">' + dotHtml + '</ul>';
+						levelHtml = '<ul class="level_box">' + levelHtml + '</ul>';
+					%>
+
+					<%= levelHtml %>
+
+					<div class="outer_progress_bar">
+						<div class="inner_progress_bar"></div>
+					</div>
+					
+					<%= dotHtml %>
+				</div>
+			</div>
+
+			<%
+				var user_upgrade_text = '';
+
+				switch (curUserLevel) {
+					case 0:
+						user_upgrade_text = '还差一单购物就能尊享V1会员特权哦！';
+
+						break;
+					case 1:
+					case 2:
+					case 3:
+						user_upgrade_text = '还差' + curUserRemainBeauty + '美丽值就能尊享V' + curUserUpgradeLevel + '会员特权哦！';
+
+						break;
+					case 4:
+						user_upgrade_text = '恭喜你已成为尊贵的V4会员';
+						break;
+					default:
+						break;
+				}
+			%>
+			<div class="user_upgrade_text"><%= user_upgrade_text %></div>
+
+			<div class="user_info_box">
+				<div class="user_beauty j_user_beuaty">
+					<p class="value"><%= curUserBeauty %></p>
+					<p class="name">美丽值</p>
+					<%
+						if (curBeautyTipsIsShow) {
+					%>
+					<div id="beauty_tips_dot" class="tips_dot"></div>
+					<%
+						}
+					%>
+				</div>
+				<div class="user_record j_user_record" data-step="<%= curUserStep %>">
+					<p class="value"><%= curUserRecord %>%</p>
+					<p class="name">美丽档案</p>
+				</div>
+			</div>
+		</div>
+		<%
+			} else {
+		%>
+		<div class="user_box user_login_box">
+			<div class="user_head">
+				<img src="<%= curUserAvatar %>" alt="<%= curUserName %>">
+			</div>
+
+			<div class="user_level_box">
+				<div class="user_level"></div>
+			</div>
+
+			<div class="user_login_btn j_login_box">登录后查看我的会员特权</div>
+
+			<div class="user_info_box">
+				<div class="user_beauty j_login_box">
+					<p class="value">－－</p>
+					<p class="name">美丽值</p>
+				</div>
+				<div class="user_record j_login_box">
+					<p class="value">登录后完善</p>
+					<p class="name">美丽档案</p>
+				</div>
+			</div>
+		</div>
+		<%
+			}
+		%>
+	</div>
+
+	<%
+		if (curUserIsLogin) {
+			var user_interests_arr = (curPageData && curPageData['interests_level_' + curUserLevel]) ? curPageData['interests_level_' + curUserLevel] : [],
+				interests_arr_len = user_interests_arr.length || 0;
+
+			if (interests_arr_len > 0) {
+				function compare(name){
+					return function(obj1, obj2){
+						var value1 = obj1[name],
+							value2 = obj2[name];
+
+						if (value2 < value1) {
+							return -1;
+						} else if (value2 > value1) {
+							return 1;
+						} else {
+							return 0;
+						}
+					};
+				}
+
+				user_interests_arr.sort(compare('flag'));
+	%>
+	<div class="interests_box">
+		<div class="title_wrap">
+			<div class="pro_title"><p>我的特权</p></div>
+		</div>
+
+		<div class="interests_wrap" id="interests_wrap">
+			<ul class="interests_iscroll" id="interests_iscroll" style="width:990px;">
+				<%
+					var counter = 1,
+						last_li_html = '',
+						first_li_html = '',
+						can_receive_html = '',
+						is_can_receive = curUserGiftData.can_receive || 0,
+						receive_gift_grade = curUserGiftData.gift_grade || 0,
+						is_can_receive = ((is_can_receive == 0) && (receive_gift_grade == 0)) ? 2 : is_can_receive,
+						li_gift_class = (is_can_receive == 2) ? '' : 'active',
+						li_gift_flag = (li_gift_class == '') ? 'interests' : 'gift',
+						promotion_gift = (curPageData && curPageData.promotion_gift) ? curPageData.promotion_gift : {},
+						gift_title = promotion_gift.title || '晋级礼包',
+						receive_gift_grade = receive_gift_grade || curUserLevel,
+						gift_intact_title = 'V' + receive_gift_grade + gift_title,
+						gift_bg_pic = promotion_gift['pic_' + is_can_receive] || 'http://d05.res.meilishuo.net/pic/_o/ce/f8/09056d530bec26b9d55cefc170d1_100_100.cg.png',
+						gift_bg_style = 'background:url(' + gift_bg_pic + ') no-repeat;background-size:50px auto;background-position:center;';
+
+					if (is_can_receive == 1) {
+						can_receive_html = '<div class="can_receive" data-level="' + receive_gift_grade + '">可领取</div>';
+					}
+
+					if (is_can_receive == 2) {
+						first_li_html = '';
+						last_li_html = [
+							'<li class="' + li_gift_class + '" data-pos="' + counter + '" data-flag="" data-name="' + gift_intact_title + '">',
+								'<div class="member_interests" style="' + gift_bg_style + '"></div>',
+								'<div class="text_title">' + gift_intact_title + '</div>',
+							'</li>'
+						].join('');
+					} else {
+						first_li_html = [
+							'<li class="' + li_gift_class + '" data-pos="' + counter + '" data-flag="' + li_gift_flag + '" data-name="' + gift_intact_title + '">',
+								can_receive_html,
+								'<div class="member_interests" style="' + gift_bg_style + '"></div>',
+								'<div class="text_title">' + gift_intact_title + '</div>',
+							'</li>'
+						].join('');
+						last_li_html = '';
+					}
+				%>
+
+				<%= first_li_html %>
+
+				<%
+					for (var j = 0; j < interests_arr_len; j++) {
+						var obj = user_interests_arr[j],
+							pic = (obj && obj.pic) ? obj.pic : '',
+							flag = (obj && obj.flag) ? obj.flag : 0,
+							title = (obj && obj.title) ? obj.title : '';
+
+						if (pic != '') {
+							var li_class = (flag == 1) ? 'active' : '',
+								interests_style = 'background:url(' + pic + ') no-repeat;background-size:50px auto;background-position:center;';
+
+							++counter;
+				%>
+				<li class="<%= li_class %>" data-pos="<%= counter %>" data-flag="interests" data-name="<%= title %>">
+					<div class="member_interests" style="<%= interests_style %>"></div>
+					<div class="text_title"><%= title %></div>
+				</li>
+				<%
+						}
+					}
+				%>
+
+				<%= last_li_html %>
+			</ul>
+		</div>
+	</div>
+	<%
+			}
+		}
+	%>
+
+	<div class="title_wrap">
+		<div class="pro_title"><p>会员福利区</p></div>
+	</div>
+
+	<section id="container" class="container">
+		<p class="sub_title">每日多款精选·10点更新·会员专享折扣</p>
+		<ul class="even goods_wall"></ul>
+		<div class="pullUp" status="loading"></div>
+    </section>
+
+	<div class="gotop_wrap">
+		<a class="gotop">
+			<img src="http://d03.res.meilishuo.net/pic/_o/d0/68/f89d059f09d440f4ee7a37669383_80_80.cg.png" alt="">
+		</a>
+	</div>
+</div>
+
+<script type="text/html" id="j_prompt_tpl">
+	<div id="j_prompt_layer" class="prompt_layer_main">
+		<div class="prompt_layer_text"><?= this.text ?></div>
+	</div>
+</script>
+
+<script type="text/html" id="j_stay_tuned_tpl">
+	<div class="stay_tuned_box">
+		<p class="stay_tuned_text">会员福利区将为会员独家奉上每天限量折扣商品<br>等级越高，折扣越劲爆！</p>
+		<div class="stay_tuned_bg"></div>
+	</div>
+</script>
+
+<script type="text/html" id="posterWall">
+	<?
+		var is_login = this.isLogin,
+			cur_user_level = this.userLevel,
+			goods_list = (this.data && this.data.data && this.data.data.goods_list) ? this.data.data.goods_list : [];
+
+		$.each(goods_list, function(index, data){
+	    	var pos = data.pos || 0,
+	    		now_price = data.now_price || {},
+	    		pev_price = data.pev_price || {},
+	    		goods_name = data.goods_name || '',
+	    		goods_image = data.goods_image || '',
+	    		twitter_id = data.twitter_id || 0,
+	    		origin_price = data.origin_price || '0.00',
+	    		off_price = data.off_price || origin_price,
+	    		href = data.url || 'javascript:void(0);',
+	    		flag = (pev_price && pev_price.price) ? 1 : 0,
+	    		cur_level_desc = 'V' + cur_user_level,
+	    		cur_level_price = (now_price && now_price.price) ? now_price.price : off_price;
+	?>
+	<li data-tid="<?= twitter_id ?>" data-pos="<?= pos ?>" data-href="<?= href ?>">
+		<figure>
+			<?
+		    	if (fml.vars.is_lazyload_poster) {
+		    		if (index < 2) {
+		    ?>
+		    <span class="df_show_img" style="opacity: 1;background-image: url(<?= goods_image ?>);"></span>
+		    <?
+		    		} else {
+		    ?>
+		    <span class="bs_load_img" asrc="<?= goods_image ?>"></span>
+		    <?
+		    		}
+				} else {
+			?>
+		    <img src="<?= goods_image ?>" alt="">
+		    <?
+				}
+		    ?>
+		</figure>
+
+		<figcaption>
+			<div class="proTitle"><?= goods_name ?></div>
+			<?
+				if (is_login) {
+			?>
+			<div class="proPrice">
+				<span class="word"><?= cur_level_desc ?>专享价:</span><i>￥</i><?= cur_level_price ?>
+			</div>
+			<div class="proSaleInfo">
+				<?
+					if (flag) {
+						var prev_level_desc = pev_price.desc || 'V0',
+							prev_level_price = pev_price.price || origin_price;
+				?>
+				<div class="text_box">
+					<p><?= prev_level_desc ?></p>
+					<p>市场价</p>
+				</div>
+				<div class="outer_bar"><div class="inner_bar"></div></div>
+				<div class="price_box">
+					<p><i>￥</i><?= prev_level_price ?></p>
+					<p><i>￥</i><?= origin_price ?></p>
+				</div>
+				<?
+					} else {
+				?>
+				<div class="single_text">市场价</div>
+				<div class="single_bar"></div>
+				<div class="single_text"><i>￥</i><?= origin_price ?></div>
+				<?
+					}
+				?>
+			</div>
+			<?
+				} else {
+			?>
+			<div class="proLogin">登录后查看会员价</div>
+
+			<div class="proSaleInfo loginSaleInfo">
+				<div class="single_text">市场价</div>
+				<div class="single_bar"></div>
+				<div class="single_text"><i>￥</i><?= origin_price ?></div>
+			</div>
+			<?
+				}
+			?>
+		</figcaption>
+	</li>
+	<?
+		});
+	?>
+</script>
+
+<script type="text/html" id="j_gift_tpl">
+	<div id="j_gift_layer" class="gift_layer">
+		<div class="layer_shade j_layer_shade"></div>
+		<div class="layer_main gift_main j_layer_main">
+			<div class="layer_bg">
+				<?
+					var level = this.level || 0;
+				?>
+				<p class="title"><i>V<?= level ?></i>会员晋级礼包</p>
+				<?
+					var giftPageData = this.giftPageData,
+						giftDataObj = (giftPageData && giftPageData['gift_level_' + level]) ? giftPageData['gift_level_' + level] : {},
+						giftImg = giftDataObj.pic || '',
+						giftName = giftDataObj.title || '';
+
+					if ((giftImg != '') && (giftName != '')) {
+				?>
+				<p class="gift_title">恭喜！获得优惠券</p>
+				<p class="gift_img">
+					<img src="<?= giftImg ?>" alt="">
+				</p>
+				<p class="gift_name"><i><?= giftName ?></i>元</p>
+				<?
+					}
+
+					var interestsArr = (giftPageData && giftPageData['interests_level_' + level]) ? giftPageData['interests_level_' + level] : [],
+						interestsArrLen = interestsArr.length || 0;
+
+					if (interestsArrLen > 0) {
+				?>
+				<p class="interests_title">晋级后将享受以下会员特权</p>
+				<div class="layer_interests_wrap" id="layer_interests_wrap">
+					<ul class="layer_interests_iscroll" id="layer_interests_iscroll" style="width:990px;">
+						<?
+							var counter = 0;
+
+							for (var i = 0; i < interestsArrLen; i++) {
+								var obj = interestsArr[i],
+									pic = (obj && obj.pic) ? obj.pic : '',
+									title = (obj && obj.title) ? obj.title : '';
+
+								if (pic != '') {
+									var interestsStyle = 'background:url(' + pic + ') no-repeat;background-size:50px auto;background-position:center;';
+
+									++counter;
+						?>
+						<li data-pos="<?= counter ?>" data-name="<?= title ?>">
+							<div class="member_interests" style="<?= interestsStyle ?>"></div>
+							<div class="text_title"><?= title ?></div>
+						</li>
+						<?
+								}
+							}
+						?>
+					</ul>
+				</div>
+				<?
+					}
+				?>
+				<p class="receive_gift_btn" data-level="<?= level ?>">立即领取</p>
+			</div>
+		</div>
+	</div>
+</script>
+
+<script>
+	fml.vars.r = '<%= this.xr.r || '' %>';
+	fml.vars.eventId = '<%= curGoodsEventId %>';
+	fml.vars.isLogin = <%= curUserIsLogin %>;
+	fml.vars.userLevel = <%= curUserLevel %>;
+	fml.vars.serverTime = <%= curServerTime %>;
+	fml.vars.userPercent = '<%= curUserPercent %>';
+	fml.vars.isNormalGetData = <%= curIsNormalGetData %>;
+	fml.vars.giftPageData = <%= JSON.stringify(curGiftPageData) %>;
+	fml.vars.is_lazyload_poster = true;
+</script>
+
+<!-- <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script> -->
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/member/club');
+_use:", this._JSstack, this._JSmods); %>
+
+<%#foot_simple.html%>

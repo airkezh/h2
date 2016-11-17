@@ -1,0 +1,68 @@
+<%# head_simple.html%>
+</head>
+<body>
+<div class="wShare"></div>
+<a class="act">
+	<img class="pai" src="<%= this.list&&this.list.act_img%>">
+</a>
+<div class="wrap">
+	<div class="wrap-rule">
+		<%this.list && this.list.banner && this.list.banner.forEach(function(v, k){%>
+		<a <%if(v.link){%>href="<%= v.link%>"<%}%>>
+			<img src="<%= v.img%>">
+		</a>
+		<%});%>
+		<%if(this.list.imgFriend){%>
+		<div class="share">
+			<img src="<%= this.list.imgFriend%>">
+		</div>
+		<%}%>
+		<%this.list && this.list.banner2 && this.list.banner2.forEach(function(v, k){%>
+		<a <%if(v.link){%>href="<%= v.link%>"<%}%>>
+			<img src="<%= v.img%>">
+		</a>
+		<%});%>
+	</div>
+</div>
+<div class="tabs">
+    <a class="tab active js-tab" data-name="tab-a">
+    	<%= this.list.textTab1%>
+    </a>
+    <a class="tab js-tab" data-name="tab-b">
+    	<%= this.list.textTab2%>
+    </a>
+</div>
+<!--群圈list begin-->
+<div class="wrap">
+    <div class="content js-content"></div>
+    <div class="content js-content"></div>
+</div>
+
+<div id="loading-bar" class="loading-bar" status="loading"></div>
+<div class="gotop-wrap">
+    <a class="gotop">
+        <img src="http://i.meilishuo.net/css/images/wap/tuan/gotop.png"/>
+    </a>
+</div>
+<%# mainapp/index.zepto.html %>
+<!--群圈list end-->
+
+<script>
+	fml.vars.isWx = <%= this.isWx%>;
+	fml.vars.CONFIG_SHARE = {
+		'shareImg' : !!<%= this.shareImg%>, 
+        'title' : '<%= this.list.share.title%>' || '一拍秀出你对鹿晗的爱',
+        'text' : '<%= this.list.share.text%>' || '力挺鹿晗，真爱美丽说',
+        'pic' : '<%= this.list.share.pic%>' || 'http://d05.res.meilishuo.net/pic/_o/7b/fe/73076b0e42ec95b0ea48839caf13_100_100.cg.jpg',
+        'url' : '<%= this.list.share.url%>' || window.location.href
+   	};
+	fml.vars.source = '<%= this.list.source%>';
+	fml.vars.default_tag = '<%= this.list.default_tag%>';
+	fml.vars.cid = <%= this.cid%>;
+</script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/wx_new/circle');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot.html%>

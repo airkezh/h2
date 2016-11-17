@@ -1,0 +1,178 @@
+/*common*/
+var $ = require('wap/zepto');
+var toCss = require('wap/component/lark/toCss');
+
+var windowWidth = $(window).width()
+    ,windowHeight = $(window).height();
+
+var wb = {
+	boxId : 'container',
+	boxW : windowWidth ,
+	boxH : windowHeight ,
+	cellW : windowWidth/4 ,
+	cellH : windowWidth*1.775/4
+}
+,countFn
+,endFn;
+
+
+//创建一个新的对象block
+function Block(opts){
+	$.extend(wb,opts)
+
+	this.dom =  document.getElementById(wb.boxId);
+	this.topPos = -wb.cellH*2 ;
+	this.step = 2;
+	this.clock = null;
+	this.state = true;
+	this.sum = 0 ,
+	this.clickCount = 0;;
+
+	countFn = wb.countFn;
+	endFn = wb.endFn;
+
+	var boxStyle = {
+		position: 'absolute' ,
+		top : '-300px',
+		width: '100%' ,
+		height : '600px'
+	},
+
+	rowStyle = {
+		width : '100%',
+		overflow : 'hidden'
+	},
+
+	cellStyle = {
+		float : 'left',
+		width : '25%',  
+		height : wb.cellH+'px'
+	},
+
+	css = toCss( boxStyle , '#'+wb.boxId )+toCss( rowStyle , '.row' )+toCss(cellStyle , '.cell');
+	
+	$('<style id="whiteBlockStyle">'+css+'</style>').appendTo('head');
+
+	$('#container').on('touchmove',function (e){
+		e.preventDefault();
+		e.stopPropagation();	
+	});
+}
+
+
+//对block初始化
+Block.prototype.init = function() {
+	var that = this;
+	for(var i = 0 ; i < 4 ; i ++){
+		that.insertRow();
+	}
+	that.start();
+
+	that.dom.ontouchstart = function(e){
+		if(!that.state){
+			that.dom.ontouchstart = null;
+		}
+		e = e || window;
+		var target = e.target || e.srcElement;
+		// console.log(target)
+		if(target.className.indexOf('black') != -1){
+			that.sum ++;
+			target.className = 'cell shapeshift';
+
+			//console.log(that.sum);
+			if(countFn) countFn(that.sum);
+
+
+		}else{
+			
+			target.className = 'cell trans';
+			that.state = false;
+			that.dom.ontouchstart = null;
+			clearInterval(that.clock);
+			if(endFn) endFn(that.sum,'clickFail');
+		}
+	};
+}
+
+
+//创建一个单元格
+Block.prototype.createCell = function(className){
+	var oDiv = document.createElement('div');
+	oDiv.className = className;
+	return oDiv;
+}
+
+//为一行四个块随机设置颜色
+Block.prototype.classArr = function(){
+	var arr = ['cell','cell','cell','cell'];
+	var i = Math.floor(Math.random()*4)
+	arr[i] = 'cell black';
+	return arr;
+}
+
+//添加行，每行4块
+Block.prototype.insertRow = function(){
+	var oRow = this.createCell('row');
+	var oClass = this.classArr();
+	var oCell = null;
+	for(var i = 0 ; i  < 4; i++){
+		oCell = this.createCell(oClass[i]);
+		oRow.appendChild(oCell);
+	}
+	var firstChild = this.dom.firstChild;
+	if(firstChild == null){
+ 		this.dom.appendChild(oRow);
+	}else{
+		this.dom.insertBefore(oRow , firstChild);
+	}
+}
+//删除一行
+Block.prototype.delRow = function(){
+	this.dom.removeChild(this.dom.childNodes[this.dom.childNodes.length - 1]);
+}
+//判断什么时候top拉出去，什么时候开始加速
+Block.prototype.judge = function(){
+	//console.log('**** ' + this.topPos)
+	if(this.topPos >= 0){
+		this.topPos = -wb.cellH ;
+		this.dom.style.height =  wb.cellH*5+'px';
+		this.dom.style.top = this.topPos + 'px';
+		// console.log(wb.cellW)
+		// console.log(this.topPos)
+		this.insertRow();
+		this.delRow();
+	}
+	//根据点的白块提升速度
+	this.step = (parseInt(this.sum/5) + 0.5)*2;
+}
+
+//block开始移动
+Block.prototype.move = function(){
+	this.topPos += this.step;
+
+	console.log(this.topPos);
+	this.dom.style.top = this.topPos + 'px'; 
+	//漏点黑块，停止游戏
+    var wHeight = window.innerHeight;
+	var oBlack = document.getElementsByClassName('black');
+	var oBlackb = (oBlack[oBlack.length - 1]) ? oBlack[oBlack.length - 1].getBoundingClientRect().bottom : 0;
+	if(oBlackb+3 >= wHeight){
+		this.state = false;
+		clearInterval(this.clock);
+		if(endFn) endFn(this.sum,'bottom');
+	}
+}
+
+//游戏开始
+Block.prototype.start = function(){
+	var that = this;
+	this.clock = setInterval(function(){
+		that.move();
+		that.judge();
+	},15);
+}
+
+//游戏结束
+Block.prototype.end = function(){}
+
+return Block;

@@ -1,0 +1,430 @@
+/**
+ * @fileoverview 首页 － 签到商城
+ * @requires
+ * @author kehuang@meilishuo.com
+ * @date 2014-12-04
+ */
+
+@import "../../block.less";
+
+html{
+	.f(10*@f);
+}
+
+body{
+	.bgc(#fff);
+}
+
+img{
+	.block;
+	.w(100%);
+}
+
+a{
+	.block;
+	outline:none;
+}
+
+.head_wrap{
+	.c;
+	margin:1.3rem auto;
+
+	.head{
+		.vm;
+		.w(10%);
+		.h(10%);
+		.mr(1rem);
+		.i_block;
+		.border-r(50%);
+		overflow:hidden;
+
+		img{
+			border:0;
+			.border-r(50%);
+		}
+	}
+
+	.award{
+		.vm;
+		.f(1.5rem);
+		.fc(#ff5f53);
+	}
+}
+
+.caption_title{
+	.pr;
+	.pt(10*@w);
+	.w(600*@w);
+	margin:0 auto;
+	border-bottom:1px solid #e5e5e5;
+
+	p{
+		.pa;
+		.c;
+		.w(10rem);
+		left:50%;
+		.ml(-5rem);
+		.bgc(#fff);
+		bottom:-.7rem;
+		.fc(#595056);
+		.f(1.3rem);
+		.l(1.3rem)
+	}
+}
+
+.caption_pic{
+	margin:1.5rem 0 1.2rem;
+}
+
+.dotted_line{
+	.pr;
+	.pt(11*@w);
+	.w(100%);
+	margin:1.8rem 0;
+	background-image:url("@{pic_url}/images/wap/activity/sign_mall/dotted_line.png");
+	background-size:100%;
+
+	p{
+		.pa;
+		.c;
+		.w(12rem);
+		left:50%;
+		.ml(-6rem);
+		.fc(#333);
+		.f(1.5rem);
+		.l(1.5rem);
+		.bgc(#fff);
+		bottom:-.6rem;
+
+		em{
+			.fc(#ff525f);
+			font-style:normal;
+		}
+	}
+}
+
+.new_box{
+	.hidden;
+	.bgc(#fff);
+	margin:0 1rem;
+
+	div.lazy_pic{
+		opacity:.75;
+		.w(100%);
+		.pt(100%);
+		background-image:url("@{pic_url}/images/wap/activity/sign_mall/default_pic.png");
+		background-size:100%;
+	}
+
+	li{
+		.left;
+		.mr(0);
+		.w(48.5%);
+		.mb(2rem);
+
+		p{
+			.pl(2*@w);
+			.pr(2*@w);
+			.mt(.8rem);
+		}
+
+		.price{
+			.f(1.2rem);
+			.l(1.8rem);
+			.fc(#ff6699);
+
+			del,span{
+				.ml(.4rem);
+			}
+
+			del{
+				.fc(#c7c7c7);
+			}
+
+			span{
+				.f(1.6rem);
+			}
+		}
+
+		.coupon{
+			.pr;
+			.w(100%);
+			.pt(46%);
+			.mt(.2rem);
+			background-image:url("@{pic_url}/images/wap/activity/sign_mall/coupon_bg_yes.png");
+			background-size:100%;
+
+			div {
+				.c;
+				.pa;
+				.w(100%);
+			}
+
+			.tit1{
+				top:10%;
+				.f(1.8rem);
+				.fc(#fff);
+			}
+
+			.tit2{
+				top:41%;
+				.f(1rem);
+				.fc(#fffa75);
+			}
+
+			.tit2.robbed{
+				.fc(#cec5c6);
+			}
+		}
+
+		.coupon.robbed{
+			background-image:url("@{pic_url}/images/wap/activity/sign_mall/coupon_bg_no.png");
+		}
+
+		.goods_title{
+			.hidden;
+			.f(1.4rem);
+			.l(1.8rem);
+			.fc(#666);
+			text-overflow:ellipsis;
+			display:-webkit-box;
+			-webkit-line-clamp:1;
+			-webkit-box-orient:vertical;
+			clear:both;
+		}
+	}
+
+	.even{
+		li:nth-child(odd){.mr(3%);}
+	}
+
+	.odd{
+		li:nth-child(odd){.mr(3%);}
+	}
+}
+
+.ios_simple;
+.pullUp{
+	.pullUpDown > .common;
+	.pullUpDown > .loading;
+	&:before{.nowrap;.ml(-10px);}
+	&[status="tap"]{background:0 none;}
+	&[status="stop"]{
+		background:0 none;.h(2px);
+		&:before{
+			content:"木有了...";.pb(2rem);
+		}
+	}
+}
+
+.gotop_wrap{
+	.pf;
+	.none;
+	.w(82*@w);
+	.pt(82*@w);
+	z-index:10;
+	right:10px;
+	bottom:20px;
+
+	.gotop{
+		.block;
+		.w(100%);
+	}
+
+	img{
+		.w(100%);
+	}
+}
+
+.error_msg{
+	.none;
+	.c;
+	.f(1.2rem);
+	.pt(20*@w);
+
+	.error_reload{
+		.c;
+		.mt(1rem);
+		.pb(20*@w);
+
+		span{
+			.border-r(6px);
+			border:solid 1px #595056;
+			padding:.5rem 1.2rem;
+			.i_block;
+		}
+	}
+}
+
+/* 弹窗 */
+.layer_shade{
+	.pf;
+	top:0;
+	left:0;
+	.w(100%);
+	.h(100%);
+	z-index:10;
+	background:rgba(0,0,0,.5)
+}
+
+.layer_main{
+	.pf;
+	top:10%;
+	left:7%;
+	.w(86%);
+	.h(auto);
+	z-index:10;
+	background:url("@{pic_url}/images/wap/activity/sign_mall/win_head.png") no-repeat;
+	background-size:100%;
+
+	.t{
+		.pr;
+		.w(100%);
+		.pt(15%);
+	}
+
+	.m{
+		.pr;
+		.w(91%);
+		left:4.5%;
+		.bgc(#fff);
+		z-index:20;
+		border-radius:2*@px;
+
+		.t1{
+			.f(1.8rem);
+			.l(1.8rem);
+			.mb(.8rem);
+			.fc(#7c4848);
+		}
+
+		p{
+			.c;
+			.l(2rem);
+			.f(1.4rem);
+			.fc(#7c4848);
+			padding:0 3%;
+
+			em{
+				.fc(#f00);
+				font-style:normal;
+			}
+		}
+
+		.tip{
+			.fc(#f00);
+		}
+
+		.coupon_bg{
+			.pr;
+			.w(84%);
+			.pt(40%);
+			.fc(#fff);
+			margin:2rem auto 0;
+			background:url("@{pic_url}/images/wap/activity/sign_mall/coupon_bg.png") no-repeat;
+			background-size:100%;
+
+			.title_wrap{
+				.c;
+				.pa;
+				top:0;
+				.w(100%);
+				margin:3% auto;
+
+				.head{
+					.vm;
+					.w(10%);
+					.h(10%);
+					.mr(.2rem);
+					.i_block;
+					.border-r(50%);
+					border:2px solid #fff;
+					overflow:hidden;
+
+					img{
+						border:0;
+						.border-r(50%);
+					}
+				}
+
+				.title{
+					.vm;
+					.f(1.6rem);
+				}
+			}
+			.desc_wrap{
+				.pa;
+				top:0;
+				.w(90%);
+				left:5%;
+				.clearfix;
+				margin:20% auto 3%;
+
+				.left{
+					.left;
+					.f(3.5rem);
+
+					em{
+						.f(2.4rem);
+						font-style:normal;
+					}
+				}
+
+				.right{
+					.right;
+
+					div{
+						.f(.9rem);
+						.l(1.1rem);
+					}
+				}
+			}
+		}
+	}
+
+	.f{
+		.pr;
+		.w(91%);
+		.pt(14%);
+		left:4.5%;
+		background:url("@{pic_url}/images/wap/activity/sign_mall/win_foot.png") no-repeat;
+		background-size:100%;
+	}
+}
+
+.layer_big{
+	left:3%;
+	.w(94%);
+}
+
+.ok_btn,
+.no_btn,
+.buy_btn,
+.visit_btn{
+	.auto;
+	.w(360/640*100%);
+	.h(80*@px);
+	.mt(5%);
+	.block;
+}
+
+.ok_btn{
+	background:url("@{pic_url}/images/wap/activity/sign_mall/ok_btn.jpg") no-repeat;
+	background-size:100%;
+}
+
+.no_btn{
+	background:url("@{pic_url}/images/wap/activity/sign_mall/no_btn.jpg") no-repeat;
+	background-size:100%;
+}
+
+.buy_btn{
+	background:url("@{pic_url}/images/wap/activity/sign_mall/buy_btn.jpg") no-repeat;
+	background-size:100%;
+}
+
+.visit_btn{
+	background:url("@{pic_url}/images/wap/activity/sign_mall/visit_btn.jpg") no-repeat;
+	background-size:100%;
+}
+

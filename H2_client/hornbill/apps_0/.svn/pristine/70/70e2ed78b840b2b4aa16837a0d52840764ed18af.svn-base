@@ -1,0 +1,41 @@
+<%# wx_new/header.html%>
+<%if(0){%>
+	<div class="wrap">
+	<% if (0 && this.userInfo_wx && !this.userInfo_wx.release) { %>
+		<div class="binding">
+			<a href="/wx/bind">绑定已有美丽说账号</a>, 不用填写地址哦</div>
+	<% }%>
+	<% if (this.userInfo_wx && this.userInfo_wx.user_id){ %>
+		<div class="user_head">
+			<span class="user_head_img" >
+				<em><img src="<%=this.userInfo_wx.avatar_a%>" alt=""></em>
+			</span>
+			<p class="nikename"><%=this.userInfo_wx.nickname%></p>
+		</div>
+	<% } %>
+
+	<% if (this.args_type && this.args_type == 'coupon') { %>
+	<div class="user_nav">
+		<a class="tap_nav" href="/wx/user/order_list">我的订单</a>
+		<a class="tap_nav active">我的优惠券</a>
+	</div>	
+	<%# wx_new/coupon.html%>
+	<% } else { %>
+	<div class="user_nav">
+		<a class="tap_nav active">我的订单</a>
+		<a class="tap_nav" href="/wx/user/coupon">我的优惠券</a>
+	</div>
+	<%# wx_new/orderList.html%>
+	<% } %>
+	</div>
+<%}else{%>
+<%= requireFn('wx_new/user_head.html')({
+		'userInfo_wx' : this.userInfo_wx,
+		'order_status' : this.order_status,
+		'orderStatus' : this.orderStatus,
+		'uInfo' : this.uInfo
+	});%>
+<div class="wrap-list"></div>
+<%# wx_new/orderList.html%>
+<%}%>
+<%# wx_new/footer.html%>

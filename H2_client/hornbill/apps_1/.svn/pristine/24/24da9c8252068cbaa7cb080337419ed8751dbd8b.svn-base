@@ -1,0 +1,112 @@
+@import "../block.less";
+
+@wxTipBg: '@{pic_url}/images/activity/danmu/wxTip.png';
+body{
+	background: #FFF000;
+}
+img{
+	.w(100%);
+	}
+.game{
+	.pr (85*@w);
+	.pl (85*@w);
+	box-sizing: border-box;
+	.syq{
+		.mt (85*@w);
+		.text{
+			.w (441/470*100%);
+			.f (1.2rem);
+			border:4px solid #000;
+			.mt (-4*@w);
+			padding: 15/470*100% 10/470*100%;
+		}
+	}
+	.spider{
+	    .mt (-8*@w);
+	    .spiderman{
+	    	.w(135/470*100%);
+	    	.ml(170/470*100%);
+			.mr(170/470*100%);
+	    }
+	}
+	.blackbgc{
+	    	.mt(-8/470*100%);
+	    	.black{
+	    		.pr;
+	    		left : 0px;
+				top : 2px;
+				.content{
+	    			.pa;
+	    			.w(460/470*100%);
+	    			.ml(6/470*100%);
+	    			clear:both;
+	    			top:(11/470*100%);
+	    			z-index:20;
+	    		}
+	    	}
+	    	
+	    }
+		.mouse{
+			.w(52/470*100%);
+			.c;
+			.left;
+			.ml(7.5/470*100%);
+			.mr(7.5/470*100%);
+			.mt(7/470*100%);
+			.mb(9/470*100%);
+			.hidden;
+			img{
+				.w(100%);
+				.block;
+				.left;
+			}
+			.charset{
+				.pt (13/470*100%);
+				.f(1.0rem);
+				.block;
+				.w(50/470*100%);
+				.pa;
+			}
+		}
+	    .end{
+			.w(345/470*100%);
+			.pl(70/470*100%);
+			.pr(70/470*100%);
+			.pb(90/470*100%);
+			.mt(20/470*100%);
+		}
+		.loading{
+			display: none;
+			.pa;
+			top:640*@px;
+			left: 300*@px;
+			.w(80/470*100%);
+			z-index: 50;
+		}
+		#wx-tips {
+  			.none;
+			position : fixed;
+			top : 0;
+			bottom : 0;
+			left: 0;
+			width : 100%;
+			background : url(@wxTipBg) no-repeat top center;
+            -webkit-background-size : 100%;
+  			background-size : 100%;
+  			z-index : 50;
+		}
+}
+.sensitiveWords{
+	display: none;
+	z-index: 100;
+	position: absolute;
+	top: 0;
+	left: 0;
+	background-color: rgba(0,0,0,0.5);
+}
+.shade{.pf;top:0;left:0;z-index:10;.w(100%);.h(100%);background:rgba(0,0,0,.5);}
+.shareD {z-index: 100;position: absolute; width:80%; padding-top:60%; top:30%; left:10%;background: url("@{pic_url}/images/wap/activity/promotion/test_game/sd.png")no-repeat top center; background-size: 100%;
+  .toFriend {position: absolute; top: 35%; width: 28%; padding-top: 30%; left: 15%;border:0px solid red}
+  .toGroup {position: absolute; top: 35%; width: 28%; padding-top: 30%; left: 55%;border:0px solid red}
+  .close {position: absolute; top:2%; width: 12%;padding-top: 12%;right: 2%; border: 0px solid red}
+}

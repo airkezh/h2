@@ -1,0 +1,55 @@
+<script type="text/html" id="shopWall">
+<? $.each(tInfo , function(k , v){
+      var className = 'hd ';
+      if(v.is_cs == 1) {
+        className += 'has-icon competitive-shop'
+      } else if(v.is_star == 1) {
+        className += 'has-icon star-shop'
+      }
+?>
+<div class="poster_grid poster_wall group_shop">
+	<div class="groupBox">
+		<div class="groupCon">
+            <div class="<?=className?>">
+                <i class="icon-shop"></i>
+                <div class="wrap">
+                    <h2><a href="/shop/<?=v.shop_id?>" target="_blank"><?=v.shop_nick?></a></h2>
+                    <div class="tex-wrap">
+                        <?if(v.is_star == 1){?>
+                        <span class="tex">粉丝<i><?=v.follower_num?></i></span>
+                        <span class="tex">评分<i><?=v.avg_point?></i></span>
+                        <?}else{?>
+                        <span class="long-tex"><?=v.shop_desc?></span>
+                        <?}?>
+                    </div>
+                </div>
+            </div>
+			<a href="/shop/<?=v.shop_id?>" target="_blank" class="imgBox">
+				<img class="goods_pic_b" src="<?=v.goods_img ?>" />
+			</a>
+            <div class="section">
+                <span class="tex">销量<i><?=v.sales_num?></i></span>
+                <span class="tex">商品数<i><?=v.goods_count?></i></span>
+            </div>
+            <div class="section btn-wrap">
+                <?if(v.newFocusShop != 1){?>
+                    <a class="btn no_att" data-shop="<?=v.shop_id?>" href="javascript: void 0;"><i class="icon-add">+</i>关注</a>
+                <?}?>
+                <a class="btn" href="/shop/<?=v.shop_id?>" target="_blank">去逛逛</a>
+            </div>
+			<?if(v.horizontal_mark && v.horizontal_mark.length){?>
+			<div class="mark">
+				<? for (var i=0,j = v.horizontal_mark.length ; i< j; i++) {
+					var data = v.horizontal_mark[i]; ?>	
+					<?data.line_height = !data.text_margin_top ? data.img_height : 14;?>
+					<?!data.text_margin_top ? data.fs = 12 : data.fs = 14;?>
+					<span class="m_ico" style="font-size:<?=data.fs?>px;<?if(data.text_font_color){?>color:<?=data.text_font_color?>;<?}?>position: relative;background:url(<?=data.img_url?>) no-repeat; height:<?=data.img_height?>px;line-height:<?= data.line_height?>px;width:<?=data.img_width?>px;"><?if(data.mark_text){?><span style="width:<?=data.img_width?>px;left: 0;position: absolute;text-align: center;top: <?= data.text_margin_top?>px;"><?=data.mark_text?></span><?}?></span>
+				<?};?>
+			</div>
+			<?}?>
+			<div class="clear_f"></div>
+		</div>
+	</div>
+</div>
+<?});?>
+</script>

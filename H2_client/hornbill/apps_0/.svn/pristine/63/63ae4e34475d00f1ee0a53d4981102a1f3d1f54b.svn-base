@@ -1,0 +1,19 @@
+<script type="text/html" id="sliders_tpl">
+<?
+	var slidersData = data;
+?>
+
+<ul id="sliders" style="font-size:0;white-space:nowrap;overflow:hidden;overflow-x:scroll;-webkit-overflow-scrolling:touch;">
+	<? slidersData.forEach(function (g){ ?>
+	<li class="sliders-section" style="display:inline-block;font-size:.24rem;">
+		<figure class="sliders-section-g" style="background-color:#fff;">
+			<a href="/sq/detail/?twitter_id=<?= g.twitter_id ?>" style="display:block;background-image:url(<?= g.goods_img ?>);background-position:center center;background-repeat:no-repeat;background-size:cover;"></a>
+			<figcaption style="white-space:normal;">
+				<? if(g.goods_title){ ?><p class="sliders-section-g-title" style="color:#666;margin:.16rem .04rem 0;"><?= g.goods_title ?></p><? } ?>
+				<? if(g.goods_price){ ?><p style="color:#f69;margin:.16rem .04rem 0;padding-bottom:.2rem;">¥ <?= g.goods_price ?></p><? } ?>
+			</figcaption>
+		</figure>
+	</li>
+	<? }); ?>
+</ul>
+</script>

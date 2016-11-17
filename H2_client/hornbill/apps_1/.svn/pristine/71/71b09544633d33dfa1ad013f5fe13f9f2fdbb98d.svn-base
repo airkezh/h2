@@ -1,0 +1,457 @@
+fml.use(['jquery', 'order_pc/common/close', 'order_pc/common/recv', 'order_pc/common/scrollFloat'], function () {
+    this['close']();
+    this['recv']();
+    /* 绑定手机提示条 暂时加在此处 by zhengke */
+    var $orderBind = $('.order_bind')
+    if (!Meilishuo.config.mobile_is_actived && !$orderBind.length == 0)
+        $orderBind.show();
+});
+fml.define('order_pc/common/orderDetail', ['jquery', 'ui/confirm', 'ui/alert','order_pc/common/autoCountDown'], function (require) {
+    var $ = require('jquery');
+    var Confirm = require('ui/confirm');
+    var Alert = require('ui/alert');
+    var autoCountDown = require('order_pc/common/autoCountDown');
+
+    $(function () {
+
+        //倒计时
+        $('.autoCountDown').each(function(index,item){
+            var finishTime = $(item).attr("data-finishTime");
+            autoCountDown(item,window.serverTime,finishTime,["天","时","分","秒"]);
+
+        });
+
+        //关闭防骗提示
+        $('.well .js-close-tip-btn').click(function () {
+            $(this).parent().remove();
+        });
+
+        $('.extend_recv_btn').click(function () {
+            var tip = "确定要延长收货时间吗？<br/>系统默认延长5天，一个订单只能延长一次！";
+            var dlg = new Confirm({
+                title: "延长收货",
+                width: 360,
+                content: tip,
+                confirmTxt: "确认延长"
+            });
+            var order_id = $(this).data('orderid');
+            var timeEle = $('.red_f', $(this).parent().siblings('.status_text'));
+            dlg.onSure(function () {
+                $.get('/aj/order/extend_receive?order_id=' + order_id + '&type=2', function (data) {
+                    if (data.code == 0) {
+                        timeEle.text(data.info.extend_recv_time)
+                        $(".extend_recv_text", timeEle.parent().parent()).remove();
+                    } else {
+                        new Alert({
+                            content: '当前操作无效！',
+                            width: 370
+                        });
+                    }
+                }, 'json');
+            });
+        });
+
+        $('#cancel_order').click(function () {
+            var confirmPanel = new Confirm({
+                width: 380,
+                content: '您确定要取消本订单吗？（如果您完成了支付，取消订单后，系统将在3-15个工作日内自动为您退款）',
+                discover: true
+            });
+            confirmPanel.onSure(function () {
+                $.post('/aj/doota/order_close', {
+                    order_id: $('#order_id').val()
+                }, function (res) {
+                    if (res.code == 0) {
+                        var a = new Alert({
+                            content: '订单取消成功！',
+                            width: 370
+                        });
+                        a.onSure(function () {
+                            location.href = location.href;
+                        });
+                    }
+                }, 'json')
+                    .error(function () {
+                        new Alert({
+                            content: '当前操作无效！',
+                            width: 370
+                        });
+                    });
+            });
+        });
+        $('#refund_cancel').click(function () {
+            var tip_content = "你确定要取消退货申请吗?";
+            if(window.refund_type != 1){
+                tip_content = "你确定要取消退货申请吗? ";
+            }else{
+                tip_content = "你确定要取消退货申请吗? 取消后此商品将不能再次申请退款!";
+            }
+            if (fml.vars.refund_type == 'goods') {
+                var confirmPanel = new Confirm({
+                    width: 380,
+                    content: tip_content,
+                    discover: true
+                });
+            } else {
+                var confirmPanel = new Confirm({
+                    width: 380,
+                    content: tip_content,
+                    discover: true
+                });
+            }
+            ;
+            confirmPanel.onSure(function () {
+                $.post('/aj/doota/refund_cancel', {
+                    refund_id: $('#refund_id').val()
+                }, function (res) {
+                    if (fml.vars.refund_type == 'goods') {
+                        if (res.code == 0) {
+                            var a = new Alert({
+                                content: '取消退货成功！',
+                                width: 370
+                            });
+                            a.onSure(function () {
+                                location.href = location.href;
+                            });
+                        }
+                    } else {
+                        if (res.code == 0) {
+                            var a = new Alert({
+                                content: '取消退款成功！',
+                                width: 370
+                            });
+                            a.onSure(function () {
+                                location.href = location.href;
+                            });
+                        }
+                    }
+                    ;
+                }, 'json')
+                    .error(function () {
+                        new Alert({
+                            content: '当前操作无效！',
+                            width: 370
+                        });
+                    });
+            });
+        });
+
+        $('#refund_reapply').click(function () {
+            var confirmPanel = new Confirm({
+                width: 380,
+                content: '您确认要恢复退款申请吗？此商品最多还能申请退款'+window.appeal_times+'次',
+                discover: true
+            });
+        $('#edit_express_cancel').click(function () {
+            $('#express_id').val('');
+            $('#express_company option:first').attr('selected', 'selected');
+        });
+        $('#edit_express_cancel').click(function () {
+            $('#express_id').val('');
+            $('#express_company option:first').attr('selected', 'selected');
+        });
+        $('#edit_express').click(function () {
+            //点击修改后验证并且提交
+            var company = $('#express_company').val();
+            var id = $('#express_id').val(),
+                msg;
+            if (!company) {
+                msg = '请选择物流公司';
+            }
+            ;
+            if (!id) {
+                msg = '请填写物流单号';
+            }
+            ;
+            if (msg) {
+                return new Alert({
+                    content: msg,
+                    width: 370
+                });
+            }
+            ;
+            $.ajax({
+                url: '/aj/express/refund_update',
+                data: {
+                    express_company: company,
+                    express_id: id,
+                    refund_id: $('#refund_id').val()
+                },
+                type: 'post',
+                dataType: 'json',
+                success: function (data) {
+                    if (data.code == 0) {
+                        var a = new Alert({
+                            content: '修改成功',
+                            width: 370
+                        });
+                        a.onSure(function () {
+                            location.href = location.href;
+                        });
+                    } else {
+                        new Alert({
+                            content: data.msg,
+                            width: 370
+                        });
+                    }
+                },
+                error: function () {
+                    new Alert({
+                        content: '系统错误',
+                        width: 370
+                    });
+                }
+            })
+        });
+
+
+            confirmPanel.onSure(function () {
+                $.post('/aj/doota/refund_reapply', {
+                    refund_id: $('#refund_id').val()
+                }, function (res) {
+                    if (res.code == 0) {
+                        var a = new Alert({
+                            content: '恢复退款申请成功！',
+                            width: 370
+                        });
+                        a.onSure(function () {
+                            location.href = location.href;
+                        });
+                    }
+                }, 'json')
+                    .error(function () {
+                        new Alert({
+                            content: '当前操作无效！',
+                            width: 370
+                        });
+                    });
+            });
+
+        })
+
+
+        $('#edit_express_cancel,#edit_express_info,#cancel_edit_express').click(function () {
+            $('#express_form').toggle();
+            //$('#express_form,.express_info').toggle();
+            $(this).parents('.step_list_wrap').find(".express_info").toggle();
+        });
+        //$("#cancel_edit_express").click()
+        $('#edit_express_cancel').click(function () {
+            $('#express_id').val('');
+            $('#express_company option:first').attr('selected', 'selected');
+        });
+        $('#edit_express').click(function () {
+            var $company = isSelected ? $('#edit_express_company_select') : $('#edit_express_company');
+            var company = $company.val();
+            var id = $('#edit_express_id').val(),
+                msg;
+            if (!company) {
+                msg = '请选择物流公司';
+            }
+            ;
+            if (!id) {
+                msg = '请填写物流单号';
+            }
+            ;
+            if (msg) {
+                return new Alert({
+                    content: msg,
+                    width: 370
+                });
+            }
+            ;
+            if (company.length > 10) {
+                new Alert({
+                    width: 398,
+                    content: '物流公司的长度不能超过10个汉字',
+                    discover: true
+                });
+                return;
+            }
+            ;
+            if (!/^(\w|\d)+$/.test(id)) {
+                new Alert({
+                    width: 398,
+                    content: '快递编号只能为字母和数字',
+                    discover: true
+                });
+                return;
+            }
+            if (id.length > 25) {
+                new Alert({
+                    width: 398,
+                    content: '物流单号的长度不能超过25位数字',
+                    discover: true
+                });
+                return;
+            }
+            ;
+            $.ajax({
+                url: '/aj/express/refund_update',
+                data: {
+                    express_company: company,
+                    express_id: id,
+                    refund_id: $('#refund_id').val()
+                },
+                type: 'post',
+                dataType: 'json',
+                success: function (data) {
+                    if (data.code == 0) {
+                        var a = new Alert({
+                            content: '修改成功',
+                            width: 370
+                        });
+                        a.onSure(function () {
+                            location.href = location.href;
+                        });
+                    } else {
+                        new Alert({
+                            content: data.msg,
+                            width: 370
+                        });
+                    }
+                },
+                error: function () {
+                    new Alert({
+                        content: '系统错误',
+                        width: 370
+                    });
+                }
+            })
+        });
+        var isSelected = true;
+        $('#express_company_select,#edit_express_company_select').on('change', function () {
+            if (this.value == 'other') {
+                isSelected = false;
+                $('#express_company').show();
+                $('#edit_express_company').show();
+            } else {
+                isSelected = true;
+                $('#express_company').hide();
+                $('#edit_express_company').hide();
+            }
+        });
+        $('#edit_alipay,#cancel_edit_alipay').click(function () {
+            $('#alipay_info p').toggle();
+        });
+        $('#cancel_edit_alipay').click(function () {
+            $('#alipay_account').val('');
+        });
+        $('#edit_real_name,#cancel_edit_real_name').click(function () {
+            $('#real_name_info p').toggle();
+        });
+        $('#cancel_edit_real_name').click(function () {
+            $('#real_name').val('');
+        });
+        $('#submit_f').click(function () {
+            var $company = isSelected ? $('#express_company_select') : $('#express_company');
+            var company = $company.val(),
+                id = $.trim($('#express_id').val());
+            if (company.replace(/\s/g, '') == '' || id.replace(/\s/g, '') == '') {
+                new Alert({
+                    width: 398,
+                    content: '请填写物流公司和单号',
+                    discover: true
+                });
+                return;
+            }
+            ;
+            if (company.length > 10) {
+                new Alert({
+                    width: 398,
+                    content: '物流公司的长度不能超过10个汉字',
+                    discover: true
+                });
+                return;
+            }
+            ;
+            if (!/^(\w|\d)+$/.test(id)) {
+                new Alert({
+                    width: 398,
+                    content: '快递编号只能为字母和数字',
+                    discover: true
+                });
+                return;
+            }
+            if (id.length > 25) {
+                new Alert({
+                    width: 398,
+                    content: '物流单号的长度不能超过25位数字',
+                    discover: true
+                });
+                return;
+            }
+            ;
+            var abort = $('#abort').attr('checked'),
+                alipay_account = $('#alipay_account:visible').val() || $('#alipay_account_display').text(),
+                real_name = $('#real_name:visible').val() || $('#real_name_display').text();
+            var confirmPannel = new Confirm({
+                width: 380,
+                content: '您填写的物流公司与单号将作为您完成退款的唯一凭证。建议您仔细检查后再提交申请',
+                discover: true,
+                confirmTxt: '确定，提交申请',
+                cancelTxt: '再检查一次'
+            });
+
+            confirmPannel.onSure(function () {
+                //console.log(id,company,$("#refund_id").val(),alipay_account,real_name);
+                $.ajax({
+                    // url:'/',
+                    url: '/refund/add_express/',
+                    type: 'post',
+                    dataType: 'json',
+                    data: {
+                        express_id: id,
+                        express_company: company,
+                        refund_id: $('#refund_id').val(),
+                        alipay_account: alipay_account,
+                        real_name: real_name
+                    },
+                    success: function (data) {
+                        if (data.code == 0) {
+                            new Alert({
+                                width: 398,
+                                content: '提交成功',
+                                discover: true,
+                                confirmTxt: '确定'
+                            }).onSure(function () {
+                                    location.href = location.href;
+                                });
+                        } else {
+                            new Alert({
+                                width: 398,
+                                content: data.msg,
+                                discover: true,
+                                confirmTxt: '确定'
+                            });
+                        }
+                    },
+                    error: function (data) {
+                        new Alert({
+                            width: 398,
+                            content: '系统错误，您的退款申请提交失败，请重新提交一下试试',
+                            discover: true,
+                            confirmTxt: '确定'
+                        });
+                    }
+                });
+            });
+        });
+
+        if(!window.orderDetailFrom){
+            new scrollFloat({
+                ele: '.good_detail_wrap',
+                scrTop: 30,
+                bottomEle:'.main'
+            });
+        }
+
+
+        $(".step_list_wrap").each(function(index){
+            var childsize = $(this).children().size();
+            if(!childsize){
+                $(this).css("paddingTop","0px");
+            }
+        });
+    });
+});

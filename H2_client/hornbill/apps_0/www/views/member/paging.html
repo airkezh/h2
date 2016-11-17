@@ -1,0 +1,48 @@
+<%
+
+	if (!this.groupPg) {
+		this.groupPg = {};
+	}
+
+	var current_page = this.groupPg.current_page | 0,
+		show_page_num = this.groupPg.page_num || 5,
+		total_num = Math.ceil((this.groupPg.total_num || 0) / (this.groupPg.page_size || 20));
+
+	if (total_num > 1) {
+%>
+<div class="pageNav">
+	<a class="pagePrev" style="<%= (current_page > 0) ? '' : 'display:none;' %>" href="javascript:;">&lt;上一页</a>
+	<%
+		var left_num = (current_page > show_page_num) ? (current_page - show_page_num) : 0,
+			right_num = left_num + show_page_num * 2;
+
+		if (right_num > total_num) {
+			right_num = total_num;
+		}
+
+		if (left_num >= 1) {
+	%>
+
+	<a href="javascript:;"><%= 1 %></a>
+	<i>...</i>
+	<%
+		}
+
+		for (var i = left_num; i < right_num; i++) {
+	%>
+	<a <% if (current_page == i) { %> class="currentpage" <% } %> href="javascript:;"><%= i + 1 %></a>
+	<%
+		}
+
+		if (right_num < total_num) {
+	%>
+	<i>...</i>
+	<a href="javascript:;"><%= total_num %></a>
+	<%
+		}
+	%>
+	<a class="pageNext" style="<%= (current_page < (total_num - 1)) ? '' : 'display:none;' %>" href="javascript:;">下一页&gt;</a>
+</div>
+<%
+	}
+%>

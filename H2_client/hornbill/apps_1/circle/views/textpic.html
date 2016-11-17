@@ -1,0 +1,50 @@
+<%#head.html%>
+<%
+var picInfo  = this.picInfo,
+	cirInfo  = this.cirInfo.data,
+    cirId    = cirInfo.id,
+	circleBanner = this.item_circle_banners || [],
+    chatUrl;
+
+    if ( this.os.mlsApp ) {
+        chatUrl = _extFn.getAppLink( 'circle', { 'circle_id': cirId }, this.os );
+    } else {
+        chatUrl = '//circle.meilishuo.com/circle/chat?circle_id=' + cirId;
+    }
+%>
+
+<section id="wrapper_main" class="wrapper">
+	<div class="picture">
+		<div class="imageSlide" id="imageSlide">
+        <ul>
+            <% picInfo.multimedia_textpic.forEach(function(bannar, index){ %>
+                <li>
+                    <img src="<%= bannar.picurl %>">
+                </li>
+            <% }); %>
+        </ul>
+        <div class="num"></div>
+    </div>
+        <i class="js-like icon-like" data-like="<%=picInfo.like_status%>" data-id="<%=picInfo.msg_id%>" data-type="msg"></i>
+	</div>
+
+
+    <div class="product-info">
+        <h2 class="title"><%= picInfo.msg_text%></h2>
+    </div>
+
+    <div class="circle" style="<%= !circleBanner.length ? 'margin-bottom:60px;' : '' %>">
+        <span class="label">来自群圈</span>
+        <div class="avatar" style="background-image: url(<%=picInfo.uinfo.avatar_a%>)">
+        </div>
+        <h3 class="title"><%=cirInfo.name%></h3>
+        <p class="info">圈主:<%=cirInfo.admin.nickname%><i class="split"></i>成员:<%=cirInfo.member_num%>人</p>
+        <a class="btn" href="<%= chatUrl %>" target="_blank">进圈参与群聊</a>
+    </div>
+</section>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+    fml.use('circle/page/textpic');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot_simple.html%>

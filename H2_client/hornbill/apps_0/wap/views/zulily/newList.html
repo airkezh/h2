@@ -1,0 +1,95 @@
+<%#head.html%>
+<%
+	var newHot = this.newHot || {};
+	var newHotData = newHot.data || {};
+	var newHotDataBanner=newHotData.banner||[];
+	var entrance= this.entrance || {};
+	var entranceData = entrance.data || [];
+	var date = this.date || '';
+%>
+<div class="wrap" id="wrap">
+	<% if(!date){ %>
+		<%= requireFn('zulily/header.html')({
+			'status' : 2,
+			'common_r' : this.common_r_XR,
+			'appShare' : this.appShare,
+			'params' : this.params,
+			'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+		});%>
+		<%= requireFn('block/banner.html')({
+			'banner' : this.banner,
+			'banner_r':this.banner_XR,
+			'hide_btn':false,
+			'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+		});%>
+	<% } %>
+	<% if(entranceData.length && !date){ %>
+		<ul class="entrance" id="entrance">
+			<% entranceData.forEach(function(item,index){ %>
+				<li>
+					<a href="javascript:;" data-date="<%= item.date %>" data-title="<%= item.title %>" data-xr="<%= this.entrance_XR %>">
+						<img src="<%= item.img_url %>" alt="">
+						<p class="title"><%= item.title %></p>
+						<p class="tips">New arrival</p>
+						<span class="shadow"></span>
+					</a>
+				</li>
+			<% }) %>
+		</ul>
+	<% } %>
+	<div class="new-box" id="newBox">
+		<% if(!date){ %>
+			<p class="tips">每周二/四/六 11:00上新</p>
+		<% } %>
+		<p class="time <%= date ? 'time-big' : '' %>"><%= newHotData.title %></p>
+	</div>
+	<div class="posterWall wall new-content" id="content">
+		<ul class="goods_wall goods"></ul>
+		<div class="pullUp" status="loading"></div>
+	</div>
+</div>
+<% if(!this.appShare){ %>
+	<%= requireFn('wapShare.html')({
+		'share' : this.share 
+	    , 'shareTitle' : '选择分享到'
+	    , '_JSstack' : this._JSstack
+		, '_JSmods' : this._JSmods
+	}); %>
+<% } %>
+<% if(date){ %>
+	<div class="top-box" style="bottom:<%if(this.isIphone){%>60<%}else{%>20<%}%>px">
+		<a class="gotop" href="javascript:;">
+			<img src="http://d02.res.meilishuo.net/img/_o/41/62/c1d9e0f159bfb506b27dea648ccb_80_80.cg.png" />
+		</a>
+	</div>
+<% } %>
+<script type="text/html" id="newPosterWall">
+	<li data-styleId="<?= this.v.id ?>" data-twitter_id="<?= this.v.twitter_id ?>" class="salelUrl">
+		<? var imgBoxHeight=parseInt($(window).width())* this.v.big_img_height / this.v.big_img_width +'px'; ?>
+		<div class="new-inner">
+			<div class="lazy_pic_big img-box" asrc="<?= this.v.big_img ?>" style="height:<?= imgBoxHeight ?>;padding-top:0"></div>
+			<%*如果不要延迟加载就这样
+			<img src="<?= this.v.big_img ?>" style="height:<?= imgBoxHeight ?>" alt="">
+			%>
+			<p class="tag"><?= this.v.brand_category ?></p>
+			<p class="title"><?= this.v.desire_title ?></p>
+			<p class="des"><?= this.v.desire_desc ?></p>
+			<p class="new-price">
+				<span>Desire价: <b><?= this.v.sale_price ?></b> </span>
+				<del>原款价: <?= this.v.original_price ?> </del>
+			</p>
+		</div>
+	</li>
+</script>
+<script>
+	<% if(date){ %>
+		fml.vars.appShare = <%= this.appShare %>;
+		fml.vars.params = <%= JSON.stringify(this.params) %>;
+	<% } %>
+	fml.vars.date = '<%== date %>';
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/zulily/newList');
+_use:", this._JSstack, this._JSmods); %>
+
+<%# foot.html%>

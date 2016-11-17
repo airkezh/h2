@@ -1,0 +1,168 @@
+
+<div class="order-list">
+	<div class="order">
+	<a href = "/sq/user/?orderStatus=0" class="txt"><span class = "<% if(this.orderStatus == 0){%> on <%}%>">全部</span></a>
+	<a href = "/sq/user/?orderStatus=1" class="txt"><span class = "<% if(this.orderStatus == 1){%> on <%}%>">待付款</span></a>
+	<a href = "/sq/user/?orderStatus=2" class="txt"><span class = "<% if(this.orderStatus == 2){%> on <%}%>">待发货</span></a>
+	<a href = "/sq/user/?orderStatus=3" class="txt"><span class = "<% if(this.orderStatus == 3){%> on <%}%>">待收货</span></a>
+	<a href = "/sq/user/?orderStatus=6" class="txt"><span class = "<% if(this.orderStatus == 6){%> on <%}%>">待评价</span></a>
+	<a href = "/sq/user/?orderStatus=4" class="txt"><span class = "<% if(this.orderStatus == 4){%> on <%}%>">退款中</span></a>
+	</div>		
+	</div>
+<script type="text/html" id="orderInitTpl">
+<? var order_list = this.order_list; if (order_list && order_list.info && order_list.info.length != 0) { ?>
+	<ul class="order_info_wrap">
+	<?
+		order_list.info && order_list.info.map(function(data) {
+
+		var order = data.order, 
+			len = data.goods.length,
+			shop_name = order.shop_name.length > 9 ? order.shop_name.slice(0,9)+'...' : order.shop_name;
+
+	?>
+		<li class="order_info">
+			<div class="goods" data-oid="<?= order.order_id?>">
+				<a href="/sq/orderDetail?is_sq=1&order_id=<?= order.order_id ?>">
+				<? if(0){?>
+					<div class="order_status">
+						<img src="<%=this.PICTURE_URL%>/images/wap/web/wx/status.png" alt="" class="status_icon">
+					</div>
+				<?}?>
+					<div class="goods_info_wrap">
+					
+						<div class="shop_name">
+							<img src="<?= order.shop_face_img?>" class="shop_icon">
+						<span class="ml_color "><?=  shop_name?></span>
+						<span class="ml_color wx_right"><?= order.status_text ?></span>
+
+						</div>
+
+						<? data.goods && data.goods.map(function(item, idx) {
+							var len = item.length,
+							goods_title = item.goods_title.length > 18 ? item.goods_title.slice(0,18)+'...' : item.goods_title ;
+						?>
+						<div class="goods_info_btm">
+							<span class="goods_img">
+								<img src="<?= item.b_pic_url ?>"/>
+							</span>
+							<div class="goods_info goods_list_info">
+								<p class="goods_title"><?= goods_title?></p>
+								<p class="shop_cost wx_grey">价格：
+									<span>￥<?= item.price ?></span>
+									<span class="wx_right">数量：<?= item.amount ?></span>
+								</p>
+							</div>
+						</div>
+						<? }); ?>
+					</div>
+				</a>
+				<div class="check">
+					<div class="total_money">
+					<span class="wx_right1">共<?= len ?>件</span>
+						<span class="all">合计：<span class="ml_color">¥<?= order.total_price ?></span></span>
+						<span class="coupon_msg"><?= order.coupon_msg ?></span>
+					</div>
+					<div class="wx_right">
+
+					<? if (order.express_id) { ?>						
+					<a href="/sq/expressInfo/?order_id=<?= order.order_id ?>&express_id=<?= order.express_id ?>&express_company=<?= order.express_company ?>" class="ml_color check_btn mt_20_btn">查看物流</a>
+					<? };
+					if (order.show_receive_button == "1") { ?>
+					<a href="/sq/orderDetail?is_sq=1&order_id=<?= order.order_id ?>" class="receipt_btn mt_20_btn">确认收货</a>
+					<? } ?>
+					<? if (order.is_commented == 1) { ?>
+					<a href="/sq/comment?order_id=<?= order.order_id ?>" class="comment_btn">评价</a>
+					<? } ?>
+					<? if (order.status_text =="等待付款") { ?>
+					<a class="pay_btn" data-price="<?= order.total_price ?>">付款</a>
+					<? } ?>
+
+					</div>
+				</div>
+			</div>
+			<div class="order_bt"></div>
+		</li>
+		<? }); ?>
+	</ul>
+	<? if (order_list.info.length < order_list.total_num ) { ?>
+	<p class="more eva_more">
+		查看更多订单
+		<span class="xiala_icon">
+			<img src="<%= this.PICTURE_URL%>/images/wap/web/wx/xiala.png">
+		</span>
+	</p>
+	<? }
+	} else { ?>
+	<div class="order_empty">
+		<div class="empty_icon">
+			<img src="<%=this.PICTURE_URL%>/images/wap/web/wx/nothing.png">
+		</div>
+		<h3>你还没有相关的订单</h3>
+		<a href="/sq/" class="btn">去逛逛</a>
+	</div>
+<? } ?>
+</script>
+<script type="text/html" id="orderListTpl">
+<? item && $.each(item, function(key, data){
+	var len = data.goods.length,
+		order = data.order,			
+		shop_name = order.shop_name.length > 9 ? order.shop_name.slice(0,9)+'...' : order.shop_name;
+
+
+?>
+	<li class="order_info">
+		<div class="goods" data-oid="<?= order.order_id?>">
+			<a href="/sq/orderDetail?is_sq=1&order_id=<?= order.order_id?>">
+				<div class="goods_info_wrap">
+					<div class="shop_name">
+						<img src="<?= order.shop_face_img?>" class="shop_icon">
+							<span class="ml_color "><?= shop_name ?></span>
+							<span class="ml_color wx_right"><?= order.status_text ?></span>
+					</div>
+					<? data.goods && data.goods.map(function(item, idx) { 
+						var goods_title = item.goods_title.length > 18 ? item.goods_title.slice(0,18)+'...' : item.goods_title;
+					?>
+					<div class="goods_info_btm">
+						<span class="goods_img">
+							<img src="<?= item.b_pic_url?>"/>
+						</span>
+						<div class="goods_info goods_list_info">
+							<p class="goods_title"><?= goods_title ?></p>
+							<p class="shop_cost wx_grey">价格：
+								<span>￥<?= item.price ?></span>
+								<span class="wx_right">数量：<?= item.amount ?></span>
+							</p>
+						</div>
+					</div>
+					<?});?>
+				</div>
+			</a>
+			<div class="check">
+				<div class="total_money">
+					<span class="wx_right1">共<?= len ?>件</span>
+					<span class="all">合计：<span class="ml_color">¥<?= order.total_price ?></span></span>
+					<span class="coupon_msg"><?= order.coupon_msg ?></span>
+				</div>
+				<div class="wx_right">
+				<? if (order.express_id) { ?>
+				<a href="/sq/expressInfo/?order_id=<?= order.order_id ?>&express_id=<?=order.express_id?>&express_company=<?= order.express_company?>" class="ml_color check_btn">查看物流</a>
+				<? } ?>
+				<? if (order.show_receive_button == '1') { ?>
+				<a href="/sq/orderDetail?is_sq=1&order_id=<?= order.order_id ?>" class="receipt_btn">确认收货</a>
+				<? } ?>
+				<? if (order.is_commented == 1) { ?>
+				<a href="/sq/comment?order_id=<?= order.order_id ?>" class="comment_btn">评价</a>
+				<? } ?>
+				<? if (order.status_text =="等待付款") { ?>
+				<a class="pay_btn" data-price="<?= order.total_price ?>">付款</a>
+				<? } ?>
+				</div>
+			</div>
+		</div>
+		<div class="order_bt"></div>
+	</li>
+<? }); ?>
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/sq/orderList');
+_use:", this._JSstack , this._JSmods ); %>

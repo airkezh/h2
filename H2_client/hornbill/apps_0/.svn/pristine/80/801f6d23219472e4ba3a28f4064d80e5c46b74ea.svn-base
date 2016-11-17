@@ -1,0 +1,60 @@
+<%# head.html %>
+<%= requireFn('block/page_head.html')({
+	'pageTitle' : '我喜欢的店铺'
+	, 'title_url' : '/welcome'
+	, 'right_type' : 'item_new'
+	, 'xr' : this.xr
+	, '_JSstack' : this._JSstack
+	, '_JSmods' :  this._JSmods
+}); %>
+
+<%
+	var follow_list = this.follow_list.data || []
+%>
+
+<%if(follow_list && follow_list.length > 0){%>
+	<div class="my_shop">
+		
+	</div>
+	<div class="pullUp" status="loading"></div>
+<%} else {%>
+	<div class="noLove">
+		<img src="http://d05.res.meilishuo.net/pic/_o/7a/c4/d6a05684868e8e8ed64b7dbc70c5_196_190.cj.png" />
+		<p>还没有喜欢过任何宝贝呢</p>
+		<a href="/welcome" xr="<%= this.xr.r%>">去首页逛逛 > </a>
+	</div>
+<%}%>
+
+<script>
+	fml.vars.userId = <%= this.userInfo.user_id %>;
+	fml.vars.follow_list = <%= JSON.stringify(this.follow_list.data)%>;
+</script>
+
+<script type="text/html" id="posterWall">
+<? var v = this.v; ?>
+	<section class="shop_list">
+		<a href="/shop/<?= v.shop_id ?>" xr="<?= fml.vars.poster_r ?>">
+			<dl class="shop_name">
+				<dt>
+					<img src="<?= v.shop_face_img ?>" />
+				</dt>
+				<dd><?= v.shop_nick ?></dd>
+			</dl>
+		</a>
+		<h3>新品上架<span>  </span></h3>
+		<div class="tags_inner" id="tags_scroll">
+			<? v && v.shop_goods && v.shop_goods.map(function(data){?>
+				<a href="/share/item/<?= data.twitter_id?>" xr="<?= fml.vars.poster_r ?>">
+					<span class="bs_load_img" asrc="<?= data.pic ?>"></span>
+					<p class="price">￥<?= data.goods_price ?></p>
+				</a>
+			<?})?>
+		</div>
+	</section>
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/person/myShop');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot.html%>

@@ -1,0 +1,20 @@
+function wap(){
+	return this;
+}
+var controlFns = {
+	search : function(params){
+		var php = {
+			'Search_autocomplete' :'/search/Search_autocomplete'
+			, 'Search_without_result_recommend' : '/search/Search_without_result_recommend'
+			, 'Search_without_result_recommend' : '/search/Search_without_result_recommend'
+		};
+		this.ajaxTo(php[params]);
+	},
+	welcome : function(params){
+		var php = {
+			'Search_word_recommend' : '/welcome/Search_word_recommend'
+		};
+		this.ajaxTo(php[params]);
+	}
+}
+exports.__create = controller.__create(wap, controlFns);

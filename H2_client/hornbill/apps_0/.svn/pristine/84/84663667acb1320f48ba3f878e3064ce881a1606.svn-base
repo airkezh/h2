@@ -1,0 +1,114 @@
+/*common*/
+var $              = require( 'wap/zepto' ),
+    CheckLogin     = require( 'circle/app/checkLogin' ),
+    Tab            = require( 'wap/component/tab' ),
+    touchSlide     = require( 'wap/app/touchSlide' ),
+    WaterFall      = require( 'circle/component/waterfall' ),
+
+    LIMIT          = 10,
+    FOLLOWED       = 'is-followed',
+    NOT_FOLLOW     = 'is-not-follow',
+    TID            = fml.vars.tid,
+
+    $body          = $( document.body ),
+    $contents      = $body.find( '.js-tab-content' ),
+    $pullUp        = $( '#pullUp' ),
+
+    followData     = {
+        follow: {
+            url:         '/aj/follow/shop/follow',
+            text:        '已关注',
+            removeClass: NOT_FOLLOW,
+            addClass:    FOLLOWED
+        },
+
+        unfollow: {
+            url:         '/aj/follow/shop/unfollow',
+            text:        '关注',
+            removeClass: FOLLOWED,
+            addClass:    NOT_FOLLOW
+        }
+    },
+    //瀑布流加载商品完毕
+    notEnoughItems = false,
+    isRequesting   = false,
+    waterfallInstance
+
+require( 'wap/zepto/touch' );
+
+function followOrUnfollow( $el, type ) {
+    var shopId = $el.data( 'shop' ),
+        fData  = followData[ type ]
+
+    $.ajax( {
+        data:     {
+            shop_id: shopId
+        },
+        dataType: 'json',
+        type:     'post',
+        url:      fData.url,
+        success:  function( data ) {
+            if ( data.code == 0 ) {
+                $el.addClass( fData.addClass )
+                    .removeClass( fData.removeClass )
+                    .text( fData.text )
+            } else {
+                alert( data.msg )
+            }
+        },
+        complete: function() {
+            isRequesting = false
+        }
+    } )
+}
+
+( function() {
+    waterfallInstance = WaterFall.init( {
+        el:             $contents.find( 'div' )[ 0 ],
+        tmpl:           'tmpl_similar',
+        url:            '/aj/similar/similar/',
+        data:           {
+            tid: TID
+        },
+        colNum:         2,
+        dataFilter:     function( data ) {
+            return Array.isArray( data ) ? data : data.data
+        },
+        onFetchSuccess: function( data, config ) {
+            if ( !data.length ) {
+                notEnoughItems = true
+                waterfallInstance.lock()
+                $pullUp.attr( 'status', 'stop' )
+                return
+            }
+
+            config.data.offset += LIMIT
+        }
+    } ).start( fml.vars.similarGoods )
+
+    Tab.init( {
+        afterChange: function( item ) {
+            if ( item.data( 'type' ) != 'similar' ) {
+                waterfallInstance.lock()
+                $pullUp.attr( 'status', 'stop' )
+            } else if ( !notEnoughItems ) {
+                waterfallInstance.unlock()
+                $pullUp.attr( 'status', 'loading' )
+            }
+        }
+    } )
+
+    $body.on( 'tap', '.js-follow-btn', function( e ) {
+        if ( CheckLogin() && !isRequesting ) {
+            isRequesting = true
+
+            var $el = $( e.target )
+
+            if ( $el.hasClass( NOT_FOLLOW ) ) {
+                followOrUnfollow( $el, 'follow' )
+            } else {
+                followOrUnfollow( $el, 'unfollow' )
+            }
+        }
+    } )
+}() )

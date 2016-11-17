@@ -1,0 +1,114 @@
+<%#head.html%>
+<%
+	var miaosha = this.miaosha && this.miaosha.data
+		, now_info = miaosha && miaosha.now_info
+		, unix_time = now_info && now_info.unix_time
+		, goods_list = now_info && now_info.goods_list
+		, next_info = miaosha && miaosha.next_info
+		, next_server_time = next_info && next_info.server_time;
+
+	var banner = this.banner && this.banner.data && this.banner.data.jrth_miaosha_banner
+		, bannerImg = banner && banner[0];
+
+	function getURL(url,title){
+		return _extFn.getAppLink("openURL", {"url": url, "title": title, "inApp" : "1"}, this.os, null, url);
+	}
+	var rush_morelink = getURL("http://"+this.host+"/activity/tuan/special/1065?time=" +next_server_time, "团购");
+%>
+<%= requireFn('activity/region99/header.html')({
+	'status' : 1,
+	'bannerImg' : bannerImg,
+	'_JSstack' : this._JSstack,
+	'_JSmods' :  this._JSmods,
+	'_Request_query' : this._Request_query
+});%>
+<div class="main">
+	<div class="actTip">
+		<span class="tipTxt">宝贝限时疯抢中</span>
+		<div class="timeBox">
+			<span>距本场结束</span>
+			<span class="rushTime" time="<%= unix_time%>">
+				<i class="hour">00</i> :
+				<i class="minute">00</i> :
+				<i class="second">00</i>
+			</span>
+		</div>
+	</div>
+	<%if(goods_list && goods_list.length > 0){%>
+		<div class="content_box">
+			<ul>
+				<% 
+				var len = goods_list.length;
+				for(var v = 0; v < len; v++){
+			      	item = goods_list[v];
+				    var _url = "javascript:void(0);",
+				        detail_url = item.url_mob,
+				        shop_url = item.url_shop,
+				        status_sum="";
+			      	
+			      	switch(item.status){
+			         	case 1:       
+				            btn_content = "立即抢";
+				            btn_class = "buy_btn";
+				            _url = detail_url;
+				            status_sum = "";
+				            break;
+			         	case 2:
+				            btn_content = "去店铺";
+				            _url = shop_url;
+				            btn_class = "over_btn";
+				            status_sum = "status_sum_over";
+				            break;
+			         	case 3:
+				            btn_content="去店铺";
+				            _url = shop_url;
+				            btn_class = "empty_btn";
+				            status_sum = "status_sum_empty";
+				            break;
+			      	} 
+			   	%>
+
+			   	<li class="goodsList">
+			   		<figure>
+			   			<a href="<%= detail_url%>"><img src="<%= item.goods_image %>"></a>
+			   			<%if(item.op_type == 1){%>
+			               <span class="mark qiang"></span>
+			            <%}%>  
+			            <%if(item.op_type == 2){%>
+			               <span class="mark pin"></span>
+			            <%}%> 
+			            <%if(item.op_type == 3){%>
+			               <span class="mark newstyle"></span>
+			            <%}%>
+			   		</figure>
+			   		<ul class="goodsInfo">
+			   			<li class="title"><a href="<%= detail_url%>"><%= item.goods_name %></a></li>
+			   			<li class="pricebox">
+			   				<span class="now_price"><i>￥</i><%= item.off_price %></span>
+			   				<del>￥<%= item.origin_price %></del>
+			   				<span class="discount <%= status_sum%>"><%= item.discount %></span>
+			   			</li>
+			   			<li class="buyernum"><p><%= item.joiner_num %>人想买</p></li>
+			   			<li>
+			   				<a class="statusInfo <%= status_sum %>" href="<%= _url%>">
+			   					<div class="statusBar">
+			   						<p class="scale"><%= item.soldout ? '已抢光' : '已抢' + item.sales + '/' + item.total_limit + '件'%></p>
+			   						<p class="progress" style="width:<%= item.sales/item.total_limit*100%>%"></p>
+			   					</div>
+			   					<div class="statusBtn <%= btn_class%>"><%= btn_content %></div>
+			   				</a>
+			   			</li>
+			   		</ul>
+			   	</li>  
+			   <%}%>           
+			</ul>
+		</div>
+	<%}%>
+	<div class="seemore">
+		<a class="linkBtn" href="<%= miaosha && miaosha.more_url %>">去抢下一场</a>
+	</div>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/region99/index');
+_use:", this._JSstack , this._JSmods); %>
+<%# foot.html%>

@@ -1,0 +1,157 @@
+<%#head.html%>
+
+<div class="main">
+	<div class="banner"></div>
+	<div class="head">
+		<a href="http://www.meilishuo.com/club/newShoppingTopic" target="_blank" class="goShare"></a>
+	</div>
+	<div class="content1"></div>
+	<div class="content2">
+		<a href="http://www.meilishuo.com/club/newShoppingTopic" target="_blank" class="goShare"></a>
+	</div>
+	<div class="discuss">
+		<div class="content_sg reply_block">
+			<div>
+				<% if(!this.userInfo.user_id){ %>
+				<div class="no_login">请登录后回复，立即<span class="red_f"><a class="reply_login" href="javascript:void(0);">登录</a>/<a href="/user/register">注册</a></span></div>
+				<% } else if(this.clubTest.canReply){ %>
+				<textarea class="reply_sg editor" placeholder="在这里输入回复内容..."></textarea>
+				<% } else { %>
+				<div class="no_replay">爱美丽Club内测中，发帖/回复暂未全部开放。先去逛逛吧！</div>
+				<% } %>
+			</div>
+			<div class="reply_bar mt10_f pr_f">
+				<% if(this.clubTest.canReply){ %>
+				<div class="toolwrap">
+					<a class="share_smileys">&nbsp;</a>
+				</div>
+				<div class="checkBox<%= this.clubTest.checkCode ? '' : ' none_f' %>" id="checkBox">
+					<label for="checkcode">验证码：<input class="l_ipt<%= this.clubTest.checkCode ? '' : ' noCheck' %>" id="checkcode" name="checkcode" type="text" value="" placeholder="验证码" maxlength="4" /></label>
+					<div class="checkImage" title="点击换一张">
+								<span id="checkcodeImage">
+									<img width="78" height="26" isblank="true" src="<%= this.PICTURE_URL %>images/register/blank.jpg">
+								</span>
+					</div>
+				</div>
+				<% } else { %>
+				<span class="share_smileys_off">&nbsp;</span>
+				<% } %>
+				<span class="<%= this.clubTest.canReply ? 'reply_btn' : 'replay_off'%>">立即回复</span>
+				<div class="img_wraper pa_f"></div>
+			</div>
+		</div>
+
+		<div class="reply_list">
+			<%this.reply_list && this.reply_list.ainfo && this.reply_list.ainfo.map(function(data, index){%>
+			<div class="reply_item">
+
+				<div class="reply_se"><span ></span></div>
+
+				<a href="/person/u/<%=data.uinfo.user_id%>" target="_blank" class="left_f"><img class="ava_r" src="<%=data.uinfo.avatar_a%>" width="40" height="40"></a>
+				<div class="reply_con">
+					<a class="reply_name" href="/person/u/<%=data.uinfo.user_id%>" target="_blank"><%=data.uinfo.nickname%></a>
+					<span class="time"><%=data.article_create_time%></span>
+					<%data.tinfo && data.tinfo.map(function(reply_data){%>
+					<p class="mt10_f"><%=reply_data.twitter_htmlcontent%></p>
+					<%if(reply_data.f_show_pic){%>
+					<div class="pic mt10_f">
+						<div class="pic_big">
+							<%if(reply_data.ginfo && reply_data.ginfo.goods_id>0){%>
+							<%
+							var goodsData = reply_data;
+							var pic_w = goodsData.n_pic_width;
+							var pic_h = goodsData.n_pic_height;
+							var wrap_w = 352;
+							var mt = ml = 0;
+							if(pic_h>400){
+							pic_w = pic_w * 400 / pic_h;
+							pic_h = 400;
+							} else if(pic_w<352){
+							mt = (400 - pic_h)/2;
+							}
+							if(pic_w<352){
+							ml = (352 - pic_w)/2;
+							} else {
+							if (pic_w > 534) {
+							pic_h = 'auto';
+							pic_w = 534;
+							}
+							wrap_w = pic_w;
+							}
+							style = 'width:'+ pic_w+'px;height:' +pic_h+'px;margin-top:'+mt+'px;margin-bottom:'+mt+'px;margin-left:'+ ml+'px;'
+							%>
+							<div class="goodsWrap clearfix_f" style="width:<%= wrap_w %>px">
+								<a class="imgWrap" href="/share/<%=reply_data.twitter_id%>" target="_blank">
+									<img class="img_sg" src="<%=reply_data.n_show_pic%>" style="<%= style %>">
+								</a>
+								<div class="titleWrap">
+									<a href="/share/<%=reply_data.twitter_id%>" class="goodstitle" target="_blank"><%=reply_data.ginfo.goods_title%></a>
+									<span>价格：<%=reply_data.ginfo.goods_price%></span>
+								</div>
+							</div>
+							<%} else {%>
+							<%	var pic_wid = reply_data.n_pic_width;
+							var pic_hei = reply_data.n_pic_height;
+							if(pic_wid>532){
+							pic_hei = pic_hei * 532 / pic_wid;
+							pic_wid = 532;
+							}
+							%>
+							<img src="<%= reply_data.n_show_pic %>" width="<%= pic_wid %>">
+							<% } %>
+						</div>
+					</div>
+					<%}%>
+					<%});%>
+					<div class="clear_f"></div>
+					<div class="item_bar clearfix_f">
+						<span class="item_reply" paid="<%=data.article_id%>">回复</span>
+						<%if (data.canDel == 1){%>
+						<span class="item_del" aid="<%=data.article_id%>">删除</span>
+						<%}%>
+					</div>
+				</div>
+				<div class="clear_f"></div>
+			</div>
+			<%});%>
+			<%if(this.reply_list.pages && this.reply_list.pages.total_num > 20){%>
+			<div class="separation"></div>
+			<%}%>
+		</div>
+		<div class="paging_panel c_f">
+			<%#paging.html%>
+		</div>
+
+		<a href="http://www.meilishuo.com/club?frm=daeh" target="_blank" class="shareBtn"></a>
+	</div>
+</div>
+
+<script>
+	Meilishuo.config.aid = '<%=this.detail.article_id%>';
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use('page/club/single');
+fml.use(['jquery' , 'app/shareTo'] , function(){
+var getShareMsg = function (dom){
+return shareData = {
+url : dom.attr('data_url'),
+title : dom.attr('data_title'),
+desc : dom.attr('data_desc'),
+img : dom.attr('data_img')
+}
+}
+$('.i_qzone').bind('click' , $.proxy(function(event){
+var shareData = getShareMsg($(event.currentTarget).parents(':first'));
+this.shareTo.shareToQzone(shareData.url , '' , shareData.desc , shareData.title , shareData.img);
+} , this));
+$('.i_sina').bind('click' , $.proxy(function(event){
+var shareData = getShareMsg($(event.currentTarget).parents(':first'));
+this.shareTo.shareToWeibo(shareData.url, shareData.desc, shareData.img);
+} , this));
+$('.i_tx').bind('click' , $.proxy(function(event){
+var shareData = getShareMsg($(event.currentTarget).parents(':first'));
+this.shareTo.shareToQQ(shareData.url , shareData.desc , shareData.img);
+} , this));
+});
+_use:", this._JSstack , this._JSmods); %>
+<%#foot.html%>

@@ -1,0 +1,103 @@
+<%
+	var mSubstr = _extFn.mSubstr;
+%>
+<div class="recommend_wrap" id="getRecommend">
+	<h2 class="act_title"></h2>
+	<div class="goods_wrap">
+		<div class="mod_title">
+			<h3>必买优品</h3>
+		</div>
+		<% this.good_info.must_goods.length && this.good_info.must_goods.map(function(data, idx){%>
+		<div class="good_info <% if(idx == this.good_info.must_goods.length - 1){%>no_border<%}%>">
+			<a href="/share/item/<%= data.twitter_id%>?frm=yhjlq" class="good_img" target="_blank">
+				<img src="<%= data.image %>">
+			</a>
+			<div class="good_cont">
+				<p class="good_tit"><a href="/share/item/<%= data.twitter_id%>?frm=yhjlq" target="_blank" title="<%= data.title%>"><%= mSubstr(data.title, 25, '...')%></a></p>
+				<p class="reason"><%= mSubstr(data.rec_season, 40, '...')%></p>
+				<div class="price">
+					<div class="price_info">
+						<p class="discount">折扣价:￥<%=data.discount_price%></p>
+						<p class="favorable">使用优惠券:<span>￥<%= data.coupon_price %></span></p>
+					</div>
+					<a href="/share/item/<%= data.twitter_id%>?frm=yhjlq" class="good_btn" target="_blank">去看看</a>
+				</div>
+			</div>
+		</div>
+		<%});%>
+	</div>
+	<div class="goods_wrap">
+		<div class="title_top"></div>
+		<div class="mod_title">
+			<a href="/tuan/?frm=yhjlq" class="more" target="_blank">更多精选&gt;</a>
+			<h3>团购精选</h3>
+		</div>
+		<ul class="good_info list_wrap">
+			<% this.good_info.tuan_selected.length && this.good_info.tuan_selected.map(function(data, idx){%>
+			<li class='good_list'>
+				<div class='list_info'>
+					<a href="/share/item/<%= data.twitter_id%>?frm=yhjlq" class="list_img" target="_blank">
+						<img src="<%= data.image %>">
+					</a>
+					<div class="list_cont">
+						<p class="list_tit"><a href="/share/item/<%= data.twitter_id%>?frm=yhjlq" target="_blank" title="<%=data.title%>"><%= mSubstr(data.title, 30, '...')%></a></p>
+						<p class="cost">
+							<span class="now">￥<%= data.price%></span>
+							<span class="norml">￥<%= data.origin_price%></span>
+						</p>
+					</div>
+				</div>
+				<p class="btn_wrap"><a href="/share/item/<%= data.twitter_id%>?frm=yhjlq" class="list_btn" target="_blank">去看看  &gt;</a></p>
+			</li>
+			<%});%>
+		</ul>
+	</div>
+	<div class="goods_wrap">
+		<div class="title_top"></div>
+		<div class="mod_title">
+			<a href="/biz/shareact/list/?frm=yhjlq" class="more" target="_blank">更多精选&gt;</a>
+			<h3>美妆精选</h3>
+		</div>
+		<ul class="good_info list_wrap">
+			<% this.good_info.cosmetic_selected.length && this.good_info.cosmetic_selected.map(function(data, idx){%>
+			<li class='good_list'>
+				<div class='list_info'>
+					<a href="/share/item/<%= data.twitter_id%>?frm=yhjlq" class="list_img" target="_blank">
+						<img src="<%= data.image %>" alt="">
+					</a>
+					<div class="list_cont">
+						<p class="list_tit"><a href="/share/item/<%= data.twitter_id%>?frm=yhjlq" target="_blank" title="<%= data.title%>"><%= mSubstr(data.title, 30, '...')%></a></p>
+						<p class="cost">
+							<span class="now">￥<%= data.price%></span>
+							<span class="norml">￥<%= data.origin_price%></span>
+						</p>
+					</div>
+				</div>
+				<p class="btn_wrap"><a href="/share/item/<%= data.twitter_id%>?frm=yhjlq" target="_blank" class="list_btn">去看看  &gt;</a></p>
+			</li>
+			<%});%>
+		</ul>
+	</div>
+	<div class="goods_wrap">
+		<div class="title_top"></div>
+		<div class="spring">
+			<div class="mod_title sping_tit">
+				<h3>更多春季新款</h3>
+			</div>
+			<div class="more_select">
+				<a href="/guang/catalog/dress?nid=11&cata_id=2000000000000&frm=yhjlq" target="_blank">
+					<img src="http://i.meilishuo.net/css/images/activity/ticket/yifu.png">
+				</a>
+				<a href="/guang/catalog/shoes?nid=13&cata_id=6000000000000&frm=yhjlq" class="xiezi" target="_blank">
+					<img src="http://i.meilishuo.net/css/images/activity/ticket/xiezi.png">
+				</a>
+				<a href="/guang/catalog/bag?nid=15&cata_id=5000000000000&frm=yhjlq" target="_blank">
+					<img src="http://i.meilishuo.net/css/images/activity/ticket/baobao.png">
+				</a>
+				<a href="/guang/catalog/access?nid=1097&cata_id=7000000000000&frm=yhjlq" class="peishi" target="_blank">
+					<img src="http://i.meilishuo.net/css/images/activity/ticket/peishi.png">
+				</a>
+			</div>	
+		</div>
+	</div>
+</div>

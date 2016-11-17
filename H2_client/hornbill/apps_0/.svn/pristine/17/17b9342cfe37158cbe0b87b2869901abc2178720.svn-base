@@ -1,0 +1,109 @@
+<%#sq/header.html%>
+
+<%
+	var coupon   = this.coupon;
+	var pageData = this.pageData.data;
+	var tImages  = [];
+	var mImages  = [];
+	tImages.push(pageData.topBanner);
+	mImages.push(pageData.themeActivities);
+%>
+
+<div class="top_images_wrap">
+	<% tImages.forEach(function (v){ %>
+		<img src="<%= v %>" alt="page image">
+	<% }); %>
+
+	<%
+	if(coupon){
+		var status = coupon.ret;
+		var bgStye = 'bg_common'
+		switch(status){
+			case 0 :
+				bgStye = 'bg_red'
+				break
+			case -3:
+				bgStye = 'bg_gray'
+				break
+		}
+	%>
+	<div class="coupon_box">
+		<section class="content">
+			<h3 class="tc">注：每天10点开抢，每人限一张</h3>		
+			<div class="coupon_info <%= bgStye %>">
+				<div class="content-left">
+					<span class="rmb">RMB</span>
+					<span class="credit"><%= coupon.credit %></span>
+					<span class="info">
+						<em class="threshold">优惠劵</em>
+						<i class="threshold">满<%= coupon.threshold %>元可用</i>
+					</span>
+					<p class="amount"><%= coupon.inform_msg %></p>
+				</div>
+				<div class="content-right">
+					<%if(status == 0){%>
+						<div class="get"><i class="get-text">立即<br>领取</i><span class="get-icon"></span></div>
+					<%}else if(status == -2){%>
+						<a href="/sq/user/coupon"><span class="got">已领取</span></a>
+					<%}else if(status == -3){%>
+						<span class="sold_out">已抢光</span>
+					<%}else if(status == -4){%>
+						<span class="wait">明日<br>再来</span>
+					<%}else if(status == -5){%>
+						<span class="wait">10点<br>开抢</span>
+					<% }else{%>
+						<span class="other"><%= coupon.msg %></span>
+					<% } %>
+				</div>
+			</div>
+			<p class="rule">点击查看活动规则 >></p>
+		</section>
+	</div>
+	<%};%>
+</div>
+
+<div class="middle_images_wrap">
+	<% mImages.forEach(function (v){ %>
+		<img src="<%= v %>" alt="page image">
+	<% }); %>
+</div>
+
+<div class="goods_wall">
+	<% var goodsData = pageData.themePavilions; %>
+	<% goodsData && goodsData.forEach(function (goods){ %>
+	<a class="goods_box" href="<%= goods.url %>" style="background-image: url(<%= goods.image_url %>);"></a>
+	<% }); %>
+</div>
+
+<div class="rule_panel">
+	<div class="alert">
+		<div class="content">
+			<img src="<%= pageData.couponRule %>" alt="rule image">
+		</div>
+		<span id="hide_btn">知道了~</span>
+	</div>
+</div>
+
+<!-- for timedown component -->
+<span class=".none"></span>
+
+<script type="text/html" id="get_coupon">
+	<p class="tag"><?= tpl ?></p>
+	<div class="url-box">
+		<a class="alink" href="/sq/user/coupon">查看我的优惠劵</a>
+		<a class="alink closeBtn">关闭</a>
+	</div>
+</script>
+
+<script>
+	fml.vars.ms = <%= Date.now() %>
+</script>
+
+<%! 
+	$_ENGINE_SELF.callFn("useModule")(
+		"<<<_use:fml.use('wap/page/sq/activity');_use:", 
+		this._JSstack, 
+		this._JSmods 
+); %>
+
+<%#sq/footer.html%>

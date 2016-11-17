@@ -1,0 +1,285 @@
+@import "atom";
+
+/**
+* 定义common常用样式
+**/
+
+.common_box(){ .inline; .mr(6px); .ml(6px); .break-word; .left; .w(228px); }
+.common_shadowBox(){ .bgwhite; .border-1(#ddd); }
+
+.common_button(){
+    .border-r(3px); .cursor;
+    .common(){ .c; }
+    .redBtn(){  .bgred; .white; }
+    .pinkBtn(){ .bgpink; .red; }
+    .grayBtn(){ background: #ccc; }
+}
+/**
+*定义立体效果button
+**/
+.solidbtn(){
+    .big_btn, .big_btnr, .small_btn, .small_btnr { background: url("@{pic_url}/images/header/btn_pic121201.png") no-repeat; .i_block; .pr; }
+    .red_follow, .pink_follow { background: url("@{pic_url}/images/header/@{mls_ico}") no-repeat; .c; .i_block; .l(31px); .cursor; .f(14px); .fb; .h(30px); .w(102px); }
+    .toobig(){
+        .toobig_btn{
+            .i_block;.pl(10px);.pr(10px);.w(156px);.h(51px); .l(50px); .c; .f(28px); .fb;
+            background: url("@{pic_url}/images/app/haibaopk/bigbtn.gif") no-repeat;
+        }
+        .toobig_red{.cursor;.bp(0px,0px);.white;}
+        .toobig_pink{.bp(0px,-52px);.red;}
+    }
+    .big(){
+        .big_btn {
+            background-position: 0 0; .h(40px); .l(38px); .c; .cursor; .white; .f(16px); .fb; .pl(6px);
+            .big_btnr { background-position: -394px 0; .h(40px); right: -6px; top: 0; .w(6px); .pa; }
+        }
+    }
+    .small(){
+        .small_btn {
+            background-position: 0 -43px; .c; .cursor; .white; .f(14px); .fb; .h(32px); .l(30px); .pl(6px);
+            .small_btnr { background-position: -194px -43px; right: -6px; top: 0; width: 6px; .h(32px); .pa; }
+        }
+    }
+    .small_red(){
+        .red_follow { .bp(-143px,-268px); .white; }
+    }
+    .small_pink(){
+        .pink_follow { .bp(-143px,-304px); .red; }
+    }
+}
+/*title 通用*/
+.common_title(){
+    .cmn_title{
+        .h(18px); .l(18px); .auto; .hidden;
+        h3 { .left; }
+        p { .right;
+            a {.gray;
+                &:hover {.red;}
+            }
+        }
+    }
+}
+/*横向和纵向红线*/
+.redline() {
+    .redline1, .redline2 { .bgred; .h(2px); .hidden; }
+    .redline1 { .w(80px); }
+    .redline2 { .w(48px); }
+    .redline3 { border-left:2px solid @red; }
+}
+.col_line() { .bgc(#f69); .left; .h(18px); .w(2px); .mr(10px); }
+
+.itemLine(@color:#ccc, @gap_ml:10px, @gap_pl:10px, @style:solid){
+    .nowrap;.i_block;.ml(@gap_ml);.pl(@gap_pl);border-left:1px @style @color;
+    &.first{.ml(0px);.pl(0px);.border-n;}
+}
+
+
+/*音频*/
+.audio(){
+    .audio_box{
+        left:26px;bottom:50px;.w(409px);.h(85px);.pa;
+        .audio_bg{
+            .w(409px);.h(85px);.pa;left:0px;top:0px;
+            background: url("@{pic_url}/images/wap/activity/season/audio-img-all.png"); _filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='@{pic_url}/images/wap/activity/season/audio-img-all.png', sizingMethod='scale'); _background-image:none;
+        }
+        .audio_control{.white;.h(74px);.pa;top:0px;z-index:1;
+            .w(392px);.h(74px);padding:2px 13px 9px 4px;
+            .info_box {.left;
+                .face {.w(68px);.h(68px);.mt(3px);.ml(3px);.left;.border-r(80px);}
+                .font {.left;.f(18px);.mt(12px);.ml(12px);.l(32px);
+                    .tle { .f(24px);.l(22px);}
+                }
+            }
+            .audio_info { .h(74px);.right;.l(74px);
+                .control_btn{.w(58px);.h(74px); .left;.pr;.cursor;}
+                .start, .pause{ .w(16px); .h(30px); .pa;top:22px;left:22px;}
+                .audio_duration{ .left; .f(24px);.mr(10px);}
+            }
+        }
+    }
+}
+
+/**推和聊天吧reply**/
+.reply(){
+    .mt(10px);
+    .pl_area { color: #666; padding: 5px; .border-1; .f(12px); .h(28px); .hidden; .w(98%); }
+    .review { .h(26px); .l(24px); .mt(10px);
+        .btn { .right; .w(60px); }
+    }
+}
+/*回顶部*/
+.webtop(){
+    #goTop { .border-1(#e6e6e6); border-bottom: none; .bgwhite; bottom: 60px; right:0; .pf; z-index: 450; .w(54px);
+        li { .border-bc(solid); .h(54px); .left; .w(100%);
+            .ico_ {
+                &top, &serviceqq, &guide { background: url("@{pic_url}/images/doota/@{doota_sale}") no-repeat;
+                    .left; .c; .h(32px); .ml(10px); .w(34px);
+                }
+                &top { .bp(-225px,-107px); .cursor; .mt(15px); }
+                &serviceqq { background: url("@{pic_url}/images/doota/feeds_0429.gif") no-repeat 9px 2px;
+                    .h(23px); .mt(8px); 
+                }
+                &guide { .bp(-184px,-107px); .mt(15px); }
+            }
+            .ico_top span, .ico_guide span { .none; }
+            .ico_top:hover, .ico_guide:hover { .bgnone;
+                span { .block;}
+            }
+            .gotop { .bgnone; .mt(0); float: none; }
+            .txt { .w(54px); .h(23px); .l(23px); .red; .left; .c; .cursor; }
+        }
+        .wlc_code { background: url("@{pic_url}/images/welcome/code.gif") no-repeat;
+            .none; .right; .h(250px); .w(150px); .pa; top: -400px;
+            a { .right; .h(20px); .w(20px); }
+            .link {.w(130px);.h(245px);}
+        }
+    }
+    .bot_cart { .bgc(#eaeaea); border-left: 1px solid #e6e6e6; border-top: 1px solid #e6e6e6;
+        .box-shadow-r(0,3px,8px,rgba(51,51,51,0.6)); .pf; right: 0; bottom: 0; z-index: 99;
+        li { .left; border-right: 1px solid #fff; .border-lc(solid); .c; .h(34px); .l(34px); .w(140px); 
+            .cart_nums,.msg_nums { .bgred; .border-1(#fff); .border-r(10px); .white;
+                .h(16px); .l(16px); .mr(-4px); .pl(4px); .pr(4px); .pr; top: -8px; right: 4px;
+            }
+            a { .block; }
+        }
+        .first { border-left: none; }
+        .last { border-right: none; }
+    }
+}
+
+/**goods 顶部banner**/
+.round_banner(){
+    .common(){
+        .mt(14px); .ml(6px); .mr(6px); .hidden; .pr; .h(100px);
+        .banner { .pa; .w(100%);
+            li { .left; .block; .w(100%);
+                .pic { .h(100px); .pr;
+                    a { top:0; left:0; .bp(0,200px); _font-size:100px; .h(100px); .pa; .w(100%); }
+                }
+            }
+        }
+    }
+    .box-shadow-r; .common;
+    .sider() {
+        .hidden;.common_shadowBox; .mt(14px); .p13;
+        .sider {
+            .w(200px); .h(200px); .pr; .hidden;
+        }
+    }
+    .type1(){
+        bottom: 10px; right: 15px; .pa; z-index: 9;
+        a { background: #FFE1EA; .border-r; .cursor; .i_block; .mr(6px); .h(8px); .w(8px); }
+        a.current { .bgred; }
+    }
+}
+
+/**认证icon**/
+.approve(){
+    .identity_big_style{
+        .inline;
+        .mls_buyer, .mls_diamond, .mls_lv, .mls_special, .mls_editor, .mls_zv { background: url("@{pic_url}/images/person/person_icon3.gif") no-repeat; .cursor; padding: 4px 10px; }
+        .mls_buyer { background-position: 0 0; }
+        .mls_diamond { background-position: 0 -28px; }
+        .mls_special { background-position: 0 -110px; }
+        .mls_lv { background-position: 0 -141px; }
+        .mls_editor { background-position: 0 -171px; }
+        .mls_zv { background-position: 0 -203px; }
+    }
+}
+.approve_small(){
+    .identity_small_style{
+        .inline;
+        .mls_buyer, .mls_diamond, .mls_special, .mls_lv, .mls_editor, .mls_zv { background: url("@{pic_url}/images/header/head_ico4.png") no-repeat; padding: 1px 8px;}
+        .mls_buyer{.bp(-43px,0);}
+        .mls_diamond{.bp(-21px,1px);}
+        .mls_special{.bp(0,1px);}
+        .mls_lv{.bp(-86px,0);}
+        .mls_editor{.bp(-109px,0);}
+        .mls_zv{.bp(-65px,0);}
+    }
+}
+.approve_old(){
+    .i_buyer, .i_diamond, .i_special, .i_lv, .i_editor, .i_zv { background: url("@{pic_url}/images/header/head_ico4.png") no-repeat; padding: 1px 8px;}
+    .i_buyer{.bp(-43px,0);}
+    .i_diamond{.bp(-21px,1px);}
+    .i_special{.bp(0,1px);}
+    .i_lv{.bp(-86px,0);}
+    .i_editor{.bp(-109px,0);}
+    .i_zv{.bp(-65px,0);}
+}
+
+
+/**search and person tabs**/
+.sp_tabs(){ .box-inset; .pt(2px); .pb(2px); margin: 14px 6px 0;
+    .tabs_con { .box-inset; .pt(12px); .pb(12px); .hidden;
+        .list { .f(18px); .fb; .hidden;
+            li { border-right: 2px solid #ddd; .left; .p0_13; }
+            .last { .border-n; }
+        }
+    }
+}
+/*book page 和杂志内页 查看更多*/
+.look_more(){
+    .c; .mt(15px);
+    .big_btn { .w(130px); }
+}
+/*更新粉条*/
+.pink_update() { background: url("@{pic_url}/images/header/@{mls_ico}") no-repeat 0px -700px;height: 50px; line-height:48px; width: 183px; .pf; left: 0; top: 260px; .cursor; z-index: 500;
+    a { .white; .f(18px); .fb; .c; .block; .w(130px); .pr(52px);
+        span {.f(24px);}
+    }
+}
+/*注册互联登陆小按钮*/
+.connect_buttom(){
+    .l_{
+        &weixin, &sinaweibo, &qq, &taobao, &renren, &wangyi, &txweibo, &douban, &baidu {
+            background:url("@{pic_url}/images/register/regIcon1.png") no-repeat;
+            .h(44px);.w(44px);.mr(8px);.mt(6px);.left; .pr;
+        }
+        &weixin{.bp(0,0);}
+        &sinaweibo{.bp(-47px,0);}
+        &qq{.bp(-94px,0);}
+        &taobao{.bp(-141px,0);}
+        &renren{.bp(-188px,0);}
+        &wangyi{.bp(0,-51px);}
+        &txweibo{.bp(-47px,-51px);}
+        &douban{.bp(-94px,-51px);}
+        &baidu{.bp(-141px,-51px);}
+    }
+}
+
+/*店铺优惠券挂件*/
+.shop_coupon(){
+    #shop_coupon_couplet{width:108px;.pa;right:50%;.mr(490px);top:-9999px;z-index:99;
+        .t{background: url("@{pic_url}/images/doota/shop_coupon1.png");.h(40px);overflow:hidden;.border-r(8px 8px 0px 0px);}
+        .u{.h(80px);background: url("@{pic_url}/images/doota/shop_coupon1.png") 0 -40px;overflow:hidden;position:relative;
+            span,a{position:absolute;display:block;}
+            span{.w(40px);.c;color:#ee4983;font-size:20px;left:18px;top:15px}
+            a{left:19px;top:49px;.w(71px);.h(20px)}
+        }
+        .b{
+            .border-r(0px 0px 8px 8px);
+            background: url("@{pic_url}/images/doota/shop_coupon1.png") 0 -120px;
+            .w(108px);
+            .h(11px);
+            overflow:hidden;
+        }
+    }
+}
+
+
+.shopStar(){
+    span{.left;
+        &.star_gray{
+            .w(85px);.mt(6px);
+            background: url("@{pic_url}/images/shop/star-c2.png") repeat-x;.h(16px);
+        }
+        &.star_yellow{
+            background: url("@{pic_url}/images/shop/star-c1.png") repeat-x;.h(16px);
+        }
+        &.avg_score{.red;.h(22px);.f(22px);.ml(5px);.mr(5px);}
+    }
+}
+
+
+.i_notice,.i_auction,.i_process{ background: url("@{pic_url}/images/pro/pro_icon.png") no-repeat; padding: 1px 8px;}

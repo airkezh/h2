@@ -1,0 +1,126 @@
+<%#head.html%>
+
+<%
+	var pageSettings = this.pageData;
+%>
+<div class="main">
+	<% pageSettings.head.length > 0 && pageSettings.head.map(function(data, index){ %>
+		<div class="head_bg" style="background-image:url('<%= data.img_src %>');height:<%= data.h %>px;"></div>
+	<% }); %>
+	<div class="sec_nav_wrap" id="tab_position">
+		<div class="tab_wrap">
+			<div class="bs_tab_wrap">
+				<%
+					var nav_width = Math.floor(960/pageSettings.nav.length)
+				%>
+				<% pageSettings.nav.forEach(function(data, index){ %>
+					<a href="/biz/beauty/mz520/?cid=8915&nav_index=<%= index %>#tab_position" <%= index == this.nav_index ? 'class="p_tab_active"' : '' %> data_name="<%= data.r %>" data_id="<%= index %>" data_type="<%= data.type || 0 %>" data_nid="<%= data.nid %>"><%= data.name %></a>
+				<% }); %>
+			</div>
+		</div>
+		<div class="sec_nav"></div>
+	</div>
+	<div class="poster" id="poster">
+		<div class="content_fluid">
+			<div class="goods_wall"></div>
+		</div>
+		<div class="clear_f"></div>
+		<div class="spinner botSpinner"></div>
+	</div>
+</div>
+
+<script type="text/html" id="posterWallPro">
+	<div class="goods_units">
+		<?
+			$.each(data, function(index, goods_data){
+				var goods_link = '';
+				if(goods_data.link){
+					goods_link = goods_data.link;
+				} else {
+					goods_link = '/share/item/' + goods_data.twitter_id + '?d_r=' + goods_data.d_r;
+				}
+		?>
+			<a href="<?= goods_link ?>" target="_blank" class="productCon">
+				<?var _l = 0;?>
+				<? goods_data.marks.forEach(function(v1 , k1){ ?>
+					<div class="new-png"  style="left:<?=6 + _l?>px"><img src="<?= v1.img_url?>" /></div>
+					<?_l += (+v1.img_width + 2);?>
+				<? });?>
+				<div class="proImg">
+					<img width="220" src="<?=goods_data.image?>" />
+				</div>
+				<div class="proTitle">
+					<?=goods_data.goods_title?>
+				</div>
+				<div class="proPrice">
+					<b><em>￥</em><?=goods_data.price?></b>
+					<? if(goods_data.original_price){ ?>
+						<span class="original_price">￥<?=goods_data.original_price?></span>
+						<?
+							var sale_price = '' + Math.round(goods_data.price/goods_data.original_price*100)/10;
+							if(sale_price.indexOf('.')<0){
+								sale_price += '.0';
+							}
+						?>
+						<span class="sale_price"><?= sale_price ?>折</span>
+					<? } ?>
+				</div>
+				<div class="proBtnWrap">
+					<span class="js-addToCart btn-addToCart buy_btn" data-tid="<?=goods_data.twitter_id?>">立即抢购</span>
+				</div>
+			</a>
+		<? }); ?>
+	</div>
+</script>
+
+<script type="text/html" id="posterWall">
+		<?
+			$.each(tInfo, function(k, v){
+				var goods_link = '';
+				if(v.link){
+					goods_link = v.link;
+				} else {
+					goods_link = '/share/item/' + v.twitter_id + '?d_r=' + v.d_r;
+				}
+				var show_pic = v.show_pic ? v.show_pic : v.ginfo ? v.ginfo.goods_pic_url : '';
+				var goods_title = v.ginfo ? v.ginfo.goods_title : "";
+		?>
+			<a href="<?= goods_link ?>" target="_blank" class="productCon goods_units poster_grid retsop poster_wall">
+				<?var _l = 0;?>
+				<? v.horizontal_mark.forEach(function(v1 , k1){ ?>
+					<div class="new-png"  style="left:<?=6 + _l?>px"><img src="<?= v1.img_url?>" /></div>
+					<?_l += (+v1.img_width + 2);?>
+				<? });?>
+
+				<div class="proImg" style="height: <?= v.poster_height * v.poster_width / 220 ?>px;">
+					<img width="220" src="<?= show_pic ?>" />
+				</div>
+				<div class="proTitle">
+					<?= goods_title ?>
+				</div>
+				<div class="proPrice">
+					<b><?= v.ginfo.goods_price ?></b>
+					<? if(v.ginfo.origin_price){ ?>
+						<span class="original_price"><?=v.ginfo.origin_price?></span>
+						<span class="sale_price"><?= v.ginfo.discount ?></span>
+					<? } ?>
+				</div>
+				<div class="proBtnWrap">
+					<span class="js-addToCart btn-addToCart buy_btn" data-tid="<?=v.twitter_id?>">立即抢购</span>
+				</div>
+			</a>
+		<? }); ?>
+</script>
+
+<%#biz/promotion/rightNav_dc.html%>
+
+
+<script type="text/html" id="tmplAddToCart">
+	<%# tmpl/app.addToCart.html%>
+</script>
+<% $_ENGINE_SELF.callFn("useModule")("fml.use('page/poster0');", this._JSstack , this._JSmodsFast ); %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/biz/beauty/mz520');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot.html%>

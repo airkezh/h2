@@ -1,0 +1,79 @@
+<%if(this.isH5){%>
+<%# head5.html %>
+<%}else{%>
+<%# head4.html %>
+<%}%>
+	<title><%== this.pageTitle%></title>
+    <meta name="description" content="<%= this.meta_description%>" />
+    <meta name="keywords" content="<%= this.keywords%>" />
+    <%if(this.author){%>
+		<meta name="author" content="<%= this.author%>"/>
+    <%}%>
+    <meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1" />
+    <meta property="qc:admins" content="173137167465514130576375" />
+    <meta name="chinaz-site-verification" content="500e4417-e595-40ac-98da-dec66c97a9e5" />
+    <% if (this._mobileAgent) { %>
+		<meta name="mobile-agent" content="format=html5;url=http://m.meilishuo.com<%=this._mobileAgent%>">
+	<% } %>
+	<% if (this._canonical) { %>
+		<link rel="canonical" href="http://www.meilishuo.com<%=this._canonical%>"/>
+	<% } %>
+	<% if(!this.noBasecss){ %>
+    	<link rel="stylesheet" type="text/css" href="<%= this.JCSTATIC_BASE %>css/order_pc/common/base.css?<%= this.SVERSION%>" />
+	<%  } %>
+	<link rel="shortcut icon" href="<%=this.DOMAIN.www%>/favicon.ico" />
+    <link rel="apple-touch-icon-precomposed" href="<%= this.CSS_JS_BASE_URL%>css/images/custom_icon_precomposed.png"/>
+	<% this.user_id = (this.userInfo ? this.userInfo.user_id:0) || 0;%>
+	<%= (function(link){
+		var str = '';
+		var base = this.JCSTATIC_BASE;
+		var sversion = this.SVERSION;
+		link && link.map(function(src){
+			str += '<link rel="stylesheet" type="text/css" href="'+base+'css/'+src+'.css?'+ sversion +'"/>';
+			});
+		return str;
+		})(this._CSSLinks)%>
+	<% if (this._CSSstack && this._CSSstack.length) { %>
+		<style>
+		<%= this._CSSstack.join("\n");%>
+		</style>
+	<% }
+	%>
+	<script type="text/javascript" src="<%= this.JCSTATIC_BASE  %>~fml?<%= this.SVERSION%>" ></script>
+	<script>
+		fml.setOptions({'sversion' : '<%= this.SVERSION %>','defer' : <%= this.JS_Defer %> ,'modulebase' : '<%= this.JCSTATIC_BASE + this.SCRIPT_BASE %>'});
+	    var Meilishuo = {
+	        'config' : {
+				nt : '<%= this.nToken%>',
+				server_url : '<%= this.SERVER_BASE %>',
+				picture_url : '<%= this.PICTURE_URL %>',
+				captcha_url : '<%= this.CAPTCHA_ULR %>',
+				im_url : '<%= this.IM_ULR %>',
+				user_id : <%= this.user_id%> ,
+				nickname : "<%= this.userInfo.nickname || ''%>",
+				fairy_id : 219,
+				forSale : <%= !!this.SaleChannel%>,
+				qzone_notfans : <%= this.userInfo.qzone_notfans %>,
+				controller : '<%== this.headTag%>',
+				avatar_c : '<%= this.userInfo.avatar_c %>',
+				level : <%= this.userInfo.level || 0%>,
+				weibo_bind : '<%=this.userInfo.weibo%>',
+				weibo_act : '<%=this.userInfo.weibo_act%>',
+				block_remain : <%= this.userInfo.block_remain || 0%>,
+				mobile_is_actived : <%= this.userInfo.mobile_is_actived || 0%>,
+				is_iPad : <%= this.is_iPad || false %>,
+				is_service : <%= this.userInfo.is_service || 0 %>,
+				domain : {
+					"www":"<%= this.DOMAIN.www%>",
+					"order":"<%= this.DOMAIN.order%>",
+					"www_hk":"<%= this.DOMAIN.www_hk%>",
+					"order_hk":"<%= this.DOMAIN.order_hk%>",
+					"hdapp":"<%= this.DOMAIN.hdapp%>",
+					"shop":"<%= this.DOMAIN.shop%>",
+					"wap":"<%= this.DOMAIN.wap%>",
+					"webapi":"<%= this.DOMAIN.webapi||'http://webapi.meilishuo.com'%>"
+				}
+			}
+	    };
+	</script>
+</head>

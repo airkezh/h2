@@ -1,0 +1,95 @@
+function book(){
+	return this;	
+}
+var controlFns = {
+	'index' : function(catalogid){
+		this.new_show(catalogid);
+	},
+	'show' : function(catalogid) {
+		var wapMod = base.loadModel('wap/tools.js')
+		var php = {
+			'poster0' : '/dict/Show_dict_m/' + catalogid
+			,'channel_info' : '/customactivity/CustomActivity_common_tool_single?id=wap_channel'
+			, 'leadApp' : '/customactivity/CustomActivity_common_tool_singleNew?id=wap_daoliu'
+		};
+		 php['bdZhiShu'] = '/dict/OptimizeBaidu'
+
+		var mSelf = this;
+		var channel = this.readData('channel',this.req.__get, ''); 
+		var frm = this.readData('frm',this.req.__get, '');
+		var refer = this.req.headers.referer;
+		var param = channel || param 
+		this.req.__get.channel = param
+		var ua = this.req.headers['user-agent'];
+		if(/(Android)/i.test(ua)){
+			php.apks = '/url/Package_get'
+		}
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			if (data.os.iphone || data.os.ipad){
+				data.appUrl =  'http://itunes.apple.com/cn/app/meilishuo/id431023686'
+			} else {
+				if (!param || (data.apks && !data.apks[param]) ) param = 'web'
+				if (data.apks && data.apks[param] && data.apks[param].src) data.appUrl = data.apks[param].src
+				
+				else 
+					data.appUrl = 'http://img.meilishuo.net/css/images/AndroidShare/Meilishuo_10008_4_3_1.apk'
+			}
+			
+			data.frm = frm;
+
+			var showZhiDing = wapMod.showZhiDing(mSelf.req,mSelf.res,data.channel_info.channel, channel)
+			data.showZhiDing = showZhiDing;
+			data.leadApp.foot_banner = false;
+
+			data.bookid = catalogid;
+			var poster0 = data.poster0;
+			var keywords = poster0.wordname;
+
+			data.bread = [{ nid: 0, word_name: keywords }];
+			data.pageTitle = keywords + '【多图】-' + keywords + '新款女装价格，品牌服饰购买及搭配图片-美丽说';
+			data.keywords = keywords+'，'+keywords + '新款,'+keywords + '女装,'+keywords + '搭配,'+ '图片,'+ keywords + '购买,'+keywords + '淘宝,'+keywords+'价格';
+			// var description = keywords + '是当前流行的时尚元素,如分享内容：';
+			var tInfo = poster0.tdk || [];
+			// for (var i = 0; i < tInfo.length; i++) {
+			// 	description += tInfo[i].title + ',价格'+ tInfo[i].price + '元及图片;';
+			// };
+			data.meta_description = keywords+'是当前流行的服饰搭配元素，想要把'+keywords + '元素搭得美丽，来美丽说购买让千万时尚MM心水的当季最流行的'+keywords+'单品、看'+keywords+'最佳搭配、购买评价、购物晒单';
+			data.ptype = 'book';
+			data.headTag = 'book';
+			data._CSSLinks = ['guang'];
+			mSelf.render('book.html', data);
+		});
+	},
+	'new_show' : function(catalogid) {
+		var php = {
+			'poster0' : '/dict/Show_dict_m/' + catalogid
+			, 'bdZhiShu' : '/dict/OptimizeBaidu'
+			, 'down_info' : '/customactivity/CustomActivity_common_tool_single?id=wap_download_set&$'
+		};
+
+		var mSelf = this;
+
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+
+			data.bookid = catalogid;
+			var poster0 = data.poster0;
+			var keywords = poster0.wordname;
+
+			data.pageTitle = keywords + '【多图】-' + keywords + '新款女装价格，品牌服饰购买及搭配图片-美丽说';
+			data.keywords = keywords+'，'+keywords + '新款,'+keywords + '女装,'+keywords + '搭配,'+ '图片,'+ keywords + '购买,'+keywords + '淘宝,'+keywords+'价格';
+			data.meta_description = keywords+'是当前流行的服饰搭配元素，想要把'+keywords + '元素搭得美丽，来美丽说购买让千万时尚MM心水的当季最流行的'+keywords+'单品、看'+keywords+'最佳搭配、购买评价、购物晒单';
+
+			data.search_words = keywords;
+
+			data.use_rem_screen = '640';
+			data._CSSLinks = ['new_book'];
+			mSelf.render('new_book.html', data);
+		});
+	}
+};
+
+exports.__create = controller.__create(book , controlFns);

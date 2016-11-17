@@ -1,0 +1,94 @@
+<%# wx_new/header.html%>
+<%
+	var temp_info    = this.tempInfo || {}
+
+       ,defaultGoods = temp_info.tInfo || []
+	   ,shareInfo    = temp_info.share || {}
+	   ,temp_banner  = temp_info.banner
+	   ,temp1        = temp_info.picture 
+	   ,temp2        = temp_info.entrance
+%>
+
+<div class="main js-tab">
+	<% if(temp_banner && temp_banner.img){
+		var _cls = (temp_banner.is_coupon==1) ? 'a-item pro-coupon' : 'a-item';
+		%>
+     	<a href="<%=temp_banner.url || 'javascript:;' %>" data-code='<%=temp_banner.code %>' class="<%= _cls%>"><img src="<%=temp_banner.img %>" /></a>
+	<%}%>
+
+	
+	<div class="temp_box" style="background:#<%=temp_info.bg_color%>">
+		<%if(temp1.imgs){%>
+			<div class="temp1">
+				<p class="title">
+					<span><%= temp1.title || ''%></span>
+				</p>
+				<% temp1.imgs && temp1.imgs.forEach(function(data,index){
+					var _cls = (data.is_coupon==1) ? 'temp1_img pro-coupon' : 'temp1_img';
+				%>
+					<a  class="<%=_cls%>" data-code="<%= data.code%>" href="<%= data.url || 'javascript:;'%>">
+						<img src="<%= data.img%>">
+					</a>
+				<%})%>		
+			</div>
+		<%}
+		if(temp2.imgs){%>
+			<div class="temp2">
+				<p class="title"><span><%= temp2.title || ''%></span></p>
+				<% temp2.imgs && temp2.imgs.forEach(function(data,index){%>
+						<a href="<%= data.url || 'javascript:;'%>">
+							<img src="<%= data.img%>">
+						</a>
+				<%})%>			
+			</div>
+		<%}%>
+	</div>
+	<% var menu = this.tempInfo.menu; 
+	   var menuLen = menu.length;
+	%>
+	<% if(menu){ %>
+	<p class="title"><span><%="全部商品" || ''%></span></p>
+	<div class="tab">
+		 <div class="tab-inner <%= menuLen < 5 ? 'flex' : '' %>" > <!-- flex -->
+	    	<% menu.forEach(function(data, i){ %>
+				<div class="tab-item js-tab-item <%= i == 0 ? 'active' : '' %>" data-type="<%=data.type %>" ><span class="name" data-type="<%=data.type %>"><%=data.title %></span></div>
+	    	<% }); %>
+	    </div>
+	</div>
+    <%}%>
+   
+	<div class="m20 bgf0"></div>
+	<div class="content-wrap">
+		<ul class="new_goods goods-wall">
+		</ul>
+		<div class="pullUp" status="loading"></div>
+	</div>
+</div>
+<%# wx_new/waterfall-temp.html%>
+<script>
+fml.vars.defaultGoods = <%= JSON.stringify( defaultGoods )%>;
+fml.vars.cid = <%= this.cid %>;
+fml.vars.types = <%= this.tempInfo.type %>;
+
+<%if ( shareInfo && shareInfo.img ) {%>
+fml.vars.shareData = {
+	'imgUrl' : '<%= shareInfo.img %>',
+	'title' : document.title,
+	'desc' : '<%= shareInfo.desc || "专属达人挑款师带你开启美丽说时尚之旅！加入我们，发现流行，占有世界！" %>'
+};
+<% }; %>;
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/wx_new/new_temp');
+_use:", this._JSstack , this._JSmods ); %>
+<%# wx_new/side.html%>
+<%# wx_new/footer.html%>
+
+
+
+
+
+
+
+

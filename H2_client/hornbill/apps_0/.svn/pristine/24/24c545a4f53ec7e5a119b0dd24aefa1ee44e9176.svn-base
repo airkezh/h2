@@ -1,0 +1,160 @@
+<%# wx/header.html%>
+<%
+	var getLink = _extFn.getLink
+		,query = this._Request_query
+		,typeName = {"hot" : "热卖","new" : "新品"}
+		,navTop = this.nav_top ? this.nav_top : [{'page_title':'每日必看'},{'page_title':'必败美衣'},{'page_title':'超值美妆'}]
+		,pageNameArr = [{"en":"daily"},{"en":"clothes"},{"en":"cosmetic"}]
+		,seckillBtn = ["整点开抢", "立即购买", "抢光了", "还有机会"]
+
+	var globalKey = this._Request_cookies.MEILISHUO_GLOBAL_KEY;
+%>
+<div class="posterWall wrap scroller">
+	<figure class="wxShareImg none_f">
+		<img src="http://img.meilishuo.net/css/images/wap/web/wx/shareWXB.jpg"/>
+	</figure>
+	<div class="nav_top" id="navTop">
+		<nav class="nav_box">
+			<ul class="goods">
+				<% for(var i=0; i<pageNameArr.length; i++){%>
+					<li <% if(this.pageName == pageNameArr[i].en){%> class="active"<%}%>>
+						<% if(this.pageName != pageNameArr[i].en){ %><a href="/wx/mall/<%=pageNameArr[i].en%>"><%= navTop[i].page_title %></a>
+						<%}else{%><%= navTop[i].page_title %><%}%>
+					</li>
+				<%}%>
+			</ul>
+			<a href="/wx/orderList" class="logisticIcon" id="logisticIcon">
+				<img src="<%=this.PICTURE_URL%>/images/wap/web/wx/logistic_icon.png" />
+			</a>
+		</nav>
+	</div>
+	<% if(this.banner.head){%>
+	<section class="mb10">
+		<%= requireFn('block/banner.html')({
+			'banner' :this.banner.head 
+			,'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+		});%>
+	</section>
+	<% }%>
+	<% if (this.discount.seckill && this.discount.seckill.length !=0){ %>
+	<section class="content_daily">
+		<% if (this.discount.seckill_disc){ %>
+		<div class="daily_title">
+			<span class="word">
+				<img class="money_icon" src="<%=this.PICTURE_URL%>/images/wap/web/wx/qiang_icon.png" />
+			</span>
+			<span class="daily_banner"><%= this.discount.seckill_disc.content%></span>
+		</div>
+		<%}%>
+		<% this.discount.seckill.map(function(data, idx){%>
+		<figure class="goodsArea <%if(idx != this.discount.seckill.length -1){%>mb10<%}%>" goods_id="<%= data.goods_id %>" twitter_id="<%= data.twitter_id%>" pid="<%= data.pid || 0%>" prop_color="<% if (data.prop && data.prop.color && data.prop.color.is_show) { %><%= data.prop.color.name%>__<%= data.prop.color.value[0]%><%}%>">
+			<a href="/wx/detail?tid=<%= data.twitter_id%>" class="show_img">
+				<img src="<%=data.goods_img%>">
+			</a>
+			<div class="goods_info">
+				<p class="goods_title"><%= data.goods_title%></p>
+				<p class="goods_data">
+					<span>已有<sapn class="ml_color"><%= data.sale_num%></span>人购买<span>
+					<span>仅剩<sapn class="ml_color"><%= data.left || 0%></span>件<span>
+				</p>
+				<p class="goods_cost">
+					<span class="ml_color now_cost">¥<%= data.discount_price%></span>
+					<%if(data.original_price){%>
+						<span class="normal_cost">¥<%= data.original_price%></span>
+					<%}%>
+					<% if(data.buy_button_status == 1){%>
+					<%if(data.is_cosmetic == '1'){%>
+					<a href="javascript:void(0)" class="buy_btn goods_btn"><%= seckillBtn[data.buy_button_status]%></a>
+					<%}else{%>
+					<a href="/wx/detail?tid=<%= data.twitter_id%>" class="goods_btn"><%= seckillBtn[data.buy_button_status]%></a>
+					<%}%>
+					<%}else{%>
+					<span class="goods_btn not_buy"><%= seckillBtn[data.buy_button_status]%></span>
+					<%}%>
+				</p>
+			</div>
+		</figure>
+		<%});%>
+	</section>
+	<% } %>
+	<%if(this.discount.groupon && this.discount.groupon.length != 0 ){%>
+	<section class="content_daily">
+		<% if(this.discount.groupon) { %>
+		<div class="daily_title">
+			<span class="word">
+				<img class="money_icon" src="<%=this.PICTURE_URL%>/images/wap/web/wx/tuan_icon.png" />
+			</span>
+			<span class="daily_banner"><%= this.discount.groupon_disc.content%></span>
+		</div>
+		<%}%>
+		<% this.discount.groupon.map(function(data, idx) { %>
+		<figure <%if(idx != this.discount.groupon.length -1){%>class="mb10"<%}%>>
+			<a href="/wx/detail?tid=<%= data.twitter_id%>" class="show_img">
+				<img src="<%=data.goods_img%>">
+			</a>
+			<div class="goods_info">
+				<p class="goods_title"><%= data.goods_title%></p>
+				<p class="goods_data">
+					<span>已有<sapn class="ml_color"><%= data.sale_num%></span>人购买<span>
+					<span>仅剩<sapn class="ml_color"><%= data.left%></span>件<span>
+				</p>
+				<p class="goods_cost">
+					<span class="ml_color now_cost">¥<%= data.discount_price%></span>
+					<%if(data.original_price){%>
+					<span class="normal_cost">¥<%= data.original_price%></span>
+					<%}%>
+					<a href="/wx/detail?tid=<%= data.twitter_id%>" class="goods_btn">立即购买</a>
+				</p>
+			</div>
+		</figure>
+		<% });%>
+	</section>
+	<% }%>
+
+	<%if(this.goods.tInfo.length != 0){%>
+	<section class="content_daily">
+		<div class="daily_title pd6">
+			<span class="word">
+				<img class="money_icon" src="<%=this.PICTURE_URL%>/images/wap/web/wx/jing_icon.png" />
+			</span>
+			<span class="daily_banner"><%= this.goods.content%></span>
+		</div>
+	</section>
+	<ul class="new_goods goods_wall">
+	</ul>
+	<div class="pullUp" status="loading"></div>
+	<%}%>
+	<% if(this.banner.bottom){%>
+	<section class="content_daily">
+		<% this.banner.bottom.map(function(data, idx){%>
+		<a href="<%=data.url%>"><img class="mb10" src="<%= data.image_url%>" /></a>
+		<% });%>
+	</section>
+	<% }%>
+	<div class="like">
+		<p>如果你喜欢<span class="ml_color">&nbsp;美丽流行购</span></p>
+		<p>点击右上角<span class="ml_color">【收藏】</span>或<span class="ml_color">【分享】</span>给好友</p>
+	</div>
+	<div class="download">
+		<img src="<%=this.PICTURE_URL%>/images/wap/web/wx/download_icon.png" class="download_icon" />
+		<a href="/download/last" class="downBtn">立即下载</a>
+		<div class="clear_f"></div>
+	</div>
+</div>
+<%# wx/posterWX.html%>
+<script>
+fml.vars.poster = {
+	'totalColNum':2,
+	'pageName' : '<%= this.pageName%>'
+};
+fml.vars.globalKey = '<%= globalKey %>'
+</script>
+<script>
+fml.vars.pid = '<%= this.pid %>';
+fml.vars.r = '<%= this.r %>';
+<%= this.goods? 'Meilishuo.config.poster0 = '+JSON.stringify(this.goods)+';':'' ;%>
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/wx/mall');
+_use:", this._JSstack , this._JSmods ); %>
+<%# wx/footer.html%>

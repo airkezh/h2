@@ -1,0 +1,61 @@
+@import "wx-rem.less";
+
+.pullUp{
+	.pullUpDown > .common;.pullUpDown > .loading;
+	&:before{
+		.nowrap;
+		.ml(-0.35rem);
+	}
+	&[status="tap"]{
+		background:0 none;	
+	}
+	&[status="stop"]{
+		background:0 none;	
+		.h(.02rem);
+		&:before{.i_block;
+			content:"没有更多内容了...";
+		}
+	}
+}
+div.pullUp{
+	.l(.8rem); .f(.28rem); .h(.8rem); .w(.8rem); background-size: .8rem 1.6rem;
+}
+
+.posterWall{.pt(.18rem); }
+.new_goods{ .f(.24rem);
+	.clearfix; .pr; 
+	.goods_li{
+		.pa;.hidden;
+	}
+	.li_border {
+		.pr;.border-1(#d9d9d9);.bgwhite;
+		.list_img {.block;background-size:100%;.hidden;
+		}
+		.list_title {.f(.24rem);.fc(#000); .l(.32rem);.hidden;}
+	}
+	.img_bt { border-bottom: 1px solid #ddd;}
+	.list_info { padding: .2rem;}
+	.list_cost {.pt( .2rem); .pb( .1rem);}
+	.money_now {.f(.30rem); .pr(.1rem);}
+	.money_normal {.f(.22rem); .t-through;}
+	.goods_type{.pa; top: -0.04rem;; left: .1rem;.l(.34rem); .white; .c; .border-r(0 0 .06rem .06rem);
+		img{.i_block;}
+	}
+	.colorgrey{ .f(.2rem); }
+}
+
+
+
+.goTop();
+/* 重写返回顶部按钮 */
+#goTop{ bottom: 1.1rem;
+	li{
+		padding-top: .16rem;
+	    padding-bottom: .08rem;
+	    .c;
+	    padding-right: .08rem;
+		.icon-gotop{
+		   .h(.8rem); .w(.8rem); .border-r(50%);
+		}
+	}
+}

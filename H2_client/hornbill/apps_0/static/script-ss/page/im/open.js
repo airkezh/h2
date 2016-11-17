@@ -1,0 +1,309 @@
+/*common*/
+var  $ = require('jquery')
+	,checkLogin = require('app/checkLogin')
+	,urlHandle = require('component/urlHandle')
+	,postMessage = require('app/im/postMessage')
+
+	require('component/dragdrop')
+
+
+var im_url = Meilishuo.config.im_url
+var popWinStatus = 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=no, copyhistory=no, width=952, height=720'
+var isPadApp = window.isPadApp
+var urls = {
+	simple : im_url + 'www/simple/'
+	,normal : im_url + 'www/'
+}
+
+function callQQ(im_win , ele, qq){
+	if (!qq) {
+		try {
+			im_win.close()
+			alert('该店铺没有任何联系方式！')
+		}catch(err){
+			console.log(err)
+			}
+		return
+	}
+	try{
+		im_win.fml.vars.im.mustleave = 1
+	}catch(err){
+		console.log(err)
+		}
+	var lctn = 'http://wpa.qq.com/msgrd?v=3&uin='+qq+'&site=qq&menu=yes'
+	ele.href = lctn
+	ele.setAttribute('target','_blank')
+	im_win.name = '_qq_'
+	im_win.location = lctn
+	/*
+	window.setTimeout(function(){
+		im_win.close()
+		}, 1000)
+	*/
+	}
+
+
+function callIM(im_win ,ele , param){
+	try {
+		ele.href = '###'+ [param.toid, '' ,param.shop_id , param.type , param.tid].join('-')
+		console.log(ele.href)
+		delete param.shop_id
+		var imParam = {
+			'fromid' :  param.from
+			,'toid' : param.toid
+			,'tid' : param.tid
+			}
+
+		if(param.win_type=='simple'){
+			var hrf = urls.simple + '?' + urlHandle.http_build_query(imParam) + '&'
+		} else {
+			var hrf = urls.normal + '?' + urlHandle.http_build_query(imParam)
+		}
+		//if (!im_win.location || 'about:blank' == im_win.location ||  im_win.location.href.indexOf(hrf) == -1 ) im_win.location = hrf
+		if (isPadApp || !im_win.location || 'about:blank' == im_win.location  ) im_win.location = hrf
+		else {
+			im_win.changeUser(param.toid)
+			}
+
+	}catch(err){
+		//打开过 qq
+		console.log(err)
+		im_win.location = hrf
+		//im_win.close()
+		}
+	}
+function reCallImWin(opt){
+	if(!checkLogin()) return
+	opt = opt || {}
+	if(location.protocol==="https:") opt.is_simple = 0
+	if(opt.is_simple){
+		var im_win = openImIframe({calltype:opt.calltype})
+			,url = urls.simple
+	} else {
+		var im_win = window.open('','_im_', popWinStatus)
+			,url = urls.normal
+	}
+	try {
+		if (!im_win.location || 'about:blank' == im_win.location) {
+			im_win.location.href = url;
+			//im_win.location = url
+		}
+	}catch (err){
+		console.log(err)
+		}
+	im_win && im_win.focus()
+
+	return false
+	}
+exports.reCallImWin = reCallImWin
+
+function closeImframe(opts){
+	opts = opts || {}
+	$('#im_iframe_div,#closeImframeBtn,#im_iframe').remove()
+
+}
+
+window.closeImframe = closeImframe;
+
+function openImIframe(opt){
+	$('.bot_cart .openIM').stop().css('opacity','1')
+	opt = opt || {}
+
+	var defaultOpts = {
+		right:38
+		,bottom:40
+		,width:570
+		,height:410
+		,divWidth:410
+		,divHeight:32
+		,topBlank:24
+		,closeBtnWidth:32
+	}
+	defaultOpts.divRight = defaultOpts.right
+	defaultOpts.divBottom = defaultOpts.bottom+defaultOpts.height-defaultOpts.divHeight -defaultOpts.topBlank
+
+	function _setDefaultPosition(){
+		$('#im_iframe_div').css({
+			right: defaultOpts.divRight+"px"
+			, bottom: defaultOpts.divBottom+"px"
+		})
+		$('#im_iframe').css({
+			right: defaultOpts.right+"px"
+			, bottom: defaultOpts.bottom+"px"
+		})
+	}
+	var iframe = $('#im_iframe')
+	if(iframe.length){
+		if(iframe.is(':visible')) return iframe[0].contentWindow
+		_setDefaultPosition()
+		$('#im_iframe_div').show()
+		iframe.show()
+	} else {
+		var im_iframe_div = $('<div />').attr('id','im_iframe_div')
+			.css({
+				width:defaultOpts.divWidth +"px"
+				, height:defaultOpts.divHeight +"px"
+				, position:"fixed"
+				, zIndex:1001
+				, right:defaultOpts.divRight +"px"
+				, bottom:defaultOpts.divBottom +"px"
+				, cursor:"move"
+				, opacity:"0.3"
+			}).appendTo('body')
+		$('<div />').attr('id','closeImframeBtn')
+			.css({
+				position:'fixed'
+				, width:defaultOpts.closeBtnWidth +'px'
+				, height:defaultOpts.closeBtnWidth +'px'
+				, zIndex:1002
+				, right:defaultOpts.divRight +"px"
+				, bottom:defaultOpts.divBottom +"px"
+				, cursor:'pointer'
+				, backgroundColor:'#f69'
+				, opacity:'0'
+			}).insertAfter(im_iframe_div)
+			.on('click',function(event) {
+				closeImframe()
+				console.log('close')
+				return false
+			});
+		iframe = $('<iframe id="im_iframe" frameborder="no" allowTransparency="true" />').css({
+				width:defaultOpts.width +"px"
+				, height:defaultOpts.height +"px"
+				, position:"fixed"
+				, zIndex:1000
+				, opacity:1
+				, right:defaultOpts.right +"px"
+				, bottom:defaultOpts.bottom +"px"
+				, border:"none"
+			}).appendTo('body')
+		$('#im_iframe_div').draggable({
+			do_not_restore:true
+			,start : function(){
+				this.css({
+					position:'absolute'
+					,top : this.offset().top-defaultOpts.topBlank +'px'
+					,height :defaultOpts.height +'px'
+					,width : defaultOpts.width +'px'
+					,left : this.offset().left - (defaultOpts.width-defaultOpts.divWidth) +'px'
+					,backgroundColor : '#f69'
+				})
+				$('#closeImframeBtn').hide()
+			}
+			,stop : function(){
+				var top = this.offset().top-$(document).add(document.documentElement).scrollTop()
+					,left = this.offset().left
+					,documentWidth = $('body').width()
+				if(top<0) top=0
+				if(left>documentWidth- defaultOpts.width) left= documentWidth- defaultOpts.width
+				this.css({
+					position:'fixed'
+					,top : (top+defaultOpts.topBlank) +'px'
+					,height : defaultOpts.divHeight+'px'
+					,width : defaultOpts.divWidth +'px'
+					,left : left + (defaultOpts.width-defaultOpts.divWidth) +'px'
+					,backgroundColor : 'transparent'
+				})
+				$('#im_iframe').css({
+					left : left +'px'
+					,top : top +'px'
+				})
+				$('#closeImframeBtn').css({
+					left : left +defaultOpts.width -defaultOpts.closeBtnWidth +'px'
+					,top : (top+defaultOpts.topBlank) +'px'
+				}).show()
+			}
+		});
+	}
+
+	postMessage.on('closeImframe', function() {
+		closeImframe()
+	})
+
+	return iframe[0].contentWindow
+
+
+
+}
+
+var onOpening = 0 //是否正在打开
+exports.bind = function(btn , opt){
+	opt = opt || {}
+	var popWin = opt.popWin || popWinStatus
+
+	function btnFn() {
+		if (!checkLogin()) return false
+		var ele = this
+		var info = ele.hash
+		if ('###' != info.slice(0 , 3)) return true
+
+		if(location.protocol==="https:") opt.is_simple = 0
+		if(opt.is_simple){
+			var im_win = openImIframe()
+		} else {
+			if (isPadApp){
+				var im_win = window
+			}else{
+				var im_win = window.open('','_im_', popWin)
+			}
+		}
+
+		if (!im_win) return false
+
+		info = info.slice(3).split('-')
+		var im_id = info[0]
+			,qq = info[1]
+			,shop_id = info[2]
+			,type = info[3]
+			,tid = info[4]
+			,win_type = opt.is_simple?'simple':'normal'
+		var user_id = Meilishuo.config.user_id
+
+		var param = {'shop_id' : shop_id
+				,'tid' : tid
+				,'type' : type
+				,'from' :  user_id
+				,source : 'web'}
+
+		function _cllQ(){
+			callQQ(im_win , ele ,qq)
+			if(opt.is_simple){
+				$('#im_iframe_div,#closeImframeBtn,#im_iframe').hide()
+				}
+			}
+
+		if (im_id < 0 ){
+			if (qq){
+				//call QQ
+				_cllQ()
+			}else{
+				console.log('should close popup window')
+				alert('用户没有绑定沟通工具')
+				//fail close popup
+			}
+		}else {
+			onOpening=1
+			$.getJSON(im_url + 'im/init?callback=?' , param)
+				.done(function(data){
+						onOpening=0
+						if (!data || 0 == data.successful || data.to <= 0) return _cllQ()
+						var to = data.to * 1
+
+						param.toid = to
+						param.win_type = win_type
+						callIM( im_win, ele , param)
+
+					} )
+				.error(_cllQ)
+
+			}
+		im_win.focus()
+        return false
+	}
+
+    if ( typeof btn == 'string' ) {
+		$(btn).click( btnFn )
+	} else {
+		$( btn.parent ).on( 'click', btn.self,  btnFn )
+	}
+}

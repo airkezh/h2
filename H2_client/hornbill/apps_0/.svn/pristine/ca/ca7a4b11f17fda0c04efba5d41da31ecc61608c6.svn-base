@@ -1,0 +1,42 @@
+<%# head.html %>
+<% 
+	var audit_status = this.userInfo.wait_audit || '';
+	var reply_comment = this.userInfo.reply_comment || '';
+%>
+
+<div class="audit_wrap">
+	<% if( audit_status != 2 ){ %>
+	<div class="audit_img"></div>
+	<div class="process">
+		<span class="pro_step pass">1</span>
+		<span class="line pass"></span>
+		<span class="pro_step pass">2</span>
+		<span class="line no-pass"></span>
+		<span class="pro_step no-pass">3</span>
+	</div>
+	<div class="pro_note">
+		<span class="pass_red">提交成功</span>
+		<span class="pass_red">审核中</span>
+		<span class="no-pass_grey">审核成功</span>
+	</div>
+	<% } else { %>
+	<div class="deny_img"></div>
+	<p class="deny_note deny_msg">审核未通过</p>
+	<% if( reply_comment && reply_comment != '' ){ %>
+		<p class="deny_detail deny_msg"><%= reply_comment %></p>
+	<%	} } %>
+</div>
+
+<%if( audit_status!= 2 ){ 
+	var link = 'meilishuo://changetab.meilishuo?json_params=' + encodeURIComponent(JSON.stringify({"r":"","tab":"首页"}));
+	%>
+<a href="<%= link %>" class="go_guang btn">快去逛逛</a>
+<% }else{ %>
+<a href="javascript:;" class="re_apply btn">重新申请</a>
+<% } %>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/audit');
+_use:", this._JSstack , this._JSmods); %>
+
+<%# foot_simple.html%>

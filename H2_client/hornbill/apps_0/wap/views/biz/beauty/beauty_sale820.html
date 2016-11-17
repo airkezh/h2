@@ -1,0 +1,128 @@
+<%#head.html%>
+
+<%
+	var pageData = this.pageData;
+	if(new Date() > new Date('2014/08/23 00:00:00')){
+		pageData.bannar[0].img_src = 'http://d05.res.meilishuo.net/img/_o/da/d0/801eaa7ebfe733bffb0e792d5ee9_640_340.cc.jpg';
+		pageData.seckill.length = 0;
+	}
+%>
+<div class="main">
+	<% pageData.bannar.length > 0 && pageData.bannar.map(function(data, index){ %>
+		<a class="top_bannar" href="<%= data.url %>"><img src="<%= data.img_src %>"></a>
+	<% }); %>
+	<%
+		if(pageData.seckill.length > 0){
+			var now_date = new Date();
+			var seckill_index = -(20-now_date.getDate());
+			var goods_index = seckill_index < 0 ? 0 : seckill_index;
+			var seckill_goods = pageData.seckill[goods_index];
+			var lastDate1 = (new Date(''+seckill_goods.goods_time_1) - now_date)/1000;
+			var lastDate2 = (new Date(''+seckill_goods.goods_time_2) - now_date)/1000;
+	%>
+	<div class="seckill">
+		<div class="seckill_goods">
+			<a href="<%= _extFn.getAppLink('twitter_single', {'twitter_info' : {'twitter_id' : seckill_goods.goods_url_1, 'is_doota' : 1}}, this.os, this.r, '/share/item/'+seckill_goods.goods_url_1) %>"><img src="<%= seckill_goods.goods_img_1 %>"></a>
+			<% if(this.seckill_num[seckill_goods.goods_url_1] === 0){ %>
+				<span class="act_over"></span>
+			<% } else if(seckill_index > -1){ %>
+				<% if(lastDate1 > 0 && !isNaN(lastDate1)){ %>
+				<p class="timeStamp_wrap red_f" time="<%= lastDate1 %>">距开抢仅剩<span class="hour">00</span>: <span class="sec">00</span>: <span class="min">00</span></p>
+				<% } else { %>
+					<p class="timeStamp_wrap red_f">正在抢购中</p>
+				<% } %>
+			<% } %>
+		</div>
+		<div class="seckill_goods">
+			<a href="<%= _extFn.getAppLink('twitter_single', {'twitter_info' : {'twitter_id' : seckill_goods.goods_url_2, 'is_doota' : 1}}, this.os, this.r, '/share/item/'+seckill_goods.goods_url_2) %>"><img src="<%= seckill_goods.goods_img_2 %>"></a>
+			<% if(this.seckill_num[seckill_goods.goods_url_2] === 0){ %>
+				<span class="act_over"></span>
+			<% } else if(seckill_index > -1){ %>
+				<% if(lastDate2 > 0 && !isNaN(lastDate2)){ %>
+				<p class="timeStamp_wrap red_f" time="<%= lastDate2 %>">距开抢仅剩<span class="hour">00</span>: <span class="sec">00</span>: <span class="min">00</span></p>
+				<% } else { %>
+					<p class="timeStamp_wrap red_f">正在抢购中</p>
+				<% } %>
+			<% } %>
+		</div>
+		<div class="clear_f"></div>
+	</div>
+	<% } %>
+	<% pageData.sec_bannar.length > 0 && pageData.sec_bannar.map(function(data, index){ %>
+		<a class="top_bannar" href="<%= data.url %>"><img src="<%= data.img_src %>"></a>
+	<% }); %>
+	<div class="poster_tab" style="background-image:url('<%= pageData.poster_tab %>');">
+		<a class="active" data_id="0" data_pid="40469" data_name="classics" href="javascript:;"></a>
+		<a data_id="1" data_pid="40467" data_name="charm" href="javascript:;"></a>
+		<a data_id="2" data_pid="40485" data_name="fragrance" href="javascript:;"></a>
+		<a data_id="3" data_pid="40487" data_name="sale" href="javascript:;"></a>
+		<div class="tab_bwrap">
+			<div class="tab_choosed tab0"></div>
+		</div>
+	</div>
+	<div class="poster"></div>
+</div>
+
+<script type="text/html" id="posterWall">
+	<div class="goods_units">
+	<?
+		function getStringLengthArr(s , len){
+			var w = 0;
+			var time = 0;
+			for(length=s.length; time<length; ){
+				if(/[^\x00-\xff]/.test(s[time])){
+					w+=2;
+				}else{
+					w+=1;
+				}	
+				time ++;
+				if(w >= (len*2)){
+					break;
+				}
+			}
+			return time;
+		}
+		function mSubstr(str , len , pad){
+			if (!str || 0 == str.length) return '';
+			if (undefined == pad ) pad = '...';
+			len = getStringLengthArr(str , len);
+			return str.substr( 0 , len) + ((pad && str.length> len) ? pad : '');
+		}
+		var poster_r = this.r;
+		this.tInfo.map(function(data){
+			var salenum_text = '人在抢购';
+	?>
+		<div class="goods_box">
+			<? if(data.horizontal_mark.length){ ?>
+				<div class="Farm">
+				<img class="Standard" src="<?= data.horizontal_mark[0].img_url ?>" style="width:<?= data.horizontal_mark[0].img_width/1.5 ?>px;"/>
+			</div>
+			<? } ?>
+			<? var url_mob = "meilishuo://twitter_single.meilishuo?json_params="+encodeURIComponent('{"twitter_info":{"twitter_id":"' + data.twitter_id + '","is_doota":1},"r":"' + poster_r + '"}'); ?>
+			<a class="goods_img" href="<?= url_mob ?>">
+				<span class="bs_load_img" asrc="<?= data.show_pic_mob ?>"></span>
+			</a>
+			<div class="desc_box">
+				<p class="desc"><a href="<?= url_mob ?>"><?= mSubstr(data.ginfo.goods_title, 20, '...') ?></a></p>
+				<?
+					var o_goods_price = data.ginfo.goods_price.slice(1);
+					var o_origin_price = data.ginfo.origin_price.slice(1);
+				?>
+				<p class="price"><span class="red_f now_price">￥<?= o_goods_price ?></span><? if(o_origin_price){ ?><span class="sequence"><del>￥<?= o_origin_price ?></del></span><? } ?></p>
+				<div class="like_buy"><p class="buy_num"><span class="red_f"><?= data.sale_num || 0 ?></span><?= salenum_text ?></p></div>
+			</div>
+		</div>
+	<? }); ?>
+	</div>
+</script>
+
+<script>
+	<%= this.list ? 'fml.vars.poster0 = '+JSON.stringify(this.list)+';':''; %>
+	fml.vars.r = '<%= this.r %>.mapp-biz_beauty_sale820';
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/biz/beauty_sale820');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot_simple.html%>

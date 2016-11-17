@@ -1,0 +1,37 @@
+<%# head_simple.html%>
+<link rel="stylesheet" href="<%=this.PICTURE_URL%>/images/wap/wx/20141225/csshake.min.css">
+</head>
+<body <%if(this.os.ios){%>class="ios"<%}%>>
+<%
+	var giftInfo=this.giftInfo || {};
+	giftInfo.award_id=giftInfo.award_id || 0;
+	giftInfo.message=giftInfo.message || "";
+	this.score=this.score || 0;
+	var giftType=(giftInfo.award_id==0 || giftInfo.award_id==2) ? false : true;
+%>
+<div class="coupon-box <%= giftType ? 'gift-box' : '' %>">
+	<div class="bottom">
+		<p class="msg" id="js-msg"><%= giftInfo.message %></p>
+		<% if(giftType){ %>
+			<p class="phone-box">
+				<input type="tel" id="js-input">
+				<a href="javascript:;" id="js-phone"></a>
+			</p>
+		<% } %>
+		<a href="javascript:;" class="btn-get" target="_blank" id="js-open"></a>
+		<% if(!giftType){ %>
+			<a href="/wx/christmas" class="btn-again" target="_blank"></a>
+		<% } %>
+		<p class="tips">微信登陆才能看到哦！</p>
+	</div>
+</div>
+<script>
+	fml.vars.score = <%=this.score%>;
+	fml.vars.award_id = <%=giftInfo.award_id%>;
+	fml.vars.giftType = <%=giftType%>;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/wx/getGift');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot.html%>

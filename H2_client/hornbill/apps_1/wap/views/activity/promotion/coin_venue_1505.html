@@ -1,0 +1,201 @@
+<!--
+/**
+ * @fileoverview 首页 － 金币会场模版页
+ * @requires zepto
+ * @author kehuang@meilishuo.com
+ * @date 2015-05-11
+ */
+-->
+
+<%#head.html%>
+<%
+	var pageRootUrl = this.pageUrl,
+		curPageData = this.result || {},
+		curServerHours = this.serverDate.getHours(),
+		curNavCss = curPageData.cate_list_style,
+		curNavData = curPageData.cate_list || [];
+
+	if (!this.pid && (curNavData.length > 0)) {
+		this.pid = curNavData[0].pid;
+	}
+%>
+
+<div class="main">
+	<%
+		if (curPageData.mob_head_bg && curPageData.mob_head_bg.img_src) {
+	%>
+	<a href="javascript:void(0);">
+		<img src="<%= curPageData.mob_head_bg.img_src %>" alt="">
+	</a>
+	<%
+		}
+
+		if (curNavData.length) {
+	%>
+	<section class="nav_box" id="nav_box">
+		<ul class="nav">
+			<%
+				var text_color = curNavCss.text_color || '#80737b',
+					active_text_color = curNavCss.active_text_color || '#f69';
+
+				curNavData.forEach(function(data, index){
+					var pid = data.pid || '',
+						name = data.name || '',
+						width = data.width || '15%',
+						hour = name.substring(0, name.indexOf('点'));
+
+					if (name != '') {
+			%>
+			<li class="" style="width: <%= width %>;border-bottom-color: #fff;" data-pid="<%= pid %>" data-hour="<%= hour %>"><a style="color: <%= text_color %>;" href="javascript:void(0);"><%= name %></a></li>
+			<%
+					}
+				});
+			%>
+		</ul>
+		<div class="lhp100"></div>
+	</section>
+	<%
+		}
+	%>
+
+	<div id="tip_box"></div>
+
+	<%
+		if (this.pid) {
+	%>
+	<section id="container" class="container">
+		<ul class="even goods_wall"></ul>
+		<div class="pullUp" status="loading"></div>
+		<div class="tipsText">该时段已经抢光啦~<br>去下个时段逛逛吧 ^-^</div>
+    </section>
+
+    <div class="gotop_wrap">
+		<a class="gotop">
+			<img src="http://d03.res.meilishuo.net/pic/_o/d0/68/f89d059f09d440f4ee7a37669383_80_80.cg.png" alt="">
+		</a>
+	</div>
+    <%
+    	}
+    %>
+</div>
+
+<script type="text/html" id="seaviewsWall">
+	<?
+		var jsonData = this.data || [];
+
+		$.each(jsonData, function(index, data){
+	    	var src = data.mob_src || '',
+	    		href = data.mob_link || 'javascript:void(0);';
+
+	    	if (src != '') {
+	?>
+	<li>	
+		<a class="link_box" href="<?= href ?>">
+			<figure>
+				<span class="df_show_img" style="padding-top: 178%;opacity: 1;background-image: url(<?= src ?>);"></span>
+			</figure>
+		</a>
+	</li>
+	<?
+			}
+		});
+	?>
+</script>
+
+<script type="text/html" id="posterWall">
+	<?
+		var tabHours = this.tabHours,
+			serverHours = parseInt(this.serverHours) || 0,
+			jsonData = this.data.data.data || [];
+
+		$.each(jsonData, function(index, data){
+			var ginfo = data.ginfo || {},
+				img = ginfo.goods_img || '';
+
+	    	if (img != '') {
+	    		var coin = 0,
+		    		href = 'javascript:void(0);',
+		    		stock = data.repertory || 0,
+		    		title = ginfo.goods_title || '',
+		    		price = ginfo.goods_price || '￥0.00',
+		    		temp_price = ginfo.goods_price || '￥0.00',
+		    		origin_price = ginfo.origin_price || '';
+
+		    	if (data.cinfo && data.cinfo.discount) {
+		    		coin = parseInt(data.cinfo.discount || 0);
+		    	}
+
+		    	if (data.link && data.link.mob) {
+		    		href = data.link.mob;
+		    	}
+
+		    	if ((tabHours != '') && (serverHours <= tabHours)) {
+		    		price = '￥0.00';
+		    		coin = parseInt(temp_price.substring(1) || 0);
+		    	}
+	?>
+	<li>	
+		<a class="link_box" href="<?= href ?>">
+			<figure>
+				<?
+					if (stock < 1) {
+				?>
+				<div class="soldout"></div>
+				<?
+					}
+
+			    	if (fml.vars.is_lazyload_poster) {
+			    		if (index < 1) {
+			    ?>
+			    <span class="df_show_img" style="opacity: 1;background-image: url(<?= img ?>);"></span>
+			    <?
+			    		} else {
+			    ?>
+			    <span class="bs_load_img" asrc="<?= img ?>"></span>
+			    <?
+			    		}
+					} else {
+				?>
+			    <img src="<?= img ?>" alt="">
+			    <?
+					}
+
+			    	if ((stock > 0) && (stock < 10)) {
+			    ?>
+			    <p class="lave">仅剩<?= stock ?>件</p>
+				<span class="progress rpbgc"></span>
+				<?
+					}
+				?>
+			</figure>
+			<figcaption>
+				<div class="proTitle"><?= title ?></div>
+				<div class="proPrice">
+					<span class="word">抵扣价 </span><?= price ?> <del class="orig_price"><?= origin_price ?></del>
+				</div>
+				<div class="proDiscount">金币抵<?= coin ?>元</div>
+			</figcaption>
+		</a>
+	</li>
+	<?
+			}
+		});
+	?>
+</script>
+
+<script>
+	fml.vars.pid = '<%= this.pid %>';
+	fml.vars.serverHours = <%= curServerHours %>;
+	fml.vars.navCss = <%= JSON.stringify(curNavCss) %>;
+	fml.vars.navData = <%= JSON.stringify(curNavData) %>;
+	fml.vars.seaviews = <%= JSON.stringify(curPageData.seaviews) %>;
+	fml.vars.activityDate = <%= JSON.stringify(curPageData.activity_date) %>;
+	fml.vars.is_lazyload_poster = true;
+	Meilishuo.config.poster0 = '';
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/promotion/coin_venue_1505');
+_use:", this._JSstack, this._JSmods); %>
+
+<%#foot_simple.html%>

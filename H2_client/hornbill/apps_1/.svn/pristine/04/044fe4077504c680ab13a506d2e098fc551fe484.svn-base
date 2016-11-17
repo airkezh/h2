@@ -1,0 +1,34 @@
+<script type="text/html" id="posterWall">
+<? $.each(this.data , function(k , v){ 
+	var pic_height = v.goods_image[0].image_height * fml.vars.poster.scale;
+?>
+<li class="goods_li poster_grid poster_wall" shop_id="<?= v.shop_id?>" goods_id="<?= v.goods_id?>" style="width:<?= fml.vars.poster.colWidth?>px;" poster_height="<?= pic_height ?>"> 
+	<div class="list_border">
+		<a href="/md/detail?goods_id=<?= v.goods_id?>" class="list_img" goods_id="<?= v.goods_id?>" image_id ="<?= v.goods_image[0].image_id?>" style="height:<?= pic_height ?>px;">
+			<p>
+				<img src="<?= v.goods_image[0].image_poster?>">	
+				<? if(v.goods_type == 1){ ?>
+					<span class="list_presa">预售</span>
+				<?}?>
+			</p>										
+		</a>
+		<div class="list_info">
+			<p class="list_title"><?= v.goods_desc?></p>
+			<p class="list_num">
+				<? if(v.goods_type == 1){ ?>
+					<span>￥<?= v.goods_display_price_presale_for_list?></span>
+					<? if(v.goods_display_price_for_list != v.goods_display_price_presale_for_list){ ?>
+						<del class="list_presa_price">￥<?= v.goods_display_price_for_list?></del>
+					<?}?>
+				<?} else{?>
+					<span>￥<?= v.goods_display_price_for_list?></span>
+				<?}?>
+			</p>
+		</div>
+		<?if(v.for_sale == 1){?>
+			<span class="sale_out">售罄</span>
+		<?}?>
+	</div>
+</li>
+<?});?>
+</script>

@@ -1,0 +1,49 @@
+function xuanguan_new (){
+	return this;	
+}
+var controlFns = {
+	'index' : function (){
+		var activity_id = this.readData('activity_id',this.req.__get, 0);
+		var pstrc = this.readData('pstrc',this.req.__get, 0);
+		var mSelf = this;
+		var locationUrl = "http://" + this.req.headers.host + this.req.url;
+		var php = {
+			'banner' : '/commerce/middlepage_banner_mob?activity_id='+ activity_id
+		};
+		var wapMod = base.loadModel('wap/tools.js');
+		var nav_index = this.readData('nav_index', this.req.__get, 0);
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			var params = {
+				'title' : {
+					'weixin' : data.banner.pageTitle,
+					'weixin_timeline' : data.banner.pageTitle,
+					'default' : data.banner.pageTitle
+				},
+				'text' : {
+					'weixin' : data.banner.pageTitle,
+					'weixin_timeline' : data.banner.pageTitle,
+					'weibo' : data.banner.pageTitle,
+					'txweibo' : data.banner.pageTitle,
+					'default' : data.banner.pageTitle
+				},
+				'pic' : {
+					'weixin' : data.banner.banner_image,
+					'weixin_timeline' : data.banner.banner_image,
+					'default' : data.banner.banner_image
+				},
+				'url' : locationUrl + '&isFromShare=true'
+			};
+			if (!data.os.iphone ||  wapMod.isNewest(this.req , '6.2.0') ) params.shareImg = true
+			data.share = wapMod.shareTo(mSelf.req , params);
+			data.activity_id = activity_id;
+			data.pstrc = pstrc;
+			data.nav_index = nav_index;
+			data.pageTitle = data.banner && data.banner.pageTitle;
+			data._CSSLinks = ['activity/xuanguan'];
+			mSelf.render('activity/xuanguan.html', data);
+		});
+	}
+};
+exports.__create = controller.__create(xuanguan_new , controlFns);

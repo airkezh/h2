@@ -1,0 +1,24 @@
+<div class="ads_sider pr_f">
+	<div class="provide">赞助商提供</div>
+	<div class="close_z pa_f none_f" style="top:0; right:13px;"></div>
+	<a class="adm_mon" href="/api/adm/?spm=<%=this.ad[0].ad_clickspm%>" target="_blank" monitor="<%=this.ad[0].ad_click_monitor%>" show_mon="<%=this.ad[0].ad_view_monitor%>">
+			<img src="<%=this.ad[0].ad_filedata%>" width="<%=this.width%>" height="<%=this.height%>">
+	</a>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use(['jquery', 'component/waterfall'], function(){
+	var $ = this.jquery;
+	var pin = this.waterfall;
+	var $ads_sider = $('.ads_sider');
+	var $close = $ads_sider.find('.close_z');
+	$ads_sider.hover(function(){
+		$close.show();
+	}, function(){
+		$close.hide();
+	});
+	$close.on('click', function(){
+		$ads_sider.remove();
+		pin.reload(true);	
+	});
+});
+_use:", this._JSstack, this._JSmods); %>

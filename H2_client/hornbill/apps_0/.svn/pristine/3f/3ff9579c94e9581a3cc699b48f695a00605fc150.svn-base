@@ -1,0 +1,68 @@
+<%
+	var notice = this.notice
+		, noticeData = notice && notice.data && notice.data.slice(0,6);
+%>
+<%# head.html%>
+<div class="main">
+	<div class="help-list-box">
+		<%# help/help-title.html%>
+		<div class="help-txt">为节约您的时间，您可以先看看以下的常见问题进行自助操作，无需等待客服处理。如果仍无法解决，您可以拨打美丽说客服电话<span class="red_f">4000-800-577</span>或留下您的<span class="red_f cursor_f suggest-btn">意见</span>。花小美谢谢您的理解！</div>
+		<h3 class="list-head">自助服务</h3>
+		<h4 class="list-head-sub">SELF-SERVICE</h4>
+		<div class="list-cont">
+			<a href="http://order.meilishuo.com/order/" class="qa-type active first">
+				<span class="qa-icon order-qa-icon"></span>
+				<span>订单查询</span>
+			</a>
+			<a href="http://order.meilishuo.com/order/list?status=2" class="qa-type">
+				<span class="qa-icon express-qa-icon"></span>
+				<span>物流查询</span>
+			</a>
+			<a href="http://order.meilishuo.com/coupon/?page=0&coupon_type=1&status=all" class="qa-type">
+				<span class="qa-icon coupon-qa-icon"></span>
+				<span>优惠券查询</span>
+			</a>
+			<a href="https://account.meilishuo.com/settings/safeCon" class="qa-type">
+				<span class="qa-icon security-qa-icon"></span>
+				<span>账号安全</span>
+			</a>
+			<a <%if( !this.userInfo || !this.userInfo.user_id){%>href="https://account.meilishuo.com/user/login/"<%}else{%>href="http://order.meilishuo.com/refund/list/"<%}%> class="qa-type last">
+				<span class="qa-icon aftersale-qa-icon"></span>
+				<span>退款退货</span>
+			</a>
+		</div>
+
+		<h3 class="list-head">活动公告</h3>
+		<h4 class="list-head-sub">EVENT ANNOUNCEMENTS</h4>
+		<ul class="list-cont">
+			<%if(noticeData && noticeData.length > 0){
+				noticeData.forEach(function(item){
+			%>
+			<li><a href="/helpcenter/detail/<%= item.know_id%>?activity=1"><%= item.title%></a></li>
+			<%	});
+			}%>
+		</ul>
+
+		<h3 class="list-head">常见问题</h3>
+		<h4 class="list-head-sub common-problem-tit">COMMON PROBLEMS</h4>
+		<%# help/issue-table.html %>
+	</div>
+	<div class="contact-customer-box">
+		<div class="contact-robot">
+			<h3 class="list-head">联系客服</h3>
+			<h4 class="list-head-sub">CONTACT US</h4>
+			<div class="robot-online">
+				<span class="robot-icon-l"></span>
+				<p class="robot-txt robot-f">MIXI智能客服机器人</p>
+				<p class="robot-txt robot-s">24小时竭诚为您服务，随时解决您的任何咨询</p>
+				<a href="/help/robot" class="btn contact-i-btn">立刻咨询</a>
+			</div>
+		</div>
+		<%# help/mail-table.html%>
+	</div>
+</div>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/help/main');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

@@ -1,0 +1,85 @@
+<%# head.html %>
+
+<% var shopInfo = this.shopInfo; %>
+
+<header class="page_head">
+	<div class="back_icon" id="back_btn"><i></i></div>
+	<div class="right_btn js_shop_cate"><i></i>分类</div>
+	<a class="title" xr="<%= this.xr.r %>"><%= shopInfo.shop_nick %></a>
+	<div class="cate_wrap none_f">
+		<div class="cate_inner">
+			<% this.shop_category[0].item_children.forEach(function(cate){ %>
+				<a href="/shop/guang/<%= this.shopId %>?category_id=<%= cate.category_id %>&item_name=<%= encodeURIComponent(cate.item_name) %>" xr="<%= this.xr.r %>"><%= cate.item_name %></a>
+			<% }); %>
+		</div>
+	</div>
+</header>
+
+<section>
+	<div class="shop_head">
+		<a class="shop_info" href="/shop/detail/<%= this.shopId %>" xr="<%= this.xr.r %>">
+			<div class="shop_logo" style="background-image: url(<%= shopInfo.shop_face_img %>);"></div>
+			<h3 class="shop_nick"><%= shopInfo.shop_nick %></h3>
+			<div class="show_detail"></div>
+		</a>
+		<div class="shop_main">
+			<div class="nums">商品：<span><%= shopInfo.total_sale_num %></span>粉丝：<span><%= shopInfo.following_num %></span></div>
+			<p class="shop_desc"><%= shopInfo.shop_desc %></p>
+			<div class="follow">
+				<div class="follow_btn js_follow_btn" data-follow="<%= shopInfo.following %>"><i></i><%= +shopInfo.following == 0 ? '添加关注' : '已关注' %></div>
+				<div class="customer_service js_customer_service" data-href="http://im.meilishuo.com/wap/chat/?shop_id=<%= shopInfo.shop_id %>&source=wap&type=2"><i></i>联系客服</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="space_bg"></div>
+
+	<nav class="js_poster_nav">
+		<ul>
+			<li class="order current"><strong>默认</strong></li>
+			<li class="order"><strong>最新</strong></li>
+			<li class="order"><strong>销量</strong></li>
+			<li class="order on_price"><strong>价格<span id="price_order"></span></strong></li>
+		</ul>
+	</nav>
+	<div class="goods_wrap">
+		<div id="goods_wall"></div>
+		<%# block/pullUpRem.html %>
+	</div>
+</section>
+
+<script>
+	<%= 'fml.vars.shopId = ' + this.shopId + ';' %>
+	fml.vars.wxshareData = {
+		'desc' : '<%= shopInfo.shop_desc %>'
+		, 'imgUrl' : '<%= shopInfo.shop_face_img %>'
+		, 'title' : '分享个店铺给你'
+		, 'link' : 'http://m.meilishuo.com/shop/<%= this.shopId %>'
+	};
+</script>
+
+<% if(this.os.weixinBrowser){ %>
+	<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<% } %>
+<script type="text/html" id="poster_tpl">
+	<? var v = this.v; ?>
+	<div class="poster_grid poster_wall" twitter_id="<?= v.twitter_id ?>">
+		<figure>
+			<div class="pic_load">
+				<a xr="<%= this.xr.r %>" class="bs_load_img" href="<?= '/share/item/' + v.twitter_id ?>" asrc="<?= v.pic_url ?>">
+				</a>
+			</div>
+			<p class="clothesTitle"><?= v.remark ?></p>
+			<figcaption>
+				<span class="price"><?= v.title ?></span>
+				<span class="like icon-heart"><?= v.count_like ?></span>
+			</figcaption>
+		</figure>
+	</div>
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/shop/shop');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot.html %>

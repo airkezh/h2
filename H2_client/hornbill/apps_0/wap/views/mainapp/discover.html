@@ -1,0 +1,24 @@
+<%# head.html%>
+<% var list = this.list %>
+
+<ul>
+	<% list.forEach( function ( item ){ 
+		userList = item.user;
+	%>
+	<li class="normal">
+		<div class="cat">
+			<span class="cat-name"><%= item.category.tag %></span>
+			<a href="/mainapp/discover_list/?cid=<%= item.category.content_id %>" class="more-btn"><span class="more">更多</span><span class="go-icon"></span></a>
+		</div>
+ 	<%= requireFn('mainapp/recommend_list.html')({
+		'list' : userList,
+		'os'   : this.os,
+	}); %>
+	</li>
+	<% } ) %>
+</ul>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/mainapp/recommend');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html%>

@@ -1,0 +1,80 @@
+@import "../../block.less";
+html,body { .bgwhite; .f(12px); }
+.topPic {
+  img { .w(100%); }
+}
+figure {
+	.title {
+		.f(1rem);
+		.l(1.2rem);
+		.cutText;
+	}
+	.link {
+		.block;
+		.mb(5px);
+		img { 
+			.w(100%);
+		}
+		span { .w(100%); }
+		background: #fff url("http://img.meilishuo.net/css/images/huodong/tuan/prebg.png") no-repeat center center;
+		background-size: 100% auto;
+		.hidden;
+	}
+	figcaption{
+		.f(1rem);
+		.h(44*@px);
+		.pt(16*@px);
+		.price{
+			.left;
+			.red;
+		}
+		.sale { .pl(5px); }
+	}
+}
+.goods_wall {
+	.pr;
+	.poster-container {
+		.pa;
+		figure {
+			.ml(4px);
+			.mr(4px);
+		}	
+	}
+}
+.pullUp{
+	.pullUpDown > .common;
+	// .pullUpDown > .loading;
+	&:before{
+		.nowrap;
+		.ml(-10px);
+	}
+	&[status="loading"]{
+		background:0 none;	
+		&:before{
+			content:"上拉看更多..."	
+		}
+	}
+	&[status="stop"]{
+		background:0 none;	
+		&:before{
+			content:"木有了...";	
+		}
+	}
+}
+.gotop{
+	.none;
+	.pf;
+	right: 20px;
+	.w(80*@w);
+	img{
+		.w(100%);
+	}
+}
+//控制文本超过两行部分显示 ...
+.cutText(){
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}

@@ -1,0 +1,277 @@
+<%# head.html %>
+<%
+var query = this._Request_query;
+var mSubstr = _extFn.mSubstr;
+%>
+
+<div class="top">
+	<img border="0" usemap="#Map" src="<%= this.PICTURE_URL%>images/app/haibaopk/topbanner2.jpg" height="350" width="948">
+	<map name="Map" id="Map">
+		<area shape="circle" coords="364,287,32" href="http://www.meilishuo.com/person/u/1585531" target="_blank" /><area shape="circle" coords="261,204,32" href="http://www.meilishuo.com/person/u/11615420 " target="_blank" /><area shape="circle" coords="142,287,32" href="http://www.meilishuo.com/person/u/3378813" target="_blank" /><area shape="circle" coords="40,225,32" href="http://www.meilishuo.com/person/u/22630750 " target="_blank" />
+	</map>
+</div>
+<div class="judges">
+	<div class="judge_menu">
+		<div class="jm_tab1" filter="1">重磅评委</div>
+		<div class="jm_tab2 jm_focus2" filter="2">嘉宾评委</div>
+	</div>
+	<div class="judge_con">
+		<div class="jc_filter" filter="1">
+			<a target="_blank" href="http://www.meilishuo.com/person/u/25683772" class="jc_box">
+				<span class="zb_1"></span><p>小布老师</p><p class="gray_f">台湾著名美妆专家</p>
+			</a>
+			<a target="_blank" href="http://www.meilishuo.com/person/u/25697431" class="jc_box">
+				<span class="zb_2"></span><p>柳燕</p><p class="gray_f">台湾巧手美肌专家</p>
+			</a>
+			<a target="_blank" href="http://www.meilishuo.com/person/u/3760833" class="jc_box">
+				<span class="zb_3"></span><p>师洋</p><p class="gray_f">全民时尚偶像</p>
+			</a>
+			<a target="_blank" href="http://www.meilishuo.com/person/u/88" class="jc_box">
+				<span class="zb_4"></span><p>马念慈</p><p class="gray_f">美丽说时尚总监</p>
+			</a>
+			<a target="_blank" href="http://weibo.com/zyh123" class="jc_box">
+				<span class="zb_6"></span><p>周艳泓</p><p class="gray_f">知名音乐人、歌手</p>
+			</a>
+			<div target="_blank" href="" class="jc_box">
+				<span class="zb_5"></span><p>陈宁</p><p class="gray_f small">原北京电视台《时尚装苑》主持人</p>
+			</div>
+			<div class="clear_f"></div>
+		</div>
+
+		<div class="jc_filter" style="display:none;" filter="2">
+			<div class="jc_box">
+				<span class="jb_1"></span> <p>国斐</p> <p class="gray_f">北京攻略设计总监</p>
+			</div>
+			<div class="jc_box">
+				<span class="jb_2"></span> <p>MIKI</p> <p class="gray_f small">凡客达人明星计划负责人</p>
+			</div>
+			<div class="jc_box">
+				<span class="jb_3"></span> <p>张磊</p> <p class="gray_f small">《北京青年周刊》新媒体中心总监</p>
+			</div>
+			<div class="jc_box">
+				<span class="jb_4"></span> <p>瞿玮</p> <p class="gray_f small">《精品购物指南 乐活志》编辑部 主任编辑</p>
+			</div>
+			<div target="_blank" href="" class="jc_box">
+				<span class="jb_5"></span><p>Miko</p><p class="gray_f">《1626》高级编辑</p>
+			</div>
+			<div class="jc_box">
+				<span class="jb_6"></span> <p>何一寒</p> <p class="gray_f">MSN中文网时尚频道</p>
+			</div>
+			<div class="clear_f"></div>
+		</div>
+	</div>
+</div>
+<div class="intro">
+	<div class="mode">
+		<p>获奖名单公布说明：</p>
+		<ol>
+			<li>感谢大家的参与，获奖名单详见本页面下方各赛区前5位呈现；</li>
+			<li>恭喜15位获奖选手获得珂兰提供精美饰，请于2012年11月30日前，将真实姓名，获奖名单，联系电话邮件至yonghubm@meilishuo.com，注明【达人对决赛】</li>
+			<li>15位获奖选手VS其余优秀选手将在7日内，通过系统消息获得达人精灵联系方式， 快与精灵联系认证成为达人吧！</li>
+		</ol>
+		<%if(this.haibaopk.isopen){%>
+			<%if(this.haibaopk.isend == true){%>
+				<span class="toobig_btn toobig_pink">已结束</span>
+			<%}else{%>
+				<%if(this.haibaopk.is_joined == '0'){%>
+				<span class="toobig_btn toobig_red" id="applyBtn">我要报名</span>
+				<%}else if(this.haibaopk.is_joined == '1'){%>
+				<span class="toobig_btn toobig_pink">已报名</span>
+				<%}%>
+			<%}%>
+		<%}%>
+	</div>
+	<div class="awards">
+		<p>奖项设置：</p>
+		<ul>
+			<li><span>明日之星奖：</span>评委选拔3位最具潜力选手，可获得价值<samp>999元</samp>红色迷情戒指；<a href="http://www.kela.cn/g-KLRW019140-0003.html" target="_blank">查看详情>></a></li> 
+			<li><span>最佳人气奖：</span>获得小红心最多15位选手（每赛区5人）可获得价值<samp>599元</samp>情人结珍珠项链；</li>
+			<li><span>扫货达人冠军：</span>可获得北京攻略提供价值<samp>1000元</samp>现金时尚基金；</li>
+			<li><span>参与用户奖：</span>只要为你看好的选手投票，就可能获得美丽福袋一个，大牌宝贝随机送！</li>
+		</ul>
+		<div class="awards_pic">
+			<a target="_blank" href="http://www.kela.cn/g-KLRW019140-0003.html" class="jz"></a>
+			<a target="_blank" href="http://www.kela.cn/g-KLPW016190-0002.html" class="xl"></a>
+		</div>
+	</div>
+</div>
+<script type="text/html" id="haibaopkUploadPicTpl">
+<div class="haibaopkUploadPicTpl">
+	<div>
+		<span class="left_f fb_f">1.选择赛区：</span>
+		<input name="division" id="division1" type="radio" value="1" checked="true"><label for="division1">美妆达人</label>
+		<input name="division" id="division2" type="radio" value="2"><label for="division2">搭配达人</label>
+		<span class="none_f">
+			<input name="division" id="division3" type="radio" value="3"><label for="division3">扫货达人</label>
+		</span>
+	</div>
+	<div class="mt10_f">
+		<span class="left_f fb_f">2.上传照片：</span>
+		<div class="uploadPic">
+			<div class="uploadPicBox"></div>
+			<p class="gray_f">支持Jpeg，大小不超过2M</p>
+			<p class="red_f">重要提示：请亲提前将上传的图片截取成 “宽170x高240”，否则图片会变形的哦～！</p>
+		</div>
+	</div>
+	<div class="mt10_f">
+		<span class="fb_f">3.提交你的真人秀杂志：</span>
+		<p> 要求：杂志内容为清晰正面照、生活照、搭配照（搭配达人/扫货达人）、美妆照（美妆达人）。杂志内需包含一张本人手持纸卡身份认证照片。例如：</p>
+		<p class="red_f"><a target="_blank" href="http://www.meilishuo.com/group/82900">http://www.meilishuo.com/group/82900</a></p>
+		<p class="mt8_f"><label for="magaLink">杂志链接：</label><input class="l_ipt" id="magaLink" type="text" name="magaLink" value="" placeholder=""/></p>
+	</div>
+	<div class="mt10_f c_f">
+		<span class="submitbtn" id="onSubmitApplyBtn">提&nbsp;&nbsp;&nbsp;&nbsp;交</span>
+		<span class="cancelbtn" id="onCancelApplyBtn">取消</span>
+	</div>
+</div>
+</script>
+<script type="text/html" id="uploadPicTpl" >
+<%*上传照片%>
+<div class="showImgage">
+	<img width="120" height="170" src="<%= this.PICTURE_URL %>images/register/blank.jpg"/>
+</div>
+<div class="uploadPicBtn btn">
+    <form enctype="multipart/form-data" method="post" id="submitPicture" target="uploadFile" action="/pictures/ajax_savePic/">
+		<span class="up_photos">选择照片文件</span>
+		<input class="cursor_f" type="file" name="attach[]" size="4" id="uploadFileSubmit"/>
+		<input type="hidden" name="imgType" value="haibaopk" />
+    </form>
+    <div id="uploadFilePanel">
+        <iframe id="getUploadFile" name="uploadFile" border="0" class="none_f"></iframe>
+    </div>
+	<div class="clear_f"></div>
+</div>
+</script>
+
+<%
+var group_info = [
+	{'title' : '嘉人分赛区同期进行中<samp>&gt;&gt;</samp>', 'link' : 'http://bbs.marieclairechina.com/home.php?mod=spacecp&ac=myactivity&aid=127'},
+	{'title' : '凡客达人分赛区同期进行中<samp>&gt;&gt;</samp>', 'link' : 'http://q.vancl.com/topic/detail/53345747'},
+	{'title' : '', 'link' : ''}
+];
+this.haibaopk.group_name && this.haibaopk.group_name.map(function(group_name, index){ %>
+<%if(this.headTag == 'haibaopk_index'){%>
+<div class="division<%if(this.haibaopk.totalNum && this.haibaopk.totalNum[index] == 0){%> none_f<%}%>" total_num="<%= this.haibaopk.totalNum && this.haibaopk.totalNum[index] %>" division="<%= index + 1 %>">
+<%}else{%>
+<div class="division" division="<%== query.tab %>">
+<%}%>
+	<div class="division_title">
+	<%if(this.headTag == 'haibaopk_index'){%>
+		<%if(this.haibaopk.isopen){%>
+		<a class="right_f" href="/wbapp/haibao/pk?limit=1&tab=<%= index + 1 %>">查看全部<samp>&gt;&gt;</samp></a>
+		<%}%>
+	<%}else if(this.headTag == 'haibaopk_detail'){%>
+		<a class="right_f" href="/wbapp/haibao/pk"><samp>&lt;&lt;</samp>返回活动主页</a>
+	<%}%>
+
+		<h3 class="left_f"><%= group_name %>赛区－获奖名单公布</h3>
+		<%if(this.haibaopk.isopen){%>
+		<a class="left_f" href="<%= group_info[index].link %>" target="_blank"><%= group_info[index].title %></a>
+		<%}%>
+	</div>
+	<div class="division_con">
+
+		<%for(var data in this.haibaopk.group_data[group_name]){
+			var drinfo = this.haibaopk.group_data[group_name][data];
+		%>
+		<div class="daren_box">
+			<a target="_blank" href="http://www.meilishuo.com/person/u/<%= drinfo.user_id%>" class="dr_pic">
+				<img width="170" height="240" src="<%= drinfo.img %>" />
+				<%if(data < 5 && ((!query.page || query.page == '0') || query.limit != '1')){%>
+				<span class="dr_icon<%= data - 0 + 1 %>"></span>
+				<%}%>
+				<%if(drinfo.is_star == 1){%>
+				<span class="dr_star"></span>
+				<%}%>
+			</a>
+		<%if(this.haibaopk.isopen){%>
+			<p><span class="dr_name"><%= drinfo.nickname %></span><span class="dr_num"><%= mSubstr((drinfo.vote + '') , 2 , '..') %></span>票</p>
+			<div class="c_f">
+			<%if(this.haibaopk.isend == true){%>
+				<span class="voteBtn pink_follow" drid="<%= drinfo.user_id%>">已结束</span>
+			<%}else{%>
+				<%if(drinfo.self == '1'){%>
+					<span class="voteBtn pink_follow" drid="<%= drinfo.user_id%>">自己哟</span>
+				<%}else if(drinfo.self == '0'){%>
+					<%if(drinfo.isvote == '0'){%>
+					<span class="voteBtn red_follow" drid="<%= drinfo.user_id%>">投她一票</span>
+					<%}else if(drinfo.isvote == '1'){%>
+					<span class="voteBtn pink_follow" drid="<%= drinfo.user_id%>">已投票</span>
+					<%}%>
+				<%}%>
+				<span class="dr_votes red_f">拉票</span>
+			<%}%>
+			</div>
+		<%}else{%>
+			<p><span class="dr_nameopen"><%= drinfo.nickname %></span></p>
+		<%}%>
+
+		</div>
+		<%}%>
+		<div class="clear_f"></div>
+	</div>
+
+	<%if(this.headTag == 'haibaopk_detail'){%>
+		<%# paging.html%>
+	<%}%>
+</div>
+<%});%>
+
+<%if(this.headTag == 'haibaopk_index'){%>
+<div class="cooper">
+	<div class="cooper_title">
+		<a class="right_f" href="http://www.meilishuo.com/person/u/27975033" target="_blank">查看全部<samp>&gt;&gt;</samp></a>
+		<h3 class="left_f">北京攻略扫货花絮</h3>
+	</div>
+	<div class="cooper_con">
+		<div class="pic_box">
+			<a class="pic_1" href="http://www.meilishuo.com/share/587258079" target="_blank" ></a>
+			<a class="pic_2" href="http://www.meilishuo.com/share/587265027" target="_blank"></a>
+			<a class="pic_3" href="http://www.meilishuo.com/share/587267849" target="_blank"></a>
+			<a class="pic_4" href="http://www.meilishuo.com/share/587274613" target="_blank"></a>
+			<a class="pic_5" href="http://www.meilishuo.com/share/587277733" target="_blank"></a>
+			<div class="clear_f"></div>
+		</div>
+		<div class="coo_box">
+			<div class="coo_1">
+				<p>联合主办方：</p>
+				<span class="bjgl"></span>
+				<span class="marie"></span>
+				<span class="fkdr"></span>
+				<div class="clear_f"></div>
+			</div>
+			<div class="coo_2">
+				<p>合作媒体：</p>
+				<span class="bjqnzk"></span>
+				<span class="clszk"></span>
+				<span class="qqwg"></span>
+				<span class="msn"></span>
+				<span class="yj"></span>
+				<span class="cntv"></span>
+				<span class="okjc"></span>
+				<span class="jpgwzn"></span>
+				<div class="clear_f"></div>
+			</div>
+			<div class="coo_2">
+				<p>合作机构：</p>
+				<span class="kela"></span>
+				<span class="vps"></span>
+				<span class="glmfl"></span>
+				<span class="namir"></span>
+				<span class="amy"></span>
+				<span class="whine"></span>
+				<span class="afu"></span>
+				<span class="wiam"></span>
+				<span class="zaders"></span>
+				<div class="clear_f"></div>
+			</div>
+			<div class="clear_f"></div>
+		</div>
+	</div>
+</div>
+<%}%>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/app/haibaopk');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html %>

@@ -1,0 +1,36 @@
+<%# head.html%>
+<div class="wrapper">
+	<div class="inner">
+		<div class="step1">
+			<% if(this.exchange_coupon.ret < 0){ %>
+				<p class="msg"></p>
+			<%}%>
+			<input class="code" type="text" value="输入兑换码"  />
+			<p class="btn" id="submit">确定</p>	
+		</div>
+		<div class="step2 none_f">
+			<p class="suc">恭喜，优惠券兑换成功！</p>
+			<div class="step2-coupon">
+	            <p class="cost">
+	            	<span class="threshold"></span>
+	            	<label>
+	            		<span class="cost-sign">￥</span>
+	            		<span class="price"></span>
+	            	</label>            	
+	            </p>
+	            <p class="desc">
+	            	<span class="declare left_f"></span>
+	            	<span class="num right_f">1张</span>
+	            </p>
+	            <p class="time"></p>
+	        </div>
+	        <div class="clear_f"></div>
+	        <a class="btn" href="http://order.meilishuo.com/coupon/?page=0&coupon_type=1&status=all" target="_blank">查看优惠券</a>
+		</div>
+	</div>
+</div>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use("page/huodong/exchange_coupon");
+_use:", this._JSstack , this._JSmods); %>
+<%# foot.html%>

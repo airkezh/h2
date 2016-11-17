@@ -1,0 +1,52 @@
+<%# wx_new/header.html%>
+
+<%
+	var uInfo = this.uInfo.data;
+%>
+<div class="bg-img">
+	<img src="http://d02.res.meilishuo.net/pic/_o/15/8e/24ed802b51b4fa625f4b740fda87_640_370.cg.jpg" alt="">
+	<div class="info">
+		<span><p><%= uInfo.follower_num%></p><p>粉丝</p></span>
+		<span><p><%= uInfo.following_num%></p><p>关注</p></span>
+		<span><p><%= uInfo.total_sale_num%></p><p>已售</p></span>
+	</div>
+</div>
+<div class="user_others_head">
+		<span class="user_head_img" >
+			<em><img src="<%=uInfo.avatar_b%>" alt=""></em>
+		</span>		
+		<p class="nikename"><span class="name-all"><%=uInfo.nickname.length < 9 ? uInfo.nickname : uInfo.nickname.slice(0,6)%></span>
+			<%if(uInfo.identity.pinkV){%><span class="certify"></span><%}%>
+		</p>
+		<%if(0){%>
+		<%if(!uInfo.follow){%>
+		<div class="follow-btn">关注</div>
+		<%}else{%>
+		<div class="follow-btn-ok">已关注</div>
+		<%}%>
+		<%}%>
+		<span class="label"><%=uInfo.tags[0] || ""%></span>
+		<!-- <a class="interest" href="/goto/download/">
+			<span href="/goto/download/" class="interest-others">关注群主</span><span class="download" href="/goto/download/">下载美丽说客户端</span>
+		</a> -->
+</div>
+
+<div class="m-list">
+		<a class="module <%if(this.type === 1){%> active <%}%>" href="/wx/u_others/<%=this.wx_user_id || 0 %>">群</a>
+		<a class="module <%if(this.type === 0){%> active <%}%>" href="/wx/u_others/<%=this.wx_user_id || 0 %>?type=1">关注</a>
+		<!-- <span class="module">喜欢</span> -->
+</div>	
+
+<!-- 群0，关注1 -->
+<%if(this.type === 0){%>
+	<div class="main goods-wall"></div>
+	<%# wx_new/user_waterfall.html%>
+<% }else if(this.type === 1){ %>
+	<div class="main goods-wall"></div>
+	<%# wx_new/attention.html%>
+<% } %>
+<script>
+fml.vars.cuid = '<%= uInfo.user_id%>';
+fml.vars._type = <%= this.type%>;
+</script>
+<%# wx_new/footer.html%>

@@ -1,0 +1,132 @@
+/*common*/
+var $ = require('jquery');
+var dialog = require( 'ui/dialog' );
+var shareTmp = require('component/shareTmp');
+var fengkongDialog = '';
+var checkLogin    = require( 'app/checkLogin' );
+var Alert   = require( 'ui/alert');
+
+var showFKRelsWin = function( rule_id ){
+	if(!checkLogin()){
+        return false;
+    }
+	$.ajax({
+		url: '/aj/check_code_aj/check_code/get_punish',
+		type: 'GET',
+		dataType: 'json',
+		data: { 'rule_id': rule_id },
+		success: function( res ){
+			// 测试接口
+			// var res = {
+			// 	    "code": -1,
+			// 	    "msg": "success",
+			// 	    "data": {
+			// 	        "code": -1,
+			// 	        "info": "success",
+			// 	        "punish_type": "p2"
+			// 	    }
+			// 	};
+			if( res.code == -1 ){
+				var html = shareTmp('release', { 'riskInfo': res.data,'rule_id': rule_id });
+	    		fengkongDialog = new dialog({title : "我的购物车" , width : 430 , content : html , onStart : function(){ } });
+	    		fengkongInit();
+			}
+		},
+		error: function(){
+			new Alert({
+                width : 370,
+                title : '我的购物车',
+                content : 'opps,有点错误,一会儿再试试吧'
+            })
+		}
+	})
+};
+
+function fengkongInit(){
+	var outerWrapper = $('.release_fengkong');
+	var riskForm = outerWrapper.find('#risk_form');
+	var errorTip = outerWrapper.find('.error_tip');
+	var submitAjaxIsComplete = true;
+
+	$('#pic_code_img').on('click', picCodeImgOnClick).trigger('click')
+
+	outerWrapper.on( 'click', '.refresh_btn',function(){
+		picCodeImgOnClick.call($('#pic_code_img'),event);
+	})
+
+	outerWrapper.find('.send_sms').on('click', sendSms);
+
+	outerWrapper.find('#risk_form').on('submit', function(event) {
+		event.preventDefault();
+		errorTip.html('');
+		var valiSucc = true;
+		riskForm.find('input').each(function(index, el) {
+			if(!$(el).val().trim()){
+				$(el).focus();
+				return valiSucc = false;
+			}
+		});
+		if(!valiSucc){
+			errorTip.html( '未输入验证码，请输入~' );
+			return;
+		}
+		var url = riskForm.attr('action')
+		if( submitAjaxIsComplete == true ){
+			submitAjaxIsComplete = false;
+			$.get(url, $(this).serialize(), function(data) {
+				submitAjaxIsComplete = true;
+				errorTip.html(data.message || '')
+				if(data.code==0){
+					location.reload();
+				}
+			},'json');
+		}
+	});
+
+	outerWrapper.find('.captcha_input').on('keyup', function(){
+		errorTip.html( '' );
+		valiSucc = true;
+	});
+
+	outerWrapper.find('.go_to_shopcar_btn').on('click', function(){
+		fengkongDialog.destory();
+	})
+}
+
+function picCodeImgOnClick(event) {
+	event.preventDefault();
+	var _this = $(this);
+	_this.off('click');
+	setTimeout(function(){
+		_this.on('click', picCodeImgOnClick)
+	},1000);
+	var src = Meilishuo.config.captcha_url + 'Captcha/Captcha?token=9adfc893s&session='+Math.random()+'&type='+_this.data('ctype');
+	_this.attr('src',src);
+}
+
+function sendSms(event) {
+	event.preventDefault();
+	var _this = $(this)
+	_this.off('click').addClass('on_reciprocal')
+	var reciprocalNum = 60
+	count()
+	function count(){
+		if(reciprocalNum>0){
+			reciprocalNum--
+			_this.html(reciprocalNum)
+			setTimeout(function(){
+				count()
+			},1000)
+		} else {
+			_this.html('获取验证码').on('click', sendSms).removeClass('on_reciprocal')
+		}
+	}
+	var url = '/aj/risk_control/send_sms'
+	$.get(url, {
+		'smstype' : 'active_sm_captcha'
+	}, function(data) {
+		$('.error_tip').html(data.message || '')
+	}, 'json')
+}
+
+exports.showFKRelsWin = showFKRelsWin;

@@ -1,0 +1,19 @@
+<%#head.html%>
+<iframe id="inApp" style="display:none;" ></iframe>
+<script type="text/javascript">
+	window.setTimeout(function(){
+		window.location.href = 'http://m.meilishuo.com/download';
+	},2000);
+
+	var inApp = document.getElementById('inApp');
+	var ua = window.navigator.userAgent;
+	var isIphone = /iPhone/.test(ua)
+	,isAndroid = /Android/.test(ua)
+	,toOpenUrl = 'meilishuo://circle.meilishuo?json_params='+ encodeURIComponent('{"circle_id": "'+ <%= this.circle_id%> +'"}');
+	if (isAndroid) {
+		inApp.src = toOpenUrl;
+	} else if(isIphone) {
+		window.location.href = toOpenUrl;
+	}
+</script>
+<%#foot_simple.html%>

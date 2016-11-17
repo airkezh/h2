@@ -1,0 +1,105 @@
+<%#head.html%>
+<%
+	var pageData = this.pageData;
+	var fold_num = 3;
+%>
+
+<% pageData.top_banner && pageData.top_banner.forEach(function(data, index){ %>
+	<a class="top_img" href="<%= data.link || '###' %>"><img src="<%= data.img_src %>" alt="pic_<%= index+1 %>"></a>
+<% }); %>
+<% if(pageData.coupon && pageData.coupon.img_src){ %>
+	<div class="get_coupon"><img src="<%= pageData.coupon.img_src %>" alt=""></div>
+<% } %>
+
+<% if(pageData.page_target){ %>
+	<div class="page_target">
+		<img src="<%= pageData.page_target %>">
+		<p>
+			<a href="#intro_4"></a>
+			<a href="#goods_1"></a>
+			<a href="#goods_2"></a>
+		</p>
+	</div>
+<% } %>
+
+<% pageData.intro && pageData.intro.forEach(function(data, index){ %>
+	<a class="top_img" href="<%= data.link || '###' %>" id="intro_<%= index %>"><img src="<%= data.img_src %>" alt="intro_<%= index+1 %>"></a>
+<% }); %>
+
+<div id="goods_1" class="fold_wrap_top">
+<% var goods_length = pageData.goods_1.length; %>
+<% pageData.goods_1 && pageData.goods_1.forEach(function(data, index){ %>
+<% if(index == goods_length-1){return;} %>
+	<a class="top_img <%= index>fold_num && index != 8 ? 'hide_pic' : '' %>" href="<%= data.link || '###' %>"><img src="<%= data.img_src %>" alt="goods_1_<%= index+1 %>"></a>
+<% }); %>
+<div class="fold_wrap">
+	<a href="###" class="unfold"><img src="<%= pageData.other.unfold %>"></a>
+	<a href="###" class="fold none_f"><img src="<%= pageData.other.fold %>"></a>
+</div>
+<a class="top_img " href="<%= pageData.goods_1[goods_length-1].link %>"><img src="<%= pageData.goods_1[goods_length-1].img_src %>" alt="goods_1_<%= goods_length %>"></a>
+</div>
+
+<div id="goods_2" class="fold_wrap_top">
+<% var goods_length = pageData.goods_2.length; %>
+<% pageData.goods_2 && pageData.goods_2.forEach(function(data, index){ %>
+<% if(index == goods_length-1){return;} %>
+	<a class="top_img <%= index>fold_num && index != 8 ? 'hide_pic' : '' %>" href="<%= data.link || '###' %>"><img src="<%= data.img_src %>" alt="goods_2_<%= index+1 %>"></a>
+<% }); %>
+<div class="fold_wrap">
+	<a href="###" class="unfold"><img src="<%= pageData.other.unfold %>"></a>
+	<a href="###" class="fold none_f"><img src="<%= pageData.other.fold %>"></a>
+</div>
+<a class="top_img " href="<%= pageData.goods_2[goods_length-1].link %>"><img src="<%= pageData.goods_2[goods_length-1].img_src %>" alt="goods_2_<%= goods_length %>"></a>
+</div>
+
+<% if(pageData.other.theme_1 && pageData.other.theme_2){ %>
+	<div class="more_theme">
+		<a href="<%= pageData.other.theme_1_link || '###' %>"><img src="<%= pageData.other.theme_1 %>"></a>
+		<a href="<%= pageData.other.theme_2_link || '###' %>"><img src="<%= pageData.other.theme_2 %>"></a>
+	</div>
+<% } %>
+
+<div class="fold_wrap_top">
+<% pageData.more && pageData.more.forEach(function(data, index){ %>
+	<a class="top_img <%= index == 1 ? 'hide_pic' : '' %>" href="<%= data.link || '###' %>"><img src="<%= data.img_src %>" alt="more_<%= index+1 %>"></a>
+	<% if(index == 1){ %>
+		<div class="fold_wrap">
+			<a href="###" class="unfold"><img src="<%= pageData.other.unfold %>"></a>
+			<a href="###" class="fold none_f"><img src="<%= pageData.other.fold %>"></a>
+		</div>
+	<% } %>
+<% }); %>
+</div>
+
+<div id="bottom_share"></div>
+<% if(this.share){ %>
+	<%= requireFn('wapShare.html')({
+		'share' : this.share 
+		, 'shareTitle' : '选择分享到'
+		, '_JSstack' : this._JSstack
+		, '_JSmods' : this._JSmods
+	}); %>
+<% } %>
+<script type="text/html" id="toupdate">
+	<div class="toupdate">
+		<p>只有最新版美丽说客户端才可以享受优惠喔，亲快去升级吧。</p>
+		<a class="btn3zi delayclose" href="/goto/download/">去升级</a>
+	</div>
+</script>
+<script type="text/html" id="alertMsg">
+	<div class="toupdate">
+		<p style="text-align: center;"><?= this.msg?></p>
+		<a class="btn3zi delayclose" href="javascript:;">确定</a>
+	</div>
+</script>
+<script>
+	fml.vars.isLogin = '<%= this.isLogin %>';
+	fml.vars.isNewest = '<%= this.isNewest %>';
+	fml.vars.coupon_apply_code_1 = '20140618215059666d9e20dc';
+	fml.vars.coupon_apply_code_2 = '20140618214755e2825cfb4e';
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/biz/mz_box');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot_simple.html%>

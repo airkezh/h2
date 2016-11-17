@@ -1,0 +1,53 @@
+<%
+var tips = this.ViewTools.timeStuff({'2015/06/15 22:00:00' : '立即抢购'} , '加入购物车'  );
+%>
+<script type="text/html" id="posterWall">
+<?
+	var pt = this.pt * 100;
+	if(!pt){
+		pt = (this.v.poster_height / this.v.poster_width) * 100;	
+	}
+?>
+<div class="poster_main productBox">
+	<a class="poster_li link_box" href="<?= this.v.link.mob?>">
+		<figure>
+			<span style="padding-top:<?= pt ?>%" class="pic_load poster_img" asrc="<?= this.v.ginfo.goods_img?>" >
+			</span>
+			
+
+			<? if( this.v.ginfo.marks && this.v.ginfo.marks[0]){
+				var _l = 0; var style = '';
+				this.v.ginfo.marks.forEach(function(marks_data, index){
+					if(index > 1) return;
+			?>
+				<div class="Farm" style="<?= style ?>">
+					<div style="text-indent: -2px; font-weight: bold;position: absolute;width:100%;text-align: center;top:<?= (marks_data.text_margin_top - 14)+'px'?>; color:<?=marks_data.text_font_color?>"><?= marks_data.mark_text?></div>
+					<img class="Standard" src="<?= marks_data.img_url?>" style="width:<?= marks_data.img_width/1.3 ?>px;"/>
+				</div>
+			<?		
+				style = 'left: ' + (parseInt(marks_data.img_width/1.3) + 6) + 'px;';
+				});
+			} ?>
+
+		</figure>
+		<figcaption>
+		<div class="poster_info">
+			<p class="proTitle"><?= this.v.ginfo.goods_title?></p>
+			<div class="proPrice">
+				<span class="price"><i></i><?= (this.v.ginfo.goods_price + '').replace(/\.[0]*$/,'').replace(/[.]$/,'')?></span>
+				<?if(this.v.ginfo.origin_price){?>
+					<del  class="orig_price"><?= (this.v.ginfo.origin_price + '').replace(/\.[0]*$/,'').replace(/[.]$/,'')?></del>
+					<!--折扣
+					<span class="discount"><?= (+(this.v.ginfo.goods_price + '').replace(/\.[0]*$/,'').replace(/[.]$/,'').replace(/^￥/,'')/+(this.v.ginfo.origin_price + '').replace(/\.[0]*$/,'').replace(/[.]$/,'').replace(/^￥/,'')*10).toFixed(1)?>折</span>
+					-->
+				<?}?>
+				<?if(this.v.ginfo.discount){?>
+				<span class="discount"><?= this.v.ginfo.discount?></span>
+				<?}?>
+			</div>
+			<div class="buy_btn"><%= tips%></div>
+		</div>
+		</figcaption>
+	</a>
+</div>
+</script>

@@ -1,0 +1,247 @@
+<%#head.html%>
+<%
+	var addTrace = this.ViewTools.addTrace
+%>
+<!-- Top-->
+<div class="top_wrap">
+	<div class="top_bnr">
+		<ul class="banner">
+			<% this.top && this.top.forEach(function(v,k){ %>
+			<li>
+				<a class="pic" href="<%= addTrace(v.link,'beauty_rollpic_'+(k+1))%>" target="_blank" data-img="<%= v.show_pic %>"></a>
+			</li>
+		<% }); %>
+		</ul>
+	</div>
+	<div class="top_box">
+		<%
+			var query = this._Request_query;
+			var getLink = _extFn.getLink;
+			var mSubstr = _extFn.mSubstr;
+		%>
+		<% if(this.top.length > 1){ %>
+		<div class="bnr_btn_wrap">
+			<span class="bnr_btn bnr_btn_left"></span>
+			<span class="bnr_btn bnr_btn_right"></span>
+		</div>
+		<% } %>
+		<div class="attr_box">
+			<ul class="sec_attr">
+				<% this.catalog && this.catalog.forEach(function(grounp,i){ %>
+				<li class="list">
+					<div class="list_cont">
+						<h3 class="nav_tle red_f">
+								<%= grounp.word_name %> 
+						</h3>
+						<p class="listP">
+							<% 
+								this.catalog[i].sub_words && this.catalog[i].sub_words.forEach(function(grounp_sub,j){ 
+									var url;
+									if(grounp_sub.url){
+										url = grounp_sub.url;
+									}else{
+										url = 'http://www.meilishuo.com/search/baobei/?searchKey='+encodeURI(grounp_sub.word_name)+'&pstrc=_search='+encodeURI(grounp_sub.word_name)+'&filter=goods'+'&beauty_words_'+(i+1)+'_'+(j+1);
+									}
+							%>
+								<a href="<%= addTrace(url,'beauty_words_'+(i+1)+'_'+(j+1))%>" target="_blank" <% if(grounp_sub.isred == 1) {  %> class= "red_f" <% }; %> ><%= grounp_sub.word_name %></a>
+							<% }); %>
+						</p>
+					</div>
+					
+					<samp class="corner"><img src="http://d02.res.meilishuo.net/pic/_o/eb/3e/b1350da176bd7b575ebf5aadc281_6_9.ch.png"></samp>
+
+					<ul class="nav_list">
+						<% this.catalog[i].children && this.catalog[i].children.forEach(function(children,v){ %>
+						<li>
+							<h4 <% if(children.isred == 1) {  %> class= "red_f" <% }; %> >
+								<%= children.word_name %>
+							</h4>
+							<p>
+								<% 
+									this.catalog[i].children[v].sub_words && this.catalog[i].children[v].sub_words.forEach(function(data,k){  
+										var url;
+										if(data.url){
+											url = data.url;
+										}else{
+											url = 'http://www.meilishuo.com/search/baobei/?searchKey='+encodeURI(data.word_name)+'&pstrc=_search='+encodeURI(data.word_name)+'&filter=goods'+'&beauty_navwords_'+(i+1)+'_'+(v+1)+'_'+(k+1);
+										}
+								%>
+									<a href="<%= addTrace(url,'beauty_navwords_'+(i+1)+'_'+(v+1)+'_'+(k+1))%>"  target="_blank" <% if(data.isred == 1) {  %> class= "red_f" <% }; %> ><%= data.word_name %></a>
+								<% }); %>
+							</p>
+						</li>
+						<% }); %>
+					</ul>
+				</li>
+				
+				<% }); %>
+			</ul>
+		</div>
+		<div class="round">
+			<div class="adType">
+				<% this.top && this.top.length>1  && this.top.forEach(function(data){ %>
+				<a></a>
+				<% }); %>
+			</div>
+		</div>
+		<div class="bnr_box">
+			<ul class="pic_attr">
+				<% this.bnr_ct && this.bnr_ct.forEach(function(data,index){ %>
+				<li><a href="<%= addTrace(data.link,'beauty_pic_'+(index+1))%>" target="_blank"><img src="<%= data.pic %>" /></a></li>
+				<% }); %>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- Top END -->
+
+<!-- AUTO-->
+<div class="auto_wrap" style="margin-top:154px">
+</div>
+<!-- AUTO END -->
+
+<!-- MIDDLE-->
+<div class="middle_wrap">
+	<img src="http://d02.res.meilishuo.net/pic/_o/b6/56/e5434d402f9cb8d57440a1e45e12_235_66.cg.jpg"><img src="http://d02.res.meilishuo.net/pic/_o/ec/c1/7d2034535e29756ff0258a0f65bf_286_66.cf.jpg"><img src="http://d05.res.meilishuo.net/pic/_o/e3/6b/d814ee8e64c7ba23aabd7ee665be_305_66.cf.jpg"><img src="http://d05.res.meilishuo.net/pic/_o/e8/ff/f363e5fca0091a370e0116ce14c5_216_66.cg.png">
+</div>
+<!-- MIDDLE END -->
+
+<!-- GOODS-->
+<div class="goods">
+	<div class="first">
+		<div class="title">1F 品牌特卖</div>
+		<div class="one_goods">
+			<% this.goods.data.brands.forEach(function(data,index){ %>
+			<a href="<%= addTrace(data.item_url,'beauty_brand_'+(index+1))%>" target="_blank"><div style="background:url(<%= data.item_img %>);background-size:100% 100%;"><p class="time" time="<%= data.end_time %>">仅剩：<span>0</span>天<span>00</span>小时<span>00</span>分<span>00</span>秒</p></div></a>
+			<% }); %>
+		</div>
+	</div>
+	<div class="other other2F">
+		<div class="table_title">
+			<div class="title">2F 功效专区</div>
+			<div class="table_menu">
+				<ul>
+				<% if(this.goods.data.effect.length > 1){ %>
+					<% this.goods.data.effect.forEach(function(title,index){ %>
+					<li class="tab"><%= title.title %></li>
+					<% }); %>
+				<% } %>
+				</ul>
+			</div>
+		</div>
+		<div class="table">
+			<% this.goods.data.effect.forEach(function(data,index){ %>
+			<div class="table_content <% if(index>0){ %>div_hide<% } %>">
+				<%
+					data.list.forEach(function(goods,id){ 
+						var link = '/share/item/'+goods.twitter_id;
+				%>
+				<a href="<%= addTrace(link,'beauty_function_'+(index+1)+'_'+(id+1))%>" target="_blank" <% if((id+1)%5 == 0){ %>class="five"<% } %> ><div class="good">
+					<img class="img lazy_load" asrc="<%= goods.goods_img %>" alt="<%= goods.goods_title %>" />
+					<p><span class="price">￥<%= goods.goods_price %></span><span class="num">销量<%= goods.sale_num %></span></p>
+					<p><%= goods.goods_title %></p>
+				</div></a>
+				<% }); %>
+			</div>
+			<% }); %>
+		</div>
+	</div>
+	<div class="other other3F">
+		<div class="table_title">
+			<div class="title">3F 护肤专区</div>
+			<div class="table_menu">
+				<ul>
+				<% if(this.goods.data.skincare.length > 1){ %>
+					<% this.goods.data.skincare.forEach(function(title,index){ %>
+					<li class="tab"><%= title.title %></li>
+					<% }); %>
+				<% } %>
+				</ul>
+			</div>
+		</div>
+		<div class="table">
+			<% this.goods.data.skincare.forEach(function(data,index){ %>
+			<div class="table_content <% if(index>0){ %> div_hide <% } %>">
+				<% 
+					data.list.forEach(function(goods,id){ 
+						var link = '/share/item/'+goods.twitter_id;
+				%>
+				<a href="<%= addTrace(link,'beauty_skin_'+(index+1)+'_'+(id+1))%>" target="_blank" <% if((id+1)%5 == 0){ %>class="five"<% } %> ><div class="good">
+					<img class="img lazy_load" asrc="<%= goods.goods_img %>" alt="<%= goods.goods_title %>" />
+					<p><span class="price">￥<%= goods.goods_price %></span><span class="num">销量<%= goods.sale_num %></span></p>
+					<p><%= goods.goods_title %></p>
+				</div></a>
+				<% }); %>
+			</div>
+			<% }); %>
+		</div>
+	</div>
+	<div class="other other4F">
+		<div class="table_title">
+			<div class="title">4F 彩妆专区</div>
+			<div class="table_menu">
+				<ul>
+				<% if(this.goods.data.cosmetics.length > 1){ %>
+					<% this.goods.data.cosmetics.forEach(function(title,index){ %>
+					<li class="tab"><%= title.title %></li>
+					<% }); %>
+				<% } %>
+				</ul>
+			</div>
+		</div>
+		<div class="table">
+			<% this.goods.data.cosmetics.forEach(function(data,index){ %>
+			<div class="table_content <% if(index>0){ %> div_hide <% } %>">
+				<% 
+					data.list.forEach(function(goods,id){ 
+						var link = '/share/item/'+goods.twitter_id;
+				%>
+				<a href="<%= addTrace(link,'beauty_makeup_'+(index+1)+'_'+(id+1))%>" target="_blank" <% if((id+1)%5 == 0){ %>class="five"<% } %> ><div class="good">
+					<img class="img lazy_load" asrc="<%= goods.goods_img %>" alt="<%= goods.goods_title %>" />
+					<p><span class="price">￥<%= goods.goods_price %></span><span class="num">销量<%= goods.sale_num %></span></p>
+					<p><%= goods.goods_title %></p>
+				</div></a>
+				<% }); %>
+			</div>
+			<% }); %>
+		</div>
+	</div>
+	<div class="other other5F">
+		<div class="table_title">
+			<div class="title">5F 个人护理</div>
+			<div class="table_menu">
+				<ul>
+				<% if(this.goods.data.personal_care.length > 1){ %>
+					<% this.goods.data.personal_care.forEach(function(title,index){ %>
+					<li class="tab"><%= title.title %></li>
+					<% }); %>
+				<% } %>
+				</ul>
+			</div>
+		</div>
+		<div class="table">
+			<% this.goods.data.personal_care.forEach(function(data,index){ %>
+			<div class="table_content <% if(index>0){ %> div_hide <% } %>">
+				<% 
+					data.list.forEach(function(goods,id){ 
+						var link = '/share/item/'+goods.twitter_id;
+				%>
+				<a href="<%= addTrace(link,'beauty_personal_'+(index+1)+'_'+(id+1))%>" target="_blank" <% if((id+1)%5 == 0){ %>class="five"<% } %> ><div class="good">
+					<img class="img lazy_load" asrc="<%= goods.goods_img %>"  alt="<%= goods.goods_title %>" />
+					<p><span class="price">￥<%= goods.goods_price %></span><span class="num">销量<%= goods.sale_num %></span></p>
+					<p><%= goods.goods_title %></p>
+				</div></a>
+				<% }); %>
+			</div>
+			<% }); %>
+		</div>
+	</div>
+</div>
+<!-- GOODS END-->
+
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/change_beauty');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot.html%>

@@ -1,0 +1,25 @@
+<div class="attr_word <% if(this.tplName){%>w_attr<%}else{%>n_attr<%}%>">
+	<div class="attr_con">
+		<% this.attr_words && this.attr_words.map(function(data , index){%>
+		<%if(data.words.length > 0){%>
+		<div class="list">
+			<h2 class="f14_f"><%= data.type%></h2>
+			<div class="attr_list  <%if(this.attr_words.length-1 == index){%> last<%};%>">
+				<ul>
+					<% data.words.map(function(more , num){
+						var attrHref = more.attrid > 0 ? '/guang/attr/'+ more.attrid : '/attr/direct?searchKey='+ encodeURIComponent(more.title)	
+						%>
+						<li><a href="<%= attrHref%>" class="<%if(more.red){%>red_f<%}%>" target="_blank"><%= more.title%></a></li>
+						<%if(++num % 6 == 0 && num != data.words.length){%>
+						</ul>
+						<ul>
+						<%};%>
+					<%});%>
+				</ul>
+			</div>
+		</div>
+		<%}%>
+	<%});%>
+	</div>
+	<div class="clear_f"></div>
+</div>

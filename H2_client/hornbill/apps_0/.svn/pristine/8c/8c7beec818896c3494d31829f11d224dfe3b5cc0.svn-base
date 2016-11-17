@@ -1,0 +1,266 @@
+fml.define('app/search' , ['jquery','component/regString' , 'component/shareTmp' , 'component/urlHandle','component/cursorPostion'] , function(require , exports){
+	
+	var $ = require('jquery');
+	var regString = require('component/regString');
+	var shareTmp = require('component/shareTmp');
+	var urlHandle = require('component/urlHandle');
+	var cursorPostion = require('component/cursorPostion');
+
+	var GOODS = 1,USER = 2,MAGAZINE = 3, SHOP = 4;
+	var kyes = ['goods','user','magazine','shop'];
+
+	var $root = $('.ser_n');
+	var	$searchTable = $root.find('.search-table');
+	var	$searchList = $searchTable.find('.list');
+	var $cur = $root.find('.cur');
+	var $searchKey = $root.find('.searchKey');
+	var $searchSugg = $root.find('.searchType');
+	var $form = $root.find('.searchBox');
+
+
+	var sugg = {
+		delayId : null,
+		delayTime : 100,
+		isKeyupAjax : true,
+		lastVal : '',
+		url : '/aj/search/',
+		searchCache : { },
+		hide : function(){
+			$searchSugg.hide();
+		},
+		show : function(){
+			$searchSugg.show();
+		},
+		getType : function(){
+			return $searchTable.find('.cur').attr('data-type');
+		},
+		render : function(data){
+			if(data.result){
+				var html = shareTmp('searchList' , data);
+				$searchSugg.html(html);
+				this.show();
+			}else{
+				this.hide();
+			}
+		},
+		pullData : function(){
+			var type = this.getType();
+			var val = $.trim($searchKey.val());
+
+			//如果其他类型有sugg这里要做判断处理 TUDO
+			if(this.lastVal == val){
+				sugg.show();
+				return;
+			}else{
+				this.lastVal = val;
+			}
+
+			this.searchCache[type] = this.searchCache[type] || { };
+
+			var searchData = this.searchCache[type];
+
+			var that = this;
+
+			clearTimeout(that.delayId);
+
+			that.delayId = setTimeout(function(){
+				if(searchData[val]){
+					that.render(searchData[val]);
+				}else{
+					$.get(that.url,{searchKey : encodeURIComponent(val)},function(data){
+						searchData[val] = data;
+						that.render(data);
+					},'JSON');
+				}
+			},that.delayTime);
+		},
+		selectItem : function(index,notChange){
+			var $item = $searchSugg.find('li');
+			var len = $item.length;
+			if(len){
+				var num = $item.filter('.search_bg').index() || 0;
+				if(index == 'up'){
+					num -= 1;
+				}else if(index == 'down'){
+					num += 1;
+				}else{
+					num = index;
+				}
+				if(num < 0){
+					num = len - 1;
+				}
+				if(num >= len){
+					num = 0;
+				}
+				var $selItem = $item.eq(num);
+				$item.removeClass('search_bg');
+				$selItem.addClass('search_bg');
+				if(!notChange){
+					$searchKey.val($selItem.text());
+				}
+			}
+		}
+	}
+
+	var form = {
+		changeField : function(key,val){
+			if(typeof key == 'object'){
+				for(var i in key){
+					this.changeField(i,key[i]);
+				}
+			}else{
+				$form.find(key).val(val);
+			}
+		},
+		changeType : function(ele,fields){
+			var $ele = $(ele);
+			var curType = $ele.attr('data-type');
+
+			$searchTable.find('span').removeClass('cur');
+			$ele.addClass('cur');
+
+			// $cur.text($ele.text()).attr('data-type',curType);
+			
+			// 修复光标问题 ＝＝#
+			// cursorPostion.setCaretPosition($searchKey,$searchKey.val().length);
+
+			var defFields = {
+				'.filter' : kyes[curType-1] || '',
+				'.search_type' : curType
+			}
+
+			if(curType == GOODS){ //目前只有宝贝有placeholder提示
+				defFields['.search_frm'] = 'searchsuggestion';
+				$searchKey.attr('placeholder',$searchKey.attr('data-placeholder'));
+			}else{
+				defFields['.search_frm'] = '';
+				$searchKey.attr('placeholder','');
+			}
+
+			this.changeField(defFields);
+
+			if(fields){
+				this.changeField(fields);
+			}
+		},
+		submit : function(){
+			$form[0].submit();
+		}
+	}
+
+	function inputHandle(ele){
+		var val = $.trim($(ele).val());
+		if(val == '' || sugg.getType() != GOODS){
+			sugg.hide();
+			return;
+		}
+		form.changeField('.suggest_frm','');
+		sugg.pullData();
+	}
+
+	function init(){
+
+		var setTimeId;
+		var isIE9 = $.browser.msie && $.browser.version == '9.0';
+		var isSuppInput = 'oninput' in document;
+		var autoFocus = false;
+		var urlparam = urlHandle.getParams(location.search);
+
+		if(urlparam.searchKey){
+			autoFocus = true;
+			$searchKey.val(urlparam.searchKey);
+			form.changeType($searchTable.find('span[data-type='+(urlparam.searchType||1)+']'));
+		}
+
+		// //左侧切换功能
+		// $searchTable.hover(function(){
+		// 	$searchList.show();
+		// },function(){
+		// 	$searchList.hide();
+		// });
+
+		$searchTable.delegate('span','click',function(){
+			form.changeType(this);
+		});
+
+		// $searchList.delegate('a','click',function(){
+		// 	$searchList.hide();
+		// 	form.changeType(this);
+		// });
+
+		//搜素sugg功能
+		if(isSuppInput){
+			$searchKey.on('input',function(e){
+				inputHandle(this);
+			});
+		}else{
+			$searchKey.on('propertychange',function(e){
+				if(!sugg.isKeyupAjax){ //屏蔽js改变值也会触发的特性
+					sugg.isKeyupAjax = true;
+					return;
+				}
+				inputHandle(this);
+			});
+		}
+
+		$searchKey.on('focus',function(){
+			if(autoFocus){ //这里要处理下结果页自动focus的触发问题
+				autoFocus = false;
+				return;
+			}
+			clearTimeout(setTimeId);
+			inputHandle(this);
+		});
+
+		$searchKey.on('keyup',function(e){
+			var keyCode = e.keyCode;
+			if(keyCode == 38 || keyCode == 40){ //上下方向键
+				sugg.isKeyupAjax = false;
+				var dir = keyCode == 38 ? 'up' : 'down';
+				sugg.selectItem(dir);
+				form.changeField('.suggest_frm','key');
+			}
+			if(isIE9 && keyCode == 8){ //IE9删除键不触发inpput事件，这里hack下 ＝＝！
+				inputHandle(this);
+			}
+
+		}).on('blur',function(){
+			/**
+			 * @date: 2014-10-11
+			 * @commented by sunzhidong
+			 *
+			 * 该 blur 事件会先于 $searchSugg 的 click 事件触发，两个事件之间存在时间差
+			 * 在 Mac 上，设置 Trackpad 使用 tab 替代 click，则时间差为 4ms 左右，而使用
+			 * 默认的 click 方式，时间差 > 160ms。(未测试鼠标，但结果应该差不多)
+			 * 所以此处隐藏 sugg 的延时需要大于 160ms。
+			 *
+			 * PS: click 事件其实是在 mouseup 之后触发，如果一直按着鼠标键，超过 300ms 后释放，
+			 *     还是会出问题，但目前没必要考虑这种特殊情况了。
+			 */
+			setTimeId = setTimeout(function(){
+				sugg.hide();
+			},300);
+
+			// hack 下
+			if(sugg.getType() != GOODS){
+				$searchKey.attr('placeholder','');
+			}
+		});
+
+		$searchSugg.delegate('li','mouseenter',function(){
+			sugg.selectItem($(this).index(),true);
+		}).delegate('li','click',function(){
+			form.changeField('.suggest_frm','mouse');
+			$searchKey.val($.trim($(this).text()));
+			form.submit();
+		});
+
+	}
+
+	return {
+		init : function(){
+			init();
+		}
+	}
+
+});

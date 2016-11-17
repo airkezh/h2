@@ -1,0 +1,45 @@
+<%#head.html%>
+<%
+	var head = this.head || {};
+	var headData = head.data || {};
+	var menu = headData.menu || [];
+%>
+<% var getLink = _extFn.getLink; %>
+<div class="wrap" id="wrap">
+	<div id="clockBox" class="clock-box">
+		<div class="time_down">
+			<div class="clock">
+				<div class="clock_center">
+					距离活动结束还有：
+					<span class="time" time="<%= headData.count_down %>"><b></b>天<b></b>时<b></b>分<b></b>秒</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="banner-box">
+		<a href="<%= headData.url || 'javascript:;' %>" style="background:url(<%= headData.image_url %>) repeat center top;">
+		</a>
+	</div>
+	<div class="tab-new" id="tabNew">
+		<div class="menu-inner">
+			<a href="/desire/newPush<%=getLink({'tab':0,'cid':this.cid})%>#tabNew" class="<%= (!this.tab || this.tab=='0' || this.tab>2 || isNaN(this.tab)) ? 'cur' : '' %>"><%= menu[0] %></a>
+			<a  href="/desire/newPush<%=getLink({'tab':1,'cid':this.cid})%>#tabNew" class="<%= this.tab==1 ? 'cur' : '' %>"><%= menu[1] %></a>
+			<a  href="/desire/newPush<%=getLink({'tab':2,'cid':this.cid})%>#tabNew" class="<%= this.tab==2 ? 'cur' : '' %>"><%= menu[2] %></a>
+		</div>
+	</div>
+	<div class="goods_wall_box">
+		<div class="spinner midSpinner"></div>
+		<div class="goods_wall"></div>
+	</div>
+	<div class="spinner botSpinner none_f"></div>
+	<div class="paging_panel c_f none_f">
+		<%#paging.html%>
+	</div>
+	<div class="clear_f"></div>
+	<%#desire/newPushPoster.html%>
+</div>
+<% $_ENGINE_SELF.callFn("useModule")("fml.use('page/poster0');", this._JSstack , this._JSmodsFast ); %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/desire/newPush');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

@@ -1,0 +1,20 @@
+<%#head.html%>
+<div class="main">
+	<form action="" id="form" method="get" id="user_info">
+		<textarea id="fb_content" required="required" placeholder="请尽量详细的描述问题，花小美会第一时间帮您解决"></textarea>
+		<input class="ipt" type="tel" required="required" placeholder="请填写QQ或手机号码，方便我们与您取得联系" id="telqq" name="telqq" pattern="[0-9]" />
+		<p class="sure"><input class="submit btn" type="submit" value="确认提交" /></p>
+	</form>
+	<div class="info">
+		<p>为了减少等待时间， 您不妨使用以下方式与我们联系</p>
+		<% var qq = this.os.iphone ?'134905793' :'186282642'; %>
+		<p class="qqbox"><span class="qq">QQ群：<%=qq%></span><span class="tel">客服电话：400-080-0577</span></p>
+	</div>
+</div>
+<script>
+fml.vars.accessToken= '<%= this.accessToken%>'
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/feedback');
+ _use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

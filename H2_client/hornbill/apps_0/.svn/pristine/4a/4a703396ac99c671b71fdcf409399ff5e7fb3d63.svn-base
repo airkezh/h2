@@ -1,0 +1,83 @@
+		<%
+			var shopping = this.shopping
+				, express = this.express
+				, order = this.order
+				, service = this.service
+				, aftersale = this.aftersale
+				, notice = this.notice;
+			var shoppingData = shopping && shopping.data && shopping.data.slice(0,6)
+				, expressData = express && express.data && express.data.slice(0,6)
+				, orderData = order && order.data && order.data.slice(0,6)
+				, serviceData = service && service.data && service.data.slice(0,6)
+				, aftersaleData = aftersale && aftersale.data && aftersale.data.slice(0,6);
+		%>
+
+		<div class="common-problems">
+			<div class="problems-th">
+				<a class="tabArea active" href="javascript:void(0)">购物指南</a>
+				<a class="tabArea" href="javascript:void(0)">配送服务</a>
+				<a class="tabArea" href="javascript:void(0)">支付及退款</a>
+				<a class="tabArea" href="javascript:void(0)">特色服务</a>
+				<a class="tabArea" href="javascript:void(0)">退款退货</a>
+			</div>
+			<div class="problems-td">
+				<ul class="contArea">
+					<li><a href="/helpcenter/shopping/">购物流程</a></li>
+					<%if(shoppingData && shoppingData.length > 0){
+						shoppingData.forEach(function (item){
+					%>
+						<li><a href="/helpcenter/detail/<%= item.know_id%>"><%= item.title%></a></li>
+					<% });
+					}
+					%>
+				</ul>
+				<ul class="contArea none_f">
+					<%if(expressData && expressData.length > 0){
+						expressData.forEach(function (item){
+					%>
+						<li><a href="/helpcenter/detail/<%= item.know_id%>"><%= item.title%></a></li>
+					<% });
+					}
+					%>
+				</ul>
+				<ul class="contArea none_f">
+					<%if(orderData && orderData.length > 0){
+						orderData.forEach(function (item){
+					%>
+						<li><a href="/helpcenter/detail/<%= item.know_id%>"><%= item.title%></a></li>
+					<% });
+					}
+					%>
+				</ul>
+				<ul class="contArea none_f">
+					<%if(serviceData && serviceData.length > 0){
+						serviceData.forEach(function (item){
+					%>
+						<li><a href="/helpcenter/detail/<%= item.know_id%>"><%= item.title%></a></li>
+					<% });
+					}
+					%>
+				</ul>
+				<ul class="contArea none_f">
+					<%if(aftersaleData && aftersaleData.length > 0){
+						aftersaleData.forEach(function (item){
+					%>
+						<li><a href="/helpcenter/detail/<%= item.know_id%>"><%= item.title%></a></li>
+					<% });
+					}
+					%>
+				</ul>
+			</div>
+		</div>
+
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use(['app/doota/tab'],function(){
+		this.tab.bind({
+	        'tagPnl': '.problems-th',
+	        'tabTag': '.tabArea',
+	        'activeTagClass': 'active',
+	        'contents': '.contArea'
+	    })
+	});
+_use:", this._JSstack , this._JSmods ); %>

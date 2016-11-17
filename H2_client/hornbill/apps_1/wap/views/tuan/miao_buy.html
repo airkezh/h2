@@ -1,0 +1,71 @@
+<?if(this.item.length){?>
+  <ul>
+  <?for(var v=0;v<this.item.length;v++){
+  data=this.item[v];
+  var _url="javascript:void(0);",
+  detail_url=fml.vars.joinurl('twitter_single', {'twitter_info' : {'twitter_id' : data.twitter_id , 'is_doota' : 1}}, fml.vars._os, fml.vars._r, '/share/item/'+data.twitter_id);
+  if(fml.vars.isexit(fml.vars.tids,data.twitter_id)){
+      var btn_content="<i class='clock'></i>已设提醒",
+      btn_class="reminded_btn";
+    }else{
+      if(data.unix_time<=600){
+        var btn_content="<i class='clock'></i>即将开抢",
+            btn_class="reminded_btn";
+      }else{
+        var btn_content="<i class='clock'></i>开抢提醒",
+        btn_class="remind_btn";
+    }
+  }
+  var tipcontent=data.status==0 ? "<span class='red_f'>"+data.joiner_num+"</span>人准备抢": "剩余<span class='red_f'>"+data.repertory+"</span>件",
+  tiptime=data.status==0 ?
+  "距开始  <i class='red_f time' time='"+data.unix_time+"'></i>" : (data.status==2?"距结束  <i class='red_f'>00时00分00秒00</i>":"距结束  <i class='red_f time' time='"+data.unix_time_to_end+"'></i>");
+   switch(data.status){
+    case 1:       
+      btn_content="<a href='"+detail_url+"'>￥立即购买</a>";
+      btn_class="buy_btn";
+      tipbg="silvertip";
+      _url=detail_url;
+      break;
+    case 2:
+      btn_content="已结束";
+      detail_url=_url;
+      tipbg="silvertip";
+      btn_class="empty_btn";
+      break;
+    case 3:
+      btn_content="已抢光";
+      detail_url=_url;
+      tipbg="silvertip";
+      btn_class="over_btn";
+      break;
+  } ?>
+  <li class="zhengdian good_box" twid="<?=data.twitter_id?>" shopid="<?=data.shop_id?>" stime="<?=data.start_time?>">
+    <figure>            
+      <a class="<?= btn_class=='remind_btn' ? '': btn_class?>" href="<?=detail_url?>">
+        <img src="<?=data.goods_image?>" />         
+      </a>
+      <span class="red_f">限量<?=data.total_limit?>件</span>
+    </figure>
+    <ul class="desc">
+      <li class="f_15 dotline"><a class="<?= btn_class=='remind_btn' ? '': btn_class?>" href="<?=detail_url?>"><?=data.goods_name?></a></li>
+      <li class="dotline"><?=tipcontent?></li>
+      <li><span class="f_23 red_f now_price">￥<?=data.off_price?></span><s class="old_price">￥<?=data.origin_price?></s></li>
+      <li class="<?= btn_class?> status_btn" strtype="<?=data.type?>"><?= btn_content?></li>
+      <li><?=tiptime?></li>
+    </ul>
+    <?if(data.type!=2){?>
+    <div class="mark<?=data.type==1?'':' miao'?>">
+        <?if(data.type==0){?>
+          <div><?=data.tag_name?></div>                             
+        <?}else{?>
+          <div class="jian">
+            <?=data.tag_name?>
+            <!-- 满100<br/>减30 -->
+          </div>
+        <?}?>
+    </div> 
+    <?}?>    
+  </li>             
+<?}?>           
+  </ul> 
+<?}?>

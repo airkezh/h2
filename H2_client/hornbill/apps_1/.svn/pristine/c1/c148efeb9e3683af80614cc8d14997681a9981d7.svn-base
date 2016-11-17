@@ -1,0 +1,395 @@
+/* 对话公共部分 */
+[class^="message"] {
+  position : relative;
+  .flexbox();
+  margin   : 30*@px 80*@px 30*@px 28*@px;
+
+  .bd {
+    max-width   : 100%;
+    margin-left : 20*@px;
+  }
+
+  .infobar {
+    max-width     : 100%;
+    margin-left   : 5px;
+    margin-bottom : 10*@px;
+    line-height   : 32*@px;
+    overflow      : hidden;
+    font-size     : 0;
+    .ellipsis;
+  }
+
+  .time {
+    float     : right;
+    font-size : 24*@px;
+    color     : #999;
+  }
+
+  .content {
+    position           : relative;
+    width              : 100%;
+    padding            : 25*@px 20*@px;
+    font-size          : 30*@px;
+    line-height        : 40*@px;
+    border-radius      : 5px;
+    -webkit-box-sizing : border-box;
+    -moz-box-sizing    : border-box;
+    box-sizing         : border-box;
+    word-break         : break-all;
+    -webkit-box-shadow : 0 1px 3px 0 rgba(0, 0, 0, .1);
+    -moz-box-shadow    : 0 1px 3px 0 rgba(0, 0, 0, .1);
+    box-shadow         : 0 1px 3px 0 rgba(0, 0, 0, .1);
+
+    &::before {
+      content      : "";
+      position     : absolute;
+      top          : 20*@px;
+      left         : -10px;
+      border       : 5px solid;
+      border-color : transparent #fff transparent transparent;
+    }
+  }
+}
+
+.avatar {
+  display       : inline-block;
+  min-width     : 80*@px;
+  width         : 80*@px;
+  height        : 80*@px;
+  border-radius : 50%;
+  overflow      : hidden;
+
+  img {
+    width         : 100%;
+    border-radius : 50%;
+  }
+}
+
+.nickname {
+  display      : inline-block;
+  max-width    : 70%;
+  margin-right : 20*@px;
+  font-size    : 28*@px;
+  color        : #666;
+  .ellipsis;
+}
+
+.mine-message {
+  -webkit-flex-direction : row-reverse;
+  flex-direction         : row-reverse;
+  margin-left            : 80*@px;
+  margin-right           : 20*@px;
+
+  .nickname {
+    float       : right;
+    margin-left : 20*@px;
+    color       : #333;
+  }
+
+  .time {
+    float : left;
+  }
+
+  .bd {
+    margin : 0 20*@px 0 0;
+  }
+
+  .infobar {
+    margin-left  : 0;
+    margin-right : 5px;
+    text-align   : right;
+  }
+}
+
+/* 对话内容(文本) */
+.message-text {
+  .content {
+    background-color : #fdfdfd;
+  }
+}
+
+/* 我的发言 */
+.mine-message {
+  .content {
+    color            : #fff;
+    background-color : #666;
+
+    &::before {
+      left         : auto;
+      right        : -10px;
+      border-color : transparent transparent transparent #666;
+    }
+  }
+}
+
+/*
+  对话内容(单品)
+  目前图文混合(textpic)用的样式和单品的一样
+*/
+.message-goods {
+  .bd {
+    width : 81.25%;
+  }
+
+  .content {
+    padding : 0;
+  }
+
+  .img-container {
+    position                : relative;
+    width                   : 100%;
+    border-top-left-radius  : 5px;
+    border-top-right-radius : 5px;
+    background-repeat       : no-repeat;
+    background-size         : cover;
+  }
+
+  .goods-desc {
+    font-size        : 28*@px;
+    line-height      : 40*@px;
+    background-color : #fff;
+    text-align       : center;
+  }
+
+  .goods-like {
+    padding                    : 25*@px 0;
+    color                      : #666;
+    background-color           : #fff;
+    text-align                 : center;
+    border-bottom-left-radius  : 5px;
+    border-bottom-right-radius : 5px;
+  }
+
+  /* 有音频就要为播放按钮多留出空来 */
+  .has-audio {
+    padding-top : 76*@px;
+  }
+
+  .title {
+    color : #595056;
+  }
+
+  .price {
+    margin-top  : 20*@px;
+    font-size   : 34*@px;
+    line-height : 1;
+    color       : #f66;
+  }
+}
+
+.has-text {
+  .goods-desc {
+    padding : 16*@px 46*@px;
+  }
+
+  .goods-like {
+    border-top : 1px solid #e9e9e9;
+  }
+
+  /* 有音频就要为播放按钮多留出空来 */
+  .has-audio {
+    padding-top : 76*@px;
+  }
+}
+
+/*
+  使用 -webkit-clip-path 来模拟客户端中图片裁剪的样式
+*/
+.support-clip-path .message-goods {
+  .content::before {
+    content : none;
+  }
+
+  .img-container {
+    left              : -10px;
+    padding-right     : 10px;
+    -webkit-clip-path : polygon(10px 0, 100% 0, 100% 100%, 10px 100%, 10px 20px, 5px 15px, 10px 10px);
+  }
+}
+
+.mine-message.message-goods {
+  .img-container {
+    left              : 0;
+    right             : -10px;
+    padding-right     : 0;
+    padding-left      : 10px;
+    -webkit-clip-path : polygon(0 0, 98% 0, 98% 10px, 99% 15px, 98% 20px, 98% 100%, 0 100%);
+  }
+}
+
+/*
+  miscpic 中的转发信息
+*/
+.repost-info-wrap {
+  position   : relative;
+  width      : 120%;
+  height     : 45*@px;
+  margin-top : 30*@px;
+  font-size  : 21*@px;
+  color      : #999;
+
+  .repost-info {
+    position         : absolute;
+    padding          : 10*@px 35*@px;
+    background-color : #fff;
+    border-radius    : 10px;
+  }
+
+  .repost-user, .repost-circle {
+    display        : inline-block;
+    margin         : 0 10*@px;
+    vertical-align : bottom;
+    max-width      : 45%;
+    .ellipsis;
+  }
+
+  .keyword {
+    display : inline-block;
+    color   : #ff91aa;
+  }
+}
+
+@media only screen
+and (max-device-width : 320px) {
+  .repost-info-wrap {
+    .repost-user, .repost-circle {
+      max-width : 30%;
+    }
+  }
+}
+
+/* 通用 link 消息 */
+.message-commonlink {
+  .content {
+    background-color : #fff;
+  }
+
+  .title {
+    font-size : 30*@px;
+    color     : #595056;
+  }
+
+  .commonlink-wrap {
+    display  : block;
+    overflow : hidden;
+  }
+
+  .img {
+    float         : left;
+    width         : 140*@px;
+    border-radius : 3px;
+  }
+
+  .intro {
+    margin-left  : 165*@px;
+    margin-right : 30*@px;
+    font-size    : 24*@px;
+    color        : #80737b;
+  }
+}
+
+/* 消息 */
+.message-notice {
+  display     : block;
+  margin      : 30*@px auto;
+  padding     : 0 20*@px;
+  font-size   : 22*@px;
+  line-height : 1.2;
+  color       : #999;
+  text-align  : center;
+}
+
+/*
+  圈主昵称旁的小皇冠图标
+*/
+.icon-crown {
+  display          : none;
+  margin-left      : 6*@px;
+  margin-right     : 20*@px;
+  width            : 28*@px;
+  height           : 26*@px;
+  background-image : url("http://d03.res.meilishuo.net/pic/_o/cf/16/ff13c5bc559678719a19eecf7cfe_24_28.cf.png");
+  background-size  : cover;
+  vertical-align   : baseline;
+}
+
+.admin-message {
+  .nickname {
+    margin-right : 0;
+  }
+
+  .icon-crown {
+    display : inline-block;
+  }
+}
+
+.admin-message.mine-message {
+  .nickname {
+    margin-left : 0;
+  }
+
+  .icon-crown {
+    margin-left  : 20*@px;
+    margin-right : 6*@px;
+  }
+}
+
+/**
+  2009 年的 flex 语法不支持 flex-direction : row-reverse;
+  所以使用 float 模拟下
+*/
+.old-webkit .mine-message {
+  display : block;
+
+  .avatar {
+    float : right;
+  }
+
+  .bd {
+    float      : right;
+    text-align : left;
+  }
+}
+
+/**
+  音频转换的加载动画
+*/
+.icon-loading {
+  display          : none;
+  height           : 36*@px;
+  width            : 36*@px;
+  background-image : url("http://d04.res.meilishuo.net/pic/_o/bc/79/94609860c2eb27fb0421d1630fd7_36_36.cg.png");
+  margin-top       : 8*@px;
+  background-size  : contain;
+  .animation(rotate .8s 0s linear infinite);
+}
+
+.is-loading {
+  .icon-play {
+    display : none;
+  }
+
+  .icon-loading {
+    display : inline-block;
+  }
+}
+
+@-webkit-keyframes rotate {
+  from {
+    -webkit-transform : rotate(0deg);
+    transform         : rotate(0deg);
+  }
+  to {
+    -webkit-transform : rotate(360deg);
+    transform         : rotate(360deg);
+  }
+}
+
+@keyframes rotate {
+  from {
+    transform : rotate(0deg);
+  }
+  to {
+    transform : rotate(360deg);
+  }
+}

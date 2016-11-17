@@ -1,0 +1,1 @@
+fml.define('order_pc/cart/index',['order_pc/cart/cart'],function(require){})

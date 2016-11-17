@@ -1,0 +1,47 @@
+<%# head.html%>
+<div class="main">
+	<%# help/help-title.html%>
+	<div class="help-crumbs">
+		<a href="/helpcenter/">帮助中心</a> > 
+		<a href="/helpcenter/issue/">常见问题</a> > 
+		<a class="red_f">购物指南</a>
+	</div>
+	<div class="common-problems shopping">
+		<div class="problems-th">
+			<a class="tabArea active" href="javascript:void(0)">挑选宝贝</a>
+			<a class="tabArea" href="javascript:void(0)">提交订单</a>
+			<a class="tabArea" href="javascript:void(0)">确认付款</a>
+			<a class="tabArea" href="javascript:void(0)">收货</a>
+			<a class="tabArea" href="javascript:void(0)">评价</a>
+		</div>
+		<div class="problems-td">
+			<p class="contArea">
+				亲爱的爱美丽们：
+			您可以通过网站搜索或者商品分类，找到心仪的宝贝，并将宝贝加入购物车。<a class="red_f" href="http://www.meilishuo.com/">立即选购>></a>
+			</p>
+			<p class="contArea none_f">
+				爱美丽们将心仪的宝贝加入购物车、或者立即购买，提交订单即可确认结算，并确认好收货信息。
+			</p>
+			<p class="contArea none_f">
+				支持多种付款方式、付款成功后，就可以与宝贝相遇了。
+			</p>
+			<p class="contArea none_f">
+				收到宝贝后爱美丽们一定要先自己查收，确认没问题后，在订单页面点击“确认收货”（发货10天未操作，系统自动确认收货）
+			</p>
+			<p class="contArea none_f">
+				爱美丽们在高兴之余也别忘了评价晒单哦，会有奖励的，快来晒晒。
+			</p>
+		</div>
+	</div>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use(['app/doota/tab'],function(){
+		this.tab.bind({
+	        'tagPnl': '.problems-th',
+	        'tabTag': '.tabArea',
+	        'activeTagClass': 'active',
+	        'contents': '.contArea'
+	    })
+	});
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

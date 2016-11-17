@@ -1,0 +1,129 @@
+<%#head.html%>
+<%
+	var startTime = '2014/03/20 12:00:00'
+		,endTime = '2014/03/27 00:00:00'
+		,today = new Date();
+	startTime = new Date(Date.parse(startTime));
+	endTime = new Date(Date.parse(endTime));
+	var isActStart = false;
+	var day = 20 - today.getDate();
+	if(startTime < today){
+		day = 27 - today.getDate();
+		isActStart = true;
+	}
+%>
+<% if(endTime < today){ %>
+	<h2 style="text-align: center;line-height: 100px;">本活动已经结束哦~</h2>
+<% } else{ %>
+	<div class="main">
+		<div class="countdown<%= isActStart ? ' countdown_start' : '' %>"><div class="cd_left<%= isActStart ? ' cd_start' : '' %>"></div><div class="cd_right cd_p<%= day %>"></div></div>
+		<% var pageData = this.pageData; %>
+		<% pageData.head.length > 0 && pageData.head.map(function(data, index){ %>
+			<div class="head_bg" style="background-image:url('<%= data.img_src %>');height:<%= data.h %>px;"></div>
+		<% }); %>
+		<div class="coupon_wrap">
+			<div class="title"></div>
+			<div class="content">
+				<% var couponData = this.couponData; %>
+				<% pageData.coupon.map(function(data, index){ %>
+				<% 
+					var couponData_now = {};
+					var tip_aa = false;
+					for(var i = 0;i < 3;i++){
+						if(couponData[i] && couponData[i].type == data.type){
+							tip_aa = true;
+							couponData_now = {
+								can_use : couponData[i].can_use,
+								left_amount : couponData[i].left_amount,
+								coupon_apply_code : couponData[i].coupon_apply_code
+							}
+						}
+					}
+
+					if(!tip_aa){
+						couponData_now = {
+							can_use : 1,
+							left_amount : 0,
+							coupon_apply_code : 0
+						};
+					}
+					var user_status = ' can_get';
+					if(couponData_now.can_use == 1){ user_status = ' zero'; }
+					if(couponData_now.can_use == 2){ user_status = ' has_get'; }
+				%>
+					<div class="coupon_box">
+						<p>有效期至3月27日12:00</p>
+						<img src="<%= data.img_src %>" alt="">
+						<p class="coupon_num left_num <%= couponData_now.left_amount == 0 ? '' : 'none_f' %>">今天<%= data.tatol %>张已领完</p>
+						<p class="coupon_num left_zero <%= couponData_now.left_amount > 0  ? '' : 'none_f' %>"><%= couponData_now.left_amount > 0 ? ('今天还剩<span>' + couponData_now.left_amount + '</span>张') : '' %></p>
+						<div class="btn_status<%= user_status %>" type_coupon="0" code="<%= couponData_now.coupon_apply_code %>" coupon="<%= data.type %>"></div>
+					</div>
+				<% }); %>
+			</div>
+		</div>
+		<div class="coupon_time">
+			<div class="title"><span id="coupon100_fix" class="fix_target"></span></div>
+			<div class="content">
+				<img src="<%= pageData.coupon_100.img_src %>" alt="">
+				<div class="rule" style="background-image:url('<%= pageData.coupon_100.rule %>');">
+					<div class="time_wrap">
+						<% 
+							var date_now = new Date();
+							var couponS = '';
+							startTime = new Date(Date.parse(this.coupon_100.begin_time));
+							var no_time = false;
+							if(this.coupon_100.left_amount != 0 && startTime < date_now){
+								no_time = true;
+								couponS = 'can_get';
+							}
+							startTime.setMinutes(30);
+							if(this.coupon_100.left_amount == 0 && startTime > date_now){ 
+								couponS = 'has_over';
+								no_time = true;
+							}
+							if(this.coupon_100.can_use == 2){
+								couponS = 'has_get';
+							}
+							var end_time_100 = new Date(Date.parse(this.coupon_100.end_time));
+							if(end_time_100.getHours() == 23){
+								end_time_100.setHours(9);
+								end_time_100.setDate(end_time_100.getDate()+1);
+							} else if(date_now.getHours() < 10){
+								end_time_100.setHours(9);
+							}
+							var lastDate = (end_time_100 - date_now)/1000+1;
+						%>
+						<p class="timeStamp_wrap timeStamp <%= no_time ? '' : 'no_timeStamp'%>" time="<%= lastDate %>"><span id="hour">00</span>: <span id="sec">00</span>: <span id="min">00</span></p>
+					</div>
+					<div class="btn_status <%= couponS %>" type_coupon="1" code="<%= this.coupon_100.coupon_id || 0 %>" coupon="<%= this.coupon_100.type %>">限量抢</div>
+				</div>
+			</div>
+		</div>
+		<div class="shop_wrap">
+			<div class="title"><span id="couponshop_fix" class="fix_target"></span><a href="<%= pageData.shopmore %>" target="_blank" class="title_con"></a></div>
+			<div class="content">
+				<% pageData.shop.forEach(function(data){ %>
+					<div class="shop_box"><a href="<%= data.link %>" target="_blank"><img src="<%= data.src %>" alt=""><span class="shop_attention">关注领券></span></a></div>
+				<% }); %>
+			</div>
+		</div>
+		<div class="fix_nav">
+			<a href="/biz/March_sale/apparel/" target="_blank">回主会场</a>
+			<a class="coupon_intro" href="<%= pageData.coupon_intro %>" target="_blank">现金券使用说明</a>
+			<ul>
+				<li><a href="/biz/March_sale/apparel/#clothing" target="_blank">衣服</a></li>
+				<li><a href="/biz/March_sale/apparel/#skirt" target="_blank">裙子</a></li>
+				<li><a href="/biz/March_sale/apparel/#trousers" target="_blank">裤子</a></li>
+				<li><a href="/biz/March_sale/apparel/#shoes" target="_blank">鞋子</a></li>
+				<li><a href="/biz/March_sale/apparel/#bag" target="_blank">包包</a></li>
+				<li><a href="/biz/March_sale/apparel/#accessories" target="_blank">首饰</a></li>
+				<li><a href="/biz/March_sale/apparel/#tuan">团购</a></li>
+				<li><a href="/biz/March_sale/apparel/#beauty">美妆</a></li>
+			</ul>
+		</div>
+	</div>
+	<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+		fml.use('page/huodong/March_apparel_sale_detail');
+		_use:", this._JSstack , this._JSmods); %>
+<% } %>
+<%#foot.html%>

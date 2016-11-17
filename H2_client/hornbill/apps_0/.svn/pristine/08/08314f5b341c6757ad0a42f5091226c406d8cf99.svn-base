@@ -1,0 +1,332 @@
+/*common*/
+require('wap/zepto')
+require('wap/zepto/touch')
+require('wap/page/wx/dapei_detail')
+
+var urlHandle          = require('wap/component/urlHandle')
+
+var $goodsList         = $('.goods')
+var $selectedInfoList  = $('.selected_info')
+var $figureList        = $('.basic_info')
+var $selectList        = $('.select')
+var $stockList         = $('.stock')
+var $totalPrice        = $('.total_price')
+var $confirmBtn        = $('#confirm_btn')
+var $notice            = $('#notice')
+var $needTriggerClick  = $('.need_trigger_click')
+var STRING_START_TYPE1 = '<span class="grey">请选择</span><span>'
+var STRING_START_TYPE2 = '<span class="grey">已选择</span><span>'
+var STRING_END_TYPE    = '</span>'
+var STRING_MIDDLE_TYPE = '</span><span>'
+var SELECT_ITEM_TYPE0  = '.select_item_type0'
+var SELECT_ITEM_TYPE1  = '.select_item_type1'
+var OUT_OF_STOCK       = 'out_of_stock'
+var SELECTED           = 'selected'
+var CHECKED            = 'checked'
+var goodsNum           = $goodsList.length
+var t                  = null
+
+var goodsList, 
+	imagesData, 
+	totalPrice, 
+	suitPrice, 
+	suitDiscPrice, 
+	EventHandler, 
+	_double,       // 替身变量
+	dressId
+	
+/** main code */
+
+// 获取数据
+_double = getData()
+
+// 整合数据
+processingData( _double, updateSelectedInfo )
+
+// 绑定事件
+EventHandler = {
+	checkboxClick : function (){
+		var $me        = this
+		var goodsIndex = $me.parent().index()
+		var price      =  +goodsList[goodsIndex].price
+		
+		if( $me.hasClass(CHECKED) ){
+			$me.removeClass(CHECKED)
+			totalPrice -= price
+			totalPrice = +( totalPrice.toFixed(2) )
+		}else{
+			$me.addClass(CHECKED)
+			totalPrice += price
+			totalPrice = +( totalPrice.toFixed(2) )
+		}
+		
+		var checkNum = $('.' + CHECKED).length
+
+		if(checkNum == 0){
+			totalPrice = 0
+			$totalPrice.html('<i>￥0</i>')
+		}else if(checkNum < goodsNum){
+			$totalPrice.html('<i>￥' + totalPrice + '</i>')
+		}else{
+			$totalPrice.html('<i>￥' + suitPrice + '</i><span>' + goodsNum + '件搭配节省&nbsp;￥' + suitDiscPrice + '</span>')
+		}
+	},
+
+	colorItemClick : function (){
+		var $me = this
+
+		if( $me.hasClass(OUT_OF_STOCK) )return
+
+		var goodsIndex = $me.data('g_index')
+		var itemIndex  = $me.index()
+		var $g         = $goodsList.eq(goodsIndex)
+
+		if( $me.hasClass(SELECTED) ){
+			$me.removeClass( SELECTED )
+			$g.find( SELECT_ITEM_TYPE1 ).find('.item').removeClass( OUT_OF_STOCK )
+		}else{
+			$me.siblings().removeClass( SELECTED )
+			$me.addClass( SELECTED )
+			updateSelectItemStatus.call($me, goodsIndex, 1)
+		}
+
+		/* 更新单品图 */
+		updateGoodsImage.call($me, goodsIndex)	
+		updateStock(goodsIndex)
+		updateSelectedInfo(goodsIndex)
+
+	},
+
+	sizeItemClick : function (){
+		var $me = this
+
+		if( $me.hasClass(OUT_OF_STOCK) )return
+
+		var goodsIndex = $me.data('g_index')
+		var index      = $me.index()
+		var $s         = $selectList.eq(goodsIndex)
+
+		if( $me.hasClass(SELECTED) ){
+			$me.removeClass( SELECTED )
+			$s.find( SELECT_ITEM_TYPE0 ).find('.item').removeClass( OUT_OF_STOCK )
+		}else{
+			$s.find( SELECT_ITEM_TYPE1 ).find('.item').removeClass( SELECTED )
+			$me.addClass( SELECTED )
+			updateSelectItemStatus.call($me, goodsIndex, 0)
+		}
+	
+		updateStock(goodsIndex)
+		updateSelectedInfo(goodsIndex)
+	},
+
+	confirmOrder : function (){
+		var $goodsChecked     = $('.' + CHECKED)
+		var serializedStr     = ''
+		var parameters        = {
+			'goodsId' : [],
+			'skuId'   : [],
+			'color'   : [],
+			'size'    : [],
+			'amount'  : [],
+			'other'   : ['goods_pid=collocation&dress_id=']
+		}
+
+		for(var i = 0; i < $goodsChecked.length; i++){
+			var $g             = $goodsChecked.eq(i).parent()
+			var goodsIndex     = $g.data('g_index')
+			var $s             = $selectList.eq(goodsIndex)
+			var $selectedColor = $s.find(SELECT_ITEM_TYPE0).find('.' + SELECTED)
+			var $selectedSize  = $s.find(SELECT_ITEM_TYPE1).find('.' + SELECTED)
+			var scrollTop      = $g.offset().top
+
+			if(!$selectedColor[0]){
+				showNotice('请选择颜色分类', scrollTop)
+				return
+			}
+			if(!$selectedSize[0]){
+				showNotice('请选择尺寸分类', scrollTop)
+				return
+			}
+
+			parameters.goodsId.push('goods_id=' + goodsList[goodsIndex].twitter_goods_id)
+			parameters.skuId.push( 'sku_id=' + $s.data('sku_id') )
+			parameters.color.push( 'color=颜色__' + $selectedColor.text() )
+			parameters.size.push( 'size=尺码__' + $selectedSize.text() )
+			parameters.amount.push('amount=1')
+		}
+		parameters.other[0] += dressId
+		for(var key in parameters){
+			serializedStr += (parameters[key].join('&') + '&')
+		}
+
+		serializedStr = serializedStr.trim()
+		serializedStr = serializedStr.slice(0, -1)
+		location.href = '/wx/orderconfirm?' + serializedStr
+		}
+}
+
+$(document.body).on('tap', function (e){
+	var $target = $(e.target)
+	var action  = $target.data('action')
+	var _event  = EventHandler[action] 
+
+	_event && _event.call($target)
+})
+
+// 初始化页面时 .need_trigger_click 的selectItem,模拟一次点击
+$needTriggerClick.trigger('click')
+$needTriggerClick.removeClass('need_trigger_click')
+
+function updateStock(goodsIndex) {
+	var $g     = $goodsList.eq(goodsIndex)
+	var $s     = $selectList.eq(goodsIndex)
+	var $stock = $stockList.eq(goodsIndex)
+	var color  = $s.find( SELECT_ITEM_TYPE0 ).find( '.' + SELECTED ).index()
+	var size   = $s.find( SELECT_ITEM_TYPE1 ).find( '.' + SELECTED ).index()
+
+	try {
+		var goods       = goodsList[goodsIndex]
+		var stocks      = goods.stock
+		var color_stock = stocks[0]
+		var size_stock  = stocks[1]
+		var _case       = color_stock.is_show + '' + size_stock.is_show
+		var stock
+		switch(_case){
+			case '11':
+				if(color == -1 || size == -1){
+					$g.find('.stock').text(goods.repertory)
+					return
+				}else{
+					stock = color_stock.stock[color][size]
+				}
+				break
+			case '10':
+				stock = color_stock.stock[color][0]
+				break
+			case '01':
+				stock = size_stock.stock[size][0]
+				break
+		}
+		$s.data('sku_id', stock.sku_id)
+		$stock.text(stock.stock_number)
+	}catch(e){}
+}
+
+function updateSelectedInfo(goodsIndex) {
+	var $g  = $goodsList.eq(goodsIndex)
+	var $si = $selectedInfoList.eq(goodsIndex)
+
+	/* @tips
+	 * select_item_type0 => color; 
+	 * select_item_type1 => size;
+	 */
+	var $color             = $g.find(SELECT_ITEM_TYPE0)
+	var $size              = $g.find(SELECT_ITEM_TYPE1)
+	var stocks             = goodsList[goodsIndex].stock
+	var data               = ['颜色','尺码']
+	var _case              = [0,0]
+	var selectedInfoData   = ''
+
+	if(stocks[0].is_show){
+		var $selected = $color.find('.' + SELECTED)
+		if($selected[0]){
+			_case[1] = 1 
+			data[0]  = $selected.text()
+		}
+	}
+
+	if(stocks[1].is_show){
+		var $selected = $size.find('.' + SELECTED)
+		if($selected[0]){
+			_case[0] = 1
+			data[1]  = $selected.text()
+		}
+	}
+
+	switch(_case.join('')){
+		case '00':
+			selectedInfoData = STRING_START_TYPE1 + data[0] + STRING_MIDDLE_TYPE + data[1] + STRING_END_TYPE
+			break
+		case '01':
+			selectedInfoData = STRING_START_TYPE1 + data[1] + STRING_END_TYPE
+			break
+		case '10':
+			selectedInfoData = STRING_START_TYPE1 + data[0] + STRING_END_TYPE
+			break
+		case '11':
+			selectedInfoData = STRING_START_TYPE2 + data[0] + STRING_MIDDLE_TYPE + data[1] + STRING_END_TYPE
+	}
+	$si.html(selectedInfoData)
+}
+
+function updateGoodsImage(goodsIndex) {
+	var $me   = this
+	var index = $me.index()
+	var $g    = $goodsList.eq(goodsIndex)
+	var $f    = $figureList.eq(goodsIndex)
+
+	if(index >= 0 && $me.hasClass(SELECTED)){
+		var imageUrl = imagesData[goodsIndex][index + 1]
+		if(imageUrl){
+			$f.css('background-image', 'url(' + imageUrl + ')')
+		}	
+	}else{
+		$f.css('background-image', 'url(' + imagesData[goodsIndex][0] + ')')
+	}
+}
+
+function updateSelectItemStatus(goodsIndex, upItemTypeIndex){
+	if( typeof upItemTypeIndex == 'undefined' )return
+
+	var $me               = this
+	var $g                = $goodsList.eq(goodsIndex)
+	var itemIndex         = $me.index()
+	var currItemTypeIndex = (upItemTypeIndex + 1)%2
+	var stocks            = goodsList[goodsIndex].stock[ currItemTypeIndex ].stock[ itemIndex ]
+	var len               = stocks.length
+	var stock             = null
+
+	for(var i = 0; i < len; i++){
+		stock = stocks[i]
+		if(stock.stock_number <= 0){
+			$g.find('.select_item_type' + upItemTypeIndex).find('.item').eq(i).addClass( OUT_OF_STOCK )
+		}else{
+			$g.find('.select_item_type' + upItemTypeIndex).find('.item').eq(i).removeClass( OUT_OF_STOCK )
+		}
+	}
+}
+
+function showNotice(txt, scrollTop){
+	clearTimeout(t)
+	$notice.html(txt).show()
+	t = setTimeout(function(){
+		$notice.hide()
+		$.scrollTo({
+		    endY: scrollTop,
+		    duration: 0
+		})
+	}, 3000)
+}
+
+function getData(){
+	return fml.vars.pageData
+}
+
+function processingData(data, cbk){
+	totalPrice    = 0
+	imagesData    = []
+	goodsList     = data.goodsList
+	suitPrice     = data.suit_price
+	suitDiscPrice = data.suit_disc_price
+	dressId       = urlHandle.getParams( location.href ).dress_id
+
+	goodsList.forEach(function (goods, goodsIndex){
+		totalPrice += (+goods.price)
+
+		var images = goods.stock[0].color_image || []
+
+		images.unshift(goods.goods_image)
+		imagesData.push(images)	
+		cbk(goodsIndex)
+	})
+}

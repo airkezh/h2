@@ -1,0 +1,51 @@
+<div class="registerForm">
+	<h2>注册美丽说</h2>
+	<div class="register_mls">
+		<fieldset>
+			<form id="registerForm" method="post" onsubmit="return false" action="">
+				<legend>美丽说注册表单</legend>
+				<p><input class="r_ipt" id="mlsEmail" type="text" name="email" value="" placeholder="电子邮箱"/><strong></strong><span class="registerInfoMessage" style="display:none;"><span></span>建议使用QQ邮箱。</span>
+				</p>
+				<p><input class="r_ipt" id="mlsName" type="text" name="nickname" value="" placeholder="昵称"/><strong></strong></p>
+				<p><input class="r_ipt none_f" id="mlsPass" name="password" type="password" value="" placeholder="密码" autocomplete="off" /><input autocomplete="off"  class="r_ipt" id="vmPass" name="" type="text" value="" placeholder="密码"/><strong></strong></p>
+				<p class="none_f"><input class="r_ipt none_f" id="mlsConfirmPass" name="confirm_password" type="password" autocomplete="off"  value="" placeholder="确认密码"/><input autocomplete="off" class="r_ipt" id="vmConfirmPass" name="" type="text" value="" placeholder="确认密码"/><strong></strong></p>
+				<p class="genderBox">
+					<input name="gender" id="genderF" type="radio" value="女" checked="true"><label class="mr14_f" for="genderF">女</label>
+					<input name="gender" id="genderM" type="radio" value="男"><label for="genderM">男</label>
+					<span class="registerInfoMessage" style="display:none;"><span></span>你的性别，以后不能更改。</span>
+				</p>
+				<div class="checkBox none_f">
+					<input type="text" class="r_ipt" name="checkcode" id="checkcode" value="" placeholder="验证码" maxlength="4">
+					<div class="checkImage">
+						<span id="checkcodeImage">
+							<img width="90" height="36" isblank="true" src="<%= this.PICTURE_URL %>images/register/blank.jpg">
+						</span>
+						<span class="red_f">换一张</span>
+					</div>
+					<strong></strong>
+				</div>
+				<span class="big_btn registerBtn"><em class="big_btnr"></em><input type="submit" value="立即注册"/></span>
+				<p>
+					<input type="checkbox" name="agreement" id="agreement" value="agreement" checked="checked" />
+					<label for="agreement">同意</label><a href="/agree" target="_blank">美丽说注册条款</a>
+					<strong></strong>
+				</p>
+			</form>
+		</fieldset>
+	</div>
+	<div class="register_other">
+		<p class="fb_f">用美丽说账号<a class="red_f" href="/user/login">登录</a></p>
+		<p>你还可以用以下方式直接登录：</p>
+		<div>
+			<a class="l_sinaweibo" href="/connect/auth/weibo"></a>
+			<a class="l_qq" href="/connect/auth/qzone"></a>
+			<span id="login_more">更多<samp>>></samp></span>
+			<%*{%><a class="l_renren none_f" href="/connect/auth/renren"></a><%*}%>
+			<%*{%><a class="l_wangyi none_f" href="/connect/auth/wangyi"></a><%*}%>
+			<a class="l_txweibo none_f" href="/connect/auth/txweibo"></a>
+			<%*{%><a class="l_douban none_f" href="/connect/auth/douban"></a><%*}%>
+			<%*{%><a class="l_baidu none_f" href="/connect/auth/baidu"></a><%*}%>
+		</div>
+	</div>
+	<div class="clear_f"></div>
+</div>

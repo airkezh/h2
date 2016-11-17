@@ -1,0 +1,24 @@
+<%#head.html%>
+<% var cirInfo = this.cirInfo.data;%>
+<div class="main">
+	<div class="circle-box">
+		<span class="portrait"><img src="<%= cirInfo.small_img%>" /></span>
+		<span class="title"><%= cirInfo.name%></span>
+		<span class="master-name">圈主：<%= cirInfo.admin.nickname%></span>
+		<div class="desc"><p><%= cirInfo.description%></p></div>
+	</div>
+	<div class="tip">邀请朋友一起来群聊种草</div>
+	<div class="share-box">
+		<%	var plat_names = {'weixin_timeline':'分享到朋友圈' , 'weixin':'分享到微信'};
+		%>
+		<% this.share && this.share.map(function(data) { 
+			var plat_name = plat_names[data.type] || '';
+		%>
+		<a href="<%= data.share_url%>"><%= plat_name%></a>
+		<%})%>
+	</div>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/app/hackWeixin');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

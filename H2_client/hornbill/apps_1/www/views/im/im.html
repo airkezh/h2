@@ -1,0 +1,75 @@
+<%# head_simple.html%>
+</head>
+<body>
+	<div class="im_left" id="im_left">
+		<div class="im_tab" id="im_tab">
+			<div class="user_info">
+				<%if(this.userInfo.user_id){%>
+				<span class="user_img"></span>
+				<p class="user_name"><%= this.userInfo.nickname %></p>
+				<%}%>
+			</div>
+		</div>
+		<div class="im_userlist">
+			<ul class="user_tab" id="user_tab">
+				<li class="tab_now act"><span> 当前会话</span></li>
+				<li class="tab_history"><span>用户列表</span></li>
+			</ul>
+			<div class="user_list" id="user_list">
+				<ul class="list_now" id="list_now"></ul>
+				<div class="list_history" id="list_history">
+					<ul></ul>
+				</div>
+			</div>
+		</div>
+		<div class="im_search" id="im_search">
+			<div class="search_result"></div>
+			<form class="search" method="post" onsubmit="return false" action>
+				<input class="search_input l_ipt" id="mlsSearchId" type="text" name="searchId" value="" placeholder="搜索用户"/>
+				<input class="searchBtn btn" type="submit" value="搜索" />
+			</form>
+		</div>
+	</div>
+	<div class="im_main" id="im_main">
+	</div>
+	<div class="layout" id="im_layout">
+		<div class="im_info_init">
+			<p><img src="<%= this.PICTURE_URL %>images/wap/web/im/leben.gif" /><span>正在连接中...</span></p>
+		</div>
+	</div>
+
+<%# im/fastReply.html%>
+<%# im/dialog.html%>
+<%# im/intro.html%>
+<%# im/sound.html%>
+
+<%# wins/windows.html %>
+
+<script type="text/html" id="im_info_offline">
+<div class="im_info_offline">
+	<p><?= fml.vars.im.offLineInfo ?></p>
+	<div>
+		<span class="reloadIM">重新登录</span>
+		<%if(this.ua != 'MLS-IMclient'){%>
+		<span class="closeIM">关闭窗口</span>
+		<%}%>
+	</div>
+</div>
+</script>
+
+<script>
+fml.vars.im = {
+	fromid : <%= this.user_id %>
+	, toid : <%= this.toid || 0 %>
+	, type : "<%= this.type || 0 %>"
+	, source : 'web'
+	, isfirst : 0
+	, ua : "<%= this.ua || '' %>"
+};
+</script>
+<script src="<%= this.IM_ULR %>socket.io/socket.io.js"></script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/im/im');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot_simple.html%>

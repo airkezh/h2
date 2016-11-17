@@ -1,0 +1,95 @@
+<%#head.html%>
+<%
+	var luhan_status = this.luhan_status;
+	var isApp = this.os.mlsApp;
+%>
+
+<% if( luhan_status == '0'){ %>
+<div class="before">
+	<img class="top_img" src="http://d04.res.meilishuo.net/pic/_o/de/17/530bc03a029af51de67982953137_640_605.cf.jpg" alt="页面顶部图片">
+	<div class="input_msg">
+		<input class="phonenum require box" placeholder="输入手机号拿走礼物!" maxlength="11">
+		<div class="cell">
+			<input class="code require box" placeholder="输入验证码">
+			<div class="send_btn box red_btn">
+				发送验证
+			</div>
+		</div>
+		<div class="apply_btn red_btn">
+    		  立即领取
+		</div>	
+	</div>
+</div>
+<% } %>
+
+<div class="after" style="display:none">
+		<img class="richbag" src="http://d04.res.meilishuo.net/pic/_o/de/17/530bc03a029af51de67982953137_640_605.cf.jpg" alt="领取成功有优惠券图" >
+		<p class="result">
+			<span class="in_notice">优惠券已放入账户</span>
+			<span class="mobile"></span>	
+		</p>
+		<div class="download_btn btn">
+                下载客户端查看优惠券
+		</div>
+		<% if( this.os.weixinBrowser ){ %>
+		<div class="share_btn btn">
+                告诉朋友们来亲鹿晗
+		</div>
+		<% } %>
+</div>
+
+
+<div class="footer">
+		<img class="note_pic" src="http://d05.res.meilishuo.net/pic/_o/d9/5f/51b1e22e33c458f78e5030c5de2c_640_553.ch.jpg" alt="相关说明">
+		<!-- <div class="note">
+			<p>活动规则</p>
+			<p>
+				一．活动时间：2015年7月31日～2015年8月16日
+			</p>
+			<p>
+				二．活动期间，新老用户进入指定活动页面，即可
+			</p>
+			<p class="left">领取1000元大礼包，数量有限，领完为止</p>
+			<p>
+				三．25元优惠券一张（满100元可用）
+			</p>
+			<p class="left">有效使用时间为成功领取后15天内均可用</p>
+			<p>
+				四．一位用户仅限领取一个大礼包
+			</p>
+			<p>五．注意事项</p>
+			<p class="left"> 
+			    1.活动过程中如发现有碍其他用户公平参加本活
+			    动，或违反本活动目的之行为（包括机器刷奖，
+			    作弊领取等）本公司将取消再此行为的用户参加
+			    本次活动的资格，或其参加活动所获得奖品，或
+			    因此享有的利益。
+			</p>
+			<p class="left">
+				2.本次活动最终解释权归美丽说公司所有
+			</p>
+		</div> -->
+		<img class="logo" src="http://d04.res.meilishuo.net/pic/_o/84/c1/8c26d9db0b7bcf10e0e6484cb4e9_128_44.cg.png" alt="logo">
+</div>
+
+<% if( this.os.weixinBrowser ){ %>
+<div class="share_mask" style="display:none">
+	<div class="word">
+		<p>我亲鹿晗了嘿嘿，</p>
+		<p>分享出去，拉拉仇恨！</p>
+	</div>
+	<img class="share_arrow" src="http://d05.res.meilishuo.net/pic/_o/8c/ab/f9c0c6e54e0c0f4983af7fdab4d7_116_213.cg.png" alt="分享箭头">
+	<img class="share_kiss" src="http://d04.res.meilishuo.net/pic/_o/5e/e9/6e5da49d18ee8caec8c74fdc1eaf_265_224.cg.png" alt="kiss">
+</div>
+<% } %>
+
+<script>
+	fml.vars.luhan_status = '<%= this.luhan_status %>';
+</script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use("wap/page/luhan_redpacket");
+_use:", this._JSstack , this._JSmods); %>
+<%#foot.html%>

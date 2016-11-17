@@ -1,0 +1,38 @@
+<%#onSale/shareJs.html%>
+<%
+	var wxindex = this.onSale.wxindex || [];
+	var user = this.user.from || {};
+	var cooperUrl='http://pages.w.meilishuo.com/cooper/329?from_id='+this.from_id;
+%>
+<div class="wrap">
+	<section class="header">
+		<div class="pic">
+			<img src="<%=user.headimgurl%>" alt="">
+			<p><%=user.nickname%></p>
+		</div>
+		<p class="des">
+			我正在美丽说<span>1元</span>领取潮人T恤！ 挑一款你的最爱，一起来领吧~
+			<b></b>
+		</p>
+	</section>
+	<ul class="banner" id="banner">
+		<% wxindex && wxindex.map(function(item){ %>
+			<li>
+				<img src="<%= item.bigSrc %>" alt="" class="bg">
+				<img src="<%= item.smallSrc %>" alt="" class="color">
+			</li>
+		<% }); %>
+	</ul>
+	<a href="<%= cooperUrl %>" class="btn">
+		<b></b>
+		<span></span>
+		马上挑选
+	</a>
+</div>
+<script>
+	fml.vars.useid = <%= this.user_id %>;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/onSale/main');
+_use:", this._JSstack, this._JSmods); %>
+<%# foot.html%>

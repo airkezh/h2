@@ -1,0 +1,110 @@
+<%#head.html%>
+<div class="sec_nav" style="display:none"></div>
+
+<div class="t_main">
+    <% if(this.pageData){ %>
+        <%= this.pageData.content || '' %>
+    <%}%>
+	<%if (this.act_config.head_bg){%>
+    <div class="mp_top">
+		<% if( this.act_config.banner.text != ''){%>
+        <div class="clock" style="color:#fff;"><%=this.act_config.banner.text%><span class="time" time="<%= new Date(this.act_config.banner.date).getTime()/1000 - new Date().getTime() / 1000%>">-天-时-分-秒</span></div>
+        <%}%>
+    </div>
+    <%}%>
+    
+    <% if(this.act_config.bg_exp && this.act_config.bg_exp.is_hide != '1'){%>
+    <div class="mp_firlook" id="mp_firlook" style="height:<%=this.act_config.bg_exp.h%>px;background:url('<%=this.act_config.bg_exp.img_src%>') top center no-repeat"></div>
+    <%}%>
+    <% if (this.cate_list){%>
+    <div id="mp_firlook" style="position:relative; top:-40px;"></div>
+    <div class="links bgred" id="goods_rg" <% if(this.act_config.cate_list_style && this.act_config.cate_list_style.bg_color != ''){%>style="background:<%= this.act_config.cate_list_style.bg_color%>"<%}%>>
+        <div class="content">
+            <% this.cate_list && this.cate_list.length && this.cate_list.map(function(data,i){%>
+            <a class="a_li <%if(this.pid == data.c_id){%>current<%}%>" href="/biz/huodong/common_new/?cid=<%=this.cid%>&pid=<%=data.c_id%><%if(this.custom !=0){%>&custom=<%=this.custom%><%}%>&hdtrc=<%= this.newHdtrcT%><%= data.c_id%>#mp_firlook"><%=data.name%></a><% });%>
+        </div>
+    </div>
+    <%}%>
+    <%
+    var query = this._Request_query;
+    var getLink = _extFn.getLink;
+    %>
+    <div class="spinner midSpinner pa_f" style="top:250px;"></div>
+    <div style="width:980px;margin:auto;" class="content_fluid">
+        
+        <% if (this.attr_description && false){ %>
+            <div class="dcb">
+                <h1 class="dcb_title redline3"><%= this.attr_description.title %></h1>
+                <p class="dcb_prefix"><%= this.attr_description.prefix %></p>
+                <p class="dcb_content"><%= this.attr_description.content %></p>
+                <div class="clear_f"></div>
+            </div>
+        <% } %>
+
+        <div class="goods_wall">
+        	
+            <div class="corner_notic">
+				<% this.cate_list && this.cate_list.length && this.cate_list.map(function(data,i){
+                %>
+                    <% if( data.shop_extent != "" && data.c_id == this.pid ){
+                        var nums = data.shop_extent.split("-");
+                        for(var j = (nums[0]-1); j < nums[1]; j++){
+                            if( this.act_config.shops[j] == null ){
+                                continue;
+                            }else{
+                    %>
+                        <a href="<%= this.act_config.shops[j].link %>" target="_blank" style="margin-top:14px;display:block;width:226px;height:369px;border:1px solid #ddd;overflow:hidden;"><img src="<%= this.act_config.shops[j].src %>" alt=''></a>
+                        
+                    <%}}}%>
+                <%});%>
+				<%# block/goods_sidebar.html%>
+            	
+            </div>
+            
+        </div>
+        <div class="spinner botSpinner none_f"></div>
+        <div class="clear_f"></div>
+        <div class="paging_panel c_f none_f">
+        <%# paging.html%>
+        </div>
+        <%if(this.adm3 && this.adm3.ad){%>
+            <%
+            this.adm3.admId = 'adm_bot';
+            this.adm3._JSstack = this._JSstack;
+            this.adm3._JSmods = this._JSmods;
+            %>
+            <%= requireFn('commerce/adm_banner.html')(this.adm3);%>
+        <%}%>
+
+    </div>
+    <%# block/attr_word.html%>
+    <%if (this.poster0){%>
+    <%# biz/promotion/poster_dc.html%>
+    <%}%>
+</div>
+
+<script type="text/html" id="tmplAddToCart">
+<%# tmpl/app.addToCart.html%>
+</script>
+
+<script>
+    <%= this.p4p? 'Meilishuo.config.p4p = { tInfo : '+JSON.stringify(this.p4p)+'};':'' ;%>
+
+    fml.vars.word_id = '';
+    fml.vars.notFluid =true;
+    fml.vars.pid = <%= this.pid%>;
+    fml.vars.cid = <%=this.cid%>;
+    fml.vars.navBgColor = <%= JSON.stringify(this.act_config.cate_list_style) %>;
+</script>
+<% $_ENGINE_SELF.callFn("useModule")("fml.use('page/poster0');", this._JSstack , this._JSmodsFast ); %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+    fml.use('page/huodong/promotion/attr_sale');
+    fml.use('page/huodong/promotion/common_new');
+    fml.use('page/poster_guang');
+_use:", this._JSstack , this._JSmods); %>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+     fml.use('page/huodong/tshirt');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot.html%>

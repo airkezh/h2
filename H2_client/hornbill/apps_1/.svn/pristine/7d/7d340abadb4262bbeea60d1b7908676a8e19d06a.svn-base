@@ -1,0 +1,64 @@
+<%# head.html %>
+<%
+var circles  = this.mycircles,
+    circleID = circles && circles.length && circles[ 0 ].id,
+    shop     = this.myshop,
+    hasShop  = !!( shop && shop.data && shop.data.partner_type != 3 ),
+	url      = this.mlsApp ? 'meilishuo://changetab.meilishuo?json_params=' + encodeURIComponent(JSON.stringify({"r":"","tab":"逛流行"})) : 'meilishuo://open.meilishuo'
+%>
+
+<div id="shop-form" class="shop-form">
+    <div class="inputs-wrap">
+        <div class="item">
+            <label for="partner_name" class="required">真实姓名</label>
+            <input id="partner_name" class="js-ipt js-required" placeholder="输入姓名需与身份证一致">
+        </div>
+        <div class="item">
+            <label for="cards_number" class="required">身份证号</label>
+            <input id="cards_number" class="js-ipt js-required" placeholder="身份证号码直接关联提现功能">
+        </div>
+        <div class="item">
+            <label for="shop_name" class="required">店铺名称</label>
+            <input id="shop_name" class="js-ipt js-required" maxlength="12">
+        </div>
+    </div>
+
+    <h3>上传个人身份证照片</h3>
+    <div class="upload-pic">
+        <ol>
+            <li>1.图示例方式双手持身份证，手指不可遮挡身份证信息</li>
+            <li>2.拍摄时聚焦在身份证上，需身份证和五官均清晰可见</li>
+            <li>3.照片内容真实有效，不得做任何修改</li>
+        </ol>
+        <div id="upload-area" class="upload-area js-upload-btn">
+            <span>立即上传</span>
+        </div>
+        <input type="hidden" id="cards_photo" class="js-ipt js-required">
+    </div>
+
+    <div class="btn-wrap">
+        <% if ( hasShop ) {%>
+        <a id="submit" href="###" class="created disabled">您已开通店铺</a>
+        <% } else { %>
+        <a id="submit" href="###">完成开通店铺</a>
+        <% } %>
+        <a id="jump" href="<%= url %>">跳过，我只要开圈子</a>
+    </div>
+</div>
+<script>
+    fml.vars.isLogin = !!<%= this.userInfo.user_id %>;
+    fml.vars.circle_id = <%= circleID %>;
+
+    if ( <%= hasShop %> ) {
+        alert('您已开通店铺');
+        if ( Meilishuo.config.os.mlsApp ) {
+            location.href = 'meilishuo://close.meilishuo';
+        } else {
+            history.back( -1 );
+        }
+    }
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+    fml.use('circle/page/create_shop');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html %>

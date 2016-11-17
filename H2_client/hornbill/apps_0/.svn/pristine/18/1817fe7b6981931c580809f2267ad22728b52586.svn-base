@@ -1,0 +1,40 @@
+<%# head_simple.html%>
+<% var pageData = this.pageData.data
+	, letters = pageData.letter
+	, shopList = pageData.shoplist
+	, page_r = this.pageData.r;%>
+<div class="main">
+	<%for(var key in shopList){%>
+	<div id="sign_<%= key%>" class="section">
+		<div class="key"><%= key%></div>
+		<div class="list">
+			<%shopList[key].forEach(function(k, i){%>
+			<a xr="<%= k.r%>" href="<%= _extFn.getAppLink('shop' , {'shop_id': k.shop_id} , this.os, null, '/shop/' + k.shop_id)%>">
+				<div class="item">
+					<div class="img" style="background-image:url(<%= k.shop_face_img%>); background-size: cover;"></div>
+					<div class="name"><label><%= k.brand_alias.length ? k.brand_alias : k.brand_name%></label>
+						<%k.tag.length && k.tag.forEach(function(s){%>
+						<span class="m-<%= s%>"></span>
+						<%})%>
+					</div>
+				</div>
+			</a>
+			<%})%>
+		</div>
+	</div>
+	<%}%>
+</div>
+<%if(letters && letters.length){%>
+<div class="all-keys">
+	<ul>
+		<%letters.forEach(function(k, v){%>
+		<li data-key="<%= k%>" data-sign="sign_<%= k%>"><%= k%></li>
+		<%})%>
+	</ul>
+</div>
+<%}%>
+<div class="sign">L</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/brand/all');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

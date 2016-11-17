@@ -1,0 +1,165 @@
+/*common*/
+var $ = require('wap/zepto')
+require('wap/zepto/touch')
+
+/* 层级控制器，需要先调用init方法 */
+var viewController = {
+	viewParent: $('.main_container')
+	,currentIndex: 0
+	,length: 0 //总层数
+	,init: function(index){
+		// index 0~3 代表初始化时的层级
+		index = index|0
+		this.currentIndex = index
+		this.length = this.viewParent.find('[class*=step_wrapper_]').length
+		if(this.currentIndex>length-1) 
+			this.currentIndex=length-1;
+		if(this.currentIndex<0) 
+			this.currentIndex=0;
+		this.reloadView()
+	}
+	,next: function(){
+		//跳转至下一层
+		this.currentIndex++
+		var length = this.length
+		if(this.currentIndex>length-1) 
+			this.currentIndex=length-1;
+		this.reloadView()
+	}
+	,prev: function(){
+		//回到上一层
+		this.currentIndex--
+		if(this.currentIndex<0) 
+			this.currentIndex=0;
+		this.reloadView()
+	}
+	,reloadView: function(){
+		switch(this.currentIndex){
+			case 0:
+				this.viewParent.find('.step_others_wrapper').removeClass('show_other')
+				break;
+			case 1:
+			case 2:
+			case 3:
+				this.viewParent.find('.step_others_wrapper').addClass('show_other')
+				this.viewParent.find('.step_others').removeClass(function(index, className){
+					var removeClasses = []
+					className.split(' ').forEach(function(name){
+						if(name.indexOf('show')!==-1){
+							removeClasses.push(name)
+						}
+					})
+					return removeClasses.join(' ')
+				}).addClass('show'+(this.currentIndex+1))
+				break;
+			default:
+				break;
+		}
+	}
+}
+
+//禁止默认滑动事件
+document.addEventListener('touchmove', function (event) {
+	event.preventDefault();
+}, false);
+
+//初始化层级控制
+viewController.init(0)
+
+//初始化翻页滑动事件
+;(function initSwipe(){
+	var hasTransitionend = (function(){
+		var transitions = {
+			'transition':'transitionend',
+			'OTransition':'oTransitionEnd',
+			'MozTransition':'transitionend',
+			'WebkitTransition':'webkitTransitionEnd'
+		}
+		for(var k in transitions){
+			if(('on'+transitions[k]) in window)
+				return transitions[k];
+		}
+		return false;
+	})() //是否支持Transitionend
+	var isBindOver = false; //已绑定翻页事件flag
+	
+	if(hasTransitionend){
+		window.addEventListener(hasTransitionend, function(){
+			closeSwipeEvent()
+			initSwipeEvent()
+		}, false)
+	}
+
+	initSwipeEvent()
+	
+	function initSwipeEvent(){
+		if(isBindOver) return;
+		isBindOver = true;
+		$('.main_container').on('swipeUp', function(){
+			closeSwipeEvent()	
+			viewController.next()
+
+		}).on('swipeDown', function(){
+			closeSwipeEvent()
+			viewController.prev()
+		})
+	}
+
+	function closeSwipeEvent(){
+		isBindOver = false;
+		$('.main_container').off('swipeUp swipeDown');
+		// if not support transitonend or no transition
+		setTimeout(function(){
+			initSwipeEvent()
+		}, 500)
+	}
+})();
+
+/* 第一页相关 */
+var pageOneViewController = {
+	init: function(index){
+		index = index|0
+		this.length = this.viewParent.find('.view').length
+		this.currentIndex = index
+		if(this.currentIndex>length-1) this.currentIndex=length-1;
+		if(this.currentIndex<0) this.currentIndex=0;
+		this.viewParent.on('swipeLeft', function(event) {
+			pageOneViewController.next()
+		}).on('swipeRight', function(event) {
+			pageOneViewController.prev()
+		});
+	}
+	,next: function(){
+		this.currentIndex++
+		var length = this.length
+		if(this.currentIndex>length-1) this.currentIndex=length-1;
+		this.reloadView()
+	}
+	,prev: function(){
+		this.currentIndex--
+		if(this.currentIndex<0) this.currentIndex=0;
+		this.reloadView()
+	}
+	,reloadView: function(){
+		this.viewParent.removeClass(function(index, className){
+			var removeClasses = []
+			className.split(' ').forEach(function(name){
+				if(name.indexOf('view')===0){
+					removeClasses.push(name)
+				}
+			})
+			return removeClasses.join(' ')
+		}).addClass('view'+this.currentIndex)
+	}
+	,autoShow: function(){
+		var _view = this.viewParent
+		_view.addClass('viewauto')
+		setTimeout(function(){
+			_view.removeClass('viewauto')
+		}, 4100)
+	}
+	,length: 0
+	,index: 0
+	,viewParent: $('.step_wrapper_1')
+}
+pageOneViewController.init()

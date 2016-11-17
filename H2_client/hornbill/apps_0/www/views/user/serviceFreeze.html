@@ -1,0 +1,155 @@
+<%# head_simple.html %>
+</head>
+<body>
+<div class="header">
+	<a class="logo_new" href="/welcome"></a>
+</div>
+<div class="wrap">
+	<div class="flowStep">
+		<ul>
+			<li class="current">
+				<span></span>
+				<div class="redline"></div>
+				<p>申请解冻</p>
+			</li>
+			<li class="current">
+				<span></span>
+				<div class="redline"></div>
+				<p>提交资料</p>
+			</li>
+			<li class="third">
+				<span></span>
+				<div class="redline"></div>
+				<p>等待审核</p>
+			</li>
+			<li>
+				<span></span>
+				<p class="last">完成</p>
+			</li>
+		</ul>
+	</div>
+	<% if(this.freezeType.data && this.freezeType.data.status.code != 2001){ %>
+	<div class="userInfo">
+		<div class="account info">
+			<div class="dec">账号昵称</div><span class="nickName"><%= this.freezeType.data.nickname %></span>
+		</div>
+		<div class="trueName info">
+			<div class="dec"><span class="nec">*</span>真实姓名</div><input class="context realName" type="text">
+			<span class="warn">请输入姓名</span>
+		</div>
+		<div class="idCard info">
+			<div class="dec"><span class="nec">*</span>身份证</div><input class="context id_card" maxlength="18" type="text">
+			<span class="warn">请正确输入身份证号</span>
+			<div class="idCardImg">
+				<div class="addPic_con" id="addPic_con">
+					<a href="javascript:;" id="add_pic" class="add_pic" >
+						<span>
+							<span class="addAccessory">上传图片
+							</span>
+							<em class="cl_i_img">&nbsp;</em>
+						</span>
+						<span class="cl_i_hover"></span>
+					</a>
+					<span class="addPic_tips">
+						支持jpg、png和静态gif格式，每张不超过3M，最多支持3张。
+					</span>
+					<div class="article_post"></div>
+					<div class="article_post_error"></div>
+				</div>
+			</div>
+		</div>
+		<div class="tel info">
+			<div class="dec"><span class="nec">*</span>联系电话</div><input maxlength="11" class="context telphone" type="text">
+			<span class="warn">请输入联系电话</span>
+		</div>
+		<div class="often info">
+			<div class="dec"><span class="nec">*</span>常用登陆地</div><input class="context loginAddress" type="text">
+			<span class="warn">请输入常用登陆地</span>
+		</div>
+		<div class="time info">
+			<div class="dec"><span class="nec">*</span>注册时间</div>
+				<% var date = new Date; var year = date.getFullYear();var month=date.getMonth(); %>
+			<div class="yearWrap">
+				<div class="year">
+					<span class="timeYear"><%= year %></span>
+					<span class="option"></span>
+				</div>
+				<ul class="none_f add_menu_leo perwidth">
+					<%for(var i=year;i>2008;i--){%>
+					<li class="chooseYear"><%= i %></li>
+					<%}%>
+				</ul>
+			</div>
+			<div class="monthWrap seconde">
+				<div class="month">
+					<span class="timeMonth"><%= month+1 %></span>
+					<span class="option"></span>
+				</div>
+				<ul  class="none_f add_menu_leo perwidth">
+					<%for(var j=1;j<13;j++){%>
+					<li class="chooseMonth"><%= j %></li>
+					<%}%>
+				</ul>
+			</div>
+		</div>
+		<div class="address info">
+			<div class="dec"><span class="nec">*</span>常用收货信息</div>
+			<textarea class="text receiptInfo" placeholder="收货人姓名/收货电话/收货地址"></textarea>
+			<span class="warn">请输入常用收货信息</span>
+		</div>
+		<div class="aid info">
+			<div class="dec">其他辅助说明</div>
+			<textarea class="text helpInfo" cols="10" rows="10"></textarea>
+		</div>
+		<div class="next">审核无误，提交资料</div>
+		<div class="validateFalse"></div>
+		
+	</div>
+	<%}%>
+	<div class="waitingCheck">
+	</div>
+</div>
+<!-- 图片上传 -->
+<script type="text/html" id="addCon">
+	<div class="item pr_f">
+		<div class="item_con">
+			<div>
+				<div class="addPic">
+					<div class="uploading">
+						<span class="pic_title"><?= data.pic_title ?></span>
+						<div class="progress_bar"><div class="upload_percentage" id="<?= data.uppic_id ?>"></div></div>
+						<div class="upload_errormsg"></div>
+					</div>
+				</div>
+				<div class="cl_i_close"></div>
+			</div>
+			<div class="clear_f"></div>
+		</div>
+	</div>
+</script>
+<script type="text/html" id="addPicCon">
+	<div class="upload">
+		<img src="<?= pic_url ?>" pid="<?= pic_id ?>">	
+	</div>
+</script>
+<script type="text/html" id="sucessFreeze">
+	<div class="sucessWrap">
+		<img src="http://d01.res.meilishuo.net/pic/_o/21/70/5e136e6c841a37ac6b6e23e65663_52_53.cg.png"/>
+		<div class="sucess">
+			<div class="freezeSucess">申请资料已提交，工作人员会在三个工作日内进行处理！</div>
+			<div class="info">
+				请耐心等待通知
+			</div>
+		</div>
+	</div>
+</script>
+<script>
+	fml.vars.nickname = <%= JSON.stringify(this.freezeType.data.nickname) %> || '';
+	fml.vars.validate_code = <%= JSON.stringify(this.freezeType.data.validate_code) %>;
+	fml.vars.statusCode = <%= JSON.stringify(this.freezeType.data.status.code) %>;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/serviceFreeze');
+_use:", this._JSstack , this._JSmods); %>
+<%# foot_simple_cr.html %>
+

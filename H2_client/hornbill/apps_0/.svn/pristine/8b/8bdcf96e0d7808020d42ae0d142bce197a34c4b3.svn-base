@@ -1,0 +1,233 @@
+<%# frame/www/head_simple.html%>
+<%
+%>
+</head>
+<body>
+<div class="header">
+	<div class="logo"></div>
+</div>
+<div class="im_main" id="im_main">
+	<div class="wait-connect">等待接入，请稍后...</div>
+	<div class="wait-queue">
+		您好，很抱歉前面有<span ></span>位客户排队，请您耐心等待。在等待期间您也可以拨打我们的客服电话400-080-0577和我们联系，感谢您对美丽说的支持。
+	</div>
+	<div class="im_inputbox">
+		<div class="im_inputbox_tools">
+			<span class="smile"><em class="i_smile">&nbsp;</em>表情</span>
+			<span class="uploadImg gray"><em class="i_upload">&nbsp;</em>图片</span>
+			<div class="evaluate_bar_fake gray" style="top:2px"><em class="i_evaluate">&nbsp;</em>满意度评价</div>
+		</div>
+		<form method="post" onsubmit="return false" action uid="<?= v.uid ?>">
+			<div class="im_inputbox_input" contenteditable="true"></div>
+			<ul class="im_inputbox_picbox"></ul>
+			<p class="button">
+				<input class="btn js-closeWindow"  type="button" value="结束对话" />
+				<input class="btn" type="button"  style="background: #e6e7e7; color:#666" value="发  送" />
+			</p>
+		</form>
+	</div>
+</div>
+<div class="right-info">
+	<ul>
+		<li class="right-info-tab right-info-tab-act">订单</li>
+		<li class="right-info-tab">常见问题</li>
+	</ul>
+	<div class="right-info-content right-info-content-act right-info-list-order list_order">
+		<div class="select_wrapper">历史订单：
+			<select name="order_select">
+				<% this.order_status_list && this.order_status_list.data && this.order_status_list.data.forEach(function(item){%>
+				<option value="<%=item.id %>"><%=item.value %></option>
+				<%}); %>
+			</select>
+		</div>
+		<ul class="order_ul_wrapper">
+
+		</ul>
+
+		<div class="order_box">
+		</div>
+
+	</div>
+	<div class="right-info-content qa">
+		<!-- <a target="_blank" href="http://www.meilishuo.com/helpcenter/shopping/">1、购物流程</a> -->
+		<%
+			if (this.qa) {
+			this.qa.forEach(function(e,i){
+		%>
+			<a target="_blank" href="http://www.meilishuo.com/helpcenter/detail/<%=e.know_id%>"><%=i+1%>、<%=e.title%></a>
+		<%
+			});
+			}
+		%>
+	</div>
+</div>
+
+<!--截图粘贴-->
+<script type="text/html" id="im_inputbox_picbox_item">
+	<li pic_url="<?= pic_url?>" pic_id="<?= pic_id?>">
+		<a target="_blank" href="<?= o_pic_url?>"></a>
+		<span class="cleanPicBtn">×</span>
+	</li>
+</script>
+<!--对话框模板-->
+<script type="text/html" id="im_main_item">
+	<div class="im_mainitem rightHide act  <?if(v.utype == 'public'){?>public<?}?>" uid="<?= v.uid ?>" <?if(v.utype == 'public'){?>utype="public"<?}?>>
+	<div class="im_top">
+	</div>
+	<div class="im_mainbox">
+		<div class="im_dialogbox">
+			<div class="im_dialog" uid="<?= v.uid ?>">
+				<div class="history hide" style="display:none">
+					<div toid="<?= v.uid?>" class="historyBtn">查看历史聊天记录</div>
+					<div class="history_intro"><span>以上是聊天记录</span></div>
+				</div>
+			</div>
+		</div>
+		<div class="im_inputbox">
+			<div class="im_inputbox_tools">
+				<span class="smile"><em class="i_smile">&nbsp;</em>表情</span>
+				<span class="uploadImg"><em class="i_upload">&nbsp;</em>图片</span>
+				<div class="evaluate_bar"><em class="i_evaluate">&nbsp;</em>满意度评价</div>
+			</div>
+			<form method="post" onsubmit="return false" action uid="<?= v.uid ?>">
+				<div class="im_inputbox_input" contenteditable="true">
+					<?if ($(".im_inputbox_input").length > 0) {?>
+						<?=$(".im_inputbox_input").html()?>
+
+					<?;$(".im_inputbox").remove()};?>
+				</div>
+				<ul class="im_inputbox_picbox"></ul>
+				<p class="button">
+					<input class="btn js-closeWindow"  type="button" value="结束对话" />
+					<input class="btn sentBtn" type="submit" value="发  送" />
+				</p>
+			</form>
+		</div>
+	</div>
+	</div>
+</script>
+
+<!--消息模板-->
+<script type="text/html" id="im_dialog_item">
+	<div class="<?if(msgStyle == 'sys'){?>d_a <?}?><?= who?> d_<?= type?>">
+		<? if(ctime){?>
+		<div class="ctime"><?= ctime ?></div>
+		<?}?>
+		<div class="con">
+			<? if(msgStyle != 'sys'){?>
+			<div class="user_info">
+				<span class="user_img"><img src="<?= avatar ?>"/></span>
+			</div>
+			<? } ;?>
+			<? if( who == 'd_u') {?><p class="title">美丽说客服<p><?}?>
+			<div class="bubble<?if(send){?> wait<?}?>" id="mid_<?= messageId?>">
+				<p><?if(type == 'text'){?><?= content ?><?}else if(type == 'img'){?><a class="imgUpload" href="<?= content.o_pic_url ?>" target="_blank"><img src="<?= content.pic_url ?>" /></a><?}?></p>
+				<span class="shap"></span><span class="shapb"></span>
+			</div>
+			<div class="clear_f"></div>
+		</div>
+		<div class="clear_f"></div>
+	</div>
+</script>
+
+<script type="text/html" id="tips_msg_tpl">
+	<div class="con">
+		123
+	</div>
+</script>
+
+<script type="text/html" id="evaluate_dialog_tpl">
+	<div class="evaluate">
+		<div class="evaluate-header">
+			您对当前客服人员服务满意吗？
+			<span class="evaluate-close">x</span>
+		</div>
+		<div class="evaluate-opt">
+			<div class="evaluate-opt-good evaluate-selected-js" data-val="1">
+				<span>满意</span>
+			</div>
+			<div class="evaluate-opt-bad" data-val="0">
+				<span>不满意</span>
+			</div>
+		</div>
+		<textarea class="evaluate-desc" placeholder="您对当前客服人员满意吗？"></textarea>
+
+		<div class="evaluate-btn-js">提交</div>
+	</div>
+</script>
+<script type="text/html" id="evaluation_through_tpl">
+	<div class="evaluation_m">
+		<div class="text">您已完成评价，感谢您对美丽说的支持！</div>
+		<div class="over">好</div>
+	</div>
+</script>
+<script type="text/html" id="tmp_order_list">
+	<? if(orders.length){ ?>
+	<? orders.forEach(function(order,index){?>
+	<? var isShow = !index;?>
+	<li class="order_li <?=isShow?'show_detail':''?>" data-orderid="<?=order.id ?>">
+		<div class="order_header">
+			<span class="arrow">></span>
+			<span class="left_f"><?=order.date ?></span>
+			<span class="right_f" style="margin-right: 5px;"><?=order.status ?></span>
+			<div class="clear_f"></div>
+		</div>
+		<div class="order_wrapper">
+			<? order.goods.forEach(function(goods){?>
+			<div class="order_content">
+				<div class="o_img_wrapper">
+					<a href="<?=order.url ?>" target="_blank">
+						<img class="goods_img" src="<?=goods.thumb ?>">
+					</a>
+				</div>
+				<div class="o_txt_wrapper">
+					<div class="goods_title">
+
+						<a href="javascript:void(0)" target="_blank"><?=goods.title ?></a>
+					</div>
+					<? goods.attr.forEach(function(attr){?>
+					<?if(attr.is_show==1){?>
+					<div class="goods_sku"><?=attr.name ?>：<?=attr.value ?></div>
+					<?}?>
+					<?}); ?>
+				</div>
+			</div>
+			<?});?>
+			<div class="order_footer">
+				<p>邮费：<?=order.charge==0?'免邮费':'￥'+order.charge ?></p>
+				<? order.coupons=order.coupons||{}; ?>
+				<p>店铺优惠：<?=order.coupons.shop || '无' ?> </p>
+				<p>网站优惠：<?=order.coupons.plat || '无' ?></p>
+				<p>实收：<span class="pay_price">￥<?=order.income ?></span></p>
+				<p>订单号码：<a href="javascript:void(0)" target="_blank" class="order_num"><?=order.id ?></a></p>
+				<?if(order.pay_time){?><p>付款时间：<?=order.pay_time ?></p><?}?>
+			</div>
+
+		</div>
+	</li>
+	<?});?>
+	<? } else { ?>
+	<li><div class="has_no_order">没有符合条件的订单</div></li>
+	<? } ?>
+</script>
+
+<!--表情图-->
+<%# frame/www/wins/windows.html %>
+
+<script>
+	fml.vars.im = {
+		fromid : <%= this.user_id %>
+	, toid : '157064095'
+	, type : "<%= this.type || 0 %>"
+	, source : 'web'
+	, recently : <%= JSON.stringify(this.recently.datas) %>
+	};
+</script>
+
+
+<script src="<%=this.IM_URL2 || '/' %>socket.io/socket.io.js"></script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use('page/im/buyer_platform_im');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# frame/www/foot_simple.html%>

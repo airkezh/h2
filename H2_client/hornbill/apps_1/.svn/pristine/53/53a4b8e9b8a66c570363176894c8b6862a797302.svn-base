@@ -1,0 +1,115 @@
+<%# activity/mew_lucky/head.html %>
+
+<%
+    var isPreSale = this.ViewTools.timeStuff({
+        '2015/6/09 00:00:00': true,
+        '2015/6/16 00:00:00': false
+    }, '');
+%>
+<div class="main">
+    <div class="title"></div>
+    <div class="kitty active">
+        <div class="kitty-wrap js-kitty-normal">
+            <div class="kitty-head"></div>
+            <div class="kitty-ear-l"></div>
+            <div class="kitty-ear-r"></div>
+            <div class="kitty-ear-l"></div>
+            <div class="kitty-body"></div>
+            <div class="kitty-paw-l"></div>
+            <div class="kitty-paw-r"></div>
+            <div class="kitty-tail"></div>
+        </div>
+        <div class="bubble js-bubble"><span class="bubble-content js-bubble-content"></span></div>
+
+        <div class="kitty-shock js-kitty-shock"></div>
+    </div>
+    <div class="rule-btn js-rule-btn">活动规则</div>
+</div>
+
+<div class="lucky-bag-list">
+    <h3>我的群红包</h3>
+    <%
+        var list = this.list,
+            luckies = list.luckyInfo || [],
+            coupons = list.coupons || [];
+
+        if ( !luckies.length && !coupons.length ) {
+    %>
+    <div class="blank">还没有群红包，快去取悦傲娇喵大王吧~</div>
+    <% } else {%>
+    <ul>
+        <%
+        luckies.forEach(function( lucky ) {
+            var num = lucky.num,
+                recNum = lucky.rec_num,
+                className = 'lucky-bag ',
+                bid = lucky.batch_id,
+                status = '';
+
+            if ( num == recNum ) {
+                className += 'is-finished';
+                btnText = '领完啦';
+                status = 'disabled';
+            } else {
+                className += 'is-normal'
+                btnText = '继续赏赐';
+                status = 'normal';
+            }
+        %>
+        <li class="<%= className %>">
+            <i class="icon-lucky-bag"></i><span class="total-num"><%= recNum %>/<%= num %>人，</span><a class="link" href="/wx/mew_lucky?bid=<%= bid %>&frm=wxred_from_mycoupon">查看红包</a><a class="btn js-share-btn" data-bid="<%= bid %>" data-status="<%= status %>" data-num="<%= num %>"><%= btnText %></a>
+        </li>
+        <% });
+        coupons.forEach(function( coupon ) {
+        %>
+        <li class="coupon">
+            <i class="icon-coupon"></i>
+            <p class="coupon-desc">
+                <span class="coupon-name"><%= +coupon.credit/100 %>元直减券</span>
+                <span class="coupon-detail">6月16日至6月18日可使用</span>
+            </p>
+            <% if ( isPreSale ) {%>
+            <span class="btn btn-disabled">16 日可用</span>
+            <% } else { %>
+            <a class="btn js-use-coupon" href="http://m-promotion.meilishuo.com/promotion/sale_1506/mv/?frm=cat_myqunred">去使用</a>
+            <% } %>
+        </li>
+        <% }); %>
+    </ul>
+    <% } %>
+</div>
+<div id="rule" class="rule">
+    <h3>活动规则</h3>
+    <ul>
+        <li>1.活动时间：2015年6月9日00:00:00—2015年6月18日23:59:59。</li>
+        <li>2.活动条件：通过手机美丽说for iOS或for Android，或者通过微信分享的链接参与活动。</li>
+        <li>3.傲娇猫咪身体的不同部位均可以抚摸，抚摸不同部位，猫咪会有不同的反应，抚摸的爽，猫咪会赏赐你群红包哦。</li>
+        <li>4.每个用户在活动中共计有3次获得群红包的机会。</li>
+        <li>5.每个群红包内的直减券金额不等，分别有1元、2元、5元、10元、20元，由拆包人随机获得。</li>
+        <li>6.每个用户在活动中共计可以获得5张美丽说直减券。</li>
+        <li>7.每个自然人用户仅能使用一个美丽说注册帐号参与本活动，美丽说任何活动均杜绝一切作弊行为，如作弊行为给美丽说平台造成损失的，美丽说保留追究其相关法律责任的权利。</li>
+        <li>8.使用他人手机号、地址等信息注册，或以非正常手段注册、一人注册多个帐号等视为违规注册，同一手机、同一IP地址、同一设备号或其他可以合理显示为同一用户的情形，均视为同一用户。美丽说有权根据自身掌握的情况独立判断参与活动的用户是否实施了违规行为，违反本规则美丽说有权利收回已领用的优惠券及对注册用户进行进一步处罚甚至冻结其帐号。</li>
+        <li>9.如果在微信抓红包获得全场直减券，则可用微信登录美丽说app，在“我---我的优惠券”中查看。</li>
+        <li>10.活动中中奖的全场直减券使用时间：2015年6月16日00:00:00—6月18日23:59:59。</li>
+        <li>11.活动中中奖的全场直减券使用方式：可用于美丽说全部商品无门槛立减，可与店铺优惠券叠加使用，但不能与平台优惠券同时使用。</li>
+        <li>12.若订单的金额小于优惠券的金额，多出部分不予退回。</li>
+        <li>13.全场直减券一经使用，不可退回。如产生退货，所退款项只限您实际支付的金额，优惠券不退。</li>
+        <li>14.全场直减券不能提现、不能转赠、不能为他人付款。</li>
+        <li>15.用户一旦选择参加本活动，即同意接受活动涉及到的所有规则，任何对活动规则或者其他相应规则有异议的，不得参加活动，否则，美丽说有权取消其参与资格。</li>
+        <li>16.美丽说在法律允许的范围内保留对本活动的最终解释权。</li>
+    </ul>
+    <a class="js-rule-close-btn rule-close-btn">知道了~</a>
+</div>
+<div class="wx-share-options js-wx-share-options">
+
+</div>
+<div class="wx-share-tip js-wx-share-tip"></div>
+<div class="mask" id="mask"></div>
+<div class="tip" id="tip"></div>
+<%# activity/mew_lucky/tip.html %>
+
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+    fml.use('wap/page/activity/mew_lucky/main');
+_use:", this._JSstack , this._JSmods); %>
+<%#foot_simple.html%>

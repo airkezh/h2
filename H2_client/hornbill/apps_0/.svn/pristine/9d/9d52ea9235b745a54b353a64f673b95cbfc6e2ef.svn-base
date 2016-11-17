@@ -1,0 +1,140 @@
+<%# sq/header.html%>
+<%
+	var getLink = _extFn.getLink
+		,query = this._Request_query
+		,typeName = {"hot" : "热卖","new" : "新品"}
+		,navTop = this.nav_top ? this.nav_top : [{'page_title':'616特惠'},{'page_title':'今日团购'},{'page_title':'美妆特卖'}]
+		,pageNameArr = this.pageNameArr || [{"en":"clothes"},{"en":"daily"},{"en":"cosmetic"}]
+		,seckillBtn = ["整点开抢", "立即购买", "抢光了", "还有机会"]
+		,typeTop = this.type_top ? this.type_top : []
+		,lists = this.banner_list;
+
+	var globalKey = this._Request_cookies.MEILISHUO_GLOBAL_KEY;
+%>
+
+<div class="posterWall wrap scroller">
+	<% if(this.banner.head){%>
+	<section style="-webkit-transform: translateZ(0);">
+		<%= requireFn('block/banner.html')({
+			'banner' : this.banner.head
+			,'hide_btn' : true
+			,'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+		});%>
+	</section>
+	<% }%>
+
+	<%if(lists && this.pageName != 'cosmetic'){%>
+	<ul class="square">
+	<% lists.forEach(function(list,index){%>
+	<li class="sq-list">
+	<a href="<%= list.link%>"><img src="<%= list.imgurl%>" alt=""></a>
+	</li>
+	<%})%>
+	</ul>
+	<%}%>
+	
+	<!-- 活动浮层 -->
+	<%if(this.mask_show){%>
+	<div id="mask">
+		<!-- <a href="http://m-qiang.meilishuo.com/sq/coupon_zone?type=noqq"><img src="<%=this.PICTURE_URL%>/images/wap/web/sq/mark916_top.png" alt=""></a> -->
+		<span class="redirect"><img src="<%=this.PICTURE_URL%>/images/wap/web/sq/mark916_top.png" alt=""></span>
+		<span class="mask_close"><img src="<%=this.PICTURE_URL%>/images/wap/web/sq/mark916_s.png" alt=""></span>
+	</div>
+	<%}%>
+
+	<!-- 横条广告位 -->
+	<%if(0 && this.egg_able && this.egg_able.ret == -4){%>
+	<a href="/sq/egg_act?from=eggBreak&coupon_id=<%= this.egg_able.coupon_id;%>&uid=<%= this.userInfo.user_id%>">
+		<img src="<%=this.PICTURE_URL%>/images/wap/sq/box-banner.jpg" width="100%" style="width:100%;"/>
+	</a>
+	<%}%>
+	
+	<!-- 瀑布流 -->
+	<%if(this.pageName == 'clothes'){%>
+	<section class="content_daily">
+		<div class="daily_title">
+			<span class="word">
+				<img class="money_icon" src="<%=this.PICTURE_URL%>/images/wap/web/wx/jing_icon.png" />
+			</span>
+			<span class="daily_banner"><%= this.goods.content%></span>
+		</div>
+	</section>
+	
+	<!-- typeTop 二级菜单 -->
+	<div class="typeTop">
+		<p>
+			<% typeTop.map(function(data, index){%>
+				<%var url =  "/sq/mall/" + this.pageName + getLink({'cate_id' : data.id})%>
+				<a href=<%=url %> typeId='<%= data.id%>' class='cosmetictap  <%= (this.cate_id == data.id) ? 'type_select' : '' %>'><%= data.name%></a>
+			<%})%>
+		</p>
+	</div>
+	<%}%>
+
+	<%if(this.pageName == 'cosmetic'){%>
+	<div class="typeTop-new">
+		<p>
+			<% typeTop.map(function(data, index){%>
+				<%var url =  "/sq/mall/" + this.pageName + getLink({'cate_id' : data.id}) + '&key_word=' + data.key%>
+				<a href=<%=url %> typeId='<%= data.id%>' class='cosmetictap  <%= (this.cate_id == data.id) ? 'type_select' : '' %>'><span class="<%= (this.cate_id == data.id) ? 'type_select' : '' %>"><%= data.name%></span></a>
+			<%})%>
+		</p>
+	</div>
+	<%}%>
+	<ul class="new_goods goods_wall" <%if(this.pageName=='cosmetic'){%> style="margin-top:10px;" <%}%> >
+	
+	</ul>
+	<div class="pullUp" status="loading"></div>
+	
+	<!-- 底部轮播 -->
+	<% if(this.banner.bottom){%>
+	<section class="content_daily">
+		<% this.banner.bottom.map(function(data, idx){%>
+		<a href="<%==data.url%>"><img class="mb10" src="<%= data.image_url%>" /></a>
+		<% });%>
+	</section>
+	<% }%>
+</div>
+<%# sq/posterSQ.html%>
+
+<ul id="goTop">
+	<li class="none_f" id="go_top"><span class="icon-gotop"></span></li>
+</ul>
+
+
+<!-- 砸蛋 -->
+<% if(this.egg_able && this.egg_able.ret == 0){%>
+<div id="egg">
+	<img src="<%=this.PICTURE_URL%>/images/wap/sq/box-1.png" class="egg"/>
+	<img src="<%=this.PICTURE_URL%>/images/wap/sq/box-2.png" class="egg-open"/>
+</div>
+<%};%>
+
+
+
+
+<script type="text/html" id="time_over">
+	明天再来&nbsp;<span class="time_num"><b>00</b>:<b>00</b>:<b>00</b></span>
+</script>
+
+<!--
+	time_space: banner轮播时间
+	redirect: 兼容手Q重新打开新的webview fml.vars.is_sq = 1;
+
+	'totalColNum':2,
+-->
+<script>
+fml.vars.poster = {
+	'pageName' : '<%= this.pageName%>',
+	'cate_id' : '<%= this.cate_id%>'
+};
+fml.vars.globalKey = '<%= globalKey %>';
+fml.vars.time_space = 3000;
+fml.vars.pid = '<%= this.pid %>';
+fml.vars.keyword = '<%= this.keyword%>'
+</script>
+<script src="http://pub.idqqimg.com/qqmobile/qqapi.js?_bid=152"></script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/sq/mall');
+_use:", this._JSstack , this._JSmods ); %>
+<%# sq/footer.html%>

@@ -1,0 +1,26 @@
+<%# wx_new/header.html%>
+
+<!-- 搜索模块 -->
+<%= requireFn('wx_new/mdl_search.html')({
+	'data' : '搜你想要的商品'
+	,'value' : this.key
+});%>
+
+<div class="posterWall wrap scroller" id='warpCon'>
+	<ul class="new_goods goods_wall">
+	</ul>
+	<div class="pullUp" status="loading"></div>
+</div>
+<%# wx_new/posterWX.html%>
+<script>
+fml.vars.key = '<%= this.key %>';
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/wx_new/search');
+_use:", this._JSstack , this._JSmods ); %>
+<%# wx_new/side.html%>
+<%# wx_new/footer.html%>
+
+
+

@@ -1,0 +1,157 @@
+/*common*/
+var swipe = require('cooper/component/swipe')
+var cPage = require('cooper/component/page')
+
+var move = true
+	, finish = 1
+	, page
+	, isA
+	, isZ
+	, $curr
+	, $prev
+	, $next
+	, $outer
+	, direction
+	, dir
+	, events
+
+var eventsSet = {
+	y:['moveAbandonY', 'moveUp', 'moveDown', 'moveUpEnd', 'moveDownEnd']
+	, x:['moveAbandonX', 'moveLeft', 'moveRight', 'moveLeftEnd', 'moveRightEnd']
+}
+
+var init = function(){
+}
+
+function resetPage(){
+
+	$curr = page.getCurrentPage().page
+	$prev = $curr.prev()
+	$next = $curr.next()
+
+	isA = page.getIsA()
+	isZ = page.getIsZ()
+	
+	move = !!($curr.attr('next') != 'clock')
+}
+
+function reset(y){
+	!y && (y = 0)
+	page.transform($curr, 'curr', y)
+	page.transform($prev, 'prev', y)
+	page.transform($next, 'next', y)
+}
+
+var resizeOuter = function(a, s1){
+	var height = $(window).height()
+	var auto = a|0
+
+	if(auto){
+		var width = $(window).width()
+			, scale0 = height/width
+			, scale = s1 || 960/640
+
+		if(scale < scale0) height = width*scale
+		else width = height/scale 
+
+		$outer.width(width)
+		$outer.height(height)
+	}
+
+   // $('body').height(height)
+   // $('html').height(height)
+}
+
+var moveDrop = function(){
+	console.log('moveDrop')
+
+	page.setAnimate()
+	page.resetPage()
+}
+
+
+var moving = function(e, offset){
+	if(!move) return;
+
+	var y = offset[direction]
+		
+	reset(y)
+}
+
+
+var moveUpEndFn = function(){
+	if(!finish) return;
+	if(!move) return;
+
+	if(isZ){
+		moveDrop()
+
+	}else{
+
+		page.goNext()
+
+		resetPage()
+		reset()
+	}
+}
+
+var moveDownEndFn = function(){
+	if(!move) return;
+
+	if(isA){
+		moveDrop()
+
+	}else{
+
+		page.goPrev()
+
+		resetPage()
+		reset()
+	}
+
+}
+
+exports.init = function(opts){
+	page = new cPage.init(opts)
+
+	direction = page.getDirection()
+	dir = page.getDir()
+	events = eventsSet[direction]
+
+	$outer = $(opts.outer || window)
+	new swipe.init({outer:$outer, yDrag:10})
+
+	resetPage()
+	reset()
+
+	resizeOuter(opts.auto, opts.scale)
+
+	$(window).on('resize', function(){
+		resizeOuter(opts.auto, opts.scale)
+	})
+
+	$outer.on('touchstart', function(){
+		resetPage()
+		reset()
+		page.clearAnimate()
+	})
+
+	$outer.on(events[0], moveDrop)
+	$outer.on(events[1], function(e,offset){
+		if(finish) moving(e,offset)
+	})
+
+	$outer.on(events[2], moving)
+	
+	$outer.on(events[3], moveUpEndFn)
+	$outer.on(events[4], moveDownEndFn)
+
+	return $.extend(page, {
+		moveDrop : moveDrop
+		, moving : moving
+		, getFinish : function(){ return finish }
+		, setFinish : function(f, tag){console.log('finish', arguments); finish = f; return finish }
+		, getMove : function(){ return move }
+		, setMove : function(m){ move = m; return move }
+	})
+}

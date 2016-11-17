@@ -1,0 +1,29 @@
+<%#head.html%>
+<%
+var mSubstr =  _extFn.mSubstr;
+
+function getURL(url,title){
+	return _extFn.getAppLink("openURL", {"url": url, "title": title, "inApp" : "1"}, this.os, null, url);
+}
+
+%>
+	<%this.search && this.search.data.forEach(function(item){%>
+	<div class="list border-Top">
+		<ul>
+			<li><%=item.category_name%></li>
+			<%item && item.list.forEach(function(data,index){%>
+			<li class="<%=index > 10 ? 'list-none' : '' %>"><em></em><a href="<%=getURL('http://'+this.host+'/help/contact/?know_id='+data.know_id+'&channel=1', '解决方案') %>"><%= mSubstr(data.title, 16, '...') || '' %></a></li>
+			<%});%>
+		</ul>
+		<%if(item.list.length > 10 ){%>
+			<p class="more">更多<strong></strong></p>
+		<%}%>
+	</div>
+	<%});%>
+	
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	
+	fml.use('wap/page/question');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot.html%>

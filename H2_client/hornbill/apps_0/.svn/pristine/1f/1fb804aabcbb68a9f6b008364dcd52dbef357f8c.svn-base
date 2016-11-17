@@ -1,0 +1,141 @@
+function crackbrand() {
+	return this;
+}
+
+var controlFns = {
+	'first': function() {
+		var php = {
+			'connect_weixin': '/connect/weixin?type=1',
+			'welcome':'/crackbrand/crackBrand_welcome'
+		}
+		this.bindDefault(php);
+		this.bridgeMuch(php);
+		var mSelf = this;
+		this.listenOver(function(data) {
+			data.use_rem_screen = true;
+			var weixinBrowser = this.req.headers['user-agent'].indexOf('MicroMessenger') > -1;
+			if (weixinBrowser) {
+				connectWX(mSelf, data);
+			}
+			data.isWx = weixinBrowser;
+			data.islogin = 0;
+			if (this.req.headers.referer && this.req.headers.referer.match(/user\/login/g)) {
+				data.islogin = 1;
+			};
+			data.pageTitle = '开撕吧名牌,100元优惠券人人有份!还不快来玩!';
+			data._CSSLinks = ["activity/crackbrand/crackbrand", "activity/crackbrand/animate"];
+			this.render('activity/crackbrand/index.html', data);
+		})
+	},
+	'start': function() {
+		var ass_gid = this.req.__get.ass_gid;
+		var php = {
+			'connect_weixin': '/connect/weixin?type=1',
+			'welcome': '/crackbrand/crackBrand_comein?ass_gid=' + ass_gid
+		}
+		this.bindDefault(php);
+		this.bridgeMuch(php);
+		var mSelf = this;
+		this.listenOver(function(data) {
+			var weixinBrowser = this.req.headers['user-agent'].indexOf('MicroMessenger') > -1;
+			if (weixinBrowser) {
+				connectWX(mSelf, data);
+			}
+			data.isWx = weixinBrowser;
+			data.islogin = 0;
+			if (this.req.headers.referer && this.req.headers.referer.match(/user\/login/g)) {
+				data.islogin = 1;
+			};
+			data.use_rem_screen = true;
+			data.ass_gid = ass_gid;
+			data.pageTitle = '开撕吧名牌,100元优惠券人人有份!还不快来玩!';
+			data._CSSLinks = ["activity/crackbrand/start", "activity/crackbrand/animate"];
+			this.render('activity/crackbrand/start.html', data);
+		})
+	},
+	'friendBefore': function() {
+		var ass_gid = this.req.__get.ass_gid;
+		var php = {
+			'connect_weixin': '/connect/weixin?type=1',
+			'welcome': '/crackbrand/crackBrand_comein?ass_gid=' + ass_gid
+		}
+		this.bindDefault(php);
+		this.bridgeMuch(php);
+		var mSelf = this;
+		this.listenOver(function(data) {
+			data.use_rem_screen = true;
+			var weixinBrowser = this.req.headers['user-agent'].indexOf('MicroMessenger') > -1;
+			if (weixinBrowser) {
+				connectWX(mSelf, data);
+			}
+			data.isWx = weixinBrowser;
+			data.islogin = 0;
+			if (this.req.headers.referer && this.req.headers.referer.match(/user\/login/g)) {
+				data.islogin = 1;
+			};
+			data.ass_gid = ass_gid;
+			data.pageTitle = '开撕吧名牌,100元优惠券人人有份!还不快来玩!';
+			data._CSSLinks = ["activity/crackbrand/start", "activity/crackbrand/animate"];
+			this.render('activity/crackbrand/friendBefore.html', data);
+		})
+	},
+	'award': function() {
+		var ass_gid = this.req.__get.ass_gid;
+		var php = {
+			'connect_weixin': '/connect/weixin?type=1',
+			'welcome': '/crackbrand/crackBrand_comein?ass_gid=' + ass_gid
+		};
+		this.bindDefault(php);
+		this.bridgeMuch(php);
+		var mSelf = this;
+		this.listenOver(function(data) {
+			var weixinBrowser = this.req.headers['user-agent'].indexOf('MicroMessenger') > -1;
+			if (weixinBrowser) {
+				connectWX(mSelf, data);
+			}
+			data.isWx = weixinBrowser;
+			data.islogin = 0;
+			if (this.req.headers.referer && this.req.headers.referer.match(/user\/login/g)) {
+				data.islogin = 1;
+			};
+			data.ass_gid = ass_gid;
+			data.use_rem_screen = true;
+			data.pageTitle = '开撕吧名牌,100元优惠券人人有份!还不快来玩!';
+			data._CSSLinks = ["activity/crackbrand/start", "activity/crackbrand/animate"];
+			this.render('activity/crackbrand/award.html', data);
+		})
+	},
+	'awardFriend': function() {
+		var ass_gid = this.req.__get.ass_gid;
+		var php = {
+			'connect_weixin': '/connect/weixin?type=1',
+			'welcome': '/crackbrand/crackBrand_comein?ass_gid=' + ass_gid
+		}
+		this.bindDefault(php);
+		this.bridgeMuch(php);
+		var mSelf = this;
+		this.listenOver(function(data) {
+			var weixinBrowser = this.req.headers['user-agent'].indexOf('MicroMessenger') > -1;
+			if (weixinBrowser) {
+				connectWX(mSelf, data);
+			}
+			data.isWx = weixinBrowser;
+			data.islogin = 0;
+			if (this.req.headers.referer && this.req.headers.referer.match(/user\/login/g)) {
+				data.islogin = 1;
+			};
+			data.use_rem_screen = true;
+			data.ass_gid = ass_gid;
+			data.pageTitle = '开撕吧名牌,100元优惠券人人有份!还不快来玩!';
+			data._CSSLinks = ["activity/crackbrand/start", "activity/crackbrand/animate"];
+			this.render('activity/crackbrand/awardFriend.html', data);
+		})
+	}
+}
+
+/*微信互联*/
+var connectWX = function(mSelf, data) {
+	if (data.connect_weixin && data.connect_weixin.redirect)
+		return mSelf.redirectTo(data.connect_weixin.redirect, true);
+}
+exports.__create = controller.__create(crackbrand, controlFns);

@@ -1,0 +1,82 @@
+<%
+	var refund_info = this.refund;
+	var wrapData = {};
+	wrapData.can_refund_goods = refund_info.can_refund_goods;
+	wrapData.can_refund_money = refund_info.can_refund_money;
+	wrapData.after_sale = refund_info.after_sale;
+	wrapData.refund_cash = refund_info.refund_cash;
+	wrapData.refund_id = refund_info.refund_id || '';
+	wrapData.type = refund_info.type;
+	wrapData.send_goods = refund_info.send_goods;
+	wrapData.use_coupon = refund_info.use_coupon;
+	wrapData.refund_freight = refund_info.refund_freight;
+	wrapData.refund_with_freight = refund_info.max_refund_with_freight;
+	wrapData.refund_detail = refund_info.refund_detail ? refund_info.refund_detail : '' ;
+	wrapData.refund_type = refund_info.refund_type||(refund_info.refund_detail&&refund_info.refund_detail.refund_type);
+
+	this.wrapData = wrapData;
+	this.refund_info = refund_info;
+
+	var is_setPayPsd = this.setPayPsd.info.is_setPayPsd;
+	var zhifu_domain = this.DOMAIN.zhifu;
+	var webapi_domain = this.DOMAIN.webapi;
+	var order_domain = this.DOMAIN.order;
+	var checkToWallet = this.refund.checkWallet;
+	var refund_mode = this.refund_mode;
+	var callbackFn = this.callback;
+	var isWxOrSq = this.isWxOrSq;
+%>
+
+<%#common/head.html%>
+<%if(callbackFn!="setPasswordCallback"){%>
+<div class="refund_apply_main_content">
+<%if(refund_info.appeal_times==0){%>
+	<div class="no-need-appeal">
+		此商品5次退款申请次数已经用完，不能再次申请或修改。如有问题，请联系美丽说客服：400-080-0577
+	</div>
+<%}else{%>
+	<section class="container">
+
+			<div class="top-wrap">
+				<p class="tips">
+					<%if(refund_info.appeal_times==5){%>
+						每件商品最多只能申请退款5次，请谨慎填写信息
+					<%}else{%>
+						此商品还能申请退款<%=refund_info.appeal_times||0%>次,请谨慎填写相关信息
+					<%}%>
+				</p>
+			</div>
+			<% if(!wrapData.send_goods) {%>
+				<%#refund/apply/money.html%>
+			<% } else { %>
+				<%#refund/apply/goods.html%>
+			<% } %>
+	</section>
+	<input type="text" class="none_f" id="order_id" value="<%== this.order_id %>" >
+	<input type="text" class="none_f" id="mid" value="<%== this.mid %>" >
+	<input type="text" class="none_f" id="refund_id" value="<%== wrapData.refund_id %>" >
+	<%#common/mls_hotline.html%>
+	<script>
+		var isSendGoods = <%=wrapData.send_goods ? 1 : 0 %>;
+	    var hasFreight = <%=!!wrapData.refund_freight%>;
+	    var CONSTANT = CONSTANT || {};
+	   	CONSTANT.cash = <%=(refund_info && refund_info.reasons && refund_info.reasons.cash?JSON.stringify(refund_info.reasons.cash):'[]')%>;
+	   	CONSTANT.goods = <%=(refund_info && refund_info.reasons && refund_info.reasons.goods?JSON.stringify(refund_info.reasons.goods):'[]')%>;
+	   	CONSTANT.refundApplyPrice = <%= (wrapData.refund_detail && wrapData.refund_detail.refund_price_apply?JSON.stringify(wrapData.refund_detail.refund_price_apply): false)%>;
+	   	CONSTANT.refund_freight = <%= (wrapData && wrapData.refund_freight?JSON.stringify(wrapData.refund_freight): false)%>;
+		var is_setPayPsd = <%=is_setPayPsd%>;
+		CONSTANT.zhifu = '<%=zhifu_domain%>';
+		CONSTANT.webapi = '<%=webapi_domain%>';
+		CONSTANT.order = '<%=order_domain%>';
+		var isWxOrSq = <%=isWxOrSq%>
+	</script>
+	<script type="text/html" id="img_upload">
+		<img src="<?=this.H_pic_url ?>" width="100%" height="100%" asrc="<?=this.o_pic_url ?>" />
+	</script>
+<%}%>
+</div>
+<%}%>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use('order_app/refund/refund_apply');
+_use:", this._JSstack , this._JSmods ); %>
+<%#common/foot_simple.html%>

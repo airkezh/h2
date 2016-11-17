@@ -1,0 +1,395 @@
+<%# head.html%>
+<% 
+	var shop_list = this.shop_list; 
+	var sInfo = shop_list.sInfo;
+	var searchKey = this.sWord;
+%>
+
+
+<div class="doc">
+	<% if(shop_list.totalNum){%>
+		<p class="shop_count">所有 &gt;共&nbsp;<%= shop_list.totalNum%>&nbsp;个店铺</p>
+	<%}%>
+	<ul class="sort">
+		<li><a data-sort="<%=''%>" class="over_all">综合</a></li>
+		<li><a data-sort="<%='sale-desc' %>" class="sales_num">销量</a></li>
+		<li><a data-sort="<%='fans-desc' %>" class="fans_num">粉丝数</a></li>
+	</ul>
+	<!-- <div class="posterWall"></div> -->
+	<div class="posterWall">
+		<% if(sInfo && sInfo.length){
+			sInfo.forEach(function(item, index){
+				var horizontal_mark = item.horizontal_mark;
+				var coupon = horizontal_mark.coupon;
+				var campaign = horizontal_mark.campaign;
+				var reduce = [], mail = [], discount = [];
+				var couponTxt;
+				if(coupon && coupon.length != 0){
+					couponTxt = coupon[0].text;
+				}
+
+				campaign.forEach(function(campaignItem, campaignIndex){
+					if(campaignItem.type == 'reduce'){
+						reduce.push(campaignItem);
+					}else if(campaignItem.type == 'mail'){
+						mail.push(campaignItem);
+					}else if(campaignItem.type == 'discount'){
+						discount.push(campaignItem);
+					}
+				});
+			%>
+			
+
+				<% if(item.shop_goods.length){ %>
+					<div class="shop">
+						<div class="shop_info">
+							<div class="shop_tit">
+								<% if(item.is_cs){%>
+									<img src="http://d04.res.meilishuo.net/pic/_o/3f/79/425abafb9bba6e1fe5d9cfff728e_77_62.cj.png" class="mark">
+								<%}else if(item.is_star){%>
+									<img src="http://d05.res.meilishuo.net/pic/_o/a3/9a/012e724d7dbc6b358313707e7ddf_44_44.ch.png" class="mark">
+								<%}%>
+								
+								<%if(item.shop_face_img){%>
+									<a href="/shop/<%= item.shop_id%>" target="_blank">
+										<img src="<%= item.shop_face_img%>" class="shop_logo">
+									</a>
+								<%}%>
+								<div class="detail">
+									<a href="/shop/<%= item.shop_id%>" target="_blank">
+										<p class="shop_name"><%= item.shop_nick%></p>
+									</a>
+									<p class="like">
+										<span>销量数:<span class="num"><%= item.sales_num%></span></span>
+										<span>粉丝数:<span class="num"><%= item.follower_num%></span></span>
+									</p>
+									<p class="main_sell"><%= item.shop_catalog%></p>
+									
+									<a class="goqq knilmi follow_shop tab_btn" href="<%= this.ViewTools.callIM(item.im) %>"  target="_blank" data-shop="<%= item.shop_id%>">联系客服</a>
+									<span class="shop_add">
+										<% if(!item.isFollowing){%>
+											<a href="javascript:;" class="attention add tab_btn" data-shop="<%=item.shop_id%>">关注店铺</a>
+										<%}else{%>
+											<a href="javascript:;" class="attention unadd tab_btn" data-shop="<%=item.shop_id%>">已关注</a>
+										<%}%>
+									</span>
+								</div>
+							</div>
+							<div class="promote">
+								<% if(mail.length){%>
+									<div class="pro-icon post">
+										<%= mail[0].brief%> 
+										<span class="triangle">▾</span>
+										<div class="dropdown_panel">
+											<% mail.forEach(function(mailItem, mailIndex){
+											%> 
+												<p><%= mailItem.text%></p>
+												<p class="time">时间:<%= mailItem.note%></p>
+											<%});%>
+										</div>
+									</div>
+								<%}%>
+								<% if(couponTxt){%>
+									<div class="pro-icon coupon">
+										<%= couponTxt%>
+										<span class="triangle">立即领取 ▾</span>
+
+										<div class="dropdown_panel">
+											<div class="hd">领券下单，更多优惠等你拿</div>
+						                    <ul class="bd">
+						                    	<% coupon.forEach(function(couponItem,couponIndex){
+						                    		if(couponIndex < 3){
+						                    	%> 
+						                    		<li class="item">
+						                    			<span class="coupon_price">￥<%= couponItem.credit%></span>
+						                    			<div class="intro">
+						                    				<p class="desc"><%= couponItem.text%></p>
+						                    				<p class="time"><%= couponItem.start_time %>~<%= couponItem.end_time%></p>
+						                    			</div>
+						                    			<span class="coupon-btn js-coupon-btn apply_status" data-coupon="<%= couponItem.coupon_apply_code %>"><%= couponItem.link_text%></span>
+						                    		</li>
+						                    		<%}%>
+						                    	<%});%>
+						                    </ul>
+						                    <span class="info js-info red_f"></span>
+						                </div>
+									</div>
+								<%}%>
+								<% if(reduce.length){%>
+									<div class="pro-icon sub">
+										<%= reduce[0].brief%> 
+										<span class="triangle">▾</span>
+										<div class="dropdown_panel">
+											<%reduce.forEach(function(reduceItem,reduceIndex){%>
+												<p class="reduceTxt"><%= reduceItem.text%><br />
+												<span class="time">时间:<%= reduceItem.note%></span></p>
+											<%});%>
+										</div>
+									</div>
+								<%}%>
+								<% if(discount.length){%>
+									<div class="pro-icon discount">
+										<%= discount[0].brief%> 
+										<span class="triangle">▾</span>
+										<div class="dropdown_panel">
+											<%discount.forEach(function(discountItem, discountIndex){%>
+												<p class="discountTxt"><%= discountItem.text%><br />
+												<span class="time">时间:<%= discountItem.note%></span></p>
+											<%});%>
+										</div>
+									</div>
+								<%}%>
+								<% if(item.alert_new_date && item.alert_new && item.alert_url){%>
+									<a href="<%= item.alert_url%>" target="_blank">
+										<p class="is_new">
+											<span class="new_date"><%= item.alert_new_date%>上新</span>
+											<span class="new_count"><%= item.alert_new%>款</span>
+										</p>
+									</a>
+								<% }%>
+								
+							</div>
+							<% if(item.points_trend){%>
+								<ul class="assess">
+									<% for(var assess in item.points_trend){
+										var assessItem = item.points_trend[assess];
+									%>
+									<li>
+										<p class="assess_name"><%= assessItem.text%></p>
+										<p class="assess_score <%if(parseInt(assessItem.mark) == 1){%> up <%}else if(parseInt(assessItem.mark) == -1 && assessItem.avg){%> down <%}%>">
+											<% if(assessItem.avg){
+												if(parseInt(assessItem.mark) == 0){
+											%>
+													<span class="average"><%= assessItem.avg%>&nbsp;--</span>
+												<%}else{%>
+													<span><%= assessItem.avg%></span>
+												<%}%>
+											<%}else{%>
+												<span>--</span>
+											<%}%>
+										</p>
+									</li>
+									<%}%>
+								</ul>
+							<%}%>
+						</div>
+
+						<ul class="goods_wall">
+							<% 
+								item.shop_goods.forEach(function(goods, goodsIndex){
+									if(goodsIndex < 4){
+							%>
+								<li>
+									<a href="/share/item/<%= goods.twitter_id%>" target="_blank">
+										<img src="<%= goods.pic%>" class="goods_pic">
+										<div class="mask">
+											<span class="price">￥<%= goods.goods_price%></span>
+											<span class="sell">销量<%= goods.sale_num%></span>
+										</div>
+									</a>
+								</li>
+								<%}%>
+							<%});%>
+						</ul>
+					</div>
+				<%}%>
+
+			<%});%>
+		<%}%>
+	</div>
+	
+</div>
+<% if(shop_list.page_frame > 1){%>
+	<div class="spinner"></div>
+<%}%>
+
+<script id="posterWall" type="text/html">
+	<? 
+		$.each(obj.sInfo, function(index, item){
+			var horizontal_mark = item.horizontal_mark;
+			var coupon = horizontal_mark.coupon;
+			var campaign = horizontal_mark.campaign;
+			var reduce = [], mail = [], discount = [];
+			var couponTxt;
+			if(coupon && coupon.length != 0){
+				couponTxt = coupon[0].text;
+			}
+
+			$.each(campaign, function(i, campaignItem){
+				if(campaignItem.type == 'reduce'){
+					reduce.push(campaignItem);
+				}else if(campaignItem.type == 'mail'){
+					mail.push(campaignItem);
+				}else if(campaignItem.type == 'discount'){
+					discount.push(campaignItem);
+				}
+			});
+			
+	?>
+		<? if(item.shop_goods.length){?>
+			<div class="shop">
+				<div class="shop_info">
+					<div class="shop_tit">
+						<? if(item.is_cs){?>
+							<img src="http://d04.res.meilishuo.net/pic/_o/3f/79/425abafb9bba6e1fe5d9cfff728e_77_62.cj.png" class="mark">
+						<?}else if(item.is_star){?>
+							<img src="http://d05.res.meilishuo.net/pic/_o/a3/9a/012e724d7dbc6b358313707e7ddf_44_44.ch.png" class="mark">
+						<?}?>
+						<?if(item.shop_face_img){?>
+							<a href="/shop/<?= item.shop_id?>" target="_blank">
+								<img src="<?= item.shop_face_img?>" class="shop_logo">
+							</a>
+						<?}?>
+						<div class="detail">
+							<a href="/shop/<?= item.shop_id?>" target="_blank">
+								<p class="shop_name"><?= item.shop_nick?></p>
+							</a>
+							<p class="like">
+								<span>销量数:<span class="num"><?= item.sales_num?></span></span>
+								<span>粉丝数:<span class="num"><?= item.follower_num?></span></span>
+							</p>
+							<p class="main_sell"><?= item.shop_catalog?></p>
+							
+							<a class="goqq knilmi follow_shop tab_btn" href="<?= item.call_im?>"  target="_blank" data-shop="<?= item.shop_id?>">联系客服</a>
+							<span class="shop_add">
+								<? if(!item.isFollowing){?>
+									<a href="javascript:;" class="attention add tab_btn" data-shop="<?=item.shop_id?>">关注店铺</a>
+								<?}else{?>
+									<a href="javascript:;" class="attention unadd tab_btn" data-shop="<?=item.shop_id?>">已关注</a>
+								<?}?>
+							</span>
+						</div>
+					</div>
+					<div class="promote">
+						<? if(mail.length){?>
+							<div class="pro-icon post">
+								<?= mail[0].brief?> 
+								<span class="triangle">▾</span>
+								<div class="dropdown_panel">
+									<? $.each(mail, function(mailIndex, mailItem){
+									?> 
+										<p><?= mailItem.text?></p>
+										<p class="time">时间:<?= mailItem.note?></p>
+									<?});?>
+								</div>
+							</div>
+						<?}?>
+						<? if(couponTxt){?>
+							<div class="pro-icon coupon">
+								<?= couponTxt?>
+								<span class="triangle">立即领取 ▾</span>
+
+								<div class="dropdown_panel">
+									<div class="hd">领券下单，更多优惠等你拿</div>
+				                    <ul class="bd">
+				                    	<? $.each(coupon, function(couponIndex, couponItem){
+				                    		if(couponIndex < 3){
+				                    	?> 
+				                    		<li class="item">
+				                    			<span class="coupon_price">￥<?= couponItem.credit?></span>
+				                    			<div class="intro">
+				                    				<p class="desc"><?= couponItem.text?></p>
+				                    				<p class="time"><?= couponItem.start_time ?>~<?= couponItem.end_time?></p>
+				                    			</div>
+				                    			<span class="coupon-btn js-coupon-btn apply_status" data-coupon="<?= couponItem.coupon_apply_code ?>"><?= couponItem.link_text?></span>
+				                    		</li>
+				                    		<?}?>
+				                    	<?});?>
+				                    </ul>
+				                    <span class="info js-info red_f"></span>
+				                </div>
+							</div>
+						<?}?>
+						<? if(reduce.length){?>
+							<div class="pro-icon sub">
+								<?= reduce[0].brief?> 
+								<span class="triangle">▾</span>
+								<div class="dropdown_panel">
+									<?$.each(reduce, function(reduceIndex, reduceItem){?>
+										<p class="reduceTxt"><?= reduceItem.text?><br />
+										<span class="time">时间:<?= reduceItem.note?></span></p>
+									<?});?>
+								</div>
+							</div>
+						<?}?>
+						<? if(discount.length){?>
+							<div class="pro-icon discount">
+								<?= discount[0].brief?> 
+								<span class="triangle">▾</span>
+								<div class="dropdown_panel">
+									<?$.each(discount, function(discountIndex, discountItem){?>
+										<p class="discountTxt"><?= discountItem.text?><br />
+										<span class="time">时间:<?= discountItem.note?></span></p>
+									<?});?>
+								</div>
+							</div>
+						<?}?>
+						<? if(item.alert_new_date && item.alert_new && item.alert_url){?>
+							<a href="<?= item.alert_url?>" target="_blank">
+								<p class="is_new">
+									<span class="new_date"><?= item.alert_new_date?>上新</span>
+									<span class="new_count"><?= item.alert_new?>款</span>
+								</p>
+							</a>
+						<? }?>
+						
+					</div>
+					<? if(item.points_trend){?>
+						<ul class="assess">
+							<? for(var assess in item.points_trend){
+								var assessItem = item.points_trend[assess];
+							?>
+							<li>
+								<p class="assess_name"><?= assessItem.text?></p>
+								<p class="assess_score <?if(parseInt(assessItem.mark) == 1){?> up <?}else if(parseInt(assessItem.mark) == -1 && assessItem.avg){?> down <? }else{?> average<?}?>">
+									<? if(assessItem.avg){
+										if(parseInt(assessItem.mark) == 0){
+									?>
+											<span class="average"><?= assessItem.avg?>&nbsp;--</span>
+										<?}else{?>
+											<span><?= assessItem.avg?></span>
+										<?}?>
+									<?}else{?>
+										<span>--</span>
+									<?}?>
+								</p>
+							</li>
+							<?}?>
+						</ul>
+					<?}?>
+				</div>
+
+				<ul class="goods_wall">
+					<? 
+						$.each(item.shop_goods, function(goodsIndex, goods){
+							if(goodsIndex < 4){
+					?>
+						<li>
+							<a href="/share/item/<?= goods.twitter_id?>" target="_blank">
+								<img src="<?= goods.pic?>" class="goods_pic">
+								<div class="mask">
+									<span class="price">￥<?= goods.goods_price?></span>
+									<span class="sell">销量<?= goods.sale_num?></span>
+								</div>
+							</a>
+						</li>
+						<?}?>
+					<?});?>
+					
+				</ul>
+
+			</div>
+		<?}?>
+	<?});?>
+</script>
+
+<script>
+fml.vars.total = <%= JSON.stringify(shop_list.totalNum);%>;
+fml.vars.pageFrame = <%= JSON.stringify(shop_list.page_frame);%>;
+fml.vars.frameSize = <%= JSON.stringify(shop_list.frame_size);%>;
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use('page/searchShop');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

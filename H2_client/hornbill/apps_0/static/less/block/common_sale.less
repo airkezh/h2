@@ -1,0 +1,148 @@
+/*二级浮动条*/
+.tabDetail(){
+  .tab_top { .bgc(#eee); .h(48px); .l(48px); .f(16px);
+	a { .left;  padding: 0 20px; }
+	.cur{ .red; .bgc(#e6e5e5);	}
+	.add_cart, .buy_btn, .non_btn { .cursor; .f(16px); .c; .right; .fn; .w(130px); }
+  }
+  .detail_items{ .bgwhite; .border-1(#eee); .h(40px); .l(40px);
+	a { .pl(25px); }
+  }
+}
+/*通用tab新标签*/
+.tabNew(){
+  .tab_top{ .bgc(#fff); .h(48px); .l(48px); .f(16px); margin:0 10px; .border-bc(solid);
+	a { .left;  padding: 0 20px; margin-top: -2px;}
+	.cur{
+	  .red;
+	  .bgc(#fff);
+	  border-bottom: 3px solid;
+	}
+	.add_cart, .buy_btn, .non_btn { .cursor; .f(16px); .c; .right; .fn; .w(130px); }
+  }
+  .detail_items{ .bgwhite; .border-1(#eee); .h(40px); .l(40px);
+	a { .pl(25px); }
+  }
+}
+/*详情title*/
+.commTle() { border-top: 1px solid #efefef; font-weight: 100; .f(16px); .h(30px); .l(28px); .mt(20px); .mb(20px);
+  span { .bgc(#efefef); .i_block; .pl(30px); .pr(30px); }
+}
+/*icons*/
+.sale_icons(){
+  .love_ico, .magazi_ico, .suc_cart, .msg_ico, .big_clock, .mid_clock, .small_clock, .tel_ico, .numBox .minus, .numBox .plus, .arrow,
+  .sharp, .hotline_ico, .star, .star b, .big_star, .big_star b, .quot_l, .quot_r, .cartico, .rmbico {
+	background: url("@{pic_url}/images/doota/@{doota_sale}") no-repeat;
+  }
+  .star, .star b { .h(12px); .left; }
+  .star { .bp(-39px,-17px); .mr(5px); .mt(4px); .w(65px); }
+  .star b { .bp(-39px,0); }
+  .cartico { .bp(-62px,-36px); .h(20px); .pl(24px); font-size:17px; }
+  .rmbico { .bp(-100px,-35px); .h(20px); .pl(17px); font-size:17px; }
+  .goqq { .cursor; .border-1(#f69); .h(23px); .l(23px); .c; .left; .red; .w(86px);
+	.qqico { background: url("@{pic_url}/images/doota/doota_im1.gif") no-repeat; .pt(2px); .pb(3px); .pl(18px); }
+  }
+}
+/*图片详情*/
+.wrapBox() { .w(100%); .hidden;
+  .format { .hidden; .clearfix; .pl(30px); .pr(10px); .mt(20px);
+	li { .left; .ellipsis; .h(32px); .l(32px); .w(226px); }
+  }
+  .pro_txt, .more_pic { .ml(20px); .mr(20px); .hidden;  }
+  .pro_txt { .pb(10px); .l(24px); }
+  .more_pic { .c;
+	.load_img { .block;.auto; background:url("@{pic_url}/images/share/loading.gif") no-repeat center; }
+  }
+}
+
+/*购物保障*/
+.promiseBox(){
+  .pro_line { .border-bc(solid); .h(0); .hidden; .mt(20px); }
+  .promise { .hidden; .auto; .w(948px);
+	ul{ .w(100%); .hidden; .pt(30px); .pb(30px);
+	  li { .left; .pl(15px); .pr(70px);
+		.pro_ico { .left; .pt(5px); .h(45px); .w(50px); }
+		p { .ml(60px); .pt(4px);
+		  a { .gray;
+			&:hover { .red; }
+		  }
+		}
+		.pro_tle { .f(18px); .yahei;  }
+	  }
+	  .last{ .pr(15px); }
+	}
+  }
+
+  .promise-haitao {
+	a, img {
+	  width: 58px;
+	  height: 58px;
+	}
+
+	a {
+	  float: left;
+	}
+
+	.pro_tle {
+	  margin-left: 78px;
+	  height: 58px;
+	  line-height: 58px;
+	  white-space: nowrap;
+	}
+  }
+}
+/*人气单品*/
+.maylike(){
+  .may_like { .w(960px); .auto;
+	.like_list { .hidden; .pt(10px);
+	  li { .left; .inline; .ml(6px); .mr(6px); .w(180px);
+		.maylike_li();.pb(20px);
+		.price_box { .border-bc2; .pb(8px); .mb(8px); }
+	  }
+	  .plus_icon{ .w(18px); .h(255px); .l(255px); .c; .f(20px); .pb(0); }
+	}
+  }
+}
+.maylike_li(){
+  .s_picBox { .h(255px); .w(180px); .block; .hidden;
+	.s_pic { .h(255px); .w(180px); .block; .c; .vm; display:table-cell;*font-size:224px;
+	  img { max-width: 180px; max-height: 255px; .vm;  }
+	}
+  }
+  .txt { .block; .h(18px); .ellipsis; .l(18px); .hidden; margin: 6px 0 5px; .w(100%); }
+  .price { .gray; .t-through; .pl(5px); }
+  .price_red { .red; .f(16px); }
+  .buy-numbers {
+	color: #999;
+  }
+}
+
+/**
+  店铺标记
+*/
+.shop-label() {
+  .icon-shop {
+	display: none;
+	position: absolute;
+	width: 44px;
+	height: 44px;
+  }
+
+  /*
+    明星店铺标记
+   */
+  .star-shop .icon-shop {
+	display: block;
+    background-image: url("http://d05.res.meilishuo.net/pic/_o/a3/9a/012e724d7dbc6b358313707e7ddf_44_44.ch.png");
+  }
+
+
+  /*
+    精品店铺标记
+  */
+  .competitive-shop .icon-shop {
+    display : block;
+    background-image: url("http://d04.res.meilishuo.net/pic/_o/3f/79/425abafb9bba6e1fe5d9cfff728e_77_62.cj.png");
+    background-size: 100% 100%;
+  }
+}

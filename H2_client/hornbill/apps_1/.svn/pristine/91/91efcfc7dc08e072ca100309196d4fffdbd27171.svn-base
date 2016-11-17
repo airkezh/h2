@@ -1,0 +1,19 @@
+<%#head_simple.html%>
+<div class="setted_head">
+	<div class="sh_head">
+		<div class="sh_content">
+			<a href="/shop/settled/">
+				<img class="s_logo" src="<%=this.PICTURE_URL %>images/doota/settled/zhaoshang_logo.jpg">
+			</a>
+			<a href="/" target="_blank">美丽说首页</a>
+		</div>
+	</div>
+	<div class="nav_wrapper">
+		<ul class="setted_nav">
+			<% this.settled && this.settled.forEach(function(item){ %>
+			<% if(item.no_nav){return;}%>
+			<li><a href="<%=item.link || ('/shop/settled/'+item.param) %>" <%if(item.link){%>target="_blank"<%}%> <%if(item.is_s){%> class="s"<%}%>><%=item.title %></a></li>
+			<% }); %>
+		</ul>
+	</div>
+</div>

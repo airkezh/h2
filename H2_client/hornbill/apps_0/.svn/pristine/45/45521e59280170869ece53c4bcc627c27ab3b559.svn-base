@@ -1,0 +1,119 @@
+<%# frame/wap/head_simple.html%>
+</head>
+<body>
+
+<div class="im_main" id="im_main">
+</div>
+
+<div class="layout">
+    <p>连接中... </p>
+</div>
+
+<script type="text/html" id="im_main_item">
+    <div class="im_mainitem rightHide <?if(v.utype == 'public'){?>public<?}?>" uid="<?= v.uid ?>" <?if(v.utype == 'public'){?>utype="public"<?}?>>
+    <div class="im_right">
+        <div class="goods"></div>
+    </div>
+    <div class="im_mainbox">
+        <div class="im_dialogbox">
+            <div class="im_dialog" id="did_<?= v.uid?>">
+                <div class="history hide">
+                    <div toid="<?= v.uid?>" class="historyBtn">查看历史聊天记录</div>
+                    <div class="history_intro"><span>以上是聊天记录</span></div>
+                </div>
+            </div>
+        </div>
+        <div class="im_inputbox">
+            <form method="post" onsubmit="return false" action>
+                <textarea class="im_inputbox_input" placeholder=""></textarea>
+                <input class="button sentBtn" type="submit" value="发送" />
+            </form>
+        </div>
+    </div>
+    </div>
+</script>
+
+<script type="text/html" id="im_goods_item">
+    <div>
+        <div class="app-download-tips">
+
+        </div>
+        <img class="goods_img" src="<?= goods_img ?>"/>
+        <p class="goods_title"><?= goods_title ?></p>
+        <p class="goods_price">¥<?= goods_price ?></p>
+    </div>
+</script>
+
+<script type="text/html" id="im_dialog_item">
+    <div class="<?= who?> d_<?= type?>">
+        <? if(ctime){?>
+        <div class="ctime">－ <?= ctime ?> －</div>
+        <?}?>
+        <div class="user_info">
+            <span class="user_img"><img src="<?= avatar ?>" /></span>
+            <p class="user_name"><?= name ?></p>
+        </div>
+        <div class="con">
+            <div class="bubble<?if(send){?> wait<?}?>" id="mid_<?= messageId?>">
+                <p><?if(type == 'text'){?><?= content ?><?}else if(type == 'img'){?><span class="imgUpload" ahref="<?= content.o_pic_url ?>" n_h="<?= content.nheight ?>" n_w="<?= content.nwidth ?>"><img src="<?= content.pic_url ?>" /></span><?}?></p>
+                <span class="shap"></span><span class="shapb"></span>
+            </div>
+        </div>
+        <div class="clear_f"></div>
+    </div>
+</script>
+
+<script type="text/html" id="select_goods_param_tpl">
+    <?var colors = data.color;?>
+    <div class="select_goods_param">
+        <div class="goods_param">
+            <figure class="desc">
+                <figcaption><?=data.goods_title?></figcaption>
+                <img src="<?=data.goods_image?>" alt=""/>
+                <p><span class="goods_price">￥<?=data.price?></span>（库存<span class="goods_leave">-</span>件）</p>
+            </figure>
+            <div class="goods_color">
+                <div class="goods_color_title">规格</div>
+                <ul class="goods_color_category">
+                    <? for (var i in colors)  {?>
+                    <li key="<?=i?>" class="goods_guige"><?=colors[i].meta_name?></li>
+                    <? }?>
+                </ul>
+            </div>
+            <div class="goods_amount">
+                <div class="goods_amount_title">数量</div>
+                <div class="goods_amount_select">
+                    <div class="minus">-</div>
+                    <div class="num">1</div>
+                    <div class="plus">+</div>
+                </div>
+            </div>
+        </div>
+        <div class="complete">
+            <span class="complete_btn">确定</span>
+        </div>
+        <div class="select_goods_param_close">x</div>
+        <div class="select_goods_param_tips"></div>
+    </div>
+
+</script>
+
+<script>
+    fml.vars.im = {
+        fromid : <%= this.user_id %>
+            , toid : <%= this.toid || 0 %>
+            , type : "<%= this.type || 0 %>"
+            , source : 'wap'
+            , im_url: Meilishuo.config.im_url
+    };
+    //<%=this.IM_URL2 || '/' %>socket.io/socket.io.js http://im.weiwang.rdlab.meilishuo.com/socket.io/socket.io.js
+</script>
+<script src="http://im.weiwang.rdlab.meilishuo.com/socket.io/socket.io.js"></script>
+<%if(0){%>
+<script src="https://cdn.socket.io/socket.io-1.0.6.js"></script>
+<%}%>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+        fml.use('m/page/im/chat');
+_use:", this._JSstack , this._JSmods ); %>
+<%# frame/wap/foot_simple.html%>

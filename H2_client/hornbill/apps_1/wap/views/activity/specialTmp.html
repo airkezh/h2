@@ -1,0 +1,27 @@
+<%#head.html%>
+	<div class="imgBox">
+		<img src="<%=this.magicBoxMain.boxInfo.toppic%>" user_id="<%= this.magicBoxMain.boxInfo.user_id%>" />
+	</div>
+	<div class="goods_detail">
+		<% this.boxPage && this.boxPage.map(function(data){ %>
+			<% if(data.tmp_id == 1){ %>
+				<% data.data_json && data.data_json.map(function(data1){  %>
+					<img src="<%=data1.pic%>" />
+				<%});%>
+			<%}else if(data.tmp_id == 2){%>
+				<% data.data_json && data.data_json.map(function(data1){  %>
+					<a href="<%=data1.weblink%>" target="_blank"><img src="<%=data1.pic%>" /></a>
+				<%});%>
+			<%}%>
+		<%});%>
+	</div>
+	<% if(this.share){ %>
+		<%= requireFn('wapShare.html')({
+			'share' : this.share
+			, 'shareID' : 'specialActivity'
+			, 'shareTitle' : '选择分享到：'
+			, '_JSstack' : this._JSstack
+			, '_JSmods' : this._JSmods
+		}); %>
+	<%}%>
+<%#foot_simple.html%>

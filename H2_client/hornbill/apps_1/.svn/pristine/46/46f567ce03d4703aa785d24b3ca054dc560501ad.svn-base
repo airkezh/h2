@@ -1,0 +1,212 @@
+/**
+*引入block
+**/
+@import "block.less";
+@import "window.less";
+
+.calendar_simple;
+
+.fluid;
+
+.cata_title { .cata_attr_title; }
+//for christmas
+.promotion_tip {
+	& > * { .pt(15px); .pr(5px); };
+	.h(auto); 
+	.banner {
+		.h(25px);
+		.left;
+	}
+	.clearfix;
+}
+@media screen and (max-width:1440px) {
+	.promotion_tip { .h(81px); }
+}
+
+.poster;
+.poster_icons;
+.redline;
+.face_pop { .window > .head_float; }
+.solidbtn;
+.solidbtn > .small_red;
+.solidbtn > .small_pink;
+.solidbtn > .big;
+
+.groupBox{ .break-word; .w(226px); }
+.groupCon{ .group > .9GG; }
+.goods_ad { .common_shadowBox; .h(304px); .mt(14px); .p13; .w(200px); }
+.rec_nav { .guang_cata_nav; .guang_cata_nav > .catalog; .guang_cata_nav > .catalogTwo;}
+.recmore_nav { .guang_cata_nav > .attr; .guang_cata_nav;}
+
+
+//页面侧边推荐导航
+.corner_notic{
+	.pa;
+	z-index: 4;
+}
+.sidebar_rec{
+	border: 1px solid #e6e6e6;
+	margin-top: 14px;
+	.bgc(#fff);
+	.list{
+		.pr;
+		padding-left:20px;
+		line-height: 24px;
+		.item{
+			.pr;
+			.bgc(#fff);
+			padding: 12px 20px 0 0;
+			h3{
+				a{
+					.fc(#f69);
+					.f(16px);
+					img{
+						vertical-align: -3px;
+					}
+				}
+			}
+			.cont{
+				padding-right: 6px;
+				padding-bottom: 6px;
+				border-bottom: 1px dotted #ccc;
+				.selected{
+					color: #fff;
+					background: #f69;
+				}
+			}
+			.corner{
+				.pa;
+				top:49%;
+				right: 21px;
+				line-height: 16px;
+				.fc(#999);
+				.f(14px);
+			}
+		}
+		.more{
+			.none;
+			z-index: 9;
+			.w(350px);
+			.bgc(#fff);
+			.pa;
+			top: -1px;
+			right: -350px;
+			border: 1px solid #e6e6e6;
+			background: #fff;
+			padding:5px 0;
+			.nav_item{
+				padding:5px 20px;
+				h4{
+					a{
+						font-size: 14px;
+					}
+				}
+			}
+		}
+		a{
+			margin: 2px 6px 2px 0;
+			line-height: 20px;
+			padding:0 3px;
+			.il-block;
+			white-space: nowrap;
+		}
+		a.selected{
+			color: red;
+		}
+	}
+	div.active{
+		margin-top: -1px;
+		border-top: 1px solid #e6e6e6;
+		border-bottom:1px solid #e6e6e6;
+		z-index: 5;
+		.more{
+			display: block;
+		}
+		.item{
+			border-right: 1px solid #fff;
+			margin-right: -1px;
+			z-index: 10;
+			.cont{
+				border-bottom:none;
+			}
+			.corner{
+				.fc(#f69);
+			}
+		}
+	}
+	div.last{
+		border-bottom:none;
+		.item{
+			.cont{
+				border-bottom:none;
+			}
+		}
+	}
+}
+
+//属性页右侧
+.attr_box {
+    .common_shadowBox; .mt(14px); .p13; .w(200px);
+    .list { .hidden; width: 100%;
+        li { .left; .inline; .hidden; margin: 10px 5px 0; .w(90px);
+            img { .h(90px); .w(90px); }
+            span { .block; .c; .h(25px); .l(25px); .hidden; .w(90px); }
+        }
+    }
+    .baike { .l(18px); .mt(5px); .break-word; }
+    .brand { .l(22px); .mt(5px);
+        a { .p05; }
+    }
+	.items_pop { .itemspop; }
+	.rec_bnr { background: url("@{pic_url}/images/goods/gentry.jpg") no-repeat; .block; .h(75px); .mt(12px); .w(200px); }
+	.adType1 { .round_banner > .type1; }
+}
+
+
+.page;
+.pageNav{.page > .pageRed; }
+
+.share_group { .share_group_btn;}
+
+//风格精选属性词
+.attrwords;
+
+.h_update { .pink_update; }
+
+.top_100 { .top100; }
+.lookmore { .look_more; }
+
+.ads_poster;
+.limit_i{
+	&bg, &l { background: url("@{pic_url}/images/catalog/limit_bg.png") no-repeat right; .left; .h(34px); _filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='@{pic_url}/images/catalog/limit_bg.png', sizingMethod='scale'); _background: none; }
+	&bg { .l(28px); .white; .c; .f(16px); .fb; .pr(7px); .pa; left: -7px; top: 12px; }
+	&l { .bp(0,0); .w(7px); .pr; .zoom; left: 0; }
+}
+
+//pretty 入口
+.pretty_ent { .common_shadowBox; .mt(14px); .w(200px); padding: 3px 13px 13px;
+	a { .block; .h(50px); .mt(10px); .w(200px); }
+}
+
+//低成本包装
+.dcb{
+	.common_shadowBox;.mt(14px);.ml(6px);.mr(6px);.pt(14px);.pb(14px);.h(48px);.hidden;
+	background:#fff url("@{pic_url}/images/attr/dcb_bg.jpg") no-repeat center right;
+	&_title{.fn;.red;.f(36px);.l(38px);.pl(20px);.left;.mt(5px);.mb(5px);}
+	&_prefix{color:#000;.f(20px);.l(38px);.pl(20px);.pr(20px);.left;.mt(5px);.mb(5px);border-right:1px solid #ccc;}
+	&_content{.pl(20px);.left;.l(24px);.w(62%);}
+}
+
+.seo_poster_title{.h(14px);.hidden;.pt(5px);}
+
+.cata_types { .bgwhite; .border-1; .h(28px); .l(28px); .hidden; margin: 14px 6px 0; .p13; 
+	li{ .border-rc(solid); .left; .f(14px); .fb; .p0_13;
+		a { .h(28px); .block; .pl(25px); .pr(25px); }
+		a.active { .bgred; .white; .border-r(16px); }
+	}
+	.last { .border-n; }
+}
+
+@import "footer.less";
+
+

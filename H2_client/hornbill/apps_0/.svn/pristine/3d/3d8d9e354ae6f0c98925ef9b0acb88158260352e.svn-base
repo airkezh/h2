@@ -1,0 +1,1028 @@
+function aj(){
+	return this;
+}
+var controlFns = {
+	getExchangeList : function(params){
+		var php = {
+			'list' : '/customactivity/CustomActivity_user_point_list'
+		}
+		this.ajaxTo(php[params]);
+	},
+	getComment : function(args){
+        var backend = {
+            'newShare' : '/item/item_reply_all'
+            ,'shop' : '/goods/comment_list'
+            ,'deal' : '/goods/sale_record_list'
+			, 'koubei' : '/goods/koubei_list'
+		}
+        var php = backend[args] || '/goods/share_comments'
+        this.ajaxTo(php)
+    },
+	getGoods : function(params){
+		var php = {
+			'new' : '/poster/latest_poster_m?__get_r=1'
+			, 'hot' : '/poster/popular_poster_m?__get_r=1'
+			, 'selected' : '/poster/selected_poster_m?__get_r=1'
+			, 'catalog' : '/poster/navigation_poster_m?__get_r=1'
+			, 'attr' : '/poster/attribute_poster_m?__get_r=1'
+			, 'search' : '/poster/search_poster_m?__get_r=1'
+			, 'group' : '/poster/group_poster_m?__get_r=1'
+			, 'recommend' : '/goods/attribute_poster?__get_r=1'
+			, 'recommend_wap' : '/goods/attribute_poster_wap?__get_r=1'
+		}
+		this.ajaxTo(php[params]);
+	},
+	wapActivityRecord : function(){
+	    this.ajaxTo('/wapactivity/Activity_record');
+	},
+	groundWap : function(){
+		this.ajaxTo('/customactivity/CustomActivity_wap_promote_dress_new');
+	},
+	act : function(params){
+		var wapMod = base.loadModel('wap/tools.js');
+		var access_token = wapMod.getMobToken(this.req ,this.res);
+		this.req.__get.app_access_token = access_token;
+		var php = {
+			'picshow_add' : '/customactivity/CustomActivity_wap_share_photo_add_user'
+			, 'picshow_vote' : '/customactivity/CustomActivity_wap_share_photo_vote'
+			, 'picshow_rank' : '/customactivity/CustomActivity_wap_share_photo_rank'
+			, 'bdapp' : '/customactivity/CustomActivity_wap_privilege_add_user'
+		}
+		this.ajaxTo(php[params]);
+	},
+	activity : function(params){
+        //this.debugSnake({target : 'devlab3'});
+
+		var php = {
+			'girls_add' : '/customactivity/CustomActivity_girlfriend_add_user',
+			'girls_vote' : '/customactivity/CustomActivity_girlfriend_vote',
+			'girls_rank' : '/customactivity/CustomActivity_girlfriend_rank',
+			'sale_vote_haibao' : '/customactivity/CustomActivity_wap_guimi_haibao',
+			'sale_vote' : '/customactivity/CustomActivity_wap_guimi_vote',
+			'sale_voted_haibao' : '/customactivity/CustomActivity_wap_guimi_voted_list',
+			'do_punch' : '/customactivity/CustomActivity_wap_user_punch',
+			'wakeup' : '/customactivity/CustomActivity_wap_user_mark',
+			'March_vote' : '/customactivity/CustomActivity_cosmetic_promote_lottery',
+			'spring_carnival_add' : '/customactivity/CustomActivity_spring_carnival_add',
+			'carnival_list' : '/customactivity/CustomActivity_wap_spring_carnival_list',
+            'promotion_poster_data' : '/customactivity/CustomActivity_common_featured_list?type=mob',
+			'bedook' : '/customactivity/CustomActivity_biduke_apply_coupon',
+			'couponAdd':'/customactivity/CustomActivity_coupon_add',
+			'couponAdd2':'/customactivity/CustomActivity_market_coupon_add',
+			'ocoupon618': '/customactivity/CustomActivity_mob_revive',
+			'ocoupon618_main': '/customactivity/CustomActivity_coupon_revival_add',
+			'june_coupon_newuser' : '/customactivity/CustomActivity_june_coupon_privilege_add',
+            'redpackage_coupon' : '/redpackage/Apply_red_package',
+            'getCouponInfo':'/huodong/getCouponInfo',
+            'df_cj' : '/customactivity/CustomActivity_nissan_coupon_lottery?from=app&action=lottery',
+            'df_like' : '/customactivity/CustomActivity_nissan_style_like?action=like',
+            "wxadd":"/weixin/Weixin_christmas_incr_a_chance",
+            "wx_survey":"/weixin/Weixin_FashionConsultant",
+            "wx_sur_start":"/weixin/Weixin_FashionSurveyFirstInto",
+            "xm_coupon":"/coupon/Get_a_coupon_by_xiaomi",
+            'lh515': '/huodong/activity_record_user',
+            'lhuser': '/huodong/activity_get_user',
+			'free_draw':'vip::/award/draw',
+			'free_saveInfo':'vip::/award/saveContactInfo',
+			"oppo_checkNum":'/oppo/Check_order_num',
+			"oppo_udateNum":"/oppo/Update_order_num"
+		};
+		this.ajaxTo(php[params]);
+	},
+	biz : function(params){
+		var php = {
+			'zero_add' : '/customactivity/CustomActivity_open_add_change_goods',
+			'girls_rank' : '/customactivity/CustomActivity_wap_share_photo_rank',
+			'girls_vote' : '/customactivity/CustomActivity_wap_share_photo_vote',
+			'girls_add' : '/customactivity/CustomActivity_wap_share_photo_add_user'
+		}
+		this.ajaxTo(php[params]);
+
+	},
+	summer_match: function(params){
+		var php = {
+			'match' : '/Wapactivity/Activity_goods'
+		}
+		this.ajaxTo(php[params])
+	},
+	doota : function(params){
+		this.debugSnake({target: 'lab2'});
+		var php = {
+			'address_add' : 'doota::/address/addr_add?source=4-0.0.1'
+			, 'address_delete' : 'doota::/address/addr_delete'
+			, 'address_select' : 'doota::/address/addr_select'
+			, 'address_validate' : 'doota::/address/addr_validate'
+			, 'address_default' : 'doota::/address/addr_default'
+			, 'order_close' : 'doota::/order/close'
+			, 'order_recv' : 'doota::/order/recv_confirm'
+			, 'cart_number' : '/cart/number'
+			, 'shop_info' : 'doota::/shop/shop_list'
+			, 'refund_apply' : 'doota::/wap/refund/refund_apply'
+			, 'express' : 'doota::/wap/refund/refund_express'
+			, 'appeal_initiate' : 'doota::/wap/appeal/initiate'
+			, 'orderNum' : 'doota::/order/goods_order_number'
+			, 'refund_edit' : 'doota::/wap/refund/refund_edit'
+			, 'refund_cancel' : 'doota::/wap/refund/refund_cancel'
+			, 'refund_reapply' : 'doota::/wap/refund/refund_reapply'
+			, 'member_gold_list' : 'doota::/coin/get_list'
+			, 'init' : 'doota::/order/init'
+		}
+		this.ajaxTo(php[params])
+	},
+	wx : function(params){
+		this.debugSnake({target: 'lab3'});
+		var php = {
+			'normal_goods' : '/weixin/weixin_mall_normal_goods'
+			, 'ordercreate' : 'doota::/order/add_weixin_goods'
+			, 'wxpay' : 'doota::/order/wechat_store_fetch'
+			, 'order_list' : 'doota::/order/list_info'
+			, 'release' : '/connect/release'
+			, 'change_bind' : '/connect/change_bind'
+			, 'coupon_list' : '/coupon/home_list'
+			, 'coupon_change' : 'doota::/order/weixin_init'
+
+//new wx
+			, 'connect' : '/connect/weixin?type=1' //拉用户信息
+			, 'sign' : '/weixin/Weixin_wap_share_sign' //js jdk 分享
+
+		}
+		this.ajaxTo(php[params])
+	},
+	wx_new : function(params){
+		// this.debugSnake({target : 'maoanli.rdlab'});
+		var php = {
+			'normal_goods' : '/weixin/weixin_mall_normal_goods'
+			, 'q_waterfall' : '/weixin/Weixin_index_waterfall'
+			, 'qun_waterfall' : '/weixin/Duang'
+			, 'q_class' : '/Weixin/focusShops'
+			, 'user_c' : '/Weixin/Weixin_circles'
+			, 'change_bind' : '/connect/change_bind'
+			, 'release' : '/connect/release'
+			, 'change_bind' : '/connect/change_bind'
+			, 'coupon_list' : '/coupon/home_list'
+			, 'hit_egg' : '/weixin/Weixin_d38_hit_an_egg'
+			, 'pt_send' : '/customactivity/CustomActivity_lottery'
+			, 'card' : '/weixin/Weixin_card_get_ticket'
+			, 'cardInfo' : '/weixin/Weixin_card_get_card_info'
+			, 'wx_tuan' : '/weixin/Weixin_mall_tuan'
+			, 'wx_tuan_info' : '/weixin/Weixin_tuan_page_info'
+			, 'shake_init' : '/customactivity/CustomActivity_lottery?act=set&activity_id=35'
+			, 'shake_save' : '/huodong/shake_save_contact'
+			, 'search' : '/weixin/search_goods'
+			, 'dr_list' : '/Weixin/tags_index'
+			, 'daily_list' : '/weixin/Weixin_mall_buyer_choice'
+			, 'wx818' : '/weixin/Weixin_818_getCoupon'
+		}
+		this.ajaxTo(php[params])
+	},
+	sq : function(params){
+		this.debugSnake({target : 'xiaolongrong.rdlab'});
+		var php = {
+			'address_info' : '/shouq/ShouQ_user_qq_addr'
+			,'normal_goods' : '/shouq/ShouQ_mall_normal_goods'
+			,'tuan' : '/shouq/ShouQ_mall_tuan'
+			,'desire' : '/shouq/ShouQ_mall_desire'
+			,'tuan_buy' :'/shouq/ShouQ_mall_spike'
+			// , 'ordercreate' : 'doota::/order/add_qq'
+			// , 'sqpay' : 'doota::/order/wechat_store_fetch' //wxpay
+			// , 'order_list' : 'doota::/order/list_info'
+			, 'release' : '/connect/release'
+			, 'change_bind' : '/shouq/ShouQ_bind'
+			, 'coupon_list' : '/shouq/ShouQ_mall_coupon'
+			// , 'coupon_change' : 'doota::/order/init_qq_new'
+			, 'change_normal' : 'doota::/address/addr_default'
+			, 'address_del' : 'doota::/address/addr_delete'
+			, 'address_list' : 'doota::/address/addr_select'
+			, 'address_add' : 'doota::/address/addr_add'
+			// , 'qq_fetch' : 'doota::/order/mob_qq_fetch'
+			, 'sq_coupon' : '/shouq/ShouQ_coupon_apply'
+			, 'sq_coupon_all' : '/shouq/ShouQ_coupon_apply_all'
+			, 'hit_egg' : '/shouq/ShouQ_d11_hit_an_egg'
+			, 'hit_gift' : '/shouq/activity_hit_gift'
+			, 'get_coupon' : '/shouq/ShouQ_d11_get_a_coupon'
+			, 'search' : '/shouq/Search_tag_poster'
+			, 'jx_goods' : '/shouq/ShouQ_mall_choice_list'
+			, 'activity_get_coupon' : '/shouq/ShouQ_universalGetCoupon'
+			, 'shop_coupon' : '/shouq/ShouQ_getShopCoupon'
+			, 'shop_waterfall' : '/shouq/ShouQ_shop_goods'
+			, 'sign_coupon' : '/shouq/ShouQ_exchangeSignCoupon'
+		}
+		 // this.debugSnake({target:'devlab3'});
+		this.ajaxTo(php[params])
+	},
+	tuan : function(params){
+		var php = {
+			'ajlist' : 'groupon::/groupon/groupon_poster_mob',
+			'batch' : 'groupon::/groupon/groupon_list_page?platform=MOB',
+			'remind_set' :'/push/Push_subscribe_msg',
+			'qiang8_list' : 'groupon::/groupon/groupon_qiang_info',
+			'hd_list' : 'groupon::/groupon/groupon_poster_mob_for_event',
+			'seckill' : 'groupon::/groupon/groupon_qiang_events_mob'
+		}
+		this.ajaxTo(php[params]);
+	},
+	sendcode : function(params){
+		var php = {
+			'sms' : '/user/Reactive_send_sms',
+			'sms_active' : '/user/Reactive',
+			'sBind' : '/user/Validate_sms_captcha_without_phone',
+			'sCode2' : '/user/Send_sms_captcha',
+			'sCode' : '/user/Send_sms_captcha_without_phone',
+			'changeBind' : '/user/Change_bind_mobile',
+			'sendBind' : '/setting/setting_bind_mobile',
+			'sendCode' : '/setting/setting_send_mob_active'
+		}
+		this.ajaxTo(php[params]);
+	},
+	coupon : function(params){
+		// this.debugSnake({target : 'devlab1'});
+		var php = {
+			'activate' : '/coupon/activate'
+			,'get' : '/coupon/apply'
+            ,'coupon_get' : "/coupon/outspread_apply"
+			,'register_apply' : '/note/register_apply_coupon'
+			,'coupon_clearance' : '/clearance/ApplyCoupon',
+			'home_list' : '/coupon/coupon_home_list?format=new&limit=100'
+			, 'coupon_xiaomi' : '/coupon/apply_coupon_for_xiaomi'
+            , 'modify_phone': '/newcomer/Set_order_redpackage_mobile'
+		}
+		this.ajaxTo(php[params]);
+	},
+	clearance: function (params) {
+		// this.debugSnake({target : 'devlab1'});
+        var php = {
+            'poster' : '/clearance/detail'
+        };
+        this.ajaxTo(php[params]);
+    },
+    new_user: function (params) {
+		// this.debugSnake({target : 'devlab1'});
+        var php = {
+            'poster' : '/section/dynamic'
+        };
+        this.ajaxTo(php[params]);
+    },
+	member_exchange: function(params){
+		var php = {
+			'add' : '/customactivity/CustomActivity_user_point_exchange_add'
+		}
+		this.ajaxTo(php[params])
+	},
+	get_exchange: function(params){
+		var php = {
+			'get' : '/customactivity/CustomActivity_user_point_update_status'
+		}
+		this.ajaxTo(php[params])
+	},
+	point_exchange: function(params){
+		var php = {
+			'point' : '/customactivity/CustomActivity_user_point_status'
+		}
+		this.ajaxTo(php[params])
+	},
+	single: function(params){
+		var php = {
+			'reply' : '/club/article_reply_list'
+		}
+		this.ajaxTo(php[params])
+	},
+	im : function(params){
+		// this.debugSnake({target : 'devlab1'});
+		var php = {
+			'history' : '/im/history'
+			, 'init' : '/im/init'
+		}
+		this.ajaxTo(php[params])
+	},
+	huodong : function(params){
+       // this.debugSnake({target : 'devlab1'});
+		var php = {
+			'fight' : '/customactivity/CustomActivity_exo_fighting_infomob',
+			'join' : '/customactivity/CustomActivity_exo_join_infomob',
+			'mz_boxShow' : '/cosmetic/cosmetic_shoppingshow_moreexpert',
+
+            'couponInfoFor11' : '/customactivity/CustomActivity_coupon_venue?type=mob&name=encore_11',
+            'getCaptchaFor11' : '/customactivity/CustomActivity_coupon_generate_captcha',
+            'checkCaptchaFor11' : '/customactivity/CustomActivity_coupon_check_captcha',
+            'meetFor11' : '/customactivity/CustomActivity_common_featured_area',
+            'getCouponFor11' : '/customactivity/CustomActivity_coupon_apply',
+            'zhiJianFor11' : '/customactivity/CustomActivity_coupon_pre_purchase',
+
+            'couponInfo' : '/promotion/promotion_coupon_venue?type=mob',
+            'getCaptcha' : '/promotion/promotion_coupon_generate_captcha',
+            'checkCaptcha' : '/promotion/promotion_coupon_check_captcha',
+            'meet' : '/promotion/promotion_common_featured_area',
+            'getCoupon' : '/promotion/promotion_coupon_apply',
+            'zhiJian' : '/promotion/promotion_coupon_pre_purchase',
+            'promotion_poster_data' : '/promotion/promotion_common_featured_list?type=mob',
+            'main_venue_rule' : '/promotion/promotion_common_rule',
+            'navi_data' : '/promotion/promotion_common_navigation',
+            'navi_data_pro' : 'promotion::/pandora/venue_navigation',
+			'wx_upload' : '/weixin/Pic_upload',
+			'shop_join' : '/CustomActivity/CustomActivity_shop_merchants'
+		};
+		this.ajaxTo(php[params]);
+	},
+	md : function(params){
+		var php = {
+			'normal_goods' : 'midian::/goods/get_list'
+		};
+		this.ajaxTo(php[params]);
+	},
+	beautysale : function(params){
+		var php = {
+			'list' : 'cosmetic::/Wapactivity/Promote_act',
+			'goods' : '/customactivity/CustomActivity_wap_spring_carnival_list'
+		};
+		this.ajaxTo(php[params]);
+	},
+	may_sale : function(params){
+		var php = {
+			'goods' : '/customactivity/CustomActivity_lovers_confessions_rank',
+			'add_love' : '/customactivity/CustomActivity_lovers_confessions_add_user'
+		};
+		this.ajaxTo(php[params]);
+	},
+	niuniu: function(params){
+		var php = {
+			'push' : '/customactivity/CustomActivity_mob_push?flag=set',
+			'get' : '/customactivity/CustomActivity_mob_every_draw?act=set&act_id=1',
+
+		};
+		this.ajaxTo(php[params]);
+	},
+	crest:function(params){
+		// this.debugSnake({'target':'devlab1'});
+		var php = {
+			"getLuckInfo" : "/customactivity/CustomActivity_wap_zhenpin_lottery?countOnly=0",
+			"postUserInfo" : "/customactivity/CustomActivity_add_user"
+		};
+		this.ajaxTo(php[params]);
+	},
+	app_feedback:function(params){
+		var php = {
+			'fd_create':'/about/feedback_app_create'
+			// ,'test' : '/customactivity/CustomActivity_mob_push?flag=set'
+		};
+		this.ajaxTo(php[params])
+	},
+	cache : function(params){
+		var php = {
+			'register_redirect_cache' : '/register/register_redirect_cache'
+		}
+		this.ajaxTo(php[params])
+	},
+	weixinLuck:function(params){
+		// this.debugSnake({'target':'devlab1'});
+		var php = {
+			"verificationCodePhp" : "/register/register_fast_sm_captcha",
+			"isMeilishuoUserPhp" : "/redpackage/Check_user_status",
+			"registerUserPhp" : "/register/register_fast_submit",
+			"getLuckPhp" : "/redpackage/Grab_red_package",
+			"isPastPhp" : "/redpackage/Red_package_expired"
+		};
+		this.ajaxTo(php[params]);
+	},
+	appTest : function(params){
+		var php = {
+			'appWelcome' : '/spam/str_de'
+		}
+		this.ajaxTo(php[params])
+	},
+	daren : function(params){
+		var php = {
+			'apply' : '/dress/daren_request'
+		}
+		this.ajaxTo(php[params])
+	},
+	promote : function(params){
+		var php = {
+			'activity_item_list_916' : '/promote/activity_item_list_916'
+			, 'activity_item_list_1111' : '/promote/activity_item_list_1111'
+			, 'activity_item_list_huodong' : 'cosmetic::/promote/Activity_item_list_huodong'
+			, 'group_join' : 'cosmetic::/promote/Group_join'
+			, 'pk_vote_add' : 'cosmetic::/promote/Pk_vote_add'
+			, 'pk_comment_add' : 'cosmetic::/promote/Pk_comment_add'
+			, 'brand_get' : 'cosmetic::/promote/Brand_get'
+			, 'pk_barrage_get' : 'cosmetic::/promote/Pk_barrage_get'
+			, 'Pk_barrage_add' : 'cosmetic::/promote/Pk_barrage_add'
+			, 'pk_list' : 'cosmetic::/promote/Pk_list'
+			, 'groupring_list' : 'cosmetic::/promote/groupring_list'
+			, 'navi_data_pro' : 'promotion::/pandora/venue_navigation'
+			, 'couponInfo_pro' : 'promotion::/coupon/venue?type=mob'
+			, 'couponShareApply' : 'promotion::/coupon/share_apply'
+		}
+		// this.debugSnake({'target':'devlab3'});
+		this.ajaxTo(php[params])
+	},
+	mua : function(params){
+		// this.debugSnake({'target':'devlab1'});
+		var php = {
+			'setRemindMe' : '/mua/setRemindMe'
+			,'getRecGoods': '/mua/getRecGoods'
+			,'getGoods': '/mua/getGoods'
+			,'getRemindMe': '/mua/getRemindMe'
+			,'getHotGoods':'/mua/getHotGoods'
+		}
+		this.ajaxTo(php[params])
+	},
+	shop : function(params){
+		// this.debugSnake({'target':'devlab3'});
+		var php = {
+			'shop' : '/shop/wap_shop_goods?__get_r=1',
+			'new_info' : '/shop/shop_new_detail',
+			'activity_coupon' : '/customactivity/CustomActivity_common_coupon_apply_1022',
+			'follow' : '/shop/shop_follow',
+			'unfollow' : '/shop/shop_unfollow',
+			'shop_main' : '/shop/wap_shop_goods'
+		}
+		this.ajaxTo(php[params])
+	},
+	korea: function(params){
+		var php = {
+			"list" : "/koreahall/hall_list"
+		};
+		this.ajaxTo(php[params]);
+	},
+	xuanguan: function(params){
+		var php = {
+			"middle" : "/commerce/middlepage_poster_mob"
+		};
+		this.ajaxTo(php[params]);
+	},
+	short: function(params){
+		var php = {
+			"getShortUrl" : "/url/shorturl"
+		};
+		this.ajaxTo(php[params]);
+	},
+	wx_mua : function(params){
+		var php = {
+			'getRecGoods': '/weixin/Weixin_mall_mua_GetRecGoods'
+			,'getGoods': '/weixin/Weixin_mall_mua_GetGoodsList'
+		}
+		this.ajaxTo(php[params])
+	},
+	baoyang: function(params){
+		// this.debugSnake({'target':'devlab1'});
+		var php = {
+			'startInfo' : '/nurturing/launch'
+			, 'payInfo' : '/nurturing/rewards'
+			, 'rewardsInfo' : '/nurturing/info'
+		};
+		this.ajaxTo(php[params]);
+	},
+	fashion: function(params){
+		var php = {
+			'specials' : '/activity/Activity_feed'
+		};
+		this.ajaxTo(php[params]);
+	},
+	storeGoods: function(params){
+		//this.debugSnake({'target':'lab6'});
+		var php = {
+			'list' : '/registration/getStoreGoods'
+		};
+		this.ajaxTo(php[params]);
+	},
+	redeemStoreCoupon: function(params){
+		//this.debugSnake({'target':'lab6'});
+		var php = {
+			'get' : '/registration/redeemStoreCoupon'
+		};
+		this.ajaxTo(php[params]);
+	},
+	exoCart: function(params){
+		// this.debugSnake({'target':'devlab1'});
+		var php = {
+			'list' : '/customactivity/CustomActivity_exo_demo'
+		};
+		this.ajaxTo(php[params]);
+	},
+    mlslm: function (params) {
+        var php = {
+            'poster' : '/commerce/ka_poster_mob'
+        };
+        this.ajaxTo(php[params]);
+    },
+    getRecommendGoods: function(params){
+    	//this.debugSnake({'target':'devlab4'});
+		var php = {
+			'list' : '/poster/popular_poster_m'
+		};
+		this.ajaxTo(php[params]);
+    },
+	/**
+	 * 2014 圣诞节弹幕
+	 */
+	danmu: function( params ) {
+        //this.debugSnake({ target: 'xiaochongchen.rdlab' });
+        var php = {
+            'aquarius': '/customactivity/CustomActivity_barrage_drifting_sep',
+            'interior': '/customactivity/CustomActivity_barrage_drifting_otc?actid=123',
+            'divergent': '/customactivity/customActivity_barrage_drifting_otc'
+        }
+		if ( php[ params ] ) {
+			this.ajaxTo( php[ params ] )
+			return;
+		}
+		this.ajaxTo( '/customactivity/CustomActivity_barrage_drifting' );
+	},
+
+	/**
+	 * 弹幕红包是否中奖
+	 */
+	danmu_lottery: function() {
+		this.ajaxTo( '/customactivity/CustomActivity_lottery' )
+	},
+
+	/**
+	 * 圣诞接礼物游戏
+	 */
+	christmas: function(params){
+		// this.debugSnake({
+		// 	target: 'devlab1'
+		// })
+		var php = {
+            'shared' : '/customactivity/CustomActivity_weixin_christmas_game'
+            ,'pushPhone' : '/customactivity/CustomActivity_weixin_christmas_gift'
+        }
+        this.ajaxTo(php[params])
+	},
+	getGift: function(params){
+		var php = {
+            'savePhone' : '/customactivity/CustomActivity_weixin_christmas_gift'
+        }
+        this.ajaxTo(php[params])
+	},
+	cosmetic: function(params){
+		var php = {
+			'cosmetic_wap_efficacy' : 'cosmetic::/cosmetic/cosmetic_wap_efficacy'
+			, 'cosmetic_recommend' : 'cosmetic::/cosmetic/cosmetic_recommend'
+		}
+		this.ajaxTo(php[params])
+	},
+	zulily:function(params){
+		// this.debugSnake({'target':'maoanli.rdlab'});
+		var php = {
+			'send' : '/style_remark/style_remark_add',
+			'style_want_list' : '/style/style_want_list',
+			'index_style_list' : '/style/style_list',
+			'style_want' : '/style/Style_want',
+			'danmu' : '/style_remark/style_remark_list',
+			'hotSaleDanmu' : '/style_remark/style_remark_list_hotSale',
+			'coupon' :'/style/style_apply_coupon',
+			'style_user_create':'/style/style_user_create',
+			'desire320':'/style/style_list',
+			'recommend':'/style/style_list',
+			'style_new_list':'/style/style_new_list',
+			'style_special':'/style/style_special',
+			'Style_push_page':'/style/Style_push_page',
+			'Style_express_list':'/style/Style_express_list',
+			'Style_special_offer_list':'/style/Style_special_offer_list',
+			'Style_home_express':'/style/Style_home_express',
+			'Style_paonan_list':'/style/Style_paonan_list'
+		}
+		//获取R参数
+		function getR(php) {
+			for (var i in php) {
+				if (php[i].indexOf('?') == -1) {
+					php[i] = php[i] + '?__get_r=1';
+				} else {
+					php[i] = php[i] + '&__get_r=1';
+				}
+			}
+		}
+		getR(php);
+		this.ajaxTo(php[params])
+
+	},
+	zulilyOld:function(params){
+		// this.debugSnake({'target':'maoanli.rdlab'});
+		var php = {
+			'send' : '/style_remark/style_remark_add',
+			'style_want_list' : '/style/style_want_list',
+			'index_style_list' : '/style/style_list',
+			'style_want' : '/style/Style_want',
+			'danmu' : '/style_remark/style_remark_list',
+			'hotSaleDanmu' : '/style_remark/style_remark_list_hotSale',
+			'coupon' :'/style/style_apply_coupon',
+			'style_user_create':'/style/style_user_create',
+			'desire320':'/style/style_list',
+			'recommend':'/style/style_list',
+			'style_new_list':'/style/style_new_list',
+			'style_special':'/style/style_special',
+			'Style_push_page':'/style/Style_push_page'
+		}
+		//获取R参数
+		function getR(php) {
+			for (var i in php) {
+				if (php[i].indexOf('?') == -1) {
+					php[i] = php[i] + '?__get_r=1';
+				} else {
+					php[i] = php[i] + '&__get_r=1';
+				}
+			}
+		}
+		getR(php);
+		this.ajaxTo(php[params])
+
+	},
+	desire:function(params){
+		// this.debugSnake({'target':'devlab1'});
+		var php = {
+			'send' : '/style_remark/style_remark_add',
+			'style_want_list' : '/style/style_want_list',
+			'index_style_list' : '/style/style_list',
+			'style_want' : '/style/Style_want',
+			'danmu' : '/style_remark/style_remark_list',
+			'hotSaleDanmu' : '/style_remark/style_remark_list_hotSale',
+			'coupon' :'/style/style_apply_coupon',
+			'style_user_create':'/style/style_user_create',
+			'desire320':'/style/style_list'
+		}
+		this.ajaxTo(php[params])
+
+	},
+	qa:function(params){
+		var php = {
+	  		'set': 'higo::/hgwap/index.php/answer/setrank',
+	  		'recommand': 'higo::/hgwap/index.php/answer/setrecommend'
+		}
+
+		this.ajaxTo(php[params])
+	},
+	circle: function(params){
+        this.debugSnake({'target':'pmlab1'});
+		var php = {
+			'get_all_list' : '/circle/get_all_list',
+			'get_newest_list' : '/circle/get_newest_list',
+			'get_promote_list' : '/circle/get_promote_list',
+			'get_my_join_list' : '/circle/get_my_join_list',
+			'member_join' : '/circle/member_join',
+            'get_member_list' : '/circle/member_selected_list',
+            'get_msg_list' : '/circle/richmsg_selectedtext_list'
+		}
+		this.ajaxTo(php[params])
+	},
+	newcomer: function(params){
+    	//this.debugSnake({'target':'lab6'});
+		var php = {
+			'get' : '/newcomer/getRecGoodsExtInfo',
+			'list' : '/newcomer/getRecGoods',
+			'coupon' : '/newcomer/applyCoupon'
+		};
+		this.ajaxTo(php[params]);
+    },
+	wx : function(args){
+        var php = {
+            'connect' : '/connect/weixin?type=1' //拉用户信息
+            , 'wxcall' : '/connect/wxcall'
+            , 'sign' : '/weixin/Weixin_wap_share_sign' //js jdk 分享
+        }
+        this.ajaxTo(php[args]);
+    },
+    share_item: function(params) {
+		var php = {
+			'goodsTag' : '/goods/comment_goods_tag'
+			, 'goodsCmt' : '/goods/comment_filter_total'
+			, 'goodsSize' : '/share/details'
+		}
+        this.ajaxTo(php[params])
+    },
+    special_goods: function(params){
+		var php = {
+			'list' : '/poster/Special_poster_m'
+		};
+		this.ajaxTo(php[params]);
+    },
+    redPaper: function(params){
+		var php = {
+			'shareState' : '/weixin/Weixin_redpacket_share_redpacket',
+			'checkCaptcha': '/weixin/Weixin_redpacket_check_captcha'
+		};
+		this.ajaxTo(php[params]);
+    },
+    getCoupons: function(params){
+    	// this.debugSnake({'target':'lab2'});
+		var php = {
+			'coupon' : '/coupon/Apply_coupon_for_whitelist',
+			'june_coupon' : '/coupon/apply_coupon_for_whitelist_new',
+			'june_coupon_sao' : '/coupon/apply_coupon_for_whitelist_repurchase'
+		};
+		this.ajaxTo(php[params]);
+    },
+    onSale: function(params){
+    	this.debugSnake({'target':'devlab2'});
+		var php = {
+			'save' : '/weixin/Weixin_activity_Stockpile_colthesinfo',
+			'getCode' : '/weixin/Weixin_activity_Send_sms_captcha',
+			'getCoupon' : '/weixin/Weixin_activity_Validate_sms_captcha'
+		};
+		this.ajaxTo(php[params]);
+    },
+    /**
+     * 主 app 相关的 h5 页面
+     */
+    mainapp: function( params ) {
+		//this.debugSnake({ target: 'pmlab1' })
+        var php = {
+            index: '/circle/get_circle_selected_list?circle_id=1',
+			get_member_list: '/circle/member_selected_list',
+			my_goods_list: '/circle/my_goods_list',
+			repin_list: '/circle/get_repin_circle_poster',
+			tranCircle: '/circle_activity/template_poster',
+			/**
+			 * 格式转换
+			 */
+			'convert_audio': '/circle/get_audio_info'
+        }
+        this.ajaxTo( php[ params ] )
+    },
+    guobinfen: function(params){
+    	//this.debugSnake({'target':'lab2'});
+		var php = {
+			'list' : '/customactivity/customActivity_promote_top?top=50&act_id=1505&act_name=fruit_fight',
+			'post' : '/Customactivity/CustomActivity_promote_drive',
+			'chou' : '/customactivity/customActivity_lottery?activity_id=33&act=set',
+			'tui' : '/customactivity/CustomActivity_weixin_push'
+		};
+		this.ajaxTo(php[params]);
+    },
+    ws_shake: function(params){
+    	//this.debugSnake({'target':''});
+		var php = {
+			'shake_set' : '/customactivity/CustomActivity_lottery?act=set&activity_id=35',
+			'shake_get' : '/customactivity/CustomActivity_lottery?act=get&activity_id=35',
+			'shake_share' : '/customactivity/CustomActivity_lottery?act=share&activity_id=35',
+			'shake_clear' : '/customactivity/CustomActivity_lottery?act=clear&activity_id=35',
+			'shake_save' : '/huodong/shake_save_contact'
+		};
+		this.ajaxTo(php[params]);
+    },
+
+
+    guaguale: function(params){
+    	//this.debugSnake({'target':''});
+		var php = {
+			'set' : '/customactivity/CustomActivity_lottery?act=set&activity_id=41',
+			'get' : '/customactivity/CustomActivity_lottery?act=get&activity_id=41',
+			'share' : '/customactivity/CustomActivity_lottery?act=share&activity_id=41',
+			'clear' : '/customactivity/CustomActivity_lottery?act=clear&activity_id=41',
+			'save' : '/huodong/shake_save_contact'
+		};
+		this.ajaxTo(php[params]);
+    },
+
+	sticker: function( param ) {
+		this.debugSnake( {
+			target: 'mob.rdlab'
+		} )
+        var php = {
+            list: '/circle/chartlet_list'
+        }
+
+        this.ajaxTo( php[ param ] )
+    },
+    music: function( param ) {
+        var php = {
+            userInfo: '/huodong/MusicFestival_record_user'
+        }
+
+        this.ajaxTo( php[ param ] )
+    },
+
+	cooper : function(param){
+		var php = {
+			delete_item : 'cooper::/api/pages/delete/'
+			, add_item : 'cooper::/api/pages/add/'
+			, add_default : 'cooper::/api/pages/add_default/'
+		}
+        this.ajaxTo( php[ param ] )
+	},
+
+    aggregation: function( param ) {
+        var php = {
+            //http://redmine.meilishuo.com/projects/meilishuo-web/wiki/Circle_searchget_circle_list_by_addr
+            'addr_circle': '/circle_search/get_circle_list_by_addr',
+            //Circle_searchget_message_list_by_addr
+            'addr_item': '/circle_search/get_message_list_by_addr',
+            //Circle_searchget_user_list_by_addr
+            'addr_user': '/circle_search/get_user_list_by_addr',
+            //Circle_searchget_message_list_by_attr_word
+            'word_item': '/circle_search/get_message_list_by_attr_word',
+            //Circle_searchget_user_list_by_tag
+            'tag_user': '/circle_search/get_user_list_by_tag'
+        }
+
+        this.ajaxTo( php[ param ] )
+    },
+
+    'promotion': function(params) {
+        //this.debugSnake({target : 'devlab1'});
+
+        var php = {
+            'coin_venue': 'promotion::/hotel/HotelGoods'
+        };
+
+        this.ajaxTo(php[params]);
+    },
+
+    /**
+     * 摸摸傲娇喵主子
+     * 群红包
+     */
+	'mew_lucky': function( param ) {
+        var php = {
+            'check': '/weixin/Weixin_apply_lucky',
+            'info': '/weixin/Weixin_lucky_info'
+        }
+
+        this.ajaxTo( php[ param ] )
+    },
+	'm_welfare':function(params){
+		var php = {
+			'wlf_list': '/welfaremob/welfare_list',
+			'wlf_lucky':'/welfaremob/welfare_activity_lucky_avatar',
+			'wlf_attention_shop':'/shop/shop_follow',
+			'attention_follow':'/user/follow?fuid=34143831',
+			'wlf_apply':'/welfaremob/welfare_activity_apply',
+			'wlf_shop_info':'/shop/shop_info',
+			'wlf_add_report':'/welfaremob/Welfare_report_new',
+			"wlf_my_wlf":'/welfaremob/welfare_my_apply',
+			"wlf_singleReportList":'/welfaremob/Welfare_report_list',
+			"goodReport":'/welfaremob/Welfare_report_recommend',
+			"like":"/twitter/like",
+			'wlf_update_report':'/welfaremob/Welfare_report_update',
+			'wlf_report_like':'/welfaremob/Welfare_report_like',
+			'wlf_report_unlike':'/welfaremob/Welfare_report_unlike',
+			'wlf_add_comment':'/welfaremob/Welfare_report_add_comment',
+			"wlf_comment_list":"/welfaremob/Welfare_report_comment_list"
+		};
+
+		this.ajaxTo(php[params]);
+	},
+    colorRun: function(params){
+    	//this.debugSnake({'target':''});
+		var php = {
+			'get' : '/customactivity/customActivity_color_run?cid=10179'
+		};
+		this.ajaxTo(php[params]);
+    },
+    designer: function(params){
+    	//this.debugSnake({'target':''});
+		var php = {
+			'vote' : '/praise/praise'
+			,'lottery' : '/customactivity/CustomActivity_lottery?act=set&activity_id=63'
+			,'save' : '/huodong/shake_save_contact'
+			,'award': 'vip::/award/draw'
+		};
+		this.ajaxTo(php[params]);
+    },
+    member: function(params){
+		var php = {
+			'doDraw': 'vip::/award/draw',
+			'doSign': 'vip::/sign/doSign',
+			'getInfo': 'vip::/vip/getInfo',
+			'getGoods': 'vip::/sign/getGoods',
+			'setRemind': 'vip::/sign/setRemind',
+			'getTradeGoods': 'vip::/half/getGoods',
+			'getMyAwards': 'vip::/award/getMyAwards',
+			'getDuibaUrl': 'vip::/duiba/getLoginUrl',
+			'getScrollList': 'vip::/award/getScrollList',
+			'saveUserInfo': 'vip::/improve/saveInfo',
+			'saveContactInfo': 'vip::/award/saveContactInfo',
+			'exchangeCoupon': 'vip::/exchange/exchangeCoupon',
+			'getExchangeGoods': 'vip::/exchange/getGoods',
+			'getScoreData': 'vip::/vip/getDepletionScore',
+			'getBeansList': 'doota::/coin/get_list_beans'
+		};
+
+		this.ajaxTo(php[params]);
+	},
+	redpacket: function(params){
+		var php = {
+			'getCode': 'promotion::/captcha/send_sms',
+			'getPaper': 'promotion::/activity/apply',
+			'newGetCode': '/newcomer/activity_validate',
+			'newGetPaper': '/newcomer/activity_apply'
+		};
+		this.ajaxTo(php[params]);
+	},
+	captcha: function(params){
+		var php = {
+			'getSms': '/risk/Captcha_sms',
+			'picValidate': '/risk/captcha_picvalidate',
+			'smsValidate': '/risk/Captcha_smsvalidate'
+		};
+
+		this.ajaxTo(php[params]);
+	},
+    singleDog: function(params){
+    	//this.debugSnake({'target':''});
+		var php = {
+			'lottery': 'vip::/award/draw'
+		};
+		this.ajaxTo(php[params]);
+    },
+	moas: function(params){
+		var php = {
+			'api': 'jungle::/moas/api/'
+		};
+		this.ajaxTo(php[params]);
+	},
+	distance : function(params){
+		var php = {
+			'friend': '/friendassist/friendAssist_doassist?ass_do=1'
+			,'lottery': 'vip::/award/draw'
+			,'coupon' : 'vip::/award/getHerList'
+			,'set' : '/friendassist/friendAssist_setcoupon?ass_coup=1'
+		};
+
+		this.ajaxTo(php[params]);
+	},
+	twoScreen : function(params){
+    	//this.debugSnake({'target':'ziqiangdong.rdlab'});
+		var php = {
+			'player': '/doublescreen/Check_pair',
+			'love_dec':'/doublescreen/Merge_user'
+		};
+		this.ajaxTo(php[params]);
+    },
+    risk_control: function(params){
+    	var php = {
+			'pic': '/risk/captcha_picvalidate' //图片解除
+			,'send_sms':'/risk/Captcha_sms' //发送短信
+			,'sms':'/risk/Captcha_smsvalidate' //短信解除
+		};
+		this.ajaxTo(php[params]);
+    },
+    maleGod: function(params){
+    	var php = {
+    		'getMaleGod': '/newcomer/Activity_testgame'
+    	};
+    	this.ajaxTo(php[params]);
+    },
+	item: function(params){
+		var php = {
+			'item_share_goods': '/item/item_share_goods'
+		};
+		this.ajaxTo(php[params]);
+	},
+	search: function(params){
+		var php = {
+			'search_tag_poster': '/search/search_tag_poster'
+		};
+		this.ajaxTo(php[params]);
+	},
+	invite: function(params){
+		var php = {
+			'coupon': '/newcomer/New_user_invitation?activity_id=12623'
+		};
+		this.ajaxTo(php[params]);
+	},
+	designerShop : function(params){
+		var php = {
+			'selected': '/street/shop_class_list?key=selected'
+			,'japan': '/street/shop_class_list?key=japan'
+			,'europe': '/street/shop_class_list?key=europe'
+			,'art': '/street/shop_class_list?key=art'
+			,'street': '/street/shop_class_list?key=street'
+		};
+		this.ajaxTo(php[params]);
+	},
+	superMaster : function(params){
+		var php = {
+			"like":"/twitter/like"
+			,"attentioned" : "/user/follow"
+			,"cancel" : "/user/cancel_follow"
+		};
+		this.ajaxTo(php[params]);
+	},
+	prev: function(params){
+		// this.debugSnake({'target':'xiaolongrong.rdlab'});
+		var php = {
+			'oldTimey': '/activity/Activity_oldTimey'
+		};
+		//获取R参数
+		function getR(php) {
+			for (var i in php) {
+				if (php[i].indexOf('?') == -1) {
+					php[i] = php[i] + '?__get_r=1';
+				} else {
+					php[i] = php[i] + '&__get_r=1';
+				}
+			}
+		}
+		getR(php);
+		this.ajaxTo(php[params])
+	},
+	welcome: function( params ) {
+		var php = {
+			tuan: 'groupon::/groupon/groupon_poster_mob'
+		}
+
+		this.ajaxTo( php[ params ] )
+	}
+}
+exports.__create = controller.__create(aj , controlFns);

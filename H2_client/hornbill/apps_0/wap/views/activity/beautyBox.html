@@ -1,0 +1,84 @@
+<%#head_simple.html%>
+</head>
+<body>
+	<div class="imgBox">
+		<!--img src="http://i.meilishuo.net/css/images/wap/activity/beautyBox/2_01.jpg" /-->
+		<img src="<%=this.magicBoxMain.boxInfo.toppic%>" user_id="<%= this.magicBoxMain.boxInfo.user_id%>" />
+		<% if( this.magicBoxMain.boxInfo.start_time * 1000 - Date.parse(new Date()) >= 0 && this.magicBoxMain.boxInfo.buyStatus == 0 ){ %>
+			<p class="time timeStamp" end-date="<%=this.magicBoxMain.boxInfo.start_time%>"><span>距抢购开启&nbsp;&nbsp;</span><strong id="day">0</strong><span>天</span><strong id="hour">0</strong><span>时</span><strong id="minute">0</strong><span>分</span><strong id="seconds">0</strong><span>秒</span></p>
+			<a class="beautyBtn" href="#01"><img src="<%=this.PICTURE_URL%>images/wap/activity/beautyBox/sharebtn2.png" /></a>
+		<%}%>
+		<%if( this.magicBoxMain.boxInfo.buyStatus == 1 ){%>
+			<span class="beautyBtn" id="buy"><img src="<%=this.PICTURE_URL%>images/wap/activity/beautyBox/buybtn3.png" /></span>
+		<%}else if ( this.magicBoxMain.boxInfo.buyStatus == 2 ){%>
+			<span class="beautyBtn" id="try"><img src="<%=this.PICTURE_URL%>images/wap/activity/beautyBox/graybtn3.png" /></span>
+		<%}else if ( this.magicBoxMain.boxInfo.buyStatus == 3 ){%>
+			<span class="beautyBtn" id="zero"><img src="<%=this.PICTURE_URL%>images/wap/activity/beautyBox/zero2.png" /></span>
+		<%}else if ( this.magicBoxMain.boxInfo.buyStatus == 4){%>
+			<span class="beautyBtn"><img src="<%=this.PICTURE_URL%>images/wap/activity/beautyBox/buyed1.png" /></span>
+		<%}%>
+	</div>
+	<div class="goods_detail">
+		<% this.boxPage && this.boxPage.map(function(data){ %>
+			<% if(data.tmp_id == 1){ %>
+				<% data.data_json && data.data_json.map(function(data1){  %>
+					<img src="<%=data1.pic%>" />
+				<%});%>
+			<%}else if(data.tmp_id == 2){%>
+				<% data.data_json && data.data_json.map(function(data1){  %>
+					<a href="<%=data1.weblink%>" target="_blank"><img src="<%=data1.pic%>" /></a>
+				<%});%>
+			<%}%>
+		<%});%>
+	</div>
+	<% if(this.share){ %>
+		<%= requireFn('wapShare.html')({
+			'share' : this.share 
+			, 'shareTitle' : '选择分享到：'
+			, '_JSstack' : this._JSstack
+			, '_JSmods' : this._JSmods
+		}); %>
+	<%}%>
+<script>
+	fml.vars.isNewest = "<%=this.isNewest%>";
+</script>
+
+
+<script type="text/html" id="tobuy">
+	<div class="tobuy">
+		参与抽奖须知：<br />
+		<ul>
+			<li>每个ID只有1次参与机会，支付成功即获得抽奖机会。因参与抽奖所支付的现金<span class="red_f">不可退款</span></li>
+			<li>活动结束后，本页面将公示中奖用户名单。中奖用户会收到私信通知</li>
+		</ul>
+		<a class="btn3zi delayclose" href="<%=this.magicBoxMain.boxInfo.twitter_url%>">去参与</a>
+	</div>
+</script>
+<script type="text/html" id="totry">
+	<div class="totry">
+		<p class="dear">亲爱的爱美丽，</p>
+		抽奖机会现在被MM们预定光啦！<br />
+		预测可能还有新的机会出现，过会儿再来试试吧。
+		<span class="closeDialog btn2zi">确定</span>
+	</div>
+</script>
+<script type="text/html" id="tozero">
+	<div class="tozero">
+		<p class="dear">亲爱的爱美丽，</p>
+		抽奖机会现在被MM们抢光啦！<br />
+		关注美丽说微信、微博，敬请期待下一期活动来袭！
+		<span class="closeDialog btn2zi">确定</span>
+	</div>
+</script>
+<script type="text/html" id="toupdate">
+	<div class="toupdate">
+		<p class="dear">亲爱的爱美丽，</p>
+		你当前的美丽说版本还不支持付款支付，快去应用商店更新最新版本吧！
+		<a class="btn3zi delayclose" href="/goto/download/">去更新</a>
+	</div>
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/beautyBox');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

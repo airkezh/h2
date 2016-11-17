@@ -1,0 +1,62 @@
+<%# frame/www/head_simple.html%>
+</head>
+<%
+	var query = this._Request_query;
+	var toid = this.toid;
+	var toUserInfo = this.recently.data.datas.filter(function(v){return v.uid==toid})[0];
+%>
+
+<div class="im_main_item">
+	<div class="im_dialogbox">
+		<div class="im_dialog" uid="<%=toid %>">
+			<div class="history hide">
+				<div class="historyBtn">查看历史聊天记录</div>
+				<div class="history_intro"><span>以上是聊天记录</span></div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/html" id="im_dialog_item">
+<div class="<?if(msgStyle == 'sys'){?>d_a <?}?><?= who?> d_<?= type?>">
+	<? if(ctime){?>
+	<div class="ctime"><?= ctime ?></div>
+	<?}?>
+	<div class="con">
+		<div class="bubble<?if(send){?> wait<?}?>" id="mid_<?= messageId?>">
+			<p><?if(type == 'text'){?><?= content ?><?}else if(type == 'img'){?><a class="imgUpload" href="<?= content.o_pic_url ?>" target="_blank"><img src="<?= content.pic_url ?>" /></a><?}?></p>
+			<span class="shap"></span><span class="shapb"></span>
+		</div>
+		<div class="clear_f"></div>
+	</div>
+	<div class="clear_f"></div>
+</div>
+</script>
+<script type="text/html" id="im_transHistory_item">
+	<div class="trans_history">
+		<div class="history_intro"><span>来自客服&nbsp;<?=transfrom?>&nbsp;的转接记录开始</span></div>
+		<? $.each(history,function (k,v){?>
+			<div class="messages">
+				<p><span class="<?=(fml.vars.im.toid==v.chatfrom)?'to':'from'?>"><?= v.chatfrom_nick ?></span><span class="t"><?= v.ctime ?></span></p>
+				<p><?if(v.type=='text'){?><?= v.msg ?><?}else if(v.type=='img'){?><?for(var i=0; i<v.picInfo.length; i++){?><img src="<?= v.picInfo[i].pic_url ?>" /><br/><?}}?></p>
+			</div>
+		<? }); ?>
+		<div class="history_intro"><span>来自客服&nbsp;<?=transfrom?>&nbsp;的转接记录结束</span></div>
+	</div>
+</script>
+
+<script>
+	fml.vars.im = {
+		toid : <%=toid %>
+		,is_black : <%=this.black.data %>
+		,source : 'win'
+		,fromid : <%=this.im_user_info.user_id %>
+		,to_utype : '<%=toUserInfo ? toUserInfo.utype:'' %>'
+	}
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/im/windows');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# frame/www/foot_simple.html%>

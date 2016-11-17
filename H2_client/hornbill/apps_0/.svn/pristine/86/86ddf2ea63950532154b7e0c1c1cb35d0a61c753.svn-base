@@ -1,0 +1,52 @@
+<%# head.html %>
+<% 
+	var headTag = this.headTag;
+	var userInfo = this.userInfo || '';
+%>
+
+<%if(!this.mlsApp){%>
+	<%# head_share.html%>
+<%}%>
+
+<fieldset class="sendCode">
+	<% if(headTag == 'sendCode_mobile' || headTag == ''){%>
+		<form id="sendCodeForm" method="post" onsubmit="return false" action="">
+			<legend>美丽说验证码表单</legend>
+
+			<h2 class="title">为了您的账户安全需要绑定常用手机号</h2>
+			<div class="form_wrap">
+				<p class="form_list">
+					<label for="mobile">手机号</label>
+					<input class="lipt" placeholder="请输入手机号" maxlength="11" autocomplete="off" id="mobile" name="mobile" type="tel" value="" />
+				</p>
+			</div>
+			<div class="error_message" style="display:none;"></div>
+			<a href="/user/sendCode/send" class="next_step" id="getCode">下一步</a>
+		</form>
+	<%} else if(headTag == 'sendCode_send') {%>
+		<form id="sendCodeForm" class="sendCodeForm" method="post" onsubmit="return false" action="">
+			<div class="tips">
+				<p>已将验证码发送到您的手机</p>
+				<p class="icon">
+					<img src="http://d01.res.meilishuo.net/pic/_o/a9/c0/059490e8d78ce986d6d888144835_38_36.cg.png" />
+				</p>
+				<p class="tel"><%= userInfo.mobile ? userInfo.mobile.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2') : '' %></p>
+			</div>
+			<div class="form_wrap">
+				<p class="form_list">
+					<label for="code">验证码</label>
+					<input class="lipt" autocomplete="off" id="code" name="code" type="tel" value=""  placeholder="输入验证码"/>
+					<span class="time" id="timeDown">59S 后重发</span>	
+				</p>
+			</div>
+			<div class="error_message" style="display:none;"></div>
+			<a href="" class="next_step">下一步</a>
+		</from>	
+	<%}%>
+</fieldset>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/sendCode');
+_use:", this._JSstack , this._JSmods); %>
+
+<%# foot_simple.html%>

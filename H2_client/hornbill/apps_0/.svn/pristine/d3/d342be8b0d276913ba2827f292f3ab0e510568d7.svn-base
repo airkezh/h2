@@ -1,0 +1,178 @@
+/*common*/
+
+/**
+ * @fileoverview 会员权益 － 会员中心
+ * @requires zepto
+ * @author kehuang@meilishuo.com
+ * @date 2015-07-03
+ */
+
+require('wap/zepto/touch');
+require('wap/zepto/scroll');
+require('wap/zepto/fastclick');
+
+var $ = require('wap/zepto');
+var openApp = require('wap/app/openApp');
+var Swipe = require('wap/component/swipe');
+var shareTmp = require('wap/component/shareTmp');
+var scroll = require('wap/component/windowScroll');
+var checkLogin = require('circle/app/checkLogin');
+
+var oGoTopWrap = $('.gotop_wrap');
+
+// 登陆成功后的回调函数
+window.MLS = {
+    didLogin : function() {
+        // 成功登录，跳转到下一步
+        window.location.reload();
+    }
+};
+
+// 判断登录，包含app和wx
+checkLogin();
+
+var interests = {
+    oLevelSwipe: null,
+    oInterestsSwipe: null,
+
+    // 初始化页面
+    init: function(){
+        if (navigator.userAgent.indexOf('MicroMessenger') != -1) {
+            openApp(window.location.href);
+        }
+
+        // 判断是否登陆
+        /*if (!fml.vars.isLogin) {
+            window.location.href = 'meilishuo://login.meilishuo/';
+            return;
+        }*/
+
+        // 判断登录，包含app和wx
+        //checkLogin();
+
+        this.initEvent();
+    },
+
+    // 初始化事件
+    initEvent: function(){
+        var self = this;
+
+        window.onload = function(){
+            // 初始化滑动
+            self.interestsSwipe('j_interests_swipe');
+            self.levelSwipe('j_level_swipe');
+        };
+
+        scroll.yIn(60, function(){
+            oGoTopWrap.show();
+        },
+        function(){
+            oGoTopWrap.hide();
+        });
+
+        $('.gotop').on('click', function(){
+            $('html,body').scrollTo({
+                endY: 0,
+                updateRate: 5
+            });
+        });
+
+        // 关闭弹窗
+        $('body').on('click', '.know_btn', function(){
+            self.removeLayer();
+        });
+
+        $('body').on('click', '.beauty_tips', function(){
+            var tpl = shareTmp('j_tips_tpl', {'data': fml.vars.pageData});
+
+            $('body').append(tpl);
+        });
+
+        $('body').on('click', '.level_box li', function(){
+            var index = $(this).data('index') || 0;
+
+            self.oLevelSwipe.slide(index);
+        });
+
+        $('body').on('click', '.level_area li', function(){
+            var index = $(this).data('index') || 0;
+
+            self.oInterestsSwipe.slide(index);
+        });
+
+        $('body').on('click', '.customer_service', function(){
+            if (fml.vars.isNewest) {
+                window.location.href = 'meilishuo://customer_service.meilishuo';
+            } else {
+                var c = new confirm({
+                    content: '当前版本不支持调起客服页面，请升级最新版本。',
+                    onSure: function(){
+                        window.location.href = '/download/latest/wap';
+                    },
+                    onCancel: function(){
+                        return;
+                    }
+                });
+            }
+        });
+    },
+
+    levelSwipe: function(id){
+        var self = this,
+            oPoints = $('.level_box').find('div');
+
+        self.oLevelSwipe = new Swipe(document.getElementById(id), {
+            startSlide: fml.vars.userLevel,
+            speed: 300,
+            //stopPropagation: true,
+            callback: function(index, element){
+                oPoints.removeClass('active').eq(index).addClass('active'); // 焦点图当前状态
+            }
+        });
+    },
+
+    interestsSwipe: function(id){
+        var self = this,
+            oPoints = $('.arrow_wrap').find('.arrow_top');
+
+        self.oInterestsSwipe = new Swipe(document.getElementById(id), {
+            startSlide: fml.vars.userLevel,
+            speed: 300,
+            //stopPropagation: true,
+            callback: function(index, element){
+                oPoints.removeClass('active').eq(index).addClass('active'); // 焦点图当前状态
+            }
+        });
+    },
+
+    // 组图swipe
+    imgSwipe: function(id){
+        var obj = null,
+            oPoints = null,
+            oSwipe = $('#' + id),
+            type = oSwipe.data('type') || '';
+
+        if (type == 'level') {
+            oPoints = $('.level_box').find('div');
+        } else if (type == 'interests') {
+            oPoints = $('.arrow_wrap').find('.arrow_top');
+        }
+
+        obj = new Swipe(document.getElementById(id), {
+            startSlide: fml.vars.userLevel,
+            speed: 300,
+            //stopPropagation: true,
+            callback: function(index, element){
+                oPoints.removeClass('active').eq(index).addClass('active'); // 焦点图当前状态
+            }
+        });
+    },
+
+    removeLayer: function(){
+        $('.j_layer_shade').remove();
+        $('.j_layer_main').remove();
+    }
+};
+
+// 初始化页面
+interests.init();

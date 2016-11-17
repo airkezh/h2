@@ -1,0 +1,36 @@
+<%#sq/header.html%>
+<%   var coupons = this.couponInfo.coupon;  %>
+<img src="<%= this.PICTURE_URL%>images/wap/sq_coupon/top_new2.png" />
+<div class="coupon_wrap">
+	<img src="<%= this.PICTURE_URL%>images/wap/sq_coupon/tit1_new3.png" />
+	<% for (var i in coupons) { var cc = coupons[i]%>
+		<% if(i >=2 ){ %>
+			<div  class="coupon" style="background: url('<%=cc.bgPic%>') no-repeat top center; background-size: 100%">
+				<span class="coupon_btn">
+					<img src="<%=cc.btnPic%>" alt="" width="60%"  code="<%=cc.coupon_code%>" type="<%=cc.coupon_type%>"/>
+				</span>
+			</div>	
+		<%}%>
+	<%}%>
+</div>
+
+<div class="coupon_alert">
+	<p>领取规则:活动期间同一张优惠券只能领取一次。</p>
+	<p>使用规则:每个订单只能使用一张优惠券。</p>
+	<p>
+		<span>活动时间:9月16日-9月18日。</span>
+	</p>
+</div>
+
+<p class="go_mall"><a href="http://m.meilishuo.com/sq/mall/daily">购时尚，赶紧逛 >></a>
+</p>
+<p class="co_info">本次活动由 美丽说(北京)网络科技有限公司 提供</p>
+<!-- <img src="<%= this.PICTURE_URL%>images/wap/sq_coupon/bottom1.jpg" /> -->
+<script>
+	var isLogin = <%=this.isLogin%>;
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/sq/coupon_zone');
+_use:", this._JSstack , this._JSmods ); %>
+<%#sq/footer.html%>

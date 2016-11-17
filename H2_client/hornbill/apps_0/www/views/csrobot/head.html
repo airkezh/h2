@@ -1,0 +1,56 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<%# lang.conf%>
+<html <%if(this.cache){%>manifest="/cache/m.manifest"<%}%>  <%if(this.mask_show){%> style="overflow:hidden;" <%}%>>
+<head>
+	<style type="text/css">
+		.ie-hack {
+			max-width: 480px;
+			*+width:expression(this.offsetWidth < 480 ? 'auto' : '480px');
+			_width: expression(this.offsetWidth < 480 ? 'auto' : '480px');
+			*+overflow: hidden;
+		}
+		.tab-content{
+			*+width:expression(this.offsetWidth < 352 ? 'auto' : '352px');
+			_width: expression(this.offsetWidth < 352 ? 'auto' : '352px');
+			*+overflow: hidden;
+		}
+
+	</style>
+	<%= (function(link){
+	var str = '';
+	var base = this.M_JCSTATIC_BASE;
+	var sversion = this.SVERSION;
+	link && link.map(function(src){
+	str += '<link rel="stylesheet" type="text/css" href="'+base+'css/'+src+'.css?'+ sversion +'"/>';
+	});
+	return str;
+	})(this._CSSLinks)%>
+	<script type="text/javascript" src="<%= this.M_JCSTATIC_BASE + this.SCRIPT_BASE %>fml.js?<%= this.SVERSION%>" ></script>
+	<script>
+		fml.setOptions({'sversion' : '<%= this.SVERSION %>','defer' : <%= this.JS_Defer %> ,'modulebase' : '<%= this.M_JCSTATIC_BASE + this.SCRIPT_BASE %>'});
+		var Meilishuo = {
+					'config' : {
+						nt : '<%= this.nToken%>',
+						server_url : '<%= this.SERVER_BASE %>',
+						picture_url : '<%= this.PICTURE_URL %>',
+						im_url : '<%= this.IM_ULR %>',
+						captcha_url : '<%= this.CAPTCHA_ULR %>',
+						controller : '<%== this.headTag%>',
+						os : <%= JSON.stringify(this.os) || '{}'%>,
+					access_token : '<%=this.accessToken || 0 %>',
+					avatar_c : '<%= this.userInfo.avatar_c %>',
+					nickname : "<%= this.userInfo.nickname || ''%>",
+					user_id : "<%= this.userInfo.user_id %>",
+				r : "<%= this.r || ''%>",
+				goAppWelcome : <%= this.goAppWelcome  %>,
+				apiHost :<%= JSON.stringify(this.apiHost) %>,
+				proxyPath : '/ja/proxy/',
+				isBusiness:<%= this.isBusiness%>
+			}
+		};
+
+	</script>
+<title>美丽说MIXI智能客服机器人</title>
+</head>
+<body>

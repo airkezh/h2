@@ -1,0 +1,63 @@
+<%# frame/www/head_simple.html%>
+</head>
+<body>
+<div id="im_body" class="user_model">
+	<div class="im_banner"><span class="closeFrame"></span></div>
+	<div class="im_left" id="im_left">
+		<div class="im_userlist">
+			<div class="user_list" id="user_list">
+				<div class="list_now" id="list_now">
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="im_main" id="im_main">
+	</div>
+</div>
+
+<%# simple/dialog.html%>
+
+<%# frame/www/wins/windows.html %>
+
+<script type="text/html" id="im_info_offline">
+<div class="im_info_offline">
+	<p><?= msg ?></p>
+	<div>
+		<span class="reloadIM">重新登录</span>
+		<%if(this.ua != 'MLS-IMclient'){%>
+		<span class="closeIM">关闭窗口</span>
+		<%}%>
+	</div>
+</div>
+</script>
+
+<script type="text/html" id="im_goods_item">
+<div class="goods_box">
+	<p class="goods_link">您正在看：<a target="_blank" href="<%= this.host%>/share/item/<?= data.twitter_id ?>"><%= this.host%>/share/item/<?= data.twitter_id ?></a></p>
+	<a class="goods_img" target="_blank" href="<%= this.host%>/share/item/<?= data.twitter_id ?>"><img src="<?= data.goods_img ?>"/></a>
+	<p class="title"><a target="_blank" href="<%= this.host%>/share/item/<?= data.twitter_id ?>"><?= data.goods_title ?></a></p>
+	<p class="price">¥<?= data.goods_price ?></p>
+	<div class="clear_f"></div>
+</div>
+</script>
+
+<script>
+fml.vars.im = {
+	fromid : <%= this.user_id %>
+	, toid : <%= this.toid || 0 %>
+	, type : "<%= this.type || 0 %>"
+	, source : 'web'
+	, recently : <%= JSON.stringify(this.recently.datas) %>
+	, risk_tip: <%= JSON.stringify(this.risk_tip) %>
+};
+
+//<%=this.IM_URL2 || '/' %>socket.io/socket.io.js    http://im.weiwang.rdlab.meilishuo.com/socket.io/socket.io.js
+</script>
+
+
+<script src="<%=this.IM_URL2 || '/' %>socket.io/socket.io.js"></script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/im/simple');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# frame/www/foot_simple.html%>

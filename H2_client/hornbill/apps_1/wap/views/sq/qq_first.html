@@ -1,0 +1,30 @@
+<%# sq/header.html%>
+<div class="wrap posterWall">
+   <div class="s_top">
+      <div class="s_banner">
+         <img src="<%= this.pageInfo.src%>" />
+      </div>
+   </div>
+
+   <ul class="new_goods goods_wall">
+   </ul>
+   <div class="pullUp" status="loading"></div>
+
+   <%# sq/posterSQ.html%>
+</div>
+<ul id="goTop">
+   <li class="none_f" id="go_top"><span class="icon-gotop"></span></li>
+</ul>
+
+<script>
+fml.vars.poster = {
+   'pageName' : '<%= this.pageName %>',
+   'cate_id' : <%= this.cate_id%>
+};
+
+fml.vars.shareInfo = {"title" :'<%= this.pageInfo.share_title || ""%>',"price" : '<%= this.pageInfo.share_con || "" %>',"img_url" : '<%= this.pageInfo.share_img || "" %>' , "url" : '<%= this.pageInfo.share_url || ""%>' };
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+   fml.use('wap/page/sq/qq_first');
+_use:", this._JSstack , this._JSmods ); %>
+<%# sq/footer.html%>

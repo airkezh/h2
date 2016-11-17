@@ -1,0 +1,86 @@
+<%# head.html%>
+<%if(this.refund && this.refund.info){%>
+
+<%
+var curSelectedReason= '';
+var refund = this.refund.info;
+order=this.refund.info.order_detail.order,
+	  refund_detail = this.refund.info.refund_detail ? this.refund.info.refund_detail : '';
+%>
+<div class="formTop">
+	<span class="icon order"></span>
+</div>
+<div class="route_bread">
+	<a href="<%=this.DOMAIN.www%>/">美丽说</a>
+	<samp>&gt;</samp>
+	<a href="<%= this.DOMAIN.order%>/order/list/">我的美丽说订单</a>
+	<samp>&gt;</samp>
+	<span class="red_f">退款申请</span>
+</div>
+<%this.status="退款申请";%>
+<%# refund/refund_status.html %>
+<div class="container">
+	<%# refund/refund_goods.html %>
+	<div class="refund_info">
+		<ul>
+			<li>
+				<label><b class="must">*</b>退款原因：</label>
+				<select class="mls-select" id="refund_reason" <%if(refund_detail){%> isEdit="1" <%}%> >
+					<option value="0">请选择退款原因</option>
+
+					<%  for(var i = 0, j = refund.reasons.length; i < j; i++ ) {%>
+						<option data-id="<%=i%>" value="<%= refund.reasons[i].option%>" <%if(refund_detail && refund_detail.select_reason == refund.reasons[i].option){curSelectedReason=i%>selected<%}%>><%= refund.reasons[i].option%></option>
+					<%}%>
+
+				</select>
+				<input type="text" id="refund_reason_text" class="txt" value="<%== curSelectedReason ? '' : (refund_detail && refund_detail.select_reason) %>" style="display:none"/>
+			</li>
+			<li>
+				<label><b class="must">*</b>退款金额：</label>
+				<span class="red_f"><%=order.max_refund_with_freight%>元
+					<%if(order.refund_tax ){%>
+
+						<%= 0 == order.refund_freight
+						? "(含商品金额" + order.goods_total_price + "元，关税" + order.refund_tax + "元)"
+					: "(含商品金额" + order.goods_total_price
+					+ "元，关税" + order.refund_tax + "元，运费" + order.refund_freight +"元)" %>
+
+					<%}else{%>
+
+						<%= 0 == order.refund_freight ? ''
+						: "(包含" + order.goods_total_price + "元货款" + order.refund_freight + "元运费)"%>
+					<%}%>
+				</span>
+				<% if(order.refund_coin && +order.refund_coin){ %><span class="strong-color">退还金币：<%= order.refund_coin %>元<%= this.refund.info.send_goods != '0' ?'（如果商品金额部分退款，则金币不退还）': '' %></span> <% } %>
+				<input type="hidden" value="<%=order.max_refund_cash%>" class="txt" id="refund_price_apply"/>
+			</li>
+			<li>
+				<label>退款说明：</label>
+				<textarea id="description"><%== refund_detail && refund_detail.reason%></textarea>
+			</li>
+		</ul>
+		<div class="c_f">
+			<input type="button" class="submit" id="submit" value="提交申请">
+			<input type="button" class="cancel" value="取  消" onclick="window.close();">
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	var CONSTANT = CONSTANT || {};
+	CONSTANT.currentType = '<%=this.current_type%>';
+	CONSTANT.curSelectedReason = '<%=curSelectedReason%>';
+	CONSTANT.refundReason = <%=(refund.reasons?JSON.stringify(refund.reasons):'[]')%>;
+	CONSTANT.freightPrice = '<%= order.refund_freight||0 %>';
+	CONSTANT.goodsPrice = '<%= order.max_refund_cash||0 %>';
+	CONSTANT.hiddenData = {
+		mid:"<%== this.mid%>",
+		order_id:"<%== this.order_id || ''%>",
+		refund_id:"<%== this.refund_id || ''%>",
+		with_goods:0
+	};
+</script>
+<%}%>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+		fml.use('order_pc/refund/apply');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

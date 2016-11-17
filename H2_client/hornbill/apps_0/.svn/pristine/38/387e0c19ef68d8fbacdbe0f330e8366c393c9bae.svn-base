@@ -1,0 +1,82 @@
+@import "../block.less";
+
+body{
+	.bgc(#eee);
+}
+.key{
+	.f(.28rem); .pl(.2rem); .pt(.15rem); .pb(.15rem);
+}
+.list{
+	.pl(.2rem); .bgc(#fff);
+	a:last-child .item {
+		border-bottom: 0;
+	}
+	.item{
+		.pt(.2rem); .pb(.2rem); .hidden; .h(.7rem); .l(.7rem);
+		border-bottom: 1px solid #f2f2f2;
+		.img{
+			.left; .w(.7rem); .h(.7rem); border-radius: 50%;
+		}
+		.name{
+			.f(.3rem); .ml(.98rem);
+		}
+	}
+}
+.all-keys{
+	position: fixed; top: 1.88rem; right: .08rem;
+	.w(.46rem); .f(.24rem); font-weight: bold; .bgc(rgb(192,192,192)); .c;
+	.pt(.4rem); .pb(.4rem); border-radius: .4rem;
+	box-shadow: 0 0 3px silver; z-index: 10;
+	li{
+		.h(.5rem); .l(.5rem); a{ .block; .fc(#fff);}
+	}
+}
+.sign{
+	font-family: "Lantinghei SC", "HY-XiZYJ", "-apple-system";
+	position:fixed; top: 0; left: 0; .f(2rem); .c; .w(100%);
+	opacity: 0;
+	-webkit-animation-duration: 1s;
+	-moz-animation-duration: 1s;
+	-o-animation-duration: 1s;
+	animation-duration: 1s;
+	-webkit-animation-fill-mode: both;
+	-moz-animation-fill-mode: both;
+	-o-animation-fill-mode: both;
+	animation-fill-mode: both;
+}
+
+.puffOut{
+	-webkit-animation-name: puffOut;
+	animation-name: puffOut;
+}
+
+@-webkit-keyframes puffOut{
+	0%{
+		opacity:1;
+		-webkit-transform-origin:50% 50%;
+		-webkit-transform:scale(1,1);
+		-webkit-filter:blur(0px);
+	}
+	100%{
+		opacity:0;-webkit-transform-origin:50% 50%;
+		-webkit-transform:scale(2,2);
+		-webkit-filter:blur(2px);
+	}
+}
+@keyframes puffOut{
+	0%{
+		opacity:1;
+		transform-origin:50% 50%;
+		transform:scale(1,1);
+		-webkit-filter:blur(0px);
+	}
+	100%{
+		opacity:0;
+		transform-origin:50% 50%;
+		transform:scale(2,2);
+		-webkit-filter:blur(2px);
+	}
+}
+
+
+

@@ -1,0 +1,39 @@
+<%
+var query = this._Request_query;
+var getLink = _extFn.getLink;
+var mSubstr = _extFn.mSubstr;
+%>
+<div class="rec_nav">
+	<div class="redline2"></div>
+	<h1 class="f18_f mt14_f"><%= this.catalog.currentWord %></h1>
+	<ul class="nav_list">
+		<% this.catalog.sub.group_map.map(function(group_name, index){ %>
+		<li>
+			<span>
+				<%if(this.catalog.sub.group_info[group_name].url){%>
+					<a class="red_f" href="<%=this.catalog.sub.group_info[group_name].url%>"><%=group_name%></a>
+				<%}else{%>
+					<%=group_name%>
+				<%}%>
+			</span>
+			<p>
+				<%if(this.catalog.sub.group_info[group_name].url){%>
+				<a <%if(query.nid == this.catalog.sub.group_info[group_name].nid){%>class="active"<%}%> href="<%=this.catalog.sub.group_info[group_name].url%>">所有</a>
+				<%}%>
+				<%for(var data in this.catalog.sub.group_keywords[group_name]){%>
+					<% var group_info = this.catalog.sub.group_keywords[group_name][data]; %>
+					<a class="<%if(query.nid == group_info.word_id || query.word == group_info.word_id || 
+					group_info.word_name == (this.attr_title_keywords && this.attr_title_keywords.word_name) ){%>active<%}else{%><%= group_info.isred == 1?'red_f':''%><%}%>" href="<%=group_info.url ? group_info.url : getLink({'word':group_info.word_id , 'page' : '0' , 'section' : 'hot'} , query)%>"><%=group_info.word_name%></a>
+				<%}%>
+			</p>
+		</li>
+		<%});%>
+	</ul>
+	<div class="cate_ser">
+		<form action="/search" method="get">
+			<span class="text"><input class="searchKeyCatalog" type="text" name="searchKey" value="" placeholder="去其他关键词"></span>
+			<span class="btn"><input type="submit" value="搜索"></span>
+			<input class="filter" type="hidden" value="goods" name="filter"/>
+		</form>
+	</div>
+</div>

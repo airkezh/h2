@@ -1,0 +1,15 @@
+<div class="registerSuccess">
+	<h3>注册成功，快去激活你的美丽说！</h3>
+	<div>
+		一封确认邮件已经发送到你的邮箱<span class="regEmail red_f"><%= this.registerSuccess.email %></span></br>点击邮件里的确认链接即可登录，快去查收邮件吧！ 激活后可以发宝贝哦！
+		<% if(this.registerSuccess.emailUrl){ %>
+		<a href="<%= this.registerSuccess.emailUrl %>" target="_blank">立即查看邮箱</a>
+		<% } %>
+	</div>
+	<p>还没有收到确认邮件？</p>
+	<ul>
+		<li>可以点击这里<span class="sendemail" id="sendemail">重新发送邮件</span></li>
+		<li>可以尝试到垃圾邮件里找找看</li>
+		<li>邮箱地址写错了？很抱歉，你需要<a href="<%= this.SERVER_BASE %>user/register">重新注册</a></li>
+	</ul>
+</div>

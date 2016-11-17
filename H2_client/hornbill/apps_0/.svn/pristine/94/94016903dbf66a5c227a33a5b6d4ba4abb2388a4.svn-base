@@ -1,0 +1,25 @@
+/*common*/
+
+var $ = require('wap/zepto')
+	, $sign = $('.sign');
+
+function bindEvent(){
+	$('.all-keys').find('li').on('click', function(){
+		$('.sign').addClass('puffOut');
+		setTimeout(function(){
+			$('.sign').removeClass('puffOut');
+		}, 1000)
+
+	})
+}
+
+function signPosition(){
+	$sign.css('top',(( $(window).height() - $sign[0].offsetHeight)/2) + 'px');
+}
+
+function init(){
+	bindEvent();
+	signPosition();
+}
+
+init();

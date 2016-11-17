@@ -1,0 +1,248 @@
+<%#head.html%>
+<%
+	var query = this._Request_query;
+	function reLink(str){
+		var buyLink = str;
+		if(this.phoneType == 'ipad'){
+			buyLink = "meilishuohd" + buyLink;
+		}else{
+			buyLink = "meilishuo" + buyLink;	
+		}
+		if (query.frmOpen)
+			buyLink = '/goto/open/?url='+ encodeURIComponent(buyLink)
+		return buyLink;
+	}
+	function singleTwitterLink(twitter_id){
+		var is_doota = 1
+		, str = this.r;
+    	str += "Wapactivity-Activity_goods:act_id=" + this.act_id + ':channel_id=' + this.channelId;
+		var twitter = { 
+			'twitter_info' : {
+				'twitter_id' : twitter_id,
+				'is_doota' : is_doota
+			},
+			'r' : str 
+		}
+		return reLink("://twitter_single.meilishuo?json_params=" + encodeURIComponent(JSON.stringify(twitter)));
+	}
+	function taobao_link(link){
+		var url = link;
+		if(this.r){
+			if(url.indexOf('?') == -1){
+				url += "?r="+this.r
+			}else{
+				url += "&r="+this.r
+			}
+		}
+		url = "http://www.meilishuo.com/gooo/tbapp/?link=" + encodeURIComponent(url);
+		var twitter = {
+			'url' : url,
+			'inApp' : '1',
+			'require_app_info' : '1'
+		}
+		return reLink("://openURL.meilishuo?json_params=" + encodeURIComponent(JSON.stringify(twitter)));
+	}
+%>
+<div class="top_banner"><img src="<%= this.beauty99.banner%>" /></div>
+<div class="wlf99">
+	<div class="intro">
+		<span class="red_f"><%= this.beauty99.red_text%></span><span><%= this.beauty99.black_text%></span>
+	</div>
+	<% var begin = Date.parse(this.beauty99.beginTime)/1000 
+	   , now = parseInt((new Date()).getTime()/1000)
+	   , end = Date.parse(this.beauty99.endTime)/1000
+	   , status = 1;
+	   if(begin && begin > now ){
+			status = 1; 
+		}else if( end && now > begin && now < end){
+			status = 2;
+		}else if( now > end ){
+			status = 3;	
+		}
+	%>
+	<% if( status == 1 ) { %>
+		<div class="countTime">
+			<span class="line left_f"></span>
+			<%= requireFn("/activity/sale/countTmp.html")({
+				'end_date':begin,
+				'now':now,
+				'timeStyle' : 'time',
+				'timewords' : this.beauty99.time_text,
+				'_JSstack':this._JSstack,
+				'_JSmods':this._JSmods
+			});%>
+			<span class="line right_f"></span>
+		</div>
+	<%}else if( status == 2 ){ %>
+		<div class="countTime">
+			<span class="line left_f"></span>
+			<%= requireFn("/activity/sale/countTmp.html")({
+				'end_date':end,
+				'now':now,
+				'timeStyle' : 'time',
+				'timewords' : this.beauty99.time_text,
+				'_JSstack':this._JSstack,
+				'_JSmods':this._JSmods
+			});%>
+			<span class="line right_f"></span>
+		</div>
+	<%}else if(status == 3){%>
+		<div class="countTime">
+			<span class="line left_f"></span><span class="over">已结束</span><span class="line right_f"></span>
+		</div>
+	<%}%>
+	<div class="tle_bg">
+		<div class="title">
+			<div class="title_box">
+				<div class="text_tle1">
+					<h1 class="tle"><%= this.beauty99.left_tit%></h1>
+				</div>
+			</div>
+		</div>
+		<div class="title t_right">
+			<div class="title_box">
+				<div class="text_tle1">
+					<h1 class="tle"><%= this.beauty99.right_tit%></h1>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="box99">
+		<% if(this.isLogin == false){ %>
+		<div class="unlogin">
+			<img src="<%= this.PICTURE_URL%>images/0.gif" />
+			<p class="word"><%= this.beauty99.unlogin_text%></p>
+			<a href="meilishuo://login.meilishuo/" class="btn" id="login">登录</a>
+		</div>
+		<%}else{%>
+		<div class="logined">
+			<img src="<%= this.userInfo.data.avatar_b%>" />
+			<p class="word">
+				<span class="red_f"><%= this.userInfo.data.nickname%></span>
+				<% if( status == 1 ){ %>
+					<%= this.beauty99.before_text%>
+				<%}else if( status == 2 ){%>
+					<%= this.beauty99.ing_text%>
+				<%}else if( status == 3 ){%>
+					<%= this.beauty99.end_text%>
+				<%}%>
+			</p>
+		</div>
+		<%}%>
+		<% this.beauty99.wlf_section && this.beauty99.wlf_section.forEach(function(goods){  %>
+		<div class="goods_info">
+			<img src="<%= goods.pic_url%>" />
+			<div class="detail">
+				<p><%= goods.goods_tit%></p>
+				<div class="price">
+					<p>原价<br /><span class="red_f">¥<%= goods.price%></span></p>
+					<p>折扣<br /><span class="red_f"><%= goods.discount%>折</span></p>
+					<p>限量<br /><span class="red_f"><%= goods.num%></span></p>
+				</div>
+				<%
+					var buy_url1 = "";
+					if(goods.twitter_id){
+						buy_url1 = singleTwitterLink(goods.twitter_id)
+					}else{
+						buy_url1 = taobao_link(goods.taobao_link)
+					}
+				%>
+				<% if(this.isLogin == false){ %>
+					<div class="gray_btn"><%= goods.buy_btn%></div>
+				<%}else{%>
+					<% if(status == 2){ %>
+						<a href="<%= buy_url1%>" class="red_btn" ><%= goods.buy_btn%></a>
+					<%}else{%>
+						<div class="gray_btn"><%= goods.buy_btn%></div>
+					<%}%>
+				<%}%>
+			</div>
+		</div>
+		<% }); %>
+	</div>
+	<div class="tle_bg">
+		<div class="title">
+			<div class="title_box">
+				<div class="text_tle1">
+					<h1 class="tle"><%= this.beauty99.buymore_tit%></h1>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="box_more">
+		<% this.beauty99.buymore && this.beauty99.buymore.forEach(function(goods){ %>
+		<div class="item">
+			<img src="<%= goods.pic_url1%>" />
+			<div class="info">
+				<p><%= goods.goods_tit1%></p>
+				<div class="price"><span class="red_f">¥<%= goods.price1%></span><del>¥<%= goods.sale%></del></div>
+				<div class="quick_buy">
+					<%
+						var buy_url = "";
+						if(goods.twitter_id){
+							buy_url = singleTwitterLink(goods.twitter_id)
+						}else{
+							buy_url = taobao_link(goods.taobao_link)
+						}
+					%>
+					<span class="buy_num"><%= goods.buy_num%></span>
+					<a href="<%= buy_url%>" class="buy_btn">立即购买</a>
+				</div>
+			</div>
+		</div>
+		<%});%>
+	</div>
+	<% if(this.beauty99.nextwlf_tit){ %>
+	<div class="tle_bg">
+		<div class="title">
+			<div class="title_box">
+				<div class="text_tle1">
+					<h1 class="tle"><%= this.beauty99.nextwlf_tit%></h1>
+				</div>
+			</div>
+		</div>
+	</div>
+	<%}%>
+	<% if(this.beauty99.nextwlf.pic_url2){ %>
+	<div class="next_wlf">
+		<img src="<%= this.beauty99.nextwlf.pic_url2%>" />
+		<% var end1 = Date.parse(this.beauty99.nextwlf.time1)/1000 
+			, now1 = parseInt((new Date()).getTime()/1000)
+			, isBegin1 = false;
+			if(end1 && end1 > now1 + 3){
+				isBegin1 = true;
+			}else{
+				isBegin1 = false;	
+			}
+		%>
+		<div class="wakeup">
+			<% if( isBegin1 == true ){ %>
+				<p class="watch timeStamp" end-date="<%= end1%>"><img src="<%= this.PICTURE_URL%>images/wap/activity/beauty99/red_watch.png" />还有<strong id="day" class="day">-</strong>天<strong id="hour" class="hour">-</strong>小时<strong id="minute" class="minute">-</strong>分<strong id="seconds" class="seconds">-</strong>秒开始</p>
+				<% if(this.wake.data == 1){ %>
+					<p class="waked_btn">√ 提醒我</p>
+				<%}else{%>
+					<p class="wake_btn">提醒我</p>
+				<%}%>	
+			<%}else{%>
+				<p class="watch">活动已经开始</p>
+				<a href="<%= this.beauty99.nextwlf.ac_link%>" class="in">点击进入</a>
+			<%}%>
+		</div>
+	</div>
+	<%}%>
+</div>
+<script>
+	Meilishuo.config.app_access_token = '<%= this.app_access_token %>';
+</script>
+<% if(this.share){ %>
+	<%= requireFn('wapShare.html')({
+	    'share' : this.share 
+		, 'shareTitle' : '点击分享，快乐+1，福利+1：'
+	    , '_JSstack' : this._JSstack
+		, '_JSmods' : this._JSmods
+	}); %>
+<%}%>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/beauty99');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

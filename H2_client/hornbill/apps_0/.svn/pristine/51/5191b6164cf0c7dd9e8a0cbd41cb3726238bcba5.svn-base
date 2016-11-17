@@ -1,0 +1,323 @@
+<%# head_simple.html%>
+
+<%* for ipad %>
+	<%if(this.is_iPad){%>
+		<%# head_ipad.html %>
+	<% } else { %>
+<%* for ipad %>
+
+<%
+var query = this._Request_query;
+var getLink = _extFn.getLink;
+var navFrm = 'frm=daeh';
+var mSubstr = _extFn.mSubstr;
+var addTrace = this.ViewTools.addTrace;
+var proData = this.promotionData || {};
+%>
+</head>
+<body>
+<%
+	if (!this.noHeaderBg) {
+
+		var actShow = this.ViewTools.timeStuff({'2015/3/10 10:00:00': 0, '2015/3/21 00:00:00': 0}, 0);
+%>
+<div class="header_bg <% if(actShow == 1){ %>header_bg_christmas<% } %>" >
+	<%
+		if(proData && proData.main && proData.branch.length > 0){
+			var navStyle = proData,
+				main = proData.main,
+				branch = proData.branch;
+	%>
+		<script type="text/javascript">
+			var style = document.createElement('style'),
+				head = document.head || document.getElementsByTagName('head')[0],
+				css = '#promo_nav{overflow:hidden;background-color:<%= navStyle.navBgColor %>;<% if(navStyle.navBgImg){ %>background-image:url(<%= navStyle.navBgImg %>);background-repeat: no-repeat;background-position:center top;background-size:auto 100%;<% } %>}#promo_nav .itemswrap{width:1200px;margin-left:auto;margin-right:auto;}#promo_nav li{font-size:14px;padding-left:10px;padding-right:10px;line-height:57px;height:57px;}#promo_nav .nav-items-main:hover,#promo_nav .nav-items-branch:hover{background-color:<%= navStyle.hoverStyle %>;}#promo_nav .nav-items-main{font-size:18px;padding-right:8px;}#promo_nav .main-a{padding-left:<%= 2 + 1 * navStyle.iconLeft.width %>px;background:url(<%= navStyle.iconLeft.img %>) left center no-repeat;}#promo_nav a{display:block;}#promo_nav span{padding-right:10px;background:url(<%= navStyle.itemsIcon %>) right center no-repeat;background-size:auto 64%;color:<%= navStyle.itemsColor %>;}#promo_nav .nav-items-main,#promo_nav .nav-items-branch{float:left;}#promo_nav .nav-items-itemright{float:right;padding-right:0;}#promo_nav .nav-items:after{content:".";clear:both;display:block;height:0;visibility:hidden;}#promo_nav .nav-items-itemright a{padding-top:6px;height:45px;}#promo_nav .nav-items-itemright img{height:100%;}';
+
+			style.type = 'text/css';
+			if(style.styleSheet){
+				style.styleSheet.cssText = css;
+			}else{
+				style.appendChild(document.createTextNode(css));
+			}
+			head.appendChild(style);
+
+		</script>
+		<div id="promo_nav">
+			<div class="itemswrap">
+				<ul class="nav-items">
+					<li class="nav-items-main"><a class="main-a" target="_blank" href="<%= main.url %>"><span class="main-icon"><%= main.name %></span></a></li>
+				<% branch.forEach(function (item, index){ %>
+					<li class="nav-items-branch"><a target="_blank" href="<%= item.url %>"><span class="branch-icon"><%= item.name %></span></a></li>
+				<% }); %>
+					<li class="nav-items-itemright"><a target="_blank" href="<%= navStyle.iconRight.url %>"><img src="<%= navStyle.iconRight.img %>"></a></li>
+				</ul>
+			</div>
+		</div>
+	<% } %>
+
+<div class="uinfo_bar">
+	<div class="header_top">
+		<% if (this.headerWelfare){ %>
+		<div class="daily_mobile">
+			<div class="boxImg">
+				<ul class="_img">
+					<li><span class="i_notice">&nbsp;</span><a href="<%= this.headerWelfare.url%>" target="_blank" title="<%= this.headerWelfare.txt%>"><%= mSubstr(this.headerWelfare.txt, 22, '...')%></a></li>
+				</ul>
+			</div>
+		</div>
+		<% } %>
+		<ul class="menu_leo">
+	    <% if (this.user_id) { %>
+			<li id="setting">
+				<%
+					var avatar = this.userInfo.avatar_d,
+						level = this.userInfo.user_grade || 0;
+
+					if (avatar && (avatar.indexOf('http://') == -1)) {
+						avatar = this.avator_pic + avatar;
+					}
+				%>
+				<a class="first" href="/person/u/<%= this.user_id %>?frm=headerprofile" title="<%= this.userInfo.nickname %>">
+					<span class="s_face"><img src="<%= avatar %>" /></span>
+					<%= mSubstr(this.userInfo.nickname, 7, '...') %>
+				</a>
+				<a class="level" href="/member/main/">
+					<span class="i_level level_<%= level %>"></span><em class="redarrow"></em>
+				</a>
+				<ul class="add_menu_leo perwidth none_f">
+					<% if (1 != this.userInfo.is_mall) {%>
+					<li>
+						<a href="/ihome" target="_blank">我的关注</a> 
+					</li>
+					<li><a href="/person/u/<%= this.user_id%>?type=editor" target="_blank">我的杂志</a></li>
+					<li><a href="/person/u/<%= this.user_id%>?type=share" target="_blank">我的分享</a></li>
+					<!--<li>
+						<a href="/member/member" target="_blank" class="msg">
+							积分兑换
+						</a>
+					</li>
+					<li><a href="/person/u/<%= this.user_id%>?type=like" target="_blank">我喜欢的</a></li>-->
+					<%}%>
+					<li class="b_line"><a href="/settings/setPersonal" target="_blank">账号与安全</a></li>
+					<li><a id="headLogoutBtn" href="/user/logout">退出</a></li>
+				</ul>
+			</li>
+			<li id="message">
+				<a class="msg">
+					消息
+					<span class="num_bgc none_f"></span>
+					<em class="redarrow"></em>
+				</a>
+				<ul class="add_menu_leo hw120 none_f" id="moreMessageBox">
+				</ul>
+			</li>
+			<li>
+				<a class="i_like" href="/person/u/<%= this.user_id%>?type=like" target="_blank">
+					<i></i>我的喜欢
+				</a>
+			</li>
+           <% } else { %>
+			<li><a class="weixin" href="/connect/auth/weixin"><em style='background:url("http://i.meilishuo.net/css/images/header/i_wx_single.png") no-repeat; padding:1px 8px;'>&nbsp;</em>微信登录</a></li>
+			<li><a href="/connect/auth/qzone"><em class="i_QQ">&nbsp;</em> QQ登录</a></li>
+			<li><a href="/user/login">登录</a></li>
+			<li><a href="/user/register">注册</a></li>
+			<% } %>
+           	<li>
+				<a href="/cart" target="_blank" class="mycart">
+					<em class="i_cart">&nbsp;</em>
+					我的购物车
+					<span class="num_bgc num_bgc_none">0</span>
+				</a>
+			</li>
+			<li>
+				<a href="/order" target="_blank"><em class="i_order">&nbsp;</em>	我的订单
+				</a>
+			</li>
+			<li id="downapp">
+				<a href="/client/?<%= navFrm%>" target="_blank">
+					<em class="i_mob">&nbsp;</em>下载App
+					<em class="redarrow"></em>
+				</a>
+				<ul class="add_menu_leo down">
+					<li>
+						<img src="http://d01.res.meilishuo.net/pic/_o/80/81/44b8493edbbf431a52895c99376f_120_120.cg.jpg" alt="">
+						<div class="client">美丽说客户端</div>
+						<div>美丽说，只做正确流行款 </div>
+					</li>
+					<li>
+						<img src="http://d04.res.meilishuo.net/pic/_o/46/01/1112dfa5a6d33ee590c81181a7db_167_165.ch.png" alt="">
+						<div class="client">美丽说HIGO客户端<br/></div>
+						<div>扫码下载，新手红包免费拿</div>
+					</li>
+				</ul>
+			</li>
+			<li><a class="last" href="/helpcenter/?frm=top_to_help" target="_blank">帮助中心</a></li>
+		</ul>
+	</div>
+	<div class="clear_f"></div>
+</div>
+	<% if(this.topbanner && this.topbanner.length && this.top_bnr_close && this.top_bnr_close.data === 0){ %>
+		<div class="header_top pr_f">
+			<ul class="head_bnr">
+				<% this.topbanner.forEach(function(data , i) {
+					data.links = addTrace(data.links , 'header_banner_'+i)
+				%>
+				<li>
+					<span class="close_bnr_btn"></span>
+					<% if (0 === i ) { %>
+					<a class="pic" href="<%= data.links%>" target="_blank" style="background:url(<%= data.img_url%>) repeat center top;"></a>
+					<% } else {%>
+					<a class="pic" href="<%= data.links%>" target="_blank" data-img ="<%= data.img_url%>" style="background: repeat center top;"></a>
+					<% } %>
+				</li>
+				<% }); %>
+			</ul>
+			<div class="adType1">
+				<% this.topbanner.length>1 &&  this.topbanner.forEach(function(data){ %>
+				<a></a>
+				<% }); %>
+			</div>
+			<div class="clear_f"></div>
+		</div>
+	<% } %>
+	<div class="clear_f"></div>
+	<div class="header_top logo_wrap header_top_new">
+		<% if (this.user_id){%>
+			<a class="logo_new" href="/?frm=logoa"></a>
+			<% }else{%>
+			<a class="logo_new" href="/welcome"></a>
+			<%}
+			this.cart_num = 0
+			var cart_num = this.cart_number && this.cart_number.info && this.cart_number.info.count
+			this.cart_num = cart_num
+		%>
+		<%
+		 	var plogo = proData.promoLogo,
+		 		timeData;
+		 	if(plogo){
+				plogo.forEach(function (item, index){
+					timeData = {};
+					timeData[item.start] = 1;
+					timeData[item.end] = 0;
+					var showThisOne = this.ViewTools.timeStuff(timeData, 0);
+					if(showThisOne == 1){
+		%>
+
+					<a class="promologo" href="<%= item.url %>"><img src="<%= item.img %>" ></a>
+		<% }});} %>
+		<% if(this.logo_act && this.logo_act.logo_src){ %>
+			<a class="logo_act_entrance left_f" href="<%= this.logo_act.logo_link %>" target="_blank"><img src="<%= this.logo_act.logo_src %>"></a>
+		<% } %>
+		<% if((!this.logo_act || !this.logo_act.logo_src) && !proData.promoLogo){%>
+			<a class="logo_slogan" href="/welcome"></a>
+		<%}%>
+
+		<div class="ser_n">
+			<% var txt = "搜流行宝贝";
+			if(this.headTag == 'dict') txt = "搜宝贝、商家";
+			txt = proData.promoSearchPlaceholder || txt;
+			%>
+			<form class="searchBox" action="/search" method="get" >
+				<div class="search-table">
+					<span class="cur" data-type="1">宝贝</span>
+					<span data-type="4">店铺</span>
+					<!-- <div class="list">
+						<ul>
+							<li><a data-type="1">宝贝</a></li>
+							<li><a data-type="4">商家</a></li>
+							<li><a data-type="3">杂志</a></li>
+							<li><a data-type="2">用户</a></li>
+						</ul>
+					</div> -->
+					<!-- <em class="arrow"></em> -->
+				</div>
+				<span class="ipt1"><input class="searchKey" name="searchKey" type="text" autocomplete="off" value="" placeholder="<%= txt %>" data-placeholder="<%= txt %>"  /></span>
+				<input class="search_type" type="hidden" value="1" name="searchType"/>
+				<input class="filter" type="hidden" value="goods" name="filter"/>
+				<input class="search_frm" type="hidden" value="searchsuggestion" name="frm">
+				<input class="suggest_frm" type="hidden" value="" name="suggest_frm">
+				<input class="search" type="hidden" name="pstrc">
+				<span class="ipt2"><input type="submit" class="fm_hd_btm_shbx_bttn" value=""/></span>
+			</form>
+			<div class="clear_f"></div>
+			<div class="hotwords">
+
+				<% this.word_recommend && this.word_recommend.forEach(function(item){ 
+					var link = "/search?searchKey="+encodeURIComponent(item.words)+'&searchType=1&filter=goods&frm=searchsuggestion&suggest_frm';
+					link = addTrace(link, '_search='+ item.words);
+					%>
+					<a target="_blank" href="<%= link %>" class="<%= item.is_red == '1' ? 'red_f' : '' %>" >
+						<%=item.words%>
+					</a>
+				<% }); %>
+			</div>
+			<ul class="searchType none_f"></ul>
+			<script type="text/html" id="searchList">
+				<?$.each(prompt , function(index , data){?>
+					<li class="searchKeyItem" stype="goods"><?= data?></li>
+				<?});?>
+			</script>
+		</div>
+
+		<div class="ads_one">
+			<% this.ads_one && this.ads_one.map(function(data,i){
+			   data.links = addTrace(data.links , 'wlc_ads_one_'+i)
+			%>
+				<a href="<%= data.links%>" target="_blank">
+					<img src="<%= data.img_url%>" />
+				</a>
+			<% }); %>
+		</div>
+
+	</div>
+</div>
+<%
+	}
+%>
+<div id="navbar">
+<% if(!this.noNavbar){ %>
+	<div class="topnav">
+		<%
+			function tagHLight(tag){
+			   return tag == this.headTag ? 'active' : '';
+			}
+
+			var menus = [
+				{ name : '首页', tag : 'welcome', url : '/welcome'},
+				{ name : '最热', tag : 'guang', url : '/guang/hot?frm=daeh'},
+				{ name : '上衣', tag : 'jacket', url : '/guang/catalog/dress?nid=210113&cata_id=2001000000000&frm=daeh'},
+				{ name : '裙子', tag : 'skirt', url : '/guang/catalog/dress?nid=210115&cata_id=2004000000000&frm=daeh'},
+				{ name : '裤子', tag : 'pants', url : '/guang/catalog/dress?nid=210117&cata_id=2006000000000&frm=daeh'},
+				{ name : '鞋子', tag : 'shoes', url : '/guang/catalog/shoes?nid=210103&cata_id=6000000000000&frm=daeh'},
+				{ name : '包包', tag : 'bag', url : '/guang/catalog/bag?nid=210105&cata_id=5000000000000&frm=daeh'},
+				{ name : '配饰', tag : 'access', url : '/guang/catalog/access?nid=210111&cata_id=7000000000000&frm=daeh'},
+				{ name : '内衣', tag : 'underwear', url : '/guang/catalog/dress?nid=210119&cata_id=2009000000000&frm=daeh'},
+				{ name : '美妆', tag : 'beauty', url : '/beauty?frm=daeh'},
+				{ name : '男装', tag : 'man', url : '/guang/catalog/man?nid=222645&cata_id=3000000000000&frm=daeh'},
+				{ name : '童装', tag : 'child', url : '/guang/catalog/child?nid=222647&cata_id=2001054000000&frm=daeh'},
+				{ name : '家居', tag : 'jiaju', url : '/guang/catalog/jiaju?nid=210107&cata_id=9000000000000&frm=daeh'},
+				{ name : '小家电', tag : 'household', url : '/guang/catalog/household?nid=222641&cata_id=9008000000000&frm=daeh'},
+				{ name : '食品', tag : 'food', url : '/guang/catalog/food?nid=222649&cata_id=10000000000000&frm=daeh'}
+			]
+		%>
+		<ul>
+			<% menus.forEach(function(item){ %>
+				<li>
+					<a href="<%=item.url%>" class="<%=tagHLight(item.tag)%>">
+						<%=item.name%>
+					</a>
+				</li>
+			<% }); %>
+		</ul>
+	</div>
+<%}%>
+
+<% if (this.secondNavHold){ %>
+	<div class="sec_nav">
+	</div>
+<% } %>
+</div>
+
+<%* for ipad %>
+	<%}%>
+<%* for ipad %>

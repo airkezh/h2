@@ -1,0 +1,31 @@
+<%#onSale/shareJs.html%>
+<%
+	var introduceUrl='/onSale/introduce?from_id='+this.from_id;
+%>
+<div class="wrap">
+	<section class="header">
+		<div class="box">
+			<h3>恭喜你! </h3>
+			<p>已成功领取T恤礼包</p>
+		</div>
+		<img src="http://d06.res.meilishuo.net/img/_o/84/1e/b1ed6cc04e9b5b5e20c77dfd3432_537_495.cf.png" alt="">
+	</section>
+	<!-- <section class="tips">
+		<p>T恤兑换现金已经下发至你的微信账号，<br>微信一键登录美丽说App，<br>使用优惠券并支付1元即可领取T恤！</p>
+		<div class="line"></div>
+		<div class="circle"></div>
+	</section> -->
+	<section class="jieshao">
+		<img src="http://d02.res.meilishuo.net/img/_o/2d/7c/2381405be2183455e06ae585dc7a_563_339.cf.png" alt="">
+		<a href="<%= introduceUrl %>">查看详细说明>></a>
+	</section>
+	<a href="javascript:;" class="btn" id="btn">去美丽说APP领T恤</a>
+	<!-- <div class="onsale-dialog" id="onsaleDialog"></div> -->
+</div>
+<script>
+	fml.vars.useid = <%= this.user_id %>;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/onSale/app');
+_use:", this._JSstack, this._JSmods); %>
+<%# foot.html%>

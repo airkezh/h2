@@ -1,0 +1,45 @@
+<%#head.html%>
+<%
+	var head = this.head || {};
+	var headData = head.data || {};
+	var menu = headData.menu || [];
+%>
+<div class="wrap" id="wrap">
+	<div class="time_down">
+		<div class="clock">
+			<div class="clock_center">
+				距离活动结束还有：
+				<span class="time" time="33333"><b></b>时<b></b>分<b></b>秒<b></b></span>
+			</div>
+		</div>
+	</div>
+	<a href="<%= headData.url || 'javascript:;' %>">
+		<img src="<%= headData.image_url %>" alt="">
+	</a>
+	<nav class="tab-new" id="tabNew">
+		<div id="prevTabNew">
+			<a href="javascript:;"><%= menu[0] %></a>
+		</div>
+		<div id="nextTabNew">
+			<a href="javascript:;"><%= menu[1] %></a>
+		</div>
+		<div id="specialTabNew">
+			<a href="javascript:;"><%= menu[2] %></a>
+		</div>
+	</nav>
+	<div class="goods_wall_box">
+		<div class="spinner midSpinner"></div>
+		<div class="goods_wall"></div>
+	</div>
+	<div class="paging_panel c_f none_f">
+		<%#paging.html%>
+	</div>
+	<div class="spinner botSpinner none_f"></div>
+	<div class="clear_f"></div>
+	<%#desire/poster.html%>
+</div>
+<% $_ENGINE_SELF.callFn("useModule")("fml.use('page/poster0');", this._JSstack , this._JSmodsFast ); %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/desire/newPush');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

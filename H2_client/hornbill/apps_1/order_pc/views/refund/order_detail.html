@@ -1,0 +1,79 @@
+<% var refund_info = this.refund.info; 
+   var order = refund_info.order_detail.order;
+   var goods_info = refund_info.order_detail.goods_info;
+   var coupon = refund_info.order_detail.couponInfo;
+%>
+<div class="good_detail_wrap">
+    <div class="good_detail">
+        <div class="contact_wrap">
+            <div class="shopname">
+                <span>商家：<a class="red_f" href="<%=this.DOMAIN.www%>/shop/<%= order.shop_id %>" target="_blank"><%== order.shop_name.substr(0,10)+(order.shop_name.length>=10?'...':'' )%></a></span>
+                <% if(order.shop_im || order.shop_qq){ %><a class="getserviceqq knilmi contact_btn" href="<%= this.ViewTools.callIM(order.shop_im , order.shop_qq) %>" target="_blank">联系客服</a><% } %>
+            </div>
+        </div>
+        <div class="good_info_wrap">
+            <div class="good_thumb">
+                <a href="<%=this.DOMAIN.www%>/share/<%if(goods_info.is_doota == '1'){%>item/<%}%><%= goods_info.twitter_id %>" target="_blank"">
+                    <img src="<%=goods_info.goods_img%>" alt=""/>
+                </a>
+            </div>
+            <div class="good_info">
+                <div class="good_name">
+                    <a href="<%=this.DOMAIN.www%>/share/<%if(goods_info.is_doota == '1'){%>item/<%}%><%= goods_info.twitter_id %>" target="_blank""><%=goods_info.goods_title||'-'%></a>
+                </div>
+                <div class="good_list">
+                   <% goods_info.prop.forEach(function(p){ %>
+                   <p>
+                        <% if(p.is_show === '1'){ %>
+                        <span><%= p.name %>：<%= p.value %></span>
+                        <% } %>
+                    </p>
+                    <% }); %>
+                </div>
+            </div>
+        </div>
+        <div class="good_detailinfo_wrap">
+            <div class="itemlist">
+                <span class="labels">单价：</span>
+                <span class="no">￥<%=goods_info.price%></span>
+            </div>
+            <div class="itemlist">
+                <span class="labels">数量：</span>
+                <span class="no"><%=goods_info.amount%></span>
+            </div>
+            <div class="itemblank"></div>
+
+            <%if(coupon.shop_coupon.redmsg){%>
+            <div class="itemlist">
+                <span class="labels">店铺优惠券：</span>
+                <span class="no">-￥<%=coupon.shop_coupon.redmsg%></span>
+            </div>
+            <%}%>
+
+            <%if(coupon.platform_coupon.redmsg){%>
+            <div class="itemlist">
+                <span class="labels">美丽说优惠券：</span>
+                <span class="no">-￥<%=coupon.platform_coupon.redmsg%></span>
+            </div>
+            <%}%>
+
+            <%if(order.refund_money){%>
+            <div class="itemlist">
+                <span class="labels"><%=order.refund_name%>：</span>
+                <span class="no">-￥<%=order.refund_money%></span>
+            </div>
+            <%}%>
+            <div class="itemblank"></div>
+            <div class="itemlist">
+                <span class="labels">商品总价：</span>
+                <span class="no red">￥<%=goods_info.real_price%></span>
+            </div>
+        </div>
+        <div class="refund_no_wrap">
+            <%if(this.refund_id){%>
+                <p>退款编号：<span><%=this.refund_id%></span></p>
+            <%}%>
+            <p>订单编号：<span><%=order.order_id%></span></p>
+        </div>
+    </div>
+</div>

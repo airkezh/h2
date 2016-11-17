@@ -1,0 +1,286 @@
+<%# head.html%>
+
+<div class="icon_info">
+	<div class="h_icon"></div>
+</div>
+
+<%if(this.refund){
+var refund_info = this.refund
+,steps = this.refund.different
+,refund_id =  refund_info.refund_id||""
+,order_id =  refund_info.order_id||""
+,mid = this.refund.mid||"";
+
+var is_after = this.refund.is_after || "";
+var apply_arbitrate = steps&&steps[0]&&steps[0].type || "1";
+var appeal_times = this.refund.appeal_times;
+var refund_type = this.refund.refund_type||"";
+
+function btnstyle(style){
+var btnstyle = "";
+if(style == "1"){
+btnstyle = "button_red";
+}
+if(style == "2"){
+btnstyle = "button_border";
+}
+if(style == "3"){
+btnstyle = "button_light";
+}
+return btnstyle;
+}
+		var refund_type = this.refund.type||"";
+		var seller_addr =  this.refund.seller_addr||""
+		,seller_phone = this.refund.seller_phone || ""
+		,seller_zipcode = this.refund.seller_zipcode ||""
+		,seller_nickname = this.refund.seller_nickname ||""
+%>
+<div class="route">
+	<div class="route_bread">
+		<a href="<%=this.DOMAIN.www%>/">美丽说</a>
+		<samp>&gt;</samp>
+		<%if(is_after){%>
+		<a href="<%= this.DOMAIN.order%>/refund/service_list/">售后</a>
+		<%}else{%>
+		<a href="<%= this.DOMAIN.order%>/refund/list/">退款/退货列表</a>
+		<%}%>
+		<samp>&gt;</samp>
+		<span class="red_f">退款详情</span>
+	</div>
+</div>
+
+<div class="order_area">
+
+	<div class="container">
+		<div class="main">
+		<%if(steps){
+			var first = 0;
+			%>
+         <!--在修改运单的时候，detail.hide是1的时候不显示step，在这里做了兼容处理,first是为了找到真正显示的第一个step-->
+		<div class="refund_steps_wrap">
+			<% steps.forEach(function(step,index){
+			var hide = step.detail.hide ||"";
+			var detail = step.detail;
+			var apply_time = detail.apply_time&&detail.apply_time.split(" ")||["",""];
+			var idate = apply_time[0],
+			itime = apply_time[1];
+			if(hide){
+				first ++;
+			}
+			var isActive = index==first?"active":"";
+			var isLast = (steps.length -1)==index?"last":"";
+			%>
+			<%if(hide != 1){%>
+			<div class="steps <%=isActive%> <%=first %>">
+				<div class="step_content <%=isActive%> <%=isLast%>">
+					<div class="step_status">
+						<%=detail.main_text%>
+					</div>
+					<!--普通状态，有description字段的情况下-->
+
+					<div class="step_list_wrap">
+						<%if(detail.description){%>
+							<%if(detail.refund_text){
+							var liNum = 2;%>
+							<div class="step_list">
+								<p>1.是否退货：<%=detail.refund_text%></p>
+							</div>
+							<%
+							}else{
+							liNum = 1;
+							}%>
+
+						<% detail.description.forEach(function(des,index){%>
+
+						<div class="step_list">
+							<p><%=index+liNum%>.<%=des.caption%> <%if(des.eviInfo&&(!des.eviInfo.is_img)){%><%=des.eviInfo%><%}%></p>
+							<%if(des.eviInfo&&des.eviInfo.is_img){
+							var proves = des.eviInfo.img_src;
+							%>
+							<div class="proof">
+								<ul>
+									<% proves.forEach(function(e,index){%>
+									<li><a href="<%=e.orig%>" target="_blank"><img src="<%=e.thumb%>"></a></li>
+									<%});%>
+								</ul>
+							</div>
+							<%}%>
+
+						</div>
+
+						<%})%>
+						<%}%>
+						<%if(detail.notice_text&&isActive){%>
+						<div class="notice">
+							<%=detail.notice_text%>
+						</div>
+						<%}%>
+
+					</div>
+
+
+					<%if(detail.action_list&&isActive){
+					var btns = detail.action_list
+					%>
+					<div class="buttons_wrap">
+						<% btns.forEach(function(bt,index){%>
+						<%if(bt.action_type == "3"){%>
+						<!--取消申请-->
+						<a id="refund_cancel" class="button <%=btnstyle(bt.action_style)%>" href="javascript:;"><%=bt.action_text%></a>
+						<%}%>
+						<%if(bt.action_type == "2"){%>
+						<!--修改申请-->
+							<%if(refund_type == 'goods'){%>
+								<a href="/refund/service/?order_id=<%=order_id%>&mid=<%=mid%>&refund_id=<%=refund_id%>&type=<%=refund_type%>" class="button <%=btnstyle(bt.action_style)%>"><%=bt.action_text%></a>
+							<%}else{%>
+								<a href="/refund/service/?order_id=<%=order_id%>&mid=<%=mid%>&refund_id=<%=refund_id%>" class="button <%=btnstyle(bt.action_style)%>"><%=bt.action_text%></a>
+							<%}%>
+						<%}%>
+						<%if(bt.action_type == "4"&&appeal_times){%>
+						<!--恢复退款申请-->
+						<a id="refund_reapply" class="button <%=btnstyle(bt.action_style)%>" href="javascript:;"><%=bt.action_text%></a>
+						<%}%>
+
+						<%if(bt.action_type == "6"){%>
+						<!--要求美丽说-->
+						<a class="button <%=btnstyle(bt.action_style)%>"  href="/appeal/?refund_id=<%=refund_id%>&type=<%=apply_arbitrate%>" ><%=bt.action_text%></a>
+						<%}%>
+
+						<%if(bt.action_type == "1"){%>
+						<!--申请退款-->
+						<a class="button <%=btnstyle(bt.action_style)%>"  href="/refund/service/?order_id=<%=order_id%>&mid=<%=mid%>"><%=bt.action_text%></a>
+						<%}%>
+						<%});%>
+					</div>
+					<%}%>
+					<!--显示提交退货信息的状态-->
+					<%if(detail.add_express=="1"&&isActive){%>
+
+					<div class="refund_express">
+						<div class="refund_add">
+							<div class="labels">退货地址</div>
+							<div class="address">
+								<%=seller_addr%>&nbsp;&nbsp;<%=seller_zipcode%>&nbsp;&nbsp;<%=seller_nickname%>&nbsp;&nbsp;<%=seller_phone%>
+							</div>
+						</div>
+						<div class="refund_reason">
+							<div class="labels"><b>*</b>物流公司</div>
+							<select class="mls-select" id="express_company_select">
+								<option value="">请选择物流公司</option>
+								<%if(this.company_list&&this.company_list.info){
+									var com_list = this.company_list.info;
+									com_list.forEach(function(item){%>
+								<option value="<%=item.value %>"><%=item.value %></option>
+									<%});
+								}%>
+								<option value="other">其他</option>
+							</select>
+							<input class="text mr"  style="display:none;" type="text" name="express_company" value="" id="express_company"/>
+						</div>
+						<div class="refund_no">
+							<div class="labels"><b>*</b>物流单号</div>
+							<input class="text" type="text" name="express_id" value="" id="express_id"/>
+						</div>
+						<!--<div class="coupontips">-->
+							<!--退货成功后，将赠送您一张XX元美丽说优惠券，以补贴退货运费-->
+						<!--</div>-->
+					</div>
+					<div class="buttons_wrap">
+						<a href="javascript:;" class="button button_red"  id="submit_f">提交退货信息</a>
+					</div>
+					<%}%>
+
+					<!--显示退货物流信息的状态-->
+					<%if(detail.express_buyer_info){
+						var expInfo = detail.express_buyer_info;
+					%>
+					<div class="step_list_wrap">
+						<div class="step_list express_info">
+							<p>1.物流公司：<%=expInfo.express_company%></p>
+						</div>
+						<div class="step_list express_info" id="express_info">
+							<p>2.物流单号：
+								<%=expInfo.express_id%>
+								<%if(expInfo.can_edit_express&&isActive){%>
+									<a href="javscript:;" class="modifyExp" id="edit_express_info">修改运单号</a>
+								<%}%>
+							</p>
+						</div>
+						<!--默认隐藏-->
+						<%if(isActive){%>
+						<form id="express_form" style="display: none">
+							<div class="step_list">
+								<label for="express_company">1.物流公司：</label>
+								<select class="mls-select" id="edit_express_company_select">
+									<option value="">请选择物流公司</option>
+									<%if(this.company_list&&this.company_list.info){
+									var com_list = this.company_list.info;
+									com_list.forEach(function(item){%>
+									<option <%if(item.value == expInfo.express_company){%>selected<%}%> value="<%=item.value %>"><%=item.value %></option>
+									<%});
+									}%>
+								</select>
+								<input class="text mr company_input" style="display: none" type="text" name="express_company" value="" id="edit_express_company"/>
+							</div>
+							<div class="step_list">
+								<label for="edit_express_id">2.物流单号：</label>
+								<input id="edit_express_id" type="text" value="<%=expInfo.express_id%>" class="company_input"/>
+								<a class="button" href="javascript:void(0);" id="edit_express">修改</a>
+								<a class="button" href="javascript:void(0);" id="cancel_edit_express">取消</a>
+							</div>
+						</form>
+						<%}%>
+						<div class="step_list">
+							<p>3.物流动态：</p>
+							<div class="flow">
+								<%if(expInfo.express){
+									expInfo.express.forEach(function(exp,index){%>
+										<p><%=exp%></p>
+									<%});
+								}%>
+
+							</div>
+						</div>
+					</div>
+
+
+					<%}%>
+
+				</div>
+				<div class="step_liststyle">
+					<span class="<%=isActive%>"></span>
+				</div>
+				<div class="step_time <%=isActive%>">
+					<p><%=idate %></p>
+					<p><%=itime%></p>
+				</div>
+			</div>
+
+			<%}});%>
+
+
+		</div>
+
+		<%}%>
+
+
+
+		<%# refund/order_detail.html%>
+		<input type="hidden" id="refund_id" value="<%=this.refund_id%>"/>
+	</div>
+	</div>
+</div>
+
+
+
+<%}%>
+<script>
+	fml.vars.refund_type = "<%=this.type ==='goods' ? 'goods' : 'money' %>";
+	window.appeal_times = "<%=appeal_times%>";
+	window.refund_type = "<%=refund_type%>";
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+		fml.use('order_pc/common/orderDetail');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot.html%>

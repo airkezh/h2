@@ -1,0 +1,44 @@
+<%
+var mSubstr = _extFn.mSubstr;
+var html_encode = _extFn.html_encode;
+%>
+<div class="shop_info">
+	<div class="redline2"></div>
+	<%if(this.shop_info.shop_level == 1){%>
+		<div class="s_logo"></div>
+	<%}%>
+	<h2 class="info_tle">
+		<a href="<%=this.shop_info.url %>" target="_blank"><%= mSubstr(this.shop_info.shop_nick,9,'...') %></a>
+	</h2>
+	<%if(this.isSingle && this.goods_info.twitter_htmlcontent != ''){%>
+		<p class="dr_talk"><span class="quot1">&nbsp;</span><%= this.goods_info.twitter_htmlcontent;%><span class="quot2">&nbsp;</span></p>
+	<%}%>
+	<%if(this.shop_info.shop_location != ''){%><p class="mt14_f">所在地：<%=this.shop_info.shop_location %></p><%}%>
+	<p class="mt14_f">宝贝数量：<%=this.shop_info.shop_goods_num %>件</p>
+	<%if(this.isEdit && this.shop_info.shop_desc != '' && this.shop_info.shop_title_desc != ''){%>
+		<div class="line_box">
+			<p class="look">编辑看点：</p>
+			<p class="f14_f"><%=this.shop_info.shop_title_desc %></p>
+			<p><%=this.shop_info.shop_desc %></p>
+		</div>
+	<%}%>
+	<%if(this.isTshopinfo){%>
+	<div class="line_box">
+		<%if(this.shop_info.shop_level == 1){%>
+			<%if(this.shop_info.shop_desc != ''){%>
+				<p class="putUp mt14_f"><%= mSubstr(this.shop_info.shop_desc , 25 , '...')%><%if(this.shop_info.shop_desc.length > 25){%><span class="unfold">展开<samp>︾</samp></span><%}%></p>
+				<p class="putDown mt14_f none_f"><%=this.shop_info.shop_desc %></p>
+			<%}%>
+			<div class="clear_f"></div>
+			<% var pic_count = 0; %>
+			<a class="gopic" href="<%=this.shop_info.url %>" target="_blank">
+				<% this.shop_info.images && this.shop_info.images.map(function(data) { %>
+					<% var style = ++pic_count % 3 ? '' : 'class="omega"' ; %>
+					<img <%= style %> src="<%=data%>" />
+				<% }); %>
+			</a>
+		<%}%>
+		<a class="goshop" href="<%=this.shop_info.url %>" target="_blank">去店铺逛逛</a>
+	</div>
+	<%}%>
+</div>

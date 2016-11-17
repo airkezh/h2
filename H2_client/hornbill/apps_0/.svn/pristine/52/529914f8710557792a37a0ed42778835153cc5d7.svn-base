@@ -1,0 +1,33 @@
+<%# head.html %>
+<% var data = this.pageData; %>
+<% data.head && data.head.forEach(function(v,k){ %>
+	<div calss="head_bg">
+	<% if(v.url){ %>
+		<a href="<%= v.url %>"><img src="<%= v.img_src %>" /></a>
+	<% }else{ %>
+		<img src="<%= v.img_src %>" />
+	<% } %>
+	</div>
+<% }); %>
+<% if(data.coupon_btn.img_src){ %>
+<div class="coupons">
+	<% if(data.coupon_title.img_src){ %><div class="title"><img src="<%= data.coupon_title.img_src %>" /></div><% } %>
+	<div class="coupon_btn" id="<%= data.coupon_btn.code %>"><img src="<%= data.coupon_btn.img_src %>" /></div>
+	<% if(data.coupon_rule.img_src){ %><div class="rule"><img src="<%= data.coupon_rule.img_src %>" /></div><% } %>
+</div>
+<% } %>
+<% if(data.classify){ %>
+<div class="classify" style="background:url('<%= data.classify_bg.img_src %>') repeat-y left top;">
+	<% if(data.classify_title.img_src){ %><div class="title"><img src="<%= data.classify_title.img_src %>" /></div><% } %>
+	<% data.classify.forEach(function (v,k){ %>
+		<div class="banners"><a href="<%= v.goods_link %>"><img src="<%= v.img_src %>" alt="" /></a></div>
+	<% }); %>
+</div>
+<% } %>
+<% data.foot && data.foot.forEach(function(v,k){ %>
+	<div calss="foot_bg"><img src="<%= v.img_src %>" /></div>
+<% }); %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/biz/act_coupons');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html %>

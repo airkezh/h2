@@ -1,0 +1,122 @@
+<!--
+/**
+ * @fileoverview 首页－会员专区
+ * @requires zepto
+ * @author kehuang@meilishuo.com
+ * @date 2015-03-11
+ */
+-->
+
+<%# head.html%>
+<%
+	var curUserInfo = this.userInfo;
+	var curUserGoldData = this.goldList.data;
+	var curUserNickName = curUserInfo.nickname || '';
+	var curUserAmount = this.userAmount.data.amount_available || 0;
+	var curUserAvatar = curUserInfo.avatar_e || 'http://i.meilishuo.net/css/images/wap/activity/sign_mall/default_head.jpg';
+%>
+<div id="j_page_wrap" class="wrap">
+	<div class="user_wrap">
+		<div class="user_box">
+			<div class="user_head">
+				<img src="<%= curUserAvatar %>" alt="<%= curUserNickName %>">
+			</div>
+			<div class="user_gold">
+				<div>我的金币</div>
+				<div class="gold"><%= curUserAmount %>元</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="pullUp" status="loading"></div>
+</div>
+
+<script type="text/html" id="j_detail_tpl">
+	<?
+		var jsonData = this.data,
+			list = jsonData.list || [],
+			listLen = list.length || 0;
+
+		if (listLen > 0) {
+			var listTotal = jsonData.total || 0,
+				listCount = jsonData.count || 0;
+	?>
+	<div class="tab_title">
+		<span class="title">金币收支明细</span>
+		<?
+			if (listTotal > listCount) {
+		?>
+		<span class="view_more">查看更多 ></span>
+		<?
+			}
+		?>
+	</div>
+
+	<div class="pay_list">
+		<ul>
+			<?
+				for (var i = 0; i < listLen; i++) {
+					var link = '',
+						href_html = '',
+						class_name = '',
+						obj = list[i],
+						text = obj.text || '',
+						ctime = obj.ctime || '',
+						amount = obj.amount || '0',
+						order_id = obj.order_id || '';
+
+					class_name = (amount.indexOf('-') != -1) ? '' : 'income';
+
+					if (order_id != '') {
+						link = 'meilishuo://order_detail.meilishuo?json_params=' + encodeURIComponent(JSON.stringify({'order_id': order_id}));
+						href_html = '<a href="' + link + '">' + order_id + '</a>';
+					}
+			?>
+			<li>
+				<span class="title"><?= text ?><?= href_html ?><br><em><?= ctime ?></em></span>
+				<span class="gold <?= class_name ?>"><?= amount ?></span>
+			</li>
+			<?
+				}
+			?>
+		</ul>
+	</div>
+	<?
+		} else {
+    ?>
+    <div class="tab_title">
+		<span class="title">金币收支明细</span>
+		<span class="no">暂无明细</span>
+	</div>
+	<?
+		}
+    ?>
+
+	<div class="gold_explain">
+		<div>这样花金币</div>
+		<div class="gold">1个金币＝1元人民币</div>
+		<p>1. 在金币商城或『买』频道找到有金币标志的商品，按照标志的金额，可以用金币1：1抵扣对应额度的现金。</p>
+		<p>2. 结算时，选中使用金币。有多少花多少。</p>
+	</div>
+
+	<div class="tab_title">
+		<span class="title">如何获得金币</span>
+	</div>
+
+	<div class="sign_wrap">
+		<a href="http://mapp.meilishuo.com/activity/sign/sign_in/?frm=qiandaomember">
+			<img src="http://d05.res.meilishuo.net/pic/_o/f2/0b/99b1c430d368c613b6af2c6b4c96_580_100.ch.jpg" alt="">
+		</a>
+	<div>
+</script>
+
+<script>
+	fml.vars.isLogin = <%=this.isLogin%>;
+
+	var curUserGoldData = <%=JSON.stringify(curUserGoldData)%>;
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/member/prefecture');
+_use:", this._JSstack, this._JSmods); %>
+<%# foot_simple.html%>

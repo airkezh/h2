@@ -1,0 +1,52 @@
+<%#head_simple.html%>
+<script>
+fml.vars.shake = {
+	name:"<%= this.name%>"
+	, state:"<%= this.state%>"
+}
+fml.vars.CONFIG_SHARE = <%= JSON.stringify(this.info.share) || '{}' %>;
+</script>
+</head>
+<body>
+
+<div class="testArea" style="background-image:url('http://d05.res.meilishuo.net/pic/_o/17/c3/962938e3492a5307bb8367c00095_640_1008.cf.jpg');">
+	<div class="bannerBox"></div>
+
+	<div class="selectBox">
+		<div class="border">
+			<img src="http://d01.res.meilishuo.net/pic/_o/a5/87/30afcf3a3fda3d210c39eda42909_532_475.ch.png"/>
+		</div>
+		<div class="cols">
+		<% this.info && this.info.detail && this.info.detail.map(function(col){%>
+			<div class="col">
+				<% col.map(function(v){%>
+				<div itemid="<%= v.id %>" style="background-image:url('<%= v.img_url %>');"></div>
+				<%})%>
+			</div>
+		<% }); %>
+		</div>
+	</div>
+
+	<div class="resultBtn" id="redultBtn">
+		<img src="http://d03.res.meilishuo.net/pic/_o/5d/73/b1aea17f6fe4e2f356ab0aeb09a4_489_70.ch.png" />
+	</div>
+	<%
+		var link = this.info.link; 
+		if(link){
+	%>
+	<a class="link" href="<%= link.url%>"> 
+		<img src="<%= link.img_url %>"/>
+	</a>
+	<%}%>
+	
+	<div class="logo">
+		<img src="http://d05.res.meilishuo.net/pic/_o/27/ee/bf4e5616bcc21b269feafa814642_640_63.cg.png" />
+	</div>
+</div>
+
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/shake/test');
+_use:", this._JSstack , this._JSmods); %>
+
+<%#foot_simple.html%>

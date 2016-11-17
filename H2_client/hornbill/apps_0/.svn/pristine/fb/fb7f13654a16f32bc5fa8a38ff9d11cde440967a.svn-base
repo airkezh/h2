@@ -1,0 +1,115 @@
+<%#head.html%>
+	<section class="apply_end" style="background: #f8f8f8;">
+		<%if(this.wlf_header.recommend_type!=2){%>
+			<div class="apply_end_tips" style="margin-top: 90px;">
+				<img src="http://i.meilishuo.net/css/images/m_welfare/wlf_apply_end.png" class="wlf_end_flower" />
+				<p class="tips_p">申请成功：由店铺<span><%=this.wlf_info.info.shop_info.shop_nick%></span>提供福利</p>
+				<a href="/m_welfare/" class="first_link">继续申请</a>
+			</div>
+			<%}else{%>
+				<div class="apply_end_tips">
+					<img src="http://i.meilishuo.net/css/images/m_welfare/wlf_apply_end.png" class="wlf_end_flower" />
+					<p class="tips_p">申请成功：由店铺<span><%=this.wlf_info.info.shop_info.shop_nick%></span>提供福利</p>
+					<a href="/m_welfare/" class="first_link">继续申请</a>
+				</div>
+				<%if(this.wlf_coupon.data&&this.wlf_coupon.data.list.length&&this.wlf_coupon.data.list.length>0){var index=0;%>
+					<div class="coupon_warp clearfix">
+						<%this.wlf_coupon.data.list.forEach(function(item){%>
+							<%if(item.show_filters==0){
+								index=index+1;
+						if(item.can_apply_status==0){%>
+								<div class="coupon_item">
+									<a href="javascript:;" data_code="<%=item.coupon_apply_code%>" class="wlf_coupon_btn" data_index="<%=index%>">
+										<img src="http://i.meilishuo.net/css/images/m_welfare/wlf_coupon_yes.jpg" class="coupon_bg" />
+										<p class="coupon_info"><span class="cp_money">¥&nbsp;<strong><%=item.credit%></strong></span><b class="cp_limit">消费满<%=item.threshold%>可用</b></p>
+									</a>
+								</div>
+								<%}else{%>
+									<div class="coupon_item">
+										<a href="javascript:;">
+											<img src="http://i.meilishuo.net/css/images/m_welfare/wlf_coupon_no.jpg" class="coupon_bg" />
+											<p class="coupon_info"><span class="cp_money">¥&nbsp;<strong><%=item.credit%></strong></span><b class="cp_limit">消费满<%=item.threshold%>可用</b></p>
+										</a>
+									</div>
+									<%}}%>
+										<%});%>
+					</div>
+					<%}%>
+						<%if(this.wlf_header.recommend_type==2){%>
+							<div class="content" style="padding: 0;">
+								<h2 class="shop_hot">店铺热销</h2>
+								<%if(this.wlf_info.info.shop_id==0){%>
+									<h3 class="wlf_title">本店推荐<span></span></h3>
+									<%}else{%>
+										<h3 class="wlf_title shop_title" id="shop_title" data_id="<%=this.wlf_info.info.shop_id%>"><%=this.wlf_info.info.shop_info.shop_nick%><span></span><b class="arrow">进店逛逛</b></h3>
+										<%}%>
+											<div class="goods_wall" id="productList" style="width: 100%;">
+												<% this.wlf_header.single_pics.forEach(function(item){%>
+													<div class="productBox">
+														<a class="link_box" href="javascript:void(0)" data-url="<%=item.url%>" data-twitter='<%=item.twitter_id%>'>
+															<figure>
+																<span class="bs_load_img" style="opacity: 1; background-image: url(<%=item.image.image[0]%>);"></span>
+															</figure>
+															<figcaption>
+																<div class="proTitle">
+																	<%=item.title%>
+																</div>
+																<div class="proPrice">
+																	<span class="price"><strong>¥&nbsp;</strong><%=item.min_price%></span>
+																	<span class="min_price"><strong>¥&nbsp;</strong><%=item.price%></span>
+																	<span class="collect"><%=item.like%></span>
+																</div>
+															</figcaption>
+														</a>
+													</div>
+													<%});%>
+											</div>
+							</div>
+							<%}%>
+								<%}%>
+
+	</section>
+	<script type="text/html" id="wlf_share_end">
+		<div class="wlf_share_dialog">
+			<p class="share_tips">第二步 分享给姐妹，完成申请
+				<br/>
+				<strong>成功分享免费福利给姐妹<br/>加大中奖机率</strong>
+			</p>
+			<div class="dialog_appshare_box">
+				<a class="shareBut" id="shareBut_wx" href="">
+					<!-- weixin -->
+					<img src="http://i.meilishuo.net/css/images/m_welfare/share_icon_wx.png" />
+				</a>
+			</div>
+			<div class="dialog_appshare_box">
+				<a class="shareBut" id="shareBut_pyq" href="">
+					<!-- pyq -->
+					<img src="http://i.meilishuo.net/css/images/m_welfare/share_icon_friend.png" />
+				</a>
+			</div>
+			<!--<div class="dialog_appshare_box">
+				<a class="shareBut" id="shareBut_xlwb" href="">
+					<img src="http://i.meilishuo.net/css/images/m_welfare/share_icon_xlwb.png" />
+				</a>
+			</div>
+			<div class="dialog_appshare_box">
+				<a class="shareBut" id="shareBut_qq" href="">
+					<img src="http://i.meilishuo.net/css/images/m_welfare/share_icon_qq.png" />
+				</a>
+			</div>-->
+			<a class="close_share_btn">
+				<img src="http://i.meilishuo.net/css/images/m_welfare/wlf_close_share.png" />
+			</a>
+		</div>
+	</script>
+	<script>
+		fml.vars.shop_id="<%=this.shopId%>";
+		fml.vars.id = "<%=this.wlf_info.info.activity_id%>";
+		fml.vars.wx_pic = "<%=this.wlf_info.info.weixin_pic%>";
+		fml.vars.wx_cont = "<%=this.wlf_info.info.weixin_content%>";
+	</script>
+	<%=requireFn( 'm_welfare/index_wlf_list.html')({ '_JSstack' : this._JSstack , '_JSmods' : this._JSmods });%>
+		<%! $_ENGINE_SELF.callFn( "useModule")( "<<<_use:
+	fml.use('wap/page/welfare_new/wlf_apply_end');
+_use:", this._JSstack , this._JSmods ); %>
+			<%#foot.html%>

@@ -1,0 +1,70 @@
+@import "block.less";
+
+
+.binding{
+	&Form{.common_shadowBox;.auto;.mb(30px);.mt(14px);}
+	&Form{
+		.w(724px);padding:20px 112px 60px 112px;
+		h2{.f(22px);.l(54px);.c;}
+		h3{.f(14px);.l(26px);.c;
+			.resent{.tunder();}
+		}
+		.binding{
+			&ErrorMessage, &InfoMessage {
+				.common_shadowBox;.ml(44px);.pa;.l(18px);.border-r(4px);.border-1c;.inline;
+				padding:10px 8px;background-color:#ffffcd;
+				span{
+					.w(9px);.h(17px);.pa;
+					top:10px;left:-9px;
+					background:url("@{pic_url}/images/register/form2.png") no-repeat -46px 0px;
+				}
+			}
+			&ErrorMessage { .ml(44px); .w(132px); }
+			&InfoMessage { .ml(22px); }
+			&_mls{
+				.w(600px);.auto;.common_shadowBox;.mt(20px);
+				fieldset {
+					padding:12px 18px;
+					h2{.f(20px);.l(34px);.tl;.mb(6px);} 
+					legend{}
+					form{
+						padding-top:10px;
+						.border-tc;.border-bc;.mb(10px);.h(200px);
+						p{
+							.r_ipt{.w(240px);}
+							label{.ml(4px);.l(42px);.i_block;}
+						}
+						.checkBox{
+							.mb(20px);.h(42px);
+							.r_ipt{.w(100px);.left;}
+						}
+						.submitBox {.ml(40px);.mt(14px);.l(30px);
+							.button{.common_button; .common_button > .redBtn; .border-n; .f(14px); .fb; .mr(15px); .ml(15px); padding:4px 10px; .w(100px);}
+						}
+					}
+				}	
+				.big_btn{.w(140px);.mb(14px);
+					input{outline:none; .white;.f(16px);.fb;.h(34px);.l(38px);.w(140px);padding:0px;margin:0px;.cursor;background:none;border:none;}
+				}	
+			}
+			&_other{
+				.left;.pl(40px);.w(260px);.h(260px);
+				p{.f(16px);.l(48px);}
+				div{ span{.mt(34px);.left;.cursor;}}
+			}
+			&_verify{ 
+				fieldset{  .border-bc;.pb(20px); .pt(20px);.h(130px);
+					.wrapper{ .c();
+	                                	.button{.common_button; .common_button > .redBtn; .border-n; .f(14px); .fb; .mr(15px); .ml(15px); padding:4px 10px; .w(100px);}
+	        	                	.btn_verify{ .h(40px); .w(150px);}
+					        .code{ .h(40px); .w(200px);}
+					}
+				}
+				.question{ .w(300px); .pt(20px); .auto;
+					.st1{ .f(14px); .l(27px); .fb(); }
+					.st2{ display:list-item; list-style: disc inside none;}
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,195 @@
+<%#head.html%>
+<div class="content mt14_f" style="background:#FFF;margin-left:auto;margin-right:auto;width:948px;">
+	<img width="948" height="250" src="<%= this.PICTURE_URL %>images/window/question_top.jpg">
+	<div class="form pr_f">
+		<form onsubmit="return false;" action="">
+			<div class="page1">
+				<p class="title"><span>1</span><em class="t_mac">亲，芳龄几许？</em></p>
+				<p><label><input type="radio" name="q1" value="1">标准萝莉（18岁以下）</label></p>
+				<p><label><input type="radio" name="q1" value="2">妙龄美少女（18-22岁）</label></p>
+				<p><label><input type="radio" name="q1" value="3">大妞（22-25岁）</label></p>
+				<p><label><input type="radio" name="q1" value="4">轻熟女（26-29岁）</label></p>
+				<p><label><input type="radio" name="q1" value="5">准御姐 （30-35岁）</label></p>
+				<p><label><input type="radio" name="q1" value="6">成熟御姐（35岁以上）</label></p>
+				
+				<p class="title"><span>2</span><em class="t_mac">MM平时从事什么类型工作？</em></p>
+				<p><label><input type="radio" name="q2" value="1">在校学生</label></p>
+				<p><label><input type="radio" name="q2" value="2">前台、行政</label></p>
+				<p><label><input type="radio" name="q2" value="3">企业职员</label></p>
+				<p><label><input type="radio" name="q2" value="4">公务员</label></p>
+				<p><label><input type="radio" name="q2" value="5">事业单位</label></p>
+				<p><label><input type="radio" name="q2" value="6">网店老板</label></p>
+				<p><label><input type="radio" name="q2" value="7">自由职业</label></p>
+				<p><label><input type="radio" name="q2" value="8">设计师</label></p>
+				<p><label><input type="radio" name="q2" value="9">互联网</label></p>
+				<p><label><input type="radio" name="q2" value="10">其他</label></p>
+			
+				<p class="title"><span>3</span><em class="t_mac">每个月能赚多少银子进账做败家本钱啊？</em></p>
+				<p><label><input type="radio" name="q3" value="1">学生党&nbsp;&nbsp;&nbsp;&nbsp;T_T</label></p>
+				<p><label><input type="radio" name="q3" value="2">2000元及以下&nbsp;&nbsp;&nbsp;&nbsp;o_o</label></p>
+				<p><label><input type="radio" name="q3" value="3">2000～3000元&nbsp;&nbsp;&nbsp;&nbsp;-_-</label></p>
+				<p><label><input type="radio" name="q3" value="4">3000～5000元&nbsp;&nbsp;&nbsp;&nbsp;=。=</label></p>
+				<p><label><input type="radio" name="q3" value="5">5000～7000元&nbsp;&nbsp;&nbsp;&nbsp;^_^</label></p>
+				<p><label><input type="radio" name="q3" value="6">7000～10000元&nbsp;&nbsp;&nbsp;&nbsp;^8^</label></p>
+				<p><label><input type="radio" name="q3" value="7">10000～20000元&nbsp;&nbsp;&nbsp;&nbsp;o(^_^)o</label></p>
+				<p><label><input type="radio" name="q3" value="8">20000元以上&nbsp;&nbsp;&nbsp;&nbsp;*@_@*</label></p>
+			
+				<p class="title"><span>4</span><em class="t_mac">目前使用哪个品牌的电话呢？</em></p>
+				<p><label><input type="radio" name="q4" value="1">iPhone</label></p>
+				<p><label><input type="radio" name="q4" value="2">三星</label></p>
+				<p><label><input type="radio" name="q4" value="3">HTC</label></p>
+				<p><label><input type="radio" name="q4" value="4">摩托罗拉</label></p>
+				<p><label><input type="radio" name="q4" value="5">小米</label></p>
+				<p><label><input type="radio" name="q4" value="6">诺基亚</label></p>
+				<p><label><input type="radio" name="q4" value="7">其他</label></p>
+				
+				<div class="clearfix_f">
+					<div class="step step1 left_f">下一页，进入MM风格测试>></div>
+					<img src="<%= this.PICTURE_URL %>images/window/question_gift1.png" class="right_f">
+				</div>
+			</div>
+			<div class="page2 none_f">
+				<p class="title"><span>5</span><em class="t_mac">亲,喜欢化妆吗(*^__^*) ……</em></p>
+				<p><label><input type="radio" name="q5" value="1">不化妆会死星人</label></p>
+				<p><label><input type="radio" name="q5" value="2">天天淡妆的人飘过</label></p>
+				<p><label><input type="radio" name="q5" value="3">有需要时再化</label></p>
+				<p><label><input type="radio" name="q5" value="4">从来不化</label></p>
+				
+				<p class="title"><span>6</span><em class="t_mac">亲，你喜欢的品牌？可以多选哦？</em></p>
+				<div class="q6_b">
+					<div class="q6_data">
+						<%for(var i=0;i<45;i++){%>
+						<a href="javascript:void(0)" <%if(i%8==7){%>style="margin-right:0;"<%}%>>
+							<input type="checkbox" name="q6[]" value="<%=i+1%>">
+						</a>
+						<%}%>
+					</div>
+					<div class="clear"></div>
+				</div>
+				<p style="margin-top:41px;"><label><input type="checkbox" name="q6[]" value="46">其他</label></p>
+				<p><label><input type="checkbox" name="q6[]" value="47">我对品牌不敏感</label></p>
+				
+				<p class="title"><span>7</span><em class="t_mac">都从哪些渠道了解时尚秘籍呀？</em></p>
+				<p><label><input type="radio" name="q7" value="1">参加商场活动，时尚发布会</label></p>
+				<p><label><input type="radio" name="q7" value="2">主动浏览时尚杂志/报纸，网络媒体，电视媒体</label></p>
+				<p><label><input type="radio" name="q7" value="3">闲暇时间浏览</label></p>
+				<p><label><input type="radio" name="q7" value="4">不关注</label></p>
+				
+				<div class="clearfix_f">
+					<div class="step step2 left_f">下一页，聊聊亲们的败家经验>></div>
+					<img src="<%= this.PICTURE_URL %>images/window/question_gift1.png" class="right_f">
+				</div>
+			</div>
+			
+			<div class="page3 none_f">
+				<p class="title"><span>8</span><em class="t_mac">亲们的网购年龄几多？</em></p>
+				<p><label><input type="radio" name="q8" value="1">1年以内 入门买家</label></p>
+				<p><label><input type="radio" name="q8" value="2">2-3年  中级买家</label></p>
+				<p><label><input type="radio" name="q8" value="3">3-5年 高级买家</label></p>
+				<p><label><input type="radio" name="q8" value="4">5-7年 资深买家</label></p>
+				<p><label><input type="radio" name="q8" value="5">7年以上  骨灰级买家</label></p>
+				
+				<p class="title"><span>9</span><em class="t_mac">每个月的败家指数有多少？</em></p>
+				<p><label><input type="radio" name="q9" value="1">100元以内</label></p>
+				<p><label><input type="radio" name="q9" value="2">100-300元</label></p>
+				<p><label><input type="radio" name="q9" value="3">300-500元</label></p>
+				<p><label><input type="radio" name="q9" value="4">500-1000元</label></p>
+				<p><label><input type="radio" name="q9" value="5">1000-2000元</label></p>
+				<p><label><input type="radio" name="q9" value="6">2000-5000元</label></p>
+				<p><label><input type="radio" name="q9" value="7">5000-10000元</label></p>
+				<p><label><input type="radio" name="q9" value="8">10000元以上</label></p>
+
+				<p class="title"><span>10</span><em class="t_mac">亲,平时更喜欢哪种方式入手美丽衣衣呢？多选哟</em></p>
+				<table id="q10_table">
+					<% var t_data = {'0':'','1':'商场或专卖店', '2':'网上购物(淘宝等)', '3':'海外代购', '4':'创意市集', '5':'尾货市场/批发市场', '6':'手机app', '7':'衣服', '14':'鞋', '21':'包', '28':'配饰', '35':'家居', '42':'化妆品'};
+					for(var i=0;i<7;i++){%>
+					<tr class="<%if(i!=0&&i%2==0){%>t_odd<%}%>">
+					<%for(var j=0;j<7;j++){%>
+						<%if (i==0){%>
+						<th <%if(j==0){%>style="width:8%;"<%}%>><%=t_data[i*7+j]%></th>
+						<%} else if(j==0){%>
+						<td class="t_left"">
+						<%=t_data[i*7+j]%>
+						</td>
+						<%}else{%>
+						<td>
+						<div><input type="checkbox" name="q10[]" value="<%=(i-1)*6+j%>"></div>
+						</td>
+						<%}%>
+					<%}%>
+					</tr>
+					<%}%>
+				</table>
+
+				<p class="title"><span>11</span><em class="t_mac">亲们都有哪些败家绝招？多选哟</em></p>
+				<p><label><input type="checkbox" name="q11[]" value="1">去美丽说购买       O(∩_∩)O~</label></p>
+				<p><label><input type="checkbox" name="q11[]" value="2">收藏喜爱的店铺，忠实回头客</label></p>
+				<p><label><input type="checkbox" name="q11[]" value="3">跟随同事朋友一起购买</label></p>
+				<p><label><input type="checkbox" name="q11[]" value="4">搜索相关关键词完成购买</label></p>
+
+				<p class="title"><span>12</span><em class="t_mac">最近一个月平均网购，店里逛街败了多少银子的东西呀？</em></p>
+				<table id="q12_table">
+					<% var t_data = {'0':'','1':'网购', '2':'线下逛街', '3':'100元以内', '6':'100-300元', '9':'300-500元', '12':'500-1000元', '15':'1000-2000元', '18':'2000-5000元', '21':'5000-10000元'};
+					for(var i=0;i<8;i++){%>
+					<tr class="<%if(i!=0&&i%2==0){%>t_odd<%}%>">
+					<%for(var j=0;j<3;j++){%>
+						<%if (i==0){%>
+						<th <%if(j==0){%>style="width:30%;"<%}%>><%=t_data[i*7+j]%></th>
+						<%} else if(j==0){%>
+						<td class="t_left"">
+						<%=t_data[i*3+j]%>
+						</td>
+						<%}else{%>
+						<td>
+						<div><input type="checkbox" name="q12[]" value="<%=(i-1)*2+j%>"></div>
+						</td>
+						<%}%>
+					<%}%>
+					</tr>
+					<%}%>
+				</table>
+				
+				<p class="title"><span>13</span><em class="t_mac">去店里购物时，会以哪种方式为主？</em></p>
+				<p><label><input type="radio" name="q13" value="1">商场折扣日</label></p>
+				<p><label><input type="radio" name="q13" value="2">商场平日</label></p>
+				<p><label><input type="radio" name="q13" value="3">折扣店</label></p>
+				<p><label><input type="radio" name="q13" value="4">外贸小店</label></p>
+			
+				<div class="clearfix_f">
+					<div class="step step3 left_f">下一页，给花小美提提意见吧>></div>
+					<img src="<%= this.PICTURE_URL %>images/window/question_gift1.png" class="right_f">
+				</div>
+			</div>
+			
+			<div class="page4 none_f">
+				<p class="title"><span>14</span><em class="t_mac">是否有下载美丽说的app？</em></p>
+				<p><label><input type="radio" name="q14" value="1">是</label></p>
+				<p><label><input type="radio" name="q14" value="2">否</label></p>
+
+				<p class="title"><span>15</span><em class="t_mac">是否通过美丽说购买宝贝呢？</em></p>
+				<p><label><input type="radio" name="q15" value="1">是</label></p>
+				<p><label><input type="radio" name="q15" value="2">否</label></p>
+
+				<p class="title"><span>16</span><em class="t_mac">花小美希望自己变得越来越“贴心”，有什么要嘱咐的吗？</em></p>
+				<p>我们欢迎姑娘们的绝妙想法，请积极填写，花小美的成长也有亲的一份功劳哟^3^</p>
+				<textarea rows="5" name="q16" style="width:770px;"></textarea>
+
+				<div class="commu mt10_f">
+					<span class="email">邮箱：</span><input type="text" style="width:400px;" name="email" class="txt_email" placeholder="别忘记填写邮箱，否则花小美无法将神秘奖品送到你手中哦~"><span class="city">城市：</span><input type="text" name="city">
+				</div>
+
+				<div class="clearfix_f">
+					<div class="submit left_f"><input type="submit" value="提交"></div>
+					<img src="<%= this.PICTURE_URL %>images/window/question_gift1.png" class="right_f">
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+<script>
+Meilishuo.config.isSurvey = '<%=this.isSurvey%>'
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/questionnarie/online_shop');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

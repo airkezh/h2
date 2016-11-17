@@ -1,0 +1,144 @@
+@import "../block.less";
+@import "../window.less";
+
+.mz_body{.pr;.mb(-14px);background:#000000;.h(2500px);}
+.mz_title{ .w(100%);.h(358px); background: url("@{pic_url}/images/huodong/meizhuang/mz_bg_01.jpg") no-repeat center center;
+	h2{.none;}
+} 
+.mz_intro{ .w(100%);.h(283px);.pb(53px); background: url("@{pic_url}/images/huodong/meizhuang/mz_bg_022.jpg") no-repeat center center;
+	.intro{
+		.h(140px);.pt(14px);.w(922px);.auto;.white;.l(18px);.f(13px);
+		div{.left;.pl(10px);.pr(10px);.h(126px);
+			h4{.l(24px);.f(18px);.c;}
+			ul{.mt(8px);}
+		}
+		&_intro{.w(266px);border-right:1px dashed #fff;}
+		&_time{.w(305px);border-right:1px dashed #fff;}
+		&_awar{.w(289px);}
+	}
+	.brand{
+		.auto;.w(948px);.pt(14px);.h(115px);.pr;
+		.banner{.hidden;.auto;.pr;.w(888px);.h(115px);}
+		ul{.w(888px);.pa;.h(115px);
+			li{.h(115px);.left;.w(888px);.mr(8px); 
+			}
+			.banner{
+				&1,&2,&3{background: url("@{pic_url}/images/huodong/meizhuang/banner1.jpg") no-repeat;}
+				&4,&5,&6{background: url("@{pic_url}/images/huodong/meizhuang/banner2.jpg") no-repeat;}
+				&7,&8,&9{background: url("@{pic_url}/images/huodong/meizhuang/banner30.jpg") no-repeat;}
+				&10{background: url("@{pic_url}/images/huodong/meizhuang/banner4.jpg") no-repeat;}
+				&1,&4,&7,&10{.bp(0px,0px);}
+				&2,&5,&8{.bp(0px,-115px);}
+				&3,&6,&9{.bp(0px,-230px);}
+			}
+		}
+		.pre,.next{.pa;.cursor;.w(30px);.h(115px);top:0px;}
+		.pre{left:0px;}
+		.next{right:0px;}
+	}
+} 
+.mz_vote{ .w(100%);.h(1586px); background: url("@{pic_url}/images/huodong/meizhuang/mz_bg_03.jpg") no-repeat top center;
+	.vote_con{.w(922px);.auto;
+		.vote_box{.left;.inline;.pr;.w(218px);.h(292px);.mt(14px);.ml(6px);.mr(6px);.hidden;
+			.title{.h(38px);.w(218px);}
+			.tab{.h(30px);.w(218px);
+				span{.left;.inline;.cursor;.h(30px);.w(60px);.ml(6px);.mr(6px);}
+			}
+			ul{.pa;top:68px;left:0px;.pt(26px);.tr;.w(218px);.h(160px);
+				li{.h(32px);.l(31px);.gray;.f(12px);.pr(8px);
+					label, input{.i_block;}
+					label{.w(180px);}
+					span{color:#b90880;.w(28px);}
+				}
+			}
+			.vote{.pa;bottom:0px;left:0px;.h(40px);.w(218px);.c;
+				background: url("@{pic_url}/images/huodong/meizhuang/mz_title1.jpg") no-repeat 0px -850px;
+				.voteBtn, .votedBtn{.w(64px);.l(22px);.h(22px);.auto;.white;.border-r(2px);}
+				.voteBtn{background-color:#330046;border:1px solid #5c336b;.cursor;}
+				.votedBtn{background-color:#a91f82;border:1px solid #ba4c9b;}
+			}
+		}
+	}
+}
+.mz_filter{.w(868px);.auto;.h(200px);.pl(78px);	
+	background: url("@{pic_url}/images/huodong/meizhuang/mz_jb01.jpg") no-repeat -1px 0px;
+	a{.inline;.w(129px);.h(200px);.left;.ml(6px);.mr(6px); }	
+}
+
+.rowBg(@l, @b){
+	ul{ background: url("@{pic_url}/images/huodong/meizhuang/mz_tab0@{l}4.png") no-repeat;}
+	.tab{
+		&1{.bp(-218px * (@b - 1), -186px * 0); }
+		&2{.bp(-218px * (@b - 1), -186px * 1); }
+		&3{.bp(-218px * (@b - 1), -186px * 2); }
+	}
+	.title{ background: url("@{pic_url}/images/huodong/meizhuang/mz_title1.jpg") no-repeat 0px -38px * ((@l - 1) * 4 + @b - 1); }
+}
+.curtab1{
+	.tab{ background: url("@{pic_url}/images/huodong/meizhuang/mz_title1.jpg") no-repeat 0px -760px; }
+	.tab, .vote{
+		&2,&3{.none;}
+	}
+}
+.curtab2{
+	.tab{ background: url("@{pic_url}/images/huodong/meizhuang/mz_title1.jpg") no-repeat 0px -790px;}
+	.tab, .vote{
+		&1,&3{.none;}
+	}
+}
+.curtab3{
+	.tab{ background: url("@{pic_url}/images/huodong/meizhuang/mz_title1.jpg") no-repeat 0px -820px;}
+	.tab, .vote{
+		&1,&2{.none;}
+	}
+}
+
+.row11{.rowBg(1,1);}
+.row12{.rowBg(1,2);}
+.row13{.rowBg(1,3);}
+.row14{.rowBg(1,4);}
+.row21{.rowBg(2,1);}
+.row22{.rowBg(2,2);}
+.row23{.rowBg(2,3);}
+.row24{.rowBg(2,4);}
+.row31{.rowBg(3,1);}
+.row32{.rowBg(3,2);}
+.row33{.rowBg(3,3);}
+.row34{.rowBg(3,4);}
+.row41{.rowBg(4,1);}
+.row42{.rowBg(4,2);}
+.row43{.rowBg(4,3);}
+.row44{.rowBg(4,4);}
+.row51{.rowBg(5,1);}
+.row52{.rowBg(5,2);}
+.row53{.rowBg(5,3);}
+.row54{.rowBg(5,4);}
+
+
+
+
+
+
+.mz_title_end{ .w(100%);.h(358px); background: url("@{pic_url}/images/huodong/meizhuang/mz_bg_11.jpg") no-repeat center center;
+	h2{.none;}
+} 
+.mz_intro_end{ .w(100%);.h(283px);.pb(53px); background: url("@{pic_url}/images/huodong/meizhuang/mz_bg_12.jpg") no-repeat center center;}
+.mz_brand01, .mz_brand02, .mz_brand03, .mz_brand04{.w(100%);.h(245px);}
+.mz_brand01{ background: url("@{pic_url}/images/huodong/meizhuang/mz_bg_13.jpg") no-repeat center center;}
+.mz_brand02{ background: url("@{pic_url}/images/huodong/meizhuang/mz_bg_14.jpg") no-repeat center center;}
+.mz_brand03{ background: url("@{pic_url}/images/huodong/meizhuang/mz_bg_15.jpg") no-repeat center center;}
+.mz_brand04{ background: url("@{pic_url}/images/huodong/meizhuang/mz_bg_16.jpg") no-repeat center center;}
+.mz_user_end{.w(100%);.h(600px); background: url("@{pic_url}/images/huodong/meizhuang/mz_bg_17.jpg") no-repeat center center;}
+.mz_user{.w(722px);.auto;.l(18px);.f(12px);
+	p{.left;.w(132px);.pl(6px);.pr(6px);.mt(14px);}
+	a{.block;.white;
+		&:hover{.red;}
+	}
+}
+
+
+
+
+
+
+@import "../footer.less";

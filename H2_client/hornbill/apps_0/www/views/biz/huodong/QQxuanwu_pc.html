@@ -1,0 +1,99 @@
+<%#head.html%>
+	<div class="mc-bd">
+		<div class="mc-bg1"></div>
+		<div class="mc-bg2"></div>
+		<div class="mc-bg3">
+			<div class="main-cont">
+				<div class="step1" id="step1">
+					<ul class="video_l" id="video_man">
+						<li class="on-checked" s_id='3762131217'>
+							<img src="<%=this.PICTURE_URL%>/images/huodong/qqxuanwu/qqxw-stop.jpg" alt="pic" title="pic" class="stop_btn" />
+							<a href="javascript:;" class="vote_btn">投票<b>(<%=this.voteList.data['3762131217']%>)</b></a>
+						</li>
+						<li s_id='3762131955'>
+							<img src="<%=this.PICTURE_URL%>/images/huodong/qqxuanwu/qqxw-stop.jpg" alt="pic" title="pic" class="stop_btn" />
+							<a href="javascript:;" class="vote_btn">投票<b>(<%=this.voteList.data['3762131955']%>)</b></a>
+						</li>
+						<li s_id='3762131583'>
+							<img src="<%=this.PICTURE_URL%>/images/huodong/qqxuanwu/qqxw-stop.jpg" alt="pic" title="pic" class="stop_btn" />
+							<a href="javascript:;" class="vote_btn">投票<b>(<%=this.voteList.data['3762131583']%>)</b></a>
+						</li>
+						<li s_id='3762130283'>
+							<img src="<%=this.PICTURE_URL%>/images/huodong/qqxuanwu/qqxw-stop.jpg" alt="pic" title="pic" class="stop_btn" />
+							<a href="javascript:;" class="vote_btn">投票<b>(<%=this.voteList.data['3762130283']%>)</b></a>
+						</li>
+					</ul>
+					<ul class="video_r">
+						<li s_id='3762132449'>
+							<img src="<%=this.PICTURE_URL%>/images/huodong/qqxuanwu/qqxw-stop.jpg" alt="pic" title="pic" class="stop_btn" />
+							<a href="javascript:;" class="vote_btn">投票<b>(<%=this.voteList.data['3762132449']%>)</b></a>
+						</li>
+						<li s_id='3762132911'>
+							<img src="<%=this.PICTURE_URL%>/images/huodong/qqxuanwu/qqxw-stop.jpg" alt="pic" title="pic" class="stop_btn" />
+							<a href="javascript:;" class="vote_btn">投票<b>(<%=this.voteList.data['3762132911']%>)</b></a>
+						</li>
+						<li s_id='3762144081'>
+							<img src="<%=this.PICTURE_URL%>/images/huodong/qqxuanwu/qqxw-stop.jpg" alt="pic" title="pic" class="stop_btn" />
+							<a href="javascript:;" class="vote_btn">投票<b>(<%=this.voteList.data['3762144081']%>)</b></a>
+						</li>
+						<li s_id='3762144419'>
+							<img src="<%=this.PICTURE_URL%>/images/huodong/qqxuanwu/qqxw-stop.jpg" alt="pic" title="pic" class="stop_btn" />
+							<a href="javascript:;" class="vote_btn">投票<b>(<%=this.voteList.data['3762144419']%>)</b></a>
+						</li>
+					</ul>
+					<div class="video-box">
+						<video src="http://i.meilishuo.net/css/images/huodong/qqxuanwu/video_0.mp4" controls="controls" autoplay="autoplay" style="width:570px;height: 425px;" id="videoBox" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' >
+							your browser does not support the video tag
+						</video>
+					</div>
+					<img src="http://i.meilishuo.net/css/images/huodong/qqxuanwu/qqxw-desc3.jpg" alt="pic" title="pic" id="singer_desc" />
+				</div>
+			</div>
+		</div>
+		<div class="mc-bg4">
+			<div class="main-cont">
+				<a id="share_qqwb" href="javascript:;"></a>
+				<a id="share_qzone" href="javascript:;"></a>
+				<a id="share_sina" href="javascript:;"></a>
+				<a id="more_1" href="http://mgc.qq.com/" target="_blank"></a>
+				<a id="more_2" href="http://x5.qq.com/" target="_blank"></a>
+			</div>
+		</div>
+		<div class="mc-bg5">
+			<div class="main-cont">
+				<a href="javascript:;" name="list"></a>
+				<span id="tag">#秀出表白奇招#</span>
+				<textarea id="topic" maxlength="140"></textarea>
+				<a href="javascript:;" id="btnSub"></a>
+				<div class="step2">
+					<div id="topicList">
+						<%if(this.poster&&this.poster.list&&this.poster.list.length){
+						for(var i=0;i<this.poster.list.length;i++){
+							var item=this.poster.list[i];
+					%>
+							<div class="topicItem">
+								<img src="<%=item.uinfo.avatar_c%>" class="user_img" alt="pic" title="pic" />
+								<div class="con_r">
+									<h3 class="user_info"><%=item.uinfo.nickname%> <%=item.twitter_create_time%></h3>
+									<p class="user_topic">
+										<%=item.twitter_htmlcontent%>
+									</p>
+								</div>
+							</div>
+							<%
+						}%>
+								<div class="clear_f"></div>
+								<div class="paging_panel c_f">
+									<%#paging.html%>
+								</div>
+					<%}%>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<% $_ENGINE_SELF.callFn("useModule")("fml.use('page/poster0');", this._JSstack , this._JSmodsFast ); %>
+		<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/huodong/QQxuanwu');
+_use:", this._JSstack , this._JSmods ); %>
+			<%#foot.html%>

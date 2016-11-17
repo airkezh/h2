@@ -1,0 +1,139 @@
+<%# wx_new/header.html%>
+<div class="posterWall wrap">
+	<figure class="wxShareImg none_f">
+		<img src="<%=this.PICTURE_URL%>/images/wap/web/wx/shareWXB.jpg"/>
+	</figure>
+
+	<!--预留顶部banner位 begin-->
+	<div class="banner-head">
+		<%if(!this.dr_id){%>
+		<a class="banner-l" href="/wx/tuan/">
+			<img src="http://d05.res.meilishuo.net/pic/_o/ad/3a/1b7b2f326ca390f485c798a08951_298_160.ch.png">
+		</a>
+		<a class="banner-l" href="/wx/mall/?pageName=daily">
+			<img src="http://d05.res.meilishuo.net/pic/_o/8e/33/107a4b5e5e71360ed75293c888b6_298_160.ch.png">
+		</a>
+		<%}else if(this.banners && this.banners.tInfo.bn_url){%>
+		<a class="banner-list" href="<%= this.banners.tInfo.bn_url%>">
+			<img src="<%= this.banners.tInfo.bn_pic%>">
+		</a>
+		<%}%>
+	</div>
+	<%if(!this.dr_id || (this.banners && this.banners.tInfo.bn_url)){%>
+	<div class="place-hold"></div>
+	<%}%>
+	<!--end-->
+
+	<!-- 砸彩蛋 -->
+	<% if(0 && this.can_hit && this.can_hit.ret == 0){%>
+	<section id="egg">
+		 <img src="<%=this.PICTURE_URL%>/images/wap/sq/box-1.png" class="egg"/>
+		<img src="<%=this.PICTURE_URL%>/images/wap/sq/box-2.png" class="egg-open"/>
+	</section>
+	<%}%>
+
+
+	<% if((this.banner.middle_ad || this.banner.middle || this.banner.bottom) && 0){%>
+	<div class="happy">
+		<!-- 中部top广告位 -->
+		<%if(this.banner.middle_ad){ %>
+			<%= requireFn('wx_new/mall_ad.html')({
+				'list' : this.banner.middle_ad
+				,'template' : 1  
+			});%>
+		<%}%>
+		<%if((new Date()) > (new Date(2015,4,15))){%>
+		<!-- 中部各场馆 -->
+		<%if(this.banner.middle){ %>
+			<%= requireFn('wx_new/mall_ad.html')({
+				'list' : this.banner.middle
+				,'template' : 2
+			});%>
+		<%}%>
+
+		<!-- 中部bottom广告位 -->
+		<%if(this.banner.bottom){ %>
+			<%= requireFn('wx_new/mall_ad.html')({
+				'list' : this.banner.bottom
+				,'template' : 1
+			});%>
+		<%}%>
+		<%}%>
+	</div>
+	<%}%>
+
+	<ul class="goods_wall new_goods">
+
+
+	</ul>
+	<div class="pullUp" status="loading"></div>
+</div>
+
+
+
+<script type="text/html" id="posterWall">
+<?
+	var _height = $('body').width()*28/64;
+?>
+<?if(this.v.type != 'banner'){?>
+<?
+var type = this.v.type,
+	shop_info = this.v.shop_info,
+	tags = this.v.tags,
+	goods_info = this.v.goods_info;
+?>
+<div class="goods-li">
+	<div class="li-head">
+		<a <?if(type != 'b_shop'){?>href="<?= '/mainapp/shop/'+shop_info.shop_id?>"<?}?> class="avatar left">
+			<img src="<?= shop_info.shop_face_img?>">
+			<span></span>
+		</a>
+		<a <?if(type != 'b_shop'){?>href="<?= '/mainapp/shop/'+shop_info.shop_id?>"<?}?> class="name left">
+			<span><?= shop_info.shop_nick?></span>
+		</a>
+		<?if(type != "b_shop"){?>
+		<div class="<?if(this.v.follow == 1){?>follow-btn-ok<?}else{?>follow-btn<?}?> right" data-sid="<?= shop_info.shop_id?>">
+			<?if(this.v.follow == 1){?>已关注<?}else{?>关注<?}?>
+		</div>
+		<?}?>
+	</div>
+	<div class="li-info">
+		<?goods_info && goods_info.length && goods_info.forEach(function(v,_){?>
+		<a href="<?= type == 'b_shop' ? '/wx/detail?tid=' + v.twitter_id + '&d_r=' + v.d_r : '/mainapp/detail/' + v.msg_id + '?d_r=' + v.d_r?>" class="left">
+			<img height="<?=_height?>px" src="<?= v.goods_img?>">
+			<?if(+v.goods_price){?><span>￥<?=v.goods_price?></span><?}?>
+		</a>
+		<?});?>
+	</div>
+	<div class="li-tag">
+		<?tags && tags.length && tags.forEach(function(v,_){?>
+		<a href="<?= '/wx/qun?dr_id=' + v.tag_id?>">
+			<img src="http://d03.res.meilishuo.net/pic/_o/c7/4c/481451b0cfdf7c9465941524a05f_34_34.cf.png">
+			<span><?= v.tag_name?></span>
+		</a>
+		<?});?>
+	</div>
+	<div class="place-hold"></div>
+</div>
+<?}else{
+var _height2 = $('body').width() * this.v.height / this.v.width;
+?>
+<div>
+<a class="banner-li" href="<?= this.v.bn_url?>">
+	<img height="<?=_height2?>px" src="<?= this.v.bn_pic?>"/>
+</a>
+<div class="place-hold"></div>
+</div>
+<?}?>
+</script>
+
+<script>
+fml.vars.isShare = true;
+fml.vars.dr_id = <%= this.dr_id%>;
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/wx_new/qun');
+_use:", this._JSstack , this._JSmods ); %>
+<%# wx_new/side.html%>
+<%# wx_new/footer.html%>

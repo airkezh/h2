@@ -1,0 +1,353 @@
+/*common*/
+require( 'm/zepto/touch' )
+
+var infoWX     = require( 'wx/info' ),
+    connectWX  = require( 'wx/connect' ),
+    signWX     = require( 'wx/sign' ),
+    shareWX    = require( 'wx/share' ),
+    shareTmp   = require( 'm/component/shareTmp' ),
+    video      = require( 'm/component/video' ),
+    userId     = Meilishuo.config.user_id,
+
+    popmessage = document.getElementById( 'popmessage' ),
+    appmessage = document.getElementById( 'appmessage' )
+
+connectWX()
+if ( Meilishuo.config.os.weixinBrowser ) {
+    signWX()
+
+    shareWX.bind( {
+        'desc':    fml.vars.CONFIG_SHARE.desc,
+        'title':   fml.vars.CONFIG_SHARE.title,
+        'imgUrl':  fml.vars.CONFIG_SHARE.imgUrl,
+        'link':    fml.vars.CONFIG_SHARE.link,
+        'success': function( res, name, eventName ) {
+        },
+        'start':   function() {
+        }
+    } )
+
+    infoWX( action )
+}
+
+var $body          = $( document.body ),
+    $chatPage      = $( '#chatPage' )
+    , $messageList = $chatPage.find( '.messageList' )
+    , $morePal     = $chatPage.find( '.morePal' )
+    , $input       = $chatPage.find( '.input' )
+    , $redMask     = $( '.redMask' ),
+    $blueMask      = $( '.blueMask' ),
+    $mobileBtn     = $( '#mobileBtn' ),
+    $mobileInput   = $( '#mobileInput' ),
+    isIOS          = Meilishuo.config.os.ios,
+    cardData
+
+video.bind()
+
+var sys = {
+        '邓超':   'http://d02.res.meilishuo.net/pic/_o/fd/28/e30bf2587864c72bd9580c01c8ee_71_71.ch.png',
+        '陈赫':   'http://d03.res.meilishuo.net/pic/_o/5d/8b/3def05513031d19fe1e70db95176_71_71.cg.png',
+        '李晨':   'http://d01.res.meilishuo.net/pic/_o/d3/03/ef17e0f19619f47adc2e5bbc7129_71_71.ch.png',
+        '郑恺':   'http://d04.res.meilishuo.net/pic/_o/05/52/9acc7c72537b501cfc369f9c5312_71_71.cf.png',
+        '王祖蓝':  'http://d03.res.meilishuo.net/pic/_o/6a/e6/4bb9ce9912c417cf0e500d5d28f9_71_71.cg.png',
+        'baby': 'http://d02.res.meilishuo.net/pic/_o/9d/f3/b76d69226de25312e599e2d8fd02_71_71.ch.png',
+        '鹿晗':   'http://d02.res.meilishuo.net/pic/_o/a6/58/0e09687499b8a4d8e038b4e806c5_71_71.cg.png'
+    },
+    curUser
+
+function resetSpeaking() {
+    var lastEl = $messageList.children().last()[ 0 ]
+    isSpeaking = false
+    lastEl && lastEl.scrollIntoView()
+}
+
+var textgap          = 400,
+    texttime         = 60,
+    isSpeaking       = false,
+    isReciveBonus    = false,
+    rnumber          = /^\d{11}$/,
+    maxImgTimeout    = 100,
+    EVENT_TOUCHSTART = 'touchmove.redmask',
+    isRequesting     = false,
+    imgLoadTimeout
+
+$chatPage
+    .on( 'tap', '.messageList .audio', function() {
+        var audio    = document.getElementById( $( this ).attr( 'audio' ) )
+            , $audio = $( this )
+
+        audio.onplay  = function() {
+            $audio.addClass( 'audioon' )
+        }
+        audio.onpause = function() {
+            $audio.removeClass( 'audioon' )
+        }
+
+        if ( $audio.is( '.audioon' ) ) {
+            audio.pause()
+
+        } else {
+            audio.play()
+        }
+    } )
+    .on( 'tap', '.messageCon>img', function() {
+        var url = $( this ).attr( 'src' )
+
+        if ( (/.gif$/g).test( url ) ) return;
+
+        wx.previewImage( {
+            current: url,
+            urls:    [ url ]
+        } );
+
+    } )
+    .on( 'tap', '.input', function() {
+        var state      = $morePal.attr( 'state' )
+            , stateNew = $( this ).attr( 'state' )
+
+        $morePal.attr( 'state', stateNew )
+        $chatPage.addClass( 'open' )
+        setTimeout( function() {
+            var lastEl = $messageList.children().last()[ 0 ]
+            lastEl && lastEl.scrollIntoView()
+        }, 0 )
+
+        if ( state == stateNew ) {
+            closePal()
+        }
+    } )
+    .on( 'tap', '.js-key', function() {
+        if ( !isSpeaking ) {
+            var key = $( this ).data( 'value' )
+            addChats( [ {
+                isUser:  true,
+                content: key
+            } ], function() {
+                resetSpeaking()
+                handleInput( key )
+                closePal()
+            } )
+        }
+    } )
+    .on( 'tap', '.js-bonus', function( e ) {
+        e.stopPropagation()
+        closePal()
+
+        if ( !isRequesting ) {
+            isRequesting = true
+            $.ajax( {
+                type:     'get',
+                dataType: 'json',
+                url:      '/aj/wx_shake/gift/',
+                success:  function( res ) {
+                    if ( res && res.apply_info && res.apply_info.type == 'card' ) {
+                        cardData = res
+                        disableGlobalTouch()
+                        $redMask.show()
+                    } else {
+                        $blueMask.show()
+                    }
+                },
+
+                complete: function() {
+                    isRequesting = false
+                }
+            } )
+        }
+    } )
+
+$messageList.on( 'tap', closePal )
+
+$blueMask.on( 'tap', function() {
+    $blueMask.hide()
+} )
+
+$mobileInput.on( 'focus', function() {
+    !isIOS && setTimeout( function() {
+        $( '.js-bonus' )[ 0 ].scrollIntoView()
+    }, 50 )
+
+    $( this )[ 0 ].scrollIntoView()
+} )
+
+$mobileBtn.on( 'tap', function() {
+    var mobile = $mobileInput.val().trim()
+
+    if ( !mobile || !rnumber.test( mobile ) ) {
+        return alert( '请输入正确的手机号码' )
+    }
+
+    //记录手机号
+    $.ajax( {
+        url:      '/aj/wx_shake/record/',
+        type:     'get',
+        dataType: 'json',
+        data:     {
+            mobile:    mobile,
+            'user_id': userId
+        }
+    } )
+
+    addCard( cardData.apply_info.card_id, {
+        timestamp:   cardData.time_stamp
+        , signature: cardData.card_sign
+        , nonce_str: cardData.nonce_str
+    } )
+
+    enableGlobalTouch()
+    $redMask.hide()
+} )
+
+function disableGlobalTouch() {
+    $body.on( EVENT_TOUCHSTART, function( e ) {
+        return false
+    } )
+}
+
+function enableGlobalTouch() {
+    $body.off( EVENT_TOUCHSTART )
+}
+
+function addCard( cardId, cardInfo ) {
+    wx.addCard( {
+        cardList: [ {
+            cardId:  cardId,
+            cardExt: JSON.stringify( cardInfo )
+        } ], // 需要添加的卡券列表
+        success:  function() {
+        }
+    } );
+}
+
+function action( data ) {
+    fml.vars.camry = data
+    addChats( fml.vars.chat.talking, resetSpeaking )
+}
+
+function closePal() {
+    $morePal.removeAttr( 'state' )
+    $chatPage.removeClass( 'open' )
+}
+
+function handleInput( value ) {
+    if ( isReciveBonus ) {
+        return
+    }
+
+    if ( value == 'C' ) {
+        isReciveBonus = true
+
+        addChats( [ {
+            nick:    '鹿晗',
+            content: '厉害厉害，回答正确！红包给你啦〜'
+        }, {
+            nick:    '鹿晗',
+            content: '<div class="js-bonus chat-inner-img"><img src="http://d03.res.meilishuo.net/pic/_o/50/be/2c064664f3790b3c1896196ff0e3_338_145.ch.png"></div>',
+            isImg:   true
+        } ], resetSpeaking )
+    } else {
+        addChats( [ {
+            nick:    '鹿晗',
+            content: '啊，你居然答错了，好伤心啊嘤嘤嘤，好吧，再给你一次机会，再错我要生气了！'
+        } ], resetSpeaking )
+    }
+
+    closePal()
+}
+
+function getChat( message, isuser, isImg ) {
+    var data = {
+        message: message,
+        isImg:   !!isImg
+    }
+
+    if ( !isuser ) {
+        data.headimgurl = sys[ curUser ]
+    }
+
+    return $( shareTmp( 'chatTpl', data ) )
+}
+
+function addChat( data, args, ttime ) {
+    var time      = 0
+        , isuser  = !!data.isUser
+        , message = data.content
+        , $msg
+        , t
+
+    if ( !isuser )
+        time = textgap
+
+    if ( typeof args == 'number' )
+        time = args
+
+    t = setTimeout( function() {
+        var date    = new Date,
+            isValid = true,
+            img
+
+        curUser = data.nick
+
+        if ( !(/<img|<video|<div|<audio/g).test( message ) ) {
+            message = '<p>' + message + '</p>'
+        }
+
+        $msg = getChat( message, isuser, data.isImg )
+        img  = $msg.find( 'img' )
+
+        if ( img.length ) {
+            setTimeout( function() {
+                isValid = false
+            }, maxImgTimeout )
+
+            img[ 0 ].onload = function() {
+                var _this = this
+
+                clearTimeout( imgLoadTimeout )
+                imgLoadTimeout = setTimeout( function() {
+                    isValid && _this.scrollIntoView()
+                }, 50 )
+            }
+        }
+
+        $msg.appendTo( $messageList )
+        $msg[ 0 ].scrollIntoView()
+        appmessage.play()
+
+    }, time )
+
+    return $msg
+}
+
+function addChats( chats, cbk ) {
+    var timelen = 0,
+        ttime
+
+    isSpeaking  = true
+
+    chats.forEach( function( v ) {
+        var tlen    = 10,
+            content = v.content
+
+        if ( v.pic ) {
+            v.isImg   = true
+            v.content = content = '<div class="chat-inner-img"><img src="' + v.pic + '"></div>'
+        }
+
+        if ( !(/<img|<video|<div|<audio|<a|shaizi/g).test( content ) ) {
+            tlen = content.length
+
+            if ( tlen < 10 ) {
+                tlen = 10
+            }
+        }
+
+        ttime = tlen * texttime
+
+        addChat( v, timelen, ttime )
+
+        timelen += ttime + textgap
+    } )
+
+    cbk && setTimeout( cbk, timelen + textgap - ttime )
+}

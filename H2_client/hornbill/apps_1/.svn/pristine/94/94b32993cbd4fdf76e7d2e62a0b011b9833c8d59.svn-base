@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<div id=dul>
+.1
+</div>
+<script type=text/plain id=head>
+	title: <?= this.title ?>
+</script>
+<script  type=text/plain id=ul>
+	<?# head ?>
+<ul>
+	<? var i = 0 ,j = this.ul.length;
+	for (;i < j ;i++){
+	?>
+		<li class='a'>= <?= this.ul[i] ?></li>
+	<? }?>
+
+</ul>
+
+</script>
+
+</body>
+<script src=js/base.js></script>
+<script src=js/tpl.js></script>
+<script src=js/ajax.js></script>
+<script>
+var data= {ul:['a','b'] , title:'tt'}
+var onclick  = function(){
+			alert(this.innerHTML)
+			}
+var cdul = vw('dul' , 'ul')
+			.setData(data)
+			.on( 'click' ,'li' , onclick)
+data.title = 'new title'
+cdul.update()
+;(function(){
+	ajax.get('d1.json',function (data){
+		console.log(data)
+		},null , 'session')
+	
+	
+	})()
+/*
+	.reset()
+var dul = {ul:['a','b'] , title:'tt'} 
+console.log(etic('ul' ,dul))
+*/
+</script>
+</html>

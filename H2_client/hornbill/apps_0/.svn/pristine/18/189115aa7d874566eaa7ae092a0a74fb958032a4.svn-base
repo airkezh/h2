@@ -1,0 +1,427 @@
+@import "../block.less";
+@import "../window.less";
+@import "../block/common_sale.less";
+
+@width: 1200px;
+@pink: #f69;
+
+body { .bgc(@bodybg); }
+
+.mr24_f {
+  margin-right: 24px;
+}
+
+.header_top {
+  width: @width;
+}
+
+/*------------------------------------*\
+    TOP BANNER
+\*------------------------------------*/
+.top-banner {
+  position: relative;
+  height: 340px;
+  overflow: hidden;
+}
+
+.top-banners {
+  overflow: hidden;
+  width: 4 * @width;
+
+  .item {
+    position: absolute;
+    width: 100%;
+    height: 340px;
+    background-position: 50%;
+    opacity: 0;
+    -webkit-transition: opacity .6s cubic-bezier(0.82, 0.14, 0.83, 1) 0s;
+    -moz-transition: opacity .6s cubic-bezier(0.82, 0.14, 0.83, 1) 0s;
+    -o-transition: opacity .6s cubic-bezier(0.82, 0.14, 0.83, 1) 0s;
+    transition: opacity .6s cubic-bezier(0.82, 0.14, 0.83, 1) 0s;
+
+    a {
+      display: block;
+      height: 100%;
+    }
+  }
+
+  .active {
+    opacity: 1;
+    z-index: 10;
+  }
+}
+
+.top-banner-handlers {
+  position: relative;
+  top: 308px;
+  height: 32px;
+  width: 1200px;
+  margin: auto;
+  z-index: 100;
+
+  .item {
+    float: left;
+    height: 32px;
+    line-height: 32px;
+    margin-right: 1px;
+    text-align: center;
+
+    a {
+      display: block;
+      font-size: 14px;
+      color: #fff;
+      background-color: rgba(153, 153, 153, .7);
+      *background-color: #999;
+    }
+  }
+
+  .last {
+    margin-right: 0;
+  }
+
+  .active {
+    a {
+      background-color: rgba(255, 102, 153, .7);
+      *background-color: #f69;
+    }
+  }
+}
+
+.shop {
+  width:  @width;
+  margin: auto;
+}
+
+.shop-ico {
+  float: left;
+  width: 19px;
+  height: 16px;
+  margin-right: 10px;
+  background-image: url("@{pic_url}/images/shop/shop_tle.png");
+  vertical-align: top;
+}
+
+
+/*------------------------------------*\
+    CATAGORY
+\*------------------------------------*/
+.shop-cat {
+
+  overflow: hidden;
+  padding-bottom: 15px;
+  margin-bottom: 25px;
+  background-color: #f7f7f7;
+
+  .item {
+    float: left;
+    margin: 15px 0 0 34px;
+  }
+
+  .item:first-child {
+    margin-left: 40px;
+  }
+
+  .title {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    padding: 6px;
+    margin-right: 10px;
+    /* 显式设置 font-size，否则 ie 7 下有问题 */
+    font-size: 14px;
+    line-height: 17px;
+    text-align: center;
+    background-color: #ff8bb3;
+    color: #fff;
+    vertical-align: top;
+  }
+
+  .list {
+    display: inline-block;
+    vertical-align: top;
+
+    li {
+      display: inline-block;
+      *display: inline;
+      margin: 6px 8px 0 0;
+      *zoom: 1;
+    }
+
+    .active {
+      color: @pink;
+    }
+  }
+
+  .first {
+    width: 109px;
+  }
+
+  .second {
+    width: 355px;
+    li:nth-child(1){
+      width: 50px;
+      text-align: center;
+    }
+  }
+
+  .last {
+
+    li {
+      margin-top: 0;
+    }
+
+    .logo {
+      display: block;
+      width: 100px;
+      height: 44px;
+      line-height: 44px;
+      background-color: #fff;
+      text-align: center;
+    }
+
+    img {
+      margin-top: 7px;
+    }
+  }
+}
+
+/*------------------------------------*\
+    SHOP
+    公共模块，被“推荐好店”与“全部好店”引用
+    区别在于是否有 avatar 和 btn
+\*------------------------------------*/
+.mod-shop {
+  position: relative;
+  margin-bottom: 5px;
+  padding: 5px 5px 10px;
+  border: 1px solid #fff;
+
+    &:hover {
+      border-color: #f4f3f3;
+    }
+
+  .shop-img-wrap {
+    display: block;
+    text-align: center;
+    overflow: hidden;
+
+    img {
+      margin-bottom: 15px;
+      border: 1px solid rgba(153, 153, 153, .08);
+    }
+  }
+
+  .info {
+    height: 60px;
+    padding: 0 6px 10px 0;
+  }
+
+  .avatar {
+    float: left;
+    margin-right: 10px;
+
+    img {
+      width: 65px;
+      height: 65px;
+      border-radius: 50%;
+    }
+  }
+  
+  .title-info {
+    height: 16px;
+    overflow: hidden;
+  }
+
+  .title {
+    float: left;
+    color: #ff8bb3;
+    font-size: 14px;
+    font-weight: bold;
+  }
+
+  .label {
+    display: inline-block;
+    height: 16px;
+    line-height: 16px;
+    margin-left: 10px;
+    padding: 0 5px;
+    background-color: #ff8bb3;
+    color: #fff;
+    text-align: center;
+  }
+
+  .assess-info, .shop-intro {
+    margin: 12px 0 8px;
+  }
+
+  /* 这两排内容要上下对齐 */
+  .assess-info span, .sale-info span {
+    display: inline-block;
+    width: 120px;
+    .ellipsis;
+  }
+
+    .intro {
+      /*
+        IE 11 下，line-height 与 font-size 相等时，文字显示不全
+        因此 line-height 不能设置为 1
+        https://connect.microsoft.com/IE/Feedback/Details/812561
+        有可能是 IE 的 line-height 居中 bug
+      */
+      line-height: 1.2;
+      .ellipsis();
+    }
+
+  .sale-info {
+    margin: 8px 0 10px;
+  }
+
+    .gray {
+      margin: 0 20px 0 8px;
+      color: #999;
+      font-style: normal;
+    }
+
+  .btn-wrap {
+    margin-top: 20px;
+    font-size: 0;
+    text-align: center;
+  }
+
+    .btn {
+      display: inline-block;
+      width: 130px;
+      height: 40px;
+      margin-right: 10px;
+      line-height: 40px;
+      color: #fff;
+      background-color: @pink;
+      border-radius: 0;
+      font-size: 16px;
+    }
+
+    .icon-add {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      margin-right: 5px;
+      font-size: 18px;
+      vertical-align: top;
+    }
+
+  .link {
+    float: right;
+    color: @pink;
+  }
+}
+
+
+.icon-title {
+  background-image: url("@{pic_url}/images/doota/shop_20140806.png");
+}
+
+.icon-title {
+  width: 80px;
+  height: 20px;
+  margin-bottom: 10px;
+}
+
+.sort a:hover .icon-arrow, .active .icon-arrow {
+  background-position: -19px -58px;
+}
+
+/*------------------------------------*\
+    SUGGEST SHOP
+\*------------------------------------*/
+.shop-suggest {
+  .btn-wrap {
+    visibility: hidden;
+  }
+
+  .icon-title {
+    background-position: 0 -3px;
+  }
+
+  .bd {
+    margin-left: -5px;
+    overflow: hidden;
+  }
+
+  .mod-shop {
+    float: left;
+    width: 372px;
+    height: 503px;
+
+    &:hover {
+      .btn-wrap {
+        visibility: visible;
+      }
+    }
+  }
+
+  .shop-img {
+    width: 372px;
+    height: 352px;
+  }
+}
+
+/*------------------------------------*\
+    ALL SHOP
+\*------------------------------------*/
+.shop-all {
+  .icon-title {
+    background-position: 0 -30px;
+  }
+
+    .sort {
+      float: right;
+      margin-right: 12px;
+      font-size: 0;
+
+      a {
+        font-size: 12px;
+        color: #999;
+
+        &:hover {
+          color: @pink;
+        }
+      }
+
+      .active {
+        color: @pink;
+      }
+
+      .middle {
+        display: inline-block;
+        height: 12px;
+        margin: 0 20px;
+        padding: 0 22px;
+        border-color: #ccc;
+        border-style: solid;
+        border-width: 0 1px;
+      }
+    }
+
+  .bd {
+    position: relative;
+    margin-left: -5px;
+    overflow: hidden;
+  }
+
+  .shop-wrap {
+    height: 385px;
+  }
+
+    .mod-shop {
+      width: 376px;
+      height: 350px;
+    }
+}
+
+.shop-label();
+.poster_icons();
+.mark{top: 56px;}
+.page;
+.pageNav{.page > .pageRed; }
+.paging_panel { .pt(15px); .pb(5px);  }
+@import "../footer.less";

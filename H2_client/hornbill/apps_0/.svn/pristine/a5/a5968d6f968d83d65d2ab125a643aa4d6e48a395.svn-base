@@ -1,0 +1,179 @@
+<%# head.html%>
+<script>
+			(function(win, doc) {
+				var docel = doc.documentElement;
+				var meta = doc.querySelectorAll('meta[name=viewport]');
+				meta[0].setAttribute('content', 'width=device-width,user-scalable=no,initial-scale=1');
+
+				function recalc() {
+					var width = docel.clientWidth;
+					docel.style.fontSize = 100 * width / 640 + 'px';
+				}
+				if (doc) {
+					recalc();
+					win.addEventListener('orientationchange', recalc, false);
+				} else if (doc.addEventListener) {
+					doc.addEventListener('DOMContentLoaded', recalc, false);
+				}
+			})(window, document)
+		</script>
+		</head>
+		<body>
+	<div class="main">
+		<img src="http://d02.res.meilishuo.net/pic/_o/26/ec/d350fc1560e46692f7dc4cf2d6d6_640_323.cf.png" class="big_imgs">
+		<ul class="yuyue_wrap">
+			<li>
+				<label for="" class="lbl">姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</label>
+				<div class="txt_box">
+					<input type="text" id="uname" maxlength="10" />
+				</div>
+			</li>
+			<li>
+				<label for="" class="lbl">手机号码：</label>
+				<div class="txt_box">
+					<input type="tel" id="phone" maxlength="11" />
+				</div>
+			</li>
+			<li>
+				<label for="" class="lbl">验&nbsp;&nbsp;证&nbsp;&nbsp;码：</label>
+				<a class="btn_yzm" href="javascript:void(0);" id="send">获取验证码</a>
+				<div class="txt_box short_txt">
+					<input type="text" class="" id="yzm" />
+				</div>
+			</li>
+			<li>
+				<label for="" class="lbl">选择城市：</label>
+				<div class="txt_box" id="city">
+					--选择--
+				</div>
+			</li>
+			<li>
+				<label for="" class="lbl">选择柜台：</label>
+				<div class="txt_box" id="">
+					<select class="select_box" id="shoppe">
+						<option>--选择--</option>
+
+					</select>
+				</div>
+
+			</li>
+			<li>
+				<label for="" class="lbl">前往日期：</label>
+				<div class="txt_box" id="data">
+					<select class="select_box" name="data" id="data_option">
+						<option>--选择--</option>
+						<option>2015-10-28</option>
+						<option>2015-10-29</option>
+						<option>2015-10-30</option>
+						<option>2015-10-31</option>
+						<option>2015-11-01</option>
+						<option>2015-11-02</option>
+						<option>2015-11-03</option>
+						<option>2015-11-04</option>
+						<option>2015-11-05</option>
+						<option>2015-11-06</option>
+						<option>2015-11-07</option>
+						<option>2015-11-08</option>
+						<option>2015-11-09</option>
+						<option>2015-11-10</option>
+						<option>2015-11-11</option>
+						<option>2015-11-12</option>
+						<option>2015-11-13</option>
+						<option>2015-11-14</option>
+						<option>2015-11-15</option>
+						<option>2015-11-16</option>
+						<option>2015-11-17</option>
+						<option>2015-11-18</option>
+						<option>2015-11-19</option>
+						<option>2015-11-20</option>
+						<option>2015-11-21</option>
+						<option>2015-11-22</option>
+						<option>2015-11-23</option>
+						<option>2015-11-24</option>
+					</select>
+				</div>
+			</li>
+		</ul>
+		<a href="javascript:void(0);" id="btn_yuyue">
+			<img src="http://d03.res.meilishuo.net/pic/_o/9b/7d/9423c05c387f4f184ab70dc9ec55_215_55.ch.png" />
+		</a>
+		<p class="tips">
+			请正确填写手机号码，我们将发送预约凭证短信。个人信息仅用于 Olay肌肤测试预约信息接收和确认，广州宝洁公司将对以上信息保密。
+		</p>
+
+		<p class="tips_small">马上预约即可免费体验
+			<br>Olay肌肤测试</p>
+		<!--预约规则-->
+		<span class="first_rules"></span>
+		<%if(this.gz=="open"){%>
+			<div class="first_popwin" id="yuyue_wrap" style="display: block;">
+				<%}else{%>
+					<div class="first_popwin" id="yuyue_wrap" style="display: none;">
+						<%}%>
+							<img class="close_pop" id="gz_close" src="http://d03.res.meilishuo.net/pic/_o/cc/a5/648d40012761947fdf6fbbba78fd_56_56.cf.png" />
+							<div class="rules-content clear" id="rules_con">
+								<h2 class="yy_title">预约规则</h2>
+								<ul class="rules">
+									<li class="sub_t">活动时间</li>
+									<li class="date">2015年10月1日—12月1日</li>
+								</ul>
+								<ul class="rules">
+									<li class="sub_t">活动说明</li>
+									<li class="sub_t_t">活动1：预约肌肤测试，立领护肤大礼包</li>
+									<li class="sub_t_t">参与步骤</li>
+									<li>
+										Step1：凭预约成功短信到预约专柜进行肌肤测 试体验；
+										<br/> Step2：拍摄体验过程照片或测试结果照片
+										<br/> Step3：在朋友圈晒出您的测试体验与照片并截 屏
+										<br/> Step4：打开Olay微信公众号，发送关键字“已 测试”；
+										<br/> Step5：将朋友圈内容截屏图片与分享图片的 原图发送给Olay；
+										<br/> Step6：根据Olay微信号提示，提交您的个人 信息：【姓名】+【手机】。
+									</li>
+									<li class="sub_t_t">活动规则</li>
+									<li>活动期间，Olay将记录参与用户的分享内容与 个人信息，活动期间共选出100位获奖者，每人 获得微晶亮肤仪1台，活动结束后10个工作日内， 将由专门工作人员电话通知获奖人员。分享的 心得与测试照片质量越高中奖几率越大哦。
+									</li>
+									<li class="sub_t_t">活动奖品</li>
+									<li>
+										微晶亮肤仪（共100台）
+									</li>
+								</ul>
+								<h2 class="yy_title">免责声明</h2>
+								<ul class="rules">
+									<li>
+										1、奖品图片仅供参考，以实物为准。如遇客观条件影响，无法提供指定奖品，活动主办方有权以价值相仿的奖品替代。
+										<br> 2、申请预约用户请填写正确有效联系方式，以便查收预约成功信息。如因提交内容有误导致无法预约成功，主办方恕不负责。
+										<br> 3、参与活动1用户首次到专柜测试才能获得护肤大礼包，非首次测试用户则不享受礼包赠送。
+										<br> 4、参与活动2用户请发送正确有效联系方式到Olay官方微信，如用户填写了错误的联系方式而导致无法联系获得奖品，主办方恕不负责。
+										<br> 5、参与活动2用户发送到当前的Olay微信公众号的分享测试心得与测试过程照片将用于全民亲测内容展示应用，赋予主办方用户本人肖像权。
+										<br> 6、主办方不对因网络传输而导致参加者提交的信息有误承担责任。
+										<br> 7、如有发现网民釆用不正当的方式恶意破坏本活动机制、刷取奖品的行为，主办方有权在不事先通知的情况下取消该网民的参与资格与兑换奖品资格。
+										<br> 8、在法律允许范围内，如遇不可抗力因素，活动主办方保留暂停和终止本次活动的权利。
+										<br> 9、本次活动期间宝洁公司有权依法进行解释未尽事宜，联系电话020-38350350-108。
+									</li>
+								</ul>
+							</div>
+					</div>
+					<div class="first_popwin" id="city_popwin" style="display: none;">
+						<img class="close_pop" id="city_cose" src="http://d03.res.meilishuo.net/pic/_o/cc/a5/648d40012761947fdf6fbbba78fd_56_56.cf.png" />
+						<h2 class="yy_title">选择预约的城市</h2>
+						<div class="rules-content city_wrap">
+							<div class="select_city">
+								<ul class="ul_city">
+									<li>
+										<span class="l">A</span>
+										<div class="r">
+											<input type="radio" name="citys" data-value="赣州" />
+											<input type="radio" name="citys" data-value="赣州" />
+											<input type="radio" name="citys" data-value="赣州" />
+											<input type="radio" name="citys" data-value="赣州" />
+										</div>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+			</div>
+			<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use("wap/page/olay_yuyue");
+_use:", this._JSstack , this._JSmods); %>
+				<%#foot_simple.html%>

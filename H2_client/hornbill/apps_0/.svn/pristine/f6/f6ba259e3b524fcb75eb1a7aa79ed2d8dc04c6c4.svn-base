@@ -1,0 +1,153 @@
+/*common*/
+require('wap/zepto');
+
+//游戏设置
+var nunImgArr = [
+	'http://d04.res.meilishuo.net/pic/_o/eb/2b/95d56a5bc108106f08cbab1d09ff_40_47.cf.png'
+	,'http://d05.res.meilishuo.net/pic/_o/30/3c/257088a28a1ab7eed634b0de4a52_40_47.ch.png'
+	,'http://d02.res.meilishuo.net/pic/_o/ca/d3/8796578ebec18bb71cb7b5d32601_40_47.cg.png'
+	,'http://d02.res.meilishuo.net/pic/_o/a6/64/bb33620bc4e4515657986f4e9db0_40_47.ch.png'
+	,'http://d04.res.meilishuo.net/pic/_o/96/59/d6232a653c72a9653bad9b309c79_40_47.cg.png'
+	,'http://d03.res.meilishuo.net/pic/_o/f1/5a/e93b00cbf89ef3db75a8593f4726_40_47.cg.png'
+	,'http://d03.res.meilishuo.net/pic/_o/78/eb/89f24dab64139b1590b04826d875_40_47.ch.png'
+	,'http://d02.res.meilishuo.net/pic/_o/63/4e/c28d7acfc84a941fcfec5072e513_40_47.cf.png'
+	,'http://d05.res.meilishuo.net/pic/_o/78/a6/b468ff70f168180780ab9c56b7f8_40_47.ch.png'
+	,'http://d04.res.meilishuo.net/pic/_o/b6/c8/8ca1c5aba3cda8335bf9a13e0b8c_40_47.cf.png'
+];
+
+function countFn(nub){
+	var n = nub.toString();
+	var t = '';
+	if(nub < 10){
+		t += '<img src="'+ nunImgArr[0] +'" >';
+	}
+	for (var i = 0 , l=n.length ; i < l; i++) {
+		t += '<img src="'+ nunImgArr[ +n[i] ] +'" >';
+	};
+	$('#game_nub').html(t);
+}
+
+function endFn(nub){
+	if(nub < 1){
+		openDialog('fail');
+	}else if(nub < 3){
+		openDialog('success' , nub);
+	}else{
+		lottery(nub)
+	}
+}
+
+function lottery(nub){
+    $.ajax({
+        type : 'get',
+        url : '/aj/singleDog/lottery',
+        data : {},
+        success : function(data){
+            res = JSON.parse(data);
+            console.log(res)
+
+            if(res.error_code==0){
+            	openDialog('success',nub);
+            }
+
+            if(res.error_code== 1){
+            	if(res.data.award.prize_level == 2){
+            		$('#quan').html(res.data.award.awardname)
+            	}
+            	if(res.data.award.prize_level == 3){
+            		$('#quan').html(res.data.award.awardname)
+            	}
+            	if(res.data.award.prize_level == 4){
+            		$('#quan').html(res.data.award.awardname)
+            	}
+            	openDialog('win',nub);
+
+            }
+
+            if(res.error_code== -1){
+            	openDialog('success',nub);
+            }
+        },
+        error:  function (XMLHttpRequest, textStatus, errorThrown) {
+        	openDialog('success',nub);
+        }
+    });
+}
+
+var whiteBlock = require('wap/page/lark/whiteBlock');
+var opts = {
+	boxId : 'container' ,
+	countFn : countFn ,
+	endFn : endFn
+}
+var block = new whiteBlock(opts);
+
+// //页面初始化
+// $('body').on('touchmove',function(e){
+// 	e.preventDefault();
+// 	e.stopPropagation();	
+// });
+
+var windowWidth = $(window).width()
+    ,windowHeight = $(window).height();
+$('.warp,.index,.guide,.game').css({'height':windowHeight});
+
+$('#startBut').click(function(){
+	$('.guide').show().siblings().hide();
+})
+
+$('.guide').click(function(){
+	$('.game').show().siblings().hide();
+	block.init();
+});
+
+//弹出层关闭按钮等逻辑
+function openDialog(parm , nub){
+	if(nub){
+		$('#'+parm+'_n').html(nub);
+	}
+	setTimeout(function(){
+		$('.dialog').hide();
+		$('#mypopbox , .dialog_'+parm).show();
+	},1500)	
+}
+
+$('#indexRule').click(function(){
+	openDialog('rule');
+});
+
+$('.dialog_but').click(function(){
+	$('#mypopbox , .dialog').hide();
+});
+
+$('.dialog_play_but').click(function(){
+	$('#mypopbox , .dialog').hide();
+	$('.row').remove();
+	$('#game_nub').html('');
+	block = new whiteBlock(opts)
+	block.init();
+});
+
+//初始化必备的图片
+var imgArr = [
+	'http://d04.res.meilishuo.net/pic/_o/eb/2b/95d56a5bc108106f08cbab1d09ff_40_47.cf.png'
+	,'http://d05.res.meilishuo.net/pic/_o/30/3c/257088a28a1ab7eed634b0de4a52_40_47.ch.png'
+	,'http://d02.res.meilishuo.net/pic/_o/ca/d3/8796578ebec18bb71cb7b5d32601_40_47.cg.png'
+	,'http://d02.res.meilishuo.net/pic/_o/a6/64/bb33620bc4e4515657986f4e9db0_40_47.ch.png'
+	,'http://d04.res.meilishuo.net/pic/_o/96/59/d6232a653c72a9653bad9b309c79_40_47.cg.png'
+	,'http://d03.res.meilishuo.net/pic/_o/f1/5a/e93b00cbf89ef3db75a8593f4726_40_47.cg.png'
+	,'http://d03.res.meilishuo.net/pic/_o/78/eb/89f24dab64139b1590b04826d875_40_47.ch.png'
+	,'http://d02.res.meilishuo.net/pic/_o/63/4e/c28d7acfc84a941fcfec5072e513_40_47.cf.png'
+	,'http://d05.res.meilishuo.net/pic/_o/78/a6/b468ff70f168180780ab9c56b7f8_40_47.ch.png'
+	,'http://d04.res.meilishuo.net/pic/_o/b6/c8/8ca1c5aba3cda8335bf9a13e0b8c_40_47.cf.png'
+	,'http://d04.res.meilishuo.net/pic/_o/0e/d4/adbb059c29b81bf25a533195ac23_160_284.cg.png'
+	,'http://d02.res.meilishuo.net/pic/_o/f2/12/6441b5c7b77c4541fff200abdea0_160_284.cg.png'
+	,'http://d05.res.meilishuo.net/pic/_o/f0/7c/a0935a3945e7d16bc1f56a69a9c1_159_283.ch.png'
+];
+
+for (var j = 0 , len = imgArr.length ; j < len; j++) {
+	var img = new Image();  
+    img.src = imgArr[ j ];  
+};
+
+

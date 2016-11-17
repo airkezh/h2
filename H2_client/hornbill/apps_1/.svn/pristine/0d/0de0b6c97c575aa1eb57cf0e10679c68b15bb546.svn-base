@@ -1,0 +1,75 @@
+<%#head.html%>
+<div class="wrap_box">
+	<div class="top_banner">
+		<div class="inner">
+			<a href="javascript:;" class="jian5"></a>
+			<a href="http://www.meilishuo.com/biz/huodong/meili99sed/?banner_id=a607699f973e70752c1b2295c822c697" target="_blank" class="jian10"></a>
+		</div>
+	</div>
+	<div class="price_box">
+		<div class="cj_normal cj_pic"></div>
+		<div class="cj_over cj_pic none_f"></div>
+		<div class="cj_click cj_pic none_f"></div>
+		<div class="vote none_f"></div>
+		<div class="moveX_wrap" id="roundText">
+			<ul>
+				<% this.record && this.record.data && this.record.data.map(function(data){  %>
+					<li><%= data.nickname%>抽中<%= data.amount%>元现金券</li>
+				<% }); %>
+			</ul>
+		</div>
+		<a href="/biz/March_sale/rule/" target="_blank" class="detail"></a>
+		<% if(this.isLogin == 1 && this.promote_num != false){ %>
+			<span class="times">你还有<span id="promoteNum"><%= this.promote_num.data%></span>次抽奖机会</span>
+		<%}%>
+	</div>
+	<ul class="card">
+		<li><a href="http://www.meilishuo.com/shop/101027" target="_blank"><img src="<%= this.PICTURE_URL%>images/huodong/March_sale/pic9.jpg" /></a></li>
+		<li><a href="http://www.meilishuo.com/shop/107463" target="_blank"><img src="<%= this.PICTURE_URL%>images/huodong/March_sale/pic10.jpg" /></a></li>
+		<li><a href="http://www.meilishuo.com/shop/107407" target="_blank"><img src="<%= this.PICTURE_URL%>images/huodong/March_sale/pic7.jpg" /></a></li>
+		<li style="margin-right:0;"><a href="http://www.meilishuo.com/shop/107461" target="_blank"><img src="<%= this.PICTURE_URL%>images/huodong/March_sale/pic8.jpg" /></a></li>
+	</ul>
+	<img src="<%= this.PICTURE_URL%>images/huodong/March_sale/miao_tit1.png" class="miao_tit" />
+	<div class="miao">
+		<% if(this.miaosha){ %>
+		<div class="lunbo_box">
+			<p class="left_btn" id="btn-left"></p>
+			<p class="right_btn" id="btn-right"></p>
+			<div class="pics">
+				<ul id="photos-table">
+					<% this.miaosha.data && this.miaosha.data.map(function(data){ %>
+						<li><%= data.image%></li>
+					<% }); %>
+				</ul>
+			</div>
+		</div>
+		<%}%>
+	</div>
+	<div id="subNav">
+		<div class="subBox">
+			<div class="subNav">
+				<ul class="sub<%= this.type%>" >
+					<li><a href="?type=0"></a></li>
+					<li><a href="?type=1"></a></li>
+					<li><a href="?type=2"></a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="goods_box">
+		<%= requireFn('biz/March_sale/goods_con.html')({
+			'March_sale_goods' : this.March_sale_goods.data.tInfo
+		}); %>
+	</div>
+</div>
+<script type="text/html" id="win">
+	<div class="pop_box">
+		<p id="pop_tit"></p>
+		<p id="pop_text"></p>
+		<a href="javascript:;" class="btn sure">确&nbsp;&nbsp;定</a>
+	</div>
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/huodong/March_sale');
+	_use:", this._JSstack , this._JSmods); %>
+<%#foot.html%>

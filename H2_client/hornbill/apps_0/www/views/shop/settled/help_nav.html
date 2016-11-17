@@ -1,0 +1,18 @@
+<%
+	var highlight = this.help_nav.highlight | 0;
+%>
+<div class="help_nav">
+	<h3 class="help_tle"><a href="?">帮助中心</a></h3>
+	<ul class="f_ul">
+		<% this.help_nav.list && this.help_nav.list.forEach(function(fNav){ %>
+		<li class="f_li">
+			<h4 class="s_tle"><%=fNav.name %></h4>
+			<ul class="s_ul">
+			<% fNav.sub && fNav.sub.forEach(function(s){%>
+				<li class="s_li"><a href="?cid=<%=s.cid%>" <%if(highlight==s.cid){%>class="red_f"<%}%>><%=s.name %></a></li>				
+			<%});%>
+			</ul>
+		</li>
+		<% }); %>
+	</ul>
+</div>

@@ -1,0 +1,108 @@
+<%# head.html%>
+<%
+var query = this._Request_query;
+var getLink = _extFn.getLink;
+var mSubstr = _extFn.mSubstr;
+%>
+<div class="spinner midSpinner pa_f" style="top:250px;"></div>
+<div class="content_fluid v_hidden">
+	<%if(this.adm5 && this.adm5.ad){%>
+		<%
+		this.adm5.admId = 'adm_top';
+		this.adm5._JSstack = this._JSstack;
+		this.adm5._JSmods = this._JSmods;
+		%>
+		<%= requireFn('commerce/adm_banner.html')(this.adm5);%>
+	<%}%>
+	<%if(query.cata_id == 6000000000000){ %>
+      <%= requireFn('pull_banner.html')({
+            'logId': 'nikeBanner'
+            ,'pic_small' : 'http://i.meilishuo.net/css/images/ads/converse_s1.jpg'
+            ,'pic_big' :  'http://i.meilishuo.net/css/images/ads/converse_b1.jpg'
+            ,'link' : 'http://meilishuo.com/u/EDrEFL?frm=shoe_converse'
+            ,'showTime' :['2013/5/6','2013/5/7']
+            ,'_JSstack' : this._JSstack ,'_JSmods' : this._JSmods ,'_Request_query' : this._Request_query
+            });%>
+	<%}%>
+
+	<% if(this.catalog && this.catalog.isnew){%>
+		<%= requireFn('guang/notic.html')({
+			'notic' : this.catalog
+		});%>
+	<%}%>
+	<%= requireFn('guang/filter.html')({
+		'catalog' : this.catalog,
+		'section' : this.section,
+		'groupPg' : this.groupPg,
+		'pricebt' : this.pricebt,
+		'search_types' : this.search_types,
+		'query' : query,
+		'getLink' : getLink
+	});%>
+	<div class="goods_wall">
+		<div class="corner_stamp">
+			<div class="cata_brands" >
+				 <% this.commerce && this.commerce.forEach( function( data){%>
+				 <div class="cata_brand">
+						<h3 class="f14_f">合作品牌</h3>
+						<div class="mt10_f">
+							<a class="avatar64_f" href="<%= data.mall_url ;%>" target="_blank"><img src="<%= data.avatar_c %>" /></a>
+							<p class="cb_t"><a href="<%= data.mall_url %>" target="_blank"><%= data.nickname %> <span class="i_zv" title="美丽说认证品牌">&nbsp;</span></a></p>
+							<% if(!data.isFollow){ %>
+								<p class="ml74_f mt14_f clearfix_f"><span class="red_follow addBrand" fuid="<%= data.user_id %>">+ 加关注</span></p>
+							<%}else{%>
+								<p class="ml74_f mt14_f clearfix_f"><span class="pink_follow removeBrand" fuid="<%= data.user_id %>">已关注</span></p>
+							<%}%>
+						</div>
+						<div class="clear_f"></div>
+					</div>
+				<%});%>
+			</div>
+
+			<div class="poster_cpt shop_follow">
+				<%# guang/cpt.html %>
+			</div>
+
+			<div class="poster_p4p"></div>
+		</div>
+
+	</div>
+	<div class="paging_panel c_f none_f">
+	<%#paging.html%>
+	</div>
+	<div class="spinner botSpinner none_f"></div>
+	<div class="clear_f"></div>
+	<%if(this.adm7 && this.adm7.ad){%>
+		<%
+		this.adm7.admId = 'adm_bot';
+		this.adm7._JSstack = this._JSstack;
+		this.adm7._JSmods = this._JSmods;
+		%>
+		<%= requireFn('commerce/adm_banner.html')(this.adm7);%>
+	<%}%>
+</div>
+<%#posternew.html%>
+<!-- <div class="share_group">
+	<p>推荐到</p>
+	<ul>
+		<li><span class="i_qzone"></span></li>
+		<li><span class="i_sina"></span></li>
+		<li><span class="i_tx"></span></li>
+	</ul>
+</div> -->
+<script>
+fml.vars.search_totalNum = <%= this.groupPg.total_num%>;
+fml.vars.colWidth = 244;
+fml.vars.posterWallWidth = 1220;
+<%= this.p4p? 'Meilishuo.config.p4p = { tInfo : '+JSON.stringify(this.p4p)+'};':''; %>
+<%= this.poster0? 'Meilishuo.config.poster0 = '+JSON.stringify(this.poster0)+';':'' ;%>
+<%= this.catalog.currentWord? 'Meilishuo.config.curWord = "'+this.catalog.currentWord+'";':'';%>
+<%= this.share_pic.length>3 ? 'Meilishuo.config.sharePic = "'+this.share_pic+'";':'';%>
+</script>
+
+<% $_ENGINE_SELF.callFn("useModule")("fml.use('page/poster0');", this._JSstack , this._JSmodsFast ); %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/catalog');
+	fml.use('page/poster_guang');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

@@ -1,0 +1,135 @@
+@import "block.less";
+@import "component/eat_candies_loading.less";
+
+body {
+  .bgc(#fff)
+}
+
+img { .block; .w(100%); }
+
+html {
+  font-size : 62.5%; /* 10/16 = 62.5% */
+}
+
+@media (-webkit-min-device-pixel-ratio : 1.5) {
+  html {
+    font-size : 50%; /* 8/16 = 50% */
+  }
+}
+
+@media (-webkit-min-device-pixel-ratio : 2) {
+  html {
+    font-size : 43.75%; /* 7/16 = 43.75% */
+  }
+}
+
+@media (-webkit-min-device-pixel-ratio : 3) {
+  html {
+    font-size : 43.75%; /* 5/16 = 31.25% */
+  }
+}
+
+header {
+  .pf; top: 0; left: 0; .w(100%); .bgwhite; z-index: 999;
+}
+
+.back_wrap {
+  .l(88*@px); .c; .f(35*@px); .fc(#80737b); .pr;
+  .back { .pa; left : 0px; .block; .pl(24px); .pr(10%); .f(28*@px); background : url('//d04.res.meilishuo.net/pic/_o/8c/8d/604ebea10f7ed8b7c26f254c7eec_20_37.cf.png') no-repeat 10px center; background-size : 10%; }
+}
+
+#nav {
+  .box; .mt(10px); .mb(10px); .pl(7%); .pr(7%); .f(14px); .c; .hidden;
+  span { 
+    .block; .l(200%); .w(50%); 
+    &:first-child { border-right: 1px solid #d9d9d9; }
+  }
+  .curr { .red; }
+}
+
+.banner {
+  .pl(9px); .pr(9px);
+  img { .w(100%); }
+}
+
+.new_goods {
+  .pr;
+  .clearfix;
+  .ml(14*@px); .mr(14*@px); .mt(10px);
+  .goods_li {
+    .pa;
+    .w(50%);
+    .hidden;
+    .li_border {
+      .ml(10*@w);
+      .mr(10*@w);
+    }
+  }
+  .li_border {
+    .pr; .mb(20*@w); .bgwhite;   
+    .lazy-bg { 
+      .block; .hidden; 
+      background : center no-repeat; 
+      background-size: cover; 
+      //opacity: 0; 
+      // -webkit-transition: all .3s linear 0s;
+      // -moz-transition: all .3s linear 0s;
+      // -o-transition: all .3s linear 0s;
+      // transition: all .3s linear 0s;
+    }
+    .list_title { .f(24*@px); .fc(#80737b); .l(30*@px); .h(30*@px);.hidden; .ellipsis; }
+  }
+  .list_info { .pt(20*@px); .pl(20*@px); .pb(20*@px); .pr(20*@px); }
+  .list_cost { .pt(20*@px); .pb(10*@px); }
+  .money_now { .f(20*@px); .pr(10*@px); .fc(#f66); }
+  .normal_lick,
+  .repin_num,
+  .sale_num { .f(20*@px); .fc(#999); background-repeat: no-repeat; background-position: 2px center; padding-left : 13%; background-size : auto 80%; }
+  .normal_lick { .mr(30*@px); background-image : url('//d04.res.meilishuo.net/pic/_o/0b/af/01f834bdf72c210229a9d6277440_27_24.cg.jpg');  }
+  .repin_num { .mr(30*@px);  background-image : url('//d02.res.meilishuo.net/pic/_o/3c/8d/225ac2deabd161d991437083fb85_21_21.cg.png');}
+  .sale_num {  background-image : url('//d04.res.meilishuo.net/pic/_o/f5/7d/438dcf9d5b2e943e558478c74968_22_23.cg.png');}
+  .money_normal { .f(22*@px); .t-through; }
+  .goods_type { .pa; top : 0; left : 10*@px; .w(70*@px); .h(34*@px); .l(34*@px); .white; .c; .border-r(0 0 6*@px 6*@px); }
+  .two_type { left : 90*@px; }
+  .new { .bgc(#ff96b9); }
+  .hot { .bgc(#ff6f80); }
+  .tag {
+    position: absolute;
+    top: 10*@px;
+    right: 10*@px;
+    background: rgba(0,0,0,.2);
+    padding: 6*@px 8*@px;
+    border-radius: 4*@px;
+    .tag-icon {
+      display: inline-block;
+      width: 24*@px;
+      height: 24*@px;
+      background: url('//d05.res.meilishuo.net/pic/_o/71/aa/5bd6a03108bc571c2038e7f55303_23_23.cf.png') no-repeat center;
+      background-size: contain;
+      vertical-align: middle;
+    }
+    .num {
+      color: #fff;
+      font-size: 24*@px;
+      vertical-align: middle;
+    }
+  }
+}
+
+.frame {
+  .pr;
+}
+
+
+.eat_candies_loading(.5rem);
+
+
+
+.gotop {
+  .w(12.5%);
+  .none;
+  right    : 20px;
+  position : fixed;
+  z-index  : 100;
+}
+

@@ -1,0 +1,38 @@
+<%#head.html%>
+	<section class="wrapper">
+		<div class="wlf_wrapBox">
+			<h3 class="wlf_title">中奖名单<span></span></h3>
+			<div class="posterWall">
+				<%if(!this.wlf_lucky){%>
+					<p>还没有人中签哦，请期待～～</p>
+					<%}else{%>
+						<ul class="goods_wall userList"></ul>
+						<div class="pullUp" status="loading"></div>
+						<%}%>
+			</div>
+		</div>
+	</section>
+	<a class="gotop" style="bottom:<%if(this.isIphone){%>60<%}else{%>20<%}%>px">
+		<img src="<%= this.PICTURE_URL%>/images/wap/tuan/gotop.png" />
+	</a>
+	<script type="text/html" id="posterWall">
+		<?this.list.forEach(function(item){ var name=item.nickname.substr(0,1)+ "**"+item.nickname.substr(-1);?>
+			<li>
+				<a href="javascript:void(0)">
+						<span class="userImg" style="background: url(<?=item.avatar_c?>); background-size: cover;"></span>
+						<p class="userName"><?=name?></p>
+					</a>
+			</li>
+			<?});?>
+	</script>
+	<script>
+		 <%= this.wlf_lucky ? 'Meilishuo.config.poster0=' + JSON.stringify(this.wlf_lucky) + ';' : ''; %>
+		fml.vars.geturl = '<%=this.geturl%>';
+		fml.vars.is_lazyload_poster = true;
+		fml.vars.activity_id = '<%=this.activity_id%>';
+	</script>
+	<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+	<%! $_ENGINE_SELF.callFn( "useModule")( "<<<_use:
+	fml.use('wap/page/welfare_new/wlf_lucky');
+_use:", this._JSstack , this._JSmods ); %>
+		<%#foot.html%>

@@ -1,0 +1,118 @@
+<%# head.html%>
+<% this.headName = '购物车'; 
+%>
+<%# head_share.html%>
+
+<div class="cart"></div>
+
+<script type="text/html" id="cartList">
+	<? if(this.info.length !== 0){ ?>
+	<ul class="order_list_list">
+		<? this.info.forEach(function(shop,i){ ?>
+		<?if(shop.valid){?>
+		<li class="cart_list">
+			<div class="shop order_info" id="shop_<?= shop.shop_id ?>">
+				<input type="checkbox" class="select_shop" name="shop[<?= i ?>]" value="<?= shop.shop_id ?>" id="select_<?= shop.shop_id ?>" shopId = "<?= shop.shop_id?>"/>
+				<input type="hidden" value="<?= shop.total_price ?>" id="shop_total_<?= shop.shop_id ?>"/>
+				<span>商家：<?= shop.shop_name?></span>
+			</div>
+			<ul class="order_goods_list">
+				<? shop.goods.forEach(function(goods,j){ ?>
+				<? if(goods.stock !== "0" && goods.shelf !== "0"){ ?>
+
+				<li id="goods_<?= goods.sid ?>" class="goods">
+					<input type="checkbox" class="select_goods" name="shop[<?= i ?>]goods[<?= j ?>]" value="<?= goods.sid ?>" id="select_<?= goods.sid ?>"/>
+					<div class="main">
+						<a href="/share/item/<?= goods.twitter_id ?>">
+							<img class="pic" src="<?= goods.b_pic_url ?>"/>
+							<div class="middle">
+								<p class="title"><?= goods.goods_title ?></p>
+								<p class="prop">
+									<?for(var g=0;g<goods.prop.length;g++){
+							    	var item =goods.prop[g];
+							    	if(item.is_show==='1'){?>
+							    		<span class="<?= i===0?'first':'' ?>"><?= item.name ?>：<?= item.value ?></span>
+							    	<?}
+							    }?>
+								</p>
+							</div>
+						</a>
+						<div class="last">
+							<p class="price">￥<span class="u_price"><?= Number(goods.goods_activity_price).toFixed(2) ?></span></p>
+							<span class="x">x</span>
+							<p class="numBox">
+								<span class="minus">-</span>
+								<input type="text" class="amount nums" data-ori="<?= goods.amount ?>" data-max="<?= goods.stock ?>" value="<?= goods.amount ?>"/>
+								<span class="add plus">+</span>
+							</p>
+							<span class="goods_total"><?= (Number(goods.amount)*Number(goods.goods_activity_price)).toFixed(2) ?></span>
+						</div>
+					</div>
+
+				</li>
+				<?}?>
+				<? }); ?>
+			</ul>
+		</li>
+		<?}?>
+		<? }); ?>
+		<?if(this.invalidList.length){?>
+		<li class="cart_list">
+			<div class="order_info">
+				<span>失效商品</span>
+			</div>
+			<ul class="order_goods_list">
+				<? this.invalidList.forEach(function(goods,i){ ?>
+				
+				<li id="goods_<?= goods.sid ?>" class="goods">
+					<a href="/share/item/<?= goods.twitter_id ?>">
+						<img class="pic" src="<?= goods.b_pic_url ?>"/>
+						<div class="middle">
+							<p class="title"><?= goods.goods_title ?></p>
+							<p class="prop">
+							    <?for(var g=0;g<goods.prop.length;g++){
+							    	var item =goods.prop[g];
+							    	if(item.is_show==='1'){?>
+							    		<span class="<?= i===0?'first':'' ?>"><?= item.name ?>：<?= item.value ?></span>
+							    	<?}
+							    }?>
+								
+							</p>
+						</div>
+					</a>
+				</li>
+				
+				<? }); ?>
+			</ul>
+			<div class="order_foot">
+				<a href="javascript:void(0)" id="removeInvalid" class="btnG">删除失效的商品</a>
+			</div>
+		</li>
+		<?}?>
+	</ul>
+	<div id="float_ctrl" class="float_ctrl">
+		<p>商品总价（不含运费）：￥<span class="total_price">0</span></p>
+		<a href="javascript:void(0)" class="go_charge">去结算</a>
+	</div>
+<?}?>
+</script>
+<script type="text/html" id="emptyTip">
+	<div class="none">
+		<div class="none_info">
+			<p>您的购物车还空着呢，</p>
+			<p>美物这么多，快去看看吧～</p>
+			<a href="/guang/hot" class="btn">去逛逛</a>
+		</div>
+	</div> 
+</script>
+
+<form class="cartForm" action="/order/init/" method="get" accept-charset="utf-8" id="form"/>
+	<input type="hidden" name="source" id="source" value="5-0.0.1"/>
+	<input type="hidden" name="sid" id="sid"/>
+	<input type="hidden" name="shop_id" id="shop_id"/>
+</form>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('m/page/doota/cart');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

@@ -1,0 +1,22 @@
+<%	var now = new Date().getTime()
+		,endTime = new Date('2015/09/30 12:00:00').getTime();
+	if(this.searchNav){
+		var searchKey = this.key;
+		var cartNum = this.cartNum;
+		var searchDefaultKeyWord = this.searchDefaultKeyWord ? this.searchDefaultKeyWord.value : '搜索宝贝';
+%>
+<div class="search">
+<%if(now < endTime){%>
+	<a class="search-l" href="/sq/sign/"></a>
+<%}%>
+	<form id="js-search-form" class="search-c" method="get">
+		<input class="search-c-input" type="search" placeholder="<%= searchDefaultKeyWord %>" <% if(searchKey){ %>value="<%= searchKey %>"<% } %> >
+	</form>
+	<a id="js-search-cart" class="search-r1" href="/sq/cart/">
+		<% if(0 &&cartNum){ %>
+		<span class="search-r1-cart"><%= cartNum > 99 ? "99+" : cartNum %></span>
+		<% } %>
+	</a>
+	<span id="js-search-cancel" class="search-r2">取消</span>
+</div>
+<%}%>

@@ -1,0 +1,19 @@
+<%#shop/settled/settle_head.html%>
+<div class="container">
+	<% this.star && this.star.info && this.star.info.forEach(function(c,index){ %>
+	<div class="star">
+		<h3 class="cata_title"><%=c.catalog %></h3>
+		<div class="content">
+			<% c.list && c.list.forEach(function(item,index){ %>
+			<div class="s_item left_f">
+				<div class="img_wrapper"><a href="<%=item.link || '##' %>" target="_blank"><img src="<%=item.pic %>"></a></div>
+				<p class="s_name"><a href="<%=item.link || '##' %>" target="_blank"><%=item.name %></a></p>
+				<p class="s_desc"><a href="<%=item.link || '##' %>" target="_blank"><%=item.desc %></a></p>
+			</div>
+			<%});%>
+			<div class="clear_f"></div>
+		</div>
+	</div>
+	<%});%>
+</div>
+<%#foot.html%>

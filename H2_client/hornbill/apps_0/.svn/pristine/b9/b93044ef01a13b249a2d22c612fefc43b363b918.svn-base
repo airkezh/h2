@@ -1,0 +1,156 @@
+/*common*/
+
+require('wap/zepto')
+
+var Waterfall   = require('circle/component/waterfall')
+var Lazy        = require('m/component/lazyLoad')
+var UrlHandle   = require('wap/component/urlHandle')
+var Alert       = require('wap/ui/alert')
+
+var LazyLoad    = Lazy.init({ xpath: '.g-entrance' })
+var shopId      = UrlHandle.getParams( location.href ).shop_id
+var paramPool   = ['goods_ctime','goods_on_shelf','sale_num',['price_high','price_lower']]
+var sortBy      = paramPool[0]
+
+var GOODS_SHELF = '.goods_shelf'
+var $gShelf     = $(GOODS_SHELF)
+var $coupon     = $('.coupon')
+var $currCoupon = null
+var $sortItem   = $('.s_item')
+var $price      = $sortItem.eq(3)  // 这里的3是表示价格 sort item
+var flag        = false
+var Wf          = null
+var cashe       = {}
+
+/** main */
+
+/* 预先绑定懒加载事件 */
+LazyLoad.scroll()
+
+/* 初始时手动出发一次瀑布流 */
+switchWaterfall( sortBy )
+
+/* 绑定事件 */
+$coupon.on('click', function (){
+
+	$currCoupon = $(this)
+	if( $currCoupon.hasClass('got') ) return
+
+	var url = '/aj/sq/shop_coupon'
+	var data = {
+		applyCode : $currCoupon.data('id')
+	}
+	$.get(url, data, couponAjaxCbk, 'json')
+})
+
+$sortItem.on('click', function (){
+	var $me = $(this)
+	var id = $me.data('id')
+	var isActive = $me.hasClass('active')
+
+	// 避免点击过快创建多个瀑布流对象
+	if(flag) return
+
+	flag = true
+
+	switch (id){
+		case 3:
+			var status = $me.data('status')
+
+			if(status == 'down'){
+				$me.data('status','up')
+				sortBy = paramPool[id][0]
+			}else{
+				$me.data('status', 'down')
+				sortBy = paramPool[id][1]
+			}
+			break;
+		default:
+			if(isActive) return
+			
+			if( $price.data('status') ){
+				$price.data('status', '')
+			}
+
+			sortBy = paramPool[id]
+	}
+
+	$sortItem.removeClass('active')
+	$me.addClass('active')
+	switchWaterfall()
+})
+
+
+function switchWaterfall(){
+	if(Wf){
+		Wf.destroy()
+		Wf = null
+	}
+
+	resetLayout()
+
+	Wf = Waterfall.init({
+		el: GOODS_SHELF,
+		tmpl: 'goods_tpl',
+		url: '/aj/sq/shop_waterfall',
+		data: { shop_id: shopId, _sortby: sortBy, limit: 15 },
+		dataName: 'gInfo',
+		colNum: 2,
+		colGap : "10 0",
+		dataFilter: wfDataFilter,
+		onFetchSuccess: wfOnFetchSuccess,
+		onFetchFinished: wfOnFetchFinished
+	})
+
+	Wf.start(cashe[sortBy])
+}
+
+function wfDataFilter (data){
+	var wfConfig = this._config
+	var gd       = wfConfig.dataName
+
+	if(data.frame == 0){
+		cashe[sortBy] = data
+	}
+
+	return data[gd]
+}
+
+function wfOnFetchSuccess(data){
+	if(data.length === 0){
+		$('.pullUp').attr('status','stop')
+		this.destroy()
+		Wf = null
+	}
+}
+
+function wfOnFetchFinished(data, textStatus){
+
+	if(textStatus == 'timeout'){
+		myAlert('抱歉~网络不给力，数据拉不出 o(╯□╰)o')
+	}
+
+	LazyLoad.load()
+	flag = false
+}
+
+function resetLayout(){
+	$('.pullUp').attr('status','loading')
+	$gShelf.empty().height(0)
+}
+
+function couponAjaxCbk(data){
+	if(data.ret === 0){
+		$currCoupon.removeClass('get')
+		$currCoupon.addClass('got')
+		$currCoupon.find('.status').html('已领')
+	}
+	myAlert(data.msg)
+}
+
+function myAlert(ct, cbk){
+	return new Alert({ 
+		content: ct,
+		onSure : cbk
+	})
+}

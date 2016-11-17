@@ -1,0 +1,24 @@
+<%#head.html%>
+<div id="answer" class="page">
+	<div class="title"></div>
+	<div class="pic">
+		<img src="" alt="答题图">
+	</div>
+
+	<div class="content">
+		<ol class="option answers">
+			<li data-click=true></li>
+		</ol>
+	</div>
+</div>
+
+
+
+<script>
+fml.vars.list = <%= JSON.stringify(this.list.data) %>;
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/zulilyOld/answer');
+_use:", this._JSstack, this._JSmods); %>
+<%#foot_frame.html%>

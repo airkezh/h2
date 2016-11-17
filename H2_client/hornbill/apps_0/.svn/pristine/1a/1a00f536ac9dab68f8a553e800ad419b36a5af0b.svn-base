@@ -1,0 +1,166 @@
+<%# sq/header.html%>
+<div id="err_msg"></div>
+<% if(0 && this.userInfo_sq && this.userInfo_sq.bind_status == 0){%>
+	<div class="binding">
+		<a href="/sq/bind">绑定已有美丽说账号</a>, 不用填写地址哦
+	</div>
+<%}%>
+<div class="wrap" id="order_confirm">
+	
+</div>
+
+<script type="text/html" id="orderConfirmTmp">
+<?
+	var plat_coupon_info = orderInfo.plat_coupon_info || [];
+?>
+<ul class="addrShow">
+	<li class="receiver">
+		<div class="receiver_line"></div>
+		<div>
+			<span class="next_icon confirm_next">
+				<img src="<?=Meilishuo.config.picture_url?>/images/wap/web/wx/next.png">
+			</span>
+			<div id="rec_address">
+				
+			</div>
+			<?if(addr_info && addr_info.has){
+				var address = addr_info.info; 
+			?>
+			<div class="receiver_info" data-type="edit" data-aid="<?= address.aid?>">
+				<p addr_id="<?= address.addr_id?>">
+					<span><img src="<?=Meilishuo.config.picture_url?>/images/wap/web/wx/user_icon.png" class="order_icon user_icon">收件人：<i class="addr_name"><?= address.name?></i></span>
+					<span><img src="<?=Meilishuo.config.picture_url?>/images/wap/web/wx/tel_icon.png" class="tel_icon">电话：<i class="addr_tel"><?= address.mobile ?></i></span>
+				</p>
+				<p>
+					<span class="i_address"><img src="<?=Meilishuo.config.picture_url?>/images/wap/web/sq/adr_icon.png" alt=""></span>
+					地址：<i class="addr_addr"><?= address.addressStr ?></i>
+				</p>
+			</div>
+			<?}else{?>
+			<div class="receiver_info" data-type="add">
+				<span class="i_address"><img src="<?=Meilishuo.config.picture_url?>/images/wap/web/sq/adr_icon.png" alt=""></span>
+				<span class="ml_color">请填写收货人信息</span>
+			</div>
+			<?}?>
+		</div>
+		<div class="receiver_line"></div>
+	</li>
+</ul>
+
+
+
+<ul>
+	<? orderInfo && orderInfo.goods.map(function(order){
+		var shop_id = order.shop_id || 0;
+		?>
+	<li class="order_goods order_info mt20">
+		<ul class="order_goods_list">
+			<? order.goods && order.goods.map(function(goods, i){ ?>
+			<li id="goods_<?= goods.sid ?>" class="goods" goods_id = <?= goods.goods_id?>>
+				<a href="#" class="goods_img">
+					<img src="<?= goods.b_pic_url?>">
+				</a>
+				<div class="confirm_goods goods_info">
+					<p class="goods_title">
+						<span><?= goods.goods_title?></span>
+					</p>
+					<span class="goods_title_">
+						现价：<span class="ml_color">￥<strong class="u_price"><?= goods.price || goods.goods_activity_price ?></strong></span>
+					</span>
+					<span class="goods_title_ g_num">
+						数量：<span class="amount"><?= goods.amount?></span>
+					</span>
+				</div>
+			</li>
+			
+			
+			<? if(goods.ac_type == 5){?>
+			<div class="success">
+				<p class="ml_color">亲爱的用户，秒杀商品，每个id限购1件，请在15分钟内付款，否则秒杀名额会自动取消哦。</p>
+			</div>
+			<? }?>
+		<? }); ?>
+		</ul>
+		<div class="pay_info">
+				<textarea class="user_comment msg" placeholder="给卖家留言"></textarea>
+				<div class="pay_way pay_way_other show_coupon shop" shop_id = <?=shop_id?>>
+					<img src="<?=Meilishuo.config.picture_url?>/images/wap/web/wx/privilege.png" class="payment_icon" />
+					店铺优惠：
+					<? if (order.coupon_info.length == 0) {?>
+						<span class="pay_list no_coupon">暂无可用优惠券</span>
+					<?} else {?>
+						<span class="next_icon confirm_next">
+							<img src="<?=Meilishuo.config.picture_url?>/images/wap/web/wx/next.png">
+						</span>
+						<? order.coupon_info.map(function(shop_coupon){ 
+							if(shop_coupon.is_check == 1){ ?>
+								<span class="pay_list plat_list" coupon_id = "<?= shop_coupon.coupon_id?>" >
+									<?= shop_coupon.title ?>
+								</span>
+							<? }});?>
+		
+					<?}?>
+				</div>
+				<div class="total_new">
+					<img src="<?=Meilishuo.config.picture_url?>/images/wap/web/wx/free.png" class="free_icon">
+					运费：<span class="ml_color"><?= order.freight?></span>
+					<span class="total_money">
+						合计：<span class="ml_color">¥</span><span class="ml_color total_price"><?= order.total_price?></span>
+					</span>
+				</div>
+			</div>
+		<div class="order_bt"></div>
+	</li>
+	<? }); ?>
+</ul>
+<div class="pay_way show_coupon plat">
+	<span class="f_left">
+	<img src="<?=Meilishuo.config.picture_url?>/images/wap/web/wx/privilege.png" class="payment_icon" />
+	全场优惠：
+	</span>
+	<span class="plat_coupon_info">
+		<? if (plat_coupon_info.length == 0) {?>
+			<span class="pay_list no_coupon">暂无可用优惠券</span>
+		<?} else {?>
+			<span class="next_icon confirm_next">
+				<img src="<?=Meilishuo.config.picture_url?>/images/wap/web/wx/next.png">
+			</span>
+			<span class="pay_list plat_list" coupon_id = "<?= plat_coupon_info[0].coupon_id?>" ><?= plat_coupon_info[0].title?></span>
+		<?}?>
+	</span>
+</div>
+
+<div class="pay_btn_wrap">
+	<p class="pay_money">合计：<span class="ml_color">¥</span><span class="ml_color order_total"><?= orderInfo.total_price?></span></p>
+	<a href="javascript:;" class="pay_btn" id="charge">QQ钱包支付<span class="shoubang"></span></a>
+</div>
+
+
+</script>
+
+
+<script type="text/html" id="platcouponTmp">
+	<span class="next_icon confirm_next">
+		<img src="<?=Meilishuo.config.picture_url?>/images/wap/web/wx/next.png">
+	</span>
+	<? plat_coupon_info.map(function(plat){ 
+		if(plat.is_check == 1){ ?>
+		<span class="pay_list plat_list" coupon_id = "<?= plat.coupon_id?>" ><?= plat.title?></span>
+		<?}
+	});?>
+</script>
+
+<script type="text/html" id="nocouponTmp">
+	<span class="pay_list no_coupon">暂无可用优惠券</span>
+</script>
+
+<script>
+	<%= 'fml.vars.parms =' + (JSON.stringify(this.parms) || '') + ';' %>
+	fml.vars.size = "<%= this.size%>";
+    fml.vars.color = "<%= this.color%>";
+</script>
+<script src="http://imgcache.qq.com/ac/vasapp/webviewlib/qw_plugin/address/mqaddr.public.js"></script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/sq/orderconfirm');
+_use:", this._JSstack , this._JSmods ); %>
+<%# sq/footer.html%>

@@ -1,0 +1,36 @@
+<strong class="title">手机绑定</strong>
+
+<fieldset class="bindMobile">
+	<form id="bindMobileForm" method="post" onsubmit="return false" action="">
+		<input type="hidden" id="org_url" name="org_url" value="<%==this.orgUrl?this.orgUrl:'/ihome'%>" />
+
+		<legend>美丽说绑定手机表单</legend>
+
+		<p class="form-list"><label for="mobile">手机号:</label>
+			<input class="lipt l_ipt" autocomplete="off" id="mobile" name="mobile" type="text" value="<%=(this.userInfo.mobile_is_actived > 0 && this.userInfo.mobile != 0) ? this.userInfo.mobile.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2'):""%>" <%=(this.userInfo.mobile_is_actived > 0 && this.userInfo.mobile != 0) ? "disabled":""%> />
+
+			<% if(!this.userInfo.mobile_is_actived > 0 || this.userInfo.mobile == 0){%>
+
+			<input class="s_button" type="button" name="send_code" id="send_code" value="发送验证码" />
+			<%}%>
+		</p>
+
+		<% if(!this.userInfo.mobile_is_actived > 0  || this.userInfo.mobile == 0){%>
+
+		<p class="form-list">
+			<label for="code">验证码:</label><input class="lipt l_ipt" autocomplete="off" id="code" name="code" type="text" value="" /><strong></strong>
+		</p>
+		<div class="setPasswordErrorMessageLine"></div>
+
+		<div class="submitBox">
+			<input id="send_bind" name="send_bind" class="ext_submit" type="submit" value="立即绑定"/>
+			<span class="bindErrorMessage" style="display:none;"></span>
+		</div>
+		
+		<%}%>
+	
+	</form>
+	<%if(this.userInfo.mobile_is_actived > 0 || this.userInfo.mobile == 0){%>
+	<a href="/settings/biePhone"><input type="submit" value="修改绑定" class="ext_submit" /></a>
+	<%}%>
+</fieldset>

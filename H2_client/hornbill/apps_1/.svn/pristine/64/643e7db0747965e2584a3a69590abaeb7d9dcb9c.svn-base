@@ -1,0 +1,53 @@
+<%if(this.userInfo && this.userInfo.need_active){%>
+<script type="text/html" id="activeAccountTpl" >
+<%*再激活账户提示%>
+<div class="active_account">
+	<div class="step1">
+		<div class="desc">系统检测到你的账户可能存在安全风险，</div>
+		<div class="desc">为了确保账号安全请输入绑定的手机号进行验证码激活</div>
+		<%if(this.userInfo.mobile){%>
+			<div>
+				<div>之前绑定的手机号码</div>
+				<div class="phoneWrap">
+					<%=('*******'+this.userInfo.mobile.slice(-4))%>
+					<input class="phone" type="hidden" value="<%= this.userInfo.mobile %>" >
+				</div>
+			</div>
+		<%}else {%>
+			<div class="active_box">
+				<input class="active_txt phone" type="text" placeholder="输入要绑定的手机号">
+				<span class="tel_icon"></span>
+			</div>
+		<%}%>
+		<div class="active_box">
+			<input class="active_txt code" type="text" placeholder="输入验证码">
+			<span class="code_icon"></span>
+			<div class="checkImage" onselectstart="return false;">
+								<img width="90" height="36" src="<%= this.PICTURE_URL %>images/register/blank.jpg"><span class="refresh"></span>
+							</div>
+		</div>
+		<div class="err_msg step1-err"></div>
+		<div class="active_box last">
+			<input class="active_send" type="button" value="发送验证短信">
+		</div>
+	</div>
+	<div class="step2">
+		<div class="desc">请输入收到短信中的验证激活码</div>
+		<div class="desc">
+			<input class="sms_code" type="text" placeholder="短信验证码"> 
+			<input class="re_get" type="button" value="获取短信验证码">
+		</div>
+		<div class="err_msg step2-err"></div>
+		<div class="desc">
+		 	<div class="desc"><input class="active_now" type="button" value="马上激活"></div>
+		 	<div><input class="last_step" type="button" value="上一步"></div>
+		</div>
+	</div>
+	<div class="step3">
+		<div class="icon desc"></div>
+		<div class="sug_desc desc">你的账号已激活成功</div>
+		<div><input class="sug_confirm" type="button" value="确定"></div>
+	</div>
+</div>
+</script>
+<%}%>

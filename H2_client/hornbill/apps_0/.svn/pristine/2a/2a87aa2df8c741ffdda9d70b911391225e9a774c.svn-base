@@ -1,0 +1,335 @@
+<%#head.html%>
+<%
+
+function markLast(data){
+	if (data && data.length){
+		data[data.length-1].isLast = true;
+	}
+}
+
+var addTrace = this.ViewTools.addTrace;
+
+var fashion_focus = this.fashion_focus;
+var debut = this.debut;
+var fashion_new = this.fashion_new;
+var desire = this.desire;
+var beauty = this.beauty;
+var recommend_shop = this.recommend_shop;
+
+%>
+<!-- START 热词轮播  old-->
+<div class="top_wrap">
+	<div class="top_bnr">
+		<ul class="banner">
+			<% this.top_bnr && this.top_bnr.forEach(function(data,index){ 
+				data.links = addTrace(data.links , 'wlc_banner_top_' + index+'%3Awlc_carouselBanner_' + index)
+			%>
+			<li>
+				<a class="pic" href="<%= data.links%>" target="_blank" data-img ="<%= data.img_url%>" style="background: repeat center top;"></a>
+			</li>
+			<% }); %>
+		</ul>
+	</div>
+	<div class="top_box">
+		<div class="bnr_btn_wrap">
+			<span class="bnr_btn bnr_btn_left"></span>
+			<span class="bnr_btn bnr_btn_right"></span>
+		</div>
+		<div class="attr_box">
+			<ul class="sec_attr">
+				<% 
+				markLast(this.sec_nav);
+				this.sec_nav && this.sec_nav.map(function(data,m,k) { 
+					data.link = addTrace(data.url , 'wlc_attr_'+m)		
+				%>
+				<li class="list<%= data.isLast?' last':'' %>">
+					<div class="list_cont<%= data.isLast?' list_cont_last':'' %>">
+						<h3 class="nav_tle">
+							<a href="<%= data.link%>" target="_blank">
+								<%= data.word_name%>
+							</a>
+						</h3>
+						<p class="listP">
+							<% data.sub_words && data.sub_words.map(function(data, j){ %>
+							<a <% if(data.isred == 1){%> class="red_f"<%}%> href="<%= addTrace(data.url,'wlc_words_'+m+'_'+j)%>" target="_blank"><%= data.word_name%></a>
+							<% }); %>
+						</p>
+						<samp class="corner">&gt;</samp>
+					</div>
+					<ul class="nav_list">
+						<% 
+						data.children && data.children.map(function(data,i,k) { 
+						data.link = addTrace(data.url , 'wlc_nav_'+i)		
+						%>
+						<li>
+							<h4><a href="<%= data.link%>" target="_blank"><%= data.word_name%></a></h4>
+							<p>
+								<% data.sub_words && data.sub_words.map(function(data,j){ %>
+								<a <% if(data.isred == 1){%> class="red_f"<%}%> href="<%= addTrace(data.url,'wlc_navwords_'+m+'_'+i+'_'+j)%>" target="_blank"><%= data.word_name%></a>
+								<% }); %>
+							</p>
+						</li>
+						<% }); %>
+					</ul>
+				</li>
+				<% }); %>
+			</ul>
+		</div>
+		<div class="round">
+			<div class="adType">
+				<% this.top_bnr && this.top_bnr.length>1  && this.top_bnr.forEach(function(data){ %>
+				<a></a>
+				<% }); %>
+			</div>
+		</div>
+		<div class="bnr_box">
+			<ul class="pic_attr">
+				<% this.bnr_ct && this.bnr_ct.map(function(data, i){
+				data.links = addTrace(data.links , 'wlc_ico_'+i)		
+					%>
+				<li><a href="<%= data.links %>" target="_blank"><img src="<%= data.img_url%>" /></a></li>
+				<% }); %>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- END -->
+<div class="bnr_11">
+	<a href="http://promotion.meilishuo.com/promotion/sale_1511/act11/?topitem=15939&topshop=15843" target="_blank"><img src="<%= this.PICTURE_URL%>images/staticbed/bnr_11.jpg" /></a>
+</div>
+<!-- one女生专场-->
+<div class="sales_one">
+	<ul class="one_top hoverBox">
+		<li>
+			<a><span class="ico_11"></span><img src="<%= this.PICTURE_URL%>images/staticbed/girl_1.jpg" /></a>
+			<a class="hoverpic none_f" href="http://promotion.meilishuo.com/promotion/sale_pro/act_venue/?aid=2318&cid=15435&pid=6066&mid=415&nid=2&frm=1n1" target="_blank"></a>
+		</li>
+		<li>
+			<a><span class="ico_11"></span><img src="<%= this.PICTURE_URL%>images/staticbed/girl_2.jpg" /></a>
+			<a class="hoverpic none_f" href="http://promotion.meilishuo.com/promotion/sale_pro/act_venue/?aid=2318&cid=15449&pid=6138&mid=415&nid=2&frm=1n2" target="_blank"></a>
+		</li>
+		<li>
+			<a><span class="ico_11"></span><img src="<%= this.PICTURE_URL%>images/staticbed/girl_3.jpg" /></a>
+			<a class="hoverpic none_f" href="http://promotion.meilishuo.com/promotion/sale_pro/act_venue/?aid=2318&cid=15437&pid=6090&mid=415&nid=2&frm=1n3" target="_blank"></a>
+		</li>
+	</ul>
+	<ul class="one_bot hoverBox">
+		<li>
+			<a><span class="ico_11"></span><img src="<%= this.PICTURE_URL%>images/staticbed/girl_4.jpg" /></a>
+			<a class="hoverpic none_f" href="http://promotion.meilishuo.com/promotion/sale_pro/act_venue/?aid=2318&cid=15443&pid=6178&mid=415&nid=2&frm=1n4" target="_blank"></a>
+		</li>
+		<li>
+			<a><span class="ico_11"></span><img src="<%= this.PICTURE_URL%>images/staticbed/girl_5.jpg" /></a>
+			<a class="hoverpic none_f" href="http://promotion.meilishuo.com/promotion/sale_pro/act_venue/?aid=2318&cid=15447&pid=6222&mid=415&nid=2&frm=1n5" target="_blank"></a>
+		<li>
+			<a><span class="ico_11"></span><img src="<%= this.PICTURE_URL%>images/staticbed/girl_6.jpg" /></a>
+			<a class="hoverpic none_f" href="http://promotion.meilishuo.com/promotion/sale_pro/act_venue/?aid=2318&cid=15445&pid=6200&mid=415&nid=2&frm=1n6" target="_blank"></a>
+		</li>
+		<li>
+			<a><span class="ico_11"></span><img src="<%= this.PICTURE_URL%>images/staticbed/girl_7s.jpg" /></a>
+			<a class="hoverpic none_f" href="http://promotion.meilishuo.com/promotion/easy/page/437&frm=1n7" target="_blank"></a>
+		</li>
+	</ul>
+	<div class="clear_f"></div>
+</div>
+<!-- one特色时尚-->
+<div class="sales_two">
+	<ul class="fashion">
+		<li>
+			<a class="f_tle" href="http://promotion.meilishuo.com/promotion/sale_pro/act_venue/?aid=2318&cid=15423&pid=6006&mid=415&nid=2&frm=2n1" target="_blank">
+				<b class="shark_ico">◆</b>
+				<img src="<%= this.PICTURE_URL%>images/staticbed/fashion_1.png" />
+			</a>
+			<a class="f_pic" href="http://promotion.meilishuo.com/promotion/sale_pro/act_venue/?aid=2318&cid=15423&pid=6006&mid=415&nid=2&frm=2n1" target="_blank">
+				<img src="<%= this.PICTURE_URL%>images/staticbed/fashion_2s.jpg" />
+			</a>
+		</li>
+		<li>
+			<a class="f_tle" href="http://www.meilishuo.com/desire/?pstrc=desire_pc_1111DC&frm=2n2" target="_blank">
+				<b class="shark_ico">◆</b>
+				<img src="<%= this.PICTURE_URL%>images/staticbed/fashion_3.png" />
+			</a>
+			<a class="f_pic" href="http://www.meilishuo.com/desire/?pstrc=desire_pc_1111DC&frm=2n2" target="_blank">
+				<img src="<%= this.PICTURE_URL%>images/staticbed/fashion_4s.jpg" />
+			</a>
+		</li>
+		<li>
+			<a class="f_tle" href="http://promotion.meilishuo.com/promotion/sale_pro/act_venue/?aid=2318&cid=15741&pid=6612&mid=415&nid=2&frm=2n3" target="_blank">
+				<b class="shark_ico">◆</b>
+				<img src="<%= this.PICTURE_URL%>images/staticbed/fashion_5.png" />
+			</a>
+			<a class="f_pic" href="http://promotion.meilishuo.com/promotion/sale_pro/act_venue/?aid=2318&cid=15741&pid=6612&mid=415&nid=2&frm=2n3" target="_blank">
+				<img src="<%= this.PICTURE_URL%>images/staticbed/fashion_6s.jpg" />
+			</a>
+		</li>
+		<li>
+			<a class="f_tle" href="http://promotion.meilishuo.com/promotion/sale_pro/act_venue/?aid=2318&cid=15861&pid=6696&mid=415&nid=2&frm=2n4" target="_blank">
+				<b class="shark_ico">◆</b>
+				<img src="http://d04.res.meilishuo.net/pic/_o/a9/3d/8afb6f6818bb9f92101b80e0a714_218_250.cg.png" />
+			</a>
+			<a class="f_pic" href="http://promotion.meilishuo.com/promotion/sale_pro/act_venue/?aid=2318&cid=15861&pid=6696&mid=415&nid=2&frm=2n4" target="_blank">
+				<img src="<%= this.PICTURE_URL%>images/staticbed/fashion_8.jpg" />
+			</a>
+		</li>
+	</ul>
+	<div class="clear_f"></div>
+</div>
+<!-- Three当红十二大款式-->
+<div class="sales_three">
+	<ul class="hot_style hoverBox">
+		<li>
+			<a><img src="<%= this.PICTURE_URL%>images/staticbed/style_1.jpg" /></a>
+			<a class="hoverpic none_f" href="http://promotion.meilishuo.com/promotion/sale_pro/act_venue/?aid=2318&cid=15657&pid=6368&mid=415&nid=2&frm=3n1" target="_blank"></a>
+		</li>
+		<li>
+			<a><img src="<%= this.PICTURE_URL%>images/staticbed/style_2s.jpg" /></a>
+			<a class="hoverpic none_f" href="http://promotion.meilishuo.com/promotion/sale_pro/act_venue/?aid=2318&cid=15659&pid=6370&mid=415&nid=2&frm=3n2" target="_blank"></a>
+		</li>
+		<li>
+			<a><img src="<%= this.PICTURE_URL%>images/staticbed/style_3.jpg" /></a>
+			<a class="hoverpic none_f" href="http://promotion.meilishuo.com/promotion/sale_pro/act_venue/?aid=2318&cid=15805&pid=6372&mid=415&nid=2&frm=3n3" target="_blank"></a>
+		</li>
+		<li>
+			<a><img src="<%= this.PICTURE_URL%>images/staticbed/style_4.jpg" /></a>
+			<a class="hoverpic none_f" href="http://promotion.meilishuo.com/promotion/sale_pro/act_venue/?aid=2318&cid=15655&pid=6374&mid=415&nid=2&frm=3n4" target="_blank"></a>
+		</li>
+		<li>
+			<a><img src="<%= this.PICTURE_URL%>images/staticbed/style_5.jpg" /></a>
+			<a class="hoverpic none_f" href="http://promotion.meilishuo.com/promotion/sale_pro/act_venue/?aid=2318&cid=15807&pid=6434&mid=415&nid=2&frm=3n5" target="_blank"></a>
+		</li>
+		<li>
+			<a><img src="<%= this.PICTURE_URL%>images/staticbed/style_6.jpg" /></a>
+			<a class="hoverpic none_f" href="http://promotion.meilishuo.com/promotion/sale_pro/act_venue/?aid=2318&cid=15661&pid=6378&mid=415&nid=2&frm=3n6" target="_blank"></a>
+		</li>
+		<li>
+			<a><img src="<%= this.PICTURE_URL%>images/staticbed/style_7s.jpg" /></a>
+			<a class="hoverpic none_f" href="http://promotion.meilishuo.com/promotion/sale_pro/act_venue/?aid=2318&cid=15809&pid=6380&mid=415&nid=2&frm=3n7" target="_blank"></a>
+		</li>
+		<li>
+			<a><img src="<%= this.PICTURE_URL%>images/staticbed/style_8.jpg" /></a>
+			<a class="hoverpic none_f" href="http://promotion.meilishuo.com/promotion/sale_pro/act_venue/?aid=2318&cid=15811&pid=6382&mid=415&nid=2&frm=3n8" target="_blank"></a>
+		</li>
+		<li>
+			<a><img src="http://d01.res.meilishuo.net/pic/_o/65/02/b383b7a602158aee906f321e9893_186_268.cg.jpg" /></a>
+			<a class="hoverpic none_f" href="http://promotion.meilishuo.com/promotion/sale_pro/act_venue/?aid=2318&cid=15819&pid=6390&mid=415&nid=2&frm=3n9" target="_blank"></a>
+		</li>
+		<li>
+			<a><img src="<%= this.PICTURE_URL%>images/staticbed/style_10.jpg" /></a>
+			<a class="hoverpic none_f" href="http://promotion.meilishuo.com/promotion/sale_pro/act_venue/?aid=2318&cid=15817&pid=6388&mid=415&nid=2&frm=3n10" target="_blank"></a>
+		</li>
+		<li>
+			<a><img src="<%= this.PICTURE_URL%>images/staticbed/style_11.jpg" /></a>
+			<a class="hoverpic none_f" href="http://promotion.meilishuo.com/promotion/sale_pro/act_venue/?aid=2318&cid=15813&pid=6384&mid=415&nid=2&frm=3n11" target="_blank"></a>
+		</li>
+		<li>
+			<a><img src="<%= this.PICTURE_URL%>images/staticbed/style_12s.jpg" /></a>
+			<a class="hoverpic none_f" href="http://promotion.meilishuo.com/promotion/sale_pro/act_venue/?aid=2318&cid=15815&pid=6386&mid=415&nid=2&frm=3n12" target="_blank"></a>
+		</li>
+	</ul>
+	<div class="clear_f"></div>
+</div>
+<div class="sales_four">
+	<ul class="caizhi hoverBox">
+		<li>
+			<a><span class="ico_11"></span><img src="<%= this.PICTURE_URL%>images/staticbed/caizhi_1.jpg" /></a>
+			<a class="hoverpic none_f" href="http://promotion.meilishuo.com/promotion/sale_pro/act_venue/?aid=2318&cid=15821&pid=6392&mid=415&nid=2&frm=4n1" target="_blank"></a>
+		</li>
+		<li>
+			<a><span class="ico_11"></span><img src="<%= this.PICTURE_URL%>images/staticbed/caizhi_2.jpg" /></a>
+			<a class="hoverpic none_f" href="http://promotion.meilishuo.com/promotion/sale_pro/act_venue/?aid=2318&cid=15823&pid=6394&mid=415&nid=2&frm=4n2" target="_blank"></a>
+		</li>
+		<li>
+			<a><span class="ico_11"></span><img src="<%= this.PICTURE_URL%>images/staticbed/caizhi_3.jpg" /></a>
+			<a class="hoverpic none_f" href="http://promotion.meilishuo.com/promotion/sale_pro/act_venue/?aid=2318&cid=15687&pid=6396&mid=415&nid=2&frm=4n3" target="_blank"></a>
+		</li>
+		<li>
+			<a><span class="ico_11"></span><img src="<%= this.PICTURE_URL%>images/staticbed/caizhi_4.jpg" /></a>
+			<a class="hoverpic none_f" href="http://promotion.meilishuo.com/promotion/sale_pro/act_venue/?aid=2318&cid=15825&pid=6402&mid=415&nid=2&frm=4n4" target="_blank"></a>
+		</li>
+	</ul>
+	<div class="clear_f"></div>
+</div>
+<div class="sales_five">
+	<ul class="yuansu hoverBox">
+		<li>
+			<a><span class="ico_11"></span><img src="<%= this.PICTURE_URL%>images/staticbed/yuansu_1.jpg" /></a>
+			<a class="hoverpic none_f" href="http://promotion.meilishuo.com/promotion/sale_pro/act_venue/?aid=2318&cid=15683&pid=6408&mid=415&nid=2&frm=5n1" target="_blank"></a>
+		</li>
+		<li>
+			<a><span class="ico_11"></span><img src="<%= this.PICTURE_URL%>images/staticbed/yuansu_2.jpg" /></a>
+			<a class="hoverpic none_f" href="http://promotion.meilishuo.com/promotion/sale_pro/act_venue/?aid=2318&cid=15827&pid=6410&mid=415&nid=2&frm=5n2" target="_blank"></a>
+		</li>
+		<li>
+			<a><span class="ico_11"></span><img src="<%= this.PICTURE_URL%>images/staticbed/yuansu_3.jpg" /></a>
+			<a class="hoverpic none_f" href="http://promotion.meilishuo.com/promotion/sale_pro/act_venue/?aid=2318&cid=15829&pid=6418&mid=415&nid=2&frm=5n3" target="_blank"></a>
+		</li>
+		<li>
+			<a><span class="ico_11"></span><img src="<%= this.PICTURE_URL%>images/staticbed/yuansu_4.jpg" /></a>
+			<a class="hoverpic none_f" href="http://promotion.meilishuo.com/promotion/sale_pro/act_venue/?aid=2318&cid=15685&pid=6424&mid=415&nid=2&frm=5n4" target="_blank"></a>
+		</li>
+	</ul>
+	<div class="clear_f"></div>
+</div>
+<div class="sales_six">
+	<ul class="big_pic hoverBox">
+		<li>
+			<a><span class="ico_11"></span><img src="<%= this.PICTURE_URL%>images/staticbed/jujia_1.jpg" /></a>
+			<a class="hoverpic none_f" href="http://promotion.meilishuo.com/promotion/sale_pro/act_venue/?aid=2318&cid=15439&pid=6112&mid=415&nid=2&frm=6n1" target="_blank"></a>
+		</li>
+	</ul>
+	<ul class="small_pic hoverBox">
+		<li>
+			<a><span class="ico_11"></span><img src="<%= this.PICTURE_URL%>images/staticbed/jujia_2.jpg" /></a>
+			<a class="hoverpic none_f" href="http://promotion.meilishuo.com/promotion/sale_pro/act_venue/?aid=2318&cid=15647&pid=6462&mid=415&nid=2&frm=6n2" target="_blank"></a>
+		</li>
+		<li>
+			<a><span class="ico_11"></span><img src="<%= this.PICTURE_URL%>images/staticbed/jujia_3.jpg" /></a>
+			<a class="hoverpic none_f" href="http://promotion.meilishuo.com/promotion/sale_pro/act_venue/?aid=2318&cid=15455&pid=6266&mid=415&nid=2&frm=6n3" target="_blank"></a>
+		</li>
+		<li>
+			<a><span class="ico_11"></span><img src="<%= this.PICTURE_URL%>images/staticbed/jujia_4.jpg" /></a>
+			<a class="hoverpic none_f" href="http://promotion.meilishuo.com/promotion/sale_pro/act_venue/?aid=2318&cid=15451&pid=6160&mid=415&nid=2&frm=6n4" target="_blank"></a>
+		</li>
+		<li>
+			<a><span class="ico_11"></span><img src="<%= this.PICTURE_URL%>images/staticbed/jujia_5.jpg" /></a>
+			<a class="hoverpic none_f" href="http://promotion.meilishuo.com/promotion/sale_pro/act_venue/?aid=2318&cid=15453&pid=6244&mid=415&nid=2&frm=6n5" target="_blank"></a>
+		</li>
+	</ul>
+	<div class="clear_f"></div>
+</div>
+<div class="sales_sev">
+	<ul class="chaozhi_t hoverBox">
+		<li>
+			<a><span class="ico_11"></span><img src="<%= this.PICTURE_URL%>images/staticbed/chaozhi_1.jpg" /></a>
+			<a class="hoverpic none_f" href="http://promotion.meilishuo.com/promotion/sale_pro/act_venue/?aid=2318&cid=15781&pid=6440&mid=415&nid=2&frm=7n1" target="_blank"></a>
+		<li>
+			<a><span class="ico_11"></span><img src="<%= this.PICTURE_URL%>images/staticbed/chaozhi_2.jpg" /></a>
+			<a class="hoverpic none_f" href="http://promotion.meilishuo.com/promotion/sale_pro/act_venue/?aid=3712&cid=15785&pid=2360&mid=415&nid=2&frm=7n2" target="_blank"></a>
+		</li>
+		<li>
+			<a><span class="ico_11"></span><img src="<%= this.PICTURE_URL%>images/staticbed/chaozhi_3.jpg" /></a>
+			<a class="hoverpic none_f" href="http://promotion.meilishuo.com/promotion/sale_pro/act_venue/?aid=2318&cid=15767&pid=6624&mid=415&nid=2&frm=7n3" target="_blank"></a>
+		</li>
+		<li>
+			<a><span class="ico_11"></span><img src="<%= this.PICTURE_URL%>images/staticbed/chaozhi_4.jpg" /></a>
+			<a class="hoverpic none_f" href="http://www.meilishuo.com/activity/tuan/rushto/2052&frm=7n4" target="_blank"></a>
+		</li>
+	</ul>
+	<<ul class="chaozhi_b hoverBox">
+		<li>
+			<a><span class="ico_11"></span><img src="<%= this.PICTURE_URL%>images/staticbed/chaozhi_6.jpg" /></a>
+			<a class="hoverpic none_f" href="http://promotion.meilishuo.com/promotion/sale_pro/shop_venue/?cid=15843&pid=6702&aid=2318&mid=415&nid=2" target="_blank"></a>
+		</li>
+		<li>
+			<a><span class="ico_11"></span><img src="<%= this.PICTURE_URL%>images/staticbed/chaozhi_5.jpg" /></a>
+			<a class="hoverpic none_f" href="http://promotion.meilishuo.com/promotion/sale_pro/act_venue/?aid=2318&cid=15855&pid=6718&mid=415&nid=2&frm=7n6" target="_blank"></a>
+		</li>
+	</ul>
+	<div class="clear_f"></div>
+</div>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/welcome2015');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot.html%>

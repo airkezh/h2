@@ -1,0 +1,458 @@
+<%# frame/www/head_simple.html%>
+</head>
+<% function userListTmp(list,utype){ %>
+<% list && list.data && list.data.map(function(v, k){ %>
+<div class="user_info" uid="<%= v.uid %>" <%if(utype){%>utype="<%=utype %>"<%}%>>
+<span class="user_img"><img src="<%= v.avatar_b %>"></span>
+<p class="user_name">
+    <span><%= v.nickname %></span>
+    <% v.icons && v.icons.length && v.icons.forEach(function(item){ %>
+    <img src="<%=item.img_url %>" width="<%=item.img_width %>" height="<%=item.img_height %>">
+    <% });%>
+</p>
+
+<span class="closeBtn">×</span>
+<span class="num"></span>
+<span class="read"></span>
+</div>
+<%});%>
+<% } %>
+<body>
+<div id="im_body" class="user_model">
+    <div class="im_left" id="im_left">
+        <div class="im_tab" id="im_tab">
+            <div class="io_status" id="io_status"></div>
+            <div class="user_info">
+                <%if(this.userInfo.user_id){%>
+                <span class="user_img"></span>
+                <p class="user_name white_f"><%= this.userInfo.nickname %></p>
+                <%}%>
+                <div class="status">
+                    <div class="user_status"><span class="big_offline">&nbsp;</span>离线</div>
+                    <!--<ul class="all_status">
+                        <li><a href="javascript:void(0)" status="1"><span class="big_online">&nbsp;</span>在线</a></li>
+                        <li><a href="javascript:void(0)" status="2"><span class="big_leave">&nbsp;</span>离开</a></li>
+                        <li><a href="javascript:void(0)" status="0"><span class="big_offline">&nbsp;</span>离线</a></li>
+                    </ul>-->
+                </div>
+            </div>
+        </div>
+        <div class="im_userlist">
+            <ul class="user_tab" id="user_tab">
+                <li class="tab_now act">
+                    <span class="i_now"></span><em class="tab_line"></em>
+                    <p class="unread_tip"></p>
+                </li>
+                <li class="tab_group">
+                    <span class="i_now"></span><em class="tab_line"></em>
+                    <p class="unread_tip"></p>
+                </li>
+                <!--<li class="tab_history"><span class="i_history"></span><em class="tab_line"></em></li>-->
+                <!--<li class="tab_history"><span class="i_public"></span></li>-->
+            </ul>
+            <div class="user_list" id="user_list">
+                <div class="list_now" id="list_now">
+                </div>
+                <div class="list_group" id="list_group">
+                </div>
+                <div class="list_history" id="list_history">
+                    <div class="list_history_box">
+                        <% userListTmp(this.historyUser); %>
+                    </div>
+                </div>
+                <div class="list_public" id="list_public">
+                    <div class="list_public_box">
+                        <% userListTmp(this.publicUser,'public'); %>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--<div class="im_search" id="im_search">-->
+            <!--<div class="search_result">-->
+                <!--<div class="ser_rlt"></div>-->
+                <!--<span class="shap"></span><span class="shapb"></span>-->
+            <!--</div>-->
+            <!--<form class="search" method="post" onsubmit="return false" action>-->
+                <!--<input class="search_input l_ipt" id="mlsSearchId" type="text" name="searchId" value="" placeholder="搜索用户"/>-->
+                <!--<input class="searchBtn btn" type="submit" value="" />-->
+            <!--</form>-->
+        </div>
+    </div>
+    <div class="im_main" id="im_main">
+    </div>
+    <div class="layout" id="im_layout">
+        <div class="im_info_init">
+            <p><img src="<%= this.PICTURE_URL %>images/wap/web/im/leben.gif" /><span>正在连接中...</span></p>
+        </div>
+    </div>
+    <div id="panel"></div>
+</div>
+
+<%# www/fastReply.html%>
+<%# www/dialog_higo.html%>
+<%# www/intro.html%>
+<%# www/sound.html%>
+
+<%# frame/www/wins/windows.html %>
+
+<script type="text/html" id="im_info_offline">
+    <div class="im_info_offline">
+        <p><?= msg ?></p>
+        <div>
+            <span class="reloadIM">重新登录</span>
+            <%if(this.ua != 'MLS-IMclient'){%>
+            <span class="closeIM">关闭窗口</span>
+            <%}%>
+        </div>
+    </div>
+</script>
+<script type="text/html" id="im_reasons">
+</script>
+
+<script type="text/html" id="im_grouplist_item">
+    <div class="user_info" gid="<?= id ?>" style="display: block;" >
+        <span class="user_img"><img src="<?= group_header ?>"/></span>
+        <p class="user_name">
+            <span><?= group_name ?></span>
+        </p>
+        <span class="closeBtn">×</span>
+        <span class="num"></span>
+        <span class="read"></span>
+    </div>
+</script>
+
+<script type="text/html" id="im_user_item">
+    <div class="user_info" uid="<?= id ?>" style="display: block;" >
+        <span class="user_img"><img src="<?= user_header ?>"/></span>
+        <p class="user_name">
+            <span><?= user_name ?></span>
+        </p>
+        <span class="closeBtn">×</span>
+        <span class="num"></span>
+        <span class="read"></span>
+    </div>
+</script>
+
+<script type="text/html" id="im_groupMain_item">
+    <div class="im_mainitem rightHide" gid="<?= id ?>">
+        <div class="im_top">
+            <div class="user_info " gid="<?= id ?>">
+                <span class="user_img"><img src="<?= group_header ?>"/></span>
+                <div class="user_name" gid="<?= id ?>">
+                    <span class="left_f"><?= group_name ?></span>
+                    <div class="im_user_tools" gid="<?= id ?>">
+                        <span class="shap"></span>
+                    </div>
+                </div>
+                <div class="clear_f"></div>
+            </div>
+        </div>
+
+        <div class="im_groupMainbox">
+            <div class="im_dialogbox">
+                <div class="im_dialog" gid="<?= id ?>">
+                    <div class="history hide">
+                        <div gid="<?= id?>" class="historyBtn">查看历史聊天记录</div>
+                        <div class="history_intro"><span>以上是聊天记录</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="im_inputbox">
+                <div class="im_inputbox_tools">
+                    <span class="smile"><em class="i_smile">&nbsp;</em>表情</span>
+                    <span class="uploadImg"><em class="i_upload">&nbsp;</em>图片</span>
+                    <?if(fml.vars.im.isHigo){?>
+                        <span class="goodsBtn"><em class="i_screen">&nbsp;</em>商品</span>
+                        <span class="couponBtn"><em class="i_screen">&nbsp;</em>优惠券</span>
+                    <?}?>
+                    <?if(fml.vars.im.imClient){?>
+                        <span class="screenShot"><em class="i_screen">&nbsp;</em>截屏</span>
+                    <?}?>
+                    <div class="fastReply">
+                        快捷回复<span><em class="shap"></em></span>
+                    </div>
+                </div>
+                <form method="post" onsubmit="return false" action gid="<?= id ?>">
+                    <div class="im_inputbox_input" contenteditable="true"></div>
+                    <ul class="im_inputbox_picbox"></ul>
+                    <p class="button">
+                        <input class="btn sentBtn" type="submit" value="发送 →" />
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/html" id="panel_table_body">
+    <? for(var i = 0; i < list.length; i++){ ?>
+    <tr  goods_id="<?= list[i].goods_id ?>">
+        <td class="nameTr"><?= list[i].goods_name?></td>
+        <td class="imgTr"><img class="imgTd" src="<?= list[i].main_image.image_thumbnail?>"/></td>
+                <td class="priceTr">
+                原价：<?= list[i].sku_info.currency_unit_cny_symbol + list[i].sku_info.sku_list_price?>
+    <br>折后价：<?= list[i].sku_info.currency_unit_cny_symbol + list[i].sku_info.sku_final_price ?></td>
+        <td class="typeTr"><?= list[i].category_name?></td>
+        </tr>
+    <?} ?>
+</script>
+<script type="text/html" id="panel_goods_table">
+    <table class="panelTable" border="0" cellpadding="2" cellspacing="0" id="panel_list">
+        <thead>
+        <th class="nameTr">名称</th>
+        <th class="imgTr">图片</th>
+        <th class="priceTr">价格</th>
+        <th class="typeTr">分类</th>
+        </thead>
+        <tbody>
+        <? for(var i = 0; i < list.length; i++){ ?>
+        <tr  goods_id="<?= list[i].goods_id ?>">
+            <td class="nameTr"><?= list[i].goods_name?></td>
+            <td class="imgTr"><img class="imgTd" src="<?= list[i].main_image.image_thumbnail?>"/></td>
+            <td class="priceTr">
+                原价：<?= list[i].sku_info.currency_unit_cny_symbol + list[i].sku_info.sku_list_price?>
+                <br>折后价：<?= list[i].sku_info.currency_unit_cny_symbol + list[i].sku_info.sku_final_price ?></td>
+            <td class="typeTr"><?= list[i].category_name?></td>
+        </tr>
+        <?} ?>
+        </tbody>
+    </table>
+</script>
+<script type="text/html" id="panel_coupon_body">
+    <? for(var i = 0; i < list.length; i++){ ?>
+    <tr coupon_id="<?= list[i].batch_id ?>">
+        <td class="nameCoupon"><?= list[i].coupon_name?></td>
+        <td class="priceCoupon"><?= list[i].face_value?></td>
+        <td class="infoCoupon"><?= list[i].limit_value?></td>
+        <td class="des"><?= list[i].coupon_desc?></td>
+        <td class="endTime"><?= list[i].show_desc?></td>
+    </tr>
+    <?} ?>
+</script>
+<script type="text/html" id="panel_coupon_table">
+    <table class="panelTable" border="0" cellpadding="2" cellspacing="0" id="panel_list">
+        <thead>
+        <th class="nameCoupon">名称</th>
+        <th class="priceCoupon">金额</th>
+        <th class="infoCoupon">使用条件</th>
+        <th class="des">描述</th>
+        <th class="endTime">有效期</th>
+        </thead>
+        <tbody>
+        <? for(var i = 0; i < list.length; i++){ ?>
+        <tr coupon_id="<?= list[i].batch_id || 0 ?>">
+            <td class="nameCoupon"><?= list[i].coupon_name?></td>
+            <td class="priceCoupon"><?= list[i].face_value?></td>
+            <td class="infoCoupon"><?= list[i].limit_value?></td>
+            <td class="des"><?= list[i].coupon_desc?></td>
+            <td class="endTime"><?= list[i].end_date?></td>
+        </tr>
+        <?} ?>
+        </tbody>
+    </table>
+</script>
+<script type="text/html" id="goods_panel">
+    <div class="goodsPanelBack"></div>
+    <div class="goodsPanel">
+        <div class="panelContainer">
+            <div class="panelTitle">
+                <?= title?>
+                <? if(list.length && !isCoupon){ ?>
+                    <div class="search">
+                        <input id="searchInput" type="text" name="searchInput" placeholder="搜索" />
+                        <div class="searchBtn1">搜索</div>
+                    </div>
+                <? } ?>
+                <? if(isCoupon && !isGroup){ ?>
+                    <div class="createCoupon">
+                        <div class="createCouponBtn">创建优惠卷</div>
+                    </div>
+                <? }?>
+            </div>
+            <div class="panelBody">
+                <? if(list.length){ ?>
+                    <div class="paging">
+                        <a id="prevPage" href="javascript:;">上一页</a> <div id="pageNum">1</div> <a id="nextPage" href="javascript:;">下一页</a>
+                    </div>
+                <? } else { ?>
+                    <div class="noGoodsInfo"><?= noInfo ?></div>
+                <? } ?>
+            </div>
+            <div class="panelFooter">
+                <button class="btn" id="closePanelBtn">关闭</button>
+                <? if(list.length){ ?>
+                    <button class="btn" id="sendPanelBtn">发送</button>
+                <? } ?>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/html" id="createCoupon">
+        <div class="panelContainer">
+            <div class="panelTitle">
+                <?= title?>
+            </div>
+            <div class="panelBody">
+                <div class="formLine">
+                    <span>优惠卷名称：</span>
+                    <input type="text" id="couponName" placeholder="名称" />
+                </div>
+                <div  class="formLine">
+                    <span>优惠卷金额：</span>
+                    <input type="text" id="couponPrice" placeholder="金额" />
+                </div>
+                <div  class="formLine">
+                    <span>优惠卷使用条件：</span>
+                    <input type="text" id="couponInfo" placeholder="使用条件" />
+                </div>
+                <div  class="formLine">
+                    <span>开始时间：</span>
+                    <input id="couponStartDate" type="text" name="couponStartDate" placeholder="开始时间" />
+                </div>
+                <div  class="formLine">
+                    <span>结束时间：</span>
+                    <input id="couponEndDate" type="text" name="couponEndDate" placeholder="结束时间" />
+                </div>
+            </div>
+            <div class="panelFooter">
+                <div class="info">asdasdasdasdasdasdasdasdas</div>
+                <button class="btn" id="closePanelBtn">关闭</button>
+                <button class="btn" id="sendCreateCouponBtn">创建并发送</button>
+            </div>
+        </div>
+</script>
+<script type="text/html" id="user_info_panel">
+    <div class="user_info" uid="<?= data.user_id ?>" style="display: block;">
+        <span class="user_img">
+            <img src="<?= data.avatar_b ?>">
+        </span>
+        <p class="user_name">
+            <span><?= data.shop.name ?>:<?= data.nickname ?></span>
+        </p>
+        <span class="closeBtn" style="display: none;">×</span>
+        <span class="num" style="display: none;"></span>
+        <span class="read"></span>
+    </div>
+</script>
+
+<script type="text/html" id="higo_dialog_item">
+    <div class="<?if(msgStyle == 'sys'){?>d_a <?}?><?= who?> d_<?= type?>">
+        <? if(ctime){?>
+        <div class="ctime"><?= ctime ?></div>
+        <?}?>
+        <div class="con">
+            <img src="<?= avatar || '' ?>" chatfrom="<?=chatfrom || 0?>" class="avatar" />
+            <div class="<?if(type == 'higo_coupon'){?>higoCouponPanel<?} else {?>bubble<?}?><?if(send){?> wait<?}?>" id="mid_<?= messageId?>">
+                <p>
+                    <?if(type == 'img' || type == 'higo_img'){?>
+                        <a class="imgUpload" href="<?= content.o_pic_url ?>" target="_blank">
+                            <img src="<?= content.pic_url ?>" />
+                        </a>
+                    <?} else if(type == 'text') {?>
+                        <?= content ?>
+                    <?} else if(type == 'higo_goods' || type == 'higo_coupon' || type == 'higo_share' || type == 'higo_goodstag_panel') {?>
+                        <img src="http://d05.res.meilishuo.net/pic/_o/c8/ad/9845c9414424cb5854238af212b0_16_16.ch.gif" style="vertical-align: middle;" />
+                    <?}?>
+                </p>
+                <span class="shap"></span><span class="shapb"></span>
+            </div>
+            <div class="clear_f"></div>
+        </div>
+        <div class="clear_f"></div>
+    </div>
+</script>
+
+<script type="text/html" id="higo_coupon_item">
+    <div class="<?if(msgStyle == 'sys'){?>d_a <?}?><?= who?> d_<?= type?>">
+        <? if(ctime){?>
+        <div class="ctime"><?= ctime ?></div>
+        <?}?>
+        <div class="con">
+            <img src="<?= avatar || '' ?>" chatfrom="<?=chatfrom || 0?>" class="avatar" />
+            <div class="higoCouponPanel<?if(send){?> wait<?}?>" id="mid_<?= messageId?>">
+                <p>
+                    <div class="higoCoupon">
+                        <p><?= coupon.coupon_title ?></p>
+                        <p>¥ <?= coupon.face_value ?></p>
+                        <div><?= coupon.coupon_desc ?> 有效期至<?= coupon.end_date ?></div>
+                    </div>
+
+                </p>
+                <span class="shap"></span><span class="shapb"></span>
+            </div>
+            <div class="clear_f"></div>
+        </div>
+        <div class="clear_f"></div>
+    </div>
+</script>
+
+<script type="text/html" id="higo_goods_panel">
+    <div class="higoGoods">
+        <img src="<?= goods_image ?>" class="goods_img" />
+        <p><?= goods_name ?></p>
+        <p class="goods_price"><?= goods_price ?></p>
+        <p><?= goods_recommend ?></p>
+    </div>
+</script>
+<script type="text/html" id="higo_coupon_panel">
+    <div class="higoCoupon">
+        <p><?= coupon_title ?></p>
+        <p>¥ <?= face_value ?></p>
+        <div><?= coupon_desc ?> 有效期至<?= (new Date(Number(end_date))).getN() ?></div>
+    </div>
+</script>
+<script type="text/html" id="higo_share_panel">
+    <div class="higoGoods">
+        <img src="<?= share_pic ?>" class="goods_img" />
+        <p class="goods_price"> 晒单啦 </p>
+        <p><?= goods_name ?></p>
+        <p><?= content ?></p>
+    </div>
+</script>
+<script type="text/html" id="higo_goodstag_panel">
+    <div class="higoGoods">
+        <img src="<?= avatar ?>" class="goods_img" />
+        <p><?= title ?></p>
+        <p class="goods_price">¥ <?= goods_price ?></p>
+        <p><?= repertory ?></p>
+    </div>
+</script>
+
+<iframe src="http://b.higo.meilishuo.com/index.php/im/AjaxGetGoodsList?shop_id=177183898507916994&type=1&size=10&p=1" id="iframe" style="display:none;"></iframe>
+<!--<script type="text/javascript">-->
+    <!--document.domain = 'meilishuo.com';-->
+        <!--var iframe=document.getElementById('iframe').contentWindow.$;-->
+        <!--iframe.get("http://b.higo.meilishuo.com/index.php/im/AjaxGetGoodsList?shop_id=177183898507916994&type=1&size=10&p=1",function(data){-->
+            <!--document.getElementByIdx_x("ajax").innerHTML=data;-->
+        <!--});-->
+<!--</script>-->
+
+<script>
+    fml.vars.im = {
+        fromid : <%= this.user_id %>
+            , toid : <%= this.toid || 0 %>
+            , type : "<%= this.type || 0 %>"
+            , offset : <%= this.recently.offset || '0' %>
+            , source : 'web'
+            , imClient : <%= (this.ua == 'MLS-IMclient')|0 %>
+            , imPCClient : <%= (this.ua == 'MLS-PC-IMclient')|0 %>
+            , recently : <%= JSON.stringify(this.recently.datas) || '[]' %>
+            , transfer : <%= JSON.stringify(this.transfer.datas) %>
+            , udr : <%= JSON.stringify(this.udr.datas) %>
+            , isHigo: true
+    };
+    <% if(this.publicUser && this.publicUser.data){%>
+        fml.vars.im.publicUserList = <%=JSON.stringify(this.publicUser.data) || ''%>
+                <% } %>
+
+    //<%=this.IM_URL2 || '/' %>socket.io/socket.io.js     http://im.weiwang.rdlab.meilishuo.com/socket.io/socket.io.js
+</script>
+
+
+<script src="<%=this.IM_URL2 || '/' %>socket.io/socket.io.js"></script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+        fml.use('page/im/higo_im');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# frame/www/foot_simple.html%>

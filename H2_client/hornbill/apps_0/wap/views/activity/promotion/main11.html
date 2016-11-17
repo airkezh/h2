@@ -1,0 +1,133 @@
+<%# head_simple.html%>
+
+</head>
+<body>
+<div class="banner">
+
+
+	<div class="countdown" >
+		<div class="bannerText"></div>
+		<div class="timerArea">
+			<dl class="timeStamp" end-date="" now="">
+				<dd id="day0"><span >-</span></dd>
+				<dd id="day1"><span>-</span></dd>
+				<dd id="hour0"><span >-</span></dd>
+				<dd id="hour1"><span >-</span></dd>
+				<!--<dt class="bigmao">：</dt>-->
+				<dd id="minute0"><span >-</span></dd>
+				<dd id="minute1"><span >-</span></dd>
+				<!--<dt class="bigmao">：</dt>-->
+				<dd id="seconds0"><span >-</span></dd>
+				<dd id="seconds1"><span >-</span></dd>
+			</dl>
+		</div>
+
+	</div>
+
+
+</div>
+
+<div class="main">
+	<div class="zhijian" ></div>
+	<div class="couponArea">
+		<%if (this.coupons) { var coupons = this.coupons%>
+		<%for (var i = 0; i < coupons.length; i++) { var c = coupons[i];%>
+		<div class="coupon" style="background: url('<%=c.bgPic%>') no-repeat top center; background-size: 100%">
+			<img width="100%" src="<%=c.bgPic%>" alt="" />
+			<img class="couponBtn" type="<%=c.threshold+ ':' + c.credit + ':' + c.id%>" code="<%=c.coupon_code%>" src="<%=c.btnPic%>" />
+			<%if (c.left_amount > 0) {%><div class="couponText">本时段还剩<span class="leftAmount"><%=c.left_amount%></span>张</div><%}%>
+		</div>
+		<%}%>
+		<%}%>
+	</div>
+	<div class="remind">
+		<div class="remind_switch"></div>
+	</div>
+</div>
+
+<div class="tips">
+
+</div>
+
+<script type="text/html" id="temp_coupons">
+<?for (var i = 0; i < this.coupons.length; i++) { var c = this.coupons[i];?>
+	<div class="coupon" style="background: url('<?=c.bgPic?>') no-repeat top center; background-size: 100%">
+		<img width="100%" src="<?=c.bgPic?>" alt="" />
+		<img class="couponBtn" type="<?=c.threshold+ ':' + c.credit + ':' + c.id?>" code="<?=c.coupon_code?>" src="<?=c.btnPic?>" />
+		<?if(c.left_amount > 0 ) {?>
+		<div class="couponText">本时段还剩<span class="leftAmount"><?=c.left_amount?></span>张</div>
+		<?}?>
+</div>
+<?}?>
+</script>
+
+
+<script type="text/html" id="temp_captcha2_img">
+	<div class="checkBox" >
+		<div class="shade"></div>
+		<div class="captchaImgBox">
+			<div class="imgTop">
+				<input class="captchaInput" name="checkcode" type="text" value="" maxlength="10" placeholder="请输入验证码"/>
+				<img class="captchaImg" src="<?=this.picUrl?>" alt="" width="40%"/>
+				<div class="newImg"></div>
+			</div>
+			<div class="imgCenter">
+
+			</div>
+			<div class="imgBottom">
+				<div class="imgCaptchaClose"  >
+
+				</div>
+				<div class="imgCaptchaCheck"  >
+
+				</div>
+
+			</div>
+		</div>
+
+
+	</div>
+</script>
+
+
+
+<script type="text/html" id="temp_short_mes">
+	<div class="checkBox" >
+		<div class="shade"></div>
+		<div class="captchaMesBox">
+			<div class="mesTop">
+				<div class="getMesCaptcha">点击发送</div>
+			</div>
+			<div class="mesCenter">
+
+			</div>
+			<div class="mesBottom">
+				<input class="captchaInput" name="checkcode" type="text" value="" maxlength="10" placeholder="请输入验证码"/>
+				<div class="captchaCheck" >
+					验证
+				</div>
+			</div>
+		</div>
+
+
+	</div>
+</script>
+
+<script type="text/html" id="temp_get_succ">
+	 <div class="shade"></div>
+	 <div class="get_success">
+		 <div class="sure_get_succ"></div>
+		 <div class="close_get_succ"></div>
+	 </div>
+</script>
+
+<script>
+	fml.vars.isCompleteStatic = <%=this.isCompleteStatic%>;
+
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use('wap/page/activity/promotion/main11');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot_simple.html%>

@@ -1,0 +1,68 @@
+<%# mlslm/headLm.html%>
+ <div class="topPic" style="background: url('<%= this.PICTURE_URL%>/images/mlslm/pc/top_pic.jpg') no-repeat top center"></div>
+ 	<div class="main">
+  		<div class="wrapper">
+	  	  	<div class="desc">
+	  	   		<div class="desc-content">
+	  	    	<div class="header">热销单品宠坏你</div>
+	  	     	    <p>要百搭、也要色彩？要超值、也要优质？要流行、也要独特？我要我要我都要！销量火爆的宝贝全在这里，满足你所有的需要。点我点我啊！</p>	
+	  	    	</div>
+	  	    </div>
+	  	  	<div class="goods_wall"></div>
+	      	<div class="paging_panel c_f none_f">
+	        <%# paging.html %>
+	      	</div>
+	      	<div class="spinner botSpinner none_f"></div>
+	      	<div class="clear_f"></div>   	
+    	</div>
+    </div>
+<script>
+    fml.vars.poster = {};
+    <%= this.poster0? 'Meilishuo.config.poster0 = '+JSON.stringify(this.poster0)+';':'' ;%>
+</script>
+<script id="posterWall" type="text/html">
+  	<? $.each(tInfo, function (k, v){ ?>
+		<div class="goodsCon">
+			<?
+			  var link = '';
+			  if(v.link){
+			  	link = v.link;
+			  }else{
+			  	link = '/share/item/' + v.twitter_id + '?d_r=' + v.d_r
+			  }
+			?>
+			<?if(v.horizontal_mark && v.horizontal_mark.length){?>
+			<div class="mark">
+				<? for (var i=0,j = v.horizontal_mark.length ; i< j; i++) {
+					var data = v.horizontal_mark[i]; ?>	
+					<?data.line_height = !data.text_margin_top ? data.img_height : 14;?>
+					<?!data.text_margin_top ? data.fs = 12 : data.fs = 14;?>
+					<span class="m_ico" style="font-size:<?=data.fs?>px;<?if(data.text_font_color){?>color:<?=data.text_font_color?>;<?}?>position: relative;background:url(<?=data.img_url?>) no-repeat; height:<?=data.img_height?>px;line-height:<?= data.line_height?>px;width:<?=data.img_width?>px;"><?if(data.mark_text){?><span style="width:<?=data.img_width?>px;left: 0;position: absolute;text-align: center;top: <?= data.text_margin_top?>px;"><?=data.mark_text?></span><?}?></span>
+				<?};?>
+			</div>
+			<?}?>
+			<a class="pic" href="<?= link ?>" target="_blank" title="<?= v.goods_title ?>">
+				<img src="<?= v.image?>">
+			</a>
+			<a href="<?= link ?>" target="_blank" class="goods_tit"><?= v.goods_title?></a>
+			<div class="goods_price">
+				<span class="red_f">￥<?= v.price ?></span>
+				<? if(v.price != v.origin_price){ ?>
+					<del>￥<?= v.origin_price ?></del>
+				<?}?>
+			</div>
+			<div class="likebuy">
+				<p class="likenum left_f">
+					<img class="left_f" src="http://i.meilishuo.net/css/images/twitter/ILikeit.gif" />
+					<span class="left_f"><?= v.count_like?>人已喜欢</span>
+				</p>
+				<?if(v.sale_num){?><p class="right_f"><span class="red_f"><?= v.sale_num?></span>人已购买</p><?}?>
+			</div>
+		</div>
+	<? }); ?>
+</script>
+<%# wins/top.html %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+  	fml.use('page/huodong/mlslm_act');
+_use:", this._JSstack , this._JSmods ); %>
+<%# mlslm/footLm.html%>

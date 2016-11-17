@@ -1,0 +1,115 @@
+/*common*/
+
+var $ = require('wap/zepto')
+	, WaterFall = require('wap/component/circleWaterfall')
+	, optimiseFn = require('wap/component/waterfallOptimise')
+	, lazy = require('wap/component/lazzyLoad')
+	, RAF = require('wap/core/rAF')
+	, rAF = RAF.rAF
+	, cAF = RAF.cAF
+
+var lazy_pic = lazy.init({'xpath' : '.bs_load_img'})
+lazy_pic.scroll()
+
+function posterInit(){
+	var urlData = {
+		'tag_word' : fml.vars.tag_word
+		, 'limit' : 30
+		, 'frame' : 1
+	}
+
+	var waterFallInstance = WaterFall.init({
+		el: '.goods_wall',
+		url: '/aj/search/search_tag_poster',
+		data: urlData,
+		dataFilter : function(data){
+			return data
+		},
+		colNum: 2,
+		colGap : 6,
+		hasSideGap: true,
+		optimiseFn : optimiseFn,
+		onFetchSuccess: function(data){
+			lazy_pic.load()
+			if(data.length == 0){
+				$('.pullUp').hide()
+				$('.more_rec').css('display', 'block')
+				this.lock()
+			}
+		}
+	}).start(fml.vars.poster0)
+
+	$(document).on('search_start', function(){
+		waterFallInstance.lock()
+	})
+	$(document).on('search_cancel', function(){
+		scrollInit()
+		waterFallInstance.unlock()
+	})
+}
+
+function nonePosterInit(){
+	var urlData = {
+		'tag_word' : fml.vars.tag_word
+		, 'limit' : 30
+		, 'frame' : 1
+	}
+
+	var waterFallInstance = WaterFall.init({
+		el: '.goods_wall',
+		url: '/aj/search/search_tag_poster',
+		data: urlData,
+		dataFilter : function(data){
+			return data
+		},
+		colNum: 2,
+		colGap : 6,
+		hasSideGap: true,
+		optimiseFn : optimiseFn,
+		onFetchSuccess: function(data){
+			lazy_pic.load()
+			if(data.length == 0){
+				$('.pullUp').hide()
+				$('.more_rec').css('display', 'block')
+				this.lock()
+			}
+		}
+	}).start(fml.vars.poster0)
+
+	$(document).on('search_start', function(){
+		waterFallInstance.lock()
+	})
+	$(document).on('search_cancel', function(){
+		scrollInit()
+		waterFallInstance.unlock()
+	})
+}
+
+function scrollInit(){
+	var win_w = $(window).width()
+		, main_page_top = $('.main_page').offset().top
+		, move_top = document.body.scrollTop
+		, target_top = (main_page_top - win_w/640*400)
+		, diff = (target_top - move_top)/10
+
+	if(main_page_top && target_top != move_top && Math.abs(diff) > 2){
+		function step(){
+			move_top += diff
+			document.body.scrollTop = move_top
+
+			if(Math.abs(target_top - move_top) >= 5) {
+				rAF(step)
+			} else {
+				lazy_pic.load()
+			}
+		}
+		step()
+	} else {
+		lazy_pic.load()
+	}
+}
+
+$(window).on('load', function(){
+	scrollInit()
+	posterInit()
+})

@@ -1,0 +1,36 @@
+function myCenter(){
+	return this;
+}
+var controlFns = {
+	index : function(){
+		var	php = {
+			'order_list' : 'doota::/order/list_info'
+			, 'order_list_pay' : 'doota::/order/list_info?status=1&$'
+			, 'order_list_send' : 'doota::/order/list_info?status=5&$'
+			, 'order_list_get' : 'doota::/order/list_info?status=2&$'
+		};
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			if(!data.userInfo || !data.userInfo.user_id){
+				return this.redirectTo('/user/login', false, {"r": "/myCenter"});
+			}
+
+			data.use_rem_screen = '640_mate';
+			data.page_tag = 'myCenter';
+
+			data.payment_num = +data.order_list_pay.total_num;
+			data.send_num = +data.order_list_send.total_num;
+			data.get_num = +data.order_list_get.total_num;
+
+			delete data.order_list_pay;
+			delete data.order_list_send;
+			delete data.order_list_get;
+
+			data.pageTitle = '个人中心';
+			data._CSSLinks = ['myCenter'];
+			this.render('myCenter.html', data);
+		});
+	}
+}
+exports.__create = controller.__create(myCenter, controlFns);

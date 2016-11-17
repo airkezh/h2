@@ -1,0 +1,47 @@
+function Bridge(opts){
+	this.opts = opts ||{}
+	this.protocol = (("https:" == document.location.protocol) ? "https://" : "http://")//当前协议
+	this.domainname = document.location.hostname //当前域名
+	var hosts = {
+		"https://":{
+			"jcstatic":""//静态域名
+			,"domain":""//passport接口域名
+			,"captcha":"https://account.meilishuo.com/Register/Captcha?token=asde39ad9"
+		}
+		,"http://":{
+			"jcstatic":"http://"+(this.opts.jcstatic || 's.meilishuo.net')
+			,"domain":"http://"+(this.opts.domain || this.domainname)
+			,"captcha":"http://captcha.meilishuo.com/Register/Captcha?token=asde39ad9"
+		}
+	}
+	this.host = hosts[this.protocol]
+}
+
+Bridge.prototype._watchs = []
+Bridge.prototype.addWatch = function(fn){
+	this._watchs.push(fn)
+}
+Bridge.prototype.watch = function(res){
+	for(var i in this._watchs){
+		this._watchs[i](res)
+	}	
+}
+
+Bridge.prototype._loadedCssFiles = {}
+Bridge.prototype.loadCssFile = function(url,cbk){
+	var url = this.host.jcstatic + url
+	if(!this._loadedCssFiles[url]){
+		this._loadedCssFiles[url]=true;
+		var link=document.createElement("link");
+		link.rel="stylesheet";
+		link.type="text/css";
+		link.href=url;
+		cbk && (link.onload = cbk)
+		document.getElementsByTagName("head")[0].appendChild(link)
+
+	}else{
+		cbk && cbk()	
+	}
+}
+
+

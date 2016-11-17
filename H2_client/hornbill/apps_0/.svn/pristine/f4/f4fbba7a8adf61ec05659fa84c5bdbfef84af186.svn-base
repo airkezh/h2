@@ -1,0 +1,199 @@
+/*common*/
+
+var $ = require('wap/zepto')
+	, WaterFall = require('wap/component/circleWaterfall')
+	, optimiseFn = require('wap/component/waterfallOptimise')
+	, lazy = require('wap/component/lazzyLoad')
+	, sticky = require('wap/component/sticky')
+	, RAF = require('wap/core/rAF')
+	, Swipe = require( 'wap/component/swipe' )
+	, timedown = require('app/doota/timedown')
+	, openAppLink = require('wap/app/openAppLink')
+	, rAF = RAF.rAF
+	, cAF = RAF.cAF
+
+	, waterfallInstances = {
+		'hot' : {
+			'section' : 'hot'
+			, 'poster0' : ''
+			, 'frame' : 1
+		},
+		'boom' : {
+			'section' : 'boom'
+			, 'poster0' : ''
+			, 'frame' : 0
+		},
+		'new' : {
+			'section' : 'new'
+			, 'poster0' : ''
+			, 'frame' : 0
+		}
+	}
+	, curWaterfallType = 'hot'
+	, activeWaterFallInstance = ''
+
+	, scrollToNavNum = 0
+
+var lazy_pic = lazy.init({'xpath' : '.bs_load_img'})
+lazy_pic.scroll()
+
+/**
+ * Tab瀑布流显示
+ */
+function activeWaterfall(type){
+	var wf = waterfallInstances[type]
+		, oldWf = waterfallInstances[curWaterfallType]
+
+	if(oldWf.instance){
+		oldWf.instance
+			.lock()
+			._config.el.hide()
+	}
+
+	curWaterfallType = type
+
+	if(!wf.instance){
+		waterfallInstances[ type ].instance= wf.instance = WaterFall.init({
+			el: $('.' + type + '_section')
+			, url: '/aj/beauty/beautysale/new_goods'
+			, colNum: 2
+			, colGap : 6
+			, hasSideGap: true
+			, optimiseFn : optimiseFn
+			, data: {
+				limit: 30
+				, section: wf.section
+				, frame: wf.frame
+				, cata_id: '8000000000000'
+			}
+			, dataFilter : function(data){
+				return data.tInfo
+			}
+			, onFetchSuccess: function(data){
+				lazy_pic.load()
+				if(data && data.length == 0){
+					$('.pullUp').attr('status', 'stop')
+					this.lock()
+				}
+				// APPLink()
+			}
+		}).start(wf.poster0)
+	}
+
+	activeWaterFallInstance = wf.instance
+
+	activeWaterFallInstance
+		.unlock()
+		._config.el.show()
+}
+
+/**
+ * 单品链接跳转
+ */
+$('.goods_wall').on('click','.pic_load',function(){
+	APPLink($(this));
+})
+function APPLink(obj){
+	var tid = obj.data('tid');
+	url = Meilishuo.config.os.mlsApp ? openAppLink.getAppLink({
+			'protocol': 'twitter_single',
+			'param': {
+				"twitter_info": {
+					"twitter_id": tid,
+					"is_doota": 1
+				}
+			}
+		}) : '/share/item/' + tid;
+	window.location.href =window.__get_r(url, obj.data('xr'));
+}
+
+/**
+ * 页面滚动，将瀑布流展现出来
+ */
+function scrollInit(){
+	var win_w = $(window).width()
+		, main_page_top = $('.main_page').offset().top
+		, move_top = document.body.scrollTop
+		, target_top = (main_page_top - win_w/640*400)
+		, diff = (target_top - move_top)/10
+
+	if(main_page_top && target_top != move_top && Math.abs(diff) > 2){
+		function step(){
+			move_top += diff
+			document.body.scrollTop = move_top
+
+			if(Math.abs(target_top - move_top) >= 5) {
+				rAF(step)
+			} else {
+				lazy_pic.load()
+			}
+		}
+		step()
+	} else {
+		lazy_pic.load()
+	}
+}
+
+function scrollToNav(){
+	if($('body').scrollTop() > scrollToNavNum) $('body').scrollTop(scrollToNavNum)
+}
+
+function scrollToNavInit(){
+	scrollToNavNum = $('.poster_wrap').offset().top - $('.wap_head').height()
+}
+
+function bindNav(){
+	scrollToNavInit()
+
+	$('.nav_item').on('click', function(){
+		$('.poster_nav').find('.active').removeClass('active')
+		$(this).addClass('active')
+		activeWaterfall($(this).data('type'))
+		scrollToNav()
+	})
+}
+
+$(window).on('load', function(){
+	scrollInit()
+	bindNav()
+	$('.nav_item').eq(0).trigger('click')
+	sticky.init('.poster_nav', {'infinity': true, 'sticky_top': 0})
+})
+
+/* 秒杀 */
+var aLi = $('.swipe > ul > li');
+aLi.eq(0).addClass('active');
+window.mySwipe = Swipe(document.getElementById('slider'), {
+	startSlide : 0,
+	speed : 400,
+	auto : 4000,
+	continuous : true,
+	disableTouch : false,
+	disableScroll : false,
+	stopPropagation : false,
+	callback : function(index, elem){
+		aLi.eq(index).addClass('active').siblings().removeClass('active');
+	},
+	transitionEnd: function(index, elem) {
+	}
+});
+
+/* 倒计时 */
+$('.time').each(function(index) {
+	var self = $(this);
+	timedown.down(self, self.attr('time'), '0d-0h-0i-0s', ['<span>%v</span>天', '<span>%v</span>时', '<span>%v</span>分', '<span>%v</span>秒'])
+		.onTimeOver(function() { 
+			// window.location.reload();
+			$('.time').html('活动结束');
+		})
+		.onAction(function() {
+			var t = arguments[2];
+			day = t.d && t.d != 0 ? (t.d < 10 ? "0" + t.d : t.d) : "00";
+			hour = t.h ? (t.h < 10 ? "0" + t.h : t.h) : "00";
+			min = t.i ? (t.i < 10 ? "0" + t.i : t.i) : "00";
+			sec = t.s ? (t.s < 10 ? "0" + t.s : t.s) : "00";
+			// ms = t.e;
+			self.html("距结束还剩&nbsp;<span>" + day + "</span>&nbsp;天&nbsp;<span>" + hour + "</span>&nbsp;小时&nbsp;<span>" + min + "</span>&nbsp;分&nbsp;<span>" + sec + "</span>&nbsp;秒");
+		}).setHeartHum(1000);
+});
+

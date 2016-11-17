@@ -1,0 +1,36 @@
+<%# head.html%>
+<%
+	var shareStatue = this.shareInfo.share_statue.share_need,
+		winnnerData = this.award.data.pic[4];
+%>
+<%if(this.fail){%>
+<div class="banner" style="background-image:url('<%= this.award.data.pic[3]%>');%>"></div>
+<%}else{%>
+<div class="banner" style="background-image:url('<%= this.award.data.pic[2]%>');%>"></div>
+<%}%>
+<% if(winnnerData){ %><div class="winner_list" style="background-image:url('<%= winnnerData %>');%>"></div><% } %>
+<div class="lineBox">
+	<% if(winnnerData){ %><a id="winner_list" class="btn">上期中奖用户</a><% } %>
+	<%if(this.fail){%>
+	<p class="go_ico"/></p>
+	<%}%>
+	<a id="closemls" class="btn">返回美丽说</a>
+</div>
+
+<!-- 分享 -->
+<% if (shareStatue == 1) {%>
+	<% if(this.share){ %>
+		<%= requireFn('wapShare.html')({
+			'share' : this.share 
+		    , 'shareTitle' : '选择分享到'
+		    , '_JSstack' : this._JSstack
+			, '_JSmods' : this._JSmods
+		}); %>
+	<%}%>
+<%} %>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/close');
+_use:", this._JSstack , this._JSmods);%>
+
+<%# foot_simple.html%>

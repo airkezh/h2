@@ -1,0 +1,30 @@
+<%
+	var notice = this.notice && this.notice.data;
+%>
+<%# head.html%>
+<div class="main">
+	<%# help/help-title.html%>
+	<div class="help-crumbs">
+		<a href="/helpcenter/">帮助中心</a> > 
+		<a class="red_f" href="/helpcenter/notice/">公告</a>
+	</div>
+	<div class="notice-list">
+		<%if(notice && notice.length > 0){%>
+			<ul>	
+				<% notice.forEach(function(item){%>
+					<li>
+						<a href="/helpcenter/detail/<%= item.know_id%>?notice=1"><%= item.title%>
+						</a>
+						<span><%= item.create_time%></span>
+					</li>
+				<%});%>
+			</ul>
+		<%}else{%>
+			暂无公告信息
+		<%}%>
+	</div>
+	<div class="paging_panel c_f">
+		<%# paging.html%>
+	</div>
+</div>
+<%# foot.html%>

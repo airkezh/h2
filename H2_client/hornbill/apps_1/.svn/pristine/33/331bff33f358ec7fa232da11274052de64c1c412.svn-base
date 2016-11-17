@@ -1,0 +1,52 @@
+@import "../block.less";
+.main{
+	.w(100%);
+	.h(100*@px);
+}
+.nav{
+	.bgc(@red);
+	.h(100*@px);
+	.white();
+	.c;
+	.l(100*@px);
+	.f(40*@px);
+}
+.shake{
+	.mt(200*@px);
+    img{
+        .w(300*@px);
+    .h(450*@px);
+    .border-r(40%);
+    .auto;
+    .block;
+    .pb(200*@px);
+        }
+    }
+
+
+
+/*定义动画*/
+
+@-webkit-keyframes move{ 
+
+    0%{-webkit-transform:translateX(0%)}
+    15%{-webkit-transform:translateX(-70%) rotate(-30deg)}
+   	30%{-webkit-transform:translateX(70%) rotate(30deg)}
+   	45%{-webkit-transform:translateX(-30%) rotate(-7deg)}
+    60%{-webkit-transform:translateX(30%)  rotate(7deg)}
+    75%{-webkit-transform:translateX(-15%) rotate(-3deg)}
+    100%{-webkit-transform:translateX(0%)}
+}
+   
+.shake-act{
+    -webkit-animation-name:move; 
+    -webkit-animation-iteration-count:4; 
+    -webkit-animation-timing-function:ease;
+    -webkit-animation-duration:0.75s; 
+     -webkit-animation-direction:normal; 
+    -webkit-animation-fill-mode:both; 
+ }
+ 
+
+/*调用动画并设置动画的参数*/
+@import "../../footer.less";

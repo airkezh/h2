@@ -1,0 +1,146 @@
+/*common*/
+require('wap/lab/jquery.imgpreload');
+
+var windowW = $(window).width() 
+,windowH = $(window).height()
+,scale = windowW * 2 / 750
+,box =  {
+	w: windowW ,
+	h: windowH
+}
+,img_bg = document.getElementById("bg")
+,img_bg0 = {
+	w : 600 * scale,
+	h : 770 * scale,
+	x : 75 * scale,
+	y : 50 * scale
+}
+,img_bg1 = {
+	w : 590 * scale,
+	h : 760 * scale,
+	x : 80 * scale,
+	y : 41 * scale,
+	alpha : .8
+}
+,img_bg2 = {
+	w : 580 * scale,
+	h : 750 * scale,
+	x : 85 * scale,
+	y : 33 * scale,
+	alpha : .6
+}
+,img_bg3 = {
+	w : 566 * scale,
+	h : 740 * scale,
+	x : 92 * scale,
+	y : 25 * scale,
+	alpha : .4
+}
+,img_0 = {
+	w : 582 * scale,
+	h : 752 * scale,
+	x : 84 * scale,
+	y : 59 * scale,
+	resetX : 84 * scale,
+	resetY : 59 * scale
+}
+,img_1 = {
+	w : 574 * scale,
+	h : 742 * scale,
+	x : 88 * scale,
+	y : 50 * scale
+}
+,cvs = document.getElementById('cvs')
+,ctx = cvs.getContext('2d')
+,step = 0;
+cvs.width = box.w * 2;
+cvs.height = box.h  * 2;
+cvs.style.width = box.w + 'px';
+
+function drawImg( img , opts ){
+	opts.alpha && ( ctx.globalAlpha = opts.alpha );
+	ctx.drawImage( img , opts.x , opts.y , opts.w , opts.h );
+	ctx.globalAlpha = 1 ;
+}
+function drawAlpha( img ){
+	ctx.globalAlpha = alpha;
+	ctx.drawImage( img , img_0.x , img_0.y , img_0.w ,img_0.h);
+	ctx.globalAlpha = 1;
+}
+function clearCanvas() {
+	ctx.clearRect(0, 0, box.w * 2 , box.h * 2 );
+}
+
+window.onload = function(){
+	draw();
+	//move();
+};
+
+function draw(){
+	alpha = 1 ;
+	CW = false ;
+	
+	clearCanvas();
+	drawImg( img_bg , img_bg3 );
+	drawImg( img_bg , img_bg2 );
+	drawImg( img_bg , img_bg1 );
+	drawImg( imgData[a+1] , img_1 );
+	drawImg( img_bg , img_bg0 );
+	drawImg( imgData[a] , img_0 );
+}
+
+var alpha = 1 
+,CW = false ;
+
+function move(){
+	clearCanvas();
+	drawImg( img_bg , img_bg3 );
+	drawImg( img_bg , img_bg2 );
+	drawImg( img_bg , img_bg1 );
+	drawImg( imgData[a+1] , img_1 );
+	drawImg( img_bg , img_bg0 );
+	
+	alpha-=0.05;
+	drawAlpha( imgData[a] );
+	
+	if( alpha < 0 ){
+		draw();
+	}else{
+		setTimeout( move , 30 )
+	};
+}
+
+var imgArray = [
+	'http://d03.res.meilishuo.net/pic/_o/66/72/4fa4c4e82985c13dfbb97820c4ec_74_165.cj.png',
+	'http://d05.res.meilishuo.net/pic/_o/2c/2f/a58968c125d539069209098f4099_945_477.cj.jpg',
+	'http://d04.res.meilishuo.net/pic/_o/f9/77/150873dcea25ea46238443961027_945_477.cj.jpg',
+	'http://d03.res.meilishuo.net/pic/_o/99/c2/4d4c5f610592563e8042ba1f211e_646_531.cj.jpg',
+	'http://d02.res.meilishuo.net/pic/_o/e4/0d/595e74d05bc34e3761885786a474_640_550.cj.jpg',
+	'http://d05.res.meilishuo.net/pic/_o/99/a1/34f85d73daea194879e0528f9aab_600_435.cj.png',
+	'http://d04.res.meilishuo.net/pic/_o/05/8d/8129461c9a7b77fcc4ef3a702d60_1080_1919.cj.png',
+	'http://d02.res.meilishuo.net/pic/_o/13/b2/7a188aac12fb0574b4f7e6ea2278_228_77.cj.png',
+	'http://d04.res.meilishuo.net/pic/_o/6f/77/14d91bdf86a580d85bb145be87d5_158_53.cj.png',
+	'http://d04.res.meilishuo.net/pic/_o/8b/7d/2cedd98580010a2cd10b02de99c4_140_140.cj.jpg',
+	'http://d02.res.meilishuo.net/pic/_o/b9/b7/1f6e5a21486fb57ff739095f434f_750_744.cj.jpg',
+	'http://d03.res.meilishuo.net/pic/_o/55/7f/6e9c5bb9554f8de8cffc720b79f8_140_125.cj.png',
+	'http://d05.res.meilishuo.net/pic/_o/e4/d3/85c8139a0db97c41839fd23fdf34_2000_1120.cj.jpg'
+];
+var a = 0 ;
+var imgData = [];
+$.imgpreload( imgArray ,{
+	each : function( l ){
+		imgData = l ;
+	},
+	all : function( l ) {
+		$('.game-but1 , .game-but2').on('click',function(){
+			a++ ;
+			move();
+		});
+	}
+});
+
+
+
+
+
+

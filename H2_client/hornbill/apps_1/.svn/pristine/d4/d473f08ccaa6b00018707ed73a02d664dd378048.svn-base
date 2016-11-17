@@ -1,0 +1,31 @@
+<% var paramR = decodeURIComponent( this.r || '' ); %>
+
+<div id="container-wrap">
+    <div id="loading-bar" class="loading-bar" status="loading"></div>
+    <div id="blank-user" class="blank">
+        <img src="http://d02.res.meilishuo.net/pic/_o/84/e0/b1ba2ebc24e071a35da3f8c2df0c_318_252.cf.png">
+    </div>
+    <div id="blank-circle" class="blank">
+        <img src="http://d03.res.meilishuo.net/pic/_o/05/37/ac85fbbed9d6757ade5b0cad9a03_318_252.ch.png">
+    </div>
+    <div id="blank-item" class="blank">
+        <img src="http://d02.res.meilishuo.net/pic/_o/4b/57/2fb7f72ffe2d27ef9fff98957a98_318_252.ch.png">
+        <a class="add-goods" href="<%=_extFn.getAppLink('publish_post',{'source':'goods_manage'}, this.os, this.r)%>">我来添加一个宝贝</a>
+    </div>
+</div>
+
+<div class="gotop-wrap">
+    <a class="gotop">
+        <img src="http://i.meilishuo.net/css/images/wap/tuan/gotop.png"/>
+    </a>
+</div>
+
+<script>
+    fml.vars.searchKeyword = '<%= this.searchKeyword %>';
+    fml.vars.r = '<%= paramR %>';
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/mainapp/aggregation');
+_use:", this._JSstack, this._JSmods); %>
+<%# foot_simple.html%>

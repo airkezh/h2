@@ -1,0 +1,45 @@
+<%#head_frame.html%>
+
+<% var pageDate = this.pageDate; 
+   var adm_banner = this.adm_banner.ad;
+%>
+<div class="recommend"> 
+	<!--轮播-->
+	<div class="imageSlide" id="imageSlide">
+		<ul>
+			<% adm_banner && adm_banner.forEach(function(data){ %>
+				<li>
+					<a href="/api/adm/?spm=<%=data.ad_clickspm%>"><img src="<%= data.ad_filedata %>"/></a>
+				</li>
+			<% }); %>
+		</ul>
+		<div class="num"></div>
+	</div>
+	<!--图标，图标描述即下载按钮 higo 美喵-->
+	<% pageDate.appList.forEach(function(appList){%>
+	<div class="app">
+		<div class="software">
+			<div class="s-left">
+				<img src="<%= appList.img %>"/>
+			</div>
+			<div class="s-right">
+				<div class="icon"> 
+					<%= appList.name%> 
+				</div>
+				<div class="description">
+					<%= appList.down %>&nbsp;&nbsp;&nbsp;<%= appList.size %>
+				</div>
+			</div>
+			<a class="icon-download" href="<%= appList.link %>">下载</a>	
+		</div>
+		<div class="software-bottom">			
+			<%= appList.desc %>
+		</div>
+	</div>
+	<% }); %>
+</div>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/friendApp');
+_use:", this._JSstack, this._JSmods); %>
+<%#foot_frame.html%>

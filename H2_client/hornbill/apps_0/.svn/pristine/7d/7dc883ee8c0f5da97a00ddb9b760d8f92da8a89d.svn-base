@@ -1,0 +1,51 @@
+/*common*/
+var $=require('wap/zepto'),
+	check = require('circle/app/checkLogin'),
+    ShareTo = require( 'wap/app/shareTo' );
+//分享
+var shareText =  '美丽说新人专属优惠，每天百款上新，买买买不停！';
+var shareImg =  'http://d01.res.meilishuo.net/pic/_o/28/f2/56254600c271bf9d1a606d8795c0_200_200.cf.png';
+var shareTitle =  '美女们来美丽说领钱了！';
+var shareUrl = window.location.protocol +"//"+window.location.host+'/activity/inviteFriends/invite/'+fml.vars.uid;
+
+var activityRull = $('.activityRull'),
+    mask = $('.mask'),
+    wrap = $('.wrap'),
+    rulewrap = $('.rulewrap'),
+    closeImg = $('.closeImg');
+window.MLS = {
+    didLogin : function(){
+        //美丽说app 登录后回调  成功登录后，返回刷新页面。
+        window.location.reload();
+    }
+}
+params = {
+        'text' : '美丽说新人专属优惠，每天百款上新，买买买不停！',
+        'title': '美女们来美丽说领钱了！',
+        'pic'  : 'http://d01.res.meilishuo.net/pic/_o/28/f2/56254600c271bf9d1a606d8795c0_200_200.cf.png',
+        'url'  : shareUrl,
+    }
+$('.wxFriends').on('click',function(){
+	loginShare(ShareTo.shareToPengYou.bind(ShareTo,params));
+})
+$('.friendCircle').on('click',function(){
+	loginShare(ShareTo.shareToPengYouQuan.bind(ShareTo,params));
+})
+function loginShare(func){
+	if( check() ){
+		func();
+	}
+}
+activityRull.on('click',function(){
+    rulewrap.show();
+})
+mask.on( 'click' , function(){
+    rulewrap.hide();
+})
+closeImg.on( 'click' ,function(){
+    rulewrap.hide();
+} )
+mask.on('touchmove', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+});

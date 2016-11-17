@@ -1,0 +1,60 @@
+<%#head.html%>
+<%
+	var newHot = this.newHot || {};
+	var newHotData = newHot.data || {};
+	var newHotDataBanner=newHotData.banner||[];
+%>
+<div class="wrap" id="wrap">
+	<%= requireFn('zulily/header.html')({
+		'status' : 2,
+		'common_r' : this.common_r_XR,
+		'appShare' : this.appShare,
+		'params' : this.params,
+		'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+	});%>
+	<%= requireFn('block/banner.html')({
+		'banner' : this.banner,
+		'banner_r':this.banner_XR,
+		'hide_btn':false,
+		'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+	});%>
+	<div class="new-box" id="newBox">
+		<p class="tips">每周二/四/六 11:00上新</p>
+		<p class="time"><%= newHotData.title %></p>
+	</div>
+	<div class="posterWall wall new-content" id="content">
+		<ul class="goods_wall goods"></ul>
+		<div class="pullUp" status="loading"></div>
+	</div>
+</div>
+<% if(!this.appShare){ %>
+	<%= requireFn('wapShare.html')({
+		'share' : this.share 
+	    , 'shareTitle' : '选择分享到'
+	    , '_JSstack' : this._JSstack
+		, '_JSmods' : this._JSmods
+	}); %>
+<% } %>
+<script type="text/html" id="newPosterWall">
+	<li data-styleId="<?= this.v.id ?>" data-twitter_id="<?= this.v.twitter_id ?>" class="salelUrl">
+		<? var imgBoxHeight=parseInt($(window).width())* this.v.big_img_height / this.v.big_img_width +'px'; ?>
+		<div class="new-inner">
+			<div class="lazy_pic_big img-box" asrc="<?= this.v.big_img ?>" style="height:<?= imgBoxHeight ?>;padding-top:0"></div>
+			<%*如果不要延迟加载就这样
+			<img src="<?= this.v.big_img ?>" style="height:<?= imgBoxHeight ?>" alt="">
+			%>
+			<p class="tag"><?= this.v.brand_category ?></p>
+			<p class="title"><?= this.v.desire_title ?></p>
+			<p class="des"><?= this.v.desire_desc ?></p>
+			<p class="new-price">
+				<span>Desire价: <b><?= this.v.sale_price ?></b> </span>
+				<del>原款价: <?= this.v.original_price ?> </del>
+			</p>
+		</div>
+	</li>
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/zulily/newList');
+_use:", this._JSstack, this._JSmods); %>
+
+<%# foot.html%>

@@ -1,0 +1,74 @@
+<%#head.html%>
+<%
+	var mSubstr = _extFn.mSubstr;
+	var discount = function(source , now){
+		return parseInt((now / source) * 100) / 10;	
+	}
+%>
+<div class="kc">
+	<div class="kc_topbg">
+		<div class="kc_top"><span>活动时间：10月22日~11月8日</span></div>
+	</div>
+	<div class="kc_rule">
+		<ul>
+			<li>1、参与用户可为如下展示的女鞋产品点投票，投票即得Kiss Cat官方旗舰店消费优惠券；</li>
+			<li>2、用户需跳转到KIiss Cat天猫店领取优惠券，可无限次参与领取，优惠券使用规则详见Kiss Cat官方旗舰店；</li>
+			<li>3、优惠券仅限双十一当天使用；</li>
+			<li>4、活动结束后将从参与投票的用户中抽取幸运用户获得天创时尚超级大奖。</li>
+		</ul>
+	</div>
+	<div class="kc_kc"></div>
+	<div class="kc_wapper">
+		<% this.kc_goods && this.kc_goods.map(function(data){  %>
+		<div class="kc_single" gid="<%= data.goods_id%>">
+			<a href="<%= data.url%>" target="_blank"><img src="<%= data.src%>" /></a>
+			<p><%= mSubstr(data.text , 37 , '...') %></p>
+			<div class="clearfix_f">
+				<p class="kc_vote"></p>
+				<p class="kc_price"><span>¥</span><%= data.saleprice%></p>
+				<p class="kc_count">
+					<span><%= discount(data.price , data.saleprice)%>折</span>
+					<del>¥<%= data.price%></del>
+				</p>
+			</div>
+		</div>
+		<%});%>
+	</div>
+	<div class="kc_kk"></div>
+	<div class="kc_wapper">
+		<% this.kk_goods && this.kk_goods.map(function(data){  %>
+		<div class="kc_single" gid="<%= data.goods_id%>">
+			<a href="<%= data.url%>" target="_blank"><img src="<%= data.src%>" /></a>
+			<p><%= mSubstr(data.text , 37 , '...') %></p>
+			<div class="clearfix_f">
+				<p class="kk_vote"></p>
+				<p class="kc_price"><span>¥</span><%= data.saleprice%></p>
+				<p class="kc_count">
+					<span><%= discount(data.price , data.saleprice)%>折</span>
+					<del>¥<%= data.price%></del>
+				</p>
+			</div>
+		</div>
+		<%});%>
+	</div>
+</div>
+<script type="text/html" id="kcat">
+	<div class="kcat">
+		<span class="closeBtn"></span>
+		<a href="http://meilishuo.com/u/ELH5OB?frm=kc100" class="sale50" target="_blank"></a>
+		<a href="http://meilishuo.com/u/ELH4LT?frm=kc50" class="sale100" target="_blank"></a>
+	</div>
+</script>
+<script type="text/html" id="kkitty">
+	<div class="kkitty">
+		<span class="closeBtn"></span>
+		<a href="http://meilishuo.com/u/ELH6Jn?frm=kc100" class="sale50" target="_blank"></a>
+		<a href="http://meilishuo.com/u/ELH5kh?frm=kc50" class="sale100" target="_blank"></a>
+	</div>
+</script>
+
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/huodong/kisscat'); 
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

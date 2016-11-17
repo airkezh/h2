@@ -1,0 +1,112 @@
+<%# head_simple.html%>
+</head>
+<body>
+	<div class="wrap">
+		<div class="main" dragMove="1">
+			<!-- page_1 -->
+			<div class="page" id="page_1">
+				<img class="top-banner" src="<%=this.PICTURE_URL%>/images/lark/pt_game/top-banner-new2.png">
+				<img class="start" src="<%=this.PICTURE_URL%>/images/lark/pt_game/btn-start.png">
+				<p>今天还剩<span id="change-time"><%= this.pt.data.leftTimes ? this.pt.data.leftTimes : 0;%></span>次机会</p>
+				<img class="share" src="<%=this.PICTURE_URL%>/images/lark/pt_game/btn-share3.png">
+				<img class="bottom-banner" src="<%=this.PICTURE_URL%>/images/lark/pt_game/bottom-banner-new.png">
+				<p>
+					<span class="winner-list">中奖名单</span>
+					<span class="rules">游戏规则</span>
+				</p>
+			</div>
+			<!-- page_2 -->
+			<div class="page" id="page_2">
+				<img class="game-top-banner" src="<%=this.PICTURE_URL%>/images/lark/pt_game/game-top-banner-new.png">
+				<img class="game-board" src="<%=this.PICTURE_URL%>/images/lark/pt_game/game-board-new.png">
+				<img class="bottom-banner" src="<%=this.PICTURE_URL%>/images/lark/pt_game/bottom-banner-new.png">
+				<img class="count-down" src="<%=this.PICTURE_URL%>/images/lark/pt_game/count-down-new.png">
+				<p>拼图倒计时<span class="count-time">25.0</span>秒</p>
+				<div class="pt-board">
+					<% this.image && this.image.map(function(item,o){%>
+							<img src="<%= item %>" />
+					<%})%>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 弹层－遮罩层 -->
+	<div class="popwin"></div>
+	<!-- 弹层－分享提示 -->
+	<div class="popwin-share">
+		<img class="share-point" src="<%=this.PICTURE_URL%>/images/lark/pt_game/wx-share-back2.png">
+	</div>
+	<!-- 弹层－明天再来 -->
+	<div class="popwin-tomorrow">
+		<img src="<%=this.PICTURE_URL%>/images/lark/pt_game/share-point.png">
+	</div>
+	<!-- 弹层－获奖名单 -->
+	<div class="winner-list-popup">
+		<img class="popup-img" src="<%=this.PICTURE_URL%>/images/lark/pt_game/popwin-winners.png">
+		<div class="popup-container">
+			<div class="winner-content">
+				<% this.winner_list && this.winner_list.data.map(function(item,index){ %>
+					<p><span><%= item.user_name%></span>刚刚以<span><%= item.use_time%></span>秒完成了拼图，并获得了美丽说<span><%= item.price%></span>元的直减券</p>
+				<% }); %>
+			</div>
+		</div>
+	</div>
+	<!-- 弹层－游戏规则 -->
+	<div class="rules-popup">
+		<img class="popup-img" src="<%=this.PICTURE_URL%>/images/lark/pt_game/popwin-rules-new4.png">
+	</div>
+	<!-- 弹层－棒棒哒 -->
+	<div class="results-good">
+		<img class="popup-img" src="<%=this.PICTURE_URL%>/images/lark/pt_game/popwin-good.png">
+		<div class="popup-container">
+			<p class="p1">只用了<span class="use-time"></span>s完成拼图！打败<span class="bat-user"></span>%的用户！！</p>
+			<p class="p2">美丽说送你一个价值连城的吻</p>
+			<img class="pic" src="<%=this.PICTURE_URL%>/images/lark/pt_game/pic-kiss.png">
+			<p  class="chance">还有<span class="play-chance"></span>次拼图机会</p>
+			<div class="results-btn"></div>
+		</div>
+	</div>
+	<!-- 弹层－简直棒呆 -->
+	<div class="results-lucky">
+		<img class="popup-img" src="<%=this.PICTURE_URL%>/images/lark/pt_game/popwin-lucky.png">
+		<div class="popup-container">
+			<p class="p1">只用了<span class="use-time"></span>s完成拼图！打败<span class="bat-user"></span>%的用户！！</p>
+			<p class="p2">美丽说奖励你<span class="coupons-money">全场直减券</span>～继续加油喔</p>
+			<img class="pic" src="<%=this.PICTURE_URL%>/images/lark/pt_game/pic-surprise.png">
+			<p  class="chance">还有<span class="play-chance"></span>次拼图机会</p>
+			<div class="results-btn"></div>
+		</div>
+	</div>
+	<!-- 弹层－真遗憾 -->
+	<div class="results-pity">
+		<img class="popup-img" src="<%=this.PICTURE_URL%>/images/lark/pt_game/popwin-pity.png">
+		<div class="popup-container">
+			<p class="p1">拼图时间结束了！！</p>
+			<p class="p2">换个姿势再完一把</p>
+			<img class="pic" src="<%=this.PICTURE_URL%>/images/lark/pt_game/pic-cry.png">
+			<p  class="chance">还有<span class="play-chance"></span>次拼图机会</p>
+			<!-- <div class="results-btn"></div> -->
+		</div>
+	</div>
+	<!-- 弹层－明天再来 -->
+	<div class="results-hum">
+		<img class="popup-img" src="<%=this.PICTURE_URL%>/images/lark/pt_game/popwin-pity.png">
+		<div class="popup-container">
+			<p class="p1 time-over">拼图时间结束了</p>
+			<p class="p2">今天的拼图机会已经用光了</p>
+			<img class="pic" src="<%=this.PICTURE_URL%>/images/lark/pt_game/pic-hum.png">
+			<p  class="chance">还有0次拼图机会</p>
+			<!-- <div class="results-btn"></div> -->
+		</div>
+	</div>
+	<div id="test"></div>
+<script type="text/javascript">
+fml.vars.count = <%= this.pt && this.pt.data.leftTimes;%>;
+fml.vars.shared = <%= (this.pt && this.pt.data.user && this.pt.data.user.haveShared === 0) ? 0 : 1;%>;
+fml.vars.sharedId = <%= this.pt && (this.pt.data.user ? 1 : 0);%>;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/lark/ptChange');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html%>
+ 

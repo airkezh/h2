@@ -1,0 +1,152 @@
+/*common*/
+require('wap/zepto/fastclick');
+require('wap/app/dialog');
+
+var poster = require('wap/app/posterPa'),
+	lazyLoad = require('m/component/lazyLoad'),
+	onscroll = require('wap/component/windowScroll'),
+	openAppLink = require('wap/app/openAppLink'),
+	posterWall = require('wap/app/posterWalls6');
+
+var weixinBrowser = navigator.userAgent.indexOf('MicroMessenger'),
+	content = $('#content'),
+	wrap = $('.wrap'),
+	kinds = $('#kinds'),
+	btnCoupon = $('#btnCoupon'),
+	celebrityList = $('#celebrityList'),
+	hotList = $('#hotList'),
+	goods_wall = $('.goods_wall'),
+	limit = 6,
+	page = 0,
+	status = "ing",
+	search = $('#search'),
+	gotopObj = $('.top-box').find('.gotop');
+
+
+/*登陆成功后的回掉函数*/
+window.MLS = {
+	didLogin: function() {
+		// 成功登录，跳转到下一步
+		window.location.reload();
+	}
+};
+// search
+// search.on('focus', function() {
+// 	var searchURL = 'http://' + window.location.host + '/zulily/search',
+// 		Url = Meilishuo.config.os.mlsApp ? openAppLink.getAppLink({
+// 			'protocol': 'openURL',
+// 			'param': {
+// 				"url": searchURL
+// 			}
+// 		}) : '/zulily/search';
+// 	window.location.href = window.__get_r(Url, $(this).data('xr'));
+// });
+
+// poster.set({
+// 	colNum: 2
+// });
+// var data = {
+// 	url: '/aj/desire/index/indexWaterfall?&limit=' + limit+'&__get_r=1',
+// 	poster: poster,
+// 	posterMargin: $('#content').offset().top,
+// 	marginOffset: 0,
+// 	lazyLoad: lazyLoad.init({
+// 		xpath: '.lazy_pic'
+// 	})
+// }
+// posterWall.scroll(data);
+
+wrap.on('click', '#btnAll', function() {
+	window.location.href = window.__get_r('/zulily/allList/', $(this).data('xr'));
+})
+
+//一进页面加载数据
+getWall(2, '/aj/desire/index/indexWaterfall?&limit=' + limit + '&__get_r=1', 'posterWall', true);
+//拉取瀑布流
+function getWall(colNum, url, tmp, showBtn) {
+	// var lazy_pic = colNum == 1 ? '.lazy_pic_big' : '.lazy_pic';
+	poster.set({
+		colNum: colNum
+	});
+	var date = {
+		url: url,
+		poster: poster,
+		tmp: tmp,
+		showBtn: showBtn,
+		showBtnText: '查看全部商品&gt;&gt;',
+		posterMargin: $('#content').offset().top,
+		marginOffset: 0,
+		lazyLoad: lazyLoad.init({
+			xpath: '.lazy_pic'
+		})
+	}
+	posterWall.scroll(date);
+};
+
+/*打开链接*/
+function redirectUrl(ele, href) {
+	var xr = ele.data('xr'),
+		url = '';
+	if (href.match(/meilishuo:\/\//gi)) {
+		url = href;
+	} else {
+		href = location.protocol + '//' + location.host + href;
+		url = Meilishuo.config.os.mlsApp ? openAppLink.getAppLink({
+			'protocol': 'openURL',
+			'param': {
+				'url': href,
+				'inApp': '1'
+			}
+		}) : href;
+	}
+	window.location.href = window.__get_r(url, xr);
+}
+// 优惠券的链接
+btnCoupon.on('click', function() {
+	redirectUrl(btnCoupon, $(this).data('url'));
+});
+// 热门的链接
+celebrityList.on('click', 'a', function() {
+	redirectUrl(celebrityList, $(this).data('url'));
+});
+// 热点的链接
+hotList.on('click', 'a', function() {
+	redirectUrl(hotList, $(this).data('url'));
+});
+// 分类的链接
+kinds.on('click', 'a', function() {
+	redirectUrl(kinds, $(this).data('url'));
+});
+
+/*获取详情页链接*/
+function getIngUrl(ele) {
+	var style_id = parseInt(ele.attr('styleId')),
+		twitter_id = ele.attr('twitter_id'),
+		detailURL = 'http://' + window.location.host + '/zulily/detail2/?style_id=' + style_id + '&twitter_id=' + twitter_id + '&frm=list_ing',
+		Url = Meilishuo.config.os.mlsApp ? openAppLink.getAppLink({
+			'protocol': 'openURL',
+			'param': {
+				"url": detailURL
+			}
+		}) : '/zulily/detail2/?style_id=' + style_id + '&twitter_id=' + twitter_id + '&frm=list_ing';
+	window.location.href = window.__get_r(Url, ele.parents('.frame').data('xr'));
+};
+content.on('click', '.detailUrl', function() {
+	getIngUrl($(this));
+})
+
+/*gotop*/
+gotopObj.on("click", function(e) {
+	document.body.scrollTop = 0
+});
+onscroll.bind(gotop, 'gotop');
+
+function gotop(pos, isDown) {
+	if (pos < 30) {
+		// btnPersonal.css('bottom', '20px');
+		gotopObj.hide()
+	} else {
+		// btnPersonal.css('bottom', '70px');
+		gotopObj.show()
+	}
+};

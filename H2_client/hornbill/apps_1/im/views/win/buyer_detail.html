@@ -1,0 +1,76 @@
+<%# win/win_header.html%>
+<div class="content">
+	<div class="detail">
+		<div class="detail-title">基本信息</div>
+		<table class="detail-list" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>买家昵称</td>
+				<td class="tdc"></td>
+				<td>买家ID</td>
+				<td class="tdc"></td>
+				<td>邮箱</td>
+				<td class="tdc" style="border-right: 1px solid #ccc"></td>
+			</tr>
+		</table>
+	</div>
+	<div class="order">
+		<div class="order-title">订单列表</div>
+		<table class="order-list" cellspacing="0" cellpadding="0">
+			<tr>
+				<th>订单号</th>
+				<th>商品名称</th>
+				<th>颜色尺码</th>
+				<th>单价</th>
+				<th>实付金额</th>
+				<th>交易状态</th>
+				<th>收货人姓名</th>
+				<th>收货人电话</th>
+				<th>收货人地址</th>
+				<th style="border-right: 1px solid #ccc">邮编</th>
+			</tr>
+		</table>
+	</div>
+</div>
+
+<script type="text/html" id="order_list_tpl">
+	<?data.forEach(function(e){
+		var rowspan = e.goods.length > 1 ? 'rowspan=' + e.goods.length : '';
+	?>
+
+	<tr>
+		<td <?=rowspan?> style="color:#ff6699"><?=e.id?></td>
+		<td>
+			<img src="<?=e.goods[0].thumb?>" alt=""/>
+			<span><?=e.goods[0].title?></span>
+		</td>
+		<td><?=e.goods[0].attr[0].value?> <?=e.goods[0].attr[1].value?></td>
+		<td><?=e.goods[0].price?></td>
+		<td <?=rowspan?>> <?=e.total_price?> </td>
+		<td <?=rowspan?>> <?=e.status?> </td>
+		<td <?=rowspan?>> <?=e.address.nickname?> </td>
+		<td <?=rowspan?>> <?=e.address.phone?> </td>
+		<td <?=rowspan?>> <?=e.address.address?> </td>
+		<td <?=rowspan?> style="border-right: 1px solid #ccc"> <?=e.address.postcode?> </td>
+	</tr>
+		<? if (rowspan != '') {
+			var goods = e.goods;
+			var goodsLen = goods.length;
+			for (var i = 1; i < goodsLen; i++) {
+				var g = goods[i];
+		?>
+		<tr>
+			<td>
+				<img src="<?=g.thumb?>" alt=""/>
+				<?=g.title?>
+			</td>
+			<td><?=g.attr[0].value?> <?=g.attr[1].value?></td>
+			<td><?=g.price?></td>
+		</tr>
+			<? }; ?>
+		<? }; ?>
+	<? });?>
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use('im_win/buyer_detail');
+_use:", this._JSstack , this._JSmods); %>
+<%# win/win_footer.html%>

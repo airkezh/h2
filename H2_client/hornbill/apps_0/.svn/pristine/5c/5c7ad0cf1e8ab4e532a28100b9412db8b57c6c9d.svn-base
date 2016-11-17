@@ -1,0 +1,317 @@
+<%
+var goodsInfo = this.goods_info || {}
+	, goods = this.goods || {}
+	, spec = goods.specification
+	, len = goods.details && goods.details.length
+	, goodsRecommend = len ? goods.details[0] : ''
+	, goodsDetail = len ? goods.details[1] : ''
+	, goodsPic = len ? goods.details[2] : ''
+	, goodsSize = len ? goods.details[3] : ''
+	, goods_comments = this.goods_comments.cInfos || [] 
+	, gCommentsLen = this.goods_comments.pages.totalNum
+	, show_koubei_or_comments = !goodsInfo.is_cosmetic && goodsInfo.comment.totalUser
+
+	, hasSize = goods.size && Object.keys(goods.size).length
+	, gshow_list = this.goods_show_list.aInfo||[];
+%>
+
+<%* 菜单 nav %>
+<ul class="nav tab_tle">
+	<li id="details" class="tabArea cur">商品详情</li>
+	<% if(hasSize){%>
+	<li class="tabArea size">尺码</li>
+	<%}%>
+	<li id="comments" data-num="<%= gCommentsLen %>" class="recommend tabArea">
+		评价 (<%= gCommentsLen %>)
+	</li>
+	<li class="tabArea">
+		晒单 (<%= this.goods_show_list.pages.totalNum || 0 %>)
+	</li>
+</ul>
+
+<div class="goods_detail wrapBox">
+	<%* 商品详情 %>
+	<div class="goods_detail_content contentArea">
+		<% if(spec && spec.length){%>
+		<div class="norms">
+			<h3>商品规格</h3>
+			<div class="norms_type">
+				<p>
+					<% spec.map(function(data, idx) { %>
+						<span><%=data[0]%>：<b><%=data[1]%> </b></span>
+					<%});%>
+				</p>
+			</div>
+		</div>
+		<%}%>
+
+		<% goods.details && goods.details.map(function(data) { %>
+		<% if(data.content && data.content.length){%>
+		<div class="norms details">
+			<h3><%= data.title %></h3>
+			<div class="img_wrap">
+			<% data.content.map(function(cons){ %>
+				<%if(cons.type == 'img'){%>
+					<div class="more_pic">
+						<span class="load_img" asrc="<%=cons.value%>"></span>
+					</div>
+				<%}else if ('gap' == cons.type){%>
+					<p class="pro_txt"></p>
+				<%}else if ('txt' == cons.type){%>
+					<p class="pro_txt"><%=cons.value%></p>
+				<%}%>
+			<%});%>
+			</div>
+		</div>
+		<%}});%>
+		<% if(show_koubei_or_comments) {%>
+		<div class="norms">
+			<h3>购买评价</h3>
+			<ul class="evaluate">
+					<% goods_comments && goods_comments.map(function(data, idx){ if(idx < 3){%>
+					<li>
+						<a href="" class="user_picture">
+							<img src="<%= data.uInfo.avatar_c%>">
+						</a>
+						<div class="public_info">
+							<p>
+								<span class="pub_right">
+									<span class="star">
+										<% for(i = 0; i < data.level; i++){%>
+											<b class="open"></b>
+										<%};%>
+										<% for(i = 0; i < 5 - data.level; i++){%>
+											<b class="shut"></b>
+										<%};%>
+									</span>
+								</span>
+								<span class="ml_color"><%= data.uInfo.nickname%></span>
+							</p>
+							<p class="content"><%= data.content%></p>
+							<p class="good_info">
+								<span class="good_style"><%= data.style %></span><span class="comment_time"><%= data.time %></span>
+							</p>
+						</div>
+					</li>	
+					<%}});%>
+			</ul>
+			
+			<label class="more ml_color comm_more_list">
+				查看更多购买评价</label>
+			
+		</div>
+		<% }%>
+	</div>
+
+	<%* 尺码 %>
+	<%if(hasSize){%>
+	<div class="size contentArea none_f">
+		<%
+			var sizeInfo = goods.size;
+			var thContent = sizeInfo.head || [];
+			var sizeImages = sizeInfo.size_img || [];
+		%>
+		<%if(sizeInfo.type == "data" && thContent.length){%>
+			<%
+				var tdContent = sizeInfo.data;
+				var tr1Content = sizeInfo.size;
+				var tdNum = tr1Content.length;
+				var tdMax = 4;
+				var styleId = tdNum + 1 > tdMax ? 5 : tdNum + 1;
+			%>
+			<!-- <h2>商品尺码</h2> -->
+			<table class="size_table">
+				<tbody class="td-style<%= styleId %>">
+					<tr class="tr1">
+						<th>尺码</th>
+						<%tr1Content.map(function(v, k){ if(k <= tdMax - 1){%>
+						<td><%= v %></td>
+						<%}});%>
+					</tr>
+					<% thContent.map(function(v1, k1){%> 
+					<tr>
+						<th><%= v1 %></th>
+						<% tdContent.map(function(v2, k2){ if(k2 <= tdMax - 1){%> 	
+						<td class="size-content"><%= v2[k1] %></td>
+						<%}});%>
+					</tr>
+					<%});%>
+				</tbody>
+			</table>
+			<%if(tdNum > tdMax){%>
+			<p class="table_gap"> </p>
+			<table class="size_table">
+				<tbody class="td-style<%= styleId %>">
+					<tr class="tr1">
+						<th>尺码</th>
+						<%tr1Content.map(function(v, k){ if(k > tdMax - 1 && k < 2*tdMax){%>
+						<td><%= v %></td>
+						<%}});%>
+					</tr>
+					<% thContent.map(function(v1, k1){%> 
+					<tr>
+						<th><%= v1 %></th>
+						<% tdContent.map(function(v2, k2){ if(k2 > tdMax - 1 && k2 < 2*tdMax){%> 	
+						<td class="size-content"><%= v2[k1] %></td>
+						<%}});%>
+					</tr>
+					<%});%>
+				</tbody>
+			<%}%>
+			</table>
+			<%if(tdNum > 2*tdMax){%>
+			<p class="table_gap"> </p>
+			<table class="size_table">
+				<tbody class="td-style<%= styleId %>">
+					<tr class="tr1">
+						<th>尺码</th>
+						<%tr1Content.map(function(v, k){ if(k > 2*tdMax - 1){%>
+						<td><%= v %></td>
+						<%}});%>
+					</tr>
+					<% thContent.map(function(v1, k1){%> 
+					<tr>
+						<th><%= v1 %></th>
+						<% tdContent.map(function(v2, k2){ if(k2 > 2*tdMax - 1){%> 	
+						<td class="size-content"><%= v2[k1] %></td>
+						<%}});%>
+					</tr>
+					<%});%>
+				</tbody>
+			</table>
+			<%}%>
+		<%}else if(sizeInfo.type == "img" && sizeImages.length){%>
+			<%sizeInfo.size_img.map(function (image){%>
+			<%if(image.type == "img"){%>
+				<img src="<%= image.value %>" alt="size info" >
+			<%}else if(image.type == "gap"){%>
+				<p class="pro_txt"></p>
+			<%}%>
+			<%});%>
+		<%}else{%>
+			<p class="no-size-info">暂无尺码信息</p>
+		<%}%>
+	</div>
+	<%}%>
+
+	<%* 评价 %>
+	<div class="comments_content contentArea none_f">
+		<div class="norms">
+			<%if(gCommentsLen){%>
+				<h3>购买评价</h3>
+				<ul class="evaluate">
+				</ul>
+				<p class="more ml_color comm_more_list">
+					查看更多购买评价
+				</p>
+			<%}else{%>
+				<label class="more ml_color">
+				暂无购买评价</label>
+			<%}%>
+			
+		</div>
+	</div>
+	
+	<%* 晒单 %>
+	<div class="show_pic contentArea none_f">
+		<ul>
+			<% gshow_list&& gshow_list.map(function(item,index){%>
+			<li class="show-list">
+				<span class="user_picture">
+					<img src="<%= item.uinfo.avatar_a%>">   
+				</span>
+				<div class="public_info">
+					<p>
+						<span class="pub_right time"><%= item.article_create_time%></span>     
+						<span><%= item.uinfo.nickname%></span>    
+					</p>
+					<%if(item.article_htmlcontent){%>
+					<p class="content"><%= item.article_htmlcontent %></p> 
+					<%}%>
+
+					<%if(item.style){%>
+					<p class="goods-size"><%=item.style%></p> 
+					<%}%>
+					 <figure class="item-show-pic">
+					<%item.pinfo && item.pinfo.map(function(datas,index){%>
+						<img class="item-img" src="<%=datas.g_show_pic%>" alt="">
+					<%}); %>
+					</figure> 
+				</div>
+			</li>
+			<%});%>		
+		</ul>
+		<%if(gshow_list.length){%>
+		<p class="more ml_color show_more">
+			查看更多购物晒单
+		</p>
+		<%}else{%>
+		<p class="more ml_color">
+			暂无任何晒单
+		</p>
+		<%}%>
+	</div>
+</div>
+	
+<%* 晒单图片放大 %>
+<div class="img-show-mark" id="img-mark"></div>
+
+<%* 评论模板 %>
+<script type="text/html" id="twitter_comment">
+<? item && $.each(item , function(key , data){
+	data.start_gray = 5 - data.level;?>
+	<li>
+		<a href="" class="user_picture">
+			<img src="<?= data.uInfo.avatar_c?>">
+		</a>
+		<div class="public_info">
+			<p>
+				<span class="pub_right">
+					<span class="star">
+						<? for(i = 0; i < data.level; i++){?>
+							<b class="open"></b>
+						<?};?>
+						<? for(i = 0; i < data.start_gray; i++){?>
+							<b class="shut"></b>
+						<?};?>
+					</span>
+				</span>
+				<span class="ml_color"><?= data.uInfo.nickname?></span>
+			</p>
+			<p class="content"><?= data.content?></p>
+			<p class="good_info">
+				<span class="good_style"><?= data.style ?></span><span class="comment_time"><?= data.time ?></span>
+			</p>
+		</div>
+	</li>
+<?});?>
+</script>
+
+<%* 晒单模板 %>
+<script type="text/html" id="twitter_show_pic">
+<? item && item.forEach(function(data, index){?>
+	<li class="show-list">
+		<span class="user_picture">
+			<img src="<?= data.uinfo.avatar_a ?>">   
+		</span>
+		<div class="public_info">
+			<p>
+				<span class="pub_right time"><?= data.article_create_time ?></span>     
+				<span><?= data.uinfo.nickname ?></span>    
+			</p>
+			<? if(data.article_htmlcontent){ ?>
+			<p class="content"><?= data.article_htmlcontent ?></p> 
+			<?}?>
+
+			<?if(data.style){?>
+			<p class="goods-size"><?=data.style?></p> 
+			<?}?>
+			 <figure class="item-show-pic">
+			<?data.pinfo && data.pinfo.map(function(datas,index){?>
+				<img class="item-img" src="<?=datas.g_show_pic?>" alt="">
+			<?}); ?>
+			</figure> 
+		</div>
+	</li>
+<?});?>
+</script>

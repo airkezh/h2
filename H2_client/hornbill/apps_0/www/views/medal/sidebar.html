@@ -1,0 +1,32 @@
+<div class="sidebar">
+	<div class="person">
+		<%var ta = this.user_info.user_id == this.userInfo.user_id ? '我' : '她'%>
+		<%var isU = this.isU;%>
+		<%if(!this.user_id_in.length) ta = '我'%>
+		<% this.user_id_in = this.user_id_in.length ? this.user_info : this.userInfo;%>
+		<%if(this.user_id_in.user_id){%>
+		<div class="person-name">
+			<a class="person-pic" href="/u/<%= this.user_id_in.user_id%>">
+				<img src="<%= this.user_id_in.avatar_a || this.user_id_in.avatar_c%>" alt="">
+			</a>
+			<%= this.user_id_in.nickname%>
+
+		</div>
+		<h2><a href="/medal/u/<%= this.user_id_in.user_id%>"><span class="get-medal <%if(isU){%>last-medal<%}%>">
+				<%= ta%>最近获得的勋章
+
+			</span></a></h2>
+
+		<% } %>
+		<h2><a href="/medal/list/<%= this.user_id_in.user_id%>"><span class="get-medal <%if(!isU){%>last-medal<%}%>">美丽说勋章</span></a></h2>
+
+		<%if(this.user_id_in.user_id){%>	
+			<h2><a href="/person/u/<%= this.user_id_in.user_id%>"><span class="back-meilishuo">
+				返回<%= ta%>的美丽说
+			
+			</span></a></h2>
+		<%}%>
+
+	
+	</div>
+</div>

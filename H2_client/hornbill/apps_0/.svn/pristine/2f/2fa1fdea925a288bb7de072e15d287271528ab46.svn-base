@@ -1,0 +1,73 @@
+<script type="text/html" id="pcmob_window">
+<div class="pc_to_mob">
+	<a href="javascript:;" class="min_logo" style="display:none"></a>
+	<div class="extend_bg" >
+		<div class="wrapper">	
+			<div class="common_imgs" >
+                    <img class="red_bag" src="http://d01.res.meilishuo.net/pic/_o/b7/84/d8246ae104b035a318d10f6503b7_335_199.cf.png" alt="8.18红包">
+                    <img class="desc80" src="http://d02.res.meilishuo.net/pic/_o/28/c5/925307a68bbf9e1583dad0e40248_309_112.cf.png" alt="80元红包提示字" >
+                    <img class="yue_notice" src="http://d02.res.meilishuo.net/pic/_o/8f/93/53a22f4eb47bea1796c7f1c7f68c_84_87.cf.png" alt="月老送你提示框">
+            </div>
+            <div class="before input_msg">
+                <p class="notice">① 输入手机号，马上领福利 </p>
+                <input class="mobile" type="text" placeholder="请输入手机号码">
+                <div class="code_line">
+                    <input class="verity_code" type="text" placeholder="请输入验证码">
+                    <a href="javascript:;" class="checkImage">
+                        <img src="" alt="图片验证码">
+                    </a>
+                    <a href="javascript:;" class="get_btn">领取福利</a>
+                </div>
+                <p class="warning"></p>
+            </div>
+            <div class="after" style="display:none">
+            </div>
+            <div class="qr_content">
+                <p class="scan_notice">② 扫码下载客户端</p>
+                <img class="qr_img" src="http://d01.res.meilishuo.net/pic/_o/33/4c/546cbb3ae478f38265ff7f462917_280_280.cg.jpg" alt="二维码图片">
+            </div>
+            <div class="close">
+                <a href="javascript:;" class="close_btn">
+                    <img src="http://d04.res.meilishuo.net/pic/_o/69/02/415376c536fd60071113f99b43ad_30_31.cg.png" alt="">
+                </a>
+                <a href="javascript:;" class="close_long_btn">不再出现</a>
+            </div>
+		</div>
+	</div>
+</div>
+</script>
+
+<script type="text/html" id="result">
+	<? if( result.error_code == 0 || result.error_code == 1 ){?>
+	<div class="success">
+		<p class="suc_note">
+			红包及下载地址已经发送到你的手机啦</br>
+			用此手机号注册就能在优惠券中看到啦～
+		</p>
+		<a href="javascript:;" class="no_recive">没收到短信?</a>
+		<div class="re_send" style="display:none">
+			<input class="re_mobile" type="text" placeholder="" readonly="readonly">
+			<a class="resend_btn" href="javascript:;">
+				重新发送
+			</a>
+		</div>
+	</div>
+	<? }else if( result.error_code == 2 ) {?>
+	<img class="after_desc80 fail" src="http://d02.res.meilishuo.net/pic/_o/28/c5/925307a68bbf9e1583dad0e40248_309_112.cf.png" alt="80元红包提示字" alt="">
+	<img class="yuelao fail" src="http://d05.res.meilishuo.net/pic/_o/ae/e1/4e6568bce32ab4f0c1e7688d44ed_193_189.cg.png" alt="月老">
+	<p class="fail_reason old_user" >
+		亲，这个红包只发给客户端新用户哦TAT</br>
+		别忧桑，客户端老用户购物还可享美美豆抵扣优惠，么么哒~❤️
+	</p>
+	<? }else if( result.error_code == 3 ) {?>
+	<img class="after_desc80 fail" src="http://d02.res.meilishuo.net/pic/_o/28/c5/925307a68bbf9e1583dad0e40248_309_112.cf.png" alt="80元红包提示字" alt="">
+	<img class="yuelao fail" src="http://d05.res.meilishuo.net/pic/_o/ae/e1/4e6568bce32ab4f0c1e7688d44ed_193_189.cg.png" alt="月老">
+	<p class="fail_reason empty">
+		啊咧咧～月老今天的红包已经发完啦</br>别忧桑，明天早上0点准时继续发红包，么么哒～
+	</p>
+	<? } ?>
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/pc_to_mob');
+_use:", this._JSstack , this._JSmods ); %>

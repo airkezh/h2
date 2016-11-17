@@ -1,0 +1,264 @@
+<%# head.html%>
+<%
+var query = this._Request_query;
+var getLink = _extFn.getLink;
+var addTrace = this.ViewTools.addTrace;
+%>
+<div class="spinner midSpinner pa_f" style="top:250px;"></div>
+<div class="content_fluid v_hidden">
+	<% if (false && this.isNewUser) {%>
+	<div class="cursor_f ban_add_fav" style="overflow:hidden;margin-top:14px; height:100px; background:url('<%=this.PICTURE_URL%>images/window/land_ban10.jpg') center top no-repeat;">
+	</div>
+	<% } %>
+	<%if(this.adm1 && this.adm1.ad){%>
+		<%
+		this.adm1.admId = 'adm_top';
+		this.adm1._JSstack = this._JSstack;
+		this.adm1._JSmods = this._JSmods;
+		%>
+		<%= requireFn('commerce/adm_banner.html')(this.adm1);%>
+	<%}%>
+	
+	<% if (this.attr_description && false){ %>
+		<div class="dcb">
+			<h1 class="dcb_title redline3"><%= this.attr_description.title %></h1>
+			<p class="dcb_prefix"><%= this.attr_description.prefix %></p>
+			<p class="dcb_content"><%= this.attr_description.content %></p>
+			<div class="clear_f"></div>
+		</div>
+	<% } %>
+	<%
+		var tip = this.promotionData.promoTip;
+	%>
+	<div class="cata_title<% if(tip){ %> christmas<% } %>">
+		<% if (this.attr_title_keywords){ %>
+		<h1><%= this.attr_title_keywords.word_name%></h1>
+		<% } %>
+		<%# block/price.html%>
+		<% if(tip){ %>
+		<div class="banner"><img src="<%= tip %>"></div>
+		<% } %>
+	</div>
+
+	<div class="goods_wall">
+		<div class="corner_notic">
+			<div class="sidebar_rec">
+			<%
+			var navlen = this.navigate.length;
+			this.navigate && this.navigate.map(function(data,index){ 
+				data.link = addTrace(data.url , 'wlc_attr_' + index);
+			%>
+			<div class="list <%if(index == navlen-1){%>last<%}%>">
+				<div class="item">
+					<h3>
+						<a href="<%=data.link%>" target="_blank">
+							<%if(data.pic){%><img src="<%=data.pic%>"><%}%> 
+							<%=data.word_name%>
+						</a>
+					</h3>
+					<div class="cont">
+						<% 
+						data.sub_words && data.sub_words.map(function(words_data,words_index){ 
+							words_data.link = addTrace(words_data.url,'wlc_words_' + index + '_' + words_index);
+						%>
+						<a class="<%if(words_data.isred == 1){%>red_f<%}%> <%if(words_data.selected == 1){%>selected<%}%>" <%if(words_data.new_tab == 1){%>target="_blank"<%}%>  href="<%=words_data.link%>">
+							<%=words_data.word_name%>
+						</a>
+						<%});%>
+					</div>
+					<samp class="corner">&gt;</samp>
+				</div>
+				<div class="more">
+					<% 
+					data.children && data.children.map(function(cdata,cindex) { 
+						cdata.link = addTrace(cdata.url , 'wlc_nav_' + cindex);		
+					%>
+					<div class="nav_item">
+						<h4><a href="<%=cdata.link%>" target="_blank"><%=cdata.word_name%></a></h4>
+						<div class="cont">
+							<% 
+							cdata.sub_words && cdata.sub_words.map(function(wdata,windex){ 
+								wdata.link = addTrace(wdata.url,'wlc_navwords_' + cindex + '_' + windex);
+							%>
+							<a href="<%=wdata.link%>" <%if(wdata.new_tab == 1){%>target="_blank"<%}%>>
+								<%= wdata.word_name%>
+							</a>
+							<% });%>
+						</div>
+					</div>
+					<%});%>
+				</div>
+			</div>
+			<%});%>
+			</div>
+			
+			<% if(this.attr_keywords.length > 0 || this.attr_match.length > 0){%>
+			<div class="recmore_nav">
+			    <% if(this.attr_keywords.length > 0){%>
+		              <h2>喜欢<%= this.attr_title_keywords.word_name%>的MM还喜欢</h2>
+		              <div class="category">
+		                  <% this.attr_keywords && this.attr_keywords.map(function(data){%>
+		                      <%if(data.isBrand){
+		                        var url = '/guang/brand/' + data.word_name + getLink({'frm' : 'section4_keyWords'});
+		                      }else{
+		                        var url = '/guang/attr/' + data.word_id + getLink({'frm' : 'section4_keyWords'});
+		                      }%>
+		                      <a href="<%= url%>" target="_blank"><%= data.word_name%></a>
+		                  <%});%>
+		                  <div class="clear_f"></div>
+		              </div>
+		        <%}%>
+		        <% if(this.attr_match.length > 0){%>
+		              <h2><%= this.attr_title_keywords.word_name%>的推荐搭配</h2>
+		              <div class="category last">
+		                  <% this.attr_match && this.attr_match.map(function(data){%>
+		                      <% if(data.isBrand){
+		                          var url = '/guang/brand/' + data.word_name + getLink({'frm' : 'section4_dapei'});
+		                      }else{
+		                          var url = '/guang/attr/' + data.word_id + getLink({'frm' : 'section4_dapei'});
+		                      }
+		                      %>
+		                      <a target="_blank" href="<%= url%>" target="_self"><%= data.word_name%></a>
+		                  <%});%>
+		                  <div class="clear_f"></div>
+		              </div>
+		        <%}%>
+			</div>
+			<%}%>
+
+			<div class="attr_box">
+			   <h2 class="f14_f">人气单品排行</h2>
+			   <ul class="items_pop">
+		           <%if(this.attr_top.length > 0){%>
+	                   <% this.attr_top.map(function(data , index){%>
+	                           <li class="<%if(index % 2 == 0){%>odd_num<%}%>">
+	                                <a href="<%= data.url%>" target="_self">
+	                                   <span class="right_f gray_f"><%= data.total%>件</span>
+	                                   <span class="<%if(index >= 3){%>num2<%}else{%>num1<%}%>"><%= index+1%>
+	                                   </span>
+	                                    <%= data.word_name%>
+	                                </a>
+	                          </li>
+	                  <%});%>
+		          <%}%>
+			  </ul>
+			</div>
+
+		</div>
+		<div class="corner_stamp">
+		<%
+			var iphoneWords = ['iphone4', 'iphone套', 'iphone4s', '手机主题', '手机底座', '手机套', '手机包', 'ipod', '苹果', '苹果皮'];
+			var androidWords = ['htc', '小米手机', '手机链', '手机挂饰'];
+			var ipadWords = ['ipad'];
+			var appUrls = { 'iphone' : 'http://meilishuo.com/u/DhoJy9?frm=iphonedownload',
+				'android' : 'http://meilishuo.com/u/EBYZ7s?frm=androiddownload',
+				'ipad' : 'http://meilishuo.com/u/C0N3uk?frm=ipaddownload'};
+			var appImgs = { 'iphone' : this.PICTURE_URL + 'images/ads/iphone_0723.jpg',
+				'android' : this.PICTURE_URL + 'images/ads/android_0723.jpg',
+				'ipad' : this.PICTURE_URL + 'images/ads/ipad_0723.jpg' };
+			var wordname = this.attr_title_keywords.word_name.toLowerCase(), appType = '';
+			if (iphoneWords.indexOf(wordname) > -1) appType = 'iphone';
+			else if (androidWords.indexOf(wordname) > -1) appType = 'android';
+			else if (ipadWords.indexOf(wordname) > -1) appType = 'ipad';
+			if (appType !== '') {
+				var appHeight = appType == 'ipad' ? 254 : 304;
+		%>
+			<div class="goods_ad" style="height:<%=appHeight%>px;">
+				<a href="<%= appUrls[appType]%>" target="_blank">
+					<img src="<%=appImgs[appType]%>">
+				</a>
+			</div>
+		<% } %>
+			<div class="poster_p4p"></div>
+		</div>
+	</div>
+	<div class="spinner botSpinner none_f"></div>
+	<div class="clear_f"></div>
+	<div class="paging_panel c_f none_f">
+	<%# paging.html%>
+	</div>
+	<%if(this.adm3 && this.adm3.ad){%>
+		<%
+		this.adm3.admId = 'adm_bot';
+		this.adm3._JSstack = this._JSstack;
+		this.adm3._JSmods = this._JSmods;
+		%>
+		<%= requireFn('commerce/adm_banner.html')(this.adm3);%>
+	<%}%>
+
+</div>
+<%# poster.html%>
+<script type="text/html" id="poster_price">
+<ul class="poster_price add_menu_leo hw76">
+	<li><a href="<%=getLink({'price' : 'all'} , query)%>">全部</a></li>
+	<li><a href="<%=getLink({'price' : '0~50'} , query)%>">0~50</a></li>
+	<li><a href="<%=getLink({'price' : '51~100'} , query)%>">51~100</a></li>
+	<li><a href="<%=getLink({'price' : '101~200'} , query)%>">101~200</a></li>
+	<li><a href="<%=getLink({'price' : '201~500'} , query)%>">201~500</a></li>
+	<li><a href="<%=getLink({'price' : '501~10000'} , query)%>">500以上</a></li>
+</ul>
+</script>
+<!--春节活动-START-->
+<%if(this.isShowSpring && this.is_join && (this.is_join.join == 0 || this.is_join.join == -1)){%>
+<script type="text/html" id="luckBagPop">
+<div class="luckBagPop" style="padding: 16px 0;height:200px;">
+	<p class="luckgirl red_f left_f f16_f" style="margin-left:160px;display:inline;">恭喜！捡到今天的幸运福袋！</p>
+	<p class="luckgirl2 red_f left_f f16_f none_f" style="margin-left:160px;">分享成功！恭喜你获得新福袋！</p>
+	<div class="close_z" style="margin:0 8px;"></div>
+	<div class="clear_f"></div>
+	<p class="c_f mt14_f f16_f fb_f new_num" style="color:#C03;">幸运号码：<?=luck_num?></p>
+	<div class="fillInfo mt14_f c_f f16_f <?if(status==2){?>none_f<?}?>">
+		<p class="f12_f"><span class="red_f">提示：</span>请完善您的中奖信息，以便中奖后及时联系您！</p>
+		<p style="margin-top:12px;">
+			<span>姓名：</span><input type="text" name="name" style="width:135px;">
+			<span style="margin-left:24px;">电子邮箱：</span><input type="text" name="email" style="width:135px;">
+		</p>
+		<p style="margin-top:6px;">
+			<span>电话：</span><input type="text" name="phone" style="width:135px;">
+			<span style="margin-left:24px;">收件地址：</span><input type="text" name="address" style="width:135px;">
+		</p>
+		<p class="sure btn left_f sureBgBtn" style="margin-left:200px;margin-top:18px;display:inline;">确认拿福袋</p>
+		<div class="none_f red_f f12_f left_f bagHint" style="margin:20px 0 0 5px;">请完善个人信息</div>
+		<div class="clear_f"></div>
+	</div>
+	<div class="shareLuck <?if(status==1){?>none_f<?}?>">
+		<p class="c_f mt14_f">分享到微博/Qzone就可以再获得一个福袋哦!</p>
+		<div class="mt8_f" style="border:1px solid #CCC; width:392px; height:42px; padding:8px; margin-left:60px;">
+			新年福利~来美丽说逛街，就能免费领福袋啦！200份好礼等你来拿，先到先得哦~【活动地址：http://www.meilishuo.com/huodong/chunjie/】
+		</div>
+		<p class="sure btn shareBgBtn left_f" style="margin-left:200px;margin-top:18px;display:inline;">分享拿福袋</p>
+	</div>
+	<div class="luckInfo none_f c_f">
+		<p class="f16_f" style="margin-top:26px;">开奖时间为2月18日！记得明天来领福袋哦！</p>
+		<a class="mt10_f block_f" href="/huodong/chunjie/" target="_blank">查看活动详情</a>
+		<div class="c_f mt14_f">
+		<span class="sure btn goonBtn">继续逛<%=this.attr_title_keywords.word_name%></span>
+		</div>
+	</div>
+</div>
+<div class="shareLuckPop none_f" style="padding:16px 0; height:200px;">
+	<div class="close_z" style="margin:0 8px;"></div>
+	<p class="c_f f16_f" style="margin-top:28px;">请选择一个你要分享到的地方：</p>
+	<p style="margin-top:32px;" class="c_f">
+		<a class="fd_ico3" href="/settings/bind/weibo" target="_blank">&nbsp;</a>
+		<a class="fd_ico4" style="margin-left:24px;" href="/settings/bind/qzone" target="_blank">&nbsp;</a>
+	</p>
+</div>
+</script>
+<script>
+	Meilishuo.config.attrWord = '<%=this.attr_title_keywords.word_name%>';
+</script>
+<%}%>
+<!--春节活动-END-->
+<script>
+	<%= this.p4p? 'Meilishuo.config.p4p = { tInfo : '+JSON.stringify(this.p4p)+'};':'' ;%>
+	<%= this.poster0? 'Meilishuo.config.poster0 = '+JSON.stringify(this.poster0)+';':'' ;%>
+	fml.vars.word_id = <%= this.attr_title_keywords.word_id%>;
+</script>
+
+<% $_ENGINE_SELF.callFn("useModule")("fml.use('page/poster0');", this._JSstack , this._JSmodsFast ); %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/attr');
+	fml.use('page/poster_guang');
+_use:", this._JSstack , this._JSmods); %>
+<%# foot.html%>

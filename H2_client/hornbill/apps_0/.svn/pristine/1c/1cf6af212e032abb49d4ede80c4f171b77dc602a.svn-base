@@ -1,0 +1,70 @@
+<%
+var goods = this.goods || {};
+var details = goods.details || [];
+var sizeInfo = null;
+
+details.map(function(k) { 
+	var content = k.content;
+	if(content && content.length){
+		content.map(function (k1){
+			if(k1.type == 'table'){
+				sizeInfo = k1.value;
+			}
+		});
+	}
+});
+%>
+
+<div class="goods_detail wrapBox">
+	<ul class="goods-detail-nav">
+		<li class="item curr"><b>商品详情</b></li>
+		<li class="item"><b>尺码信息</b></li>
+	</ul>
+	<div class="goods_detail_content contentArea show-less">
+		<% details && details.map(function(data) { %>
+		<% if(data.content && data.content.length){%>
+		<div class="norms details">
+			<h3><%= data.title %></h3>
+			<div class="img_wrap">
+			<% data.content.map(function(cons){ %>
+				<%if(cons.type == 'img'){%>
+					<div class="more_pic">
+						<span class="load_img" asrc="<%=cons.value%>"></span>
+					</div>
+				<%}else if ('gap' == cons.type){%>
+					<p class="pro_txt"></p>
+				<%}else if ('txt' == cons.type){%>
+					<p class="pro_txt"><%=cons.value%></p>
+				<%}%>
+			<%});%>
+			</div>
+		</div>
+		<%}});%>
+	</div>
+
+	<div class="size_content contentArea none_f">
+		<%if(sizeInfo){%>
+			<table class="size_table">
+				<%
+					if(sizeInfo.head){
+						var headLength = sizeInfo.head.length;
+					}
+				%>
+				<tbody>
+				<% sizeInfo.head && headLength && sizeInfo.head.map(function(v1, k1){ if(k1 <= 4){%> 
+					<tr>
+						<th style="<%if(headLength >= 4){%>width: 19%<%}else if(headLength == 2){%>width:40%; text-align: left;<%}else if(headLength == 3){%>width:30%;<%}%>"><%= v1 %></th>
+						<% sizeInfo.body && sizeInfo.body.length && sizeInfo.body.map(function(v2){%> 	
+						<td style="<%if(headLength == 2){%>text-align: left;<%}%>"><%= v2[k1] %></td>
+						<%});%>
+					</tr>
+				<%}});%>
+				</tbody>
+			</table>
+		<%}else{%>
+			<h3 class="no-size-info">暂无尺码信息</h3>
+		<%}%>
+	</div>
+
+	<div class="show-detail-btn show-all"></div>
+</div>

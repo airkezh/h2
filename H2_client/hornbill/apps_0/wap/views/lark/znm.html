@@ -1,0 +1,31 @@
+<%# head_simple.html%>
+<div class="mian" style="overflow:hidden;">
+	<p></p>
+	<div class="banner">
+		<img src="http://img.meilishuo.net/css/images/wap/activity/znm/top.png" />
+		<h1 class="product_num"><%= this.productNum%></h1>
+		<h1 class="chance_num"><%= this.chanceNum%></h1>
+	</div>
+	<div class="images">
+		<% for(var i = 0; i < this.pic.length; i++){%>
+			<div class="float-l">
+				<img src="http://img.meilishuo.net/css/images/wap/activity/znm/<%= this.pic[i].num %>.jpg" num="<%= this.pic[i].at%>" />
+			</div>
+		<%}%>
+	</div>
+	<div class="start">
+		<img src="http://img.meilishuo.net/css/images/wap/activity/znm/start.png" />
+	</div>
+	<div class="error">
+		<img src="http://img.meilishuo.net/css/images/wap/activity/znm/sorry.png" />
+	</div>
+
+</div>
+<script>
+fml.vars.productNum = "<%= this.productNum%>";
+fml.vars.chanceNum = "<%= this.chanceNum%>";
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/lark/lark');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html%>

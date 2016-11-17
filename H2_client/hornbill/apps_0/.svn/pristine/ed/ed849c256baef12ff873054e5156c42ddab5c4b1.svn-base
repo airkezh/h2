@@ -1,0 +1,98 @@
+<%#head.html%>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<%
+	var listData = this.listData || {};
+	var listDataData = listData.data || {};
+	var bannerData= listDataData.banner || {};
+%>
+<a href="<%= bannerData.url ? bannerData.url : 'javascript:;'%>" xr="<%= this.listData_XR %>" class="<%= this.cid != 8147 ? 'banner' : 'bnrOnSale'%>">
+	<img src="<%= bannerData.img%>" />
+</a>
+<section class="box" id="box">
+	<ul class="goods_wall" data-xr="<%= this.listData_XR %>">
+		<% listData.data && listData.data.small && listData.data.small.map(function(v, index){ 
+			var isBuy = parseInt(v.twitter_id)==0 ? false : true ;
+		%>
+			<li data-id="<%= v.id %>" data-tid="<%= v.twitter_id %>">
+				<div class="inner">
+					<a href="javascript:;" class="pic <%= isBuy ? 'done-link' : 'ing-link' %>">
+						<img src="<%= v.main_img %>" alt="">
+					</a>
+					<p class="title"><%= v.title %></p>
+					<p class="price">
+						<% if(isBuy){ %>
+							<span><%= v.sale_price %></span>
+							<del><%= v.price %></del>
+						<% }else{ %>
+							<span>凑人中</span>
+						<% } %>
+					</p>
+					<a href="javascript:;" class="buy-btn <%= isBuy ? 'done-link' : 'ing-link' %>"><%= isBuy ? '去抢购' : '去围观' %></a>
+				</div>
+			</li>
+		<% }); %>
+	</ul>
+</section>
+<a class="gotop" style="bottom:<%if(this.isIphone){%>60<%}else{%>20<%}%>px">
+	<img src="http://d02.res.meilishuo.net/img/_o/41/62/c1d9e0f159bfb506b27dea648ccb_80_80.cg.png" />
+</a>
+
+<script type="text/html" id="intro">
+	<div class="dialog_box">
+		<h1>活动规则</h1>
+		<p>1、打开微信App，找到“我->钱包->美丽说“,找到本活动</p>
+		<p>2、选择你希望1元购买的T恤，召集3位姐妹一起参加活动，姐妹参加并完成任务后4人一起1元领取T恤</p>
+		<p>3、优惠最终会以优惠券的形式下发到你的微信互联账号，用户微信互联账号登录美丽说</p>
+		<p>4、进入本活动页面，使用优惠券再支付1元即可获得T恤</p>
+		<p>5、优惠券仅支持购买本次活动T恤.优惠券不允许与其他优惠券共同使用</p>
+		<p>6、美丽说对活动期间的各项规则保留最终解释权。</p>
+		<button class="btn">知道了~</button>
+	</div>
+</script>
+
+<%= requireFn('wapShare.html')({
+	'share' : this.share 
+    , 'shareTitle' : '选择分享到'
+    , '_JSstack' : this._JSstack
+	, '_JSmods' : this._JSmods
+}); %>
+<script>
+	fml.vars.mlsHost = '<%= this.mlsHost%>';
+	fml.vars.inAppTabbar = <%= this.inAppTabbar %>;
+	fml.vars.shareData = <%= JSON.stringify(this.shareData) %>;
+	fml.vars.listData = <%= JSON.stringify(this.listData.data) %>;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/zulily/desire320',function(){
+		if(Meilishuo.config.os.weixinBrowser){
+			$.ajax({
+				url: '/aj/wx/sign'
+				, data: {
+					url:window.location.href
+				}   
+				, dataType: 'json'
+				, type: 'post'
+				, success : function(data){
+					wx.config({
+						debug:false
+						//debug:false 
+						, appId: data.info.appId
+						, timestamp: data.info.timestamp
+						, nonceStr: data.info.nonceStr
+						, signature: data.info.signature
+						, jsApiList: [
+							'checkJsApi',
+							'onMenuShareTimeline',
+							'onMenuShareAppMessage',
+							'onMenuShareQQ',
+							'onMenuShareWeibo'
+						]   
+					}); 
+				},
+				error: function(err){
+				}
+			})
+		}
+	});
+_use:", this._JSstack, this._JSmods); %>
+<%#foot.html%>

@@ -1,0 +1,25 @@
+<%if(this.match){%>
+<ul class="like_list">
+	<li>
+		<div class="s_picBox">
+			<a class="s_pic" href="<%= this.match.goods_info[0].link_url%>" target="_blank" title="<%= this.match.goods_info[0].goods_title%>"><img src="<%= this.match.goods_info[0].image.image[0]%>" /></a>
+		</div>
+		<a class="txt" target="_blank" href="<%= this.match.goods_info[0].link_url%>"><%= this.match.goods_info[0].goods_title%></a>
+	</li>
+	<%this.match && this.match.goods_info && this.match.goods_info.map(function(data , index){  %>
+	<% if(index > 0){ %>
+	<li class="plus_icon">+</li>
+	<li>
+		<div class="s_picBox">
+			<a class="s_pic" href="<%= data.link_url%>" target="_blank" title="<%= data.goods_title%>"><img src="<%= data.image.image[0]%>" /></a>
+		</div>
+		<a class="txt" target="_blank" href="<%= data.link_url%>"><%= data.goods_title%></a>
+		<div class="info-box">
+			<span class="info-box-price">¥ <%= data.price == '' ? data.original_price : data.price%></span>
+			<span class="info-box-num"><%= data.sales ||0%>人购买</span>
+		</div>
+	</li>
+	<%}%>
+	<%})%>
+</ul>
+<%}%>

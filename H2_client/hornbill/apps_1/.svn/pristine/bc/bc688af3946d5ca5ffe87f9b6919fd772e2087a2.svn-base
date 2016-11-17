@@ -1,0 +1,67 @@
+<%# sq/header.html%>
+<%
+	var goods = this.order_info ? this.order_info.info.goods : []
+%>
+<div class="wrap">
+	<div class="order_ses">
+		<p class="ok_wrap">
+			<img src="<%=this.PICTURE_URL%>/images/wap/web/wx/ok_icon.png" class="ok_icon" />
+			恭喜，支付成功
+		</p>
+	</div>
+
+	<div class="order_info" id="textAreaList"></div>
+
+	<!-- <p class="firBind firstSelect"><a class="fir_bind" href="/sq/qq_rule">首次绑卡返10元现金 活动规则>></a></p> -->
+	<div class="check_new">
+		<a href="/sq/user" class="ml_color check_btn">查看订单</a>
+		<a href="/sq/" class="ml_color check_btn">继续逛</a>
+	</div>
+	<!--p class="attention">
+		<input type="checkbox" checked="checked" />
+		关注美丽说服务号
+	</p-->
+	<div class="mls_kefu">
+		如果你对该笔交易有任何疑问<br/>
+		请致电美丽说客服：<a href="tel:4000800577">400-080-0577</a>
+	</div>
+</div>
+<script type="text/html" id="goodsInfoTmp">
+	<div class="goods">
+		<? this.goods && this.goods.map(function(goods, i){ ?>
+			<? var pageName = goods.pageName ? goods.pageName : 'undefined'; ?>
+		<a href="/sq/detail?tid=<?= goods.twitter_id?>&page_name=<?= pageName?>" class="next_icon ses_next">
+			<img src="<%=this.PICTURE_URL%>/images/wap/web/wx/next.png" />
+		</a>
+		<div class="goods_info_wrap">
+			<a href="/sq/detail?tid=<?= goods.twitter_id?>&page_name=<?= pageName?>" class="goods_img">
+				<img src="<?= goods.b_pic_url?>" />
+			</a>
+			<div class="goods_info">
+				<a href="/sq/detail?tid=<?= goods.twitter_id?>&page_name=<?= pageName?>">
+					<p class="goods_title"><?= goods.goods_title?></p>
+				</a>
+				<p class="goods_size">
+				<?goods.prop && goods.prop.map(function(data, i){?>
+				<?if(data.is_show){?>
+					<span><?= data.name?>：<?= data.value?></span>
+				<?}?>
+				<?});?>
+				</p>
+				<p class="goods_price">
+					<span>价格：<?= goods.price?></span>
+					<span>数量：<?= goods.amount?></span>
+				</p>
+			</div>
+		</div>
+		<?});?>
+	</div>
+</script>
+<script>
+	<%= 'fml.vars.transaction_id ="' + this.transaction_id + '";' %>
+	<%='fml.vars.order_id ="'+ this.order_id + '";'%>
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/sq/success')
+_use:", this._JSstack , this._JSmods ); %>
+<%# sq/footer.html%>

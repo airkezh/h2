@@ -1,0 +1,93 @@
+<%# head.html%>
+<% var getLink = _extFn.getLink; %>
+<%
+	var eventId = this.event_id;
+	var rush = this.rush && this.rush.data
+		, tabs = rush && rush.tabs
+		, banner = rush && rush.banner_pc;
+%>
+
+<div class="wrap">
+	<div class="banner" style="background:url('<%= banner %>') no-repeat center top;"></div>
+	<div class="rush_nav" id="rush_nav">
+		<div class="nav_box">
+			<div class="nav_cont">
+				<%if(tabs && tabs.length > 0){%>
+				<ul class="nav_tabs">
+					<%tabs.forEach(function(item, i){%>
+					<li <%if(this.tab){%><%= item.tab == this.tab ? 'class="curr"' : '' %><%}else{%><%= i == 0 ? 'class="curr"' : '' %><%}%>>
+						<a href="/activity/tuan/rushto/<%=eventId%><%=getLink({'tab': item.tab,'sbase':this.sbase, 'sort':this.sort })%>#rush_nav"><%= item.title%></a>
+					</li>
+					<%});%>
+				</ul>
+				<%}%>
+				<ul class="range">
+			        <li <%if(this.sbase === "0"||!this.sbase){%> class="active"<%}%>>
+			        	<a href="/activity/tuan/rushto/<%=eventId%><%=getLink({'tab':(this.tab ? this.tab : ''),'sbase':0,'sort':0})%>#rush_nav">默认</a>
+			        	<span class="special">|</span>
+			        </li>
+			        <li<%if(this.sbase === "1"){%> class="active"<%}%>>
+			          	<a href="/activity/tuan/rushto/<%=eventId%><%=getLink({'tab': (this.tab ? this.tab : ''),'sbase':1,'sort':0})%>#rush_nav">人气</a>
+			          	<span class="special">|</span>
+			        </li>
+			        <li<%if(this.sbase === "4"){%> class="active"<%}%>>
+			          	<a href="/activity/tuan/rushto/<%=eventId%><%=getLink({'tab':(this.tab ? this.tab : ''),'sbase':4,'sort':0})%>#rush_nav">销量</a>
+			          	<span class="special">|</span>
+			        </li>
+			        <li<%if(this.sbase === "3"){%> class="active"<%}%>>
+			          	<a href="/activity/tuan/rushto/<%=eventId%><%=getLink({'tab': (this.tab ? this.tab : ''),'sbase':3,'sort':(this.sbase === "3" && this.sort === "1")? '0' : '1'})%>#rush_nav">价格<i class="<%= (this.sbase === "3"&&this.sort === "1")? 'arrow_t' : 'arrow_d';%>">&nbsp;</i></a>
+			        </li>
+			    </ul>
+			</div>
+		</div>
+	</div>
+	<div class="goods_wall_box">
+		<div class="spinner midSpinner"></div>
+		<div class="goods_wall"></div>
+	</div>
+	<div class="spinner botSpinner none_f"></div>
+	<div class="clear_f"></div>
+</div>
+<div class="nav_right d-nav">
+	<div class="menu_main">
+	</div>
+</div>
+<script type="text/html" id="posterWall">
+	<?for(var i = 0 ; i < tInfo.length; i++){
+		var item = tInfo[i];
+	?>
+		<li class="goodsItem poster_wall">
+			<?if(item.horizontal_mark && item.horizontal_mark.length > 0 && item.horizontal_mark[0] && item.horizontal_mark[0].img_url){?>	
+			<div class="new-png">
+				<span style="position:relative;left:0px">
+					<img src="<?= item.horizontal_mark[0].img_url?>">
+				</span>
+			</div> 	
+			<?}?>		 			
+			<a class="s_pic" href="<?= item.link?>" target="_blank" title="">	 
+				<img src="<?= item.goods_pic_url?>" class="bs_load_img">
+			</a>
+			<div class="desc_box">
+				<p class="txt">
+					<a href="<?= item.link ?>" target="_blank"><?= item.goods_title?></a>
+				</p>
+				<p class="pold">原价：<s><?= item.origin_price ?></s></p>
+				<p class="info-goods" style="border:none;">
+					疯抢价<span class="f-18">¥</span>
+					<span class="f-14"><?= item.goods_price ?></span>
+					<span class="num"><?= item.sale_nums ?><i>人抢</i></span>
+				</p>
+			</div>
+		</li>
+	<?}?>
+</script>
+<script type="text/javascript">
+fml.vars.event_id = <%= this.event_id%>;
+fml.vars.isShow = <%= this.ViewTools.timeStuff({'2015/11/1 00:00:00' : 1, '2015/11/11 23:59:59' : 0} , 0 ) %>;
+</script>
+
+<% $_ENGINE_SELF.callFn("useModule")("fml.use('page/poster0');", this._JSstack , this._JSmodsFast ); %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/huodong/tuan_rush');
+_use:", this._JSstack , this._JSmods); %>
+<%# foot.html%>

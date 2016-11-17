@@ -1,0 +1,799 @@
+<%
+	/**
+ 	 * @fileoverview 首页－美美豆乐园
+     * @requires zepto
+     * @author kehuang@meilishuo.com
+     * @date 2015-10-20
+     */
+%>
+
+<%#head.html%>
+<%
+	var curUserIsLogin = this.isLogin;
+	var curUserInfo = this.userInfo;
+	var curPageData = this.pageData;
+	var curSignData = this.signData;
+	var curTaskData = this.taskData;
+	var curBeansData = this.beansData;
+	var curBeautyData = this.percentData;
+	var curGiftPageData = this.giftPageData;
+	var curCalendarData = this.calendarData;
+	var curIsNormalGetData = this.isNormalGetData;
+	var curUserTaskData = (curTaskData && curTaskData.data) ? curTaskData.data : [];
+	var curUserSignData = (curSignData && curSignData.data) ? curSignData.data : {};
+	var curUserBeansData = (curBeansData && curBeansData.data) ? curBeansData.data : {};
+	var curUserBeautyData = (curBeautyData && curBeautyData.data) ? curBeautyData.data : {};
+	var curUserCalendarData = (curCalendarData && curCalendarData.data) ? curCalendarData.data : {};
+	var curRunningmanData = (curUserSignData && curUserSignData.runningman) ? curUserSignData.runningman : {};
+	var curCateData = (curPageData && curPageData.cate_list) ? curPageData.cate_list : [];
+	var curActivityDate = (curPageData && curPageData.activity_date) ? curPageData.activity_date : {};
+	var curDailySkinData = (curPageData && curPageData.daily_skin) ? curPageData.daily_skin : {};
+	var curActivitySkinData = (curPageData && curPageData.activity_skin) ? curPageData.activity_skin : {};
+	var curCateId = (curCateData[0] && curCateData[0].cate_id) ? curCateData[0].cate_id : '';
+	var curServerWeek = this.serverDay;
+	var curServerDate = this.serverDate;
+	var curServerTime = curServerDate.getTime();
+	var curServerYear = curServerDate.getFullYear();
+	var curServerMonth = curServerDate.getMonth();
+	var curServerDay = curServerDate.getDate();
+	var curActivityStartTime = new Date(curActivityDate.start_time || '').getTime() || 0;
+	var curActivityEndTime = new Date(curActivityDate.end_time || '').getTime() || 0;
+
+	var con_sign_days = 5;
+	var cur_server_month = curServerMonth + 1;
+	var str_server_day = (curServerDay < 10) ? ('0' + curServerDay) : curServerDay;
+	var str_server_month = (cur_server_month < 10) ? ('0' + cur_server_month) : cur_server_month;
+	var str_server_date = curServerYear + '-' + str_server_month + '-' + str_server_day;
+	var beans_tips_is_show = curUserBeansData.is_show || 0;
+	var user_beauty = curUserBeautyData.score || '- -';
+	var user_remain_beauty = curUserBeautyData.remaind_score || 0;
+	var user_percent = curUserBeautyData.percent ? (curUserBeautyData.percent + '%') : '- -%';
+	var user_name = (curUserInfo && curUserInfo.nickname) ? curUserInfo.nickname : '- -';
+	var user_level = curUserSignData.level || 0;
+	var user_temp_beans = curUserSignData.beans_available || 0;
+	var user_available_beans = curUserSignData.beans_available || '- -';
+    var user_expire_beans = curUserSignData.beans_to_expire || 0;
+    var user_sign_days = curUserSignData.continues || 0;
+    var user_need_days = curUserSignData.needs || 0;
+    var user_gain_beans = curUserSignData.bonus || 0;
+    var user_sign_status = curUserSignData.status || 0;
+    var user_remind_status = curUserSignData.remind || 0;
+    var is_show_award_layer = curRunningmanData.status || 0;
+    var runningman_award_beans = curRunningmanData.bonus || 0;
+	var user_big_head = (curUserInfo && curUserInfo.avatar_c) ? curUserInfo.avatar_c.replace('/c/', '/a/') : 'http://d06.res.meilishuo.net/ap/a/78/32/59c5fb29fb8ea04deddb2ad0ff42_256_256.cf.png';
+	var user_small_head = (curUserInfo && curUserInfo.avatar_c) ? curUserInfo.avatar_c.replace('/c/', '/b/') : 'http://d06.res.meilishuo.net/ap/a/78/32/59c5fb29fb8ea04deddb2ad0ff42_256_256.cf.png';
+
+	var str_sign_days = '';
+	var prefix_sign_days = '';
+	var sign_days_len = (user_sign_days + '').length;
+
+	for (var i = 0; i < (3 - sign_days_len); i++) {
+		prefix_sign_days += '0';
+	}
+
+	str_sign_days = prefix_sign_days + user_sign_days;
+
+	var update_user_level = (user_level < 4) ? (user_level + 1) : 4;
+
+	var tempSwipeBannerArr = [];
+    var curSwipeBannerArr = curPageData.swipe_banner || [];
+	var curSwipeBannerLen = curSwipeBannerArr.length;
+
+	for (var i = 0; i < curSwipeBannerLen; i++) {
+		var curSwipeBannerData = curSwipeBannerArr[i],
+			banner_begin_time = new Date(curSwipeBannerData.begin_time || '').getTime() || 0,
+			banner_end_time = new Date(curSwipeBannerData.end_time || '').getTime() || 0,
+			banner_status = ((curServerTime >= banner_begin_time) && (curServerTime <= banner_end_time)) ? true : false;
+
+		banner_status && tempSwipeBannerArr.push(curSwipeBannerData);
+	}
+
+	curPageData.swipe_banner = tempSwipeBannerArr;
+
+	var isActivityDay = ((curServerTime > curActivityStartTime) && (curServerTime < curActivityEndTime)) ? 1 : 0;
+	var curPageSkinData = isActivityDay ? curActivitySkinData : curDailySkinData;
+	var signed_mark_icon = curPageSkinData.signed_mark_icon || 'http://d04.res.meilishuo.net/pic/_o/47/45/3eac3e17057ab806e18f4e79719e_76_96.cj.png';
+	var nosign_mark_icon = curPageSkinData.nosign_mark_icon || 'http://d04.res.meilishuo.net/pic/_o/50/df/640ba739466134f43bf508a807ec_76_96.cj.png';
+%>
+
+<div class="main">
+	<%
+		if (beans_tips_is_show) {
+			var beans_to_expire = curUserBeansData.beans_to_expire || 0,
+				expire_time = curUserBeansData.expire_time || '';
+
+			if (beans_to_expire != 0) {
+	%>
+	<div id="beans_tips_wrap" class="beans_tips_wrap">您有<%= beans_to_expire %>美美豆 将在<%= expire_time %>过期</div>
+	<%
+			}
+		}
+
+		var top_banner_class = '',
+			login_banner_class = '',
+			desc_text_color = curPageSkinData.desc_color || '#fff',
+			desc_text_style = 'color:' + desc_text_color + ';',
+			login_btn_style = 'background-color:' + desc_text_color + ';',
+			head_bg_img = curPageSkinData.head_bg || 'http://d05.res.meilishuo.net/pic/_o/3c/10/e553d405d61434f7c583cf214811_750_346.cj.png',
+			top_head_style = 'background:url(' + head_bg_img + ') no-repeat;background-size:100%;';
+
+		if (isActivityDay) {
+			top_banner_class = 'banner_activity_wrap';
+			login_banner_class = 'activity_login_wrap';
+		} else {
+			top_banner_class = 'banner_daily_wrap';
+			login_banner_class = 'daily_login_wrap';
+		}
+
+		if (curUserIsLogin) {
+			if (curIsNormalGetData == 0) {
+				var title_bg_img = curPageSkinData.title_bg || 'http://d01.res.meilishuo.net/pic/_o/3d/6a/e61e8cc4b003226d70c06d023a48_400_71.cj.png',
+					title_arrow_img = curPageSkinData.title_arrow || 'http://d01.res.meilishuo.net/pic/_o/f0/84/8642cc1b95ae4bad67021a6857e1_29_29.cj.png',
+					user_beans_color = curPageSkinData.title_color || '#fff',
+					user_beans_style = 'color:' + user_beans_color + ';',
+					beans_box_style = 'background:url(' + title_bg_img + ') no-repeat;background-size:100%;',
+					title_arrow_style = 'background:url(' + title_arrow_img + ') no-repeat;background-size:100%;';
+	%>
+	<div class="<%= top_banner_class %>" style="<%= top_head_style %>">
+		<div class="user_box">
+			<div class="beans_box" style="<%= beans_box_style %>">
+				<div class="user_beans" style="<%= user_beans_style %>">我的美美豆: <i id="user_available_beans"><%= user_available_beans %></i><span class="dot" style="<%= title_arrow_style %>"></span></div>
+			</div>
+
+			<ul class="sign_days_box">
+				<%
+					var sign_state_key = '',
+						sign_state_style = '',
+						user_signed_days = con_sign_days - user_need_days,
+						reward_text_color = curPageSkinData.reward_color || '#fff',
+						reward_text_style = 'color:' + reward_text_color + ';';
+
+					for (var i = 0; i < con_sign_days; i++) {
+						sign_state_key = (i < user_signed_days) ? ('signed_icon_' + (i + 1)) : ('nosign_icon_' + (i + 1));
+						sign_state_icon = curPageSkinData[sign_state_key] || 'http://d05.res.meilishuo.net/pic/_o/78/5d/f2ba215e4b25dc61c4d8b485a654_100_124.cj.png';
+						sign_state_style = 'padding-top:62px;background:url(' + sign_state_icon + ') no-repeat;background-size:50px auto;background-position:center;';
+				%>
+				<li>
+					<div class="icon" style="<%= sign_state_style %>">
+						<%
+							if (i == 4) {
+						%>
+						<div class="extra_add" style="<%= reward_text_style %>">+<%= user_gain_beans %></div>
+						<%
+							}
+						%>
+					</div>
+				</li>
+				<%
+					}
+				%>
+			</ul>
+
+			<%
+				var con_sign_text = (user_signed_days == 5) ? ('连续签到' + user_sign_days + '天，恭喜获得额外' + user_gain_beans + '豆的连续签到奖励') : ('连续签到' + user_sign_days + '天，再签' + user_need_days + '天可额外获得' + user_gain_beans + '美美豆奖励');
+			%>
+			<div class="sign_desc_text" style="<%= desc_text_style %>"><%= con_sign_text %></div>
+		</div>
+
+		<%
+			var sign_class = (user_sign_status == 0) ? '' : 'signed',
+				nosign_mark_img = (user_sign_status == 0) ? nosign_mark_icon : signed_mark_icon,
+				sign_box_style = 'background:url(' + nosign_mark_img + ') no-repeat;background-size:100%;';
+		%>
+		<div id="j_sign_box" class="sign_box <%= sign_class %>" style="<%= sign_box_style %>"></div>
+	</div>
+	<%
+			} else {
+	%>
+	<div class="<%= login_banner_class %>" style="<%= top_head_style %>">
+		<div class="login_box">
+			<div class="login_text j_reload_box" style="">点击刷新</div>
+			<div class="error_text" style="<%= desc_text_style %>">加载失败，请刷新重试</div>
+		</div>
+	</div>
+	<%
+			}
+		} else {
+	%>
+	<div class="<%= login_banner_class %>" style="<%= top_head_style %>">
+		<div class="login_box">
+			<div class="login_text j_login_box" style="">点击登录</div>
+			<div class="error_text" style="<%= desc_text_style %>">咦？您还未登录哦！登录后查看美美豆信息</div>
+		</div>
+	</div>
+	<%	
+		}
+	%>
+
+	<div class="mall_wrap">
+		<%
+			var gallery_pic_data = curPageData.gallery_pic || [],
+				swipe_banner_data = curPageData.swipe_banner || [],
+				swipe_banner_len = swipe_banner_data.length || 0,
+				gallery_pic_len = gallery_pic_data.length || 0;
+
+			if (gallery_pic_len > 0) {
+		%>
+		<ul class="gallery_box gallery_<%= gallery_pic_len %>_row">
+			<%
+				for (var j = 0; j < gallery_pic_len; j++) {
+					var img_name = '',
+						data = gallery_pic_data[j],
+						img_src = data.img_src || '',
+						img_title = data.img_title || '',
+						img_link = data.img_link || '';
+
+					switch (j) {
+						case 0:
+							img_name = 'ExchangeGift';
+
+							break;
+						case 1:
+							img_name = 'LargeDraw';
+
+							break;
+						case 2:
+							img_name = 'BeanExgCoupon';
+
+							break;
+						case 3:
+							img_name = 'ExchangeCoupon';
+
+							break;
+					}
+
+					if (img_src != '') {
+			%>
+	    	<li data-href="<%= img_link %>" data-pos="<%= j + 1 %>" data-name="<%= img_name %>" data-title="<%= img_title %>">
+	    		<a href="javascript:void(0);">
+	    			<img src="<%= img_src %>" alt="<%= img_title %>">
+	    		</a>
+	    	</li>
+	    	<%
+	    			}
+	    		}
+	    	%>
+		</ul>
+		<%
+			}
+
+			var do_task_len = curUserTaskData.length || 0;
+
+			if (do_task_len > 0) {
+		%>
+		<div class="do_task_box">
+			<div class="task_head">
+				<div class="title">做任务赚美美豆</div>
+				<div class="link" data-href="/member/task_center/">查看全部</div>
+			</div>
+
+			<div class="task_content">
+				<%
+					if (curUserIsLogin) {
+				%>
+				<ul class="task_area">
+					<%
+						for (var k = 0; k < do_task_len; k++) {
+							var data = curUserTaskData[k],
+								img = data.img || '',
+								url = data.url || '',
+								name = data.name || '',
+								desc = data.desc || '';
+
+							if (url != '') {
+					%>
+					<li data-pos="<%= k %>" data-href="<%= url %>">
+						<img src="<%= img %>" alt="<%= name %>">
+						<div class="text"><%= desc %></div>
+					</li>
+					<%
+							}
+						}
+					%>
+				</ul>
+				<%
+					} else {
+				%>
+				<p>登录后可查看您的任务信息</p>
+				<%
+					}
+				%>
+			</div>
+		</div>
+		<%
+			}
+
+			if (swipe_banner_len > 0) {
+		%>
+		<div id="img_swipe_box" class="swipe">
+			<div class="swipe_wrap" style="width: 32000px;">
+				<%
+					for (var l = 0; l < swipe_banner_len; l++) {
+						var data = swipe_banner_data[l],
+							img_src = data.img_src || '',
+							img_title = data.img_title || '',
+							img_link = data.img_link || '';
+
+						if (img_src != '') {
+				%>
+				<div class="swipe_pic tracking" data-href="<%= img_link %>" data-name="<%= img_title %>" data-pos="<%= l + 1 %>">
+					<img src="<%= img_src %>" alt="<%= img_title %>">
+				</div>
+				<%
+						}
+					}
+				%>
+			</div>
+			<%
+				if (swipe_banner_len > 1) {
+			%>
+			<ul class="swipe_num">
+				<%
+					for (var m = 0; m < swipe_banner_len; m++) {
+						var className = (m == 0) ? 'active' : '';
+
+						if (img_src != '') {
+				%>
+				<li class="<%= className %>"></li>
+				<%
+						}
+					}
+				%>
+			</ul>
+			<%
+				}
+			%>
+		</div>
+		<%
+			}
+
+			var cate_list_data = curPageData.cate_list || [],
+				cate_list_len = cate_list_data.length || 0;
+
+			if (cate_list_len > 0) {
+		%>
+
+		<div id="tip_box"></div>
+
+		<div class="nav_wrap" id="nav_wrap">
+			<div class="nav_iscroll" id="nav_iscroll" style="width: 1000px;">
+				<ul>
+					<%
+						for (var n = 0; n < cate_list_len; n++) {
+							var data = cate_list_data[n],
+								cid = data.cate_id || '',
+								name = data.name || '',
+								className = (n == 0) ? 'curr' : '';
+					%>
+					<li class="<%= className %>" data-cid="<%= cid %>"><%= name %></li>
+					<%
+						}
+					%>
+				</ul>
+			</div>
+		</div>
+		<%
+			}
+		%>
+	</div>
+
+	<section class="container">
+		<ul class="even goods_wall"></ul>
+		<div class="pullUp" status="loading"></div>
+    </section>
+
+	<div class="gotop_wrap">
+		<a class="gotop">
+			<img src="http://d03.res.meilishuo.net/pic/_o/d0/68/f89d059f09d440f4ee7a37669383_80_80.cg.png" alt="">
+		</a>
+	</div>
+</div>
+
+<script type="text/html" id="posterWall">
+	<?
+		$.each(this.data.list, function(index, data){
+	    	var img = data.img || '',
+	    		pos = data.pos || 0,
+	    		offset = data.offset || 0,
+	    		price = data.price || 0,
+	    		stock = data.stock || 0,
+	    		title = data.title || '',
+	    		twitter_id = data.twitter_id || 0,
+	    		origin_price = data.origin_price || 0,
+	    		href = data.url || 'javascript:void(0);';
+	?>
+	<li data-tid="<?= twitter_id ?>" data-pos="<?= pos ?>" data-href="<?= href ?>">	
+		<a class="link_box" href="javascript:void(0);">
+			<figure>
+				<?
+					if (stock < 1) {
+				?>
+				<div class="soldout"></div>
+				<?
+					}
+
+			    	if (fml.vars.is_lazyload_poster) {
+			    		if (index < 2) {
+			    ?>
+			    <span class="df_show_img" style="opacity: 1;background-image: url(<?= img ?>);"></span>
+			    <?
+			    		} else {
+			    ?>
+			    <span class="bs_load_img" asrc="<?= img ?>"></span>
+			    <?
+			    		}
+					} else {
+				?>
+			    <img src="<?= img ?>" alt="">
+			    <?
+					}
+
+			    	if ((stock > 0) && (stock < 10)) {
+			    ?>
+			    <p class="lave">仅剩<?= stock ?>件</p>
+				<span class="progress rpbgc"></span>
+				<?
+					}
+				?>
+			</figure>
+			<figcaption>
+				<div class="proTitle"><?= title ?></div>
+				<div class="proPrice">
+					<span class="word">抵扣价 </span><i>￥</i><?= price ?>
+				</div>
+				<div class="proDiscount"><span class="bean">美美豆抵<?= offset ?>元</span></div>
+			</figcaption>
+		</a>
+	</li>
+	<?
+		});
+	?>
+</script>
+
+<script type="text/html" id="j_sign_tpl">
+	<div id="j_sign_layer" class="sign_layer">
+		<?
+			var win_height = this.win_height || 0,
+				layer_height = this.layer_height || 0;
+		?>
+		<div class="layer_shade blurry_shade" style="top:-<?= win_height ?>px;">
+		</div>
+
+		<%
+			var layer_border_color = curPageSkinData.layer_border_color || '#fb0',
+				layer_close_icon = curPageSkinData.layer_close_icon || 'http://d01.res.meilishuo.net/pic/_o/fb/08/6e3600a312450347395d92577917_76_96.cj.png',
+				sign_layer_bb = 'border-bottom:2px solid ' + layer_border_color + ';',
+				close_btn_class = isActivityDay ? ' layer_activity_btn' : '',
+				close_btn_style = 'background:url(' + layer_close_icon + ') no-repeat;background-size:100%;';
+		%>
+		<div class="layer_shade sign_shade" style="<%=  sign_layer_bb %>top:-<?= layer_height ?>px;height:80%;">
+			<div class="close_layer_btn<%= close_btn_class %>" style="<%= close_btn_style %>"></div>
+		</div>
+
+		<div class="layer_main" style="top:-<?= layer_height ?>px;">
+			<div class="m">
+				<div class="sign_beans">美美豆&nbsp;<span id="j_available_beans"><%= user_temp_beans %></span>&nbsp;<i id="j_add_beans">+0</i></div>
+
+				<div class="sign_day">连续签到&nbsp;<span id="j_sign_days"><%= str_sign_days %></span>&nbsp;天</div>
+
+				<div class="sign_desc_box">
+					<%
+						var user_sign_desc = (user_need_days == 0) ? ('恭喜获得额外' + user_gain_beans + '豆的连续签到奖励') : ('再签' + user_need_days + '天就能额外获得' + user_gain_beans + '美美豆');
+					%>
+					<div id="j_sign_desc" class="sign_desc"><%= user_sign_desc %></div>
+				</div>
+
+				<div class="sign_calendar_wrap">
+					<div class="sign_state_box">
+						<%
+							var is_remind_class = '',
+								is_remind_text = '点击打开签到提醒';
+
+							if (user_remind_status == 1) {
+								is_remind_class = ' active';
+								is_remind_text = '点击关闭签到提醒';
+							}
+						%>
+						<div class="icon_date"><%= str_server_date %></div>
+						<div class="icon_remind<%= is_remind_class %>" id="j_sign_remind"><%= is_remind_text %></div>
+					</div>
+
+					<%
+						var sign_calendar_arr = curUserCalendarData.calendar || [],
+							calendar_arr_len = sign_calendar_arr.length || 0;
+
+						if (calendar_arr_len > 0) {
+					%>
+					<div class="sign_calander_box">
+						<div class="title">日</div>
+						<div class="title">一</div>
+						<div class="title">二</div>
+						<div class="title">三</div>
+						<div class="title">四</div>
+						<div class="title">五</div>
+						<div class="title" style="border-right:0;">六</div>
+
+						<%
+							for (var i = 0; i < calendar_arr_len; i++) {
+								var href = '',
+									item_html = '',
+									item_style = '',
+									data = sign_calendar_arr[i],
+									act = data.act || [],
+									bonus = data.bonus || 0,
+									weekday = data.weekday || 0,
+									is_signed = data.signed || 0,
+									is_current = data.current || 0,
+									year = data.year || curServerYear,
+									month = data.month || (curServerMonth + 1),
+									day = data.day || curServerDay,
+									date = data.date || str_server_date;
+
+								if (((i + 1) % 7) == 0) {
+									item_style = 'border-right:0;';
+
+									if (i == (calendar_arr_len - 1)) {
+										item_style += 'border-bottom-right-radius:4px;';
+									}
+								}
+
+								if (i == (calendar_arr_len - 7)) {
+									item_style += 'border-bottom-left-radius:4px;';
+								}
+
+								if (is_current) {
+									item_html = '<span class="day">' + day + '</span>';
+
+									if (!(act instanceof Array)) {
+										var img = act.img || '';
+
+										href = act.url || '';
+
+										if (img != '') {
+											var img_style = 'background:url(' + img + ') no-repeat;background-size:100%;';
+
+											item_html += '<div class="icon_activity" style="' + img_style + '"></div>';
+										}
+									}
+
+									if (bonus) {
+										item_html += '<div class="icon_beans icon_beans_' + bonus + '"></div>';
+									}
+
+									if (is_signed) {
+										item_html += '<div class="icon_signed"></div>';
+									}
+								}
+						%>
+						<div class="item" id="<%= date %>" style="<%= item_style %>" data-href="<%= href %>">
+							<%= item_html %>
+						</div>
+						<%
+							}
+						%>
+					</div>
+
+					<div class="sign_calander_bottom"></div>
+					<%
+						}
+
+						var sign_tips_data = curUserCalendarData.tips || [];
+
+						if (!(sign_tips_data instanceof Array)) {
+							var sign_tips_url = sign_tips_data.url || '',
+								sign_tips_text = sign_tips_data.text || '';
+
+							if ((sign_tips_url != '') && (sign_tips_text != '')) {
+					%>
+					<div class="sign_layer_tips" data-href="<%= sign_tips_url %>"><%= sign_tips_text %><em></em></div>
+					<%
+							}
+						}
+					%>
+				</div>
+
+				<div class="sign_ornament_bg"></div>
+			</div>
+		</div>
+	</div>
+</script>
+
+<script type="text/html" id="j_receive_beans_tpl">
+	<div class="layer_shade receive_shade j_layer_shade"></div>
+	<div class="layer_main receive_beans_main j_layer_main">
+		<div class="layer_bg">
+			<div class="receive_beans_btn"></div>
+		</div>
+	</div>
+</script>
+
+<script type="text/html" id="j_receive_success_tpl">
+	<div class="layer_shade receive_shade j_layer_shade"></div>
+	<div class="layer_main receive_success_main j_layer_main">
+		<div class="layer_bg"></div>
+	</div>
+</script>
+
+<script type="text/html" id="j_upgrade_tpl">
+	<div id="j_upgrade_layer" class="upgrade_layer">
+		<div class="layer_shade j_layer_shade"></div>
+		<div class="layer_main upgrade_main j_layer_main">
+			<div class="layer_bg">
+				<p class="title">恭喜，你已升级为<i>V<%= user_level %></i>等级!</p>
+				<p class="sub_title">成功打败美丽说<%= user_percent %>的用户</p>
+				<%
+					if (user_level < 4) {
+				%>
+				<p class="text_desc">还差<%= user_remain_beauty %>美丽值，即可升级为V<%= user_level + 1 %>等级</p>
+				<%
+					}
+				%>
+				<p class="layer_receive_btn">领取晋级礼包</p>
+			</div>
+		</div>
+	</div>
+</script>
+
+<script type="text/html" id="j_gift_tpl">
+	<div id="j_gift_layer" class="gift_layer">
+		<div class="layer_shade j_layer_shade"></div>
+		<div class="layer_main gift_main j_layer_main">
+			<div class="layer_bg">
+				<p class="title"><i>V<%= user_level %></i>会员晋级礼包</p>
+				<%
+					var giftObj = (curGiftPageData && curGiftPageData['gift_level_' + user_level]) ? curGiftPageData['gift_level_' + user_level] : {},
+						giftImg = giftObj.pic || '',
+						giftName = giftObj.title || '';
+
+					if ((giftImg != '') && (giftName != '')) {
+				%>
+				<p class="gift_title">恭喜！获得优惠券</p>
+				<p class="gift_img">
+					<img src="<%= giftImg %>" alt="">
+				</p>
+				<p class="gift_name"><i><%= giftName %></i>元</p>
+				<%
+					}
+
+					var interestsArr = (curGiftPageData && curGiftPageData['interests_level_' + user_level]) ? curGiftPageData['interests_level_' + user_level] : [],
+						interestsArrLen = interestsArr.length || 0;
+
+					if (interestsArrLen > 0) {
+				%>
+				<p class="interests_title">晋级后将享受以下会员特权</p>
+				<div class="interests_wrap" id="interests_wrap">
+					<ul class="interests_iscroll" id="interests_iscroll" style="width:990px;">
+						<%
+							var counter = 0;
+
+							for (var i = 0; i < interestsArrLen; i++) {
+								var obj = interestsArr[i],
+									pic = (obj && obj.pic) ? obj.pic : '',
+									title = (obj && obj.title) ? obj.title : '';
+
+								if (pic != '') {
+									var interestsStyle = 'background:url(' + pic + ') no-repeat;background-size:50px auto;background-position:center;';
+
+									++counter;
+						%>
+						<li data-pos="<%= counter %>" data-name="<%= title %>">
+							<div class="member_interests" style="<%= interestsStyle %>"></div>
+							<div class="text_title"><%= title %></div>
+						</li>
+						<%
+								}
+							}
+						%>
+					</ul>
+				</div>
+				<%
+					}
+				%>
+				<p class="receive_gift_btn" data-level="<%= user_level %>">立即领取</p>
+			</div>
+		</div>
+	</div>
+</script>
+
+<script type="text/html" id="j_prompt_tpl">
+	<div id="j_prompt_layer" class="prompt_layer_main">
+		<div class="prompt_layer_text"><?= this.text ?></div>
+	</div>
+</script>
+
+<script type="text/html" id="j_remind_tpl">
+	<div class="tpl_shade tpl_remind j_layer_shade"></div>
+	<div class="tpl_main remind_main j_layer_main">
+		<div class="m">
+			<img src="http://d01.res.meilishuo.net/pic/_o/30/87/25186c04b09bbc2719d620064fcb_570_440.cg.png" alt="">
+			<div class="know_btn"></div>
+		</div>
+	</div>
+</script>
+
+<script type="text/html" id="j_setting_tpl">
+	<div class="tpl_shade tpl_remind j_layer_shade"></div>
+	<div class="tpl_main setting_main j_layer_main">
+		<div class="m">
+			<img src="http://d01.res.meilishuo.net/pic/_o/06/41/b1abcd42e35264c75cc93cbd2e77_570_440.cf.png" alt="">
+			<div class="buttons">
+				<div class="knows_btn"></div>
+				<div class="settings_btn"></div>
+			</div>
+		</div>
+	</div>
+</script>
+
+<script type="text/html" id="j_stroke_tpl">
+	<div class="layer_shade j_layer_shade"></div>
+	<div class="layer_main stroke_main j_layer_main">
+		<div class="m">
+			<img src="http://d05.res.meilishuo.net/pic/_o/f0/96/63a48f5abab475a92095f0eb429c_640_580.cf.png" alt="">
+			<div class="know_btn"></div>
+		</div>
+	</div>
+</script>
+
+<script type="text/html" id="img_captcha_tpl">
+	<div class="checkBox">
+		<div class="shade j_layer_shade"></div>
+		<div class="captchaImgBox j_layer_main">
+			<div class="imgTop">
+				<input class="captchaInput" name="checkcode" type="text" value="" maxlength="10" placeholder="请输入验证码">
+				<img class="captchaImg" src="<?= this.picUrl ?>" width="40%" alt="">
+				<div class="newImg"></div>
+			</div>
+			<div class="imgCenter"></div>
+			<div class="imgBottom">
+				<div class="imgCaptchaClose"></div>
+				<div class="imgCaptchaCheck"></div>
+			</div>
+		</div>
+	</div>
+</script>
+
+<script type="text/html" id="sms_captcha_tpl">
+	<div class="checkBox">
+		<div class="shade j_layer_shade"></div>
+		<div class="captchaSmsBox j_layer_main">
+			<div class="smsTop">
+				<div class="getSmsCaptcha">点击发送</div>
+			</div>
+			<div class="smsCenter"></div>
+			<div class="smsBottom">
+				<input class="captchaInput" name="checkcode" type="text" value="" maxlength="10" placeholder="请输入验证码">
+				<div class="captchaCheck">验证</div>
+			</div>
+			<div class="smsClose"></div>
+		</div>
+	</div>
+</script>
+
+<script>
+	fml.vars.r = '<%= this.xr.r || '' %>';
+	fml.vars.cateId = '<%= curCateId %>';
+	fml.vars.isIos = <%= this.isIos %>;
+	fml.vars.isLogin = <%= curUserIsLogin %>;
+	fml.vars.isNewest = <%= this.isNewest %>;
+	fml.vars.isUpgrade = <%= this.isUpgrade %>;
+	fml.vars.isNormalGetData = <%= curIsNormalGetData %>;
+	fml.vars.isShowAwardLayer = <%= is_show_award_layer %>;
+	fml.vars.serverDay = <%= curServerDay %>;
+	fml.vars.serverMonth = <%= curServerMonth %>;
+	fml.vars.serverStrDate = '<%= str_server_date %>';
+	fml.vars.runningmanAwardBeans = <%= runningman_award_beans %>;
+	fml.vars.userSignStatus = <%= user_sign_status %>;
+	fml.vars.userExpireBeans = <%= user_expire_beans %>;
+	fml.vars.signedMarkIcon = '<%= signed_mark_icon %>';
+	fml.vars.userBeansData = <%= JSON.stringify(curUserBeansData) %>;
+	fml.vars.pageSkinData = <%= JSON.stringify(curPageSkinData) %>;
+	fml.vars.is_lazyload_poster = true;
+</script>
+
+<!-- <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script> -->
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/member/beans_paradise');
+_use:", this._JSstack, this._JSmods); %>
+
+<%#foot_simple.html%>

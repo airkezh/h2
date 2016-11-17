@@ -1,0 +1,41 @@
+<%#head.html%>
+<div class="beauty main_content">
+	<h2 class="cataH"><%=this.currentWord%></h2>
+	<div class="sideBar pr_f">
+		<div class="rec_nav">
+			<%#beauty/catacon.html%>
+		</div>
+	</div><!--end leftBar-->
+	<%this.cataMain.gInfo && this.cataMain.gInfo.map(function(data){%>
+	<div class="beauty_con">
+		<div class="star_rec clearfix_f">
+			<%if(data.star!=0){%><div class="ico"></div><%}%>
+			<a class="pic" href="/beauty/single/<%=data.goods_id%>" target="_blank">
+				<img src="<%=data.img%>" alt="<%=data.goods_name%>" />	
+			</a>
+			<div class="r_com">
+				<h3><a href="/beauty/single/<%=data.goods_id%>" target="_blank"><%=data.goods_name%></a></h3>
+				<span>好评度</span><em><i style="width:<%=Math.floor(5.8*data.grade)%>px;"></i></em>
+				<span class="u_num"><b><%=data.test_user%></b>人使用</span>
+				<div class="clear_f"></div>
+				<% data.comment && data.comment.map(function(comm, index){%>
+				<div class="u_com" style="<%if(index==1){%>border:none;<%}%>">
+					<a target="_blank" class="avatar32_f" href="/person/u/<%=comm.user_id%>"><img src="<%=comm.avatar_c%>" alt="<%=comm.nickname%>" /></a>
+					<div class="ml40_f">
+						<a class="name" href="/person/u/<%=comm.user_id%>" target="_blank"><%=comm.nickname%></a>
+						<p class="mt5_f">
+							<b>使用心得：</b><%=comm.comment%>
+						</p>
+					</div>
+				</div>
+				<%});%>
+			</div>
+		</div>
+	</div>
+	<%});%>
+	<div class="clear_f"></div>
+	<div class="paging_panel mt14_f" style="margin-left:240px;">
+		<%#paging.html%>
+	</div>
+</div>
+<%#foot.html%>

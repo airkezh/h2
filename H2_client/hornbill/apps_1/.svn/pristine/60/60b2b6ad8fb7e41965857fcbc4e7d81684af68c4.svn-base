@@ -1,0 +1,240 @@
+<!--
+/**
+ * @fileoverview 新人特供精选
+ * @requires zepto
+ * @author kehuang@meilishuo.com
+ * @date 2015-01-22
+ */
+-->
+
+<%#head.html%>
+<%
+	var curRecGoodsData = this.recGoodsData.data || [];
+%>
+
+<div class="main">
+	<div class="pullUp" status="loading"></div>
+	<div class="flop_wrap"></div>
+</div>
+
+<script type="text/html" id="j_swipe_tpl">
+	<div class="swipe_wrap">
+	<?
+		var goodsData = this.goodsData || [],
+			goodsDataLen = goodsData.length;
+
+		if (goodsDataLen > 0) {
+			var extData = this.extData || [];
+
+			$.each(goodsData, function(index, goods){
+				var goods_href = '',
+					goods_id = goods.twitter_id || '',
+					goods_src = goods.img || '',
+					goods_rate = extData[index] || '－',
+					goods_title = goods.title || '',
+					goods_sales = goods.sales || 0,
+					goods_price = goods.price || 0,
+					goods_shop = goods.shop,
+					goods_coupon = goods.coupon,
+					shop_id = goods_shop.shop_id || '',
+					shop_url = goods_shop.url || '',
+					shop_title = goods_shop.title || '',
+					coupon_code = goods_coupon.code || '',
+					coupon_status = goods_coupon.status || 0,
+					coupon_credit = goods_coupon.credit || 0,
+					coupon_threshold = goods_coupon.threshold || 0,
+					goods_twitter_id = goods.twitter_goods_id || '';
+
+				if (goods_id != '') {
+					goods_href = getAppLink(goods_id);
+				}
+	?>
+		<div class="swipe" data-index="<?= index ?>">
+			<div class="swipe_item">
+				<div class="swipe_pic" data-src="<?= goods_src ?>" data-price="<?= goods_price ?>" data-sales="<?= goods_sales ?>" data-link="<?= goods_href ?>" data-slink="<?= shop_url ?>" data-gid="<?= goods_id ?>" data-tid="<?= goods_twitter_id ?>" data-shoptitle="<?= shop_title ?>" data-coucode="<?= coupon_code ?>" data-coustatus="<?= coupon_status ?>" data-coucredit="<?= coupon_credit ?>" data-couthreshold="<?= coupon_threshold ?>">
+					<img src="<?= goods_src ?>" alt="<?= goods_title ?>">
+				</div>
+			</div>
+
+			<div class="swipe_info">
+				<div class="fans">
+					<div class="support_list">
+						<em><?= goods_sales ?></em>个小伙伴都买了，好评率<em class="j_goods_rate"><?= goods_rate ?></em>
+					</div>
+		        </div>
+		        <div class="link j_shop_link" data-sid="<?= shop_id ?>" data-tid="<?= goods_twitter_id ?>" data-link="<?= shop_url ?>">进店逛逛</div>
+		    </div>
+
+		    <div class="swipe_dislike"></div>
+		    <div class="swipe_like"></div>
+		    <div class="swipe_price">￥<?= goods_price ?></div>
+		</div>
+		<?
+			});
+		?>
+	</div>
+
+	<div class="operate_area">
+		<div class="dislike_btn"><img src="<%= this.PICTURE_URL %>images/wap/activity/special_choice/no_icon2.jpg" alt=""></div>
+		<div class="like_btn"><img src="<%= this.PICTURE_URL %>images/wap/activity/special_choice/love_icon2.jpg" alt=""></div>
+	</div>
+	<?
+		}
+	?>
+</script>
+
+<script type="text/html" id="j_guide_tpl">
+	<div class="layer_shade j_layer_shade"></div>
+	<div class="layer_main j_layer_main">
+		<div class="m">
+			<img src="<%= this.PICTURE_URL %>images/wap/activity/special_choice/guide1.jpg">
+			<div class="guide_btn_box"></div>
+		</div>
+	</div>
+</script>
+
+<script type="text/html" id="j_coupon_tpl">
+	<?
+		var couponData = this.couponData || null;
+
+		if (couponData) {
+			var coupon_desc = '无门槛限制',
+				goods_src = couponData.goods_src,
+                goods_link = couponData.goods_link,
+                goods_price = couponData.goods_price,
+                shop_title = couponData.shop_title,
+                coupon_code = couponData.coupon_code,
+                coupon_status = couponData.coupon_status,
+                coupon_credit = couponData.coupon_credit,
+                coupon_threshold = parseInt(couponData.coupon_threshold || 0);
+
+            if (coupon_threshold > 0) {
+            	coupon_desc = '消费满' + coupon_threshold + '元可用';
+            }
+	?>
+	<div class="tpl_shade j_layer_shade"></div>
+	<div class="tpl_main j_layer_main">
+		<div class="m">
+			<p class="title pt0">现在购买省<?= coupon_credit ?>元!</p>
+			<div class="coupon">
+				<div class="desc">
+					<p class="t1">有效期7天</p>
+					<p class="t2"><?= coupon_desc ?></p>
+				</div>
+				<div class="bonus"><span>￥</span><?= coupon_credit ?></div>
+			</div>
+			<div class="product">
+				<a href="<?= goods_link ?>">
+					<img src="<?= goods_src ?>" alt="">
+				</a>
+				<div class="price">￥<?= goods_price ?></div>
+			</div>
+			<div class="btn_group">
+				<img src="<%= this.PICTURE_URL %>images/wap/activity/special_choice/btn_group.png" alt="">
+				<div class="get_btn j_get_btn" data-code="<?= coupon_code ?>" data-status="<?= coupon_status ?>" data-title="<?= shop_title ?>" data-credit="<?= coupon_credit ?>" data-threshold="<?= coupon_threshold ?>"></div>
+				<div class="close_btn j_close_btn"></div>
+			</div>
+		</div>
+	</div>
+	<?
+		}
+	?>
+</script>
+
+<script type="text/html" id="j_success_tpl">
+	<?
+		var couponData = this.couponData || null;
+
+		if (couponData) {
+			var shop_title = couponData.shop_title,
+                coupon_desc = couponData.coupon_desc,
+                coupon_credit = couponData.coupon_credit;
+	?>
+	<div class="tpl_shade j_layer_shade"></div>
+	<div class="tpl_main j_layer_main">
+		<div class="m">
+			<p class="title">优惠券领取成功</p>
+			<div class="coupon">
+				<div class="suc_desc">
+					<p class="t1"><?= shop_title ?></p>
+					<p class="t2"><?= coupon_desc ?></p>
+					<p class="t3">有效期7天</p>
+				</div>
+				<div class="bonus"><span>￥</span><?= coupon_credit ?></div>
+			</div>
+			<ul class="txt_desc">
+				<li>商品已经加“我”-“我的喜欢”</li>
+				<li>支付订单时，优惠券会自动出现</li>
+				<li>到“我”-“我的优惠券”可以查看优惠券</li>
+			</ul>
+			<div class="know_btn j_close_btn"></div>
+		</div>
+	</div>
+	<?
+		}
+	?>
+</script>
+
+<script type="text/html" id="j_failure_tpl">
+	<div class="tpl_shade j_layer_shade"></div>
+	<div class="tpl_main j_layer_main">
+		<div class="m">
+			<p class="fail_title">优惠券跑掉了~！</p>
+			<p class="fail_desc">注册好久了就不要和新妹子抢红包啦~！</p>
+			<div class="know_btn j_close_btn"></div>
+		</div>
+	</div>
+</script>
+
+<script type="text/html" id="j_limit_tpl">
+	<div class="tpl_shade j_layer_shade"></div>
+	<div class="tpl_main j_layer_main">
+		<div class="m">
+			<p class="fail_title">优惠券跑掉了~！</p>
+			<p class="fail_desc">已领取过这个店铺的优惠券，可用于本商品哦</p>
+			<div class="know_btn j_close_btn"></div>
+		</div>
+	</div>
+</script>
+
+<script type="text/html" id="j_default_tpl">
+	<%
+		var url = this.mlsApp ? 'meilishuo://changetab.meilishuo?json_params=' + encodeURIComponent(JSON.stringify({"r":"","tab":"逛流行"})) : 'meilishuo://open.meilishuo';
+	%>
+	<a href="<%= url %>"><div class="swipe_default"></div></a>
+</script>
+
+<!-- <script type="text/html" id="j_default_tpl">
+	<div class="tpl_shade j_layer_shade"></div>
+	<div class="tpl_main j_layer_main">
+		<div class="m">
+			<div class="swipe_default"></div>
+		</div>
+	</div>
+</script> -->
+
+<script>
+	fml.vars.isLogin = <%= this.isLogin %>;
+	fml.vars.isGuide = <%= this.isGuide %>;
+
+	var curServerTime = <%= this.serverDate.getTime() %>;
+	var curRecGoodsData = <%= JSON.stringify(curRecGoodsData) %>;
+	var curUserRegTime = <%= this.curUserRegTime %>;
+	var curPictureUrlStr = '<%= this.PICTURE_URL %>' || 'http://i.meilishuo.net/css/';
+
+	function getAppLink(tid){
+		if (!Meilishuo.config.os.mlsApp) {
+			link = '/share/item/' + tid;
+		} else {
+			link = 'meilishuo://twitter_single.meilishuo?json_params=' + encodeURIComponent(JSON.stringify({'twitter_info': {'twitter_id': tid, 'is_doota': 1}, 'r': Meilishuo.config.r}));
+		}
+
+		return link;
+	}
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/special_choice');
+_use:", this._JSstack, this._JSmods); %>
+
+<%#foot_simple.html%>

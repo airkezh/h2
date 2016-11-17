@@ -1,0 +1,113 @@
+<%#head.html%>
+<div class="main">
+	<div class="lev-bg1">
+		<div class="main-cont">
+			<div class="video">
+				<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,19,0" width="300" height="220">
+					<param name="movie" value="http://static.video.qq.com/TPout.swf?vid=f00145ze2mh&auto=1" />
+					<param name="quality" value="high" />
+					<param name="wmode" value="transparent" />
+					<embed src="http://static.video.qq.com/TPout.swf?vid=f00145ze2mh&auto=1" quality="high" wmode="transparent" pluginspage="http://www.macromedia.com/go/getflashplayer" allowScriptAccess="always" allowFullScreen="false" type="application/x-shockwave-flash" width="300" height="220">
+					</embed>
+				</object>
+			</div>
+		</div>
+	</div>
+
+
+
+	<div class="lev-bg2">
+		<div class="b1"></div>
+		<div class="b2">
+			<div class="step1">
+				<span data-index="midu60-2" data-status="60" class="s1"></span>
+				<span data-index="midu80-2" data-status="80" class="s2"></span>
+				<span data-index="midu100-2" data-status="100" class="s3"></span>
+				<span data-index="midu60-3" data-status="60" class="s4"></span>
+				<span data-index="midu80-4" data-status="80" class="s5"></span>
+
+
+				<span data-index="midu120-3" data-status="120" class="s6"></span>
+				<span data-index="midu120-4" data-status="120" class="s7"></span>
+				<span data-index="midu120-1" data-status="120" class="s8"></span>
+				<span data-index="midu100-3" data-status="100" class="s9"></span>
+				<span data-index="midu80-1" data-status="80" class="s10"></span>
+
+				<span data-index="midu80-3" data-status="80" class="s11"></span>
+				<span data-index="midu100-1" data-status="100" class="s12"></span>
+				<span data-index="midu60-1" data-status="60" class="s13"></span>
+				<span data-index="midu120-2" data-status="120" class="s14"></span>
+				<span data-index="midu100-4" data-status="100" class="s15"></span>
+			</div>
+
+			<div class="step2">
+				<span data-status="k1" class="s1"></span>
+				<span data-status="k2" class="s2"></span>
+				<span data-status="k7" class="s3"></span>
+				<span data-status="k5" class="s4"></span>
+				<span data-status="k6" class="s5"></span>
+				<span data-status="k4" class="s6"></span>
+				<span data-status="k3" class="s7"></span>
+				<span data-status="k8" class="s8"></span>
+			</div>	
+
+			<div class="upload-box">
+				<%= requireFn('biz/huodong/upload_photo.html')({
+					'upload_style' : 'obolaiUpWapper',
+					'reload_style' : 'obolai_reup'
+				}); %>
+				<button class="next none_f"></button>
+			</div>
+
+		</div>
+		<div class="b3">
+			<% if(this.now_people.data>=100){%>
+				<div class="tip1" style="display:block;"></div>				
+			<%}%>
+			<% if(this.now_people.data>=500){%>
+				<div class="tip2" style="display:block;"></div>				
+			<%}%>
+			<% if(this.now_people.data>=2000){%>
+				<div class="tip3" style="display:block;"></div>				
+			<%}%>
+		</div>
+		<div class="b4"></div>
+		<div class="b5"></div>
+
+	</div>
+
+
+
+	<div class="lev-bg3">
+		<div class="b11">
+			<div style="position:relative;width:1000px;margin:0 auto;"><div class="jiao"></div>
+			<div class="line"></div>
+			</div>
+		</div>
+		<div style="postion:relative">
+		<%#biz/huodong/basic.html%>
+
+		</div>
+		<div class="b1"></div>
+		<div class="b2"></div>
+	</div>
+
+
+
+	<!-- 查看蜜度弹窗-->
+	<script type="text/html" id="ice">
+		<div class="candy_pop">
+			<a class="close_btn" href=""></a>
+			<img src="<?=lpic?>" width="244" height="344" class="lpic"/>
+			<img src="<?=tpic?>" class="tpic"/>
+			<a id="share_sina" href="javascript:;"></a>
+		</div>
+	</script>
+
+
+
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/huodong/CandyCrush');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

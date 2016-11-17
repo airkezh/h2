@@ -1,0 +1,31 @@
+/*common*/
+var $ = require('wap/zepto');
+var WaterFall = require( 'circle/component/waterfall' );
+var lazy = require( 'm/component/lazyLoad' )
+
+var lazyLoad = lazy.init({xpath:'.pic_load'})
+
+var pageid = fml.vars.pageid;
+
+var waterFallInstance = WaterFall.init({
+	el: '.goods_wall',
+	url: '/aj/sq/search?key_word=' + fml.vars.key + '&pageid=' + pageid,
+	dataName: 'tInfo', //默认
+	colNum: 2,
+	colGap : 0,
+	// onFetchStart: function(wf){
+	// 	// wf.data.offset = wf.data.frame*10;
+	// },
+	onFetchSuccess: function(data){
+		lazyLoad.scroll()
+		if(data.length < 10){
+			$('.pullUp').attr('status','stop');
+			this.lock();
+		}
+	},
+	onFetchFinished: function(data){
+		lazyLoad.load()
+		// hide_loading();
+	}
+}).start()
+

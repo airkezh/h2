@@ -1,0 +1,242 @@
+@import "wx.less";
+
+.ios_simple;
+.sliderBanner;
+.banner-slider-point{ .none;.pa;bottom: -8*@px;left: 45%;
+	li{.mr(16*@px);.bgc(#fff);}
+	li.curr{background: 0; .border-1(#fff);.h(12*@px);.w(12*@px);}
+}
+
+.pullUp{
+	.pullUpDown > .common;.pullUpDown > .loading;
+	&:before{
+		.nowrap;
+		.ml(-35px);
+	}
+	&[status="tap"]{
+		background:0 none;	
+		/*
+		&:before{
+			content:"上拉看更多..."	
+		}
+		*/
+	}
+	&[status="stop"]{
+		background:0 none;	
+		.h(2px);
+		&:before{.i_block;
+			content:"没有更多内容了...";
+		}
+	}
+}
+
+.dialog();
+#dialogContent {
+	.list { .h(124px); overflow-y: scroll;}
+}
+
+.goTop();
+.icon-gohome{.none !important;}
+
+.nav_top {
+	.pr; .h(58*@px); .l(58*@px); .p10_0; border-bottom: 1px solid #d6d6d6; .bgc(#fff);
+	.nav_box {
+		.pr;.mr(20*@px); .ml(20*@px); .clearfix;
+		.goods { .w(100%); .auto;}
+		ul.cosmetic{
+			li{.w(24.5%);}
+		}
+		.discount_nav { .w(600/600*100%);}
+		li {
+			.left; .w(172/525*100%);.c; border: 1px solid #776f74; border-right: none;
+			a {.fc(#9a9598); .i_block; .cursor; .w(100%);}
+			&:first-of-type{
+				border-radius: 6*@px 0 0 6*@px;
+			}
+			&:last-of-type{
+				border-right: 1px solid #776f74; border-radius: 0 6*@px 6*@px 0; .vm;
+			}
+		}
+		.discount_nav li{ .w(197/600*100%);}
+		.active {
+			.bgc(#776f74); .white;
+			a {.white;}
+		}
+		.logisticIcon {.i_block; .w(36*@px); .pa; top: 20*@px; right: 15*@px;}
+	}
+
+
+	.change {
+		.none; z-index: 22; .w(640*@w); left: 0px; .pa; top: 98*@px; .border-1(#d9d9d9); border-left: 0; border-right: 0; .f(28*@px); .bgc(#fff); 
+		&:before {
+			content: ""; .pa; .w(10px); .h(10px); top: -6px; right: 12px; .bgc(#fff);transform: rotate(45deg);-webkit-transform: rotate(45deg); border-top: 1px solid #d9d9d9;border-left: 1px solid #d9d9d9;
+		}
+		p { border-bottom: 1px solid #d9d9d9; .pb(10*@px);.pt(20*@px); .pr(30*@px); .pl(30*@px);}
+		.set { .block; .pt(10*@px); .pb(20*@px); .pr(30*@px); .pl(30*@px);}
+	}
+
+}
+.discount_top { .bgc(#f0edee); border-bottom: none;}
+
+.content_daily {
+	.ml(20*@px); .mr(20*@px); 
+	.daily_title {
+		.ellipsis;
+		.clearfix; .l(36*@px);
+		.pt(30*@px); .pb(24*@px);
+		//.word { .block;}
+		.money_icon {.i_block; .w(146*@px); .h(32*@px); .vm; .left; .mt(1px);}
+		.daily_type { .f(28*@px); color: #787878; .pl(8*@px); .left;}
+		.daily_banner { .fc(#666); .l(36*@px); .border-r(6*@px); .i_block; .pl(2px); .vm; .f(24*@px);}
+		.daily_none { float: none;}
+	}
+
+	.pd6 { .pb(12*@px); }
+	.mb10 { .mb(20*@px);}
+
+	figure {
+		.border-1(#d9d9d9); .bgwhite;
+	}
+	.show_img {.w(600*@w); .h(300*@px); .c;
+		img { .border-bd9; }
+	}
+	.goods_info{
+		.pt(20*@px); .pl(20*@px); .pb(20*@px); .pr(20*@px);
+		.goods_title { .f(28*@px); .l(28*@px); .fc(#333); .pb(12*@px);}
+		.goods_data {.f(22*@px); .l(22*@px); .fc(#666); .pr(20*@px);}
+		.goods_cost {.pt(14*@px); .gray; .l(56*@px)}
+		.now_cost {.f(42*@px);}
+		.normal_cost {.f(32*@px); .t-through;}
+		.goods_btn {.right; .w(180*@px); .h(60*@px); .f(28*@px); .l(60px*@px); .c; .white; .bgc(#F69); .cursor;}
+		.not_buy {.bgc(#999); cursor: default;}
+	}
+	
+}
+.frame{
+	.pr;
+}
+.new_goods{
+	.clearfix;
+	.ml(20*@px);.mr(20*@px);.mt(12px);
+	.goods_li{
+		.pa;
+		.w(50%);
+		.hidden;
+		.li_border{
+			.ml(10*@w);
+			.mr(10*@w);
+		}
+	}
+	.li_border {
+		.pr;.border-1(#d9d9d9);.mb(20*@w); .bgwhite;
+		.list_img {.block;background-size:100%;.hidden;
+		}
+		.list_title {.f(24*@px);.fc(#666); .l(32*@px);.hidden;}
+	}
+	.img_bt { border-bottom: 1px solid #ddd;}
+	.list_info { .pt(20*@px); .pl(20*@px); .pb(20*@px); .pr(20*@px);}
+	.list_cost {.pt(20*@px); .pb(10*@px);}
+	.money_now {.f(30*@px); .pr(10*@px);}
+	.money_normal {.f(22*@px); .t-through;}
+	.goods_type {.pa; top: 0; left: 10*@px; .w(70*@px); .h(34*@px); .l(34*@px); .white; .c; .border-r(0 0 6*@px 6*@px);}
+	.two_type { left: 90*@px;}
+	.new {.bgc(#ff96b9);}
+	.hot {.bgc(#ff6f80);}
+}
+.like {
+	.pt(30*@px); .pb(30*@px); .mr(20*@px); .ml(20*@px); 
+	p{.l(36*@px); .f(24*@px); .c;}
+}
+.download {
+	.block;
+	.pl(20*@px); .pr(20*@px); .bgc(#fbfafb); .pt(14*@px); .pb(6*@px);
+	.download_icon { .w(388*@px); .h(82*@px); .left; }
+	.downBtn { .mt(14*@px); .right; .l(50*@px); .w(150*@px); .vm; .bgred; .c;  .white; .f(24*@px); .h(50*@px); .block;}
+}
+
+
+.happy{
+	.bgc(#fff);.border-bd9(#d6d6d6);
+	.hidden;.pb(3%);.pr(4%);.pl(4%);.pt(3%);
+	span{.left;.w(49%);.i_block;.mb(1.5%);
+		&:nth-of-type(2n){
+				.ml(1.5%);
+		}
+	}
+	div.list_img{.pb(2%);}
+}
+
+.higo{
+	.bgc(#fffbe0);.pr(5%);.pl(5%);.pb(5%);
+}
+.gap{
+	.h(10px);.bgc(#fff);
+}
+.trick{
+	.pf;right:0px;bottom: 90px;z-index:10;.w(30%);
+}
+// .typeTop{
+// 	p{
+// 		.bgc(#fff);border-bottom: 1px #d6d6d6 solid;.c; /* .pl(2%);*/
+// 		a{
+// 			.w(17%);.c;.l(70*@px);.i_block;/*.ml(3%);.mr(3%);*/
+// 			&:active,&:visited{.fc(#666);}
+// 		}
+// 		/* 2,2,2,3  3,3,3,3*/
+// 		// a.bag{
+// 		// 	.w(17.5%);
+// 		// }
+// 		/* 4,4,4,4 */
+// 		a.home{
+// 			.w(17.6%);
+// 		}
+// 		 2,2,2 
+// 		a.korea{
+// 			.w(20%);.ml(6%);.mr(6%);
+// 		}
+// 		/* 2,2,2,2*/
+// 		a.skincare,a.cosmetics,a.spring{
+// 			.w(17.8%);
+// 		}
+// 		/* 4,4 */
+// 		a.desire{
+// 			.w(26%);.ml(10%);.mr(10%);
+// 		}
+// 		a.type_select{
+// 			border-bottom: 2px #f69 solid;.mb(-1px);.fc(#f69);
+// 			&:visited{.fc(#f69);} /*兼容酷派*/
+// 		}
+
+// 	}
+// }
+
+//砸蛋弹层
+#egg{
+	.w(50%);.pf;right: 0;bottom: 210*@px; z-index: 2;
+	img{
+		.w(100%);
+	}
+	.egg-open{
+		.none;
+	}
+	-webkit-animation:wobble 1s .2s ease both;
+	-moz-animation:wobble 1s .2s ease both;
+}
+@-webkit-keyframes wobble{
+	0%{-webkit-transform:translateX(0%)}
+	15%{-webkit-transform:translateX(-25%) rotate(-5deg)}
+	30%{-webkit-transform:translateX(20%) rotate(3deg)}
+	45%{-webkit-transform:translateX(-15%) rotate(-3deg)}
+	60%{-webkit-transform:translateX(10%) rotate(2deg)}
+	75%{-webkit-transform:translateX(-5%) rotate(-1deg)}
+	100%{-webkit-transform:translateX(0%)}
+}
+@-moz-keyframes wobble{
+	0%{-moz-transform:translateX(0%)}
+	15%{-moz-transform:translateX(-25%) rotate(-5deg)}
+	30%{-moz-transform:translateX(20%) rotate(3deg)}
+	45%{-moz-transform:translateX(-15%) rotate(-3deg)}
+	60%{-moz-transform:translateX(10%) rotate(2deg)}
+	75%{-moz-transform:translateX(-5%) rotate(-1deg)}
+	100%{-moz-transform:translateX(0%)}
+}

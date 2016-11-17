@@ -1,0 +1,45 @@
+<%
+var cirInfo = this.cirInfo.data;
+var users = this.users;
+var msgs = this.msgs;
+%>
+<div class="show-back js-jump">
+    <div class="head-wall">
+        <div class="inner-ring"></div>
+        <div class="admin-head" style="background-image:url('<%= cirInfo.admin.avatar_a%>')"></div>
+        <div class="users-head">
+            <% users.forEach(function(user,index){%>
+               <img src="<%=user.avatar_a %>" alt="" data-num="<%= index %>"/>
+            <%})%>
+
+        </div>
+        <div class="num">
+            <img src="http://d03.res.meilishuo.net/pic/_o/83/81/39d4dbf329317628d4d631f8640c_13_24.cg.png" alt=""/>
+            <hr class="line"/>
+            <span><%= cirInfo.member_num%></span>
+        </div>
+    </div>
+    <div class="admin-name">
+        <%= cirInfo.admin.nickname %>
+        <span class="admin-ico"></span>
+    </div>
+    <div class="msg">
+        <% msgs.forEach(function(msg,index){%>
+            <p data-num="<%= index %>"><%=msg.msg_text %></p>
+        <%})%>
+        <p data-num="6"><span class="love-ico"></span>爱上了这个宝贝</p>
+        <p data-num="7"><span class="new-ico"></span>新人报道哦~</p>
+    </div>
+
+    <a class="add-btn" href="//circle.meilishuo.com/circle/chat?circle_id=<%= cirInfo.id %>">
+        <span class="add-ico"></span>
+        <span>加入讨论现场</span>
+    </a>
+
+    <i class="dot red-dot"></i>
+    <i class="dot white-dot"></i>
+    <i class="dot gray-dot"></i>
+    <i class="dot yellow-dot"></i>
+    <i class="dot green-dot"></i>
+    <i class="dot last-dot"></i>
+</div>

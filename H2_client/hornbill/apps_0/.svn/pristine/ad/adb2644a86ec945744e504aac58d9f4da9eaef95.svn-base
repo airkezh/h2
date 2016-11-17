@@ -1,0 +1,64 @@
+<%#head.html%>
+<%
+	var wlListRenderFn = requireFn('wins/reply_box.html');
+%>
+<div class="container">
+	<div><img src="<%= this.nike.banner%>" /></div>
+	<div class="nav1">
+		<a href="/biz/huodong/nike1/tshow"></a>
+		<a href="/biz/huodong/nike1/sport"></a>
+		<a href="/biz/huodong/nike1/welfare"></a>
+	</div>
+	<div><img src="<%= this.nike.nav_banner%>"></div>
+	<div class="sub_msg">
+		<input type="text" class="iheight" />
+		<input type="text" class="inum" />
+		<input type="text" class="iweight" />
+		<input type="text" class="iaddress" />
+		<input type="text" class="isize" />
+		<input type="text" class="iname" />
+		<p id="nike_submit"></p>
+	</div>
+	<div class="discus_box">
+		<%#wins/publishor.html%>
+		<div class="reply_list comments">
+			<%this.topic_list && this.topic_list.list.map(function(data){%>
+				<%=wlListRenderFn(data)%>
+		<%});%>
+	    </div>
+		<div class="paging_panel c_f">
+		   <%#paging.html%>
+		</div>
+	</div>
+</div>
+<script>
+Meilishuo.config.tag_id = '<%=this.beauty_id%>';
+Meilishuo.config.tag = '<%=this.beautyTag%>';
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('app/publishor');
+	fml.use('app/replyBox');
+	fml.use('jquery' , function(){
+		$('#nike_submit').on('click' , function(){
+			var iheight = $('.iheight').val()
+			,inum = $('.inum').val()
+			,iweight = $('.iweight').val()
+			,iaddress = $('.iaddress').val()
+			,isize = $('.isize').val()
+			,iname = $('.iname').val();
+			if(iheight == '' || inum == '' || iweight == '' || iaddress == '' || isize == '' || iname == '') {
+				alert('内容不能为空');
+				return;
+			}
+			var data = { 'height' : iheight , 'phone' : inum , 'weight' : iweight , 'address' : iaddress , 'real_name' : iname , 'size' : isize };
+			$.get('/aj/huodong/nike_submit' , data , function(res){
+				if(res.data == 1) {
+					alert('提交成功');	
+				}else{
+					alert('提交失败，请重新提交');	
+				}
+			} , 'json' );	
+		});
+	});
+_use:", this._JSstack , this._JSmods); %>
+<%#foot.html%>

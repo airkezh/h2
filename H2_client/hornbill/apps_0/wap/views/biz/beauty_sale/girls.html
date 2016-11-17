@@ -1,0 +1,154 @@
+<%#head.html%>
+<%
+	var pageData = this.pageData;
+	var topicsData = [];
+	var targetsArray = [];
+	var navsArray = pageData.banner_navs;
+	var sg_index = pageData.is_main_goods != '0' ? 1 : 0 ;
+	['group_1', 'group_2', 'group_3', 'group_4', 'group_5', 'group_6', 'group_7'].forEach(function(data, index){
+		if(pageData[data].length){
+			var dataTmp = {
+				'banner' : pageData[data]
+			};
+			if(this.summer_goods.length > 1){
+				dataTmp.twitters = this.summer_goods[index+sg_index].twitters;
+				targetsArray.push(data);
+			}
+			topicsData.push(dataTmp);
+		}
+	});
+%>
+
+<style>
+	body{background-color: <%= pageData.setting.bgc || '#fff' %>;}
+</style>
+<%= requireFn('slider.html')({
+	'os' : this.os
+	, 'footBanner' : true
+	,'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+	, 'showZhiDing' : this.showZhiDing
+	, 'leadApp' : this.leadApp
+	, 'mlsApp' : this.mlsApp
+	, 'appUrl' : this.appUrl
+	, 'locationUrl' : this.locationUrl
+	, 'template' : 'template'
+});%>
+<% if(pageData.top_banner){ %>
+	<% pageData.top_banner.forEach(function(banner){ %>
+		<a href="<%= banner.link || '###' %>"><img src="<%= banner.img_src %>"></a>
+	<% }); %>
+<% } %>
+
+<%
+	coupon = this.coupon ? this.coupon.data : false;
+	if(pageData.coupon && pageData.coupon.img_src && coupon){
+		var status = 'can_get';
+		var status_text = '立即领取';
+		if(coupon.left_amount == 0){
+			status = 'has_over';
+			status_text = '已领光';
+		}
+		if(coupon.can_use == 2){
+			status = 'has_get';
+			status_text = '已领取';
+		}
+%>
+	<div class="coupon_wrap">
+		<img src="<%= pageData.coupon.img_src %>">
+		<div class="coupon_con">
+			<a href="javascript:;" class="<%= status %>"><%= status_text %></a>
+			<p><% if(coupon.left_amount != 0){ %>今日剩余<span class="left_num"><%= coupon.left_amount %></span>张<% } else { %> &nbsp; <% } %></p>
+		</div>
+	</div>
+<% } %>
+
+<% topicsData.forEach(function(data, index){ %>
+	<div id="<%= targetsArray[index] %>"></div>
+	<% data.banner.forEach(function(banner){ %>
+		<a href="<%= banner.link ? _extFn.getAppLink('twitter_single', {'twitter_info' : {'twitter_id' : banner.link, 'is_doota' : 1}}, this.os, this.r+':cid='+this.cid+':ac_id='+this.ac_id, '/share/item/'+banner.link) : '###' %>"><img src="<%= banner.img_src %>"></a>
+	<% }); %>
+	<% if(data.twitters){ %>
+		<%= requireFn("biz/beauty_sale/goods_show.html")({
+			'goods': data.twitters,
+			'is_lazyload' : true,
+			'os': this.os,
+			'r': this.r+':cid='+this.cid+':ac_id='+this.ac_id,
+			'_JSstack' : this._JSstack,
+			'_JSmods' : this._JSmods
+		}); %>
+	<% } %>
+<% }); %>
+
+<% if(pageData.bottom_banner){ %>
+	<% pageData.bottom_banner.forEach(function(banner){ %>
+		<a class="b20_bannar" href="<%= banner.link || '###' %>"><img src="<%= banner.img_src %>"></a>
+	<% }); %>
+<% } %>
+
+<% pageData.is_act_ads != '0' && this.act_ads && this.act_ads.map(function(data){ %>
+	<a class="b20_bannar" href="<%= data.ad_link || 'javascript:;' %>">
+		<img alt="<%= data.ad_words %>" src="<%= data.ad_banner %>" />
+	</a>
+<% }); %>
+
+<% if(this.check_history != false){ %>
+	<div class="check_history">
+		<a href="<%= _extFn.getAppLink('openURL', {"url": "http://mapp.meilishuo.com/biz/shareact/main/","inApp":1, "require_app_info":1, "title": "美妆"}, this.os, this.r) %>"><span>更多潮流美妆></span></a>
+	</div>
+<% } %>
+
+<%= requireFn("biz/beauty_sale/gotop.html")({
+	'isIphone': this.os.ios,
+	'_JSstack': this._JSstack,
+	'_JSmods': this._JSmods
+});%>
+
+<%= requireFn("biz/beauty_sale/fixnav.html")({
+	'navs': navsArray,
+	'targets': targetsArray,
+	'_JSstack': this._JSstack,
+	'_JSmods': this._JSmods
+});%>
+
+<script type="text/html" id="toupdate">
+	<div class="toupdate">
+		<p>只有最新版美丽说客户端才可以享受优惠喔，亲快去升级吧。</p>
+		<a class="btn3zi delayclose" href="/goto/download/">去升级</a>
+	</div>
+</script>
+<script type="text/html" id="alertMsg">
+	<div class="toupdate">
+		<p style="text-align: center;"><?= this.msg?></p>
+		<a class="btn3zi delayclose" href="javascript:;">确定</a>
+	</div>
+</script>
+
+<%= requireFn('wapShare.html')({
+	'share' : this.share,
+	'shareTitle' : '选择分享到：',
+	'_JSstack' : this._JSstack,
+	'_JSmods' : this._JSmods
+}); %>
+
+<% if(this.shop_coupon && this.shop_coupon.length){ %>
+	<script>
+		fml.vars.isLogin = '<%= this.isLogin %>';
+		fml.vars.isNewest = '<%= this.isNewest %>';
+		fml.vars.cid = '<%= this.cid %>';
+		fml.vars.ac_id = '<%= this.ac_id %>';
+		fml.vars.left_num = '<%= coupon.left_amount || 0 %>';
+		fml.vars.coupon_apply_code = '<%= this.shop_coupon[0].coupon_apply_code || 0 %>';
+		fml.vars.frm = '<%= this.frm %>'
+	</script>
+	<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+		fml.use('wap/page/biz/bs_girls');
+	_use:", this._JSstack , this._JSmods ); %>
+<% } %>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/component/lazyLoad', function(){
+		this.load('.bs_load_img' ,'asrc');
+	});
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot_simple.html%>

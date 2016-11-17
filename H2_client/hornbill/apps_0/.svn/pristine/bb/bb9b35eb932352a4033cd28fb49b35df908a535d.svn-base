@@ -1,0 +1,106 @@
+<%# head.html%>
+<%
+var query = this._Request_query;
+var getLink = _extFn.getLink;
+var mSubstr = _extFn.mSubstr;
+var addTrace = this.ViewTools.addTrace;
+
+var thisYear    = '' + (new Date).getFullYear(),
+	entryDatas = this.guang_new_title,
+	entryObject = {};
+
+entryDatas.forEach( function( item ) {
+	entryObject[ thisYear + '/' + item.date + ' 00:00:00' ] = item
+})
+entryObject = this.ViewTools.timeStuff( entryObject );
+
+%>
+<div class="spinner midSpinner pa_f" style="top:250px;"></div>
+
+<div class="content_fluid v_hidden" >
+	<%if(this.adm27 && this.adm27.ad){%>
+		<%
+		this.adm27.admId = 'adm_top';
+		this.adm27._JSstack = this._JSstack;
+		this.adm27._JSmods = this._JSmods;
+		%>
+		<%= requireFn('commerce/adm_banner.html')(this.adm27);%>
+	<% } %>
+
+	<% if(this.notic){%>
+		<%# guang/notic.html%>
+	<%}%>
+	
+	<!-- new -->
+	<%if(!this.isShow){%>
+		<ul class="cata_types">
+			<li><a class="<%if(this.attrName == 'hot'){%> active <%};%> hot first" href="/guang/hot">流行</a></li>
+			<li><a class="<%if(this.attrName == 'popular'){%> active <%};%> popular" href="/guang/popular">热销</a></li>
+			<li><a class="<%if(this.attrName == 'new'){%> active <%};%>  new" href="/guang/new">上新</a></li>
+		</ul>
+	<%}%>
+	<div class="goods_wall" style="height:1000px; width:100%;">
+		<div class="corner_stamp">
+			<div class="poster_cpt shop_follow">
+				<%# guang/cpt.html %>
+			</div>
+			<div class="poster_p4p"></div>
+		</div>
+	</div>
+	<div class="goods_banner"><a href="/welcome" target="_blank"></a></div>
+	<div class="spinner botSpinner none_f"></div>
+	<div class="clear_f"></div>
+	<div class="paging_panel c_f none_f">
+	<%#paging.html%>
+	</div>
+	<%if(this.adm29 && this.adm29.ad){%>
+		<%
+		this.adm29.admId = 'adm_bot';
+		this.adm29._JSstack = this._JSstack;
+		this.adm29._JSmods = this._JSmods;
+		%>
+		<%= requireFn('commerce/adm_banner.html')(this.adm29);%>
+	<%}%>
+</div>
+<%# posternew.html%>
+<%if(this.attrName!='hot'&&this.attrName!='new'&&this.attrName!='popular'){%>
+<!-- <div class="share_group">
+	<p>推荐到</p>
+	<ul>
+		<li><span class="i_qzone"></span></li>
+		<li><span class="i_sina"></span></li>
+		<li><span class="i_tx"></span></li>
+	</ul>
+</div> -->
+<%}%>
+<script>
+fml.vars.colWidth = 244;
+fml.vars.posterWallWidth = 1220;
+fml.vars.frame = <%= query.frame%> || 0;
+fml.vars.page = <%= query.page%> || 0;
+fml.vars._guang_word_name = "<%= this.attrName%>";
+
+fml.vars.attrNamePos = 0;
+switch(fml.vars._guang_word_name){
+	case "hot" :
+	fml.vars.attrNamePos = 0;
+	break;
+	case "popular" :
+	fml.vars.attrNamePos = 1;
+	break;
+	case "new" :
+	fml.vars.attrNamePos = 2;
+	break;
+};
+<%= this.p4p? 'Meilishuo.config.p4p = { tInfo : '+JSON.stringify(this.p4p)+'};':'' ;%>
+<%= this.poster0? 'Meilishuo.config.poster0 = '+JSON.stringify(this.poster0)+';':'' ;%>
+Meilishuo.config.curWord = "<%== this.currentWord%>";
+<%= this.share_pic&&this.share_pic.length>6 ? 'Meilishuo.config.sharePic = "'+this.share_pic+'";':'';%>
+</script>
+<% $_ENGINE_SELF.callFn("useModule")("fml.use('page/poster0');", this._JSstack , this._JSmodsFast ); %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+		fml.use('page/guang');
+		fml.use('page/poster_guang');
+_use:", this._JSstack , this._JSmods ); %>
+<%if(this.attrName == 'new'){%><div class="h_update none_f"><a><span id="msgSize">0</span>个新分享</a></div><%}%>
+<%# foot.html%>

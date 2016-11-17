@@ -1,0 +1,18 @@
+<%#head.html%>
+<div class="auto_box">
+	<div class="redline1"></div>
+	<div class="brand_tit">
+		<h2 class="bd_tle2">品牌活动/Events</h2>
+	</div>
+	<ul class="clearfix_f">
+	<% this.events && this.events.map(function(data) { %>
+		<li class="e_pic">
+			<p><a href="<%=data.activity_url%>" target="_blank"><%= data.activity_name%></a></p>
+			<a href="<%=data.activity_url%>" target="_blank"><img alt="<%=data.activity_name%>" title="<%=data.activity_name%>" src="<%=data.activity_image%>" /></a>
+		</li>
+	<% }); %>
+	</ul>
+    <div class="clear_f"></div>
+    <div class="paging_panel c_f"><%#paging.html%></div>
+</div>
+<%#foot.html%>

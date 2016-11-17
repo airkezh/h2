@@ -1,0 +1,105 @@
+<%# head.html%>
+
+<% 
+	var goods = this.goods;
+	var apply10 = this.goods.coupon[2].can_apply_status;
+	var apply30 = this.goods.coupon[1].can_apply_status;
+	var apply100 = this.goods.coupon[0].can_apply_status;
+	var apply10code = this.goods.coupon[2].coupon_apply_code;
+	var apply30code = this.goods.coupon[1].coupon_apply_code;
+	var apply100code = this.goods.coupon[0].coupon_apply_code;
+%>
+
+<div class="main">
+	<div class="div1"></div>
+	<div class="coupon">
+		<% if(apply10 == 2){ %>
+		<img src="http://d03.res.meilishuo.net/pic/_o/8b/0f/235f055c70ae05bf208eb26f89f8_266_156.cg.png">
+		<% }else{ %>
+		<img class="coupon10" data-code="<%= apply10code %>" src="http://d02.res.meilishuo.net/pic/_o/13/ca/c6cc1b065b1be250ebd2a067c546_266_156.ch.png">
+		<% } %>
+		<% if(apply30 == 2){ %>
+		<img src="http://d05.res.meilishuo.net/pic/_o/00/91/bf93746ce2c4d5e6300f7383a8bc_266_155.cg.png">
+		<% }else{ %>
+		<img class="coupon30" data-code="<%= apply30code %>" src="http://d05.res.meilishuo.net/pic/_o/d4/34/d606ee4ddec581af23579f17f845_266_155.cf.png">
+		<% } %>
+		<% if(apply100 == 2){ %>
+		<img src="http://d02.res.meilishuo.net/pic/_o/9c/14/75054bc60ccc06a9f2ddce48f8cb_265_155.cg.png">
+		<% }else{ %>
+		<img class="coupon100" data-code="<%= apply100code %>" src="http://d05.res.meilishuo.net/pic/_o/c4/9a/0c1a62ae18cf476784917bac0feb_180_105.cg.png">
+		<% } %>
+	</div>
+	<div class="div3"></div>
+	<div class="div4"></div>
+	<div class="div5"></div>
+	<div class="div6">
+		<div class="join_voice"></div>
+	</div>
+	<div class="div7"></div>
+	<div class="div8"></div>
+	<div class="div9">
+		<div class="join_cd"></div>
+	</div>
+	<div class="div10"></div>
+	<div class="div11 voice"></div>
+	<div class="good_list">
+		<% goods.suit_goods.forEach(function(item){ %>
+		<a href="http://www.meilishuo.com/share/item/<%= item.twitter_id%>" target="_blank">
+			<div class="goods">
+				<div class="goods_img" style="background:url('<%= item.img %>') no-repeat;background-size:100%;"></div>
+				<p class="goods_name"><%= item.title %></p>
+				<div class="price">
+					<span class="now_price"><%= item.price %></span>
+					<del class="original_price"><%= item.original_price %></del>
+					<span class="discount"><%= item.discount %>折</span>
+				</div>
+				<p class="buy">立即抢购</p>
+			</div>
+		</a>
+		<% }) %>
+	</div>
+	<div class="null"></div>
+	<div class="div12 cd"></div>
+	<div class="good_list">
+		<% goods.mask_goods.forEach(function(item){ %>
+		<a href="http://www.meilishuo.com/share/item/<%= item.twitter_id%>" target="_blank">
+			<div class="goods">
+				<div class="goods_img" style="background:url('<%= item.img %>') no-repeat;background-size:100%;"></div>
+				<p class="goods_name"><%= item.title %></p>
+				<div class="price">
+					<span class="now_price"><%= item.price %></span>
+					<del class="original_price"><%= item.original_price %></del>
+					<span class="discount"><%= item.discount %>折</span>
+				</div>
+				<p class="buy">立即抢购</p>
+			</div>
+		</a>
+		<% }) %>
+	</div>
+	<div class="null"></div>
+	<div class="div13"></div>
+	<div class="good_list">
+		<% goods.others.forEach(function(item){ %>
+		<a href="http://www.meilishuo.com/share/item/<%= item.twitter_id%>" target="_blank">
+			<div class="goods">
+				<div class="goods_img" style="background:url('<%= item.img %>') no-repeat;background-size:100%;"></div>
+				<p class="goods_name"><%= item.title %></p>
+				<div class="price">
+					<span class="now_price"><%= item.price %></span>
+					<del class="original_price"><%= item.original_price %></del>
+					<span class="discount"><%= item.discount %>折</span>
+				</div>
+				<p class="buy">立即抢购</p>
+			</div>
+		</a>
+		<% }) %>
+	</div>
+</div>
+<div class="popwin">
+	<img src="http://d04.res.meilishuo.net/pic/_o/82/64/e4e9b252fc0ddd2d66c7d6803428_437_249.cg.png">
+</div>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use("page/huodong/voice");
+_use:", this._JSstack , this._JSmods); %>
+<%# foot.html%>

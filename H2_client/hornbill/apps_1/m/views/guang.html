@@ -1,0 +1,84 @@
+<%#head_simple.html%>
+<%
+var getLink = _extFn.getLink;
+var query = this._Request_query;
+%>
+<%if(1==0){%>
+<meta name="apple-itunes-app" content="app-id=id431023686">
+<%}%>
+</head>
+<body <%if(this.os.ios){%>class="ios"<%}%>>
+
+<%= requireFn('slider.html')({
+	'os' : this.os
+	, 'attr_id' : this.ptype == 'attr' ? this.pid : ''
+	, 'nid' : this.ptype == 'catalog' ? this.pid : ''
+	, 'getAppLinkUrl' : this.getAppLinkUrl
+	, 'apk' : ''
+	, 'footBanner' : true
+	,'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+	, 'title' : this.currentWord 
+	, 'source' : 'wapguangattr'
+	, 'frm' : this.frm
+	, 'showDaoLiu' : this.showDaoLiu
+	, 'showZhiDing' : this.showZhiDing
+	, 'leadApp' : this.leadApp
+	, 'appUrl' : this.appUrl
+});%>
+	
+<div class="mls_body" id="layout">
+<%#head_guang.html%>
+	<%if(this.headTag == 'goods'){%>
+	<div class="nav_top" id="navTop">
+		<nav class="nav_box">
+		<ul class="goods">
+			<li><a href="/welcome">首页</a></li>
+			<li <%if(this.ptype == 'selected'){%>class="active"<%}%>><a href="/guang/selected">流行</a></li>
+			<li <%if(this.ptype == 'hot'){%>class="active"<%}%>><a href="/guang/hot">最热</a></li>
+			<li <%if(this.ptype == 'new'){%>class="active"<%}%>><a href="/guang/new">最新</a></li>
+		</ul>
+		</nav>
+	<%}else{%>
+	<% var isRoute = this.route && this.route.length != 0; %>
+	<div class="nav_top" id="navTop">
+		<%if(isRoute){
+			var pnid = this.route[0].nid;
+			var breadLen = this.bread.length;
+		%>
+		<nav class="nav_box">
+			<ul class="catalog">
+			<%this.route.map(function(v,k){%>
+				<li <%if(((query.nid || this.bread[breadLen - 1].nid ) == v.nid && this.ptype != 'search') || query.keyword == v.word_name){%>class="active"<%}%>><a href="/guang/catalog/?nid=<%=v.nid%>&pnid=<%=pnid%>"><%= v.word_name %></a></li>
+			<%});%>
+
+			</ul>
+			<span class="openClosed" id="openClosed">
+		</nav>
+		<%}%>
+	<%}%>
+	</div>
+</header>
+<section id="wrapper_main" class="wrapper<%if(!isRoute && this.headTag != 'goods'){%> normal<%}%>">
+	<div class="posterWall">
+		<div class="goods_wall"></div>
+		<div class="pullUp" status="loading"></div>
+	</div>
+</section>
+
+<%# poster.html%>
+<%# block/gotop.html%>
+</div>
+
+<script>
+fml.vars.frm = '<%= this.frm %>';
+fml.vars.poster = {
+	'ptype' : '<%= this.ptype%>'
+	, 'pid' : '<%= this.pid%>'
+};
+<%= this.poster0? 'Meilishuo.config.poster0 = '+JSON.stringify(this.poster0)+';':'' ;%>
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('m/page/guang');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html%>

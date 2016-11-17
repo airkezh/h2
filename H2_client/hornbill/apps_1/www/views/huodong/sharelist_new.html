@@ -1,0 +1,106 @@
+<%#head.html%>
+<% var mSubstr = _extFn.mSubstr; %>
+<div class="act_box mt30">
+	<div class="act_title">
+		<div class="title"><img src="http://i.meilishuo.net/css/images/doota/act/title-1.png"/><span>时尚买手精选、当季热卖、限时限量，每天10：00准时上新</span></div>
+		<div class="num">今天进入卖场的已有<span><%= this.num && this.num.data.channel_uv%></span>人</div>
+		<div class="clear_f"></div>
+	</div>
+	<%this.main && this.main.forEach(function(v,k){%>
+	<a class="now pr" href="<%= v.ac_link %>" target="_blank">
+		<div class="del">
+			<div class="log">
+				<img src="<%= v.brand_logo%>" />
+			</div>
+			<h3><%= mSubstr(v.show_name, 10, '...') %></h3>
+			<p><%= v.brand_desc%></p>
+			<div class="con">
+				<div class="cost">
+					<span><%= v.discount_desc_v2%></span><%= v.discount_choice%>
+				</div>
+				<div class="num">
+					<%= v.ac_uv%>人正在抢购
+				</div>
+				<div class="clear_f"></div>
+			</div>
+			<div class="clock"><img src="http://i.meilishuo.net/css/images/doota/act/clock.png" />还剩<span class="time" time="<%= v.end_time - new Date().getTime() / 1000%>">-天-小时-分-秒-</span></div>
+		</div>
+		<div class="img">
+			<img src="<%= v.big_pic_v2%>" />
+		</div>
+		<%var _l = 0;%>
+		<%v.ac_mark && v.ac_mark.forEach(function(v1,k1){%>
+			<div class="tag" style="left:<%=_l + 10%>px">
+				<img src="<%= v1.img_url%>" />
+				<%_l += (+v1.img_width + 2);%>
+			</div>
+		<%});%>
+	</a>
+	<%});%>
+</div>
+<% if(this.ready){ %>
+	<div class="act_box mt30">
+		<div id="ready"></div>
+		<div class="act_title">
+			<div class="title"><img src="http://i.meilishuo.net/css/images/doota/act/title-2.png"/><span>更多精彩抢先看</span></div>
+			<div class="clear_f"></div>
+		</div>
+		<div class="will">
+			<%this.ready.forEach(function(v,k){%>
+			<a class="will_del" href="<%= v.ac_link %>" target="_blank">
+				<div class="will_top">
+					<img src="<%= v.horizon_pic_v2%>" width="468"/>
+				</div>
+				<div class="will_time"><img src="http://i.meilishuo.net/css/images/doota/act/clock.png" />距开抢还剩<span class="time" time="<%= v.end_time - new Date().getTime() / 1000%>">-天-小时-分-秒-</span></div>
+			</a>
+			<%});%>
+			<div class="clear_f"></div>
+		</div>
+	</div>
+<% } %>
+<div class="act_box mt30">
+	<%if(this.already){%>
+	<div class="act_title">
+		<div class="title"><img src="http://i.meilishuo.net/css/images/doota/act/title-3.png"/><span>精彩回眸</span></div>
+		<div class="clear_f"></div>
+	</div>
+	<div class="content">
+		<div class="hotDeals">
+			<%for(var i = 0; i < this.already.length; i++){%>
+			<a target="_blank" href="<%= this.already[i].ac_link %>" class="hotCon">
+				<div class="hotImg">
+					<img src="<%=this.already[i].vertical_pic_v2%>" />
+				</div>
+				<div class="hotTitle1">
+						<%=this.already[i].show_name%><span>|</span><%=this.already[i].brand_name%><br />
+					<div>已于<%=this.already[i].end_time_str.split(' ')[0]%>结束</div>
+				</div>
+			</a>
+			<%}%>
+			<div class="clear_f"></div>
+		</div>
+	</div>
+	<%}%>
+</div>
+<div class="act_box mt30">
+	<div class="bottom_left">
+		<img src="<%= this.num && this.num.data.merchant_pic%>">
+	</div>
+	<div class="bottom_right">
+		<div class="tel">
+			<div>美丽说客服热线</div>
+			<p>4000-800-577</p>
+		</div>
+		<div class="work">
+			<p>工作时间：每天08:00-22:00</p>
+		</div>
+	</div>
+	<div class="clear_f"></div>
+</div>
+<div class="promise-foot mt30">
+	<%# doota/promise.html%>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+     fml.use('page/doota/shareact_new');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

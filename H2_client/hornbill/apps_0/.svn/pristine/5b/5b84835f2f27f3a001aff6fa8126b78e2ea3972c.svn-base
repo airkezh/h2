@@ -1,0 +1,19 @@
+<%
+	var pageData=this.pageData || {};
+	var bannerBg=pageData.bannerBg || "";
+	var banner=pageData.banner || "";
+%>
+<div class="mua-banner" style="background:#e6e6e4 url(<%= bannerBg.bg %>) center center no-repeat;">
+	<ul>
+		<% banner && banner.forEach(function(data , index){ %>
+			<li>
+				<a href="javascript:;" data-img ="<%= data.img_url %>" style="background: repeat center top;"></a>
+			</li>
+		<% }); %>
+	</ul>
+	<div class="focus">
+		<% banner && banner.length>1  && banner.forEach(function(data){ %>
+			<a></a>
+		<% }); %>
+	</div>
+</div>

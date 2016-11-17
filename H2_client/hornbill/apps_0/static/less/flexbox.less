@@ -1,0 +1,50 @@
+/*
+  flexbox
+  2009: http://www.w3.org/TR/2009/WD-css3-flexbox-20090723/
+  2012: http://www.w3.org/TR/2012/WD-css3-flexbox-20120322/
+  lastest: http://www.w3.org/TR/css3-flexbox/
+
+  http://caniuse.com/#search=flex
+*/
+.flexbox() {
+  display : -webkit-box; /* OLD - iOS 6-, Safari 3.1-8 */
+  display : -moz-box; /* OLD - Firefox 19- (buggy but mostly works) */
+  display : -ms-flexbox; /* TWEENER - IE 10 */
+  display : -webkit-flex; /* NEW - Chrome */
+  display : flex; /* NEW, Spec - Opera 12.1, Firefox 20+ */
+}
+
+.flex(@param) {
+  -webkit-box-flex : @param;
+  -moz-box-flex    : @param;
+  -webkit-flex     : @param;
+  -ms-flex         : @param;
+  flex             : @param;
+}
+
+.flex-direction(@param) {
+  -webkit-flex-direction : @param;
+  flex-direction         : @param;
+}
+
+.justify-content(@param) {
+  -webkit-box-pack        : @param;
+  -webkit-justify-content : @param;
+  justify-content         : @param;
+}
+
+.align-items(@param) {
+  -webkit-box-align   : @param;
+  -webkit-align-items : @param;
+  align-items         : @param;
+}
+
+.order(@param) {
+  -webkit-box-ordinal-group : @param;
+  -moz-box-ordinal-group    : @param;
+  -ms-flex-order            : @param;
+  -webkit-order             : @param;
+  order                     : @param;
+}
+
+

@@ -1,0 +1,144 @@
+<%# head_simple.html%>
+</head>
+<body>
+<%
+	var candidate_info = this.candidate_info.data;
+	var h = candidate_info.pic_height;
+	var w = candidate_info.pic_width;
+	var ml = 0;
+	var style = '';
+	if(w/h >= 104/145){
+		ml = (145*w-104*h)*50/104/h;
+		style = 'height: 100%;left:-'+ml+'%;width: auto;';
+	} else {
+		style = 'width: 100%;height: auto;';
+	}
+%>
+<div class="appBox">
+	<% if(this.pageTag == 'invite'){
+			inviteS = this.pageSettings.invite;
+	%>
+		<div class="invite_con">
+			<div class="img_wrap">
+				<img src="<%= inviteS.page_bg %>" >
+			</div>
+			<div class="user_pic">
+				<img src="<%= candidate_info.pic_url %>" class="pic_me" style="<%= style %>">
+			</div>
+			<ul class="num_info">
+				<li><span class="vote_t">您的票数为</span></li>
+				<li class="vote_num"><div><span><%= candidate_info.score %></span>票</div></li>
+				<li class="rank">当前排名为第<span><%= candidate_info.rank %></span>名</li>
+				<li class="next_seat">还差<span><%= candidate_info.nextScore %></span>票就能上升一位！</li>
+			</ul>
+		</div>
+	<% } else if(candidate_info.is_vote == 1 || candidate_info.is_vote == 2){
+			finishS = this.pageSettings.finish;
+			if(w/h >= 19/27){
+				ml = (27*w-19*h)*100/38/h;
+				style = 'height: 100%;left:-'+ml+'%;width: auto;';
+			} else {
+				style = 'width: 100%;height: auto;';
+			}
+	%>
+		<div class="finish_con">
+			<div class="img_wrap">
+				<img src="<%= finishS.page_bg %>" >
+			</div>
+			<div class="candidate_pic">
+				<img src="<%= candidate_info.pic_url %>" class="pic_me" style="<%= style %>">
+			</div>
+			<a class="btn wbtn mtb js_lookBrand" go_href="/biz/girlfriends_2/page/myPic?cid=<%= this.cid %>&app_version=<%= this.app_version %>&app_access_token=<%= this.access_token %>&r=<%= this.r%>">查看榜单</a>
+		</div>
+	<%
+		} else {
+			voteS = this.pageSettings.vote;
+	%>
+		<div class="vote_con">
+			<div class="p_con">
+				<img src="<%= voteS.page_bg %>" />
+			</div>
+			<div class="candidate_pic">
+				<img src="<%= candidate_info.pic_url %>" class="pic_me" style="<%= style %>">
+			</div>
+			<div class="num_info_wrap">
+				<p><%= candidate_info.nickname %></p>
+				<ul class="num_info">
+					<li><span>目前票数<b><%= candidate_info.score %></b></span></li>
+					<li><span>还差<strong><%= candidate_info.nextScore %></strong>票，排名就能上升一位啦！</span></li>
+				</ul>
+			</div>
+			<%if(this.pageTag == 'vote'){%>
+				<a class="btn wbtn mtb vote_gl" uid="<%= candidate_info.user_id %>"><%= voteS.vote_btn %></a>
+			<%}else{ %>
+				<a class="btn wbtn mtb" href="<%= voteS.noapp_link %>"><%= voteS.noapp_btn %></a>
+			<% } %>
+		</div>
+	<%}%>
+</div>
+<% if(this.pageTag == 'invite'){ %>
+	<%= requireFn('wapShare.html')({
+		'share' : this.share
+		,'shareID' : 'girlfriend_s_'+this.cid
+		, 'shareTitle' : this.pageSettings.invite.page_btn
+		, '_JSstack' : this._JSstack
+		, '_JSmods' : this._JSmods
+	}); %>
+<% } %>
+<script>
+	fml.vars.huodong_enname = '<%=this.pageSettings.huodong.huodong_enname%>';
+	fml.vars.id = '<%= this.id %>';
+	fml.vars.cid = '<%= this.cid %>';
+	fml.vars.act_id = '<%= this.pageSettings.huodong.act_id %>';
+	fml.vars.access_token = '<%= this.access_token %>';
+	fml.vars.access_user = '<%= this.access_user %>';
+	fml.vars.gotoLead = '<%= this.gotoLead %>';
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/zepto/touch', function(){
+		$('.vote_gl').on('tap', function(){
+			if (navigator.userAgent.indexOf(' MicroMessenger/') > 0 || !Meilishuo.config.os || !Meilishuo.config.os.mlsApp){
+				if(navigator.userAgent.indexOf('MicroMessenger') != -1) {
+					window.location.href = 'meilishuo://openURL.meilishuo?json_params=' + encodeURIComponent(JSON.stringify({"url":window.location.href,"inApp":"1"}))
+				}
+
+				window.location.href = '/goto/open/?appUrl='+encodeURIComponent(window.location.href) + '&gotoLead='+fml.vars.gotoLead;
+				return ;
+			}
+			var url = '/aj/biz/girls_vote';
+			var data = {
+				'user_id': $(this).attr('uid'),
+				'cid': fml.vars.cid,
+				'id': fml.vars.id,
+				'access_token': fml.vars.access_token
+			};
+			var _self = this;
+			$.get(url, data, function(res){
+				if (res.data == 0) return;
+				var $vote = $(_self).parents('.poster_grid').find('.vote_num');
+				$vote.html(parseInt($vote.html())+1);
+				$(_self).removeClass('vote_girl').addClass('voted').html('谢谢支持');
+				setTimeout(function(){
+					window.location.reload();
+				}, 1500);
+			}, 'json');
+		});
+		$('.js_lookBrand').on('click', function(){
+			var url = $(this).attr('go_href');
+			var data = {
+				'access_token': fml.vars.access_token,
+				'id' : fml.vars.id,
+				'cid' : fml.vars.cid
+			};
+			$.get('/aj/biz/girls_add', data, function(res){
+				location.href = url;
+			}, 'json').error(function(){
+				location.href = url;
+			});
+			setTimeout(function(){
+				location.href = url;
+			}, 500);
+		});
+	});
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html%>

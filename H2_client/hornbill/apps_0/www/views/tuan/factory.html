@@ -1,0 +1,23 @@
+<%# head.html%>
+<% var banner = this.finfo.data.banner;
+var rows = this.finfo.data.rows;%>
+<div class="main">
+	<%if(banner.banner_pic_url){%>
+	<div class="topb">
+		<a target="_blank" <%= banner.banner_jump_url ? "href="+banner.banner_jump_url : ''%>><img src="<%= banner.banner_pic_url%>" /></a>
+	</div>
+	<%}%>
+	<div class="content">
+		<%rows.forEach(function(v,k){
+			if(v.row_image_count != '0'){%>
+			<ul class="row" style="height: <%= v.row_height%>px;">
+				<%v.images.forEach(function(v1,k1){%>
+				<li <%= (k1+1)%v.row_image_count == 0 ? "class='last'" : ''%> style="width: <%= v1.pic_width%>px;">
+					<a target="_blank" href="<%= v1.jump_url%>"><img style="height: <%= v.row_height%>px;" src="<%= v1.pic_url%>" /></a>
+				</li>
+				<%});%>
+			</ul>
+		<%}});%>
+	</div>
+</div>
+<%# foot.html%>

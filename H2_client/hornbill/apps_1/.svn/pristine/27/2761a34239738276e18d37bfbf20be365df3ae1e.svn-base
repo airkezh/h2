@@ -1,0 +1,29 @@
+<script type="text/html" id="tmpl_tip">
+    <? var data = this.data;
+    if ( data.hasClose ) {
+    ?>
+    <i class="icon-close js-close"></i>
+    <? } ?>
+    <div class="tip-bd">
+        <? if ( data.extra ) { ?>
+        <p class="tip-extra-info"><?= data.extra ?></p>
+        <? } ?>
+        <div class="tip-kitty touch-kitty-<?= data.kitty ?>"></div>
+        <h3 class="tip-title"><?= data.title ?></h3>
+        <p class="tip-content"><?= data.content ?></p>
+        <a class="tip-btn js-btn" data-bid="<?= data.bid || 0 ?>" data-num="<?= data.num || 0 ?>" data-status="normal"><?= data.btn ?></a>
+    </div>
+</script>
+<script type="text/html" id="tmpl_wx_share">
+    <div class="tip-bd tip-wx">
+        <a class="icon js-share-option-btn" data-type="friends" data-from="<?= this.data.from ?>">
+            <i class="icon-wx"></i>
+            <span>微信</span>
+        </a>
+        <a class="icon js-share-option-btn" data-type="timeline" data-from="<?= this.data.from ?>">
+            <i class="icon-friends-circle"></i>
+            <span>朋友圈</span>
+        </a>
+        <a class="tip-btn js-btn">取消</a>
+    </div>
+</script>

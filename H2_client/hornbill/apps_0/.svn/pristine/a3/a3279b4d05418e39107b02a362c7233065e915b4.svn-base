@@ -1,0 +1,49 @@
+<%#head.html%>
+<%
+	var progress = Math.floor(185426 / 285426 * 100);
+	function getURL(url,title){
+		return _extFn.getAppLink("openURL", {"url": url, "title": title, "inApp" : "1"}, this.os, null, url);
+	}
+	var tuan_morelink = getURL("http://"+this.host+"/tuan", "团购");
+
+	var tuan = this.tuan && this.tuan.data
+		, goods_list = tuan && tuan.goods_list
+		, banner = this.banner && this.banner.data && this.banner.data.jrth_tuan_banner
+		, bannerImg = banner && banner[0];
+%>
+<%= requireFn('activity/region99/header.html')({
+	'status' : 2,
+	'bannerImg' : bannerImg,
+	'_JSstack' : this._JSstack,
+	'_JSmods' :  this._JSmods,
+	'_Request_query' : this._Request_query
+});%>
+<%if(goods_list && goods_list.length > 0){%>
+<div class="main">
+	<%goods_list.forEach(function(item){%>
+		<a class="goodsList" href="<%= item.url_mob%>">
+			<figure>
+				<span class="bs_load_img" asrc="<%= item.goods_image_mob %>"></span>
+				<p class="countdown"><span class="time" time="<%= item.unix_time%>">剩余0天0小时0分钟</span></p>
+				<span class="progress pasted" style="width:43%"></span>
+				<span class="progress future" style="width:57%; right:0;"></span>
+			</figure>
+			<figcaption>
+				<p class="title"><%= item.goods_name %></p>
+				<p class="price">
+					<span class="newprice">¥<%= item.off_price %></span>
+					<span class="discount"><%= item.save_price > 100 ? item.discount : ('省'+ item.save_price + '元')%></span>
+				</p>
+				<p class="num"><%= item.sale_num %>人已购买</p>
+			</figcaption>
+		</a>
+	<%});%>
+</div>
+<%}%>
+<div class="seemore">
+	<a class="linkBtn" href="<%= tuan && tuan.more_url %>">去逛更多</a>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/region99/index');
+_use:", this._JSstack , this._JSmods); %>
+<%# foot.html%>

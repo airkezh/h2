@@ -1,0 +1,63 @@
+<%# sq/header.html%>
+<%= 
+	requireFn("sq/search_md.html")({
+		"searchNav" : this.searchNav,
+		"message" : this.message,
+		"keyWord" : this.keyWord,
+		"searchInitData" : this.searchInitData,
+		"from" : "search",
+		"_JSstack" : this._JSstack,
+		"_JSmods"  :  this._JSmods
+	});
+%>
+
+<div class="section_wrap">
+	<%
+		var sec1D = [
+			{ name: 'hot', txt: '默认' },
+			{ name: 'boom', txt: '热销' },
+			{ name: 'new', txt: '上新' }
+		];
+		var category = this.category;
+		var popular = this.recommend;
+	%>
+	<% if(popular){ %>
+	<section class="popular">
+		<h3>相关流行</h3>
+		<div class="popular-wrapper">
+		<% popular.forEach(function (item){ %>
+			<a class="popular-goods" href="/sq/search/?key_word=<%= item.word %>&d_r=<%= item.d_r %>" style="background-image: url(<%= item.pic %>);"></a>
+		<% }); %>
+		</div>
+	</section>
+	<% } %>
+	<section class="sec1">
+		<ul class="sec1-ctn">
+			<% sec1D.forEach(function (item){ %>
+			<li class="js-nav-item<%if (item.name == category){%> selected<%}%>" data-category="<%= item.name %>">
+				<span><%= item.txt %></span>
+			</li>
+			<% }); %>
+		</ul>
+	</section>
+	<section class="sec2">
+		<div id="goods_shelf" class="sec2-ctn"></div>
+		<div class="pullUp" status="loading"></div>
+	</section>
+</div>
+
+<%# sq/goods_tpl.html %>
+
+<script>
+	fml.vars.shareInfo = { "share_url" : location.href };
+</script>
+
+<script src="http://pub.idqqimg.com/qqmobile/qqapi.js?_bid=152"></script>
+<%! 
+	$_ENGINE_SELF.callFn("useModule")(
+		"<<<_use:fml.use('wap/page/sq/search');_use:", 
+		this._JSstack, 
+		this._JSmods 
+	); 
+%>
+<%# sq/footer.html%>

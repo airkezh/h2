@@ -1,0 +1,27 @@
+<%# head.html %>
+<div class="changePassword">
+<h3>亲爱的用户，您的账号存在安全问题，动一动手指让它更安全</h3>
+<div>
+<p style="margin:0 auto;width:700px;">完成以下操作，继续你的美丽旅程：</p>
+<p><span class="step">点击按钮发送激活邮件</span><span class="step">去邮箱点击激活链接</span><span>更新密码正常使用</span></p>
+<a href="javascript:void(0)" id="send_email">立即发送邮件</a>
+<span class="red_f send_sucess none_f">发送成功！</span>
+</div>
+<p class="hasQ">遇到问题？</p>
+<ul>
+<li style="width:300px;text-align:left;">如有任何问题，请发送邮件到<span class="red_f">kefu@meilishuo.com</span></li>
+</ul>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use('jquery' , function($){
+	$('#send_email').bind('click' , function(){
+		var url = '/aj/forcemail/';
+		var data = {};
+		var callback = function(){
+			window.location.href = '/settings/emailPsSuccess';
+		};
+		$.get(url , data , callback);
+	});
+});
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

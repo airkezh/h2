@@ -1,0 +1,47 @@
+function clearance(){
+	return this;
+}
+var controlFns = {
+	'index' : function(){
+		// this.debugSnake({'target':'devlab1'});
+
+		var mSelf = this;
+		var wapMod = base.loadModel('wap/tools.js');
+		var pageShareURL = encodeURIComponent('/clearance');
+		var welUrl = encodeURIComponent('http://www.meilishuo.com/welcome/')
+		var shareURL = 'http://m.meilishuo.com/goto/open/?appUrl=' + pageShareURL + '&bg='+ pageShareURL + '&bg2='+ welUrl;
+		
+		var php = {
+			'banner' : '/clearance/topic'//?code=mob_discount&id=7271'
+			,'shop_list' : '/clearance/detail'//'/clearance/shop?frame=1'
+			,'toast' : '/clearance/toast'
+			,'share_info' : '/customactivity/CustomActivity_common_tool_single?id=fuider_wap_special&cid=7053'
+			// ,"mobUserInfo" : "/customactivity/CustomActivity_wap_user_info"
+		}
+		this.bindDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			// console.log(data.userInfo.user_id);
+			data.userInfo.user_id == 0 ? data.isLogin = 0 : data.isLogin = 1;
+			var shareList = data.share_info.share || {};
+			var params = {
+				'title' : shareList.title,
+				'text' : shareList.text,
+				'pic' : {
+					"weixin" : shareList.src,
+					"weixin_timeline" : shareList.src,
+					"default" : shareList.src
+				},
+				'url' : shareURL
+			};
+			data.share = wapMod.shareTo(mSelf.req , params);
+
+			data._CSSLinks = ['clearance/clearance'];	
+			data.pageTitle = '清仓';
+			
+			this.render('activity/clearance.html', data);
+		});
+
+	}
+}
+exports.__create = controller.__create(clearance , controlFns);

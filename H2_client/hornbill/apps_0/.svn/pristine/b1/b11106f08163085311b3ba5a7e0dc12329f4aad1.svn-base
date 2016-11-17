@@ -1,0 +1,124 @@
+/*common*/
+var $=require('wap/zepto')
+	,scroll = require('wap/component/windowScroll')
+	,shareTmp = require('wap/component/shareTmp')
+	,WaterFall = require( 'circle/component/waterfall' )
+	,optimiseFn = require('circle/component/waterfallOptimise')
+	,lazy = require( 'm/component/lazyLoad' )
+var $tleImg = $('.tleImg')
+	,$popularTopic = $('.popularTopic')
+	,$body = $('body')
+	,$more = $('.more')
+	,$loading = $('.loading')
+	,$gotop = $('.gotop')
+	,$selectedInfo = $('.selectedInfo')
+	,$popularInfo = $('.popularInfo')
+	,$goodsWall = $('.goods_wall')
+var lazyLoad = lazy.init({xpath:'.pic_load'});
+//banner跳链接
+function getBannerUrl(ele) {
+	var url = ele.data('url');
+	var params = '{"url":"' + url + '","inApp":"1"}';
+	var href='meilishuo://openURL.meilishuo/?json_params=' + encodeURIComponent( params )
+	var	openlink = Meilishuo.config.os.mlsApp ? href: url ;
+	if(url){
+		window.location.href =window.__get_r(openlink, ele.data('xr'));
+	}
+}
+// 判断时候支持position：sticky
+function hasSticky() {
+	var element = document.createElement('div');
+	if ('position' in element.style) {
+		element.style['position'] = '-webkit-sticky';
+		element.style['position'] = '-moz-sticky';
+		element.style['position'] = '-o-sticky';
+		element.style['position'] = '-ms-sticky';
+		element.style['position'] = 'sticky';
+		return element.style['position'] === '-webkit-sticky' || element.style['position'] === '-moz-sticky' || element.style['position'] === '-o-sticky' || element.style['position'] === '-ms-sticky' || element.style['position'] === 'sticky'
+	} else {
+		return false;
+	}
+}
+function initWaterFall(){
+	var waterFallInstance = WaterFall.init({
+		el: '.goods_wall',
+		url: '/fashionHistory/aj/fashionReview',
+		colNum: 1,
+		colGap : '0 0',
+		hasSideGap : true,
+		data : {
+			'offset' : 0,
+			'limit' : 2
+			,'__get_r' : 1
+		},
+		dataFilter:function( data ) {
+			return data.data
+		},
+		onFetchSuccess: function(data,index){
+			lazyLoad.scroll();
+			waterFallInstance._config.data.offset += 2
+		},
+		onFetchFinished: function(data){
+			$more.show();
+			lazyLoad.load()
+			$loading.attr('status','stop');
+			$loading.hide();
+			if(JSON.parse(data.response).data.length==0){
+				$more.attr('status','stop')
+			}
+		},
+		optimiseFn: optimiseFn
+	});
+	return waterFallInstance;
+}
+$selectedInfo.click(function(){
+	var href = $(this).data('href');
+	window.location = window.__get_r(href, $(this).data('xr'));
+});
+
+$goodsWall.on( 'click' , '.popularInfo' , function(){
+	var fashionHref = $(this).data('fashionhref');
+	var xr = $(this).data('xr');
+	window.location = window.__get_r(fashionHref,xr );
+});
+
+// tab吸顶
+(function(){
+	var water = initWaterFall();
+	water.start();
+	//banner跳转
+	$('.tleImg').on('click' , function(){
+		getBannerUrl($(this));
+	})
+	$(window).scroll(function() {
+		if (!hasSticky()) {
+			var $timeWrap= $('.timeWrap');
+			var $forFixed = $('.forFixed');
+			var afterScroll = $body.scrollTop();
+			$timeWrap.each(function(index, el){
+				var $el = $(el)
+					,$popularTopic = $(el).parents('.popularTopic')
+					,$popularTitle = $popularTopic.find('.popularTitle')
+					,top = $popularTitle.offset().top
+					,height = $popularTitle.height()
+				if(afterScroll>top && afterScroll<top+height){
+					$forFixed.removeClass('fixed')
+					$popularTopic.find('.forFixed').addClass('fixed')
+				} else if(afterScroll<$timeWrap.eq(0).offset().top || (afterScroll > $el.offset().top && afterScroll < $el.offset().top+$el.height())){
+					$forFixed.removeClass('fixed')
+				}
+			})
+		}
+	});
+})();
+
+/*回顶部*/
+
+$gotop.on("click", function(e) {
+    document.body.scrollTop = 0;
+});
+scroll.yIn(30,function(){
+    $gotop.show();
+},function(){
+    $gotop.hide();
+});

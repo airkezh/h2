@@ -1,0 +1,150 @@
+<!--
+/**
+ * @fileoverview 首页 － 韩国馆
+ * @requires zepto
+ * @author kehuang@meilishuo.com
+ * @date 2014-10-13
+ */
+-->
+
+<%#head.html%>
+<%
+	
+%>
+
+<!-- banner -->
+<a href="<%= _extFn.getAppLink('openURL', {"url": "http://mapp.meilishuo.com/korea/xiaobao/", "inApp":1, "require_app_info":1, "title": "韩国馆服务保障说明"}, this.os, this.r) %>"><div class="banner"></div></a>
+
+<div class="pic_wrap">
+	<ul class="pic_list_box goods_wall"></ul>
+</div>
+
+<div class="pullUp" status="loading"></div>
+
+<%= requireFn('wapShare.html')({
+	'share' : this.share,
+	'shareTitle' : '选择分享到',
+	'_JSstack' : this._JSstack,
+	'_JSmods' : this._JSmods
+}); %>
+
+<div class="gotop_wrap">
+	<a class="gotop">
+		<img src="http://i.meilishuo.net/css/images/wap/korea/gotop.png">
+	</a>
+</div>
+
+<script>
+	var ua = navigator.userAgent;
+	var android = ua.match(/(Android)\s+([\d.]+)/);
+	<%= this.list ? 'Meilishuo.config.fallWall0 = ' + JSON.stringify(this.list) + ';' : ''; %>
+</script>
+
+<script type="text/html" id="posterWall">
+<?
+	var jsonData = this.tInfo;
+
+	if (jsonData) {
+		var goodsData = jsonData.twitterInfo || [];
+
+		(goodsData.length > 0) && goodsData.forEach(function(data, index){
+?>
+	<li>
+		<div class="swipe load">
+			<div class="swipe_wrap">
+				<?
+					var pics = data.pics || [];
+
+					if (pics.length > 0) {
+						if (android) {
+				?>
+				<div class="swipe_pic">
+					<a href="<?= data.link ?>">
+						<img src="<?= pics[0] ?>" alt="<?= data.title ?>">
+					</a>
+				</div>
+				<?
+						} else {
+							pics.forEach(function(pic, index){
+				?>
+				<div class="swipe_pic">
+					<a href="<?= data.link ?>">
+						<img src="<?= pic ?>" alt="<?= data.title ?>">
+					</a>
+				</div>
+				<?
+							});
+						}
+					}
+				?>
+			</div>
+			<ul class="swipe_num">
+				<?
+					if (!android && (pics.length > 1)) {
+						pics.forEach(function(pic, index){
+							if (index == 0) {
+				?>
+				<li class="active"></li>
+				<?
+							} else {
+				?>
+				<li class=""></li>
+				<?
+							}
+						});
+					}
+				?>
+			</ul>
+
+			<?
+				if (data.tag != '') {
+					var type = data.tag.type || '';
+
+					if (type == 'new') {
+			?>
+			<div class="swipe_info new">new</div>
+			<?
+					} else if (type == 'hot') {
+			?>
+			<div class="swipe_info hot">hot</div>
+			<?
+					} else if (type == 'discount') {
+			?>
+			<div class="swipe_info sale"><?= data.tag.discount ?></div>
+			<?
+					} else if (type == 'saleout') {
+			?>
+			<div class="swipe_info soldout"></div>
+			<?
+					}
+				}
+			?>
+		</div>
+		<div class="pic_info">
+			<a href="<?= data.link ?>">
+                <p class="title"><?= data.title ?></p>
+                <p class="decs"><?= data.info ?></p>
+                <div class="state">
+                	<div class="fl">
+                		<span class="price"><?= data.price ?></span>
+                		<del class="oprice"><?= data.origin_price ?></del>
+                	</div>
+                	<div class="fr">
+                		<span class="view"><?= data.viewNum ?></span>&nbsp;&nbsp;&nbsp;&nbsp;
+                		<span class="like"><?= data.likeNum ?></span>
+                	</div>
+                </div>
+            </a>
+        </div>
+	</li>
+<? 
+		});
+	}
+?>
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use("wap/page/korea/index");
+	fml.use("wap/page/biz/gotop");
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

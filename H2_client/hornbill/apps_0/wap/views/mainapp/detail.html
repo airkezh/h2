@@ -1,0 +1,107 @@
+<%# head.html%>
+
+<%
+var os = this.os,
+    r = this.r,
+    oldGetAppLink = _extFn.getAppLink,
+    getAppLink = function( protocol, params ) {
+        return oldGetAppLink( protocol, params, os, r );
+    },
+    /* 判断是在客户端还是浏览器，然后使用不同的链接 */
+    environment = os.mlsApp ? 'app' : 'wap',
+    rholder     = /{([^}]+)}/g,
+    rcurls      = /{|}/g,
+
+    linkConfig  = {
+        goods: {
+            wap: '//m.meilishuo.com/share/item/',
+            app: 'twitter_single'
+        },
+
+        buy: {
+            wap: '//im.meilishuo.com/wap/load/?',
+            app: 'im_chat'
+        },
+
+        circle: {
+            wap: '//circle.meilishuo.com/circle/chat?circle_id={circle_id}&r={r}',
+            app: 'circle'
+        },
+
+        textpic: {
+            wap: '//circle.meilishuo.com/circle/textpic/{msg_id}?r={r}',
+            app: 'rich_message'
+        },
+
+        miscpic: {
+            wap: '//m.meilishuo.com/mainapp/detail/{msg_id}?r={r}',
+            app: 'rich_message'
+        },
+
+        repin_circle_list : {
+            wap: '//m.meilishuo.com/mainapp/repin_list/?msg_id={msg_id}',
+            app: 'repin_circle_list'
+        }
+    };
+
+function convertLink( protocol, params ) {
+    var url = linkConfig[ protocol ][ environment ],
+        _params;
+
+    params.r = r;
+
+    if ( environment == 'wap' ) {
+        if ( protocol == 'goods' ) {
+            url += params.twitter_info.twitter_id + '?r=' + r;
+        } else if ( url.indexOf( '?' ) == url.length - 1 ) {
+            _params = [];
+            for ( var key in params ) {
+                _params.push( key + '=' + params[ key ] )
+            }
+
+            url += _params.join( '&' );
+        } else {
+            url.match( rholder ).forEach( function( str ) {
+                url = url.replace( str, params[ str.replace( rcurls, '' ) ] );
+            } )
+        }
+
+        return url
+    } else {
+        return 'meilishuo://' + url +
+            '.meilishuo?json_params=' +
+            encodeURIComponent( JSON.stringify( params ) );
+    }
+}
+
+/* 音频单位是秒 */
+function parseAudioDuration( duration ) {
+    var MINUTE = 60,
+        mins
+
+    if ( duration < MINUTE ) {
+        return duration + '\'\''
+    } else {
+        mins = parseInt( duration / MINUTE, 10 )
+        return mins + '\'' + ( duration - mins * MINUTE ) + '"'
+    }
+}
+%>
+
+<%= requireFn( 'mainapp/post.html' )({
+    detail: this.detail,
+    banners: this.banners,
+    list: this.list,
+    getAppLink: getAppLink,
+    parseAudioDuration: parseAudioDuration,
+    convertLink: convertLink,
+    os: this.os
+});%>
+
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/mainapp/detail');
+_use:", this._JSstack, this._JSmods); %>
+
+<%# foot_simple.html%>

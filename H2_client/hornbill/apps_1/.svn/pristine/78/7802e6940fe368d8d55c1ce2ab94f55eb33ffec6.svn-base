@@ -1,0 +1,19 @@
+<%
+var otherItems = this.feature_goods.other_items;
+%>
+<ul class="like_list">
+	<% otherItems.map(function(data, i) { %>
+	<li <% if(i == 0) {%>class="first"<%} else if(i == otherItems.length - 1 ) {%>class="last"<%}%>>
+	<div class="s_picBox">
+		<a class="s_pic" href="<%=data.link_url%>" target="_blank" title="<%=data.goods_title%>"><img src="<%=data.image%>" /></a>
+	</div>
+	<a class="txt" href="<%=data.link_url%>" target="_blank"><%=data.goods_title%></a>
+	<div class="info-box">
+		<span class="info-box-price">¥ <%= data.price == '' ? data.original_price : data.price%></span>
+		<span class="info-box-num"><%= data.sale_num ||0%>人购买</span>
+	</div>
+	</li>
+	<% }); %>
+</ul>
+<div class="clear_f"></div>
+

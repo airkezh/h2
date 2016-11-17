@@ -1,0 +1,110 @@
+<%* 单宝页sku购买模块 *%>
+
+<%
+	var goodsInfo = this.goods_info.data || {};
+	var globalKey = this._Request_cookies.MEILISHUO_GLOBAL_KEY;
+	var shop_in = this.shop_in.data || '';
+	var is_zero = goodsInfo.shelf == 2;
+%>
+
+<input type="hidden" name="order_init_r" value="<%= this.xr.r %>" />
+
+<div class="buy_wrap <%= is_zero ? 'goods_off' : '' %>">
+	<%* todo : 当没有颜色或者尺寸的时候，第一个sku选择问题；颜色图片尺寸过大； %>
+	<%
+		var prop = goodsInfo.prop;
+	%>
+	<% if(!is_zero){ %>
+		<div class="fixed_sku slide_bottom_out">
+			<div class="black_mask"></div>
+			<div class="sku_wrap">
+				<div class="sku_h">
+					<div class="img_wrap" style="background-image: url(<%= goodsInfo.image.image[0] %>);"></div>
+					<p class="title"><%= goodsInfo.goods_title %></p>
+					<p class="price">¥<%= goodsInfo.price %></p>
+					<div class="close">关闭</div>
+				</div>
+				<div class="sku_c">
+					<ul>
+						<% if(prop.color && prop.color.is_show){ %>
+							<li id="colorList">
+								<p class="title">颜色</p>
+								<%
+									var color_meta_id = prop.color.meta_id;
+									var color_value = prop.color.value;
+									var color_image = prop.color.image;
+								%>
+								<% color_value.forEach(function(item, index){ %>
+									<% if(color_image && color_image[index]){ %>
+										<div class="p_color_btn img_btn" data-name="<%= item %>" data-id="<%= color_meta_id[index] %>" si="<%= index+1 %>"><img src="<%= color_image[index] %>" title="<%= item %>" alt="<%= item %>"></div>
+									<% } else { %>
+										<div class="p_color_btn text_btn" data-name="<%= item %>" data-id="<%= color_meta_id[index] %>" si="<%= index+1 %>"><span><%= item %></span></div>
+									<% } %>
+								<% }); %>
+							</li>
+						<% } %>
+						<% if(prop.size && prop.size.is_show){ %>
+							<li id="sizeList">
+								<p class="title">尺码</p>
+								<%
+									var size_meta_id = prop.size.meta_id;
+								%>
+								<% prop.size.value.forEach(function(size_value, index){ %>
+									<div class="p_size_btn text_btn" data-name="<%= size_value %>" data-id="<%= size_meta_id[index] %>" si="<%= index+1 %>"><%= size_value %></div>
+								<% }); %>
+							</li>
+						<% } %>
+						<li class="numBox">
+							<p class="title">数量</p>
+							<span class="minus active">-</span>
+							<input class="nums" title="请输入购买数量" type="text" value="1">
+							<span class="plus active">+</span>
+							<span class="stock">(库存<span><%= goodsInfo.repertory %></span>件)</span>
+							<div class="input_mask"></div>
+						</li>
+					</ul>
+				</div>
+				<div class="confirm_wrap">
+					<div class="confirm_btn">确定</div>
+					<a class="download_btn" xr="<%= this.xr.r %>" href="/goto/open/?bg=http%3A%2F%2Fm.meilishuo.com%2Fdownload%2Flatest%2F%3Fchannel%3D30902%26frm%3Ddingdan&url=<%= encodeURIComponent('meilishuo://twitter_single.meilishuo/?json_params=' + encodeURIComponent('{"twitter_info":{"twitter_id":"' + goodsInfo.twitter_id + '", "is_doota": "1"}}')) %>"><p>下载客户端 ></p><p>新人下单 享更多优惠</p></a>
+				</div>
+			</div>
+		</div>
+	<% } %>
+	<div class="buy_box">
+		<% if(is_zero){ %><div class="goods_tips">该宝贝已下架</div><% } %>
+		<a href="/welcome?frm=daobaobottombar" xr="<%= this.xr.r%>" class="home_link">首页</a>
+		<a class="cnt_seller" href="http://im.meilishuo.com/wap/chat/?tid=<%= goodsInfo.twitter_id %>&goods_id=<%= goodsInfo.goods_id %>&shop_id=<%= shop_in.shop_id %>&source=wap&type=2&button_stat_area=wap_single_service" xr="<%= this.xr.r%>">客服</a>
+		<div class="love <%if(goodsInfo.beauty_me == 1){%>love_show<%}%>" id="js_love_btn" isLove="0">喜欢</div>
+		<div class="buy_btn" data-type="buy">购买</div>
+		<div class="add_cart" data-type="cart">加入购物车</div>
+	</div>
+</div>
+
+<script>
+	fml.vars.count_discuss = "<%= goodsInfo.twitter_stat.discuss_num%>";
+	fml.vars.goods = {
+		"id" : "<%=goodsInfo.goods_id %>"
+		, "twitter_id": "<%= goodsInfo.twitter_id%>"
+		,"pid" :"<%= goodsInfo.pid || 0%>"
+		, "price" : "<%= goodsInfo.price || 0 %>"
+		, "price_max" : "<%= goodsInfo.price_max || 0%>"
+		, "original_price" : "<%= goodsInfo.original_price || 0 %>"
+		, "original_price_max" : "<%= goodsInfo.original_price_max || 0 %>"
+	};
+	fml.vars.goods_stock = <%= JSON.stringify(goodsInfo.stock)%>;
+	fml.vars.goods_prop = <%= JSON.stringify(goodsInfo.prop)%>;
+	fml.vars.goods_sku = <%= JSON.stringify(goodsInfo.sku)%>;
+	fml.vars.globalKey = '<%= globalKey %>';
+	fml.vars.frm = '<%== this.frm %>';
+	fml.vars.shop_id = <%= goodsInfo.shop_id %>;
+	fml.vars.goodsId = <%= goodsInfo.goods_id%>;
+	fml.vars.common_r = '<%= this.xr.r%>';
+	fml.vars.twitter_id = '<%= goodsInfo.twitter_id%>';
+	fml.vars.is_zero = <%= JSON.stringify(is_zero) %>;
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/share/item_foot');
+_use:", this._JSstack , this._JSmods ); %>
+

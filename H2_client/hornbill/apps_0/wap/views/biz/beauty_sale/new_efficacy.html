@@ -1,0 +1,64 @@
+<%#head.html%>
+<div class="main">
+	<div class="search">
+		<form class="js_search_form" action="" method="get">
+			<div class="search_content">
+				<span></span>
+				<input class="input" type="search" placeholder="<%= this.search.content %>" />
+			</div>
+			<input type="submit" class="search_btn" value="搜索">
+		</form>
+	</div>
+	<div class="images">
+		<% this.efficacy.forEach(function(efficacy){ %>
+			<div class="content">
+				<a href="<%= efficacy.url %>">
+					<div class="image" style="background-image: url(<%= efficacy.pic %>);"></div>
+					<p><%= efficacy.word_name %></p>
+				</a>
+			</div>
+		<% }); %>
+	</div>
+	<div class="load">
+		<div class="good_content"></div>
+		<div class="pullUp" status="loading"></div>
+	</div>
+</div>
+<script type="text/javascript">
+fml.vars.goods = <%= JSON.stringify(this.goods) %>;
+</script>
+<script type="text/html" id="posterWall">	
+
+<? 
+	var v = this.v;
+	var pt = this.pt * 100;
+	if(!pt){
+		var pt = (v.img_o_height / v.img_o_width) * 100;	
+	}
+
+	function getAppLink(tid){
+		if(!<%= this.os.mlsApp ? true : false %>){
+			return '/share/item/'+tid;
+		} else {
+			return 'meilishuo://twitter_single.meilishuo?json_params='+encodeURIComponent(JSON.stringify({"twitter_info" : {"twitter_id":tid, "is_doota":1}, "r":'<%= this.r %>'}));
+		}
+	}
+?>
+<div class="poster">
+	<a href="<?= getAppLink(v.twitter_id) ?>">
+		<div class="goods" style="background-image: url('<?= v.n_pic_file ?>');padding-top: <?= pt ?>%;"></div>
+		<p class="title"><?= v.ginfo.goods_title ?></p>
+		<p class="price">
+			<span class="vip_price"><?= v.ginfo.goods_price ?></span>
+			<img src="http://d04.res.meilishuo.net/pic/_o/0b/af/01f834bdf72c210229a9d6277440_27_24.cg.jpg" />
+			<span><?= v.count_like ?></span>
+		</p>
+	</a>
+</div>
+
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/biz/new_efficacy');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

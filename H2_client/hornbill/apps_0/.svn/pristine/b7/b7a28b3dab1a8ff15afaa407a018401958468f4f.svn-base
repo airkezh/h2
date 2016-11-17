@@ -1,0 +1,162 @@
+fml.use(['jquery' , 'app/personWall' , 'component/urlHandle'] , function(){
+	var query = this.urlHandle.getParams(window.location.href.toString());
+	var urlData = {
+		'frame' : query.frame || 0,
+		'page' :  0,
+		'user_id' : fml.vars.user_id || 0,
+		'tid' : fml.vars.twitter_id || 0,
+		'is_twitter' : true,
+		'type' : 'share', 
+		'twitter' : 'share' 
+	};
+	var opts = this.jquery.extend({}, urlData, query);
+	if(fml.vars.newShare){
+		this.personWall(opts , '/aj/getTwitterGoods/newShare');
+	}else{
+		this.personWall(opts , '/aj/getTwitterGoods/');
+	}
+});
+
+fml.use('app/admClick', function(){
+	this.monitor();
+});
+
+fml.use('app/adPoster', function(){
+		this.carousel('.tr_bnr',{'width':228,'height':160,'gap':4000,'type':2});
+		this.carousel('.tr_bnr2',{'width':228,'height':160,'gap':4000,'type':2});
+});
+
+fml.use('component/waterfall' , function(){
+	this.init({
+		containerId : '.goods_wall'
+		,colNumMin : 3
+	});
+})
+fml.use('app/deletePoster_guang' , function(del){
+	    del.deleteTrigger();
+		del.deleteTwitter();
+		del.deleteComment();
+});
+//fml.use('app/userInfoTips' , function(){
+//	this('.comments' , '.userInfoTips');
+//});
+fml.use('jquery' , function(){
+	var $ = this;
+	var img = $('.twitter_pic');
+	var orginImg = new Image
+	orginImg.onload = function(){
+		if(this.width > 450){
+			img.width(fml.vars.isTaobaoPic ? 310 : 450);    
+		}
+		$('.content .code_pic').width(img.width());
+	}
+	orginImg.src = img[0].src;
+
+	/// hide head while  visit from internal
+	if (document.referrer && document.referrer.indexOf(window.location.host) > 0 ){
+		$('#navbar')[0].scrollIntoView();
+		if(window.location.href.indexOf('o_c=1') > -1)
+			$('.comments').show();
+	}
+});
+fml.use('jquery' , function(){
+	$('.click_pl').click(function() {
+		$('.comments').toggle();
+	});
+	$(".more_cur").click(function(){
+		$(".more_pic a").removeClass("h_limit");
+		$(".more_cur").hide();
+	});
+});
+
+fml.use('app/twitterReport' , function(){
+	this('#twitter_report');	
+});
+fml.use('app/page' , function(){
+	this({
+		'totalNum' : fml.vars.count_discuss
+	});	
+});
+fml.use('app/twitter_comment' , function(){
+	this();	
+});
+fml.use('app/like' , function(){
+	this.twitterLike('.twitter' , '.twitter_like');
+});
+fml.use('app/eventHover' , function(){
+	this.hoverShow('.pic_view' , '.view_pic');
+	this.hoverShow('.buyer_ico_box' , '.buyer_txt');
+});
+fml.use('app/forward' , function(){
+	this.twitterForward('.twitter' , '.twitter_forward');
+});
+fml.use('app/follow' , function(){
+    this('.addGroupFollow' , '.removeGroupFollow' , '.removeGroupFollow' , 'red_follow' , 'pink_follow');
+});
+fml.use('jquery' , function(){
+	$('.unfold').click(function() {
+		$('.putDown').show();
+		$('.putUp').hide();
+	});
+	//关于宝洁的收集cookie的案子，希望收集到“去购买”的数据
+	$('.price_go').click(function(){
+		var url = "http://pix04.revsci.net/F09828/b3/0/3/noscript.gif?D=DM_LOC%3Dhttp%253A%252F%252Fwww.meilishuo.com%253Faction%253Dbuyitnow%2526bpid%253Dmeilishuo%26DM_EOM%3D1&C=F09828&L=0";
+  		var img =  new Image(1,1);
+  		img.onload = img.onerror = function(){};
+  		img.src = url;
+	})
+});
+fml.use('component/lazyLoad' , function(){
+	this.load('.more_pic span' ,'asrc');
+});
+fml.use('jquery' , function(){
+	var tabView = $('.tabView')
+		, tab = tabView.find('.tabArea')
+		, content = tabView.find('.contentArea')
+	tab.on('click', function(){
+		tab.removeClass('cur')
+		$(this).addClass('cur')
+
+		content.hide().filter('[contentArea=' + $(this).attr('contentArea') + ']').show()
+	});
+
+	if ('#commentsBox' == window.location.hash){
+		tab.eq(1).trigger('click')
+		$('.pcBox').length && $('.pcBox')[0].scrollIntoView()
+		}
+});
+fml.use(['jquery','app/tracking' ,'component/iStorage'] , function(){
+	var $ = this.jquery
+		,iStorage = this.iStorage
+		,tracking = this.tracking
+	var check = Meilishuo.config.user_id;
+	var huodong_shuang_11	= iStorage.getCookie('huodong_shuang_11')
+		,db11 = iStorage.getCookie('fx_db11')
+		,globalKey = iStorage.getCookie('MEILISHUO_GLOBAL_KEY')
+	if(check || huodong_shuang_11 || globalKey.slice(17,23)*1 > 131102){
+		return;
+	}
+	if (db11){
+		$('#tb_sr_close').remove()
+		$('#tb_sr .clearTool').remove()
+	}else{
+		$('#tb_sr .outLink').remove()
+		}
+	$('.price_go,.tui_tle a,.pic_view').click(function(){
+		$('#tb_sr').show();
+		var setT = setTimeout(function(){
+			$('#tb_sr').hide();
+		},10000);
+	});
+	$('#tb_sr a.outLink').click(function(){
+		iStorage.setCookie('huodong_shuang_11' , new Date().getTime() ,{'duration' : 10* 86400});
+	});
+	$('#tb_sr_close ,#tb_sr .clearTool a').click(function(){
+		tracking.cr('db11' ,{btn : $(this).is('#tb_sr_close') ? 'tb_sr_close':'baidu'})
+		$('#tb_sr').hide();
+		iStorage.setCookie('fx_db11' , new Date().getTime() ,{'duration' : 10* 86400});
+		
+		})
+
+});
+fml.define('page/twitter', [], function(){});

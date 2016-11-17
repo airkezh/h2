@@ -1,0 +1,155 @@
+<%#head.html%>
+<meta name="format-detection" content="telephone=no" />
+<%
+	var exchange_type = {
+		'1' : '已兑完',
+		'0' : '去兑换'
+	}
+	var pageData = this.pageData;
+	var day = new Date();
+	var day_locale = day.getFullYear() + '年';
+	day_locale += (day.getMonth() + 1) + '月';
+	day_locale += day.getDate() + '日';
+	var anniversary = (day > new Date('2014/04/08 00:00:00') || this.force_show);
+%>
+<input id="has_joined" type="hidden"/>
+<div class="top_banner">
+	<%= requireFn('block/banner.html')({
+		'banner' : this.pageData.top_banner,
+		'hide_btn':true,
+		'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+	});%>
+	<div class="bottom_cover">
+		<img src="http://i.meilishuo.net/css/images/huodong/exo/mob_slider_cover.png"/>
+	</div>
+</div>
+	<div class="time_wrap">
+		<img src="http://d05.res.meilishuo.net/img/_o/8e/1a/7e50a8f71c37cf7499a892b505a9_640_160.c8.png" alt="">
+		<div class="num">
+			<p class="time" style="color:#<%= this.pageData.date_color %>"><%= day_locale %></p>
+			<label id="fnum"><%= this.fighting_num.fight_count%></label>
+			<p id="follow_num" class="num_wrap">今天有<span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span>人</p>
+			<p><%= this.pageData.text_content %></p>
+		</div>
+	</div>
+		<img id="fight" src="<%= this.pageData.btn_url %>" <%if(this.has_fought){%>style="display:none"<%}%>/>
+		<img src="<%= this.pageData.btn_url1 %>" <%if(!this.has_fought){%>style="display:none"<%}%>/>
+	<%*{%><div class="picshow_wrap">
+		<%= requireFn('block/banner.html')({
+			'banner' : pageData.pic_show
+			,'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+		});%>
+	</div>
+	<%*}%>
+	<% this.fuide.twitter_post_list && this.fuide.twitter_post_list.map(function(data){ %>
+		<div class="img_tit"><img src="<%= data.banner_image%>" /></div>
+		<a href="<%= data.link%>" target="_blank" class="firstPic"><img src="<%= data.image%>" /></a>
+		<div class="item1">
+			<div class="goods_wall">
+			<%this.act_poster = data.tInfo;%>
+			<% this.act_poster && this.act_poster.map(function(data){ %>
+				<div class="poster_grid poster_wall">
+					<figure>
+					<% if(data.link){ %>
+						<a href="<%=data.link%>" target="_blank" class="pic"><img src="<%= data.image%>" /></a>
+					<%}else{%>
+						<a href="<%= _extFn.getAppLink('twitter_single', {'twitter_info' : {'twitter_id' : data.twitter_id, 'is_doota' : 1}}, this.os, this.r, '/share/item/'+data.twitter_id)%>" class="pic"><img src="<%= data.image%>" /></a>
+					<%}%>
+						<figcaption>
+							<span class="price">￥<%= data.price %></span>
+							<span class="like icon-heart"><%= data.count_like %></span>
+						</figcaption>
+					</figure>
+				</div>
+			<% }); %>
+			</div>
+		</div>
+	<%});%>
+	<!-- <img src="<%=this.pageData.title_bg%>">
+			<%if(this.user_info){%>
+	<span class="user_point" style="display:none"><%=this.user_info.data.point%></span>
+			<%}%>
+	<div class="welfare_fan">
+		<div class="shrinked">
+			<img src="http://i.meilishuo.net/css/images/huodong/exo/exo_mob_jifen_title2.png" alt="">
+			<%if(this.user_info){%>
+			<div><span><%= this.user_info.data.point %></span>积分</div>
+			<%}%>
+		</div>
+		<div class="extended" style="display:none">
+			<%if(this.user_info){%>
+			<div><span><%= this.user_info.data.point %></span>积分</div>
+			<%}%>
+			<img src="http://i.meilishuo.net/css/images/huodong/exo/exo_mob_jifen_extended4.png"/>
+			<a href="javascript:;" class="toggle"></a>
+		</div>
+		<div class="goods_wrap">
+			<ul class="goods_list" type="new">
+				<% pageData.new_goods.map(function(data, idx){%>
+				<li twitter_id="<%= data.twitter_id %>">
+					<div class="li_line">
+						<a class="good_img">
+							<img src="<%= data.pic_url %>">
+						</a>
+						<div class="good_info">
+							<p class="good_t">
+								<%= data.goods_titile %>
+							</p>
+							<p class="good_msg">
+								需<span class="integral"><%= data.point %>积分</span>
+							</p>
+							<a href="javascript:void(0)" point="<%= data.point%>" exchangeNum ="<%= data.exchangeNum%>"  class="btn <%= this.exchange_status.data.new_goods[data.twitter_id] ? 'have_go' : 'go' %>"><%= exchange_type[this.exchange_status.data.new_goods[data.twitter_id]] %></a>
+						</div>
+					</div>
+				</li>
+				<%});%>
+			</ul>
+		</div>
+	</div> -->
+	<div class="exo_news">
+		<% pageData.news.forEach(function(data){ %>
+			<div class="exo_box">
+				<img src="<%= data.bg %>">
+				<div class="exo_con">
+					<img src="<%= data.img_src %>" alt="">
+					<div class="text">
+						<div class="day"><%= data.day %></div>
+						<div class="week"><p>星期<%= data.week %></p><p><%= data.date %></p></div>
+						<p class="news_text"><%= data.text %></p>
+					</div>
+				</div>
+				<%if(data.link){%>
+					<a href="<%=data.link%>"></a>
+				<%}%>
+			</div>
+		<% }); %>
+	</div>
+	<img src="<%= pageData.group_bg %>" alt="">
+	<div class="group">
+		<% this.group.forEach(function(data){ %>
+			<div class="group_box">
+				<a href="<%= _extFn.getAppLink('group' , {'group_id': data.group_id } , this.os, this.r); %>">
+					<p class="title"><%= data.name %></p>
+					<img src="<%= data.mixpic %>" alt="">
+					<p class="go_group">去看看</p>
+				</a>
+			</div>
+		<% }); %>
+	</div>
+	<img src="<%= this.PICTURE_URL%>images/wap/activity/exo/pic4.jpg" />
+	<div class="guanzhu">
+		<a href="http://meilishuo.qzone.qq.com" class="left_f"><img src="<%= this.PICTURE_URL%>images/wap/activity/exo/pic5.jpg" /></a>
+		<a href="http://m.weibo.cn/u/1718455577" class="left_f"><img src="<%= this.PICTURE_URL%>images/wap/activity/exo/pic6.jpg" /></a>
+	</div>
+	<img src="<%= this.PICTURE_URL%>images/wap/activity/exo/pic8.jpg" />
+	<div class="popup" style="display:none">
+		<img src="<%= this.pageData.popup_image %>"/>
+		<span id="closePopup"></span>
+	</div>
+	<div class="masker" style="display:none"></div>
+	<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+		fml.use('wap/app/hackWeixin');
+		fml.use('wap/app/banner');
+		fml.use('page/huodong/exo_wap');
+	_use:", this._JSstack , this._JSmods); %>
+<%#foot_simple.html%>

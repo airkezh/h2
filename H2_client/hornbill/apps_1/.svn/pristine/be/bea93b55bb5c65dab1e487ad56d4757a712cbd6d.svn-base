@@ -1,0 +1,213 @@
+<!--
+/**
+ * @fileoverview 补签活动 － 每日签到
+ * @requires zepto
+ * @author kehuang@meilishuo.com
+ * @date 2014-09-09
+ */
+-->
+
+<%# head_simple.html%>
+<%
+	var curSignUserData = this.signUserData;
+	var curSignUserInfo = this.signUserInfo.data;
+	var curConSignDays = curSignUserInfo.continuous || 0;
+	var curPatchData = curSignUserInfo.patch;
+	var curPatchMoney = curPatchData.bonus;
+	var curPatchStatus = curPatchData.status;
+	var curPatchChance = curPatchData.chance;
+	var curPatchMissing = curPatchData.missing;
+	var curServerDate = this.serverDate;
+	var curServerYear = curServerDate.getFullYear();
+	var curServerMonth = curServerDate.getMonth() + 1;
+	var curServerDay = curServerDate.getDate();
+	var strServerMonth = (curServerMonth < 10) ? '0' + curServerMonth : curServerMonth;
+	var strServerDay = (curServerDay < 10) ? '0' + curServerDay : curServerDay;
+	var curServerDateStr = curServerYear + '-' + strServerMonth + '-' + strServerDay;
+%>
+</head>
+<body>
+
+<!-- <div class='load_shade'>
+	<div class='load'></div>
+</div> -->
+
+<div id="wrap">
+	<header class="header">
+		<div class="tips j_ret_tips">
+			<%
+				if (curPatchChance <= 0) {
+			%>
+			<strong>你还没有补签卡~</strong>
+			<p class="no_ret">每成功支付1笔订单，可以获得1张补签卡<br>快去买东西吧~</p>
+			<%
+				} else {
+					if (curPatchStatus == 0) {
+						if (curPatchMissing == '') {
+			%>
+			<p class="ret">你已经补完了所有的漏签记录！</p>
+			<%
+						} else {
+			%>
+			<p class="ret">今天可以补签<b><%= curPatchMissing %></b>的签到记录<br>签到奖金恢复到<b class="money"><%= curPatchMoney %></b>元</p>
+			<%
+						}
+					} else {
+						if (curPatchMissing == '') {
+			%>
+			<p class="ret">你已经补完了所有的漏签记录！</p>
+			<%
+						} else {
+			%>
+			<p class="ret">今天可以补签<b><%= curPatchMissing %></b>的签到记录<br>签到奖金恢复到<b class="money"><%= curPatchMoney %></b>元</p>
+			<%
+						}
+					}
+				}
+			%>
+		</div>
+
+		<div class="sign_box">
+			<img src="http://i.meilishuo.net/css/images/wap/signPatch/sign_icon.png" alt="">
+			<span class="j_ret_num"><b>X</b><%= curPatchChance%></span>
+		</div>
+
+		<p class="ret_desc">你一共有<b><%= curPatchChance%></b>张补签卡</p>
+
+		<div class="btn_box j_btn_box">
+			<%
+				if (curPatchChance <= 0) {
+			%>
+			<div class="btn_buy">
+				<a href="javascript:;" class="yellow j_buy_btn"></a>
+			</div>
+			<%
+				} else {
+					if (curPatchStatus == 0) {
+						if (curPatchMissing == '') {
+			%>
+			<div class="btn_again">
+				<a href="javascript:;" class="yellow j_return_btn"></a>
+			</div>
+			<%
+						} else {
+			%>
+			<div class="btn_ret">
+				<a href="javascript:;" class="yellow j_ret_btn"></a>
+				<a href="javascript:;" class="red j_later_btn"></a>
+			</div>
+			<%
+						}
+					} else {
+						if (curPatchMissing == '') {
+			%>
+			<div class="btn_again">
+				<a href="javascript:;" class="yellow j_return_btn"></a>
+			</div>
+			<%
+						} else {
+			%>
+			<div class="btn_ret">
+				<a href="javascript:;" class="yellow j_ret_btn"></a>
+				<a href="javascript:;" class="red j_later_btn"></a>
+			</div>
+			<%
+						}
+					}
+				}
+			%>
+		</div>
+	</header>
+
+	<!-- 补签说明 -->
+	<section class="content">
+		<p class="tit_desc">补签说明：</p>
+		<ul class="txt_desc">
+			<li>每成功支付1笔订单，可以获得1张补签卡。</li>
+			<li>每次自动补签最近一天漏签的签到记录。</li>
+			<li>补签后漏签日会更新为已签到状态。</li>
+			<li>签到奖金会按补签后的记录重新计算。因为漏签导致的奖金清零会自动恢复，但兑奖后的奖金不会恢复。</li>
+		</ul>
+	</section>
+
+	<!-- 日历 -->
+	<div class="calanderWrap calanderWrap1">
+		<%
+			var calPrevYear = 2015,
+				calNextYear = 2015,
+				calPrevMonth = 1,
+				calNextMonth = 1,
+				calCurYear = curServerYear,
+				calCurMonth = curServerMonth;
+
+			if (calCurMonth == 1) {
+				calPrevYear = calCurYear - 1;
+				calNextYear = calCurYear;
+				calPrevMonth = 12;
+				calNextMonth = calCurMonth + 1;
+			} else if (calCurMonth == 12) {
+				calPrevYear = calCurYear;
+				calNextYear = calCurYear + 1;
+				calPrevMonth = calCurMonth - 1;
+				calNextMonth = 1;
+			} else {
+				calPrevYear = calCurYear;
+				calNextYear = calCurYear;
+				calPrevMonth = calCurMonth - 1;
+				calNextMonth = calCurMonth + 1;
+			}
+
+			calPrevMonth = (calPrevMonth < 10) ? '0' + calPrevMonth : calPrevMonth;
+			calNextMonth = (calNextMonth < 10) ? '0' + calNextMonth : calNextMonth;
+		%>
+		<div class="date_box">
+			<div class="prev_btn j_calander_btn" data-flag="prev" data-year="<%= calPrevYear %>" data-month="<%= calPrevMonth %>"></div>
+			<div class="icon_cal"></div>
+			<div class="month"><%= curServerDateStr %></div>
+			<div class="totals">
+				连续第<span class="num" id="j_sign_days">0</span>天签到
+			</div>
+			<div class="next_btn j_calander_btn" data-flag="next" data-year="<%= calNextYear %>" data-month="<%= calNextMonth %>"></div>
+		</div>
+		<div class="calander"></div>
+		<div class="cBottom"></div>
+	</div>
+</div>
+
+<!-- 返回顶部 -->
+<a href="javascript:;" class="gotop" id="gotop">返回顶部</a>
+
+<!-- 补签弹窗 -->
+<script type="text/html" id="j_ret_layer">
+	<div class="shade j_layer_shade"></div>
+	<div class="main j_layer_main">
+		<div class="t"></div>
+		<div class="m">
+			<p class="tit">补签成功！</p>
+			<p class="sub_tit">明天可以继续补签8月24日的签到记录~</p>
+			<div class="tip_bg"></div>
+			<a href="javascript:;" class="ok_btn"></a>
+		</div>
+		<div class="f"></div>
+	</div>
+</script>
+
+<script>
+	fml.vars.isLogin = <%=this.isLogin%>;
+
+	var curServerYear = <%=curServerYear%>;
+	var curServerMonth = <%=curServerMonth%>;
+	var curServerDateStr = '<%=curServerDateStr%>';
+	var curSignData = <%=JSON.stringify(curSignUserData.data)%>;
+	var curSignedArr = curSignData.signed;
+	var curConvertedArr = curSignData.converted;
+	var curConSignDays = <%=curConSignDays%>;
+	var isNewest = <%=this.isNewest%>;
+	var curFirstSignDate = '<%=curSignUserInfo.firstSignDate%>';
+	var curLastSignDate = '<%=curSignUserInfo.lastSignDate%>';
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use("wap/page/activity/signPatch");
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html%>

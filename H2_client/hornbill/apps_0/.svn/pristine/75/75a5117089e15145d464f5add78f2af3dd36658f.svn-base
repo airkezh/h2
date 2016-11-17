@@ -1,0 +1,527 @@
+<% if(this.user_id){ %>
+<script type="text/html" id="addShareTpl" >
+<div class="add_share">
+	<div class="pickup">安装<a class="red_f" href="/pickup" target="_blank">美丽说拾宝工具</a>，浏览其他网站时直接把宝贝分享到美丽说</div>
+	<a class="share_goods" href="javascript:void(0)">分享宝贝</a>
+	<a class="share_pic" href="javascript:void(0)">分享图片</a>
+	<a class="new_magazine" href="javascript:void(0)">新建杂志</a>
+</div>
+</script>
+<script type="text/html" id="shareGoodsLinkTpl" >
+<%*分享宝贝%>
+<div class="add_share_goods" id="shareGoodsLink">
+    <div class="shareLinks">
+	    <div id="linkMessageTips">请在下面输入宝贝的链接地址</div>
+	    <div class="gray_f mt10_f">
+		    <input type="text" class="add_goods_url" />
+		    <input id="addGoodsSubmit" class="add_goods_btn" type="button" value="确 定" />
+	    </div>
+    </div>
+</div>
+</script>
+<script type="text/html" id="shareGoodsUploadTpl" >
+<%*上传照片%>
+<div class="add_share_goods shareGoodsUpload">
+    <form enctype="multipart/form-data" method="post" id="submitPicture" target="uploadFile" action="/imageupload/pic_upload">
+	<div class="up_photos mlsUploadPic cursor_f">
+		<span class="up_photo_bg"></span>
+		<span class="up_photo">选择照片文件</span>
+	</div>
+	<a class="up_photosing none_f">正在上传...</a>
+    <input class="cursor_f" type="file" name="attach" size="4"  id="uploadFileSubmit"/>
+    </form>
+    <div id="uploadFilePanel">
+        <iframe id="getUploadFile" name="uploadFile" border="0" class="none_f"></iframe>
+    </div>
+	<div class="clear_f"></div>
+</div>
+</script>
+<script type="text/html" id="shareGoodsUploadPanelTpl">
+	<div class="forwardMagazin">
+		<h4 class="goods_title none_f"></h4>
+		<div class="maga_img"><img class="magaImgage"  width="180"/></div>
+	    <div class="maga_cr">
+	        <div class="maga_slc">
+	            <select name="select" id="select" class="selectList">
+				</select>
+	            <div class="maga_crb none_f" id="createPanel" >
+					<div class="sj_box right_f createMaga" id="createMaga">
+						<span class="sj_btn_bg"></span>
+						<span class="sj_btn"><em class="sj_btnr"></em>创建</span>
+					</div>
+					<input class="mc_ipt maxConent" id="createMagaValue" maxlength="20"  type="text" value="" placeholder="创建一个杂志" name="create">
+	                <div class="clear_f"></div>
+	                <p class="none_f" id="ForwardMsg">哎呀，这个名称已经有人使用了，请换个名称吧！</p>
+	            </div>
+	        </div>
+	        <textarea id="forwardContent" style="overflow-y:auto;" class="maxConent maga_area __atName" placeholder="写点什么,评论一下"></textarea>
+            <span class="message show_message_tips none_f">正在提交...</span>
+	        <div class="maga_zf">
+	            <div class="left_f">
+					<div class="sj_box left_f mr4_f">
+						<span class="sj_btn_bg"></span>
+						<span class="sj_btn" id="forwardMaga"><em class="sj_btnr"></em>分享</span>
+					</div>
+					<a class="share_smileys">&nbsp;</a>
+				</div>
+	        </div>
+	    </div>
+    </div>
+</script>
+<script type="text/html" id="createMagazinePanelTpl" >
+<%*创建杂志%>
+<div class="add_share_goods" id="createMagazinePanel">
+	<div class="l30_f f14_f"><span class="s_title">标题</span><input type="text" class="maga_title gray_f" value="" placeholder="20个字以内" maxlength="20" /></div>
+	<div class="clear_f"></div>
+	<div class="s_box">
+		<div class="s_title" style="_width: 28px;">分类</div>
+		<ul id="magaTyepList" class="ml40_f">
+		</ul>
+	</div>
+	<div class="clear_f"></div>
+	<div class="mt5_f">
+		<div class="sj_box left_f">
+			<span class="sj_btn_bg"></span>
+			<span class="sj_btn" id="createMagazine"><em class="sj_btnr"></em>创建</span>
+		</div>
+		<span id="createMagaMsg" class="cf_pro none_f red_f">请选择分类</span>
+	</div>
+</div>
+</script>
+<script type="text/html" id="magaSucTpl" >
+<%*创建杂志成功提示%>
+<div class="maga_suc">
+    <p class="f16_f"><span class="ms_ico">成功</span></p>
+    <p class="f14_f mt10_f">去 <a class="red_f" href="/group/<?=magaId?>" id="magaLink" target="_blank"><?=magaName?></a> 看看&gt;&gt;</p>
+</div>
+</script>
+<script type="text/html" id="shareMagaSucTpl" >
+<%*站外分享到美丽说成功提示%>
+<div class="maga_suc" style="width:520px;">
+    <p class="f16_f"><span class="ms_ico">分享成功！</span></p>
+    <p class="f14_f mt10_f"><a class="red_f" href="/" id="magaLink" target="_blank">去美丽说看看&gt;&gt;</a></p>
+</div>
+</script>
+<script type="text/html" id="loginMessage" >
+<%*私信%>
+<div class="pop_letter">
+	<fieldset>
+		<legend>美丽说发送私信</legend>
+		<p><label for="">发消息给：</label><input class="toNickName l_ipt" type="text"/></p>
+		<p><label for="">消息内容：</label><textarea class="toMsgCont msg_area"></textarea></p>
+		<p class="sendbox">长度不能超过200个字</p>
+		<p class="sendbox"><label for="">验证码：</label><input maxlength="4" class="l_ipt code checkCodeText" type="code" /><span class="codeimg checkImage"><img src="http://captcha.meilishuo.com/Register/Captcha?token=asde39ad9&session=" /></span></p>
+		<div class="clear_f"></div>
+		<p class="sendbox"><input type="button" class="sendsubmit" value="发送"/><span class="tipBox none_f" >  </span></p>
+	</fieldset>
+</div>
+</script>
+<script type="text/html" id="zeroFollowTpl">
+<%*零关注弹窗%>
+<div class="zero_fow">
+	<div class="zero_t" style="height: 66px;">
+		<div class="close_z"></div>
+		<span class="leben"></span>
+		<p class="nick">Hi, <b><%= this.userInfo.nickname %>:</b></p>
+		<p class="txt">关注一些你可能感兴趣的人～看看他们都在逛什么吧！</p>
+	</div>
+	<div class="clear_f"></div>
+	<ul class="zero_c">
+		<? $.each(fol_user, function(k, v) { ?>
+		<li>
+			<a class="avatar64_f userUrl1" href="/person/u/<?= v.user_id + frm ?>" target="_blank"><img src="<?= v.avatar_c ?>" /></a>
+			<p class="z_tle"><span class="right_f"><input class="sel_box" usrId="<?= v.user_id ?>" id="checkedbox" type="checkbox" checked></span><a class="userUrl" href="/person/u/<?= v.user_id + frm?>" target="_blank"><?= v.nickname ?>&nbsp;<?= v.credit ?></a></p>
+			<p>
+				<span class="similar gray_f"><?= v.sim ?></span></p>
+				<p>粉丝<a class="fans red_f" href="/ur/fans/<?= v.user_id + frm ?>" target="_blank"><?= v.static.fans ?></a> 分享<a class="share red_f" href="/person/u/<?= v.user_id + frm ?>?type=share" target="_blank"><?= v.static.share ?></a> <a class="red_f" href="/atme/recommend/<?= v.user_id + frm ?>" target="_blank"><em class="lm_love">&nbsp;</em><?= v.static.heart ?></a></p>
+		</li>
+		<? }); ?>
+	</ul>
+	<div class="clear"></div>
+	<div class="zero_b"><span class="ienot"><input id="selectall" type="checkbox" checked="">全选</span><a id="afterFollow" class="sure btn">关注，回我的首页</a></div>
+</div>
+</script>
+<script type="text/html" id="folTipTpl">
+<div class="maga_suc">
+    <p class="f14_f">亲，请至少保留一个关注对象哦~</p>
+	<p class="mt20_f"><a id="follow_confirm" class="sure btn">确定</a></p>
+</div>
+</script>
+<%}%>
+<%if (!this.user_id){%>
+<script type="text/html" id="loginNav">
+    <li id="setting">
+		<a class="first" href="/person/u/<?=user_id?>?frm=headerprofile" title="<?=nickname?>">
+			<span class="s_face"><img src="<?=avatar_c?>"/></span> 
+			<?=nickname?>
+		</a>
+		<a class="level" href="/member/main/">
+			<span class="i_level level_<?= user_grade || 0 ?>"></span><em class="redarrow"></em>
+		</a>
+		<ul style="display:none" class="add_menu_leo perwidth none_f">
+			<? if (1 != is_mall) { ?>
+			<li>
+				<a href="/person/u/<?=user_id?>?type=editor" target="_blank"> 
+					我的杂志
+				</a>
+			</li>
+			<li>
+				<a href="/person/u/<?=user_id?>?type=share" target="_blank"> 
+					我的分享
+				</a>
+			</li>
+			<? } ?>
+			<li class="b_line">
+				<a href="/settings/setPersonal" target="_blank"> 
+					账号与安全
+				</a>
+			</li>
+			<li><a id="headLogoutBtn" href="/user/logout"> 退出</a></li>
+		</ul>
+	</li>
+	<li id="message">
+		<a class="msg"> 
+			消息
+			<span class="num_bgc none_f"></span>
+			<em class="redarrow"></em>
+		</a>
+	<ul style="display:none" class="add_menu_leo hw120 none_f" id="moreMessageBox">
+		<li><a href="/ur/fans/<?=user_id?>" target="_msg"> 查看关注</a></li>
+		<li><a href="/atme/" target="_msg"> 查看@我的</a></li>
+		<li><a href="/msg/main/user" target="_msg"> 查看私信</a></li>
+		<li><a href="/msg/main/syser" target="_msg"> 查看系统消息</a></li>
+		<li><a href="/ur/like/<?=user_id?>" target="_msg"> 查看喜欢我的</a></li>
+		<li><a href="/club/recommend/<?=user_id?>" target="_msg">查看回复我的</a></li>
+	</ul>
+	</li>
+	<li>
+		<a class="i_like" href="/person/u/<?=user_id?>?type=like" target="_blank">
+			<i></i>我的喜欢
+		</a>
+	</li>
+	<li>
+		<a href="/cart" target="_blank" class="mycart">
+			<em class="i_cart">&nbsp;</em> 
+			我的购物车
+			<?if(cartnum > 0){?>
+				<span class="num_bgc"><?=cartnum?></span>
+			<?}else{?>
+				<span class="num_bgc num_bgc_none">0</span>
+			<?}?>
+		</a>
+	</li>
+	<li>
+		<a href="/order" target="_blank">
+			<em class="i_order">&nbsp;</em> 我的订单
+		</a>
+	</li>
+	<li id="downapp">
+		<a href="/client/?frm=daeh" target="_blank">
+			<em class="i_mob"> &nbsp;</em> 下载App
+			<em class="redarrow"></em>
+		</a>
+		<ul class="add_menu_leo down">
+			<li>
+				<img src="http://d03.res.meilishuo.net/pic/_o/85/27/ab7c68c7d71e78c8f59b809c6b07_120_120.ch.jpg" alt="">
+				<div class="client">美丽说客户端</div>
+				<div>发现流行，占有世界</div>
+			</li>
+			<li>
+				<img src="http://d04.res.meilishuo.net/pic/_o/46/01/1112dfa5a6d33ee590c81181a7db_167_165.ch.png" alt="">
+				<div class="client">美丽说HIGO客户端<br/></div>
+				<div>扫码下载，新手红包免费拿</div>
+			</li>
+		</ul>
+	</li>
+	<li>
+		<a class="last" href="/helpcenter/?frm=top_to_help" target="_blank"> 
+			帮助中心
+		</a>
+	</li>
+</script>
+<script type="text/html" id="loginTpl" >
+<%*登录弹窗改版%>
+<div class="login_wrap">
+	<div class="login_normal">
+		<h3>
+			<a href="/user/register?frm=tk_reg" target="_BLANK">注册</a>
+			登录美丽说
+		</h3>
+		<fieldset>
+			<form method="post" onsubmit="return false" action="" id="loginForm">
+				<div class="l_list">
+					<p class="l_box">
+						<input type="text" class="l_txt" id="mlsUser" name="mlsUser" placeholder="手机号/邮箱/用户名" />
+						<span></span>
+						<span class="user_icon"></span>
+					</p>
+				</div>
+				<div class="l_list">
+					<p class="l_box">
+						<input type="password" class="l_txt" id="password" name="password" placeholder="密码" />
+						<span></span>
+						<span class="pwd_icon"></span>
+					</p>
+				</div>
+				<div class="l_list authcode none_f">
+					<div class="l_box">
+						<input class="l_txt" id="checkcode" name="checkcode" type="text" placeholder="请输入验证码" maxlength="4" />
+						<span></span>
+						<span class="code_icon"></span>
+						<div class="checkImage" onselectstart="return false;">
+							<img width="90" height="36" src="<%= this.PICTURE_URL %>images/register/blank.jpg"><span class="refresh"></span>
+						</div>
+					</div>
+				</div>
+				<div class="loginErrorMessage none_f"></div>
+				<div class="login_btn_wrap">
+					<input type="submit" class="login_btn" value="立即登录"/>
+				</div>
+				<div class="remember">
+					<input type="checkbox" name="savestate" id="savestate" checked="checked" />
+					<label for="savestate">记住我</label>
+				</div>
+				<a href="/user/findPwd?frm=pop_fpwd" target="_blank" class="forget_pwd">忘记密码？</a>
+			</form>
+		</fieldset>
+	</div>
+	<div class="login_fast">
+		<h3>无需注册，即可登录</h3>
+		<div class="fast_way">
+			<a href="/connect/auth/qzone?frm=tk_qq1" class="qq_way"></a>
+			<a href="/connect/auth/weibo?frm=tk_sina1" class="weibo_way"></a>
+			<a href="/connect/auth/weixin?frm=tk_weixin" class="weixin_way"></a>
+		</div>
+		<h4 class="more_tip">更多登录方式<span> &gt;&gt;</span></h4>
+		<div class="more_way none_f">
+			<a href="/connect/auth/txweibo?frm=tk_txweibo" class="txweibo"></a>
+			<a href="/connect/auth/douban?frm=tk_douban" class="douban">
+				<span class="msg"><em class="arrow1">◆</em><em class="arrow2">◆</em>维护期间暂停新用户登录，老用户不受影响</span>
+			</a>
+			<a href="/connect/auth/renren?frm=tk_renren" class="renren"></a>
+			<a href="/connect/auth/baidu?frm=tk_baidu" class="baidu">
+				<span class="msg"><em class="arrow1">◆</em><em class="arrow2">◆</em>维护期间暂停新用户登录，老用户不受影响</span>
+			</a>
+		</div>
+	</div>
+	<div class="clear_f"></div>
+</div>
+</script>
+<script type="text/html" id="loginSina" >
+<div class="pop_login">
+	<div class="l_ico">
+		<a class="big_sina" href="/connect/auth/weibo?frm=tk_sina1"></a>
+	</div>
+	<h4><%=this.lang.window.login_sina%></h4>
+	<div class="mt30_f c_f">已有帐号，直接<a class="red_f" href="/user/login?frm=tk_denglu2">登录</a></div>
+</div>
+</script>
+<script type="text/html" id="loginQQ" >
+<div class="pop_login">
+	<div class="l_ico">
+		<a class="big_qq" href="/connect/auth/qzone?frm=tk_qq1"></a>
+	</div>
+	<h4><%=this.lang.window.login_qq%></h4>
+	<div class="mt30_f c_f">已有帐号，直接<a class="red_f" href="/user/login?frm=tk_denglu1">登录</a></div>
+</div>
+</script>
+<script type="text/html" id="loginRenren" >
+<div class="pop_login">
+	<div class="l_ico">
+		<a class="big_ren" href="/connect/auth/renren?frm=tk_rr"></a>
+	</div>
+	<h4><%=this.lang.window.login_renren%></h4>
+	<div class="mt30_f c_f">已有帐号，直接<a class="red_f" href="/user/login?frm=tk_dengl3">登录</a></div>
+</div>
+</script>
+<%}%>
+<script type="text/html" id="pop_loading">
+<div class="pop_loading">
+<div></div>
+</div>
+</script>
+<script type="text/html" id="shop_pop_loading">
+	<div class="shop_pop_loading">
+		<div></div>
+	</div>
+</script>
+<script type="text/html" id="floatingWindow">
+<div class="rec_layout floatingWindow">
+<div class="top_ico none_f"></div>
+<div class="left_ico none_f"></div>
+<div class="right_ico none_f"></div>
+<div class="bot_ico none_f"></div>
+<div class="group_rec">
+</div>
+</div>      
+</script>
+<%# wins/loginSmile.html %>
+<script type="text/html" id="mailSub">
+<div class="mail_sub">
+	<fieldset>
+		<form id="substribe" method="post" target="_blank" action="/edm/subscribe">
+		<legend>美丽说邮件订阅</legend>
+		<p><span>您的邮箱：</span><input id="sub_email" class="l_ipt" type="text" name="email" placeholder="建议您使用qq邮箱" /></p>
+		<p><span>您的姓名：</span><input id="sub_opt" class="l_ipt" type="text" name=username placeholder="选填" /></p>
+		<p>
+			<input id="sub_now" class="btn sure" type="submit" value="现在订阅"/>
+			<span class="hint_sub none_f red_f">您的邮箱填写有误，请重新填写。</span>
+		</p>
+		</form>
+	</fieldset>	
+</div>
+</script>
+<div class="atDiv" style="word-wrap: break-word; outline: medium none; position: absolute;overflow:auto;filter:alpha(opacity=0);moz-opacity:0;opacity:0;">
+	<span class="before"><?= before?></span><span class="flag"><?= flag?></span><span class="after"><?= after?></span>
+</div>
+<script type="text/html" id="atSearchKey">
+<ul class="atSearch pa_f" style="border:1px solid #CCCCCC;border-radius:2px;color:#333;padding:1px;background:#fff;z-index:1000;">
+	<li class="atTitle" style="padding:5px 10px;white-space:nowrap;">选择最近@的人或直接输入</li>
+</ul>
+</script>
+<script type="text/html" id="UserMember_exchange_success" >
+<%*会员积分%>
+<div class="dialog_member can">
+	<p class="meb_content">
+		<b class="member_icon success"></b>
+		<span>兑换成功，商品会统一在下周三发货，发货地址为MM在美丽说上填写的默认地址，发货后会有私信通知，请注意查收！</span>
+	</p>
+	<p class="tab_sure">
+		<a class="btn sure mem_btn close_dailog">确定</a>
+	</p>
+</div>
+</script>
+<script type="text/html" id="UserMember_exchange_affirm" >
+<div class="dialog_member can_not">
+	<p class="meb_content affirm_cont">
+		<b class="member_icon success"></b>
+		该商品需花费<?= data?>积分，确认进行兑换？
+	</p>
+	<p class="tab_sure">
+		<a class="btn sure mem_btn affirm_btn">确定</a>
+		<a class="btn sure mem_btn close_dailog">取消</a>
+	</p>
+</div>
+</script>
+<script type="text/html" id="UserMember_exchange_filed" >
+<div class="dialog_member can_not">
+	<p class="meb_content">
+		<b class="member_icon fail"></b>
+		积分不足，快去购物获取更多积分吧！
+	</p>
+	<p class="tab_sure">
+		<a class="btn sure mem_btn close_dailog" href="/tuan?frm=member_dialog" target="_blank">去购物</a>
+		<a class="btn sure mem_btn know close_dailog">知道了</a>
+	</p>
+</div>
+</script>
+<script type="text/html" id="UserMember_exchange_nochange" >
+<div class="dialog_member can_not">
+	<p class="meb_content">
+		<b class="member_icon fail"></b>
+		请先领取积分！
+	</p>
+	<p class="tab_sure">
+		<a class="btn sure mem_btn close_dailog">确定</a>
+	</p>
+</div>
+</script>
+<script type="text/html" id="UserMember_exchange_defeated" >
+<div class="dialog_member can_not">
+	<p class="meb_content">
+		<b class="member_icon fail"></b>
+		兑换失败,请再试一遍！
+	</p>
+	<p class="tab_sure">
+		<a class="btn sure mem_btn close_dailog">确定</a>
+	</p>
+</div>
+</script>
+<script type="text/html" id="UserMember_exchange_num" >
+<div class="dialog_member can_not">
+	<p class="meb_content">
+		<b class="member_icon fail"></b>
+		该商品只能兑换<?= data?>次，去看看其他的商品吧！
+	</p>
+	<p class="tab_sure">
+		<a class="btn sure mem_btn close_dailog">确定</a>
+	</p>
+</div>
+</script>
+<script type="text/html" id="UserMember_exchange_outOfStock" >
+<div class="dialog_member can_not">
+	<p class="meb_content">
+		<b class="member_icon fail"></b>
+		该商品已被全部兑完，快去看看其他的商品吧！
+	</p>
+	<p class="tab_sure">
+		<a class="btn sure mem_btn close_dailog" href="/tuan?frm=member_dialog" target="_blank">去购物</a>
+		<a class="btn sure mem_btn know close_dailog">知道了</a>
+	</p>
+</div>
+</script>
+<script type="text/html" id="UserMember_exchange_login" >
+<div class="dialog_member can_not">
+	<p class="meb_content">
+		<b class="member_icon fail"></b>
+		未登录，请先登录！
+	</p>
+	<p class="tab_sure">
+		<a class="btn sure mem_btn close_dailog">确定</a>
+	</p>
+</div>
+</script>
+<script type="text/html" id="guess_like" >
+<div class="module guess_like">
+	<div class="tit">
+		<h2>
+			<?=title?>
+			<span class="subtit"><?=subtitle?></span>
+		</h2> 
+		<div class="operate">
+			<a><?=more.text?></a>
+		</div>
+	</div>
+	<div class="cont">
+		<?=contHtml ?>
+	</div>
+</div>
+</script>
+<script type="text/html" id="guess_like_cont" >
+<? $.each(list,function(key,item){ ?>
+<div class="item">
+	<div class="pic">
+		<a target="_blank" href="<?=item.url ?>&pstrc=fe_pos%3A:wlc_selected_<?= page ?>_<?= key ?>"><img src="<?=item.show_pic ?>"></a>
+	</div>
+	<div class="desc">
+		<div>
+			<span class="price"><?=item.ginfo.goods_price?></span>
+			<span class="like"><?=item.count_like ?></span>
+		</div>
+		<div class="tit">
+			<a target="_blank" href="<?=item.url ?>&pstrc=fe_pos%3A:wlc_selected_<?= page ?>_<?= key ?>">
+			<?=item.ginfo.goods_title?>
+			</a>
+		</div>
+	</div>
+</div>
+<? }); ?>
+</script>
+<script type="text/html" id="checkCodeTpl">
+<%*获取短信校验码%>
+<div class="checkCodeWrap">
+	<form id="checkCodeForm" method="post" onsubmit="return false" action="" >
+		<div class="checkBox" id="checkBox">
+			验证码
+			<input class="checkTxt" id="checkcode" name="checkcode" type="text" value="" placeholder="验证码" maxlength="4" autocomplete="off" />
+			<span class="checkImage checkCodeCont">
+				<span id="checkcodeImage">
+					<img width="90" height="36" isblank="true" src="<%= this.PICTURE_URL %>images/register/blank.jpg">
+				</span>
+				<span class="red_f">看不清楚，换一张</span>
+			</span>
+		</div>
+		<input type="submit" class="submitCode" value="提交"/>
+	</form>
+</div>
+</script>

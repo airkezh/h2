@@ -1,0 +1,67 @@
+<%#head.html%>
+<div class="beauty">
+	<div class="sideBar pr_f">
+		<div class="rec_nav">
+			<%#beauty/catacon.html%>
+		</div>
+	</div><!--end leftBar-->
+	<div class="beauty_con">
+		<a class="beauty_banner" href="<%=this.beauty_banner.banner_url%>" target="_blank">
+			<img src="<%=this.beauty_banner.banner_image%>" width="706" height="240" alt="<%=this.beauty_banner.banner_title%>"/>   
+		</a>
+		<div class="brand_logo">
+			<%this.brandList && this.brandList.map(function(data, index){
+				var last = '';
+				if (index%6==5) last = 'last';
+				var url = '/beauty/catalog/';
+				if (data.has_brand_page) url = '/beauty/brand/';
+			%>
+			<a href="<%=url+data.words_id%>" target="_blank"><span class="<%=last%>"></span><img src="<%=data.brand_url%>" alt="<%=data.words_name%>" /></a>
+			<%});%>
+			<div class="clear_f"></div>
+		</div>
+		<a class="arrow_down" href="javascript:void(0);"></a>
+		<a class="arrow_up" style="display:none;" href="javascript:void(0);"></a>
+		<h2 class="f16_f">大家认为最好用的</h2>
+		<div class="use_best pr_f">
+			<div class="sliderBg">
+				<div class="slider">
+					<ul>
+						<%this.commonList && this.commonList.map(function(data, index){%>
+						<li class="<%if((this.words_id==0&&index==0)||(this.words_id==data.words_id)){%>active<%}%>">
+							<a href="/beauty/?word=<%=data.words_id%>" rel="nofollow">
+								<span><%=data.words_name%></span>
+							</a>
+						</li>
+						<%});%>
+					</ul>
+				</div>
+			</div>
+			<%this.goodsMain && this.goodsMain.gInfo && this.goodsMain.gInfo.map(function(data, index){%>
+			<div class="bestCon" style="<%if(index%3==2){%>border-right:none;<%}%>">
+				<div class="com">
+					<a href="/beauty/single/<%=data.goods_id%>" target="_blank"><img src="<%=data.img%>" alt="<%=data.goods_name%>" /></a>
+					<h3><a href="/beauty/single/<%=data.goods_id%>" target="_blank"><%=data.goods_name%></a></h3>
+					<div class="u_num"><b><%=data.test_user%></b>人使用</div>
+					<span>好评度</span><em><i style="width:<%=Math.floor(5.8*data.grade)%>px;"></i></em>
+				</div>
+				<% var comment = data.comment[0];%>
+				<% if(comment) {%>
+				<div class="daren_rec">
+					<a href="/person/u/<%=comment.user_id%>" class="avatar32_f" target="_blank"><img src="<%=comment.avatar_c%>" alt="" /></a>
+					<div class="ml40_f des">
+						<a href="/person/u/<%=comment.user_id%>" target="_blank"><b><%=comment.nickname%></b></a><span class="i_special">&nbsp;</span><span>推荐</span><br />
+						<span><%=comment.comment%></span>
+					</div>
+				</div>
+				<%}%>
+			</div>
+			<%});%>
+			<div class="clear_f"></div>
+		</div><!-- end 最好用 -->
+	</div>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/beauty');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

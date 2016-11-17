@@ -1,0 +1,48 @@
+<%# head_simple.html %>
+<script src="<%= this.M_JCSTATIC_BASE %>js/jquery.js"></script>
+<script src="<%= this.M_JCSTATIC_BASE %>passport/dist/v1.js"></script>
+</head>
+<body>
+
+<div id="loginBox2">
+</div>
+<script>
+var login = new MLSPassport.login({
+	app_id:"10001",
+	defaultCSS:true,
+	jcstatic :'<%= this.M_JCSTATIC_BASE %>',
+	domain :'<%= this.PASSPORT_DOMAIN %>',
+	captcha :'<%= this.CAPTCHA_ULR %>',
+	ui:{
+	//	formTitleShow:0,
+	//	formTitleText:'',
+
+	//	checkcodeAreaShow:1,
+	//
+	//	submitBtnText:'登录美丽说',
+
+	//	registerBtnShow:0,
+	//	registerBtnText:'注册美丽说',
+
+
+	//	rememberBtnShow:0,
+	//	rememberBtnText:'',
+
+	//	findBtnShow:0,
+	//	findBtnText:'',
+	//	
+		usernamePlaceholder:'11',
+	//	passwordPlaceholder:'',
+	//	checkcodePlaceholder:'',
+
+	},
+	risk_type:'pic',
+	outer:'#loginBox2',
+	watch:function(res){
+		console.log('demo login', res);
+	}
+})
+</script>
+
+<%# foot_simple.html %>
+

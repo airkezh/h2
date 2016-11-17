@@ -1,0 +1,32 @@
+<%# demo/head.html%>
+
+<section class="page">
+	<h2>Banner</h2>
+
+	<%= requireFn('block/banner.html')({
+		'banner' :this.homeBanner 
+		,'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+	});%>
+
+	<dl>
+		<dt>特点：</dt>
+		<dd>无缝轮播，自适应宽度，支持最大宽度。</dd>
+		<dt>数据结构：</dt>
+		<dd>
+			bannerData: [{image_url:"", url:"", image_width:""}, ..., {}]
+		</dd>
+		<dt>less：</dt>
+		<dd>.sliderBanner;</dd>
+		<dt>html：</dt>
+		<dd>
+		< %= requireFn('block/banner.html')({
+			'banner' :bannerData
+			,'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+		});%>
+		</dd>
+	</dl>
+
+
+</section>
+
+<%# demo/foot.html%>

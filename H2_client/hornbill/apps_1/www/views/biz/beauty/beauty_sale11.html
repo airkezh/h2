@@ -1,0 +1,101 @@
+<%#head.html%>
+
+<%
+	var getLink = _extFn.getLink,
+		pageData = this.pageData;
+	for(var i = 0,k = pageData.length; i<k; i++){
+		if(this.acid == pageData[i].page.cid){
+			var pageSettings = pageData[i];
+		}
+	}
+%>
+<div class="main">
+	<% pageSettings.head.length > 0 && pageSettings.head.map(function(data, index){ %>
+		<div class="head_bg" style="background-image:url('<%= data.img_src %>');height:<%= data.h %>px;"></div>
+	<% }); %>
+	<div class="sec_nav_wrap">
+		<div class="tab_wrap">
+			<div class="bs_tab_wrap <%= pageSettings.nav.length == 3 ? 'three_tab' : '' %>">
+				<% pageSettings.nav.forEach(function(data, index){ %>
+					<div <%= index == 0 ? 'class="p_tab_active tab0"' : '' %> data_name="<%= data.r %>" data_id="<%= index %>"><%= data.name %></div>
+				<% }); %>
+			</div>
+		</div>
+		<div class="sec_nav"></div>
+	</div>
+	<div class="poster" id="poster">
+		<div class="spinner botSpinner"></div>
+	</div>
+	<% if(pageSettings.pc_foot.img_src){ %>
+		<div class="foot_bannar">
+			<a href="<%= pageSettings.pc_foot.link %>" target="_blank"><img src="<%= pageSettings.pc_foot.img_src %>"></a>
+		</div>
+	<% } %>
+</div>
+
+<script type="text/html" id="posterWall">
+	<div class="goods_units">
+		<?
+			$.each(data, function(index, goods_data){
+				var goods_link = '';
+				if(goods_data.link){
+					goods_link = goods_data.link;
+				} else {
+					goods_link = '/share/item/' + goods_data.twitter_id + '?d_r=' + goods_data.d_r;
+				}
+		?>
+			<a href="<?= goods_link ?>" target="_blank" class="productCon">
+				<?var _l = 0;?>
+				<? if(goods_data.is_end == 1){?>
+					<div class="soldend"></div>
+				<? } else if(goods_data.repertory == 0){?>
+					<div class="soldout"></div>
+				<? } else { ?>
+					<? goods_data.marks.forEach(function(v1 , k1){ ?>
+						<div class="new-png"  style="left:<?=6 + _l?>px"><img src="<?= v1.img_url?>" /></div>
+						<?_l += (+v1.img_width + 2);?>
+					<? });?>
+				<? } ?>
+				<div class="proImg">
+					<img width="220" src="<?=goods_data.image?>" />
+				</div>
+				<div class="proTitle">
+					<?=goods_data.goods_title?>
+				</div>
+				<div class="proPrice">
+					<b><em>￥</em><?=goods_data.price?></b>
+					<? if(goods_data.original_price){ ?>
+						<span class="original_price">￥<?=goods_data.original_price?></span>
+						<?
+							var sale_price = '' + Math.round(goods_data.price/goods_data.original_price*100)/10;
+							if(sale_price.indexOf('.')<0){
+								sale_price += '.0';
+							}
+						?>
+						<span class="sale_price"><?= sale_price ?>折</span>
+					<? } ?>
+				</div>
+				<div class="proBtnWrap">
+					<span class="js-addToCart btn-addToCart" data-tid="<?=goods_data.twitter_id?>">加入购物车</span>
+				</div>
+				<div class="proStatus">
+					<?=goods_data.sell_num?><?= this.is_start ? "人已喜欢" : "人在抢购" ?>
+				</div>
+			</a>
+		<? }); ?>
+	</div>
+</script>
+<script type="text/html" id="tmplAddToCart">
+	<%# tmpl/app.addToCart.html%>
+</script>
+
+<script>
+	fml.vars.acid = '<%== this.acid %>';
+	fml.vars.hdtrc = '<%== this.hdtrc %>';
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/huodong/beauty_sale11');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot.html%>

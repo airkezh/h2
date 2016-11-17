@@ -1,0 +1,25 @@
+<%#head_simple.html%>
+<script>
+		(function(win,doc){
+			var docel = doc.documentElement;
+			var meta = doc.querySelectorAll('meta[name=viewport]');
+			meta[0].setAttribute('content','width=device-width,user-scalable=no,initial-scale='+1/devicePixelRatio);
+			function recalc(){
+				var width = win.innerWidth;//获取device-width
+				docel.style.fontSize = 100 * width/640+'px';
+			}
+			if(doc){
+				recalc();
+				win.addEventListener('orientationchange',recalc,false);
+			}
+		})(window,document)
+</script>
+</head>
+<body>
+<div class="target"></div>
+<div class="ck"></div>
+<!-- 指定js -->
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/lark/zt-use');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

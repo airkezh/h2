@@ -1,0 +1,120 @@
+<%#head.html%>
+<div class="zero">
+	<div class="zero_top"></div>
+	<a class="zero_intro" href="http://m.meilishuo.com/activity/four_years/prepare/?cid=83"></a>
+	<%if(this.userInfo.data.user_id == 0){%>
+	<div class="zero_info">
+		<p>您要登录并购买无忧购商品，才能参加0元换购，付款之后记得回来哦！</p>
+	</div>
+	<%}else if(this.zero.user_info.status == 1){%>
+	<div class="zero_info">
+		<p>您要购买无忧购商品，才能参加0元换购，付款之后记得回来哦！</p>
+	</div>
+	<%}else if(this.zero.user_info.status == 2){%>
+	<div class="zero_info">
+		<p>您今天换购机会已经用完，请明天再来！</p>
+	</div>
+	<%}%>
+	<div class="goods_wall">
+		<% this.zero.list.map(function(v,i){%>
+		<div class="poster_grid poster_wall" twitter_id="<%=v.twitter_id%>">
+			<figure>
+				<a style="padding-top:<%= 303/224 *100 %>%" class="pic_load" href="javascript:void(0);<%* v.wap_link_url%>">
+					<img src="<%= v.pic_url %>" alt="<%= v.goods_title %>" title="<%= v.goods_title %>"/>
+				</a>
+				<p class="goods_title">
+					<%= v.goods_title%>
+				</p>
+					<%if(this.userInfo.data.user_id == 0){%>
+					<figcaption class="disable1">
+					<%}else if(this.zero.user_info.status == 2 ||(this.zero.user_info.status == 0 && v.num == 0) ){%>
+					<figcaption class="disable3">
+					<%}else if(this.zero.user_info.status == 0){%>
+					<figcaption class="available">
+					<%}else{%>
+					<figcaption class="disable2">
+					<%}%>
+					<p class="num">仅剩：<%= v.num%>件</p>
+					<p class="goods_price">原价：<%= v.goods_price %></p>
+					<span class="zero_btn<%if(this.userInfo.data.user_id == 0){%> showLoginBtn<%}%>"></span>
+				</figcaption>
+			</figure>
+		</div>
+		<%});%>
+		<div class="clear_f"></div>
+	</div>
+	<a class="zero_ad wyg" href="http://wap.meilishuo.com/activity/project/audio/?banner_id=67b1583054d90732cf68cc889a0e2f3a"></a>
+	<a class="zero_ad kj" href="/biz/fouryears/ranking/?app_access_token=<%= this.app_access_token %>"></a>
+</div>
+	
+<script type="text/html" id="zero_success">
+	<div class="zero_page">
+		<p>恭喜换购成功！</p>
+		<p>在您收到无忧购商品并确认收货7天后，即寄出您的0元换购奖品。</p>
+		<div class="btnBox">
+			<span class="zeroSuccessBtn btn">我知道了</span>
+		</div>
+	</div>
+</script>
+<script type="text/html" id="zero_confirm">
+	<div class="zero_dialog">
+		<p>确认换购这一件么？</p>
+		<div class="btnBox">
+			<span class="zeroAddBtn closeDialog">确认</span>
+			<span class="closeDialog">再看看</span>
+		</div>
+	</div>
+</script>
+<script type="text/html" id="zero_fail">
+	<div class="zero_dialog">
+		<p>抱歉，系统繁忙！请稍后再试。</p>
+		<div class="btnBox">
+			<span class="closeDialog">确认</span>
+		</div>
+	</div>
+</script>
+<script type="text/html" id="zero_done">
+	<div class="zero_dialog">
+		<p>您今天换购机会已经用完，</br>请明天再来。</p>
+		<div class="btnBox">
+			<span class="closeDialog">确认</span>
+		</div>
+	</div>
+</script>
+<script type="text/html" id="zero_login">
+	<div class="zero_dialog">
+		<p>您需要登录并购买无忧购商品，才能参加0元换购，</br>请登录。</p>
+		<div class="btnBox">
+			<span class="closeDialog">确认</span>
+		</div>
+	</div>
+</script>
+<script type="text/html" id="zero_buy">
+	<div class="zero_dialog">
+		<p>您要购买无忧购商品，才能参加0元换购，付款之后记得回来哦！</p>
+		<div class="btnBox">
+			<span class="closeDialog">确认</span>
+		</div>
+	</div>
+</script>
+
+<% if(this.share){ %>
+	<%= requireFn('wapShare.html')({
+	    'share' : this.share 
+		, 'shareTitle' : '把活动分享给朋友，快乐+1，福利+1：'
+	    , '_JSstack' : this._JSstack
+		, '_JSmods' : this._JSmods
+	}); %>
+<%}%>
+<script>
+Meilishuo.config.app_access_token = '<%= this.app_access_token %>';
+fml.vars.zero = {
+	'user' : <%= JSON.stringify(this.zero.user_info)%>
+};
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/biz/zero');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot_simple.html%>
+

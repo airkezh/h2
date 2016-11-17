@@ -1,0 +1,26 @@
+
+<%# head.html%>
+<%
+var imgsrc=this.img_src;
+%>
+<style>
+
+body{background-color:<%= imgsrc.bc%>}
+.shake{background-color: <%= imgsrc.bg%>}
+
+</style>
+<div class="main">
+	<div class="nav">
+		请稍等，活动即将开始</div>
+	<div class="content">
+		<div class="shake">
+      <img class="swimg" src="<%= imgsrc.img %>"/>    
+        </div>
+	</div>
+	
+</div>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use('wap/page/lark/shake');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

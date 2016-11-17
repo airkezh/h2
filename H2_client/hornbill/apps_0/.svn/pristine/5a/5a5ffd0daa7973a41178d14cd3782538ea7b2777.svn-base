@@ -1,0 +1,570 @@
+<!--
+/**
+ * @fileoverview 首页 － 签到商城
+ * @requires zepto
+ * @author kehuang@meilishuo.com
+ * @date 2014-12-04
+ */
+-->
+
+<%#head.html%>
+<%
+	var curPageData = this.pageData || {};
+	var curLayerData = this.layerData || {};
+	var curGoodsData = this.goodsInfo.data || {};
+	var curSignUserData = this.signUserData;
+	var curSignUserInfo = this.signUserInfo.data;
+	var curUserTotalMoney = curSignUserInfo.bonus || 0;
+	var curConSignDays = curSignUserInfo.continuous || 0;
+	var curServerDate = this.serverDate;
+	var curServerTime = curServerDate.getTime();
+	var curServerYear = curServerDate.getFullYear();
+	var curServerMonth = curServerDate.getMonth() + 1;
+	var curServerDay = curServerDate.getDate();
+	var strServerMonth = (curServerMonth < 10) ? '0' + curServerMonth : curServerMonth;
+	var strServerDay = (curServerDay < 10) ? '0' + curServerDay : curServerDay;
+	var curServerDateStr = curServerYear + '-' + strServerMonth + '-' + strServerDay;
+%>
+
+<div class="main">
+	<%
+		var banner_pic = this.PICTURE_URL + 'images/wap/activity/sign_mall/sign_mall_banner2.jpg',
+			banner_style = 'background-image:url(' + banner_pic + ');';
+	%>
+	<div class="banner_wrap" style="<%= banner_style %>">
+		<div class="sign_bonus"><%= curUserTotalMoney %></div>
+		<div class="sign_txt">
+			<p class="tit">我的奖金：<em><%= curUserTotalMoney %></em>元</p>
+			<p>连续签到<em><%= curConSignDays %></em>天，明天再来！</p>
+			<p><a href="/activity/sign/sign_rule/">活动规则 ></a></p>
+		</div>
+		<div class="icon_date"></div>
+	</div>
+
+	<div class="coupon_wrap">
+		<a href="/activity/sign/sign_coupon/">
+			<div class="title">优惠券秒杀</div>
+			<!-- <div class="text">每天中午12点开抢 ></div> -->
+			<div class="text_box">每天中午12点<span>领&nbsp;&nbsp;取</span></div>
+		</a>
+	</div>
+
+	<div class="mall_wrap"></div>
+
+	<div class="dotted_line">
+		<p>今日上新<em><%= curGoodsData.total || 0 %></em>件<br><span class="caption_btn">金币双倍兑换说明</span></p>
+	</div>
+
+	<div class="goods_wrap">
+		<div class="new_box">
+			<ul class="even goods_wall"></ul>
+		</div>
+	</div>
+
+	<div class="pullUp" status="loading"></div>
+
+	<div class="gotop_wrap" style="bottom:40px">
+		<a class="gotop">
+			<img src="<%= this.PICTURE_URL %>images/wap/korea/gotop.png" alt="">
+		</a>
+	</div>
+</div>
+
+<script type="text/html" id="j_recommend_html">
+	<?
+		var jsonData = this.data,
+			banner_status = true,
+			rec_banner_data = jsonData.sign_mall_banner || null,
+			rec_banner_src = rec_banner_data.img_src || '',
+			cur_server_time = parseInt(curServerTime / 1000);
+
+		if (rec_banner_src != '') {
+			var banner_begin_time = Date.parse(rec_banner_data.begin_time || '') / 1000,
+				banner_end_time = Date.parse(rec_banner_data.end_time || '') / 1000;
+
+			if (banner_begin_time) {
+				if (!banner_end_time || (banner_end_time && (cur_server_time >= banner_begin_time) && (cur_server_time <= banner_end_time))) {
+					banner_status = true;
+				} else {
+					banner_status = false;
+				}
+			} else {
+				if (!banner_end_time || (banner_end_time && (cur_server_time <= banner_end_time))) {
+					banner_status = true;
+				} else {
+					banner_status = false;
+				}
+			}
+
+			if (banner_status) {
+				var rec_banner_title = rec_banner_data.img_title || '',
+					rec_banner_link = rec_banner_data.img_link || 'javascript:void(0);';
+	?>
+	<a href="<?= rec_banner_link ?>">
+		<img src="<?= rec_banner_src ?>" alt="<?= rec_banner_title ?>">
+	</a>
+	<?
+			}
+		}
+
+		var rec_one_data = jsonData.recommend_one || [],
+			rec_one_len = rec_one_data.length;
+
+		if (rec_one_len > 0) {
+			if (rec_one_len <= 3) {
+	?>
+	<div class="swipe" id="j_img_swipe">
+		<div class="swipe_wrap">
+			<div class="swipe_pic">
+				<ul class="list_pics">
+					<?
+						for (var i = rec_one_len - 1; i >= 0; i--) {
+							var data = rec_one_data[i],
+								img_src = data.img_src || '',
+								img_title = data.img_title || '',
+								img_link = data.img_link || 'javascript:void(0);';
+					?>
+					<li>
+						<a href="<?= img_link ?>">
+							<img src="<?= img_src ?>" alt="<?= img_title ?>">
+						</a>
+					</li>
+					<?
+						}
+					?>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<?
+			} else {
+	?>
+	<div class="wrapperIndexActivity" id="wrapperIndexActivity">
+		<div class="scrollerActivity" id="scrollerActivity">
+			<ul>
+				<?
+					for (var i = rec_one_len - 1; i >= 0; i--) {
+						var data = rec_one_data[i],
+							img_src = data.img_src || '',
+							img_title = data.img_title || '',
+							img_link = data.img_link || 'javascript:void(0);';
+				?>
+				<li>
+					<a href="<?= img_link ?>">
+						<img src="<?= img_src ?>" alt="<?= img_title ?>">
+					</a>
+				</li>
+				<?
+					}
+				?>
+			</ul>
+		</div>
+	</div>
+	<?
+			}
+		}
+
+		var aquarius_status = true,
+			rec_two_data = jsonData.recommend_two || [],
+			rec_two_len = rec_two_data.length,
+			aquarius_begin_time = Date.parse(jsonData.aquarius_begin_time || '') / 1000,
+			aquarius_end_time = Date.parse(jsonData.aquarius_end_time || '') / 1000;
+
+		if (aquarius_begin_time) {
+			if (!aquarius_end_time || (aquarius_end_time && (cur_server_time >= aquarius_begin_time) && (cur_server_time <= aquarius_end_time))) {
+				aquarius_status = true;
+			} else {
+				aquarius_status = false;
+			}
+		} else {
+			if (!aquarius_end_time || (aquarius_end_time && (cur_server_time <= aquarius_end_time))) {
+				aquarius_status = true;
+			} else {
+				aquarius_status = false;
+			}
+		}
+
+		if (aquarius_status && (rec_two_len > 0)) {
+	?>
+	<div class="recommend_box">
+		<ul class="odd">
+			<?
+				$.each(rec_two_data, function(index, data){
+					var img_src = data.img_src || '',
+						img_title = data.img_title || '',
+						img_link = data.img_link || 'javascript:void(0);';
+			?>
+			<li>
+				<a href="<?= img_link ?>">
+					<img src="<?= img_src ?>" alt="<?= img_title ?>">
+				</a>
+			</li>
+			<?
+				});
+			?>
+		</ul>
+	</div>
+	<?
+		}
+	?>
+</script>
+
+<script type="text/html" id="posterWall">
+	<?
+		var goodsData = this.data.list;
+
+		if (goodsData.length > 0) {
+			$.each(goodsData, function(index, goods){
+				var shopData = goods.shop,
+					couponData = goods.coupon,
+					goods_title = goods.title || '',
+					goods_price = goods.price || '',
+					goods_img = goods.img || '<%= this.PICTURE_URL %>/images/wap/activity/sign_mall/default_pic.png';
+	?>
+	<li>
+		<a href="<?= goods.url ?>">
+			<div class="lazy_pic" asrc="<?= goods_img ?>"></div>
+			<?
+				if (goods_title != '') {
+			?>
+			<p class="goods_title"><?= goods_title ?></p>
+			<?
+				}
+
+				if (goods_price != '') {
+					var goods_credit = parseFloat(couponData.credit || 10),
+						cur_price = goods_price.substring(1),
+						old_price = parseInt(cur_price),
+						sub_price = parseFloat(cur_price) - goods_credit,
+						new_price = (sub_price < 0) ? 0 : sub_price.toFixed(2);
+			?>
+			<p class="price">用券价<span>￥<?= new_price?></span><del>￥<?= old_price ?></del></p>
+			<?
+				}
+			?>
+		</a>
+		<?
+			if (couponData && (couponData.constructor == Object)) {
+				var title = shopData.title || '',
+					avater = shopData.avater || '',
+					shopurl = shopData.url || '',
+					code = couponData.code || '',
+					price = couponData.price || 0,
+					credit = couponData.credit || 0,
+					status = couponData.status || 0,
+					threshold = couponData.threshold || 0,
+					flag = (status == 0) ? 'robbed' : '',
+					coupon_type = (threshold == 0) ? '直减券' : '满减券',
+					start = (couponData.expiration && couponData.expiration.start) ? couponData.expiration.start : '',
+					end = (couponData.expiration && couponData.expiration.end) ? couponData.expiration.end : '';
+		?>
+		<div class="coupon <?= flag ?>" code="<?= code ?>" url="<?= goods.url ?>" shopurl="<?= shopurl ?>" title="<?= title ?>" avater="<?= avater ?>" price="<?= price ?>" credit="<?= credit ?>" status="<?= status ?>" threshold="<?= threshold ?>" start="<?= start ?>" end="<?= end ?>">
+			<div class="tit1"><?= credit ?>元店铺券</div>
+			<div class="tit2 <?= flag ?>">花费<?= price ?>元奖金</div>
+		</div>
+		<?
+			} else {
+		?>
+		<div class="coupon robbed">
+			<div class="tit1">10元店铺券</div>
+			<div class="tit2 robbed">花费5元奖金</div>
+		</div>
+		<?
+			}
+		?>
+	</li>
+	<?
+			});
+		}
+	?>
+</script>
+
+<script type="text/html" id="j_coupon_layer">
+	<?
+		var code = '',
+			url = '',
+			shopurl = '',
+			price = 0,
+			credit = 0,
+			threshold = 0,
+			title = '',
+			desc = '无门槛限制',
+			avater = '',
+			start = '',
+			end = '',
+			couponType = '',
+			jsonData = this.data;
+
+		if (jsonData) {
+			code = jsonData.code;
+			url = jsonData.url;
+			shopurl = jsonData.shopurl;
+			price = jsonData.price;
+			credit = jsonData.credit;
+			threshold = jsonData.threshold;
+			title = jsonData.title;
+			avater = jsonData.avater;
+			start = jsonData.start;
+			end = jsonData.end;
+		}
+
+		if (threshold > 0) {
+			couponType = '满减券';
+			desc = '<em>满' + threshold + '元</em>可用';
+		} else {
+			couponType = '直减券';
+		}
+	?>
+	<div class="layer_shade j_layer_shade"></div>
+	<div class="layer_main j_layer_main">
+		<div class="t"></div>
+		<div class="m">
+			<p class="t1">温馨提示</p>
+			<p>你将花费<em><?= price ?>元</em>签到奖金，</p>
+			<p>领取<em><?= credit ?>元</em>店铺券，<?= desc ?>，</p>
+			<?
+				if (title != '') {
+			?>
+			<p>仅限<em><?= title ?></em>店铺内使用。</p>
+			<?
+				}
+
+				if ((start != '') && (end != '')) {
+			?>
+			<p>有效期：<?= start ?>~<?= end ?></p>
+			<?
+				}
+			?>
+			<p class="tip">下单时记得选中这张店铺优惠券哦~</p>
+			<a href="javascript:;" class="ok_btn" code="<?= code ?>" url="<?= url ?>" shopurl="<?= shopurl ?>" title="<?= title ?>" avater="<?= avater ?>" credit="<?= credit ?>" threshold="<?= threshold ?>" start="<?= start ?>" end="<?= end ?>"></a>
+			<a href="javascript:;" class="no_btn"></a>
+		</div>
+		<div class="f"></div>
+	</div>
+</script>
+
+<script type="text/html" id="j_convert_layer">
+	<?
+		var credit = 0,
+			threshold = 0,
+			url = '',
+			shopurl = '',
+			title = '',
+			desc = '无门槛限制',
+			avater = '',
+			start = '',
+			end = '',
+			jsonData = this.data;
+
+		if (jsonData) {
+			credit = jsonData.credit;
+			threshold = jsonData.threshold;
+			url = jsonData.url;
+			shopurl = jsonData.shopurl;
+			title = jsonData.title;
+			avater = jsonData.avater;
+			start = jsonData.start;
+			end = jsonData.end;
+		}
+
+		if (threshold > 0) {
+			desc = '满' + threshold + '使用';
+		}
+	?>
+	<div class="layer_shade j_layer_shade"></div>
+	<div class="layer_main layer_big j_layer_main">
+		<div class="t"></div>
+		<div class="m">
+			<p class="t1">兑换成功！</p>
+			<div class="coupon_bg">
+				<div class="title_wrap">
+					<a href="javascript:;" class="head">
+						<img src="<?= avater ?>" alt="">
+					</a>
+					<span class="title"><?= title ?></span>
+				</div>
+				<div class="desc_wrap">
+					<div class="left"><?= credit ?><em>元</em></div>
+					<div class="right">
+						<div>仅限店内使用</div>
+						<div><?= desc ?></div>
+						<div><?= start ?>~<?= end ?></div>
+					</div>
+				</div>
+			</div>
+			<a href="<?= url ?>" class="buy_btn"></a>
+			<a href="<?= shopurl ?>" class="visit_btn"></a>
+		</div>
+		<div class="f"></div>
+	</div>
+</script>
+
+<script type="text/html" id="j_caption_layer">
+	<div class="layer_shade j_layer_shade"></div>
+	<div class="layer_main j_layer_main">
+		<div class="t"></div>
+		<div class="m">
+			<p class="t1">奖金双倍兑换规则</p>
+			<div class="caption_bg"></div>
+			<a href="javascript:;" class="know_btn"></a>
+		</div>
+		<div class="f"></div>
+	</div>
+</script>
+
+<script type="text/html" id="patch_card_layer">
+	<div class="shade j_layer_shade"></div>
+	<div class="win_box win_card j_layer_main">
+		<?
+  			var superData = this.data,
+  				total = superData.total || 0,
+  				bonus = superData.bonus || 0;
+  		?>
+		<p class="title">恭喜你发现一张<br><em>超级补签卡</em></p>
+		<p class="desc"><em>除夕~今天</em>，一次补齐你<?= total ?>天的漏签<br>奖金将恢复到<em><?= bonus ?></em>元</p>
+		<div class="bg">
+			<img src="<%= this.PICTURE_URL %>images/wap/activity/may_sale/super_patch_card.jpg" alt="">
+		</div>
+		<p class="tip">立即使用，过期无效</p>
+		<div class="patch j_patch_btn"></div>
+		<p class="close j_close_btn">不使用补签卡</p>
+	</div>
+</script>
+
+<script type="text/html" id="patch_success_layer">
+	<div class="shade j_layer_shade"></div>
+	<div class="win_box win_patch j_layer_main">
+		<?
+  			var chance = this.chance || 0;
+  		?>
+		<p class="title">补签成功！</p>
+		<p class="desc">节日期间使用的<em><?= chance ?></em>张补签卡<br>现在退还给你，记得常来签到~</p>
+		<div class="bg">
+			<img src="<%= this.PICTURE_URL %>images/wap/activity/may_sale/sign_patch_card2.jpg" alt="">
+			<span><b>X</b><?= chance ?></span>
+		</div>
+		<div class="know j_know_btn"></div>
+	</div>
+</script>
+
+<script type="text/html" id="signin_calendar_layer">
+	<div class="layer_shade j_layer_shade"></div>
+	<div class="calendar_box j_layer_main">
+		<a href="javascript:;" class="calendar_close"></a>
+	  	<div class="calanderWrap">
+	  		<?
+	  			var recData = this.data,
+	  				banner_src = recData.src || '',
+	  				banner_link = recData.link || 'javascript:void(0);',
+	  				banner_title = recData.title || '';
+
+	  			if (banner_src != '') {
+	  		?>
+	  		<a href="<?= banner_link ?>" class="layer_banner">
+	  			<img src="<?= banner_src ?>" alt="<?= banner_title ?>">
+	  		</a>
+	  		<?
+	  			}
+	  		?>
+	  		<%
+				var calPrevYear = 2015,
+					calNextYear = 2015,
+					calPrevMonth = 1,
+					calNextMonth = 1,
+					calCurYear = curServerYear,
+					calCurMonth = curServerMonth;
+
+				if (calCurMonth == 1) {
+					calPrevYear = calCurYear - 1;
+					calNextYear = calCurYear;
+					calPrevMonth = 12;
+					calNextMonth = calCurMonth + 1;
+				} else if (calCurMonth == 12) {
+					calPrevYear = calCurYear;
+					calNextYear = calCurYear + 1;
+					calPrevMonth = calCurMonth - 1;
+					calNextMonth = 1;
+				} else {
+					calPrevYear = calCurYear;
+					calNextYear = calCurYear;
+					calPrevMonth = calCurMonth - 1;
+					calNextMonth = calCurMonth + 1;
+				}
+
+				calPrevMonth = (calPrevMonth < 10) ? '0' + calPrevMonth : calPrevMonth;
+				calNextMonth = (calNextMonth < 10) ? '0' + calNextMonth : calNextMonth;
+			%>
+			<div class="date_box" <? if (banner_src == '') { ?>style="margin-top:8%;"<? } ?>>
+				<div class="prev_btn j_calander_btn" data-flag="prev" data-year="<%= calPrevYear %>" data-month="<%= calPrevMonth %>"></div>
+				<div class="icon_cal"></div>
+				<div class="month"><%= curServerDateStr %></div>
+				<div class="next_btn j_calander_btn" data-flag="next" data-year="<%= calNextYear %>" data-month="<%= calNextMonth %>"></div>
+			</div>
+			<div class="calander"></div>
+			<div class="cal_bottom"></div>
+			<p class="patch_tip">
+				<span class="txt">你已经补完了所有的漏签记录！</span>
+				<img src="<%= this.PICTURE_URL %>images/wap/activity/may_sale/ret_btn.png" alt="tip" class="patch_btn">
+			</p>
+	  	</div>
+	</div>
+</script>
+
+<script>
+	var curServerTime = <%=curServerTime%>;
+	var curServerYear = <%=curServerYear%>;
+	var curServerMonth = <%=curServerMonth%>;
+	var curServerDateStr = '<%=curServerDateStr%>';
+	var curPageData = <%=JSON.stringify(curPageData)%>;
+	var curLayerData = <%=JSON.stringify(curLayerData)%>;
+	var curSignData = <%=JSON.stringify(curSignUserData.data)%>;
+	var curSignedArr = curSignData.signed;
+	var curConvertedArr = curSignData.converted;
+	var curConSignDays = <%=curConSignDays%>;
+	var curUserTotalMoney = <%=curUserTotalMoney%>;
+	var curUserPatchData = <%=JSON.stringify(curSignUserInfo.patch)%>;
+	var curUserSuperData = <%=JSON.stringify(curSignUserInfo.super)%>;
+	var curFirstSignDate = '<%=curSignUserInfo.firstSignDate%>';
+	var curLastSignDate = '<%=curSignUserInfo.lastSignDate%>';
+
+	var tempRecommendOneArr = [];
+	var cur_server_time = parseInt(curServerTime / 1000);
+    var curRecommendOneArr = curPageData.recommend_one || [];
+	var curRecommendOneLen = curRecommendOneArr.length;
+
+	for (var i = 0; i < curRecommendOneLen; i++) {
+		var chunks_status = true,
+			curRecOneData = curRecommendOneArr[i],
+			chunks_begin_time = Date.parse(curRecOneData.begin_time || '') / 1000,
+			chunks_end_time = Date.parse(curRecOneData.end_time || '') / 1000;
+
+		if (chunks_begin_time) {
+			if (!chunks_end_time || (chunks_end_time && (cur_server_time >= chunks_begin_time) && (cur_server_time <= chunks_end_time))) {
+				chunks_status = true;
+			} else {
+				chunks_status = false;
+			}
+		} else {
+			if (!chunks_end_time || (chunks_end_time && (cur_server_time <= chunks_end_time))) {
+				chunks_status = true;
+			} else {
+				chunks_status = false;
+			}
+		}
+
+		chunks_status && tempRecommendOneArr.push(curRecOneData);
+	}
+
+	curPageData.recommend_one = tempRecommendOneArr;
+
+	fml.vars.isLogin = <%=this.isLogin%>;
+	fml.vars.is_lazyload_poster = true;
+	fml.vars.goods_data = <%=JSON.stringify(curGoodsData.list)%>;
+	<%= this.goodsInfo ? 'Meilishuo.config.fallWall0 = ' + JSON.stringify(this.goodsInfo) + ';' : ''; %>
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/sign_mall2');
+_use:", this._JSstack, this._JSmods); %>
+
+<%#foot_simple.html%>

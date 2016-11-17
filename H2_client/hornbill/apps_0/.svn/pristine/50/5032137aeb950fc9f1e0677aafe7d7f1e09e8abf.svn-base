@@ -1,0 +1,25 @@
+function clearance(){
+	return this;
+}
+var controlFns = {
+	index: function(){
+		this.market()
+	},
+	market : function(){
+		var mSelf = this;
+		var php = {
+			'pageData' : 'jungle::/moas/api/1197'
+			,'goodsData' : 'jungle::/moas/api/1215'
+		};
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			data.use_rem_screen = true;
+
+			data.pageTitle = '清仓大卖';
+			data._CSSLinks = ['biz/clearance/market'];
+			mSelf.render('biz/clearance/market.html', data);
+		});
+	}
+}
+exports.__create = controller.__create(clearance , controlFns);

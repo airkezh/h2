@@ -1,0 +1,57 @@
+<%#head.html%>
+<header class="header" id="header">
+	<div class="nav_ban">
+		<h1>卸载原因</h1>
+		<!-- <span class="icon-back" id="backBtn"></span> -->
+	</div>
+</header>
+<img src="<%=this.PICTURE_URL%>images/wap/uninstall/uninstal_0.png" alt="">
+<div class="down_"><a href="/download/latest/uninstalled" class="button">试试最新版本</a></div>
+
+<div class="ins_main">
+	<a href="javascript:;" data-type="1" class="ins_box req_normal">
+		<span class="bg_img bg_1"></span>
+		<p>产品体验不好</p>
+		<i>吐槽产品经理</i>
+	</a>
+	<a href="javascript:;" data-type="2" class="ins_box req_normal">
+		<span class="bg_img bg_2"></span>
+		<p>推荐宝贝不喜欢</p>
+		<i>吐槽时尚买手</i>
+	</a>
+	<a href="javascript:;" data-type="3" class="ins_box req_normal">
+		<span class="bg_img bg_3"></span>
+		<p>占内存、耗流量</p>
+		<i>吐槽研发大叔</i>
+	</a>
+	<a href="javascript:;" data-type="4" class="ins_box req_normal">
+		<span class="bg_img bg_4"></span>
+		<p>店家太坑爹</p>
+		<i>吐槽客服小妹</i>
+	</a>
+	<a href="javascript:;" data-type="6" class="ins_box req_normal">
+		<span class="bg_img bg_5"></span>
+		<p>推送多、烦死了</p>
+		<i>最后一个问题…</i>
+	</a>
+	<a href="/uninstall/req_other/<%=this.toid%>" data-type="0" class="ins_box">
+		<span class="bg_img bg_6"></span>
+		<p>其他问题</p>
+		<i>通通告诉我</i>
+	</a>
+</div>
+
+<script type="text/html" id="alertMsg">
+	<div class="toupdate">
+		<p style="text-align: center;"><?= this.msg?></p>
+		<a class="btn3zi delayclose" href="javascript:;">确定</a>
+	</div>
+</script>
+<script>
+	fml.vars.is_other = false;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/uninstall');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot_simple.html%>

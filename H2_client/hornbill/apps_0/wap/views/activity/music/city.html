@@ -1,0 +1,97 @@
+<%# head.html%>
+<%
+	var weixinBrowser = this.weixinBrowser;
+	var num = this.music.data;
+%>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<div class="main">
+	<img class="logo" src="<%=this.PICTURE_URL%>/images/activity/music_festival/logo_meilishuo.png">
+	<img class="question-title center" src="<%=this.PICTURE_URL%>/images/activity/music_festival/data_title.png">
+	<div class="tab center">
+		<div class="tab_menu">
+			<ul>
+				<li class="selected"><b>上海</b></li>
+				<li><b>西安</b></li>
+				<li><b>成都</b></li>
+				<li><b>北京</b></li>
+				<li><b>广州</b></li>
+			</ul>
+		</div>
+		<div class="tab_box">
+			<div>
+				<p class="people">有<span class="people-num"><i><%= num %></i></span>人跟你抢</p>
+				<p class="data">倒计时<span class="data-num"><i> </i></span>天</p>
+			</div>
+			<div class="hide">
+				<!-- <p class="month"><span class="month-num"><i>5</i></span>月<span class="month-num"><i>11</i></span>日</p> -->
+				<p class="month">敬请期待</p>
+				<p class="ticket-text">等你来抢票</p>
+			</div>
+			<div class="hide">
+				<!-- <p class="month"><span class="month-num"><i>5</i></span>月<span class="month-num"><i>18</i></span>日</p> -->
+				<p class="month">敬请期待</p>
+				<p class="ticket-text">等你来抢票</p>
+			</div>
+			<div class="hide">
+				<!-- <p class="month"><span class="month-num"><i>6</i></span>月</p> -->
+				<p class="month">敬请期待</p>
+				<p class="ticket-text">等你来抢票</p>
+			</div>
+			<div class="hide">
+				<!-- <p class="month"><span class="month-num"><i>9</i></span>月<span class="month-num"><i>25</i></span>日</p> -->
+				<p class="month">敬请期待</p>
+				<p class="ticket-text">等你来抢票</p>
+			</div>
+		</div>
+	</div>
+	<% if(weixinBrowser){ %>
+		<img class="list-button button center goApp" src="<%=this.PICTURE_URL%>/images/activity/music_festival/list.png">
+		<img class="share-button button center" src="<%=this.PICTURE_URL%>/images/activity/music_festival/share.png">
+	<% }else{%>
+		<a href="http://circle.meilishuo.com/circle/landing?circle_id=280089"><img class="inter-button center" src="<%=this.PICTURE_URL%>/images/activity/music_festival/inter.png"></a>
+	<% } %>
+	<div class="popwin">
+		<img class="know" src="<%=this.PICTURE_URL%>/images/activity/music_festival/know.png">
+	</div>
+</div>
+
+<%= requireFn('wapShare.html')({
+	'share' : this.share 
+    , 'shareTitle' : '选择分享到'
+    , '_JSstack' : this._JSstack
+	, '_JSmods' : this._JSmods
+}); %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/music/music',function(){
+		if(Meilishuo.config.os.weixinBrowser){
+			$.ajax({
+				url: '/aj/wx/sign'
+				, data: {
+					url:window.location.href
+				}   
+				, dataType: 'json'
+				, type: 'post'
+				, success : function(data){
+					wx.config({
+						debug:false
+						//debug:false 
+						, appId: data.info.appId
+						, timestamp: data.info.timestamp
+						, nonceStr: data.info.nonceStr
+						, signature: data.info.signature
+						, jsApiList: [
+							'checkJsApi',
+							'onMenuShareTimeline',
+							'onMenuShareAppMessage',
+							'onMenuShareQQ',
+							'onMenuShareWeibo'
+						]   
+					}); 
+				},
+				error: function(err){
+				}
+			})
+		}
+	});
+_use:", this._JSstack, this._JSmods); %>
+<%# foot.html%>

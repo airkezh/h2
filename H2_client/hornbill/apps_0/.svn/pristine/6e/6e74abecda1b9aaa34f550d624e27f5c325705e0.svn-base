@@ -1,0 +1,259 @@
+@import "../../block.less";
+@import "./kitty.import.less";
+@import "./common.import.less";
+@import "./tip.import.less";
+
+.center() {
+  top               : 50%;
+  left              : 50%;
+  -webkit-transform : translate3d(-50%, -50%, 0);
+  transform         : translate3d(-50%, -50%, 0);
+}
+
+body {
+  position         : relative;
+  background-color : #ffe8ab;
+}
+
+.has-tip, .has-tip body {
+  height   : 100%;
+  overflow : hidden;
+}
+
+.has-tip .mask {
+  display : block;
+}
+
+.main {
+  position         : relative;
+  background-image : url("http://d04.res.meilishuo.net/pic/_o/76/02/991d968a5720b718deb964e43d0b_640_902.cf.png");
+  background-size  : cover;
+}
+
+.title {
+  width           : 80%;
+  height          : 80px;
+  margin          : auto;
+  padding-top     : 24.68%;
+  background      : url("http://d05.res.meilishuo.net/pic/_o/72/5a/1a1039e92935d014094d2a1b6b68_570_138.cf.png") no-repeat center;
+  background-size : contain;
+}
+
+.rule-btn {
+  position           : absolute;
+  left               : 30*@px;
+  bottom             : 32*@px;
+  height             : 44*@px;
+  line-height        : 44*@px;
+  padding            : 0 24*@px;
+  font-size          : 26*@px;
+  border-radius      : 5px;
+  color              : #bf5c18;
+  background-color   : #fff;
+  -webkit-box-shadow : 1px 2px #8b8678;
+  -moz-box-shadow    : 1px 2px #8b8678;
+  box-shadow         : 1px 2px #8b8678;
+  z-index            : 10;
+}
+
+.bubble {
+  position           : absolute;
+  right              : -2%;
+  top                : 6%;
+  width              : 35%;
+  padding-top        : 30%;
+  background         : url("http://d03.res.meilishuo.net/pic/_o/08/1e/e4e11a2c7cde39a409be287d449e_191_145.cg.png") no-repeat;
+  background-size    : contain;
+  z-index            : 12;
+  opacity            : 0;
+  -webkit-transition : opacity .5s;
+  -moz-transition    : opacity .5s;
+  -ms-transition     : opacity .5s;
+  transition         : opacity .5s;
+  pointer-events     : none;
+}
+
+.bubble-content {
+  position    : absolute;
+  left        : 20%;
+  top         : 20%;
+  width       : 70%;
+  line-height : 30*@px;
+  font-size   : 26*@px;
+  color       : #a36624;
+}
+
+/* 红包列表 */
+.lucky-bag-list {
+  background-color : #fffefc;
+
+  h3 {
+    height        : 90*@px;
+    line-height   : 90*@px;
+    font-size     : 40*@px;
+    color         : #bf5c18;
+    text-align    : center;
+    border-bottom : 1px solid #f3ece8;
+  }
+
+  li {
+    height        : 90*@px;
+    line-height   : 90*@px;
+    border-bottom : 1px solid #f3ece8;
+    color         : #bf5c18;
+    font-size     : 0;
+    overflow      : hidden;
+  }
+
+  .blank {
+    padding    : 40*@px;
+    color      : #cfb19d;
+    text-align : center;
+  }
+}
+
+.total-num, .link {
+  display        : inline-block;
+  font-size      : 30*@px;
+  line-height    : 90*@px;
+  color          : #bf5c18;
+  vertical-align : top;
+}
+
+.coupon-desc {
+  display    : inline-block;
+  height     : 54*@px;
+  margin-top : 20*@px;
+}
+
+.coupon-name, .coupon-detail {
+  display : block;
+}
+
+.coupon-name {
+  height      : 30*@px;
+  line-height : 30*@px;
+  font-size   : 30*@px;
+}
+
+.coupon-detail {
+  height      : 24*@px;
+  line-height : 24*@px;
+  color       : #e4b89a;
+  font-size   : 20*@px;
+}
+
+[class^="icon-"] {
+  display           : inline-block;
+  background-repeat : no-repeat;
+  background-size   : contain;
+}
+
+.icon-lucky-bag {
+  width            : 60*@px;
+  height           : 70*@px;
+  margin           : 0 30*@px 0 36*@px;
+  background-image : url("http://d02.res.meilishuo.net/pic/_o/06/36/69e676926f3ff3933492f146c437_60_70.cg.png");
+  vertical-align   : middle;
+}
+
+.icon-coupon {
+  width            : 88*@px;
+  height           : 42*@px;
+  margin           : 0 22*@px 0 18*@px;
+  background-image : url("http://d05.res.meilishuo.net/pic/_o/ba/f5/fea15d346bd37ecdc8f21a4b8529_88_42.ch.png");
+}
+
+/* 按钮 */
+.btn {
+  float              : right;
+  width              : 160*@px;
+  height             : 68*@px;
+  line-height        : 68*@px;
+  margin             : 10*@px 40*@px;
+  background-color   : #ff5959;
+  border-radius      : 3px;
+  color              : #fff;
+  font-size          : 30*@px;
+  text-align         : center;
+  vertical-align     : text-bottom;
+  -webkit-box-shadow : 0 1px #e04f4d;
+  -moz-box-shadow    : 0 1px #e04f4d;
+  box-shadow         : 0 1px #e04f4d;
+
+  &:active {
+    color : #fff;
+  }
+}
+
+.btn-disabled {
+  color            : #ccc;
+  background-color : rgba(0, 0, 0, .7);
+  box-shadow       : none;
+}
+
+.is-finished .btn {
+  background-color   : #a0a0a0;
+  -webkit-box-shadow : 0 1px #8e8d8c;
+  -moz-box-shadow    : 0 1px #8e8d8c;
+  box-shadow         : 0 1px #8e8d8c;
+}
+
+.rule {
+  display          : none;
+  position         : fixed;
+  top              : 10%;
+  left             : 6.5%;
+  width            : 87.5%;
+  height           : 70%;
+  background-color : #f8eac7;
+  border-radius    : 5px;
+  overflow         : hidden;
+  z-index          : 30;
+
+  h3 {
+    margin-top : 20*@px;
+    font-size  : 40*@px;
+    color      : #9c5e24;
+    text-align : center;
+  }
+
+  ul {
+    height      : 70%;
+    padding     : 20*@px 30*@px 120*@px;
+    line-height : 34*@px;
+    font-size   : 20*@px;
+    color       : #a36a33;
+    overflow-y  : scroll;
+  }
+
+  .rule-close-btn {
+    position                   : absolute;
+    left                       : 0;
+    bottom                     : 0;
+    width                      : 100%;
+    height                     : 90*@px;
+    line-height                : 90*@px;
+    font-size                  : 30*@px;
+    color                      : #f8eac7;
+    background-color           : #99591d;
+    text-align                 : center;
+    border-bottom-left-radius  : 5px;
+    border-bottom-right-radius : 5px;
+  }
+}
+
+/*
+  微信分享
+*/
+.wx-share-tip {
+  display         : none;
+  position        : fixed;
+  top             : 0;
+  left            : 0;
+  right           : 0;
+  bottom          : 0;
+  background      : rgba(0, 0, 0, .7) url("http://d01.res.meilishuo.net/pic/_o/e7/48/310feddcd5f01ff6e312bb9e7c3e_383_440.cg.png") no-repeat center 20%;
+  background-size : 50%;
+  z-index         : 30;
+}

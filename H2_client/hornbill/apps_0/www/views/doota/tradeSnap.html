@@ -1,0 +1,120 @@
+<%# head.html%>
+<%
+	var shop_in = this.snap.shop_info || {}
+		,goodsInfo = this.goods_info || {}
+		,skuInfo = this.snap.sku_info || {};
+%>
+<hr style="border:0;background-color:#f69;height:1px;">
+<div class="main">
+	<div class="item-box" id="snap-goods-item">
+		<div class="content">
+			<div class="item-sale">
+				<h3 class="item-title"><%= goodsInfo.goods_title%></h3>
+				<div class="item-price-info">
+					<span class="price-now">￥<i class="num" ><%= skuInfo.purchase_price%></i></span>
+                	<span class="price-original">￥<i class="num" ><%= skuInfo.goods_price%></i></span>
+                	<% if(skuInfo.freight == 0){ %>
+                    	<span class="label-text" style="background-color:#ff9933" >免运费</span>
+                    <% } %>
+				</div>
+				<table class="sku_box">
+					<tr>
+						<td class="ltd">运 费</td>
+						<% if(skuInfo.freight == 0){ %>
+							<td>免运费</td>
+						<%}else{%>
+							<td><%= skuInfo.freight%>元</td>
+						<%}%>
+					</tr>
+					<tr>
+						<td class="ltd">颜 色</td>
+						<td><%= skuInfo.color%></td>
+					</tr>
+					<% if(skuInfo.size != ""){ %>
+						<tr>
+							<td class="ltd">尺 码</td>
+							<td><%= skuInfo.size%></td>
+						</tr>
+					<%}%>
+				</table>
+				<div class="snap-tip-box">您现在查看的是交易快照，<a href="/share/item/<%= goodsInfo.twitter_id%>" target="blank" >点此查看最新商品信息</a></div>
+			</div>
+			<div class="item-pic">
+				<div class="item-pic-origin">
+					<img src="<%= goodsInfo.goods_img%>" />
+				</div>
+				
+			</div>
+		</div>
+		<div class="sidebar">
+			<% if( shop_in ) { %>
+	            <div class="shop">
+	                <a class="shop-avatar" href="/shop/rating/?shop_id=<%=shop_in.shop_id%>&frm=rate_to_rateall" target="_blank"><img width="48" src="<%=shop_in.shop_face_img%>"></a>
+	                <i class="icon-shop"></i>
+	                <div class="shop-wrap">
+	                    <a href="/shop/<%=shop_in.shop_id%>?pos=guangNick" target="_blank" class="shop-name"><%=shop_in.shop_nick%></a>
+	                </div>
+	                <ul class="shop-assess">
+	                    <%
+		                    var trend = shop_in.points_trend;
+		                    if(trend) {
+			                    [
+			                        [ '描述', 'accord', 'first' ],
+			                        [ '质量', 'quality', 'middle' ],
+			                        [ '服务', 'attitude', 'middle' ],
+			                        [ '发货', 'fast', 'last' ]
+			                    ].forEach(function(data, i) {
+			                    var prop = data[1],
+			                        mark, avg, content, stateClass;
+
+			                    if ( !trend[prop] ) return
+
+			                    mark = trend[prop].mark
+			                    avg  = trend[prop].avg
+
+			                    if ( mark == 1 ) {
+			                        stateClass = 'up'
+			                    } else if ( mark == 0 ) {
+			                        stateClass = 'fair'
+			                    } else {
+			                        stateClass = 'down'
+			                    }
+
+			                    if ( !avg || avg == '0.0' ) {
+			                        content = '--'
+			                    } else {
+			                        content = '<i class="arrow-ico">--</i>' + avg
+			                    }
+	                    %>
+	                    <li class="shop-assess-<%=data[2]%>">
+	                        <%=data[0]%>
+	                        <a href="/shop/rating/?shop_id=<%=shop_in.shop_id%>&frm=rate_to_rateall" class="shop-point <%=stateClass%>" target="_blank"><%=content%></a>
+	                    </li>
+		                <%
+				                })
+		                	}
+	                    %>
+	                </ul>
+	                <ul class="shop-info">
+	                    <li>所在地区：<%= shop_in.location%></li>
+	                    <li>销售数量：<%= shop_in.goods_sales%></li>
+	                    <li>联系客服：<a class="knilmi" href="<%= this.ViewTools.callIM(this._serviceIM) %>" target="_blank"><i class="icon-contact"></i></a></li>
+	                </ul>
+	                <a href="/shop/<%=shop_in.shop_id%>?frm=rate_to_shop" class="into-shop-btn" target="_blank"><i class="into-shop-ico"></i>进入店铺</a>
+	            </div>
+            <% } %>
+		</div>
+	</div>
+	<div class="box item-detail">
+		<div id="item-detail-nav">
+			<%# doota/detail_items.html%>
+		</div>
+		<div class ="contentArea">
+			<%# doota/sale_detail.html%>
+		</div>
+	</div>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+        fml.use('page/doota/snapshot');
+_use:", this._JSstack , this._JSmods); %>
+<%# foot.html%>

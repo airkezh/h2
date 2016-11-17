@@ -1,0 +1,101 @@
+<%# head_simple.html%>
+</head>
+<body>
+<div id="warp" class="warp"  >
+    <div class="main" id="main" >
+        <section class="index">
+            <img class="img" src="http://d02.res.meilishuo.net/pic/_o/34/50/58da7c3c34d02ef6c73aa65393f2_640_779.ch.jpg" alt="旅行怎能这么素! 快来测试你与哪个城市最搭调 提前为下次旅行准备战衣 " />
+            <div class="index_box">
+                <img class="img" src="http://d05.res.meilishuo.net/pic/_o/e7/76/0ecf22887efa7d24ea4af0edfaff_640_153.cf.jpg" alt="开始测试" />
+                <a id="index_but" class="index_but" href="javascript:;">开始测试</a>
+            </div>
+            
+            <img class="img" src="http://d02.res.meilishuo.net/pic/_o/c7/dd/eb20e87e4f47c466af9cda748b7c_640_78.ch.jpg" />
+        </section>
+
+        <section class="upImg">
+            <div id="upImg_warp">
+                <div class="upImg_con">
+                    <div class="upImg_box">
+                        <img id="upImg_img" class="upImg_img" src="http://d03.res.meilishuo.net/pic/_o/4b/e6/5dd1de717a1c51ed9e704fc30913_378_540.cf.png" />
+                        <div id="upImg_alert" class="upImg_alert">
+                            <img src="http://d03.res.meilishuo.net/pic/_o/9d/82/7f59c0ad6e05ee742fdc7c6e40f4_378_540.cf.png" alt="啊哦！你是在逗我吗？换张照片试试吧！" />
+                        </div>
+                    </div>
+                    <div class="upImg_cover"></div>
+                </div>
+
+                <div class="upImg_butBox">
+                    <div id="upImg_fileBut" class="upImg_but fl" href="javascript:;">
+                        <img src="http://d04.res.meilishuo.net/pic/_o/eb/54/f0621ebe9fc27214662ee6c6dacb_257_132.ch.png" alt="选择照片">
+                        
+                        <a id="fileA" class="fileA" href="">美丽说app  上传图片</a>
+                        <input type="file" class="fileInput" id="fileInput" />
+                    </div>
+
+                    <a class="upImg_but fr"  id="upimgBut" href="javascript:;">
+                        <img src="http://d04.res.meilishuo.net/pic/_o/ab/b4/ad01da4c946815b7cedddc337fc9_257_132.cg.png" alt="上传图片">
+                    </a>
+                </div>
+            </div>
+            
+            <div class="upImg_loadWarp" id="upImg_loadWarp">
+                <div class="upImg_load">
+                    <!-- <div class="upImg_load_ani loading_act">
+                    </div> -->
+                    <img src="http://d01.res.meilishuo.net/pic/_o/c6/34/61f2b8aee3f2eded31f7ac065b44_286_270.cf.gif" />
+                </div>
+                <div class="upImg_loadAlt">
+                    <img src="http://d02.res.meilishuo.net/pic/_o/a9/dc/6842b46629b14130050641d3aaa7_523_66.cg.png" />
+                </div>
+                
+            </div>
+
+        </section>
+        
+        <section class="result">
+            <div class="result_head">
+                <img src="http://d03.res.meilishuo.net/pic/_o/65/a3/91a0858cdb3f1f86227ebe143ee8_640_102.cf.jpg" alt="">
+            </div>
+            <img id='result_img' class="result_img" src="" />
+            <a class="result_but" id="result_shareBut" href="">
+                <img src="http://d02.res.meilishuo.net/pic/_o/74/e2/5d9e4de72b99457da834c8639aae_321_159.cg.png" alt="">
+            </a>
+            <a class="result_but" href="http://m-promotion.meilishuo.com/promotion/common/custompage/?fid=279&r=main623_csyx">
+                <img src="http://d04.res.meilishuo.net/pic/_o/10/eb/1f22c80874670ba2c0632bd97892_326_44.cf.png" alt="">
+            </a>
+            
+
+            <div class="mypopbox" id="mypopbox"  style="display: none; ">
+                <div class="over">
+                    <img src="http://d03.res.meilishuo.net/pic/_o/c8/fa/3a8f6c4983636ffaea552be62580_578_783.ch.png" alt="">
+                </div>
+                
+                <div class="overlay">
+                    
+                </div>
+            </div>
+        </section>
+
+    </div>
+</div>
+
+
+<div id="imgShowBox"></div>
+
+
+<script>
+    fml.vars.isLogin= <%= this.isLogin || false; %>   ;
+
+    fml.vars.isWx = <%= this.isWx %>;
+
+
+</script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use('wap/page/activity/colorRun');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot.html%>
+

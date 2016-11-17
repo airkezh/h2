@@ -1,0 +1,26 @@
+<%# head_simple.html%>
+<% var fData = this.all;
+function decContent(str){
+return str
+}
+function changeIpad(url){return this.os.ipad ? url.replace('meilishuo://','meilishuohd://'):url;}
+%>
+</head>
+<body>
+<div class="main">
+	<div class="banner"></div>
+	<div class="head"></div>
+	<div class="c1"></div>
+	<div class="c2"></div>
+</div>
+<span class="gotop" style="bottom:<%if(this.isIphone){%>60<%}else{%>20<%}%>px">
+	<img src="http://i.meilishuo.net/css/images/wap/tuan/gotop.png" />
+</span>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use('wap/page/audio');
+fml.use('wap/app/hackWeixin');
+fml.use('wap/page/activity/fwindow');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot_simple.html%>

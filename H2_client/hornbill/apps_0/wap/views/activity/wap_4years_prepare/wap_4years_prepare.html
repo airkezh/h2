@@ -1,0 +1,26 @@
+<%# head.html%>
+<%
+	var banners = this.wap_4years_prepare.banners;
+%>
+
+<div class="main">
+<%
+banners.forEach(function(banner){
+%>
+	<a href="<%=banner.link? banner.link : 'javascript:;' %>" xr="<%=this.xr.r %>" >
+		<img src="<%=banner.src %>" alt="" width="100%" />
+	</a>
+<%
+});
+%>
+</div>
+
+<%= requireFn('wapShare.html')({
+	'share' : this.share
+	,'shareID' : 'punch'
+	, 'shareTitle' : '选择分享到：'
+	, '_JSstack' : this._JSstack
+	, '_JSmods' : this._JSmods
+}); %>
+
+<%# foot_simple.html%>

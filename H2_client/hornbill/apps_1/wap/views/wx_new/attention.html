@@ -1,0 +1,50 @@
+
+<script type="text/html" id="posterWall">
+<?
+	var _height = $('body').width()*28/64,
+		_height2 = $('body').width()*23/64;
+?>
+<?if(this.v.type != 'banner'){?>
+<?
+var type = this.v.type,
+	shop_info = this.v.shop_info,
+	tags = this.v.tags,
+	goods_info = this.v.goods_info;
+?>
+<div class="goods-li">
+	<div class="li-head">
+		<a <?if(type != 'b_shop'){?>href="<?= '/mainapp/shop/'+shop_info.shop_id?>"<?}?> class="avatar left">
+			<img src="<?= shop_info.shop_face_img?>">
+			<span></span>
+		</a>
+		<a <?if(type != 'b_shop'){?>href="<?= '/mainapp/shop/'+shop_info.shop_id?>"<?}?> class="name left">
+			<span><?= shop_info.shop_nick?></span>
+		</a>
+	</div>
+	<div class="li-info">
+		<?goods_info && goods_info.length && goods_info.forEach(function(v,_){?>
+		<a href="<?= type == 'b_shop' ? '/wx/detail?tid=' + v.twitter_id + '&d_r=' + v.d_r: '/mainapp/detail/' + v.msg_id + '?d_r=' + v.d_r?>" class="left">
+			<img height="<?=_height?>px" src="<?= v.goods_img?>">
+			<?if(+v.goods_price){?><span>￥<?=v.goods_price?></span><?}?>
+		</a>
+		<?});?>
+	</div>
+	<div class="li-tag">
+		
+	</div>
+	<div class="place-hold"></div>
+</div>
+<?}?>
+
+</script>
+
+<div id="loading" class="loading-bar"></div>
+<script>
+	Meilishuo.vars = Meilishuo.vars || {};
+	Meilishuo.vars.wx_user_id = <%=this.wx_user_id%>;
+
+	fml.vars.args_type = 'attention'
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/wx_new/user_c');
+_use:", this._JSstack , this._JSmods ); %>

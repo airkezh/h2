@@ -1,0 +1,35 @@
+<%# head_simple.html%>
+<div class="redBox">
+	<div class="redShare"></div>
+</div>
+<script type="text/html" id="shareDialog">
+	<div class="shade"></div>
+	<div class="shareD">
+		<div class="toFriend"></div>
+		<div class="toGroup"></div>
+		<div class="close"></div>
+	</div>
+</script>
+
+<script type="text/html" id="share_md">
+</script>
+
+<script>
+		var isLogin = <%=this.isLogin%>;
+		var batchId= "<%=this.batchId%>";
+		var Uid = "<%=this.Uid%>";
+		var imgUrl = 'http://d01.res.meilishuo.net/img/_o/0e/6b/a95c0492a8833984f4e3f12d09ca_200_200.cg.jpg';
+		var lineLink = 'http://m.meilishuo.com/activity/weixinLuck/index/?frm=wxlucky&uid='+Uid +'&bid=' +batchId;
+		var descContent = '美丽说11.11，买新款冬装、囤洗护用品姨妈巾能省钱！';
+		var shareTitle = '小婊砸，本宫发红包啦！美丽说双11，买冬装更超值~';
+		var shareTimelineText = '小婊砸，本宫发红包啦！美丽说双11，买冬装更超值~';
+	    var customAppId = 'wxd00a5f16e02bed58';
+</script>
+
+<script src="<%= this.JCSTATIC_BASE  %>/js/open/shareCollect.js?<%= this.SVERSION%>"></script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use("wap/page/activity/wxRed");
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot_simple.html%>

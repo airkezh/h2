@@ -1,0 +1,167 @@
+@import "wx.less";
+
+@bg-color: #fafafa;
+
+html, body, .wrap {
+  height   : 100%;
+  overflow : hidden;
+}
+
+body {
+  background-color : #fff;
+  font-weight      : bold;
+}
+
+.wrap {
+  position    : relative;
+  /* hack for margin collapse */
+  padding-top : 1px;
+  text-align  : center;
+}
+
+.avatar {
+  display               : block;
+  width                 : 120*@px;
+  height                : 120*@px;
+  margin                : 50*@px auto 0;
+  border                : 4px solid #f6f6f6;
+  -webkit-border-radius : 50%;
+  border-radius         : 50%;
+  background            : no-repeat 0;
+  overflow              : hidden;
+}
+
+.avatar-img {
+  width : 100%;
+}
+
+.nickname {
+  margin    : 20*@px 0;
+  font-size : 26*@px;
+  color     : #666;
+}
+
+.text-gather {
+  display               : inline-block;
+  margin                : 0 auto 28*@px;
+  padding               : 10*@px 40*@px;
+  font-size             : 24*@px;
+  color                 : #999;
+  -webkit-border-radius : 12px;
+  border-radius         : 12px;
+  background-color      : #f4f4f4;
+}
+
+.payment-box, .btn-payment, .link {
+  width  : 87.5%;
+  margin : auto;
+}
+
+.payment-box {
+  position              : relative;
+  padding               : 43*@px 0;
+  -webkit-border-radius : 8px;
+  border-radius         : 8px;
+  background-color      : @bg-color;
+  border                : 1px solid #e3e3e3;
+
+  &::before {
+    content           : "";
+    position          : absolute;
+    top               : -6px;
+    left              : 49%;
+    width             : 10px;
+    height            : 10px;
+    border            : 1px solid #ddd;
+    background-color  : @bg-color;
+    -webkit-transform : rotate(45deg);
+    -moz-transform    : rotate(45deg);
+    -ms-transform     : rotate(45deg);
+    -o-transform      : rotate(45deg);
+    transform         : rotate(45deg);
+  }
+
+  &::after {
+    content          : "";
+    position         : absolute;
+    top              : 0;
+    left             : 10%;
+    width            : 80%;
+    height           : 15px;
+    background-color : @bg-color;
+  }
+
+  h3 {
+    margin-bottom : 30*@px;
+    font-size     : 24*@px;
+    color         : #80737b;
+  }
+
+  .amount {
+    font-size   : 46*@px;
+    color       : #f66;
+    font-weight : normal;
+  }
+}
+
+.btn-payment {
+  height                : 84*@px;
+  line-height           : 84*@px;
+  margin-top            : 50*@px;
+  padding               : 0;
+  -webkit-border-radius : 4px;
+  border-radius         : 4px;
+  border                : 0;
+  color                 : #fff;
+  background-color      : #32b835;
+  font-size             : 30*@px;
+}
+
+footer {
+  position   : fixed;
+  left       : 0;
+  right      : 0;
+  bottom     : 120*@px;
+  text-align : center;
+}
+
+.link {
+  display            : block;
+  width              : 80%;
+  height             : 60*@px;
+  line-height        : 60*@px;
+  margin-bottom      : 30*@px;
+  font-size          : 24*@px;
+  color              : #f66;
+  text-align         : center;
+  border             : 1px solid #d8d8d8;
+  border-left-color  : transparent;
+  border-right-color : transparent;
+
+  .label {
+    display               : inline-block;
+    margin-left           : 20*@px;
+    padding               : 4*@px 6*@px;
+    line-height           : 30*@px;
+    font-size             : 22*@px;
+    color                 : #32b835;
+    border                : 1px solid;
+    -webkit-border-radius : 4px;
+    border-radius         : 4px;
+  }
+}
+
+.text {
+  font-size   : 24*@px;
+  line-height : 45*@px;
+}
+
+.icon-logo {
+  display          : inline-block;
+  width            : 45*@px;
+  height           : 45*@px;
+  margin-right     : 20*@px;
+  background-image : url("http://d05.res.meilishuo.net/pic/_o/ac/2f/09392f37828e7ff3e90685f25e82_100_100.cg.png");
+  background-size  : cover;
+  vertical-align   : bottom;
+}

@@ -1,0 +1,190 @@
+@import "../block.less";
+
+html{.f(10*@f);}
+body{.bgc(#fff);.f(0rem)}
+img{.block;.w(100%);}
+a:hover{.fc(#666)}
+.bs100(){background-size: 100%}
+.ellipsis(){.hidden;white-space:nowrap;text-overflow:ellipsis}
+.ellipsis-row(n){.hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:n;-webkit-box-orient:vertical;}
+
+// lazy_pic
+.lazy_pic .shadow{ .block; .w(100%); .h(35px); background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.4)); .pa; bottom: 0; border: none;}
+.lazy_pic,.lazy_pic_big{ .pt(160%);background-size: 100%; background-image: url('http://i.meilishuo.net/css/images/huodong/tuan/pre1.png'); .pr;
+ // background: -webkit-linear-gradient(linear, 0 0, 0 100%, from(#2074af), to(#2c91d2));
+	.shadow{ .block; .w(100%); .h(35px); background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.4)); .pa; bottom: 0; border: none;}
+}
+.lazy_pic_big{
+	background-size: 100%; background-image: url('http://d04.res.meilishuo.net/img/_o/4e/b7/1bd9f7ee6bc964907e9c83b6ae5c_320_264.cg.jpg');
+}
+
+/* loading */
+.pullUp{
+	.mt(0);.mb(.26rem);
+	.pullUpDown > .common;.pullUpDown > .loading;
+	&:before{
+		.nowrap;
+		.ml(-10px);
+	}
+}
+.pullUp{.l(.5rem);.h(.5rem);.w(.5rem);background-size:.5rem 1rem;.f(.25rem)}
+/* gotop */
+.top-box{.w(.7rem);.pf; right: 10px;z-index: 110;
+	span{.block;}
+}
+.gotop{.none;
+	img{.mb(5px)}
+}
+// banner
+.sliderBanner;
+.slide;
+// 轮播banner
+.sliderBanner;
+.banner-slider-point{.pa;.w(100%);left:0;bottom:0.01rem;
+	li{float: none;.i_block;background-color:#fff;.vm;.w(.08rem);.h(.08rem);.mr(.08rem);}
+	.curr{background-color:transparent;border:1px solid #fff}
+}
+.banner-slider{.pr;}
+.banner-slider-wrap li{.w(100%)}
+// postwall
+.wall,.recommend {
+	.most_intro { .mt(16*@px); .l(32*@px); .fc(#666); .pl(40*@px); .pr(40*@px); .h(68*@px); .hidden;}
+	
+	.most {
+		.pr;.hidden;
+		.mark { 
+			.pa; top: 0; right: 2%; .w(12%); .h(12%);
+		}
+	}
+	.tips-box{.pa;bottom:3%;left:1.5%;background: url('http://d02.res.meilishuo.net/img/_o/25/9a/f9f259c1bcef1f0bb17ed2de56dd_129_32.ch.png') no-repeat 0 0;background-size:100% 100%;padding:4px 5px 4px 22px;
+		b{.f(1rem);.fc(#fff);.vm;}
+	}
+	.pic{.mt(-14%);
+		img{border:3px solid #fff;.border-r(100%);.w(16%);.auto;}
+		p{.c;.mt(5px);.fc(#bc9f76);.f(1.2rem)}
+	}
+	.sale-title{.c;padding:0;.mt(.1rem);.w(90%);.f(.25rem);.auto;.l(1.4);.h(28px);.hidden;.tl;white-space:nowrap;text-overflow:ellipsis}
+	.f00{.fc(#000);padding:5px 0;}
+	.price{.c;.mb(6px);.mt(6px);
+			span{.f(.25rem);.fc(#f23d3d);.mr(5px)}
+			del{.f(.25rem);.fc(#a9a9a9)}
+		}
+	.btn {.f(1.5rem);.fc(#fff);padding:6px 0;.w(55%);.c;.block;.auto;.mb(25px);}
+	.btn-buy{ .bgc(#f25051); }
+	.btn-none{ .bgc(#ccc); }
+	.progress_wrap { .pr;  left: 0; .w(100%); }//background: -webkit-linear-gradient(top, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5));
+	.progress {.clearfix;
+		.pt(10*@px); .pl(10*@px); .pr(2%); .mb(13px);
+		.zan_normal {
+			.w(4.5rem); .h(4.5rem); margin: 0 auto; .mb(5%);
+			background: url("http://d04.res.meilishuo.net/img/_o/7a/39/d1232ad4b61ad508ef4c62112c07_80_80.cg.png") no-repeat;
+			background-size: 100%;
+			// background-position: center center;
+		}
+		.zan_love {
+			background: url("http://d06.res.meilishuo.net/img/_o/c9/e5/299ca9fc63281b819eaac0c22140_80_80.cf.png") no-repeat;
+			background-size: 100%;
+		}
+		// dd { .block; .left; .w(85%);}
+		.pic{ .left; } 
+		.name{ .left; .ml(38px); .mt(-36px);.w(75%);.hidden;}
+		.want {
+			 .f(1rem);transform:scale(0.875); text-transform: uppercase; .fc(#666); .pt(14*@px); .c;
+			 span{.fc(#ee3d30);.pl(4*@px);}
+			 .num {.fc(#666);} 
+
+		}
+		.strip {
+			.h(6*@px); .w(100%); background: #e5e5e5; .mt(1%); .mb(1%);
+		}
+		.strip_red {
+			.w(60%); .bgc(#ee3d30); .block; .h(6*@px);
+		}
+		// 买手信息新增
+		dd{ .f(1.2rem); transform:scale(0.92);}
+		.maishou_pic {.w(36px); .h(36px); .border-r(50%); .border-n;}
+		.maishou_name { .left;  color: #fff;.ellipsis;.w(100%);.h(15px)}
+		.most_intro { .pl(5px); .mt(0px); .pr(0px); .mb(3px);}
+		.clearfix;
+	}
+
+	.goods {
+		.clearfix; .pt(8px);
+		li {.pa;
+			.most_intro { text-indent: 0;}
+			.price{.mt(0px);.mb(.3rem);.f(.25rem);.mt(.1rem)}
+			.tips{bottom:3%}
+			.goods_info {
+			 .pr;
+			 .lazy_pic{ .pt(128%);background-size: 100%; background-image: url('http://i.meilishuo.net/css/images/huodong/tuan/pre1.png'); .pr;
+					 // background: -webkit-linear-gradient(linear, 0 0, 0 100%, from(#2074af), to(#2c91d2));
+			 		.shadow{ .block; .w(100%); .h(35px); background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.4)); .pa; bottom: 0; border: none;}
+			 	}
+			}
+		}
+		.progress {
+			// dd { .f(1.1rem);}
+		}
+		.sub-lazy{ .pt(160%); background-image: url('@{pic_url}/images/wap/web/zulily/lazyLoad2.jpg');}
+	}
+	.most_intro { text-indent: 0;.pb(0);.h(auto);.c}
+}
+
+.posterWall{padding:.08rem 0 0 .08rem;.bgc(#fff);min-height:10rem;.mt(-13px)}
+// .frame{.pl(.08rem)}
+.wall .goods li .goods_info{.mr(.08rem)}
+.mark0{ 
+		.pa; top: 0; left: 0;
+		img { .block; .w(70%);}
+	}
+
+.goods_wall{.pr;}
+/* 分享 */
+.starBox { .star_box; }
+
+
+//tab
+.tab {.hidden;.w(100%);.bgc(#fff);z-index: 100;.c;position: -webkit-sticky;position: -moz-sticky;position: -o-sticky;position: -ms-sticky;position: sticky;top:0;left:0;
+	a{.f(.25rem);.fc(#333);.left;.w(33.33333%);padding:.25rem 0;
+		b{border-right: 1px solid #d9d9d9;box-sizing:border-box;.fn;.block;}
+	}
+	.cur{.fc(#f23b36)}
+}
+
+// hot-shop&&kinds-box
+.hot-shop,.kinds-box{.bgc(#f6f6f6);padding:.15rem 0;
+	.inner{.bgc(#fff);padding:.1rem 0 .1rem .08rem;.hidden;}
+	.title{.tr;.f(.25rem);.l(1.2);.mb(.1rem);.fn;letter-spacing:2px;
+		h3{.tl;.left;.fn;.ml(.1rem)}
+		span{.fc(#999);.mr(.1rem)}
+		img{.il-block;.w(.25rem);.mr(.1rem);vertical-align:text-bottom;transition:transform .3s linear 0s;-webkit-transition:-webkit-transform .3s linear 0s;}
+	}
+	ul{.hidden;.pr(.08rem)}
+	.show{transform:rotateY(0deg);-webkit-transform:rotateY(0deg);}
+	.hide{transform:rotateY(90deg);-webkit-transform:rotateY(90deg);}
+	// .show{.block}
+	// .hide{.none}
+	li{.left;.w(33.333333334%);
+		a{.block;.pr(.08rem);.pb(.08rem)}
+		// img{.border-r(50%)}
+	}
+}
+.shop-ul-box{
+	.pr;.hidden;.h(4.2rem);
+	 ul{transition:all .4s linear 0s;-webkit-transition:all .4s linear 0s;.pa;left:0;top:0;.w(100%);.pr(0);}
+}
+.kinds-box{.pt(0);
+	h3{.f(.25rem);.l(1.2);.mb(.1rem);letter-spacing:2px;.fn;.ml(.1rem)}
+	ul{.w(5000px);overflow:visible;}
+	li{.w(1.4rem);}
+}
+//优化CSS3硬件加速的坑
+.fixedCss3(){z-index:1;.pr;}
+.banner-slider{.fixedCss3;}
+.hot-shop,.kinds-box{
+	ul{z-index:1;.pa;}
+	.title{
+		img{.fixedCss3;}
+	}
+}
+.kinds-box ul{.fixedCss3;}

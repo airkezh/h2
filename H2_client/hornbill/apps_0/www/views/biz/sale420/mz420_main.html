@@ -1,0 +1,90 @@
+<%#head.html%>
+<%
+	var getTimeRemain = function(time){
+		if(time && time > this.cur_time){
+			return time - this.cur_time;
+		}else{
+			return '';
+		}
+	}
+
+%>
+<div class="top">
+	<div class="inner">
+		<div class="down">
+			<% if(this.status == 'nostart'){ %>
+				距离热卖&nbsp;还有<span class="time" remain="<%= getTimeRemain(this.start_time)%>">-天--时--分</span>
+			<%}else if(this.status == 'saling'){%>
+				距离结束&nbsp;还有<span class="time" remain="<%= getTimeRemain(this.end_time)%>">-天--时--分</span>
+			<%}else{%>
+				活动已结束
+			<%}%>
+		</div>
+		<p class="find" id="01"></p>
+	</div>
+</div>
+<%= requireFn("biz/sale420/coupon.html")({
+	'couponData': this.couponData,
+	'coupon_100': this.coupon_100,
+	'pageData': this.pageData,
+	'_JSstack': this._JSstack,
+	'_JSmods': this._JSmods
+});%>
+<div class="wrap">
+	<% 
+		var is_start;
+		if(this.status == 'nostart'){ is_start = 1; }else{ is_start = 0; } 
+	%>
+	<p class="dw" id="02"></p>
+	<div class="tit tit1"><a href="/biz/shareact/beautySale/?ac_id=523" target="_blank"></a></div>
+	<div class="goods_wrap">
+		<% this.temai1.data[0].twitters.length = 32 %>
+		<%= requireFn("huodong/block/beautySale_twitter.html")({
+			'goods': this.temai1.data[0].twitters,
+			'is_start': is_start
+		});%>
+	</div>
+	<p class="dw" id="03"></p>
+	<div class="tit tit2"><a href="/biz/shareact/beautySale/?ac_id=525" target="_blank"></a></div>
+	<div class="goods_wrap">
+		<% this.temai2.data[0].twitters.length = 60 %>
+		<%= requireFn("huodong/block/beautySale_twitter.html")({
+			'goods': this.temai2.data[0].twitters,
+			'is_start': is_start
+		});%>
+	</div>
+	<p class="dw" id="04"></p>
+	<div class="tit tit3"><a href="/biz/shareact/beautySale/?ac_id=527" target="_blank"></a></div>
+	<div class="goods_wrap">
+		<% this.temai3.data[0].twitters.length = 40 %>
+		<%= requireFn("huodong/block/beautySale_twitter.html")({
+			'goods': this.temai3.data[0].twitters,
+			'is_start': is_start
+		});%>
+	</div>
+	<p class="dw" id="05"></p>
+	<div class="tit tit4"><a href="/biz/shareact/beautySale/?ac_id=529" target="_blank"></a></div>
+	<div class="goods_wrap">
+		<% this.temai4.data[0].twitters.length = 32 %>
+		<%= requireFn("huodong/block/beautySale_twitter.html")({
+			'goods': this.temai4.data[0].twitters,
+			'is_start': is_start
+		});%>
+	</div>
+</div>
+<div class="sidebar">
+	<ul>
+		<li><a href="#02"></a></li>
+		<li><a href="#03"></a></li>
+		<li><a href="#04"></a></li>
+		<li><a href="#05"></a></li>
+		<li><a href="/biz/March_sale/apparel/?cid=769" target="_blank"></a></li>
+		<li><a href="/tuan/?frm=mz420" target="_blank"></a></li>
+		<li><a href="/biz/huodong/meili99sed/?banner_id=ac1732965f9b48f0c160499894fbfa54" target="_blank" style="height:40px"></a></li>
+		<li><a href="#01" style="height:21px"></a></li>
+	</ul>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/huodong/sale420');
+_use:", this._JSstack , this._JSmods); %>
+<%#foot.html%>

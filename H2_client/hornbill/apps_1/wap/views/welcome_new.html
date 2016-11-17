@@ -1,0 +1,150 @@
+<%#head.html%>
+<% var hotsale = this.hotsale.data %>
+<%
+	var qiang8 = this.qiang8.data || {}
+		, tuan = this.tuan.data || {}
+		, tuanInfo = tuan.home_zhekouzhuanqu_tuangoubanner
+		, qingcang = this.qingcang.data || {}
+		, qingInfo = qingcang.home_qingcang 
+		, miaosha = this.miaosha.data || {}
+		, miaoInfo = miaosha.home_miaosha
+%>
+<%= requireFn('slider.html')({
+	'os' : this.os
+	, 'footBanner' : true
+	, 'isIqiyiApp' : this.isIqiyiApp
+	,'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+	, 'showDaoLiu' : this.showDaoLiu
+	, 'showZhiDing' : this.showZhiDing
+	, 'leadApp' : this.leadApp
+	, 'appUrl' : this.appUrl
+	, 'frm' : this.frm
+});%>
+<%#head_welcome.html%>
+
+<section id="wrapper_main" class="wrapper">
+
+	<%= requireFn('block/banner.html')({
+		'banner' :this.homeBanner.data
+		,'banner_r' : this.homeBanner.r
+		,'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+	});%>
+	<!-- 折扣区 -->
+	<div class="discount">
+		<h2 class="title">折扣专区<span>Sale</span></h2>
+		<div class="sale">
+			<a href="/activity/tuan/special/1065" xr="<%= this.qiang8.r%>" class="seckill">
+				<h3><span class="timeIcon"></span>秒杀专区</h3>
+				<p class="timeDown"><%= qiang8.time_tip%></p>
+				<dl class="q8_ltime" stime="<%= qiang8.time_value%>">
+	            	<dd id="hour"></dd><strong>:</strong>
+	            	<dd id="minu"></dd><strong>:</strong>
+	            	<dd id="sec" class="last"></dd>
+	            </dl> 
+	            <img src="<%= miaoInfo && miaoInfo[0].show_pic%>" />
+			</a>
+			<div class="saleRight">
+				<a href="/tuan" xr="<%= this.tuan.r%>" class="tuan">
+					<div class="wording">
+						<h3>团购专场</h3>
+						<p>血拼清单</p>
+					</div>
+					<img src="<%= tuanInfo && tuanInfo[0].show_pic %>" />
+				</a>
+				<a href="/clearance" xr="<%= this.qingcang.r%>" class="clear">
+					<div class="wording">
+						<h3>限时清仓</h3>
+						<p>最强性价比</p>
+					</div>
+					<img src="<%= qingInfo && qingInfo[0].show_pic%>" />
+				</a>
+			</div>
+		</div>
+	</div>
+	<div class="category">
+		<h2 class="title">热门分类<span>Top</span></h2>
+		<% this.navigate.data && this.navigate.data.map(function(v,k){ %>
+		<div class="info">
+			<a href="<%= v.url%>" class="clothes" xr="<%= this.navigate.r%>">
+				<img src="<%= v.logo %>" />
+				<span><%= v.wording%></span>
+			</a>
+			<section>
+				<a href="<%= v.banner[0].url%>" xr="<%= this.navigate.r%>">
+					<dl class="main">
+						<dt><img src="<%= v.banner[0].pic%>" /></dt>
+						<dd><%= v.banner[0].word_name%></dd>
+						<dd><%= v.banner_wording%></dd>
+					</dl>
+				</a>
+				<div class="count">
+					<div class="list">
+						<a href="<%= v.banner[1].url%>" xr="<%= this.navigate.r%>">
+							<img src="<%= v.banner[1].pic%>" />
+							<p><%= v.banner[1].word_name%></p>
+						</a>
+					</div>
+					<div class="list">
+						<a href="<%= v.banner[2].url%>" xr="<%= this.navigate.r%>">
+							<img src="<%= v.banner[2].pic%>" />
+							<p><%= v.banner[2].word_name%></p>
+						</a>
+					</div>
+				</div>
+			</section>
+			<nav>
+				<ul>
+				<% v.children.map(function(v,k){ %>
+					<%if(k < 12){%>
+						<li><a href="<%= v.url%>" xr="<%= this.navigate.r%>" <%if(v.isred == '1'){%>style="color: #ff6699"<%}%>><%= v.word_name%></a></li>
+					<%}%>
+				<%});%>
+				</ul>
+			</nav>
+		</div>
+		<%});%>
+	</div>
+	<div class="love">
+		<h3>
+			<span></span>
+			精选推荐
+			<span></span>
+		</h3>
+		<div class="goods_wall">
+		</div>
+		<div class="pullUp" status="loading"></div>
+	</div>
+</section>
+
+<script type="text/html" id="posterWall">
+<?
+var pt = (this.v.poster_height / this.v.poster_width) * 100;	
+?>
+<div class="poster_grid poster_wall" twitter_id="<?=this.v.twitter_id?>">
+	<figure>
+		<a xr="<?= fml.vars.poster_r?>" class="pic_load"  style="padding-top:<?= pt ?>%" href="/share/<?if(this.v.is_doota == '1'){?>item/<?}?><?= this.v.twitter_id?><?if(this.v.url_query){?>?<?= this.v.url_query?><?}?>">
+			<img src="<?= this.v.show_pic ?>" alt="<?= this.v.ginfo.goods_title ?>" title="<?= this.v.ginfo.goods_title ?>"/>
+		</a>
+		<? if(this.v.ginfo.goods_title){?>
+			<p class="clothesTitle"><?= this.v.ginfo.goods_title?></p>
+		<?}?>
+		<figcaption>
+			<? if(this.v.ginfo.goods_price){?>
+			<span class="price"><?= this.v.ginfo.goods_price?></span>
+			<? }?>
+			<span class="like icon-heart"><?= this.v.count_like?></span>
+		</figcaption>
+	</figure>
+</div>
+</script>
+
+<script>
+	fml.vars.frm = '<%== this.frm %>';
+	fml.vars.common_r = '<%== this.xr.r%>';
+</script>
+
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/welcome_new');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

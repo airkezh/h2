@@ -1,0 +1,31 @@
+<script type="text/html" id="posterWall">
+<?
+fml.vars.twitter_load = fml.vars.twitter_load || {};
+$.each(this.tInfo , function(k , v){ 
+	if(!v || fml.vars.twitter_load[v.twitter_id]){return}
+	fml.vars.twitter_load[v.twitter_id] = true;
+	var pic_height = v.pic_height * fml.vars.poster.scale;
+?>
+<div class="poster_grid poster_wall" twitter_id="<?=v.twitter_id?>" style="width:<?= fml.vars.poster.colWidth?>px;" poster_height="<?= pic_height + 45?>">
+	<figure>
+	<%if(1==0){%>
+		<a class="pic_load" href="/share/<?= v.twitter_id?>" style="padding-top:<?= pic_height ?>px;background-image:url('<?= v.pic_url ?>');"></a>
+	<%}%>
+		<a class="pic_load" href="/share/<?= v.twitter_id?>" style="height:<?= pic_height ?>px;">
+			<img src="<?= v.pic_url ?>" alt="<?= v.title ?>" />
+			
+		</a>
+		<? if(v.title){?>
+			<p class="clothesTitle"><?= v.title ?></p>
+		<?}?>
+		<figcaption>
+			<? if(v.price){?>
+			<span class="price"><?= v.price?></span>
+			<? }?>
+			<span class="like"></span>
+			<span class="likecounts"><?= v.count_like?></span>
+		</figcaption>
+	</figure>
+</div>
+<? }); ?>
+</script>

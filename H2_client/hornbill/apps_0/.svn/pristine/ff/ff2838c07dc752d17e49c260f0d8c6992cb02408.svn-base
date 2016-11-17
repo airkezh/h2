@@ -1,0 +1,24 @@
+<script type="text/html" id="res_goods">
+	<? this.goods.forEach(function(goods){ ?>
+		<div class="goods">
+			<div class="shoper js_app_link" data-href="<?= goods.shop_link ?>"><img src="<?= goods.avatar ?>"><?= goods.nickname ?></div>
+			<div class="show_time"><?= goods.show_time ?></div>
+			<div class="pic js_app_link" data-href="<?= goods.goods_link ?>"><? if(goods.img){ ?><img src="<?= goods.img ?>"><? } ?></div>
+			<div class="desc js_app_link" data-href="<?= goods.goods_link ?>"><?= goods.goods_desc ?></div>
+			<? if(goods.discount_cost){ ?>
+				<div class="price">￥<span class="now_price"><?= goods.discount_cost ?></span><span class="origin_price">￥<?= goods.goods_price ?></span></div>
+			<? } else { ?>
+				<div class="price">￥<span class="now_price"><?= goods.goods_price ?></span></div>
+			<? } ?>
+			<div class="rec" <?= goods.search_words.length ? '' : 'style="margin-top: .1rem;"' ?>>
+				<? goods.search_words.forEach(function(word){ ?>
+					<a href="<?= word.words_link ?>"><?= word.words ?></a>
+				<? }); ?>
+			</div>
+		</div>
+	<? }); ?>
+</script>
+
+<script>
+	<%= this.bs_rec ? 'fml.vars.waterfall0 = ' + JSON.stringify(this.bs_rec) + ';' : '' %>
+</script>

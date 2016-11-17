@@ -1,0 +1,30 @@
+<%#head.html%>
+<%
+	var super_buyers = this.super_buyers;
+%>
+<div class="main">
+	<div class="top_banner">
+		<img src="<%= super_buyers.top_banner %>" alt="">
+		<% if(super_buyers.audio){ %>
+			<div class="audio_box">
+				<%= requireFn('block/audio.html')({
+				'audio' :{
+					'audio_url' : super_buyers.audio.audio_url
+					,'audio_duration' : super_buyers.audio.audio_duration
+					,'avatar_url': super_buyers.audio.avatar_url
+					,'nickname': super_buyers.audio.nickname
+					,'title': super_buyers.audio.title
+				}
+				, 'id' : 'top0'
+				});%>
+			</div>
+		<% }%>
+	</div>
+	<% super_buyers.rec_item.length > 0 && super_buyers.rec_item.forEach(function(data, index){ %>
+		<a href="<%= data.link || 'javascript:;' %>" target="_blank"><img src="<%= data.src %>" alt=""></a>
+	<% }); %>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+     fml.use('wap/page/audio');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

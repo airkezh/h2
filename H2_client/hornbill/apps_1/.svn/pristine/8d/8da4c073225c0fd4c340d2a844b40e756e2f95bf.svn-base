@@ -1,0 +1,45 @@
+<%# head.html%>
+<%
+var query = this._Request_query;
+var shareStatue = this.shareInfo.share_statue.share_need
+%>
+<div class="banner" style="background-image:url('<%= this.award.data.pic[0]%>');%>"></div>
+<% 
+var bg_time  = this.award.data.bg_time
+	,end_time = this.award.data.end_time
+	,st = new Date
+var appliable = true
+if (bg_time && st < new Date(bg_time)) appliable = false
+if (end_time && st > new Date(end_time)) appliable = false
+
+if (appliable) {
+%>
+<div class="lineBox">
+	<% if (this.award.userNum > 0) {%>
+	<span class="user_num"><%= this.award.userNum%>人已参加</span>
+	<%}%>
+	<a class="btn" ><%= this.award.data.botton_subject%></a>
+</div>
+<% } %>
+<script>
+	fml.vars.isLogin = '<%= this.userInfo.user_id %>';
+	fml.vars.mlsApp = '<%= this.mlsApp %>';
+	fml.vars.bannerId = '<%= this._Request_query.banner_id %>';
+</script>
+<!-- 分享 -->
+<% if (shareStatue == 1) {%>
+	<% if(this.share){ %>
+		<%= requireFn('wapShare.html')({
+			'share' : this.share 
+		    , 'shareTitle' : '选择分享到'
+		    , '_JSstack' : this._JSstack
+			, '_JSmods' : this._JSmods
+		}); %>
+	<%}%>
+<%} %>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/award');
+_use:", this._JSstack , this._JSmods);%>
+
+<%# foot_simple.html%>

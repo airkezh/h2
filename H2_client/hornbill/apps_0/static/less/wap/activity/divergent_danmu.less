@@ -1,0 +1,314 @@
+@import "../block";
+
+@mineZIndex: 20;
+@bonusZIndex: 30;
+@ruleZIndex: 40;
+@panelZIndex: 50;
+@ftIndex: 35;
+
+@dmBg: "@{pic_url}/images/divergent/divergent_danmu_bg.png";
+@official: "@{pic_url}/images/activity/danmu/aquarius/official.png";
+@panelBg: "@{pic_url}/images/activity/danmu/aquarius/p_board.png";
+@freshBtn: "@{pic_url}/images/activity/danmu/aquarius/flesh_btn.png";
+@callBoardBg: "//d02.res.meilishuo.net/pic/_o/8c/2c/9acb64a3e140d6b1cfa1431ee015_640_521.cg.png";
+
+* {
+  -webkit-box-sizing : border-box;
+  -moz-box-sizing    : border-box;
+  box-sizing         : border-box;
+}
+
+html, body, #danmu {
+  // height     : 100%;
+  // max-height : 100%;
+  // width      : 100%;
+  .bgc(#000);
+  overflow   : hidden;
+}
+
+// body {
+//   position : fixed;
+//   width    : 100%;
+//   top      : 0;
+//   bottom   : 0;
+// }
+
+html {
+  font-size : 62.5%; /* 10/16 = 62.5% */
+}
+
+@media (-webkit-min-device-pixel-ratio : 1.5) {
+  html {
+    font-size : 50%; /* 8/16 = 50% */
+  }
+}
+
+@media (-webkit-min-device-pixel-ratio : 2) {
+  html {
+    font-size : 43.75%; /* 7/16 = 43.75% */
+  }
+}
+
+@media (-webkit-min-device-pixel-ratio : 3) {
+  html {
+    font-size : 43.75%; /* 5/16 = 31.25% */
+  }
+}
+
+#danmu {
+  // position                : absolute;
+  // top                     : 0;
+  // left                    : 0;
+  // width                   : 100%;
+  background              : #000 url(@dmBg) no-repeat center top;
+  background-size         : 100% auto;
+  //overflow                : hidden;
+
+  .ft {
+    // position : fixed;
+    // bottom   : 0;
+    // left     : 0;
+    //width    : 100%;
+    z-index  : @ftIndex;
+    //height   : 30%;
+  }
+
+  .wrap {
+    position : relative;
+    width    : 90%;
+    height   : 20%;
+    margin   : auto;
+  }
+}
+
+#stage {
+  position      : relative;
+  //height        : 80%;
+  .pt(550*@w);
+  .mt(200*@w);
+  //.mb(5%);
+
+  div {
+    position : absolute;
+    left     : 100%;
+  }
+}
+
+/*------------------------------------*\
+
+    弹幕中显示的信息
+    bg-color: #3c453a
+
+\*------------------------------------*/
+[class^="bullet"] {
+  position          : relative;
+  height            : 4.4rem;
+  line-height       : 4.4rem;
+  padding           : 0 2.7rem 0 2.7rem;
+  font-size         : 2.4rem;
+  color             : #000;
+  background-color  : rgba( 255, 232, 20,.702 );
+  border-radius     : 2.5rem;
+  text-align        : center;
+  white-space       : nowrap;
+  z-index           : 0;
+  -webkit-transform : translateZ(0);
+  -moz-transform    : translateZ(0);
+  -ms-transform     : translateZ(0);
+  -o-transform      : translateZ(0);
+  transform         : translateZ(0);
+}
+
+/*
+  在代码中有特殊用途
+*/
+#bullet-signal {
+  position   : absolute;
+  left       : -100%;
+  visibility : hidden;
+}
+//官方发的子弹
+.bullet-o {
+  color            : #fff;
+  background-color : rgba(255, 232, 20,.702);
+  z-index          : @mineZIndex;
+  i {
+    .pa; top: 0; left: 3rem; .w(3.4rem); .h(100%);
+    background-image: url(@official);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 100% auto;
+  }
+  span { position  : relative; left: 2rem; }
+}
+
+//自己发的子弹
+.bullet-m {
+  background-color : rgba( 255, 255, 255, .8 );
+  z-index          : @mineZIndex;
+
+  span { position  : relative; }
+}
+
+//TODO 信息
+#error-msg {
+  position         : absolute;
+  top              : 0;
+  display          : none;
+  width            : 100%;
+  height           : 3.7rem;
+  line-height      : 3.7rem;
+  margin-bottom    : 1rem;
+  font-size        : 2.1rem;
+  color            : #fff;
+  background-color : rgb(89, 70, 71);
+  background-color : rgba(89, 70, 71, .8);
+  border-radius    : .3rem;
+  text-align       : center;
+}
+
+/*------------------------------------*\
+
+    活动规则与分享按钮
+
+\*------------------------------------*/
+.ft {
+  -webkit-transform : translateZ(0);
+  -moz-transform    : translateZ(0);
+  -ms-transform     : translateZ(0);
+  -o-transform      : translateZ(0);
+  transform         : translateZ(0);
+
+  .btn {
+    display    : inline-block;
+    color      : #fff;
+    text-align : center;
+  }
+
+  .btns {
+    width     : 100%;
+    height    : 100%;
+    margin    : auto;
+    font-size : 0;
+
+    .btn {
+      width            : 48%; //210
+      height           : 4.5rem;
+      line-height      : 4.5rem;
+      color            : #fff;
+      background-color : #4e00ff;
+      font-size        : 2.3rem;
+      border-radius    : 1.8rem;
+      vertical-align   : top;
+    }
+
+    .invite .btn {
+      width : 100%;
+    }
+  }
+}
+
+/*------------------------------------*\
+
+    输入框及发射按钮
+
+\*------------------------------------*/
+.inputs {
+  //height     : 67%;
+  margin-top : 3%;
+  padding    : 1.5% 3% 1.5% 3%;
+  //background-color: #f3f3f3;
+
+  #input {
+    float          : left;
+    width          : 76%;
+    height         : 5rem;
+    padding        : 1rem;
+    font-size      : 2.3rem;
+    border         : none;
+    border-radius  : .3rem;
+    vertical-align : top;
+  }
+
+  .btn {
+    width            : 20%;
+    height           : 5rem;
+    line-height      : 5rem;
+    margin-left      : 2%;
+    margin-bottom    : 1rem;
+    font-size        : 2.5rem;
+    border-radius    : .3rem;
+    color            : #000;
+    background-color : #ffe600;
+  }
+
+  .btn-on {
+    background-color : #4e00ff;
+  }
+}
+
+/*------------------------------------*\
+
+    快速发射按钮及刷新按钮
+
+\*------------------------------------*/
+.ft {
+  .wrapper { margin-top: 1rem; }
+}
+
+#fresh {
+  width: 20%;
+  background: #505050 url(@freshBtn) center center no-repeat;
+  background-size: auto 60%;
+}
+
+.circle-entrance-top {
+  .pa;
+  top: 1.7rem;
+  right: .6rem;
+  .white;
+  .f(2rem);
+}
+
+.call-board {
+  .pr;
+  // .ml(6px);
+  // .mr(6px);
+  .mt(1rem);
+  .mb(6.5rem);
+  .pt(521*@w);
+  // .pl(3px);
+  // .pr(3px);
+  background: url(@callBoardBg) center center no-repeat;
+  background-size: 100% auto;
+}
+
+.circle-entrance-left,
+.circle-entrance-right{
+  .w(170*@w);
+  .pt(50/640*100%);
+}
+
+.circle-entrance-left {
+  .pa;
+  bottom: 46/521*100%;
+  left: 56/640*100%;
+}
+
+.circle-entrance-right {
+  .pa;
+  bottom: 46/521*100%;
+  right: 48/640*100%;
+}
+/* 分享 */
+.starBox { 
+  .star_box; 
+  .bgc(#222121);
+  .border-n;
+  .share_ico{
+    .btncontain{
+      .btn { .bgc(#FFCE52); .fc(#000); }
+    }
+  }
+  //h2, .share_ico{ .bgc(#222121); }
+}

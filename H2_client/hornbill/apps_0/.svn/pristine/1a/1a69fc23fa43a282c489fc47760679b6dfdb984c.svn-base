@@ -1,0 +1,404 @@
+@import "wx.less";
+.firBind{ .none;} 
+
+/*兼容orderlist异步加载*/
+// .wrap{
+// 	div.m50{.h(0);}
+// }
+
+.user_nav{.bgwhite;.border-bd9;.c;.h(88*@px);
+	a{.i_block; .h(70*@px);.f(28*@px);.cursor;.l(88*@px);.pl(10*@px);.pr(10*@px);border-bottom: 4*@px solid transparent; .ml(20*@px);.mr(20*@px);}
+	a.active{border-bottom: 2px solid @red;.fc(@red);}
+}
+.binding{.w(100%);.h(80*@px);.bgc(#ffffe3);.f(28*@px);.l(80*@px);
+	a{.tunder;.ml(40*@px);}
+}
+
+.next_icon { .pa; .w(15*@px); .h(25*@px); .cursor; right: 26*@w; top:40%;}
+.status_icon { .wx_icon; .w(26*@px); .h(30*@px);}
+
+.more { .f(28*@px); .pt(40*@w);.pb(40*@w);.block; .c; .l(16*@px);}
+.eva_more { .l(26*@px);}
+.xiala_icon { .w(28*@px); .h(16*@px); .i_block;}
+.no_weixin_notice{
+	.mt(20*@px);
+	.yellow_box;
+}
+
+.check {
+	.c; 
+	.pt(16*@px); .f(28*@px);  .clearfix;
+	.receipt_btn, .check_btn{.l(56*@px); .border-r(6*@px);.c; .i_block;.ml(10*@px);.mr(10*@px);.pl(12*@px);.pr(12*@px);}
+	.receipt_btn {.bgc(#ef4f4f);.white;.pt(2*@px);.pb(2*@px);}
+	.check_btn {.border-1 (#9a9a9a);.fc(#9a9a9a);}
+	.total_money{.tl;.pr;
+		.coupon_msg{.right;}
+	}
+};
+
+.check_btn,.receipt_btn{.pa; right: 0; top: -16*@px;}
+
+.check_btn {.border-1 (#ff6699);}
+
+.receiver {
+	.module_info; .pr;.padding;.hidden;
+	.receiver_line { .h(6*@px); background: url("@{pic_url}/images/wap/web/wx/boder_bg.png") repeat-x;}
+	.i_address{.i_block;.h(32*@px);.w(26*@px);/*.pr(16*@px);*/.left;}
+	.receiver_info {
+		 .clearfix; .f(24*@px);.w(588*@w);.right;
+		p { 
+			.l(36*@px); .pt(4*@px); .pb(4*@px); .clearfix;
+			span{ .left; .ellipsis;
+			}
+			i{font-style: normal;}
+		}
+		// .user_icon { .w(26*@px); .h(26*@px); .wx_icon;} 
+		// .tel_icon { .w(22*@px); .h(24*@px); .mt(4*@px); .wx_icon;}
+		
+	}
+	
+}
+
+.place {
+	.module_info; .f(24*@px);
+	.padding;
+	.site_icon { .w(28*@px); .h(24*@px); .wx_icon;}
+	.way {
+		border-left: 1px solid #d9d9d9; .pl(30*@px); .ml(10*@px); .pr;
+		.way_now {
+			.pt(30*@px); .pr; .pb(20*@px);
+			.way_icon { .pa; left: -20px; top: 15px; .w(10px); .h(10px); .wx_icon;}
+		}
+		.next { .pa; .w(15*@px); .h(25*@px); .cursor; right: 0; top: 32*@px;}
+	}
+	.order_time { .gray; }
+}
+
+.order_info_wrap { .mt(20*@px);}
+.order_goods{.bgc(#fff);}
+
+//订单确认页，购物车下单，一个店铺多个商品
+.order_goods_list{
+	li{.mt(26*@px);}
+}
+.order_info {
+	.mb(20*@px);
+	.order_bt { background: url("@{pic_url}/images/wap/web/wx/huabian.png") repeat-x; .h(5px);}
+	.payment {
+		.bgc(#fff); .pt(40*@px); .l(28*@px); .mt(40*@px); .border-td9;
+		.payment_icon { .wx_icon; .w(30*@px); .h(30*@px);}
+		.plat_icon{ .wx_icon; .w(24*@px); .h(32*@px);}
+	}
+	.status {
+		.l(32*@px); .padding; .bgc(#fff);.mt(40*@px);.border_tb;.pr;
+		.status_info {.i_block;.w(90%);}
+		.pay_hint{.mt(20*@px);}
+		.more_next{.pa;.i_block;right:70*@px;top:40*@px;
+			.next_icon{top: 2*@px;right:-30*@px;}
+		}
+		
+	}
+	.goods {
+		.pt(32*@px);.pb(32*@px);.pl(40*@px);.pr(40*@px);.clearfix; .bgc(#fff); .pr; .mt(20*@px);
+		.shop_info{.border-bd9;.mb(20*@px);}
+		.goods_next { top: 40/120*100%;}
+		.shop_name { /*.pb(0);*/ .pb(20*@px);}
+		.goods_img { .left; .w(120/560*100%); .block; .border-1(#d9d9d9);}
+		.goods_info_wrap {.clearfix;}
+		.goods_info {
+			.ml(150/560*100%); .clearfix;
+			p { .l(36*@px);} 
+			.goods_title,.goods_title_ { .f(28*@px); .l(36*@px);}
+			.goods_size, .goods_price{
+				.left;.f(20*@px);.fc(#959595);	.mt(20*@px);
+				span{.block;}
+			}
+			.goods_size{.mr(60*@px);}
+			.success_ti { .f(32*@px); .pb(10*@w);}
+		}
+		.goods_list_info { .mr(30/560*100%);.pb(16*@px);}
+		.goods_info_btm { .border-bd9;.mb(10px);}
+		.goods_info_bno { .border-n;}
+		.refund { .right;  .l(50*@px);
+			span { .block; .c;}
+		}
+		.re_btn { .w(120*@px); .block; }
+		.confirm_goods {
+			.goods_title { .mb(16*@px);}
+			.goods_title_{.fc(#999);.f(24*@px);}
+			.g_num{.right;.mr(12*@px);}
+			.goods_num { .w(110/560*100%); .f(30*@px); .mt(10*@px);}
+		}
+		.total {
+			.f(24*@px); .pt(30*@px);
+			// .free_icon {.wx_icon; .w(26*@px); .h(24*@px);}
+			// .coupon_icon{.wx_icon;.w(28*@px); .h(28*@px);}
+			//.total_money { .right;}
+			.money_discount{.right;}
+			
+		}
+		.order_coupon{
+			.mt(24*@px);.border-td9;.pt(30*@px);
+			.total_money { .right;.pr(40*@px);}
+		}
+		.user_msg{
+			.mt(20*@px);.l(32*@px);
+		}
+	}
+}
+.margin_tb{.mt(8px);.mb(8px);}
+
+.safety {
+	// .gray_color{.mb(20*@px);
+	.module_info; .f(22*@px); .padding;
+	ul{.hidden;}
+	.safe_tro{.left;.c;.w(25%);
+		img{.w(56*@px);.h(61*@px);.i_block;.mt(30*@px);}
+		p{.gray_color;.l(40*@px);}
+	}
+	.tel{.pb(30*@px);.h(20*@px);.border-td9;.mt(30*@px);.pt(30*@px);}
+	.indent_info {
+		.l(36*@px); .pt(30*@px); .border-td9;
+	}
+}
+.blank{.h(100px);}
+.verify {
+	.module_info;.padding; .pl(0*@px);.pr(30*@px);  .l(64*@px);.c; .w(100%);
+	.pf; bottom: 0; z-index: 1;
+	span { .f(32*@px);
+		// a{.right;}
+	}
+	p{.c;
+		a{.mr(10/640*100%);.i_block;}
+		a#cancel_order{.mr(0);}
+	}
+	a {.w(280/640*100%); .l(88*@px); .wx_btn}
+	a.recvOrder{.w(90%);}
+}
+
+// .coupon_msg { .right;}
+/* === confirm start === */
+
+.confirm_next { top: 250*@w; right: 20*@px;}
+.shop_confirm_next{ top: 16px; right: 20*@w;}
+
+.success {
+	.module_info; border-top: none; .padding; .f(28*@px); .bgc(#fafafa); .pb(80*@w);
+	.congrats { .f(32*@px); .pt(10*@px); .pb(20*@px);}
+	.ml_color { .l(40*@px); }
+}
+
+.pay_btn_wrap { 
+	padding: 20px 10px; .bgc(#fff);text-align: right;.mt(40*@px);
+	.pay_money{.left;.f(14px);.fc(@red);.l(45px);}
+	.pay_btn {
+		 .wx_btn; .l(88*@px);.pl(50*@px);.pr(50*@px);.bgc(#ee4f4f);
+	}
+}
+
+.pay_way {
+	.module_info; .padding; .bgwhite; .l(28*@px); .border-td9; .border-bd9; /*.mb(40*@px);*/ .pr;.hidden;.mb(0);
+	.pay_list { 
+		.red; .right;
+		span { .colorgrey;}
+	}
+	.f_left{.left;}
+	.plat_list {.block; .pt(20*@px); float: none; clear: left;}
+	.no_coupon { .colorgrey;}
+	.plat_icon { .wx_icon; .w(24*@px); .h(32*@px);}
+	.wx_card_num{.right; .pr(10*@px);.green_color;}
+}
+
+.wx_card{.mt(0);border-top: none;
+	.green_color{.pr(10*@px);}
+	.confirm_next{top: 240*@w;}
+}
+
+
+.pay_info {
+	 .padding; .bgwhite; .mt(0);.pt(0);.border-bd9;
+}
+
+.pay_way_other { margin: 0; padding: 30*@px; .pl(0);}
+
+.freight { border-bottom: none;}
+
+.msg { .border-d9;.l(30*@px); .fc(#666); .bgwhite; .mt(15px);.border-r(10*@px); .w(580/600*100%); .h(100*@px);}
+
+.total {
+	.module_info; .padding;.f(24*@px);.pl(0);border-bottom: none; .pt(40*@px);.pb(0);.mt(20*@px);
+	.total_money { .right;}
+}
+
+.total_new{
+	// .module_info; .padding;.f(24*@px);.pl(0);border-bottom: none; .pt(40*@px);.pb(0);.mt(20*@px);
+	.pt(30*@px);.border-td9;
+	.total_money { .right;}
+	.pb(30*@px);
+}
+.mt20{.mt(40*@px);.border-td9;}
+// .t_adjust{.pl(40*@px);.pb(40*@px);.border-d9;}
+
+/* === myorder start === */
+
+.order_status {
+	border-bottom: 1px solid #e5e4e5; .pb(32*@px); .mb(30*@w); .l(32*@px); .pr;
+	.all { .right; .mr(30*@w);}
+}
+.myorder_next { top: 4*@px; right: 0;}
+.shop_name {
+	.ellipsis; 
+	.clearfix; .pb(0);
+	.shop_icon { .wx_icon; .w(28*@px); .h(24*@px);}
+}
+.shop_cost { .pt(30*@w);}
+
+/* === order_empty ==== */ 
+.order_empty {
+	.c; .pt(160*@px);
+	.empty_icon {.wx_icon; .w(68*@px); .h(84*@px); .i_block; float: none;}
+	h3 { .f(36*@px); .pt(46*@px); .l(18px); .fn;} 
+	p{ .f(24*@px); .pt(20*@px);}
+	.btn { .wx_btn; .f(36*@px); .w(280*@w); .h(80*@px); .l(80*@px); .mt(100*@px);}
+}
+
+
+/* === success start === */
+.ses_next { top: 52/120*100%;}
+.attention {
+	.c; .pt(30*@w); .l(36*@px);
+}
+
+
+
+.order_ses {
+	.padding;.f(28*@px);.c;
+	.ok_wrap{.f(36*@px);.mt(30*@px);.mb(30*@px);}
+	.ok_icon{
+		.w(168*@px); .h(168*@px);.auto;.mt(80*@px);
+	}
+	.order_btn{.w(100%); .border-r(10*@px);.bgc(#ff94b7);.fc(#fff);.block;.mb(30*@px);.pt(24*@px);.pb(24*@px);.mt(50*@px);}
+	.btn_guang{.fc(#888);.bgc(#fff);border:1px solid #e6e5e6;.mt(0);}
+
+	// p{ .l(40*@px);}
+	// .ok_wrap { .f(36*@px); }
+	// .ok_icon { .wx_icon; .w(168*@px); .h(168*@px); .pr(10*@px); .mt(4*@px); .mr(0);}
+}
+.mls_kefu { .c; .bgc(#fff); .pb(60*@px); .pt(60*@w);}
+
+
+/* === fail start === */
+// .fail {
+//  	.module_info; .border-r(20*@px); .pb(80*@w); .pt(80*@w); .pl(100*@w); .pr(100*@w);.border-n; .pr; 
+// 	.fail_icon { .wx_icon; .w(40*@px); .h(40*@px); .pa; left: 40/560*100%;}
+// 	h3 { .f(32*@px); .l(40*@px);}
+// 	p {.pt(10*@px); .pb(40*@w); .f(28*@px);}
+// 	.failbtn_wrap { .c;}
+// 	.fail_btn { float: none; .w(280/560*100%);}
+// }
+
+/* === show_coupon === */
+/*弹窗*/
+.dialog();
+.selectDialog();
+.select_wrap {
+	.bgwhite; .border-d9; .pf; bottom: 0; .w(100%); .h(326*@px); overflow-y: scroll;
+	li { .pl(90*@px);.l(80*@px); .border-bd9; .h(80*@px); .pr; .f(24*@px);}
+	.checkState { .pa; .left; top: -1px; left: 10*@px; background: url("@{pic_url}/images/wap/web/wx/ok_icon.png") center center no-repeat; .w(40px); .h(40px); .vm; background-size: 20px;}
+}
+
+
+.user_coupon{.none;}
+#dialogLayer{.fc(#000);}
+
+.fir_bind{.block;.h(40*@px); .l(40*@px);.pl(40*@px);.fc(#ff6699);.mb(20*@px);}
+//临时提示
+.notice-cj{
+	.fc(#f69);
+	.ml(20px);
+	.mr(20px);
+	.mt(20px);
+	.l(18px);
+}
+
+
+
+
+.progress{
+	.h(235*@px);
+	.bgc(@white);
+	border-top: 1px solid #d9d9d9;
+	border-bottom: 1px solid #d9d9d9;
+	.pro_info{
+		.w(392*@px);
+		// .w(548*@px);
+		.h(80*@px);
+		.mt(25*@px);
+		.auto;		 	
+	}	
+	.txt_info{
+		.c;
+		span{
+			.w(152*@px);
+			.i_block;
+		}
+	}
+	.pro_message{
+		.red;
+		.f(40*@px);
+		.c;
+		.mt(35*@px);
+
+	}
+}
+.no_send_goods,.no_receive_goods{ 
+	.on{
+		border:2px solid #ccc;
+		color:#ccc;
+		.w(56*@px);
+		.h(56*@px);
+		.left();
+		.bgc(@white);
+		.border-r(50%);
+		.c;
+		.l(60*@px);
+		.f(25*@px);
+	}
+	.strip{
+		.bgc(@lightGray);
+		.w(50*@px);
+		.h(5*@px);
+		.left();
+		.mt(30*@px);
+	}
+}
+
+.send_goods,.receive_goods,.pay_money,.close_order{
+	.on{
+		.w(60*@px);
+		.h(60*@px);
+		.left();
+		.bgc(@red);
+		.border-r(50%);
+		.c;
+		.l(60*@px);
+		.white;
+		.f(25*@px);
+	}
+	.strip{
+		.bgc(@red);
+		.w(50*@px);
+		.h(5*@px);
+		.left();
+		.mt(30*@px);
+	}
+}
+.close_order,#order_txt{
+	//.none();
+}
+.list-higo{
+	.w(95.067%);
+	.auto;
+	.mt(10px);
+	.mb(10px);
+}

@@ -1,0 +1,15 @@
+<%# head_simple.html%>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+		fml.use('page/meilishuo_share');
+_use:", this._JSstack , this._JSmods ); %>
+</head>
+<body style="background-color:transparent">
+	<div class="header_top" style="width:532px;">
+		<a class="logo_new" href="/?frm=mls_share" style="left:auto;margin-left:0;" target="_blank"></a>
+		<% if (this.user_id){%>
+		<span style="float:right;height:45px;line-height:45px;">你正在使用<a class="red_f" href="/person/u/<%= this.user_id %>" target="_blank"><%= this.userInfo.nickname %></a>帐号|<a href="/user/logout" class="logout red_f">换个帐号</a></span>	
+		<% } %>
+	</div>
+<div id="waitFor" style="text-align:center;position:absolute;left:50%;top:69px;margin-left:-50px;z-index:9999999;display:block;background:#FF6699;padding:3px; color:#fff;" >正在加载,请稍候...</div>
+<%# wins/windows.html%>
+<%# foot_simple.html %>

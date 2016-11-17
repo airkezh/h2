@@ -1,0 +1,32 @@
+<%#head.html%>
+<header class="header" id="header">
+	<div class="nav_ban">
+		<h1>意见反馈</h1>
+		<!-- <span class="icon-back" id="backBtn" ></span> -->
+	</div>
+</header>
+<img src="<%=this.PICTURE_URL%>images/wap/uninstall/uninstal_1.png" alt="">
+<!-- <div class="req_block"></div> -->
+<form id="reqForm" method="post" onsubmit="return false" action="">
+<div class="down_">
+	<textarea name="reason" id="reason" placeholder="告诉我具体原因，小美一定全力为你优化:D"></textarea>
+	<input id="contact" type="text" name="contact" value="" placeholder="请填写QQ或手机号码，方便我们与你联系: ）">
+	<input type="hidden" name="toid" id="toid" value="<%=this.toid%>">
+	<div class="reqErrorMessage"></div>
+	<input type="submit" class="button reqButton" value="提交反馈，坐等大奖">
+</div>
+</form>
+
+<script type="text/html" id="alertMsg">
+	<div class="toupdate">
+		<p style="text-align: center;"><?= this.msg?></p>
+		<a class="btn3zi delayclose" href="javascript:;">确定</a>
+	</div>
+</script>
+<script>
+	fml.vars.is_req_other = true;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/uninstall');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

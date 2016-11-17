@@ -1,0 +1,90 @@
+<%# head_simple.html%>
+<%
+var hu = this.hotspotUrl;
+%>
+<script>
+	if (window.location.search.indexOf("isFromShare") >= 0) {
+		isPc();
+	}
+	function isPc() {
+		//平台、设备和操作系统
+		var system ={
+			win : false,
+			mac : false,
+			xll : false
+		};
+		//检测平台
+		var p = navigator.platform;
+
+		system.win = p.indexOf("Win") == 0;
+		system.mac = p.indexOf("Mac") == 0;
+		system.x11 = (p == "X11") || (p.indexOf("Linux") == 0);
+		//跳转语句
+		if(system.win||system.mac||system.xll){//转向pc页面
+			window.location.href = "http://promotion.meilishuo.com/promotion/sale_1501/act119/"
+		}
+	}
+</script>
+</head>
+<body>
+<div class="banner">
+	<div class="rule js_rule"></div>
+	<%var pageUrl = this.locationUrl + "/promotion/sale_1501/coupon_new_goods/"%>
+	<a class="go_coupon_page" href='<%=_extFn.getAppLink("openURL", {"url": pageUrl, "title": "2015春装领券页"}, this.os, null, pageUrl)%>'></a>
+</div>
+<div class="p0">
+	<a class="hs1" href='<%=_extFn.getAppLink("openURL", {"url": hu[0].url, "title": hu[0].title}, this.os, null, hu[0].url)%>' ></a>
+	<a class="hs2" href='<%=_extFn.getAppLink("openURL", {"url": hu[1].url, "title": hu[1].title}, this.os, null, hu[1].url)%>' ></a>
+</div>
+<div class="p1">
+	<a class="hs3" href='<%=_extFn.getAppLink("openURL", {"url": hu[2].url, "title": hu[2].title}, this.os, null, hu[2].url)%>' ></a>
+	<a class="hs4" href='<%=_extFn.getAppLink("openURL", {"url": hu[3].url, "title": hu[3].title}, this.os, null, hu[3].url)%>' ></a>
+</div>
+<div class="p2">
+	<a class="hs5" href='<%=_extFn.getAppLink("openURL", {"url": hu[4].url, "title": hu[4].title}, this.os, null, hu[4].url)%>' ></a>
+	<a class="hs6" href='<%=_extFn.getAppLink("openURL", {"url": hu[5].url, "title": hu[5].title}, this.os, null, hu[5].url)%>' ></a>
+</div>
+
+<%= requireFn('wapShare.html')({
+'share' : this.share
+, 'shareTitle' : '选择分享到'
+, '_JSstack' : this._JSstack
+, '_JSmods' : this._JSmods
+}); %>
+
+
+<script type="text/html" id="rule_tpl">
+	<div class="shade"></div>
+	<?
+		var bg = this.ruleData.background;
+		var tBtn = this.ruleData.top_close_btn;
+		var bBtn = this.ruleData.footer_close_btn;
+	?>
+	<div class="rule_dialog" style="width:<?=bg.width+'%'?>;padding-top:<?=bg.height?>%;left:<?=(100-bg.width)/2+'%'?>;background: url(<?=this.ruleData.background.img?>) no-repeat top center;background-size: 100%;">
+		<div class="rule_dialog_btn" style="bottom:<?=bBtn.height?>%"></div>
+		<div class="rule_close_btn" style="width:<?=tBtn.width?>%; height:<?=tBtn.height?>%; top:<?=tBtn.horizontal?>%; right:<?=tBtn.vertical?>%">
+			<img src="<?=this.ruleData.top_close_btn.img?>" alt=""/>
+		</div>
+	</div>
+</script>
+
+<script>
+
+	var imgUrl = '<%=this.shareInfo.pic%>';
+	var lineLink = '<%=this.shareInfo.url%>';
+	var descContent = '<%=this.shareInfo.content%>';
+	var shareTitle = '<%=this.shareInfo.pengyou_title%>';
+	var shareTimelineText = '<%=this.shareInfo.pengyouquan_title%>';
+	var customAppId = 'wxd00a5f16e02bed58';
+</script>
+<script src="<%= this.JCSTATIC_BASE  %>/js/open/shareCollect.js?<%= this.SVERSION%>"></script>
+
+
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+
+fml.use('wap/page/activity/promotion/mv_1501_new_goods');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot_simple.html%>
+

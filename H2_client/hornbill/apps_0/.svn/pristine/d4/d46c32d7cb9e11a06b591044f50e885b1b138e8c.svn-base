@@ -1,0 +1,62 @@
+<%#head_simple.html%>
+<script>
+fml.vars.shake = {
+	name:"<%= this.name%>"
+	, state:"<%= this.state%>"
+}
+fml.vars.CONFIG_SHARE = <%= JSON.stringify(this.info.share) || '{}' %>;
+</script>
+</head>
+<body>
+
+<div class="resultArea" style="background-image:url('http://d01.res.meilishuo.net/pic/_o/f8/d6/4460558ba726a8c5e8c57152343e_640_1008.ch.jpg');">
+
+	<div class="roleBox">
+		<p>
+			<img src="http://124.202.144.17/pic/_o/49/c0/98cb84a4726e608763cb38f0af61_188_323.cf.png" />
+		</p>
+	</div>
+
+	<div id="resultBox" class="resultBox">
+		<p>
+			<img src="http://124.202.144.17/pic/_o/91/42/ebf8e27ffd3ad9e9f29121c68655_401_444.cg.png" />
+		</p>
+	</div>
+
+
+	<div style="position:absolute;top:0px;">
+		<%= JSON.stringify(this.info) %>
+	</div>
+
+	<div class="mobileBox" id="mobileBox">
+		<img src="http://d04.res.meilishuo.net/pic/_o/37/9e/ea4855b24a2e6954b4adfb891c4e_549_79.cf.png" />
+		<input id="mobileInput" class="mobileInput" type="tel" placeholder="输入手机号奖品才能找到你"/>
+		<span id="mobileBtn" class="mobileBtn"></span>
+	</div>
+
+
+	<div class="shareBtn" id="shareBtn">
+		<img src="http://d02.res.meilishuo.net/pic/_o/93/2c/92f1f542e5727e8578e736073c0a_549_79.ch.png" />
+	</div>
+
+
+	<%
+		var link = this.info.link; 
+		if(link){
+	%>
+	<a class="link" href="<%= link.url%>"> 
+		<img src="<%= link.img_url %>"/>
+	</a>
+	<%}%>
+	
+	<div class="logo">
+		<img src="http://d05.res.meilishuo.net/pic/_o/27/ee/bf4e5616bcc21b269feafa814642_640_63.cg.png" />
+	</div>
+
+</div>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/shake/result');
+_use:", this._JSstack , this._JSmods); %>
+
+<%#foot_simple.html%>

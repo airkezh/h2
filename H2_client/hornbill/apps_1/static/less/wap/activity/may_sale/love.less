@@ -1,0 +1,71 @@
+@import "../../block.less";
+html{.f(10*@f);}
+body { padding:0;margin:0; .bgc(#ffe6ed); .fc(#666); }
+img{ width: 100%; .block; }
+
+.top_bnr { background: url("@{pic_url}/images/wap/activity/may_sale/love_top3.jpg") no-repeat; background-size: 100%;
+	.pt(564/640*100%); .w(100%); .pr;
+	.go_520{.pt(16%);.w(26%);.pa;bottom: 34%;right: 6%;}
+	.share { .block; .pt(150*@w); .w(100%); .pa; bottom: 60*@w; left: 0; background: url("@{pic_url}/images/wap/activity/may_sale/love1.png") no-repeat; background-size: 100%;}
+	.share_max{ background: url("@{pic_url}/images/wap/activity/may_sale/love_max1.png") no-repeat; background-size: 100%;}
+}
+.detail { background: url("@{pic_url}/images/wap/activity/may_sale/act_intro.jpg") no-repeat; background-size: 100%;
+	.pt(332/640*100%); .w(100%); 
+}
+.main { .w(100%); .hidden;.pr; .pb(40*@w);
+	.act_poster;
+	.pic_box { .clearfix;
+		.small_pic { .pa; .ml(5px); }
+		figure { .bgwhite;
+			figcaption { .pt(14*@px); .pb(14*@px); .ml(14*@px); .mr(14*@px); .border-tc(dotted); .mt(10*@px); .pr;
+				.face { .h(44*@px); .w(44*@px); .left; }
+				p { .ml(56*@px); }
+				.txt { .gray; .l(28*@px); .h(56*@px); .hidden;}
+				.approve { background:url("@{pic_url}/images/wap/activity/may_sale/heart_red.png") no-repeat; }
+				.approved { background:url("@{pic_url}/images/wap/activity/may_sale/heart_pink.png") no-repeat; }
+				.approve, .approved { background-size: 100%; .h(88*@px); .w(135*@px); .pt(22*@px);
+					.white; .c; .l(32*@px); .pa; top: -75*@px; right: 8*@px; 
+					span { .block; }
+					.nums { .f(32*@px); }
+				}
+			}
+		}
+	}
+}
+.ios_simple;
+.poster_simple;
+.poster > ._pa;
+
+.colFlag{ z-index: 2; }
+.pullUp{
+	.pullUpDown > .common;.pullUpDown > .loading;
+	&:before{
+		.nowrap;
+		.ml(-10px);
+	}
+	&[status="tap"]{
+		background:0 none;	
+		&:before{
+			content:"上拉看更多..."	
+		}
+	}
+	&[status="stop"]{
+		background:0 none;	
+		&:before{
+			content:"木有了...";	
+		}
+	}
+}
+
+/*dialog*/
+.dialog();
+.draw_box{ .c; margin:20px 0; }
+.dialog_box{
+	.pt(1rem);
+	p{ .l(2rem); .f(1.4rem); }
+	.btn3zi{ .act_btn; .border-r(40*@px); .f(1.6rem); padding: 1% 12px;.w(30%); .left;.ml(8%);.mt(20px);}
+}
+.toupdate .btn3zi{.ml(30%);}
+.invite .btn3zi{.w(50%);.ml(20%);}
+
+@import "../../footer.less";

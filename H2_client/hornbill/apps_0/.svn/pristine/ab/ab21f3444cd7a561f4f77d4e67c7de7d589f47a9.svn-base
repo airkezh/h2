@@ -1,0 +1,25 @@
+<%#head.html%>
+<div class="main">
+	<!-- top banner-->
+	<%if(this.topbanner&&this.topbanner.mob_juhe_top_banner&&this.topbanner.mob_juhe_top_banner.length){
+		var topbanner=this.topbanner.mob_juhe_top_banner[0];%>
+		<div class="topbanner">		
+			<a href="<%= topbanner.link==''? 'javascript:void(0);' : topbanner.link%>">
+				<img src="<%= topbanner.show_pic%>" alt="<%= topbanner.tab_name%>" />
+			</a>
+		</div>
+	<%}%>
+
+	<!--分会场banners-->
+	<%if(this.meetbanner&&this.meetbanner.mob_juhe_bottom_banner&&this.meetbanner.mob_juhe_bottom_banner.length){
+		var meetbanners=this.meetbanner.mob_juhe_bottom_banner;%>
+		<div class="meetbanner">	
+		    <%meetbanners.forEach(function(data){%>		
+				<a href="<%= data.link%>">
+					<img src="<%= data.show_pic%>" alt="<%= data.tab_name%>" />
+				</a>
+			<%})%>
+		</div>
+	<%}%>
+</div>
+<%# foot_simple.html%>

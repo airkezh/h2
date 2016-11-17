@@ -1,0 +1,89 @@
+<%# sq/header.html %>
+<%# sq/search_md.html %>
+<%
+	var tab     = this.tab.left || [];
+	var right   = this.content;
+	var content = this.content.right || [];
+	var banner  = this.content.banner;
+%>
+<div class="js-wrapper wrapper">
+	<ul class="js-tab-list tab-list">
+		<% 
+			tab.forEach(function (item, index){ 
+				var classname = 'js-tab-item';
+
+				if(this.tabIndex){
+					if(this.tabIndex == item.nid){
+						classname += ' selected';
+					}
+				}else if(index === 0){
+					classname += ' selected';
+				}
+		%>
+		<li class="<%= classname %>" data-index="<%= index %>" data-id="<%= item.nid %>"><%= item.word_name %></li>
+		<% }); %>
+	</ul>
+	<div class="js-content content">
+		<% if(banner){ %>
+		<div class="banner">
+			<a href="<%= banner.url %>"><img src="<%= banner.image_url %>"></a>
+		</div>
+		<% } %>
+
+		<% content.forEach(function (item){ %>
+		<section class="category">
+			<h3 class="category-title"><%= item.title %></h3>
+			<div class="category-content">
+			<% 
+				var categoryBlock = item.children || []; 
+				categoryBlock.forEach(function (item){ 
+			%>
+				<figure>
+					<a href="/sq/search/?key_word=<%= item.key_word %>&d_r=<%= item.d_r %>" style="background-image:url(<%= item.pic %>);width:100%;padding-top:<%= 100*item.pic_height/item.pic_width %>%;"></a>
+					<figcaption><%= item.txt %></figcaption>
+				</figure>
+			<% }); %>
+			</div>
+		</section>
+		<% }); %>
+	</div>
+</div>
+
+<script type="text/html" id="js-content-tpl">
+	<?  
+		var banner  = this.banner;
+		var content = this.right;
+	?>
+	<? if(banner){ ?>
+	<div class="banner">
+		<a href="<?= banner.url ?>"><img src="<?= banner.image_url ?>"></a>
+	</div>
+	<? } ?>
+
+	<? content.forEach(function (item){ ?>
+	<section class="category">
+		<h3 class="category-title"><?= item.title ?></h3>
+		<div class="category-content">
+		<? 
+			var categoryBlock = item.children || []; 
+			categoryBlock.forEach(function (item){ 
+		?>
+			<figure>
+				<a href="/sq/search/?key_word=<?= item.key_word ?>&d_r=<?= item.d_r ?>" style="background-image:url(<?= item.pic ?>);width:100%;padding-top:<?= 100*item.pic_height/item.pic_width ?>%;"></a>
+				<figcaption><?= item.txt ?></figcaption>
+			</figure>
+		<? }); ?>
+		</div>
+	</section>
+	<? }); ?>
+</script>
+
+<%! 
+	$_ENGINE_SELF.callFn("useModule")(
+		"<<<_use:fml.use('wap/page/sq/category');_use:", 
+		this._JSstack, 
+		this._JSmods 
+	); 
+%>
+
+<%# sq/footer.html %>

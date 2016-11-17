@@ -1,0 +1,307 @@
+@import "../block.less";
+
+html{.f(100px);}
+
+body {
+  font-size: 12px;
+  overflow-x: hidden;
+  .bgc(#F63D3D);
+}
+button{
+	border: none;
+}
+
+
+.main{
+	.w(100%);
+	position: relative;
+	overflow: hidden;
+	background: #f34043 url('http://d03.res.meilishuo.net/pic/_o/28/65/19ce1d3d0c5fd1590e25bbaeed06_640_1008.cg.jpg') no-repeat;
+	background-size: 100% auto;
+	
+	.shake{
+		position: absolute;
+		left:24%;
+		bottom: 10px;
+		z-index: ;
+		.w(54%);
+		z-index:4; 
+		
+		.swimg{
+			.block;
+			.w(100%);
+			-webkit-transform-style: preserve-3d;
+			-webkit-transform-origin:30% 100%;
+		}
+	}
+
+
+	.cover{
+		position: absolute;
+		left:0%;
+		bottom: 0;
+		z-index: 6;
+		.w(100%);
+		img{
+			.block;
+			.w(100%);
+		}
+	}
+}
+
+.fixedWarp{
+	position: fixed;
+	z-index: 10;
+	left: 0;
+	bottom: 0;
+	.w(100%);
+	.h(.42rem);
+	padding:.21rem 0 .15rem 0;
+	.bgc(#F34043);
+	.box{
+		.h(100%);
+		margin:0  .125rem;
+		background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAk4AAAACCAYAAACuXFPLAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNui8sowAAABDSURBVFiF7c6xDQAQFEXRTxTGUaklVjCE2gZmFlpmEKGQe/r78lQLccoBW4sY704mAAAAnuspy+xjq9GXvgAAAHxnAT3qCHliSxtHAAAAAElFTkSuQmCC");
+		background-repeat: repeat-y;
+		background-size: 100% auto;
+		.scrollWarp{
+			.h(.37rem);
+			.pt(.05rem);
+			background-image:url("http://d05.res.meilishuo.net/pic/_o/91/73/91fdc5fce83c3efcbcfe542288a0_590_23.cg.png");
+			background-repeat: no-repeat;
+			background-size: 100% auto;
+			
+		}
+
+		.scrollDom{
+			margin: 0 .08rem;
+			overflow: hidden;
+			li{
+				margin: 0 .05rem;
+				height: 100%;
+				line-height: .37rem;
+				text-align: center;
+				.ellipsis();
+				color: #E4495C;
+				font-size: .12rem;
+			}
+		}
+	}
+
+}
+
+
+.mask-bottom{
+	display:none;
+	.w(100%);
+	.h(100%);
+	background-color:rgba(0, 0, 0, 0.4);
+	position:absolute;
+	top:0;
+	z-index:102;
+}
+
+.mask {
+	display: none;
+	position: absolute;
+	top: 0;
+	.w(100%);
+	.h(100%);
+	z-index: 200;
+}
+
+.mypopbox{
+	display: none;
+	position: fixed;
+	z-index: 999;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 160%;
+	overflow-x: hidden;
+
+	.dialog {
+		display: none;
+		position: absolute;
+		z-index: 100;
+		top: 100px;
+		background: #FBFBFB;
+		width: 270px;
+		left: 50%;
+		margin-left: -135px;
+		.close{
+			position: absolute;
+			top: 18px;
+			right:18px ;
+			width: 18px;
+			height: 18px;
+			background: url('http://d02.res.meilishuo.net/pic/_o/4c/57/e3f8cb2e0784eb61bdf8243a8993_32_32.ch.jpg');
+			background-size: 100% 100%;
+		}
+		.con{
+			padding:35px 35px 25px 35px;
+			.expression{
+				display: block;
+				margin: 0 auto 13px;
+				width:110px;
+			}
+			p{
+				font-size: 13px;
+				line-height:20px;
+				text-align: center;
+				color: #444;
+			}
+			.fz16{
+				font-size: 16px;
+			}
+			.winBut,.againBut{
+				display: block;
+				margin: 10px auto;
+				width: 200px;
+				height: 34px;
+				line-height: 34px;
+				border-radius:17px;
+				background-color:#F9D407;
+				color: #fff;
+				font-size: 15px;
+				text-align: center;
+			}
+			.winBut:hover{
+				color: #fff;
+			}
+		}
+	}
+
+	.overlay{
+		display: none;
+		position: absolute;
+		z-index: 90;
+		top: 0px;
+		left: 0px;
+		bottom: 0px;
+		right: 0px;
+		background-color: rgba(0, 0, 0, 0.5);
+	}
+
+}
+
+.mypopbox .dialog_input{
+	position: relative;
+	top: 60px;
+	display: none;
+	background-color:  transparent;
+	z-index: 100;
+}
+.dialog_input img {
+  width: 100%;
+}
+.dialog_input  .mask-msg {
+  position: absolute;
+  top: 125px;
+  width: 80%;
+  left: 10%;
+}
+.dialog_input .mask-msg-inner {
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+.dialog_input .mask-msg label {
+  width: 40%;
+  text-align: center;
+  float: left;
+  height: 25px;
+  line-height: 25px;
+}
+
+.dialog_input .mask-msg input {
+  width: 50%;
+  height: 25px;
+  float: left;
+}
+.dialog_input .mask-sub {
+  position: absolute;
+  bottom: 7.8125%;
+}
+
+.dialog_input .mask-sub .mask-btn-one {
+  margin-left: 15%;
+  float: left;
+  width: 70%;
+}
+
+
+.shareTo{
+
+	width: 100%;
+	text-align: center;
+	overflow: hidden;
+	margin: 14px 0;
+	a{
+		display: inline-block;
+		width: 45px;
+		height: 45px;
+		margin: 0 18px;
+		background-size: 100% 100%;
+	}
+	.shareTo_pyq{
+		background-image: url('http://d03.res.meilishuo.net/pic/_o/65/23/9e4e776ef1f8bcdbe52e91b0947b_90_90.cf.jpg');
+	}
+	.shareTo_wx{
+		background-image: url('http://d03.res.meilishuo.net/pic/_o/ac/f6/f1f308b6cc055c6ec4c96037e290_90_90.cf.png');
+	}
+}
+
+
+
+.shake-act {
+    -webkit-animation-name: move;
+    -webkit-animation-iteration-count: 4;
+    -webkit-animation-timing-function: ease;
+    -webkit-animation-duration: .25s;
+    -webkit-animation-direction: normal;
+    -webkit-animation-fill-mode: both;
+}
+
+@-webkit-keyframes move {
+    0% {
+        -webkit-transform: rotate(0deg)
+    }
+
+    25% {
+        -webkit-transform:  rotate(-10deg)
+    }
+
+    75% {
+        -webkit-transform: rotate(10deg)
+    }
+
+    100% {
+        -webkit-transform: rotate(0deg)
+    }
+}
+
+
+
+
+
+
+@media screen and (min-width:320px) and (max-width:360px){html{font-size: 100px;}}
+@media screen and (min-width:360px) and (max-width:375px){html{font-size: 112.5px;}}
+@media screen and (min-width:375px) and (max-width:414px){html{font-size: 117.18px;}}
+@media screen and (min-width:414px) and (max-width:480px){html{font-size: 129.37px;}}
+@media screen and (min-width:480px) and (max-width:640px){html{font-size: 150px;}}
+@media screen and (min-width:640px){
+	html{font-size: 200px;}
+	.main {
+  		width: 640px;
+  		max-width: 640px;
+  		margin: 0 auto;
+	}
+}
+
+
+
+/*调用动画并设置动画的参数*/
+@import "../../footer.less";
+
+

@@ -1,0 +1,123 @@
+<%# wx_new/header.html %>
+<% var select_infos = this.select_infos || {};
+ function style0(){%>
+<div class="clothes_test_box page0">
+		<p class="title">选择你的基础信息</p>
+		<div class="page0_box_center">
+			<div class="infos_prompt">
+				<span class="info_left">身高</span>
+				<span class="info_right">厘米</span>	
+			</div>
+			<div class="select_mask">
+				<span class="select_html">请选择你的身高</span>
+				<select class="p_height">
+				<option value="" selected>请选择你的身高</option>
+					<% for (var i=130;i<=200; i++){%>
+						<option value="<%=i %>"><%= i%></option>
+					<%}%>
+				</select>
+				<em></em>
+			</div>
+
+		</div>
+		<div class="page0_box_center">
+				<div class="infos_prompt">
+					<span class="info_left">体重</span>
+					<span class="info_right">公斤</span>	
+				</div>
+
+				<div class="select_mask">
+					<span class="select_html">请选择你的体重</span>
+					<select class="p_weight">
+					<option value=""  selected>请选择你的体重</option>
+						<% for (var i=30;i<=150; i++){%>
+							<option value="<%=i %>"><%= i%></option>
+						<%}%>
+					</select>
+					<em></em>
+				</div>
+		</div>
+		<div class="page0_box_center">
+			<div class="infos_prompt">
+				<span class="info_left">年龄</span>
+				<span class="info_right">岁</span>	
+			</div>
+			<div class="select_mask">
+				<span class="select_html">请选择你的年龄</span>
+				<select class="p_age">
+					<option value=""  selected>请选择你的年龄</option>
+					<% for (var i=10;i<=80; i++){%>
+						<option  value="<%=i %>"><%= i%></option>
+					<%}%>
+				</select>
+				<em></em>
+			</div>		
+		</div>		
+</div>
+<%}%>
+<!-- 2，3，4，5单选 -->
+<%function style1(infos){
+	infos.single && infos.single.forEach(function(boxs,index){%>
+		<div class="clothes_test_box page<%= boxs.num%>" style="display:none">
+		<p class="title"><%= boxs.name%></p>
+			<ul class="box">
+			<% boxs.data && boxs.data.forEach(function(datas,idx){%>
+				<li class="item"  data-num="<%= boxs.num%>" data-value="<%= datas.value%>">
+					<img src="<%= datas.pic%>" data-img = "<%= datas.cli_pic%>" alt="">
+				</li>
+			<%})%>
+			</ul>
+		</div>
+	<%})%>
+<%}%>
+<!-- 5 多选-->
+<%function style2(infos_m){
+	var item = infos_m.more|| {}
+		,word = item.word || []
+%>
+<div class="clothes_test_box page5">
+	<p class="title"><%= item.name %></p>
+	<div class="more_select_box"  data-number="<%= item.num%>">
+		<div class="qst_list q_left">
+			<ul>
+				<% 
+					word[0] && word[0].forEach(function(items,index){%>
+						<li data-val = "<%= items.value%>"><%= items.key%></li>
+				<%})%>
+			</ul>
+		</div>
+		<div class="q_center">
+			<img src="<%= item.url%>">
+		</div>
+		<div class="qst_list right">
+			<ul>
+				<% 
+					word[1] && word[1].forEach(function(items,index){
+						var only_one = index==0||index==1 ? "only_one" : "";
+						%>
+						<li class="<%= only_one%>" data-val = "<%= items.value%>"><%= items.key%></li>
+				<%})%>
+			</ul>
+		</div>
+	</div>
+</div>
+<%}%>
+
+<%	style0();
+	style1(select_infos);
+	style2(select_infos);
+%>
+<div class="btns">
+	<button class="btn_style btn_pre" style="display:none">上一步</button>
+	<button class="btn_style btn_next">下一步</button>
+	<button class="btn_style btn_success">完成</button>
+</div>
+<script>
+ fml.vars.isShare = <%= this.share || false %>;
+ fml.vars.wx_from = '<%= Array.isArray( this.wx_from ) ? this.wx_from[ 0 ] : this.wx_from %>';
+ fml.vars.shareData = {'title': '听说做完这个测试的人都变美了——快分享给朋友吧！','imgUrl' : 'http://d02.res.meilishuo.net/pic/_o/66/cc/8677209a088f37af5b79c3e64d7b_200_200.cf.jpg' , 'desc' : '你真的穿对了吗？一测就知道，专属你的最专业穿搭报告', 'link' :  window.location.protocol+'//'+window.location.host+'/wx/clothes_test/index/?wx_from=friend'};
+</script>	
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/wx_new/clothes_test');
+_use:", this._JSstack , this._JSmods ); %>
+<%# wx_new/footer.html %>

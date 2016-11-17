@@ -1,0 +1,59 @@
+<%#head.html%>
+
+<% if(this.bs_bannar.top_banner && this.bs_bannar.top_banner.length){ %>
+<div class="banner_wrap">
+	<div class="imageSlide" id="imageSlide">
+		<ul>
+			<% this.bs_bannar.top_banner.forEach(function(bannar, index){ %>
+				<li>
+					<a class="top_bannar swipe" href="<%= bannar.link %>"><img src="<%= bannar.pic %>"></a>
+				</li>
+			<% }); %>
+		</ul>
+		<div class="num"></div>
+	</div>
+</div>
+<% } %>
+
+<div class="nav_wrap">
+	<div class="nav n_nav">
+		<div class="active pk_nav" data-cr="pktai">PK台</div>
+		<div class="circle_nav" data-cr="quanqiubai">全球败</div>
+		<div class="bannar_nav" data-cr="pinpai">品牌街</div>
+		<div class="efficacy_nav" data-cr="gongxiao">功效区</div>
+	</div>
+</div>
+<div class="nav fixed_nav none_f">
+	<div class="active pk_nav" data-cr="pktai_fixed">PK台</div>
+	<div class="circle_nav" data-cr="quanqiubai_fixed">全球败</div>
+	<div class="bannar_nav" data-cr="pinpai_fixed">品牌街</div>
+	<div class="efficacy_nav" data-cr="gongxiao_fixed">功效区</div>
+</div>
+
+<div class="tab_content"></div>
+<div class="pullUp" status="loading"></div>
+
+
+<%# biz/beauty_sale/act_pktai.html %>
+<%# biz/beauty_sale/act_circle.html %>
+<%# biz/beauty_sale/act_bannar.html %>
+<%# biz/beauty_sale/efficacy.html %>
+
+<%= requireFn("biz/beauty_sale/act_home_layer.html")({
+	'isIphone': this.os.ios,
+	'sort': true,
+	'r': this.r,
+	'_JSstack': this._JSstack,
+	'_JSmods': this._JSmods
+});%>
+
+<script>
+	fml.vars.r = '<%= this.r %>';
+	<%= this.pk_online ? 'fml.vars.pk_online = ' + JSON.stringify(this.pk_online) + ';' : '' %>
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/biz/act_home');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot_simple.html%>

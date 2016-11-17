@@ -1,0 +1,29 @@
+<%# head.html%>
+<%
+	 var query = this._Request_query;
+	 var getLink = _extFn.getLink;
+ %>
+<div class="trlogin">
+	<div class="t_sorry">
+		<h1>非常抱歉！淘宝登录暂时无法使用。</h1>
+		<p>
+			不过别担心，如果你曾经使用淘宝互联登录</br>
+			可以尝试通过<a href="/user/appeal_tb/" class="red_f"> 账号申诉 </a>方式找回你的账号密码
+		</p>
+	</div>
+	<div class="line"></div>
+	<div class="login_other try">
+		<p class="f14_f">还没有美丽说账号？&nbsp;<a class="red_f" href="/user/register?frm=_wzzhuce" target="_BLANK">立即注册</a></p>
+		<p class="f16_f">你还可以用以下方式直接登录：</p>
+		<div>
+			<a class="l_sinaweibo" href="/connect/auth/weibo<%if(query.r){%>?r=<%== query.r %><%}%>"></a>
+			<a class="l_qq" href="/connect/auth/qzone<%if(query.r){%>?r=<%== query.r %><%}%>"></a>
+			<%*{ 4.18%><a class="l_renren" href="/connect/auth/renren<%if(query.r){%>?r=<%== query.r %><%}%>"></a><%*}%>
+			<%*{ 4.18%><a class="l_wangyi" href="/connect/auth/wangyi<%if(query.r){%>?r=<%== query.r %><%}%>"></a><%*}%>
+			<a class="l_txweibo" href="/connect/auth/txweibo<%if(query.r){%>?r=<%== query.r %><%}%>"></a>
+			<%*{ 4.18%><a class="l_douban" href="/connect/auth/douban<%if(query.r){%>?r=<%== query.r %><%}%>"></a><%*}%>
+			<%*{ 4.18%><a class="l_baidu" href="/connect/auth/baidu<%if(query.r){%>?r=<%== query.r %><%}%>"></a><%*}%>
+		</div>
+	</div>
+</div>
+<%# foot.html%>

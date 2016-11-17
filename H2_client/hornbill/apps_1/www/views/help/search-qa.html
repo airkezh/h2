@@ -1,0 +1,45 @@
+<%
+	var searchQa = this.searchQa || {}
+		, list = searchQa && searchQa.data;	
+
+	function markeColor(str, key){
+		var re = new RegExp(key, 'g');
+		return str.replace(re, '<span class="red_f">'+ key +'</span>');
+	}
+%>
+<%# head.html%>
+<div class="main">
+	<%# help/help-title.html%>
+	<%if(list && list.length > 0){%>
+		<div class="search-info">
+			<% if(decodeURIComponent(this.title)){%>
+				<p>关于“<span class="red_f"><%= decodeURIComponent(this.title) || ''%></span>”共找到“<%= this.total_size || ''%>”条答案，如下</p>
+			<%}else{%>
+				<p>帮助中心问题列表如下</p>
+			<%}%>
+			<a href="/helpcenter/">返回帮助中心首页</a>
+		</div>
+		<div class="question-list">
+			<ul>
+				<%list.forEach(function(item){ %>
+					<li>
+						<a href="/helpcenter/detail/<%= item.know_id%>?search=1">
+							<%= markeColor(item.title, decodeURIComponent(this.title)) || ''%>
+						</a>
+					</li>
+				<%});%>
+			</ul>
+		</div>
+		<div class="paging_panel c_f">
+			<%# paging.html%>
+		</div>
+	<%}else{%>
+		<div class="to-index"><a href="/helpcenter/">返回帮助中心首页</a></div>
+		<div class="no-results">
+			<span class="sorry">sorry</span>
+			<p class="f20_f">很抱歉</p>
+			<p class="f14_f gray_f">我们暂时无“<%if(this.title){%><%== this.title%><%}else{%>''<%}%>”相关的搜索结果，为解决您的问题， <a href="/helpcenter/custom-service/" class="contact-us">请联系我们 >></a></p>
+		</div>
+	<%}%>
+</div>
+<%# foot.html%>

@@ -1,0 +1,141 @@
+<%# head.html %>
+<%
+	var attr_intro = this.attr_intro;
+	var attr_tags = attr_intro && attr_intro.tags || [];
+	var attr_cards = attr_intro && attr_intro.cards || [];
+	var attr_word = this.attr_word;
+
+	var poster_blcok_mt = (Math.ceil(attr_word.length/5)*1.66) + 'rem';
+	var down_info = this.down_info || {};
+	var download_info = down_info.guang_page || {};
+	if(!attr_word.length){
+		poster_blcok_mt = download_info.img ? (download_info.img_height/download_info.img_width)*100+'%' : '0px';
+	}
+%>
+
+<% if(attr_word.length){ %>
+	<div id="attr_block">
+		<% attr_word.forEach(function(item, index){ %>
+			<a href="/guang/catalog_new/?nid=<%= item.nid %>&tag_word=<%= encodeURIComponent(item.query_word) %>" xr="<%= this.xr.r %>"><span class="bs_load_img" asrc="<%= item.pic %>"></span><span><%= item.word_name %></span></a>
+		<% }); %>
+	</div>
+<% }else if( download_info.img ){ %>
+	<div class="head_img">
+		<%
+			var openUrl = 'meilishuo://search_goods_result.meilishuo/?json_params=' + encodeURIComponent('{"tag_word":"' + this.tag_word + '", "is_doota": "1"}');
+			var down_link = download_info.link ? download_info.link : "/goto/open/?bg=http%3A%2F%2Fm.meilishuo.com%2Fdownload%2Flatest%2F%3Fchannel%3D30902%26frm%3Dbangdang&url=" + encodeURIComponent(openUrl);
+		%>
+		<a href="<%= down_link %>" xr="<%= this.xr.r %>">
+			<img src="<%= download_info.img %>" class="mls_desc">
+		</a>
+	</div>
+<% } %>
+
+<section id="poster_blcok" class="main_page" style="margin-top: <%= poster_blcok_mt %>;">
+	<% var pro_spec_banner = this.pro_spec_banner || {}; %>
+	<%= requireFn('block/wap_head.html')({
+		'xr' : this.xr
+		, 'search_words' : this.tag_word
+		, 'cat_banner' : pro_spec_banner.cat_bar
+		, '_JSstack' : this._JSstack
+		, '_JSmods' :  this._JSmods
+	});%>
+
+	<% if(this.page_tag == 'search' && (!this.poster0 || !this.poster0.length)){ %>
+		<div class="none_search">
+			<img src="http://d05.res.meilishuo.net/pic/_o/46/e5/14c033f1ac592e9b6f74784a7750_68_62.cj.png">
+			<p>抱歉，没有找到合适的商品，</br>我们为您推荐“<span><%== this.tag_word %></span>”相关产品</p>
+		</div>
+	<% } %>
+
+	<% if(attr_cards.length){ %>
+		<div class="cards_block">
+			<div class="cards_inner">
+				<div class="swipe">
+					<% attr_cards.forEach(function(card, index){ %>
+						<a href="/search/?keyword=<%= card.word %>" xr="<%= this.xr.r %>"><img style="<%= index == 0 ? '-webkit-transform: scale(1);' : '' %>" src="<%= card.pic %>"></a>
+					<% }); %>
+				</div>
+			</div>
+		</div>
+	<% } %>
+
+	<% if(attr_tags.length){ %>
+		<div class="tags_block">
+			<div class="title">相关流行</div>
+			<div class="tags_inner" id="tags_scroll">
+				<% attr_tags.forEach(function(tag){ %>
+					<a href="/search/?keyword=<%= encodeURIComponent(this.tag_word + ' ' + tag.word) %>" xr="<%= this.xr.r %>"><span class="bs_load_img" asrc="<%= tag.pic %>"><%= tag.word %></span></a>
+				<% }); %>
+			</div>
+		</div>
+	<% } %>
+
+	<div class="poster_wrap">
+		<% if(this.poster0 && this.poster0.length){ %>
+			<div class="poster_nav">
+				<div class="nav_item hot active" data-type="hot"><span>流行</span></div>
+				<div class="nav_item boom" data-type="boom"><span>热销</span></div>
+				<div class="nav_item new" data-type="new"><span>上新</span></div>
+			</div>
+		<% } %>
+		<div class="goods_wall hot_section"></div>
+		<div class="goods_wall boom_section"></div>
+		<div class="goods_wall new_section"></div>
+		<div class="pullUp" status="loading"></div>
+	</div>
+</section>
+
+<%# block/wap_foot.html %>
+
+<script type="text/html" id="posterWall">
+	<? var v = this.v; ?>
+	<div class="poster_grid poster_wall" twitter_id="<?= v.twitter_id?>">
+		<figure>
+			<div class="pic_load">
+				<a xr="<?= fml.vars.poster_r ?>" class="bs_load_img" href="<?= v.url ?>" asrc="<?= v.z_pic_url ?>">
+					<? v.h_mark.map(function(mark){ ?>
+						<img class="h_mark" style="width:<?= mark.img_width / 125 ?>rem;" src="<?= mark.img_url ?>"/>
+					<? }); ?>
+				</a>
+			</div>
+			<p class="clothesTitle"><?= v.remark ?></p>
+			<figcaption>
+				<span class="price"><?= v.title ?></span>
+				<span class="like icon-heart"><?= v.count_like ?></span>
+			</figcaption>
+		</figure>
+	</div>
+</script>
+
+<script type="text/html" id="nonePosterWall">
+	<? var v = this.v; ?>
+	<div class="poster_grid poster_wall" twitter_id="<?= v.twitter_id?>">
+		<figure>
+			<div class="pic_load">
+				<a xr="<?= fml.vars.poster_r ?>" class="bs_load_img" href="<?= v.url ?>" asrc="<?= v.show_pic ?>">
+					<? v.horizontal_mark.map(function(mark){ ?>
+						<img class="h_mark" style="width:<?= mark.img_width / 125 ?>rem;" src="<?= mark.img_url ?>"/>
+					<? }); ?>
+				</a>
+			</div>
+			<p class="clothesTitle"><?= v.ginfo.goods_title ?></p>
+			<figcaption>
+				<span class="price"><?= v.ginfo.goods_price ?></span>
+				<span class="like icon-heart"><?= v.count_like ?></span>
+			</figcaption>
+		</figure>
+	</div>
+</script>
+
+<script>
+	fml.vars.poster_r = '<%= this.xr.r %>';
+	fml.vars.poster0 = <%= JSON.stringify(this.poster0) || '[]' %>;
+	fml.vars.tag_word = '<%== this.tag_word %>';
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/guang/new');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot.html %>

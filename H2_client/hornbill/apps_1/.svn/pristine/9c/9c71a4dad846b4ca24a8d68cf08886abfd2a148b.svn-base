@@ -1,0 +1,92 @@
+<%
+	var mSubstr = _extFn.mSubstr;
+	var pageData = this.pageData;
+%>
+<div class="main" style="background-color:<%= pageData.body_bgc || '#ff667c' %>; padding-bottom: 100px;">
+	<div class="recommend_wrap" id="getRecommend">
+		<div class="act_title" style="background-image:url('<%= pageData.activity_title.img_src %>');height:<%= pageData.activity_title.h %>px;"></div>
+		<div class="goods_wrap">
+			<% this.good_info.must_goods.length && this.good_info.must_goods.map(function(data, idx){%>
+			<div class="good_info <% if(idx == this.good_info.must_goods.length - 1){%>no_border<%}%>">
+				<a href="/share/item/<%= data.twitter_id%>?frm=yhjlq" class="good_img" target="_blank">
+					<img src="<%= data.image %>">
+				</a>
+				<div class="good_cont">
+					<p class="good_tit"><a href="/share/item/<%= data.twitter_id%>?frm=yhjlq" target="_blank" title="<%= data.title%>"><%= mSubstr(data.title, 25, '...')%></a></p>
+					<p class="reason"><%= mSubstr(data.rec_season, 40, '...')%></p>
+					<div class="price">
+						<div class="price_info">
+							<p class="discount">原价:￥<%=data.discount_price%></p>
+							<p class="favorable">折扣价:<span>￥<%= data.coupon_price %></span></p>
+						</div>
+						<a href="/share/item/<%= data.twitter_id%>?frm=yhjlq" class="good_btn" target="_blank">去看看</a>
+					</div>
+				</div>
+			</div>
+			<%});%>
+		</div>
+		<% if ( this.good_info.tuan_selected.length > 0) {%>
+		<div class="goods_wrap">
+			<div class="mod_title">
+				<a href="<%= pageData.tuan_title.more_link %>?frm=yhjlq" target="_blank"><img src="<%= pageData.tuan_title.title_bg %>" alt=""></a>
+			</div>
+			<ul class="good_info list_wrap">
+				<% this.good_info.tuan_selected.length && this.good_info.tuan_selected.map(function(data, idx){%>
+				<li class='good_list'>
+					<div class='list_info'>
+						<a href="/share/item/<%= data.twitter_id%>?frm=yhjlq" class="list_img" target="_blank">
+							<img src="<%= data.image %>">
+						</a>
+						<div class="list_cont">
+							<p class="list_tit"><a href="/share/item/<%= data.twitter_id%>?frm=yhjlq" target="_blank" title="<%=data.title%>"><%= mSubstr(data.title, 30, '...')%></a></p>
+							<p class="cost">
+								<span class="now">￥<%= data.price%></span>
+								<span class="norml">￥<%= data.origin_price%></span>
+							</p>
+						</div>
+					</div>
+					<p class="btn_wrap"><a href="/share/item/<%= data.twitter_id%>?frm=yhjlq" class="list_btn" target="_blank">去看看  &gt;</a></p>
+				</li>
+				<%});%>
+			</ul>
+		</div>
+		<%}%>
+		<% if ( this.good_info.cosmetic_selected.length > 0) {%>
+		<div class="goods_wrap">
+			<div class="mod_title">
+				<a href="<%= pageData.cosmetic_title.more_link %>?frm=yhjlq" target="_blank"><img src="<%= pageData.cosmetic_title.title_bg %>" alt=""></a>
+			</div>
+			<ul class="good_info list_wrap">
+				<% this.good_info.cosmetic_selected.length && this.good_info.cosmetic_selected.map(function(data, idx){%>
+				<li class='good_list'>
+					<div class='list_info'>
+						<a href="/share/item/<%= data.twitter_id%>?frm=yhjlq" class="list_img" target="_blank">
+							<img src="<%= data.image %>" alt="">
+						</a>
+						<div class="list_cont">
+							<p class="list_tit"><a href="/share/item/<%= data.twitter_id%>?frm=yhjlq" target="_blank" title="<%= data.title%>"><%= mSubstr(data.title, 30, '...')%></a></p>
+							<p class="cost">
+								<span class="now">￥<%= data.price%></span>
+								<span class="norml">￥<%= data.origin_price%></span>
+							</p>
+						</div>
+					</div>
+					<p class="btn_wrap"><a href="/share/item/<%= data.twitter_id%>?frm=yhjlq" target="_blank" class="list_btn">去看看  &gt;</a></p>
+				</li>
+				<%});%>
+			</ul>
+		</div>
+		<%}%>
+		<div class="goods_wrap">
+			<div class="spring" style="background-image:url('<%= pageData.foot.img_src %>');height:<%= pageData.foot.h %>px;">
+				<div class="more_select">
+					<% pageData && pageData.foot_list.forEach(function(data){ %>
+					<a href="<%= data.img_link %>&frm=yhjlq" target="_blank">
+						<img src="<%=data.img_src%>">
+					</a>
+					<% });%>
+				</div>	
+			</div>
+		</div>
+	</div>
+</div>

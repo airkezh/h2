@@ -1,0 +1,42 @@
+function xmcoupon(){
+	return this;
+}
+var controlFns = {
+	gcou: function(){
+		var php = {
+		};
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			data.pageTitle = '美丽说优惠券活动';
+			data._CSSLinks = ['activity/xmcou'];
+			this.render('activity/xmcou.html' , data);
+		});
+	},
+
+	gsucc: function(){
+		var php = {
+		};
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			data.pageTitle = '美丽说优惠券活动';
+			data._CSSLinks = ['activity/succcou'];
+			this.render('activity/succcou.html' , data);
+		});
+	},
+
+	exchange : function (){
+		var php = {};
+		var from = this.req.__get.from;
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function (data){
+			data.from = from;
+			data.pageTitle = '优惠券兑换';
+			data._CSSLinks = ['activity/coupon_exchange'];
+			this.render('activity/coupon_exchange.html', data);
+		});
+	}
+};
+exports.__create = controller.__create(xmcoupon, controlFns);

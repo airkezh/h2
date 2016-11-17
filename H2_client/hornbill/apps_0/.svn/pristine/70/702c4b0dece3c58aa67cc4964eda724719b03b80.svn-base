@@ -1,0 +1,48 @@
+<%#head.html%>
+<div class="medal">
+<div class="medal-all">
+<%#medal/sidebar.html%>
+<div class="findfs-rightpart mls-medal mt14">
+	<div class="box_shadow p13">
+		<div class="breadcrumb">
+			<a href="">所有勋章</a> &gt; <%= this.medal_message.medal_title %>
+		</div>
+		<div class="medal-wrapper">
+			<div class="medal-icon">
+				<%if(this.medal_message.update_time){%><div class="medal-label"></div><%}%>
+				<a class="pic_medal" href="">
+					<span style="background:url(http://img.meilishuo.net//css/images/medal/icons/<%= this.medal_message.medal_icon %>);"></span>
+			</a>
+			</div>
+			<div class="medal-desc">
+				<h2><%= this.medal_message.medal_title %></h2>
+				<p><%= this.medal_message.medal_details %></p>
+				<span><%= this.medal_message.got_number %>人已获得</span>
+			</div>
+			<div style="clear:both"></div>
+			
+		</div>
+		<div class="medal-user-wrapper">
+			<h3 class="getMedal">她们获得了<%= this.medal_message.medal_title %></h3>
+			<%if(this.user_list){%>
+				<%for (var i in this.user_list){%>
+					<%if(i<36){%>
+						<a class="medal-user-pic" href="/person/u/<%= this.user_list[i].user_id%>"><img src="<%= this.user_list[i].avatar_c %>"></a>
+				<% }} %>
+				<div style="clear:both"></div>
+				<a class="medal-expand" href="">展开所有 >></a>
+				<%for (var i in this.user_list){%>
+					<%if(i>=36){%>
+						<a class="medal-user-pic none" href="/person/u/<%= this.user_list[i].user_id%>"><img src="<%= this.user_list[i].avatar_c %>"></a>
+			<% }}} %>
+			<div style="clear:both"></div>
+		</div>
+	</div>
+</div>
+</div>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/medal/main');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot.html%>

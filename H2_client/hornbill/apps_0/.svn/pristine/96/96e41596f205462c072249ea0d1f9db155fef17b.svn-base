@@ -1,0 +1,50 @@
+<%# sq/header.html%>
+<div class="wrap"></div>
+<script>
+	var _data = {
+		"order_id" : "<%= this.order_id%>",
+		"express_id" : "<%= this.express_id%>",
+		"express_company" : "<%= this.express_company%>"
+	};
+</script>
+<script type="text/html" id="expressTmp">
+	<?
+		var length = express ? express.length : 0
+		    , n = length - 1
+		    , imgStr;
+	?>
+	<ul class="logistic_info">
+		<? if(express && length){?>
+			<? express.reverse().forEach(function(e,i){ 
+				switch(i){
+					case n:
+					  imgStr = "right";
+					  break;
+					case 0:
+					  imgStr = "site";
+					  break;
+					default:
+					  imgStr = "way";
+				}?>
+			<li class="logistic_li <?if(imgStr == 'site'){?>here<?}?>">
+				<img src="http://i.meilishuo.net/css/images/wap/web/wx/<?= imgStr?>_icon.png" class="<?= imgStr?>_icon">
+				<p>
+					<span class="ml_color"><?= e.text?></span>
+				</p>
+				<p class="time"><?= e.time?></p>
+			</li>
+			<?});?>
+		<?}?>
+		<li class="logistic_li here last">
+			<p>
+				物流公司：<span><%= _data.express_company%></span>
+			</p>
+			<p class="order">运货单号：<span><%= _data.express_id%></span></p>
+		</li>
+	</ul>
+
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/sq/express');
+_use:", this._JSstack , this._JSmods ); %>
+<%# sq/footer.html%>

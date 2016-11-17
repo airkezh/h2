@@ -1,0 +1,13 @@
+<%#head.html%>
+<%
+	var shareInfo = this.share_info.data || {}
+		, introInfo = shareInfo.intro || []
+%>
+<div class="wrap">
+	<a class="intro" href="/zulilyOld" xr="<%= this.share_info_XR %>">
+		<% shareInfo && introInfo && introInfo.map(function(item){ %>
+			<img src="<%= item.image_src %>" />
+		<%}); %>
+	</a>
+</div>
+<%# foot.html%>

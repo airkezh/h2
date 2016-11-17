@@ -1,0 +1,26 @@
+function dress(param) {
+	return this;
+}
+var controlFns = {
+	'index' : function(param){
+		return this.detail(param);
+	},
+	'detail' : function(dress_id) {
+		//this.debugSnake({target : 'devlab1'});
+		var dress_id = dress_id || this.req.__get.dress_id;
+		// console.log(this.req.__get.dress_id);
+		// console.log(dress_id);
+		var mSelf = this;
+		var php = {
+			'dressInfo' : '/dress/dress_share?dress_id=' + dress_id
+		};
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			data._CSSLinks = ['coll'];
+			data.pageTitle = '搭配详情页';
+			mSelf.render('coll/coll.html' , data);
+		});
+	}		
+}
+exports.__create = controller.__create(dress, controlFns);

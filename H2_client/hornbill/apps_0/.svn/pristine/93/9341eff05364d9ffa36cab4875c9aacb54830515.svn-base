@@ -1,0 +1,311 @@
+/*common*/
+var tracking = require('wap/app/tracking'),
+	openApp = require('wap/app/openApp'),
+	shareTmp = require('wap/component/shareTmp');
+require('wap/zepto/fastclick');
+require('wap/page/mainapp/audio');
+require('wap/page/mainapp/repin_list');
+
+
+var $ = require('wap/zepto/touch');
+var WXShare = require('wx/share');
+var WXSign = require('wx/sign');
+var shareTmp = require('wap/component/shareTmp');
+var openAppLink = require('wap/app/openAppLink');
+
+var $doc = $(document);
+var $tags = $('.picture .tag');
+var $voiceBtn = $('.voice');
+var $imageWrap = $('#imgSlide');
+var $image = $imageWrap.find('li');
+var $bookmark = $('.bookmark');
+var imgAmounts = $image.length;
+var pageNum = imgAmounts;
+var wrapWidth = $imageWrap.width();
+var basicStep = 20;
+var _index = 0;
+var clicked = false;
+var $curr, $next, $prev, startX, xStep, p1, p2, p3;
+
+var Cwidth = document.body.clientWidth > 640 ? 640 : document.body.clientWidth;
+var Cheight = document.body.clientHeight < 570 ? 570 : document.body.clientHeight;
+/*拼接r参数（用于模版里）*/
+function joinurl(protocol, param, isosapp, r, wapHref) {
+	if (!protocol || !param) return false
+	if (!isosapp) return wapHref || '###noapp'
+	if (r) param.r = r
+	var link = 'meilishuo'
+	link += '://' + protocol + '.meilishuo?json_params=' + encodeURIComponent(JSON.stringify(param))
+	return link
+};
+//if (Meilishuo.config.os.mlsApp == false) {
+//	var locationUrl = window.location.href;
+//	openApp(locationUrl);
+//}
+//(function init() {
+//
+//	$('.picture').css("height", wrapWidth + "px");
+//	if (imgAmounts > 1) {
+//
+//		if (imgAmounts == 2) {
+//			$image.clone().appendTo($image.parent())
+//			$image = $imageWrap.find('li')
+//			imgAmounts += 2
+//		}
+//
+//		$imageWrap.on({
+//			'touchstart': touchStart,
+//			'touchmove': touchMove,
+//			'touchend': touchEnd
+//		})
+//		prepare()
+//		$bookmark.show()
+//		updateBookmark()
+//	}
+//}())
+//
+//function prepare() {
+//	rectifier(_index)
+//
+//	for (var i = 0; i < imgAmounts; i++) {
+//		$image.eq(i).css('left', -100 * i + '%')
+//	}
+//
+//	$image.css({
+//		'-webkit-transform': 'translate3d(100%,0,0)',
+//		'transform': 'translate3d(100%,0,0)'
+//	})
+//	translate()
+//}
+//
+//function rectifier(index) {
+//	if (index >= imgAmounts) index %= imgAmounts
+//	if (index < 0) index = imgAmounts - 1
+//
+//	var pi, ci, ni
+//
+//	_index = index
+//
+//	switch (index) {
+//		case 0:
+//			ci = index
+//			pi = imgAmounts - 1
+//			ni = 1
+//			break
+//		case imgAmounts - 1:
+//			ci = index
+//			pi = index - 1
+//			ni = 0
+//			break
+//		default:
+//			ci = index
+//			pi = index - 1
+//			ni = index + 1
+//	}
+//
+//	$prev = $image.eq(pi)
+//	$curr = $image.eq(ci)
+//	$next = $image.eq(ni)
+//}
+//
+//function translate(direction) {
+//	$prev.css({
+//		'-webkit-transform': 'translate3d(-100%,0,0)',
+//		'transform': 'translate3d(-100%,0,0)'
+//	})
+//	$curr.css({
+//		'-webkit-transform': 'translate3d(0,0,0)',
+//		'transform': 'translate3d(0,0,0)'
+//	})
+//	$next.css({
+//		'-webkit-transform': 'translate3d(100%,0,0)',
+//		'transform': 'translate3d(100%,0,0)'
+//	})
+//}
+//
+//function touchStart(e) {
+//	e.preventDefault()
+//	if (!e.touches.length) return
+//	var touch = e.touches[0]
+//	startX = touch.pageX
+//	$image.removeClass('onmove')
+//}
+//
+//function touchMove(e) {
+//	e.preventDefault()
+//
+//	if (!e.touches.length) return
+//
+//	var touch = e.touches[0]
+//	xStep = touch.pageX - startX
+//	p2 = xStep / wrapWidth * 100
+//	p1 = -100 + p2
+//	p3 = 100 + p2
+//
+//	$prev.css({
+//		'-webkit-transform': 'translate3d(' + p1 + '%,0,0)',
+//		'transform': 'translate3d(' + p1 + '%,0,0)'
+//	})
+//	$curr.css({
+//		'-webkit-transform': 'translate3d(' + p2 + '%,0,0)',
+//		'transform': 'translate3d(' + p2 + '%,0,0)'
+//	})
+//	$next.css({
+//		'-webkit-transform': 'translate3d(' + p3 + '%,0,0)',
+//		'transform': 'translate3d(' + p3 + '%,0,0)'
+//	})
+//}
+//
+//function touchEnd(e) {
+//	if (xStep > basicStep) {
+//		_index--
+//		$prev.addClass('onmove')
+//	} else if (xStep < -1 * basicStep) {
+//		_index++
+//		$next.addClass('onmove')
+//	} else {
+//		translate()
+//		return
+//	}
+//
+//	$curr.addClass('onmove')
+//	rectifier(_index)
+//	updateBookmark();
+//	translate()
+//}
+//
+//function updateBookmark() {
+//		var currPage = $curr.data('index')
+//		var content = currPage + '/' + pageNum
+//		$bookmark.text(content)
+//	}
+/*2:商品详情*/
+$("#btnWantBuy").on("click", function(event) {
+	tracking.cr('welfare_try', {
+		area: 'want_buy',
+		action: 'click'
+	});
+	/*传递r参数*/
+	var twitter_id = $(this).attr("data_id");
+	var detailUrl = joinurl('twitter_single', {
+		'twitter_info': {
+			'twitter_id': twitter_id,
+			'is_doota': 1
+		}
+	}, Meilishuo.config.os.mlsApp, Meilishuo.config.r, '/share/item/' + twitter_id);
+	window.location.href = detailUrl;
+	return false;
+});
+/*添加大图轮播*/
+//var pics = fml.vars.pics;
+//var dialog = shareTmp("bigPics", {
+//	"pics": pics
+//});
+//$("body").append(dialog);
+
+var slideClass = {
+	hasTouch: false,
+	newClass: function(obj) {
+		var obj = obj || {};
+		if (this.hasTouch == false) {
+			this.init.prototype = slideClass;
+			this.hasTouch = true;
+		}
+		return new this.init(obj);
+	},
+	prevPage: function() {
+		var _this = this;
+		//_this.item > 0 ? _this.item = _this.item-- : 0;
+		if (this.item != 0) {
+			_this.item--;
+		}
+		_this.objAnimation(_this.item);
+		_this.curItem(_this.item);
+	},
+	nextPage: function() {
+		var _this = this;
+		//_this.item < _this.mainLength ? _this.item = _this.item++ : _this.mainLength;
+		if (this.item != _this.mainLength - 1) {
+			_this.item++;
+		}
+		_this.objAnimation(_this.item);
+		_this.curItem(_this.item);
+	},
+	objAnimation: function(setEq) {
+		var _this = this;
+		_this.slideBox.css("-webkit-transition", '.4s');
+		_this.slideBox.css("-webkit-transform", 'translate3d(-' + setEq * Cwidth + 'px,0,0)');
+	},
+	curItem: function(setItem) {
+		var _this = this;
+		var currPage = setItem;
+		var content = (currPage + 1) + '/' + _this.mainLength;
+		if (_this.mainLength > 0) {
+			_this.$bookmark.show();
+		}
+		_this.$bookmark.html(content)
+	},
+	bindTouch: function() {
+		var _this = this;
+		var startPage = {
+				x: 0,
+				y: 0
+			},
+			endPage = {
+				x: 0,
+				y: 0
+			};
+		_this.slide.on('touchstart', function(e) {
+			e.preventDefault();
+			/*渔村初始化坐标*/
+			startPage.x = e.changedTouches[0].pageX;
+			startPage.y = e.changedTouches[0].pageY;
+		});
+		_this.slide.on('touchmove', function(e) {
+			e.preventDefault();
+			var movePagex = e.changedTouches[0].pageX;
+			var lateX = (movePagex - startPage.x) - _this.item * Cwidth;
+			_this.slideBox.css("-webkit-transform", 'translate3d(' + lateX + 'px,0,0)');
+			/*判断方向*/
+			var movePagexNum = movePagex - startPage.x;
+			if (movePagexNum != 0) {
+				_this.slideBox.css("-webkit-transition", "0");
+				_this.slideBox.css("-webkit-transform", 'translate3d(-' + _this.item * Cwidth + 'px' + ',0,0)');
+			}
+		});
+		_this.slide.on('touchend', function(e) {
+			endPage.x = e.changedTouches[0].pageX - startPage.x;
+			endPage.y = e.changedTouches[0].pageY - startPage.y;
+			if (Math.abs(endPage.x) >= 50) {
+				endPage.x > 0 ? _this.prevPage() : _this.nextPage();
+			} else {
+				_this.objAnimation(_this.item);
+				if ($("#bigImg").hasClass("bigImg")) {
+					$("#bigImg").removeClass("bigImg");
+					$("#bigImg").css("height", Cwidth + "px");
+				} else {
+					$("#bigImg").addClass("bigImg");
+					$("#bigImg").css("height", Cheight + "px");
+				}
+			}
+		});
+	},
+	init: function(obj) {
+		var _this = this;
+		_this.item = 0;
+		_this.slide = obj.slide;
+		_this.slideBox = obj.slide.find("ul").eq(0);
+		_this.mainLength = obj.slide.find('li').length;
+		_this.slideItem = obj.slide.find('li');
+		_this.$bookmark = obj.slide.find('.bookmark');
+		_this.slideBox.css("width", Cwidth * _this.mainLength + "px");
+		_this.slide.css("height", Cwidth + "px");
+		_this.slide.parent(".picture").css("height", Cwidth + "px");
+		_this.slideItem.css("width", Cwidth + "px");
+		_this.bindTouch();
+	}
+};
+var slideObj = {
+	slide: $("#imgSlide_1"),
+}
+slideClass.newClass(slideObj);

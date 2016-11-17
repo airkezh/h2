@@ -1,0 +1,534 @@
+function sq(){ return this; }
+
+var wapMod = base.loadModel('wap/tools.js')
+var controlFns = {
+	index : function (args){
+		var homeName = 'handpick'
+
+		args = (args in controlFns) ? args : homeName
+
+		/*==== 商场首页控制 ====*/
+		var Now       = new Date()
+		var startTime = new Date('2015/12/11 00:00:00')
+		var endTime   = new Date('2015/12/14 00:00:00')
+		var actShow   = (startTime <= Now && endTime > Now)
+		
+		if (actShow && args == homeName) {
+			return this.activity()
+		}
+
+		this[args]()
+	},
+
+	sqcall : function(args){
+		var php  = {
+			'wxcall' : '/connect/sqcall'
+		}
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			if(data.wxcall && data.wxcall.jumpUrl) {
+				return this.redirectTo(data.wxcall.jumpUrl, true);
+			}
+			else{
+				var redirect = this.readData('redirect', this.req.__get, '/sq/index');
+				return this.redirectTo(redirect, true);
+			}
+		})
+	},
+
+	connectCircle : function(args) {
+        var req = this.req,
+			php = {
+        		'connect_sq' : '/connect/shouq?type=1'
+			},
+			goback = req.__get.goback
+
+		if ( Array.isArray( goback ) ) {
+			goback = goback[ 0 ]
+		}
+        this.setMDefault(php)
+        this.bridgeMuch(php)
+        this.listenOver( function( data ) {
+        	wapMod.connectSQ( this, data )
+        	data.goback = goback;
+			this.render('sq/goback.html', data);
+        })
+    },
+
+	tuan : function (){
+		var eventId = this.readData('event_id', this.req.__get, 1065)
+		var cateId  = this.readData('cate_id', this.req.__get, '')
+		var php     = {
+			'basic' : '/shouq/ShouQ_tuan_banner?page_name=daily',
+			'cart' : 'doota::/cart/number',
+		    'searchInitData' : '/shouq/ShouQ_mall_DefaultSearchWord',
+		    'message' : 'im::/im/open_msg_num?appkey=666666&appsecret=d9044d3f5caf36b874daca20b76a1b8a&uid=1024&source=wap'
+		}
+
+		this.setMDefault(php)
+		this.bridgeMuch(php)
+		this.listenOver(function (data){
+			data.searchNav  = 1
+			data.bottomNav  = 1
+			data.navIndex   = 1
+			data.addPendant = true
+			data.cate_id    = cateId || (data.basic.category[0] && data.basic.category[0].id)
+			data.cartNum    = (data.cart && data.cart.code == 0 && data.cart.info.count > 0) ? data.cart.info.count : 0
+			data.useRemToFitWindowSize = true
+			data.pageTitle  = "团购"
+			data._CSSLinks  = ['sq/tuan']
+			this.render('sq/tuan.html', data)
+		})
+	},
+
+	tuan_buy: function(event_id){
+		var event_id = event_id||this.req.__get.event_id || 1065;
+		var php = {
+			'special_list':'/shouq/ShouQ_mall_spike?event_id='+event_id+'&type=0',
+			'leadApp' : '/customactivity/CustomActivity_common_tool_singleNew?id=wap_daoliu'
+		}; 
+		var locationUrl = this.req.headers.host + this.req.url
+		this.bindDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			data.locationUrl = locationUrl
+			data.pageTitle = '团购－秒杀专场';
+			data._CSSLinks = ['sq/tuan_buy'];
+			data.event_id=event_id;
+			this.render('sq/tuan_buy.html' , data);
+		});
+	},
+
+	handpick : function (){
+		//this.debugSnake({ target: 'wenkaizheng.rdlab' })
+		var eventId = this.readData('event_id', this.req.__get, 1065)
+		var interfaces = {
+			'pageData' : '/shouq/ShouQ_wellChosen',
+			'message' : 'im::/im/open_msg_num?appkey=666666&appsecret=d9044d3f5caf36b874daca20b76a1b8a&uid=1024&source=wap',
+			'tuan' : '/shouq/ShouQ_mall_spike?type=0&countdown=1&event_id=' + eventId
+			//'tuan_enter_img':'/shouq/ShouQ_mall_spike?type=0&banner=1&event_id=' + eventId
+		}
+
+		this.setMDefault(interfaces)
+		this.bridgeMuch(interfaces)
+		this.listenOver(function (data){
+			data.searchNav = 1
+			data.bottomNav = 1
+			data.navIndex  = 0
+			data.share     = true
+			data.addPendant = true
+			data.useRemToFitWindowSize = true
+			data.cart = data.pageData.cartnum
+			data.searchInitData = data.pageData.searchword
+			data.cartNum   = (data.cart && data.cart.code == 0 && data.cart.info.count > 0) ? data.cart.info.count : 0
+			data.pageTitle = "精选"
+			data._CSSLinks = ['sq/handpick']
+
+			this.render('sq/handpick.html', data)
+		})
+	},
+
+	category : function (level){
+		//this.debugSnake({ target: 'wenkaizheng.rdlab' })
+		var tabIndex = this.req.__get.nid 
+		var interfaces = {
+			'tab' : '/shouq/ShouQ_mall_classify?action=1', 
+			'content' : '/shouq/ShouQ_mall_classify?action=2',  //@require nid
+			'cart' : 'doota::/cart/number',
+		    'searchInitData' : '/shouq/ShouQ_mall_DefaultSearchWord',
+		    'message' : 'im::/im/open_msg_num?appkey=666666&appsecret=d9044d3f5caf36b874daca20b76a1b8a&uid=1024&source=wap'
+		}
+
+		this.setMDefault(interfaces)
+		this.bridgeMuch(interfaces)
+		this.listenOver(function (data){
+			data.tabIndex = tabIndex
+			data.useRemToFitWindowSize = true
+			data.searchNav  = 1
+			data.bottomNav = 1
+			data.navIndex  = 2
+			data.pageTitle = '分类'
+			data._CSSLinks = ['sq/category']
+			this.render('sq/category.html', data)
+		})
+	},
+
+	detail : function(tid){
+		//this.debugSnake({target : 'xiaolongrong.rdlab'});
+		if(tid){
+			this.req.__get.twitter_id = tid; // 1784921633
+		}else if(this.req.__get.tid){
+			this.req.__get.twitter_id = this.req.__get.tid;
+		}
+
+		if (!this.req.__get.page_name) {
+			this.req.__get.page_name = 'daily';
+		};
+
+		var php = {
+				'goods' : '/shouq/ShouQ_mall_details'
+				, 'goods_info' : '/shouq/ShouQ_mall_single'
+				, 'goods_show_list':'/shouq/shouQ_goods_show_list'
+				, 'cart' : 'doota::/cart/number'
+				, 'connect_sq' : '/connect/shouq'
+			}
+
+		//优惠劵入口banner显示判断
+		var now_time = new Date()
+			,banner_start = new Date('2014/09/15 00:00:00')
+		    ,banner_end = new Date('2014/09/19 00:00:00')
+
+		var banner_show = (banner_start <= now_time && now_time < banner_end);
+
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			wapMod.connectSQ(this, data);
+			data.cartNum   = (data.cart && data.cart.code == 0 && data.cart.info.count > 0) ? data.cart.info.count : 0
+			var prop = data.goods_info.prop;
+			data.goods_info && data.goods_info.prop && (data.goods_info.prop = {
+							'size': prop[1]
+							,'color':  prop[0]
+						})
+			data.share = true;
+			data.banner_show = banner_show;
+			data.useRemToFitWindowSize = true;
+			data.pageTitle = '商品详情';
+			data._CSSLinks = ['sq/detail'];
+			this.render('sq/detail.html' , data);
+		});
+	},
+
+	shop : function (){
+		var interfaces = {
+			basic : '/shouq/ShouQ_shop_info' // @require shop_id
+		}
+
+		this.setMDefault(interfaces)
+		this.bridgeMuch(interfaces)
+		this.listenOver(function (data){
+			data.addPendant = true
+			data.useRemToFitWindowSize = true
+			data.pageTitle = "商家店铺"
+			data._CSSLinks = ['sq/shop']
+			this.render('sq/shop.html', data)
+		})
+	},
+
+	user : function(args){
+		var page = this.readData('page',this.req.__get, 0)|0;
+		var status = this.readData('status',this.req.__get, 0)|0;
+
+		var orderStatus = this.req.__get.orderStatus || 0;
+		
+		var cType = this.req.__get.coupon_type || 'fullCourt';
+
+		args = args || 'order_list';
+		var php = {
+			'userInfo_sq':'/shouq/ShouQ_user_info'
+			,'hasCoupon' : '/shouq/Icon_tip'
+			, 'connect_sq' : '/connect/shouq'
+		}
+			,css_link = ['sq/order'];
+		if('coupon' == args){
+			php['coupon'] = '/shouq/ShouQ_mall_coupon?couponType=' + cType;
+			css_link.push('sq/coupon');
+		}
+
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			wapMod.connectSQ(this, data);
+			data.orderStatus = orderStatus;
+			data.couponType = cType;
+			data.bottomNav = 1;
+			data.navIndex = 4;
+			data.args_type = args;
+			data.groupPg = {};
+			data.groupPg.total_num = (args != 'order_list') ? data[args]['totalNum'] : 0;
+			data.groupPg.page_size = 20;
+			data.groupPg.current_page = page;
+			data.pageTitle = '个人订单';
+			if (data.coupon) {
+				data.pageTitle = '优惠券';
+			};
+			data._CSSLinks = css_link;
+			this.render('sq/user.html', data);
+		});
+	},
+
+	userCen : function(){
+		//this.debugSnake({target: 'wenkaizheng'})
+		var php = {
+			'userInfo_sq' : '/shouq/ShouQ_user_info',
+			'coupon_num'  : '/shouq/ShouQ_mall_coupon?status=available&numonly=1',
+			'order_info'  : 'doota::/qq/Order_list_classify_statistic',
+			'message'     : 'im::/im/open_msg_num?appkey=666666&appsecret=d9044d3f5caf36b874daca20b76a1b8a&uid=1024&source=wap',
+			'connect_sq' : '/connect/shouq'
+		}
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			wapMod.connectSQ(this, data);
+			data.bottomNav = 1;
+			data.navIndex = 3;
+			data.pageTitle = '个人中心';
+			data._CSSLinks = ['sq/userCen']
+			this.render('sq/userCen.html', data);
+		});
+	},
+
+	// personal : function (){
+	// 	var interfaces = {
+	// 		'personal_info' : '/shouq/ShouQ_user_info',
+	// 		'coupon' : '/shouq/ShouQ_mall_coupon?status=available&numonly=1',
+	// 		'order' : 'doota::/qq/Order_list_classify_statistic',
+	// 		'message' : 'im::/im/open_msg_num?appkey=666666&appsecret=d9044d3f5caf36b874daca20b76a1b8a&uid=1024&source=wap',
+	// 		'connect_sq' : '/connect/shouq'
+	// 	}
+	// 	this.setMDefault(interfaces);
+	// 	this.bridgeMuch(interfaces);
+	// 	this.listenOver(function(data){
+	// 		wapMod.connectSQ(this, data);
+	// 		data.bottomNav = 1;
+	// 		data.navIndex = 3;
+	// 		data.useRemToFitWindowSize = true;
+	// 		data.pageTitle = '个人中心';
+	// 		data._CSSLinks = ['sq/userCen']
+	// 		this.render('sq/personal.html', data);
+	// 	});
+	// },
+
+	cart : function(){
+		var php  = {'connect_sq' : '/connect/shouq'}
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			wapMod.connectSQ(this, data);
+			data.useRemToFitWindowSize = true;
+			data.pageTitle = '购物车';
+			data._CSSLinks = ['sq/cart'];
+			this.render('sq/cart.html' , data);
+
+		});
+	},
+	
+	orderconfirm : function(){
+		var goods_max = this.readData('max',this.req.__get,10)
+			size = this.readData('size',this.req.__get,'')
+	    	color = this.readData('color',this.req.__get,'')
+
+		var php = {
+			'userInfo_sq':'/shouq/ShouQ_user_info',
+			'connect_sq' : '/connect/shouq'
+		}
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			wapMod.connectSQ(this, data);
+			data.parms = this.req.__get
+			data.goods_max = goods_max < 10 ? goods_max : 10;
+			data.size = size;
+			data.color = color;
+			data.headTag = 'sq';
+			data.pageTitle = '订单确认';
+			data._CSSLinks = ['sq/order'];
+			this.render('sq/confirm.html' , data);
+
+		});
+	},
+
+	success : function(){
+		var order_id = this.readData('order_id',this.req.__get, 0);
+		var transaction_id = this.readData('transaction_id',this.req.__get, 0);
+		var bank_type = this.readData('bank_type', this.req.__get, '');
+		var php  = {'connect_sq' : '/connect/shouq'}
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			wapMod.connectSQ(this, data);
+			data.bank_type = bank_type;
+			data.transaction_id = transaction_id;
+			data.order_id = order_id;
+			data.pageTitle = '美丽说';
+			data._CSSLinks = ['sq/order'];
+			this.render('sq/success.html' , data);
+		});
+	},
+
+	fail : function(){
+		var order_id = this.readData('order_id',this.req.__get, 0)
+			, msg = this.readData('msg', this.req.__get, 0) || ''
+
+		var  php = {'connect_sq' : '/connect/shouq'}
+
+		var status = 0
+			, titleText = msg ? msg : "下单失败"
+			, btnText = "去逛逛"
+			, url = "/sq"
+
+		if(order_id){
+			status = 1
+			titleText = "您的订单尚未支付成功"
+			btnText = "查看订单"
+			url = "/sq/orderDetail?order_id=" + order_id
+		}
+
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			wapMod.connectSQ(this, data);
+
+			data.order_id = order_id
+			// data.msg = msg
+			data.titleText = titleText
+			data.btnText = btnText
+			data.url = url
+			data.pageTitle = '美丽说';
+			data._CSSLinks = ['sq/order'];
+			this.render('sq/fail.html' , data);
+		});
+	},
+
+	orderDetail : function(){
+		var order_id = this.readData('order_id',this.req.__get, 0);
+		this.req.__get.is_sq = 1
+
+		var php  = {
+			'connect_sq' : '/connect/shouq'
+		}
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			wapMod.connectSQ(this, data);
+			data.order_id = order_id;
+			data.pageTitle = '订单详情';
+			data.headTag = 'sq';
+			data._CSSLinks = ['sq/orderD'];
+			this.render('sq/orderDetail.html' , data);
+		});
+	},
+
+	expressInfo : function(){
+		var express_id = this.readData('express_id',this.req.__get, 0);
+		var express_company = this.readData('express_company',this.req.__get, 0);
+		var order_id = this.readData('order_id',this.req.__get, 0);
+		var php = {
+			'connect_sq' : '/connect/shouq'
+		}
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			wapMod.connectSQ(this, data);
+			data.express_id = express_id;
+			data.express_company = express_company;
+			data.order_id = order_id;
+			data.pageTitle = '物流信息';
+			data._CSSLinks = ['sq/express'];
+			this.render('sq/express.html' , data);
+		});
+	},
+
+	search : function (){
+		// this.debugSnake({target: 'wenkaizheng.rdlab'})
+		var keyWord  = this.readData('key_word', this.req.__get, '')
+		var category = this.readData('section', this.req.__get, 'hot')
+		var php      = {
+			'recommend' : '/shouq/ShouQ_search_recommend', //@require key_word
+			'cart'   : 'doota::/cart/number',
+			'searchInitData' : '/shouq/ShouQ_mall_DefaultSearchWord',
+			'message' : 'im::/im/open_msg_num?appkey=666666&appsecret=d9044d3f5caf36b874daca20b76a1b8a&uid=1024&source=wap'
+		}
+
+		this.setMDefault(php)
+		this.bridgeMuch(php)
+		this.listenOver(function (data){
+			var cart = data.cart
+
+			if(cart && cart.code == 0){
+				var count = cart.info.count
+				data.cartNum = count > 0 ? count : 0
+			}
+			
+			data.keyWord   = keyWord 
+			data.category  = category
+			data.searchNav = 1
+			data.addPendant = true
+			data.useRemToFitWindowSize = true
+			data.pageTitle = '美丽说'
+			data._CSSLinks = ['sq/search']
+			this.render('sq/search.html' , data)
+		})
+	},
+
+	sign : function (){
+		var interfaces = {
+			basic : '/shouq/ShouQ_signInPage',
+			connect_sq : '/connect/shouq'
+		}
+
+		this.setMDefault(interfaces)
+		this.bridgeMuch(interfaces)
+		this.listenOver(function (data){
+			wapMod.connectSQ(this, data)
+			data.useRemToFitWindowSize = true
+			data.pageTitle = '签到商城'
+			data._CSSLinks = ['sq/sign']
+			this.render('sq/sign.html', data)
+		})
+	},
+
+	activity : function (){
+		var interfaces = {
+			pageData : '/shouq/ShouQ_mall_1101_main',
+			coupon : '/shouq/ShouQ_universalCouponStatus?activity_name=shouq_915_couponSet',
+			connect_sq : '/connect/shouq'
+		}
+
+		this.setMDefault(interfaces)
+		this.bridgeMuch(interfaces)
+		this.listenOver(function (data){
+			wapMod.connectSQ(this, data);
+			data.pageTitle = data.pageData.title
+			data.useRemToFitWindowSize = true
+			data._CSSLinks = ['sq/activity']
+			this.render('sq/activity.html', data)
+		})
+	},
+
+	collect : function (){
+		var interfaces = {
+			'connect_sq' : '/connect/shouq'
+		}
+
+		this.setMDefault(interfaces)
+		this.bridgeMuch(interfaces)
+		this.listenOver(function (data){
+			wapMod.connectSQ(this, data)
+			data.addPendant = true
+			data.useRemToFitWindowSize = true
+			data.pageTitle = ''
+			data._CSSLinks = ['sq/collect']
+			this.render('sq/collect.html', data)
+		})
+	},
+
+	comment : function (){
+		var interfaces = {
+			orderDetail : 'doota::/order/detail'    //@require order_id
+		}
+
+		this.setMDefault(interfaces)
+		this.bridgeMuch(interfaces)
+		this.listenOver(function (data){
+			wapMod.connectSQ(this, data)
+			data.useRemToFitWindowSize = true
+			data.pageTitle = '商品评价'
+			data._CSSLinks = ['sq/comment']
+			this.render('sq/comment.html', data)
+		})
+	}
+}
+
+exports.__create = controller.__create(sq , controlFns);

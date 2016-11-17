@@ -1,0 +1,358 @@
+<%#head.html%>
+
+<%= requireFn('slider.html')({
+'os' : this.os
+, 'footBanner' : true
+, 'isIqiyiApp' : this.isIqiyiApp
+,'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+, 'showDaoLiu' : this.showDaoLiu
+, 'showZhiDing' : this.showZhiDing
+, 'leadApp' : this.leadApp
+, 'appUrl' : this.appUrl
+, 'frm' : this.frm
+});%>
+
+<%= requireFn('block/wap_head.html')({
+    'xr' : this.xr,
+    'search_words' : this.default_navigate && this.default_navigate.search_promote.search_keyword,
+    'default_navigate' : this.default_navigate && this.default_navigate.root_category,
+    'first' : {
+        'tag': 'div',
+        'text': '我',
+        'href': '#'
+    },
+    '_JSstack' : this._JSstack,
+    '_JSmods' :  this._JSmods
+});%>
+<%if(this.userInfo.user_id){%>
+<div class="personArea" id="personArea" isShow="0">
+    <div class="userInfo">
+        <img src="<%= this.userInfo.avatar_c %>"/><span><%= this.userInfo.nickname%></span>
+    </div>
+    <ul>
+        <li><a href="/order/" xr="<%= this.xr.r%>">我的订单</a></li>
+        <li><a href="/coupon/list/" xr="<%= this.xr.r%>">我的优惠券</a></li>
+        <li><a href="/address/" xr="<%= this.xr.r%>">我的地址</a></li>
+        <li><a id="headLogoutBtn" href="/user/logout" xr="<%= this.xr.r%>">退出登录</a></li>
+    </ul>
+</div>
+<%}%>
+
+<section id="wrapper_main" class="wrapper">
+
+    <%= requireFn('block/banner.html')({
+    'banner' :this.homeBanner.data
+    ,'banner_r' : this.homeBanner.r
+    ,'_JSstack' : this._JSstack ,'_JSmods' : this._JSmods
+    });%>
+
+    <!-- 团购 -->
+    <div class="groupbuy section">
+        <div class="hd">
+            <span class="btn-more js-groupbuy">更多<i class="icon-more"></i></span>
+
+            <h2 class="title">团购<span class="label">Group Buying</span></h2>
+        </div>
+        <div class="bd">
+            <ul class="item-list">
+                <%
+                var tuan = this.tuan;
+                tuan && tuan.forEach(function( item ) {
+                %>
+                <li class="item">
+                    <a href="/share/<%= item.twitter_id %>" xr="<%= this.xr.r %>">
+                        <div class="item-pic" style="background-image: url(<%= item.item_image %>)">
+                            <span class="item-title"><%= item.item_title %></span>
+                        </div>
+                        <div class="item-desc">
+                            <span class="item-num"><i class="num-main">￥<%= item.price %></i>立省<i class="num"><%=
+                                item.original_price - item.price %></i>元</span>
+                            <span class="item-join"><%= item.joins %>人已参团</span>
+                        </div>
+                    </a>
+                </li>
+                <% }) %>
+                <a href="/tuan" class="btn-jump" xr="<%= this.xr.r %>">点击查看全部<i class="icon-right-arrow"></i></a>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 秒杀 -->
+    <div class="seckill section">
+        <div class="hd">
+            <a href="/activity/tuan/special/1065" class="btn-more" xr="<%= this.xr.r %>">更多<i class="icon-more"></i></a>
+
+            <h2 class="title">秒杀<span class="label">Seckill</span></h2>
+        </div>
+        <div class="bd">
+            <div class="nav_wap">
+                <div class="navbox">
+                    <div class="points">
+                        <s></s>
+                        <ul>
+                            <%
+                            var seckillTime = this.seckill_time.data,
+                                tabLen = seckillTime && seckillTime.qiang_info.tab.length - 1;
+                            seckillTime && seckillTime.qiang_info.tab.forEach(function(data,k){
+                            var s_content = '已结束';
+                            switch(data.status){
+                            case 0:
+                            s_content = '已结束';
+                            break;
+                            case 1:
+                            s_content = '抢购中';
+                            break;
+                            case 2:
+                            s_content = '即将开始';
+                            break;
+                            }
+                            %>
+                            <li name="tab_<%=k%>" data-islast="<%= k == tabLen ? 1 : 0 %>" data-hour="<%=data.server_time%>" data-status=<%= data.status%>
+                                data-unix=<%= data.unix_time%> class="<%=data.lightspot ? 'curr' : ''%> <%= data.status
+                                == 2 ? 'darkgray' : '' %>">
+                                <a href="javascript:void(0);">
+                                    <span><%=data.server_time%>:00<label><%=s_content%></label></span>
+                                </a>
+                            </li>
+                            <%});%>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div id="content_box">
+                <div class="content"></div>
+                <p class="btn-load js-btn-load">点击加载更多<i class="icon-load"></i></p>
+
+                <p class="btn-next js-btn-next">查看下个时段秒杀</p>
+                <a class="btn-all js-btn-all" href="/activity/tuan/special/1065" xr="<%= this.xr.r %>">查看更多秒杀单品</a>
+                <p class="empty js-empty">没有秒杀内容</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 分类 -->
+    <div class="category section">
+        <ul class="bd cate-list">
+            <%
+            var cate = this.default_navigate.root_category,
+            max = 5;
+            cate && cate.forEach(function( item, i ) {
+            if ( i > max ) return;
+            var url = '/guang/catalog_new/?nid=' + item.nid + '&tag_word=' + encodeURIComponent( item.tag_word );
+            %>
+            <li class="cate">
+                <a href="<%= url %>" xr="<%= item.r %>" style="background-image: url(<%= item.pic %>)"></a>
+            </li>
+            <% } ) %>
+        </ul>
+    </div>
+
+    <div class="poster-wall section">
+        <div class="hd js-fixed-tab">
+            <span class="tab" data-type="promotion">促销</span>
+            <span class="tab" data-type="new">新款</span>
+            <span class="tab" data-type="hot">热销</span>
+        </div>
+        <div class="bd">
+            <div class="tab-content tab-promotion" data-type="promotion"></div>
+            <div class="tab-content tab-new" data-type="new"></div>
+            <div class="tab-content tab-hot" data-type="hot"></div>
+            <div class="pullUp" status="loading"></div>
+        </div>
+    </div>
+</section>
+
+<script type="text/html" id="zd_info">
+    <?if(this.item && this.item.length){?>
+    <ul>
+        <?
+   var item = this.item,
+        max = 7,
+        len = item.length > max ? max : item.length,
+        state;
+
+        for(var v=0;v
+        <len
+        ;v++){
+        state = 'block';
+        data=this.item[v];
+        var _url="javascript:void(0);",
+        detail_url=fml.vars.joinurl('twitter_single', {'twitter_info' : {'twitter_id' : data.twitter_id , 'is_doota' :
+        1}}, fml.vars._os, fml.vars._r, '/share/item/'+data.twitter_id),
+        shop_url = fml.vars.joinurl('shop', {'shop_id':data.shop_id}, fml.vars._os, fml.vars._r, '/shop/'+data.shop_id),
+        status_sum="";
+        if(fml.vars.isexit(fml.vars.tids,data.twitter_id)){
+        var btn_content="<i class='clock'></i>已提醒",
+        btn_class="reminded_btn",
+        status_sum="status_sum_reminded";
+        }else{
+        if(fml.vars.timeunix<=600){
+        var btn_content="<i class='clock'></i>马上开抢",
+        btn_class="reminded_btn",
+        status_sum="status_sum_reminded";
+        }else{
+        var btn_content="<i class='clock'></i>即将开抢",
+        btn_class="remind_btn",
+        _url = detail_url,
+        status_sum="status_sum_remind";
+        }
+        }
+        switch(data.status){
+        case 1:
+        btn_content="立即抢";
+        btn_class="buy_btn";
+        _url=detail_url;
+        status_sum="";
+        break;
+        case 2:
+        btn_content="去店铺";
+        _url=shop_url;
+        btn_class="over_btn";
+        status_sum="status_sum_over";
+        break;
+        case 3:
+        btn_content="去店铺";
+        _url=shop_url;
+        btn_class="empty_btn";
+        status_sum="status_sum_empty";
+        break;
+        }
+
+        if ( !fml.vars.isLoadAll && v > 1 ) {
+        state = 'none';
+        }
+        ?>
+        <li class="zhengdian-new good_box <?if(v == 0){?>fir<?}?>" twid="<?=data.twitter_id?>" shopid="<?=data.shop_id?>" stime="<?=data.start_time?>" style="display: <?= state ?>;">
+            <figure>
+                <a href="<?=detail_url?>" xr="<?= fml.vars.common_r ?>"><img src="<?=data.goods_image?>"/></a>
+            </figure>
+            <ul class="desc">
+                <li class="li-a f_15"><a href="<?=detail_url?>" xr="<%= this.xr.r %>"><?=data.goods_name?></a></li>
+                <li class="li-b">
+                    <span class="f_20 now_price"><i class="f_16">￥</i><?= data.off_price?></span>
+                    <del class="old_price">￥<?= data.origin_price?></del>
+                    <span class="discout <?= status_sum?>"><?= data.discount ?></span>
+                </li>
+                <li class="li-c saleinfo"><p><?= data.joiner_num?>人想买</p></li>
+                <li class="li-d">
+                    <a class="statusinfo <?= status_sum?>" href="<?= _url ?>" xr="<?= fml.vars.common_r ?>">
+                        <div class="staus-bar">
+                            <?if(data.status==0){?>
+                            <p class="scale">仅限<?= data.total_limit ?>件</p>
+                            <?}else{?>
+                            <p class="scale"><?= data.soldout ? '已抢光' : '已抢' + data.sales + '/' + data.total_limit + '件'?></p>
+                            <span class="progress" style="width:<?= data.status == 2 ? 100 : data.sales/data.total_limit*100?>%"></span>
+                            <?}?>
+                        </div>
+                        <div class="status-btn f_15 <?= btn_class?>" strtype="<?=data.type?>"><?= btn_content?></div>
+                    </a>
+                </li>
+            </ul>
+            <?if(data.type==0){?>
+            <span class="mark qiang"></span>
+            <?}?>
+            <?if(data.type==1){?>
+            <span class="mark pin"></span>
+            <?}?>
+        </li>
+        <?}?>
+    </ul>
+    <?}?>
+</script>
+
+<script type="text/html" id="posterWall">
+    <?
+    var v = this.v;
+    var progress = Math.floor(v.time_unix / v.time_total * 100);
+?>
+    <div class="productBox">
+        <?if(!v.is_hjf){?>
+        <a class="link_box" href="<?= v.url_mob?>" xr="<?= fml.vars.poster_r?>">
+            <figure>
+                <?if(v.horizontal_mark.length){?>
+                <div class="new-png">
+                    <?var _l = 0;?>
+                    <? $.each(v.horizontal_mark , function(k1 , v1){ ?>
+                    <div style="left:<?=2 + _l?>px"><img src="<?= v1.img_url?>"/></div>
+                    <?_l += (+v1.img_width + 2);?>
+                    <?});?>
+                </div>
+                <?}?>
+                <?if(v.soldout){?>
+                <img class="zeroflag" src="http://i.meilishuo.net/css/images/wap/activity/all/bs_over.png" width="40"/>
+                <?}?>
+                <?if(fml.vars.is_lazyload_poster){?><span class="bs_load_img" asrc="<?= v.show_pic_mob?>"></span>
+                <?}else{?>
+                <span class="groupbuy-item-pic" style="background-image: url( <?= v.show_pic_mob ?> ); padding-top:139.738%;"></span>
+                <?}?>
+                <?if(!fml.vars.istomorrow && v.soldout==0){?>
+                <p class="countdown"><span class="time" time="<?=v.time_unix?>"></span></p>
+                <!--进度条-->
+                <span class="progress rpbgc" style="width:<?=100-progress?>%;"></span>
+                <span class="progress gpbgc" style="width:<?=progress?>%; left:<?=100-progress?>%;"></span>
+                <?}?>
+            </figure>
+            <figcaption>
+                <div class="proTitle"><?= v.ginfo.goods_title?></div>
+
+                <div class="proPrice">
+                <span class="price"><i>￥<?= (v.ginfo.discount_goods_price + '').replace(/\.[0]*$/,'').replace(/[.]$/,'')?></i>
+                </span>
+                    <?if(v.ginfo.goods_price){?>
+                    <del class="orig_price">
+                        ¥<?= (v.ginfo.goods_price + '').replace(/\.[0]*$/,'').replace(/[.]$/,'')?></del>
+                    <?}?>
+                    <?if(v.ginfo.discount){?>
+                    <span class="discount<?=v.soldout==1?' graydct':''?>"><?= v.ginfo.discount?></span>
+                    <?}?>
+                </div>
+
+                <div class="proStatis">
+                    <span class="num"><?= v.count_participants?></span><?=fml.vars.istomorrow?'人已关注':'人已参团'?>
+                </div>
+
+            </figcaption>
+        </a>
+        <?}else{?>
+        <a class="link_box hjfpos" href="<?= v.hjf_jump_url?>">
+            <img src="<%=this._imgurlhead%>/images/huodong/tuan/prebg.png"/>
+            <figcaption class="ownh"></figcaption>
+            <img class="adenter" src="<?=v.hjf_pic_url?>"/>
+        </a>
+        <?}?>
+    </div>
+</script>
+
+
+<script type="text/html" id="normalPosterWall">
+    <?
+    var v = this.v,
+        pt = 130;
+?>
+    <div class="poster_grid poster_wall" twitter_id="<?=v.twitter_id?>">
+        <figure>
+            <a xr="<?= fml.vars.poster_r?>" class="pic_load" style="padding-top:<?= pt ?>%;background-image:url(<?= v.pic_url ?>)" href="/share/<?if(v.is_doota == '1'){?>item/<?}?><?= v.twitter_id?><?if(v.url_query){?>?<?= v.url_query?><?}?>">
+            </a>
+
+            <p class="clothesTitle"><?= v.title?></p>
+            <figcaption>
+                <? if(v.price){?>
+                <span class="price"><?= v.price?></span>
+                <? }?>
+                <span class="like icon-heart"><?= v.count_like?></span>
+            </figcaption>
+        </figure>
+    </div>
+</script>
+
+<script>
+    fml.vars.event_id = 1065;
+    fml.vars.frm = '<%== this.frm %>';
+    fml.vars.common_r = '<%== this.xr.r%>';
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+        fml.use('wap/page/welcome_tmp');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

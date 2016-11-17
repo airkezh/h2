@@ -1,0 +1,41 @@
+/*common*/
+require('wap/zepto');
+
+
+
+//游戏设置
+
+var whiteBlock = require('wap/page/lark/whiteBlock');
+var opts = {
+	boxId : 'container'
+}
+var block = new whiteBlock(opts);
+
+
+// //页面初始化
+
+$('body').on('touchmove',function(e){
+	e.preventDefault();
+	e.stopPropagation();	
+});
+var windowWidth = $(window).width()
+    ,windowHeight = $(window).height();
+$('.warp,.index,.guide,.game').css({'height':windowHeight});
+
+$('#startBut').click(function(){
+	$('.guide').show().siblings().hide();
+})
+
+$('.guide').click(function(){
+	$('.game').show().siblings().hide();
+	block.init();
+});
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,72 @@
+<%#head.html%>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<%
+	var pageData = this.pageData || {}
+		, userinfo = this.getUserInfo || {} 
+		, fromUserInfo = userinfo.from_user_info || {}
+		, count = this.count || {}
+		, wxInfo = this.wxInfo || {}
+%>
+<div class="wrap">
+	<img src="<%= pageData.head_img%>" class="head_bg"/>
+	<div class="listMain">
+		<header>
+			<div class="avatar"><img src="<%= fromUserInfo.headimgurl %>" /></div>
+			<h2><%= fromUserInfo.nickname %></h2>
+			<img src="<%= pageData.intro %>" class="intro"/>
+			<h3>
+				今天有 <span><%= count.count %></span> 人领到了新衣红包
+			</h3>
+		</header>
+		<ul class="goodsInfo">
+			<% pageData && pageData.goods && pageData.goods.map(function(data){ %>
+			<li goods_id="<%= data.goods_id %>" small_pic="<%= data.image_small %>">
+				<img src="<%= data.image_src %>" class="goods_pic"/>
+				<div class="infor">
+					<h3>
+						<span><%= data.key %></span>
+						<%= data.title %>
+					</h3>
+					<p class="want">
+						<span class="icon" state="0"></span>
+						<span class="word">想要</span>
+					</p>
+				</div>
+			</li>
+			<%}); %>
+		</ul>
+		<div class="next">下一步</div>
+	</div>
+	<div class="shareMain" user_id="<%= wxInfo.user_id %>">
+		<header>
+			<div class="avatar"><img src="<%= wxInfo.headimgurl %>" /></div>
+			<h2><%= wxInfo.nickname %></h2>
+			<div class="want_list">
+				
+			</div>
+		</header>
+		<p class="intro">
+			快把这些新款送给你的好友，</br>
+			就可以领取现金红包，<span>100%</span>中奖！
+		</p>
+		<div class="shareBtn">
+			<img src="http://d02.res.meilishuo.net/pic/_o/b5/07/412b32c8dacc9b90174b00dbefee_570_102.cg.png" />
+		</div>
+	</div>
+</div>
+
+<script type="text/html" id="shareLead">
+	<div class="dialog_box">
+		<span class="share_pic"></span>
+	</div>
+</script>
+
+<script>
+	fml.vars.mlsHost = "<%= this.mlsHost%>";
+	fml.vars.from_id = "<%= this.from_id%>";
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/redPaper/list');
+_use:", this._JSstack, this._JSmods); %>
+<%# foot.html%>

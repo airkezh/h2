@@ -1,0 +1,62 @@
+<%#head.html%>
+<%
+	var userInfo = this.userInfo || {};
+%>
+<div class="wrap">
+	<%# zulily/header.html%>
+	<div class="posterWall wall" id="content">
+		<ul class="goods_wall goods"></ul>
+		<div class="pullUp" status="loading"></div>
+	</div>
+</div>
+<%= requireFn('wapShare.html')({
+	'share' : this.share 
+    , 'shareTitle' : '选择分享到'
+    , '_JSstack' : this._JSstack
+	, '_JSmods' : this._JSmods
+}); %>
+<script type="text/html" id="posterWall">
+	<li styleId="<?= this.v.id ?>" twitter_id="<?= this.v.twitter_id ?>" data-status="<?= this.v.status ?>" class="detailUrl">
+		<div class="goods_info">
+			<div class="lazy_pic img-box" style="background-image:url(<?= this.v.main_img?>)">
+				<span class="shadow"></span>
+				<? if(parseInt(this.v.status)==5){ ?>
+					<span class="sold"></span>
+				<? } ?>
+			</div>
+			<div class="progress_wrap">
+				<dl class="progress">
+					<dt class="pic"><img src="<?= this.v.founder.avatar_a ?>" alt="" class="maishou_pic"></dt>
+					<dd class="name"><span class="maishou_name"><?= this.v.founder.nickname ?></span></dd>
+					<dd><p class="most_intro"><?= this.v.title ?></p></dd>
+					<dt class="zan_normal <?= this.v.is_mywant ? 'zan_love' : '' ?>"></dt>
+					<dd>
+						<p class="strip">
+							<span class="strip_red" style="width:<?if(parseInt(this.v.want_base) +  parseInt(this.v.want_num) >= parseInt(this.v.want_target)){?>100%;<?}else{?><?= (parseInt(this.v.want_base) +  parseInt(this.v.want_num)) /  parseInt(this.v.want_target) * 100 ?>%<?}?>">
+							</span>
+						</p>
+						<p class="want">
+							<span class="num"><?= parseInt(this.v.want_base) +  parseInt(this.v.want_num)?></span>
+							人想要&nbsp;/&nbsp;<span><?= this.v.status_name?></span>
+						</p>
+					</dd>
+				</dl>
+			</div>
+		</div>
+	</li>
+</script>
+
+<script type="text/html" id="noLove">
+	<div class="dialog_box">我不想要啦</div>
+</script>
+<script>
+	fml.vars.isLogin = <%= this.userInfo.user_id%>;
+	fml.vars.trace_id = '<%= this.desireTraceId %>'; 
+	fml.vars.appShare = <%= this.appShare %>; 
+	fml.vars.params = <%= JSON.stringify(this.params) %>; 
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/zulily/ing');
+_use:", this._JSstack, this._JSmods); %>
+
+<%# foot.html%>

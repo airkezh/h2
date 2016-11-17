@@ -1,0 +1,119 @@
+<%#shop/settled/settle_head.html%>
+<div class="guide_area">
+	<div class="guide_box">
+        <div class="x-header">招商服务</div>
+		<% var connect_info = this.connect_info.info || {};%>
+		<p class="d">了解更多，请致电：</p>
+		<p class="tel">
+            <table class="x-cinfo">
+                <%connect_info && connect_info.tel && connect_info.tel.forEach(function(item){ %>
+        <tr>
+            <td class="x-dq"><%=item.name%></td>
+            <td><%=item.tel.join('<br>')%></td>
+        </tr>
+                <%});%>
+            </table>
+		</p>
+		<a class="rz" href="https://shop.meilishuo.com/user/login/" target="_blank">我要入驻</a>
+		<div class="d_b">
+			<table>
+				<tr>
+					<td width="60" class="x-qqtop">企业QQ：</td>
+					<td>
+                    <%connect_info && connect_info.qq && connect_info.qq.forEach(function(item){%>
+                        <div><%=item.name%>：<%=item.qq.join('&nbsp;')%></div>
+                    <%});%>
+                    </td>
+				</tr>
+			</table>
+			
+			<br>	
+		</div>
+	</div>
+	<div class="round">
+		<% this.banners && this.banners.info && this.banners.info.forEach(function(item){%>
+		<a></a>
+		<%});%>
+	</div>
+</div>
+<div class="banners">
+	<div id="slider">
+		<% this.banners && this.banners.info && this.banners.info.forEach(function(item){%>
+		<a href="<%=item.url %>" target="_blank" style="background: url('<%=item.pic %>') no-repeat center center;"></a>
+		<%});%>
+	</div>
+</div>
+<div class="container">
+	<div class="l">
+		<div class="process">
+			<h3><span class="left_f">入驻流程</span><a href="/shop/settled/process" target="_blank" class="more">查看更多>></a></h3>
+			<div class="content">
+				<% this.register_process && this.register_process.info && this.register_process.info.forEach(function(item,index,arr){%>
+				<div class="c_item">
+					<h4><%=item.title %></h4>
+					<p><%=item.content %></p>
+					<%if(item.is_reg){%><a href="https://account.meilishuo.com/user/register" class="btn" target="_blank">马上注册</a><%}%>
+					<%if(item.is_apply){%><a href="https://shop.meilishuo.com/user/login/" class="btn" target="_blank">马上申请</a><%}%>
+				</div>
+				<%});%>
+				<div class="clear_f"></div>
+			</div>
+		</div>
+		<div class="odds">
+			<h3><span class="left_f">平台优势</span><a href="/shop/settled/odds" target="_blank" class="more">查看更多>></a></h3>
+			<div class="content">
+				<% this.odds_list && this.odds_list.info && this.odds_list.info.forEach(function(item,index){ %>
+				<div class="c_item <%=index%2 ? 'right_f' : 'left_f' %>">
+					<h4>
+						<img src="<%=item.icon %>">
+						<%=item.title %>
+					</h4>
+					<p><%=item.desc %></p>
+				</div>
+				<%});%>
+				<div class="clear_f"></div>
+			</div>
+		</div>
+		<div class="star">
+			<h3><span class="left_f">明星商家</span><a href="/shop/settled/star" target="_blank" class="more">查看更多>></a></h3>
+			<div class="content">
+				<% this.star_list && this.star_list.info && this.star_list.info.forEach(function(item,index){ %>
+				<div class="s_item <%=index%2 ? 'right_f' : 'left_f' %>">
+					<div class="img_wrapper">
+						<a href="<%=item.link || '###' %>" target="_blank">
+							<img src="<%=item.pic %>">
+						</a>
+					</div>
+					<div class="s_content">
+						<p class="s_name"><a href="<%=item.link || '###' %>" target="_blank"><%=item.name %></a></p>
+						<p class="s_desc"><a href="<%=item.link || '###' %>" target="_blank"><%=item.desc %></a></p>
+					</div>
+					<div class="clear_f"></div>
+				</div>
+				<%});%>
+				<div class="clear_f"></div>
+			</div>
+		</div>
+	</div>
+	<div class="r">
+		<div class="post_list_wrapper">
+			<h3><span class="left_f">最新公告</span><a href="/shop/settled/plist" target="_blank" class="more">查看更多>></a></h3>
+			<ul class="post_list">
+				<% this.post_list && this.post_list.list && this.post_list.list.forEach(function(item){ %>
+				<li>
+					<a href="/shop/settled/post?id=<%=item.id %>" target="_blank">
+						<span class="title"><%= item.title%></span>
+						<span class="p_date"><%= item.date%></span>
+					</a>
+				</li>
+				<%});%>
+			</ul>
+		</div>
+	</div>
+	<div class="clear_f"></div>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/doota/settled_index');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>
+

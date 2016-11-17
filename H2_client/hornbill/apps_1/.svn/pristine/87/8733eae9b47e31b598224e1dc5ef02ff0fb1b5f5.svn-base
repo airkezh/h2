@@ -1,0 +1,14 @@
+<%#head.html%>
+<%
+var imgObject = this.imgArray.data || {};
+var imgArr = imgObject.imgArr || [];
+%>
+<div class="wrap">
+	<% imgArr.forEach(function(item, index){ %>
+		<a href="<%= item.url || 'javascript:;' %>" xr="<%= this.imgArray_XR %>"><img src="<%= item.src %>" alt=""></a>
+	<% }); %>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/zulily/introduce');
+_use:", this._JSstack, this._JSmods); %>
+<%# foot.html%>

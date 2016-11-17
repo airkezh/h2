@@ -1,0 +1,58 @@
+<%# head.html%>
+<div class="wrap">
+	<%if(!this.board_id && this.adm63 && this.adm63.ad){%>
+		<%
+		this.adm63.admId = 'adm_top';
+		this.adm63._JSstack = this._JSstack;
+		this.adm63._JSmods = this._JSmods;
+		%>
+		<%= requireFn('commerce/adm_banner.html')(this.adm63);%>
+	<%}%>
+	<div class="hotnew">
+		<a href="/club/?bid=<%=this.board_id%>"<%if(this.sort=='reply'){%> class="red_f"<%}%>>精选晒单</a>
+		<span>|</span>
+		<a href="/club/?sort=new&bid=<%=this.board_id%>"<%if(this.sort=='new'){%> class="red_f"<%}%>>最新晒单</a>
+	</div>
+	<div class="wraper_l">
+		<div class="redline2"></div>
+		<%#club/topics.html%>
+		<div class="paging_panel c_f">
+		<%#paging.html%>
+		</div>
+	</div>
+	<div class="wraper_r">
+		<a href="/club/newShoppingTopic" target="_blank" class="shopPublishor">我要晒单</a>
+		<div class="sider">
+			<div class="redline1"></div>
+			<h2>晒单达人</h2>
+			<%this.user_rec && this.user_rec.map(function(data, index){%>
+			<div class="bigwig" <%if(index+1 == this.user_rec.length){%>style="border-bottom:none;"<%}%>>
+				<div>
+					<a href="/person/u/<%=data.uinfo.user_id%>" target="_blank"><img class="ava_r" src="<%=data.uinfo.avatar_a%>" width="40" height="40"></a>
+					<p class="nickname"><a href="/person/u/<%=data.uinfo.user_id%>" target="_blank"><%=data.uinfo.nickname%></a></p>
+					<%var label = (data.uinfo && data.uinfo.label && data.uinfo.label[0]) ? data.uinfo.label[0].label_name : '美妆达人';%>
+					<p class="desp">
+						<%if(data.uinfo.user_id != this.user_id){%>
+						<%if(data.uinfo.followed == 0) {%>
+						<span class="addFollow btn_fol" fuid="<%=data.uinfo.user_id%>" followed="<%=data.uinfo.followed%>">+ 加关注</span>
+						<%} else {%>
+						<span class="removeFollow btn_unfol" fuid="<%=data.uinfo.user_id%>" followed="<%=data.uinfo.followed%>">已关注</span>
+						<%}%>
+						<%}%>
+						<span class="label"><%=label%></span>
+					</p>
+				</div>
+				<div class="clear_f"></div>
+				<%data.tinfo && data.tinfo.map(function(dt){%>
+				<p class="article"><a href="/club/single/<%=dt.article_id%>" target="_blank"><em class="cl_i_item">&nbsp;</em><%=dt.article_title%></a></p>
+				<%});%>
+			</div>
+			<%});%>
+		</div>
+	</div>
+</div>
+<%# user/windows.html%>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/club/club');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

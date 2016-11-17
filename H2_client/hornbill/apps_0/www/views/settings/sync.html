@@ -1,0 +1,62 @@
+ <strong class="title">同步绑定</strong>
+<div class="syncMain">
+	<div class="setSync">
+		<div class="tab-con login-title">
+		 		<span>平台</span>
+		 		<span>绑定</span>
+		 		<span>消息同步</span>
+		 		<span>动作同步</span>
+ 		</div>
+		<fieldset class="setSyncForm">
+		<form id="setPasswordForm" method="post" onsubmit="return false" action="">
+		<div class="syncFloat">
+			<div class="syncFloatIn tab-con">
+				<div class="syncLogo syncLogoLeft"><span>新浪微博</span></div>
+				<div class="none_f">
+					<input name="follow-mls" id="follow-mls" type="checkbox" />
+					<label>关注美丽说官方微博</label>
+				</div>
+				<span class="connect_map <%if(this.sync.info.weibo &&this.sync.info.weibo.connect == 'off'){%>none_f<%}%>">
+					已绑定
+				</span>
+				<a class="syncBind weibo <%if(this.sync.info.weibo &&this.sync.info.weibo.connect == 'on'){%>none_f<%}%>" href="/connect/auth/weibo?position=newbind">
+					<span><e class="bie-now">立即绑定</e></span></a>
+
+					<span>
+						<input type="checkbox" name="sina_sync_goods" id="sina_sync_goods" value="1" <%if(this.sync.info.weibo.connect == 'off'){%>disabled="disabled"<%}%> <%if(this.sync.info.weibo &&this.sync.info.weibo.share == 'on'){%>checked="true"<%}%> /><label for="sina_sync_goods">新浪微博</label>
+				
+					</span>
+					<span>	
+						<input type="checkbox" name="sina_sync_activity" value="1" <%if(this.sync.info.weibo.connect == 'off'){%>disabled="disabled"<%}%> <%if(this.sync.info.weibo &&this.sync.info.weibo.sina_sync_activity == 'on'){%>checked="true"<%}%> /><label>同步动作</label>
+					</span>
+			</div>
+			<div class="syncFloatIn tab-con">
+				<div class="syncLogo syncLogoRight"><span>QQ空间</span></div>
+				<span class="connect_map <%if(this.sync.info.qzone&&this.sync.info.qzone.connect == 'off'){%>none_f<%}%>">
+					已绑定
+				</span>
+				<a class="syncBind qzone  <%if(this.sync.info.qzone&&this.sync.info.qzone.connect == 'on'){%>none_f<%}%>" href="/connect/auth/qzone?position=newbind"><span><e class="bie-now">立即绑定</e></span></a>
+				<span>
+					<input type="checkbox" name="qzone_sync_goods" id="qzone_sync_goods" value="1" <%if(this.sync.info.qzone.connect == 'off'){%>disabled="disabled"<%}%> <%if(this.sync.info.qzone&&this.sync.info.qzone.share == 'on'){%>checked="true"<%}%> /><label for="qzone_sync_goods">Qzone</label></span>
+			</div>
+		</form>
+
+		<%if(this.err_bind != 0){%>
+			<p style="color:#f69;margin:20px 20px 0px 30px;">
+				<%if(this.err_bind == -1){ %>
+				 	该微博账号已经和其它美丽说账号绑定过了!
+				<%}else if(this.err_bind == -2){%>
+					不要贪心,已经绑定过了!
+				<%}else if(this.err_bind == -3){%>
+					 该Qzone账号已经和其它美丽说账号绑定过了!
+				<%}%>
+			</p>
+		<%}%>
+		<p class="three">绑定第三方账号，可以直接登录美丽说，还可以将美丽说内容同步到以上平台，与更多好友分享</p>
+	</fieldset>
+	
+		</div>
+		
+	</div>
+	
+</div>

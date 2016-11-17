@@ -1,0 +1,105 @@
+<%# head.html%>
+<%
+	var pageData = this.pageData
+	,   goodsInfo = this.pageData.goods_info
+	,   goods_id_arr = []
+	,   images = this.pageData.images
+
+	var cur_time  = (new Date).getTime() / 1000
+	var globalKey = this._Request_cookies.MEILISHUO_GLOBAL_KEY;
+
+	function getTimeRemain(end_time){
+		if (end_time && end_time > cur_time) return end_time - cur_time
+		else return end_time
+	}
+%>
+<% if (pageData) {%>
+<div class="wrap">
+	<figure>
+		<a class="try_img">
+			<img src="<%= pageData.penny_top.penny_img%>"/>
+		</a>
+		<div class="intro">
+			<a class="intro_title">
+				<%= pageData.penny_intro.intro_title%>
+				<b class="icon_hide">
+					<img src="<%=this.PICTURE_URL%>/images/wap/activity/penny/intro_hide.png"/>
+				</b>
+			</a>
+			<div class="intro_cont">
+				<h3><%= pageData.intro_cont.intro_cont_title%></h3>
+				<p><%= pageData.intro_cont.intro_cont_main%></p>
+			</div>
+			<a class="intro_img">
+				<img src="<%= pageData.penny_intro.intro_img%>"/>
+			</a>
+		</div>
+	</figure>
+	<% if (pageData && goodsInfo) {%>
+	<% pageData && goodsInfo.map(function(data,idx){ %>
+	<div class="goods_wrap <%if(idx == goodsInfo.length -1){%>goods_noborder<%}%>">
+		<div class="goods_cont">
+			<a href="<%= _extFn.getAppLink('twitter_single', {'twitter_info' : {'twitter_id' : data.twitter_id, 'is_doota' : 1}}, this.os, this.r, '/download/latest/test')%>" class="goods_img" tid="data.twitter_id" target="_blank">
+				<img src="<%= data.pic_url_wap%>"/>
+			</a>
+			<div class="goods_info" penny_id="<%= data.penny_id%>">
+				<h3 class="goods_title"><%= data.goods_title%></h3>
+				<p class="goods_intro"><%= data.goods_intro%></p>
+				<% 
+					var start_time = new Date();
+					var end_time = new Date(data.end_time);
+					var promptRemain = end_time - start_time;
+					promptRemain = promptRemain/1000;
+				%>
+				<div class="time_wrap">
+					<b class="time_icon">
+						<img src="<%=this.PICTURE_URL%>/images/wap/activity/penny/time_icon.png"/>
+					</b>
+					<%	if(promptRemain && promptRemain > 0){ %>
+						仅剩&nbsp;<span class="time time_down" remain="<%= promptRemain%>">--天--时--分--秒</span>
+					<%  } else {%>
+						活动结束
+					<%  } %>
+				</div>
+				<p class="goods_value">价值:￥<%= data.goods_value%></p>
+				<p class="goods_num" twitter_id="<%=data.penny_id%>">共<%= data.goods_num%>份&nbsp;&nbsp;&nbsp;&nbsp;已有<span class="apply_num_<%= data.penny_id%>">0</span>人申请</p>
+				<a href="<%= _extFn.getAppLink('twitter_single', {'twitter_info' : {'twitter_id' : data.penny_id, 'is_doota' : 1}}, this.os, this.r, '/download/latest/test')%>" class="btn" target="_blank"><%= data.try_money%></a>
+			</div>
+		</div>
+		<% if (data.store_status == '1'){%>
+		<div class="store" shop_id="<%= data.shop_id%>">
+			<a href="<%= _extFn.getAppLink('shop' , {'shop_id':data.shop_id} , this.os, this.r) %>" target="_blank">
+				<span class="next_icon">
+					<img src="<%=this.PICTURE_URL%>/images/wap/activity/penny/next_icon.png"/>
+				</span>
+				<p>商品由<span><%= data.store_name%></span>店铺提供</p>
+				<p class="store_intro"><%= data.store_intro%></p>
+				<p>店铺优惠：<span><%=data.discount_cont%></span></p>
+			</a>
+		</div>
+		<%}%>
+	</div>
+	<%}); %>
+	<%}%>
+	<% images && images.map(function(data,idx){ %>
+	<div <%if(idx < images.length -1){%>class="bottom" <%}%>>
+		<a href="<%= data.image_link%>">
+			<img src="<%= data.image_src%>" />
+		</a>
+	</div>
+	<%});%>
+</div>
+<%}%>
+
+<% if(this.share){ %>
+	<%= requireFn('wapShare.html')({
+		'share' : this.share 
+	    , 'shareTitle' : '选择分享到'
+	    , '_JSstack' : this._JSstack
+		, '_JSmods' : this._JSmods
+	}); %>
+<%}%>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/penny');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

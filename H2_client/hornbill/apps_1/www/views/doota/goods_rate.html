@@ -1,0 +1,50 @@
+<% var goodsInfo = this.goods_info || {} %>
+<div class="goods-star" id="goods-star">
+	<%if ( this.shop_com ){%>
+	<div class="goods-star-right js-star-right">
+		<div class="goods-star-title">
+			店铺评分（最近90天共<%= this.shop_com.num %>人评分）
+		</div>
+		<ul>
+			<%
+				var shopCom = this.shop_com;
+				[{
+					label: '描述一致',
+					val: shopCom.avg_accord
+				}, {
+					label: '质量满意',
+					val: shopCom.avg_quality
+				}, {
+					label: '服务态度',
+					val: shopCom.avg_attitude
+				}, {
+					label: '发货速度',
+					val: shopCom.avg_fast
+				}].forEach(function( v ) {
+			%>
+			<li>
+				<label><%= v.label %>:</label>
+				<span class="item-tag-progressbar">
+					<i class="item-tag-progress" style="width:<%= 100 * (v.val || 5)/5 %>%;"></i>
+				</span>
+				<%= +v.val || '--' %>
+			</li>
+			<%
+				});
+			%>
+		</ul>
+	</div>
+	<div class="goods-star-left js-star-left">
+        <% if ( !this.hasNoSatisfyRatio ) {%>
+		<div class="goods-star-title js-star-title">
+			商品好评率
+				<span class="goods-praise-ratio red_f pre">
+					<%= this.hasNoSatisfyRatio ? '暂无评分哦~' : goodsInfo.satisfy_rate %>
+				</span>
+		</div>
+        <% } %>
+		<ul class="goods-tags js-goods-tags">
+		</ul>
+	</div>
+	<%}%>
+</div>

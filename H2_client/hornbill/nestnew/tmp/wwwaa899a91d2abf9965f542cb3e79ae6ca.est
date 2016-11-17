@@ -1,0 +1,23 @@
+/*--/Users/MLS/Documents/H2/H2_client/hornbill/apps_0/www/views/user/login_new.html--*/ 
+     var est = require(config.path.lib + 'est/est.js'); 
+     var _extFn = require('/Users/MLS/Documents/H2/H2_client/hornbill/nestnew/server/lib/est/extFn.js'); 
+     function requireFn(tpl) { return est.renderFile('/Users/MLS/Documents/H2/H2_client/hornbill/apps_0/www/views/' ,tpl , null , null ,'www' ,true); } ; 
+     function __getHtml (_data) { 
+       function jsRender(tpl , id) { return est.jsRender(requireFn(tpl)(_data), id  ); } ; 
+       var __htm ='';
+__htm += '';
+__htm += est.renderFile("/Users/MLS/Documents/H2/H2_client/hornbill/apps_0/www/views/" ,"head_simple.html",_data,null,"www" )||"";
+__htm += '\n</head>\n<body>\n<div class="wrap">\n	<div class="reg_wrap">	\n		<div class="head">\n			<a href="/" class="reg_logo"></a>\n			<a href="/" class="welcome_txt"></a>\n		</div>\n		<div class="main">\n			<div class="ad_wrap">\n				<img src="';
+__htm +=_data.PICTURE_URL;
+__htm += 'images/register/ad_img.jpg" width="370" height="353" />\n			</div>\n			<div class="login_form">\n				<form id="loginForm" method="post" onsubmit="return false" action="">\n					<h3>\n						<a href="/user/register">注册</a>\n						登录美丽说\n					</h3>\n					<div class="login_list">\n						<p class="login_box">\n							<input class="login_txt" id="mlsUser" name="mlsUser" type="text" placeholder="邮箱/手机号/昵称" />\n							<span></span>\n							<span class="user_icon"></span>\n						</p>\n					</div>\n					<div class="login_list">\n						<p class="login_box">\n							<input class="login_txt" id="password" name="password" type="password" placeholder="密码" />\n							<span></span>\n							<span class="pwd_icon"></span>\n						</p>\n					</div>\n					<div class="login_list authcode ';
+ if(_data.captcha.need_captcha != 1){ ;__htm += 'none_f';
+ } ;__htm += '">\n						<div class="login_box">\n							<input class="login_txt" id="checkcode" name="checkcode" type="text" placeholder="请输入验证码" maxlength="4" />\n							<span></span>\n							<span class="code_icon"></span>\n							<div class="checkImage" onselectstart="return false;">\n								<img width="90" height="36" src="';
+__htm += _data.PICTURE_URL ;
+__htm += 'images/register/blank.jpg"><span class="refresh"></span>\n							</div>\n						</div>\n					</div>\n					<div class="loginErrorMessage none_f"></div>\n					\n					<div class="login_btn_wrap">\n						<input type="submit" class="login_btn" value="立即登录"/>\n					</div>\n					<div class="remember">\n						<input type="checkbox" name="savestate" id="savestate" checked="checked" />\n						<label for="savestate">记住我</label>\n					</div>\n					<div class="forget_pwd">\n						<a href="/user/findPwd" target="_blank">忘记密码？</a>\n					</div>\n				</form>\n				<div class="fast_login">\n					<h3>无需注册，即可登录</h3>\n					<div class="fast_way">\n						<a href="/connect/auth/qzone" class="qq_way"></a>\n						<a href="/connect/auth/weibo" class="sina_way"></a>\n						<a href="/connect/auth/weixin" class="weixin_way"></a>\n					</div>\n				</div>\n				<div class="more_way_wrap">\n					<h4 onselectstart="return false">更多登录方式>></h4>\n					<div class="more_way none_f">\n						<a href="/connect/auth/txweibo" class="txweibo"></a>\n						<a href="/connect/auth/douban" class="douban"></a>\n						<a href="/connect/auth/renren" class="renren"></a>\n						<a href="/connect/auth/baidu" class="baidu"></a>\n					</div>\n				</div>\n				<div class="notice">\n					公告：淘宝互联已失效，点此进行 \n					<a href="/user/appeal_tb/">账号申诉</a>\n				</div>\n			</div>\n		</div>\n	</div>\n</div>\n';
+__htm += est.callFn("useModule")("Meilishuo.config._or = \"%s\";\n	fml.use('page/login');", _data._JSstack , _data._JSmods ,_data._OrginRequest||'') || '';
+ ;__htm += '\n';
+ _data._disableThirdParty = true;__htm += '\n';
+__htm += est.renderFile("/Users/MLS/Documents/H2/H2_client/hornbill/apps_0/www/views/" ,"foot_simple_cr.html",_data,null,"www" )||"";
+__htm += '\n';
+return __htm;} 
+ exports.html = __getHtml; 

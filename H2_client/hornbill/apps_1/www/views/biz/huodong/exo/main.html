@@ -1,0 +1,155 @@
+<%
+	var exchange_type = {
+		'1' : '已兑完',
+		'0' : '去兑换'
+	}
+	var mSubstr = _extFn.mSubstr;
+%>
+<%#head.html%>
+<style>
+	body{ background:#fff; }
+	.fight{
+		background:url(<%= this.new_banner.fought_button%>);
+	}
+</style>
+
+<%
+	var isLogin = this.userInfo.user_id;
+%>
+<div class="join">
+	已有<span id="join_num"><%= this.join_num.join_num %></span>人加入了美丽行星
+</div>
+<div class="firstPage">
+	<div class="top" style="background:url(<%= this.new_banner.fight_num_bg %>)">
+		<div class="inner">
+			<p class="date" style="color:#<%= this.new_banner.date_color%>"><%=this.year%>年<%= this.month%>月<%= this.day%>日</p>
+			<p id="follow_num"> 
+				<label id="fnum" class="fnum"><%= this.fight_num.fight_count%></label>
+				<span></span><span></span><span></span><span></span><span></span><span></span>
+			</p>
+			<span id="fight" class="fight <%if(!this.has_fought){%>available<%}%>"></span>
+		</div>
+	</div>
+	<div class="top_bnr">
+		<ul class="banner">
+			<% this.new_banner && this.new_banner.banner && this.new_banner.banner.map(function(data){ %>
+				<li><a href="<%= data.link || 'javascript:;'%>" class="pic" style="background:url(<%= data.src%>) no-repeat center top;" <%if(data.link.indexOf('http://') != -1){%>target="_blank"<%}%>></a></li>
+			<%});%>
+		</ul>
+		<div class="round">
+			<div class="adType">
+				<% this.new_banner && this.new_banner.banner && this.new_banner.banner.length>1  && this.new_banner.banner.map(function(data){ %>
+					<a></a>
+				<% }); %>
+			</div>
+		</div>
+	</div>
+</div>
+<% this.fuide.twitter_post_list && this.fuide.twitter_post_list.map(function(data){ %>
+<div class="item1">
+	<div class="img_tit"><img src="<%= data.banner_image%>" width="948" /></div>
+	<div class="goods_box">
+		<a href="<%= data.link%>" target="_blank" class="firstPic"><img src="<%= data.image%>" /></a>
+		<%= requireFn('activity/act_poster.html')({
+			'act_poster' : data.tInfo
+		}); %>
+	</div>
+</div>
+<%});%>
+<!-- <div class="title2"></div>
+<%if(isLogin){%>
+<div class="exo_user">
+	<div class="head_img">
+		<img src="<%= this.user_info.data.avatar_b %>" width="50px" height="50px"/>
+	</div>
+	<div class="user_info">
+		<p class="name"><%= this.user_info.data.nickname %></p>
+		<p><span class="user_point"><%= this.user_info.data.point%></span>积分 | <a href="/member/list" target="_blank">积分明细&gt;</a></p>
+	</div>
+	<div class="buy_more"><a href="/tuan?frm=member_more" target="_blank">去购物领取更多积分 &gt;</a></div>
+</div>
+<%}%>
+<div class="center">
+	<%this.force_hide = 1;%>
+	<%#member/intro.html%>
+</div>
+<div class="nav"></div>
+<div class="center">
+	<ul class="goods new_goods contentArea" type="new">
+		<% this.exchange.new_goods.length && this.exchange.new_goods.map(function(data, idx){%>
+		<li <% if(idx % 3 == 2){%>class="nomr"<%}%> tid = "<%= data.twitter_id%>">
+			<a class="good_img">
+				<img src="<%= data.pic_url%>">
+			</a>
+			<div class="good_info">
+				<p class="good_title"><%= mSubstr(data.goods_titile, 36, '...')%></p>
+				<p class="need">
+					需<span class="redword"><b><%= data.point%></b>积分</span>
+				</p>
+				<%
+					var can_get = this.exchange_status.data.new_goods[data.twitter_id] === 0;
+					var type_num = can_get ? '0' : '1' ;
+				%>
+				<a href="javascript:void(0)" point="<%= data.point%>" exchangeNum ="<%= data.exchangeNum%>"class="good_btn <%= can_get ? 'go' : 'over'%>"><%= exchange_type[type_num]%></a>
+			</div>
+		</li>
+		<%});%>
+	</ul>
+</div> -->
+<div class="title1"></div>
+<div class="news">
+	<a href="javascript:;" id="left"></a>
+	<a href="javascript:;" id="right"></a>
+	<div class="c">
+		<div class="mask">
+			<%if(this.news && this.news.length){%>
+			<%for(var i = this.news.length-1;i>=0;i--){%>
+			<%var data = this.news[i];%>
+			<div class="tag"> 
+				<%if(data.link){%>
+				<a target="_blank" href="<%=data.link%>"></a>
+				<%}%>
+				<img src="<%=data.img%>"/>
+				<div class="content"><%==data.text%></div>
+				<div class="date"><%=data.date%></div>
+			</div>
+			<%}%>
+			<%}%>
+		</div>
+	</div>
+</div>
+<div class="masker"></div>
+<div id="masker"></div>
+<div id="popup" style="background:url('<%= this.new_banner.popup_bg %>');">
+	<a id="close_popup" href="javascript:;"></a>
+	<a id="share_sina" href="javascript:;"></a>
+	<a id="share_qqzone" href="javascript:;"></a>
+	<a id="share_qqwb" href="javascript:;"></a>
+	<a id="coupon_link" target="_blank" href="/coupon/"></a>
+</div>
+<div class="video" id="video">
+	<a href="javascript:;" id="close"></a>
+</div>
+<div class="box3"></div>
+<div class="magazine" <%if(this.group && this.group.length && this.group.length < 4){%>style="width:<%= this.group.length*241 %>px"<%}%>>
+<% this.group && this.group.map(function(data){ %>
+	<div class="groupBox">
+		<div class="groupCon">
+			<div class="gc_title">
+				<h4><a href="/group/<%= data.group_id%>" target="_blank"><%= data.name%></a></h4>
+			</div>
+			<a href="/group/<%= data.group_id%>" target="_blank" class="imgBox">
+				<span asrc="<%= data.mixpic%>" class="maxpic" ></span>
+			</a>
+			<div class="lookBox">
+				<a class="btn" href="/group/<%= data.group_id%>" target="_blank">去看看</a>
+			</div>
+		</div>
+	</div>
+<% }); %>
+</div>
+<%#huodong/exo_bottom.html%>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/huodong/exo_zhuanti');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

@@ -1,0 +1,111 @@
+<%#head.html%>
+
+<%
+	var pkInfo = this.pageData.pkInfo;
+	var productInfo = this.pageData.productInfo;
+	var twitterList = this.pageData.twitterList;
+	var DEFAULT_AVATAR_E = 'http://d05.res.meilishuo.net/ap/e/56/de/19e804632c91d96c684320171e31_256_256.cc.jpg';
+	var OVER_AVATAR_E = 'http://d05.res.meilishuo.net/img/_o/70/d1/2a7dc6f679bb4c728335796a2155_60_60.cf.png';
+
+	var red_num = productInfo[0].product_vote;
+	var yellow_num = productInfo[1].product_vote;
+	var total = red_num + yellow_num;
+	total = total ? total : 1;
+	productInfo[0].pro_width = (red_num / total * 100) + '%';
+	productInfo[1].pro_width = (yellow_num / total * 100) + '%';
+%>
+
+<div class="pk_desc">
+	<img src="<%= pkInfo.index_img %>" alt="<%= pkInfo.description %>">
+</div>
+
+<%
+	productInfo.forEach(function(product, index){
+		var pk_type = index ? '黄方' : '红方';
+%>
+	<div class="pk_defences color_<%= index %>" data-id="<%= product.product_id %>">
+		<div class="title">
+			<span class="top"><%= pk_type + ':' %><%= product.product_title %></span>
+		</div>
+		<p class="sketch"><%= product.product_desc %></p>
+		<div class="pk_bullet">
+			<img class="bullet_bg" src="<%= product.product_img %>">
+			<div class="bullet_wrap" id="stage_<%= index+1 %>"></div>
+		</div>
+		<div class="plant_bullet">
+			<input type="text" placeholder="说出你支持<%= pk_type %>的理由，biubiu~">
+			<span class="btn js_biubiu" data-danmu="<%= index %>" data-id="<%= product.product_id %>">发射</span>
+		</div>
+		<div class="progress">
+			<div class="pro_in <%= index ? 'yellow' : 'red' %>" style="width: <%= product.pro_width %>;"></div>
+		</div>
+		<div class="support">
+			<div class="user_title">已有<span class="fb_f" data-supports="<%= product.product_vote %>"><%= product.product_vote %></span>位美人支持<%= pk_type %>，快为你的阵营加油吧！</div>
+			<div class="user_pics">
+
+				<%
+					product.product_vote_user.forEach(function(user, index){
+						if(index > 6) return
+				%>
+					<div class="images normal"><img src="<%= user.avatar_e %>" alt=""></div>
+				<% }); %>
+
+				<div class="images last <%= product.product_vote_user.length > 7 ? '' : 'none_f' %>"><img src="<%= OVER_AVATAR_E %>"></div>
+			</div>
+		</div>
+	</div>
+<% }); %>
+<%
+	var show_desc = false;
+	if(pkInfo.notice_desc && pkInfo.notice_img) show_desc = true;
+%>
+<div class="fixed_wrap <%= twitterList.length ? 'no_line' : '' %>">
+	<div class="cricle_title">本期PK由<div class="avatar"><img src="<%= productInfo[0].avatar_e || DEFAULT_AVATAR_E %>"><% if(show_desc){ %><div class="triangle-css3 transform ie-transform-filter"></div><% } %></div><%= productInfo[0].nickname %>发起</div>
+	<% if(show_desc){ %>
+		<a class="huodong_desc" href="<%= pkInfo.notice_link %>">
+			<img src="<%= pkInfo.notice_img %>">
+			<span class="notice_desc"><%= pkInfo.notice_desc %></span>
+			<span class="right">了解详情 ></span>
+		</a>
+	<% } %>
+
+	<% if(pkInfo.groupring_url){ %>
+		<div class="line">
+			<a href="<%= pkInfo.groupring_url %>" class="join_cricle">来讨论好货吧 ></a>
+		</div>
+	<% } %>
+
+</div>
+
+<% if(twitterList.length){ %>
+	<div class="goods_title"><span>相关商品</span></div>
+	<div class="rec_goods">
+		<% twitterList.forEach(function(goods){ %>
+			<a class="items" href="<%= goods.link %>" data-id="<%= goods.id %>">
+				<div class="img_wrap" style="background-image:url('<%= goods.img %>');"></div>
+				<p class="title"><%= goods.goods_title %></p>
+				<div class="desc"><span class="price">￥<%= goods.price %></span><span class="like_num"></span><%= goods.like_num %></div>
+			</a>
+		<% }); %>
+	</div>
+<% } %>
+
+<a class="pk_list" href="<%= _extFn.getAppLink('openURL', {"url": 'http://lcfm.fedevot.meilishuo.com/biz/shareact/main/?anchor=index&r=' + this.xr.r, "inApp": 1, "require_app_info": 1}, this.os, '', '/biz/shareact/main/?anchor=index&r=' + this.xr.r); %>"><span>更多潮流单品推荐</span></a>
+
+
+<script>
+	fml.vars.user_id = <%= this.userInfo_wap.data.user_id %>;
+	fml.vars.circle_id = '<%= pkInfo.circle_id || 0 %>';
+	fml.vars.red_num = <%= red_num %>;
+	fml.vars.yellow_num = <%= yellow_num %>;
+</script>
+
+<script type="text/html" id="user_image">
+	<div class="images"><img src="<%= this.userInfo_wap.data.avatar_b %>"></div>
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/biz/pkbang_new');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot.html%>

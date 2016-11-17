@@ -1,0 +1,76 @@
+<%# head_simple.html%>
+	<script> 
+            (function(win,doc){
+                var docel = doc.documentElement;
+                var meta = doc.querySelectorAll('meta[name=viewport]');
+                meta[0].setAttribute('content','width=device-width,user-scalable=no,initial-scale=1');
+                function recalc(){
+                    var width = docel.clientWidth;
+                    docel.style.fontSize = 100 * width/640+'px';
+                }
+                if(doc){
+                    recalc();
+                    win.addEventListener('orientationchange',recalc,false);
+                }else if (doc.addEventListener){
+                    doc.addEventListener('DOMContentLoaded', recalc, false);
+                }
+            })(window,document)
+     </script>
+</head>
+<% var testResult = this.testResult
+    var info = testResult.data %>
+<div class="wrap">
+	<div class="result">
+		<%== this.name %><%= info.res %>
+	</div>
+	<img class="resultImage" src="<%= info.pic_url %>">
+	<div class="resultDesc"><%= info.desc %> </div>
+    <div class="btn">
+        <div class="restartBtn"><a href="/activity/testGame/index/<%= this.testId %>">重新测试</a></div>
+        <div class="shareBtn">分享到朋友圈</div>
+    </div>
+    <% if(info.banner.pic_url){ %>
+    <div class="bannerWrap">
+        <a class="bannerLink" href="<%= info.banner.jump_url %>">
+            <img class="bannerImage" src="<%= info.banner.pic_url %>"/>
+        </a>
+    </div>
+    <% } %>
+    <div class="recommentWrap">
+        <div class="recommentDesc">
+            <span class="greyLine"></span>
+            <span class="moreText"><%= info.recom_desc %></span>
+        </div>
+        <% info.recom && info.recom.forEach(function(data){ %>
+        <div class="recommentInfo">
+            <div class="recommentGoods">
+                <a href="<%= data.jump_url %>">
+                    <img src="<%= data.pic_url %>"/>
+                </a>
+            </div>
+        </div>
+        <% }) %>
+    </div> 
+    <%if(info.floating_banner.pic_url){%>
+    <div class="fixedBanner">
+        <a href="<%= info.floating_banner.jump_url %>"><img src="<%= info.floating_banner.pic_url %>"/>
+        </a>
+    </div>
+    <%}%>
+</div>
+<div class="shareImg">
+    <img src="http://d03.res.meilishuo.net/pic/_o/53/55/454bb3c3ab18e3eacb54e3de2f73_482_291.ch.png">
+</div>
+<script>
+    fml.vars.isWxLogin= <%= this.isWxLogin || false %>   ;
+    fml.vars.isWx = <%= this.isWx %>;
+    fml.vars.testId = <%= this.testId %>;
+    fml.vars.shareData = <%= JSON.stringify(info.shareData) %>;
+    
+</script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use('wap/page/activity/testGameResult');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot.html%>

@@ -1,0 +1,67 @@
+<%# sq/header.html%>
+<%# sq/search_md.html %>
+<%
+	var category  = this.category || [];
+	var banners   = this.banner;
+	var pageName  = this.pageName;
+%>
+
+<div class="section_wrap">
+	<% if(pageName && banners[pageName]){ %>
+		<% var banner = banners[pageName]; %>
+		<a <%if(banner.url){%>href="<%= banner.url %>"<%}%>>
+			<img src="<%= banner.img%>" alt="banner">
+		</a>
+	<% } %>
+
+	<% var url; %>
+	<% if(category.length){ %>
+		<div class="category_nav">	
+			<p class="cosmetic">
+		<% category.map(function(data, index){%>
+		<% url =  "/sq/search/?page_name=" + pageName + '&key=' + data.key + '&d_r=' + this.DR; %>
+				<a href=<%=url %> class='cosmetictap <%= (this.key == data.key) ? 'type_select' : '' %>'>
+					<span class="<%= (this.key == data.key) ? 'type_select' : '' %>"><%= data.name%></span>
+				</a>
+		<%})%>
+			</p>
+		</div>
+	<% }else{ %>
+		<ul class="order_nav">
+		<% 
+			var section = this.section;
+			url = "/sq/search/?key=" + this.key + '&d_r=' + this.DR;
+		%>
+			<li><a class="<%= (section != 'boom' && section != 'new' ) ? 'selected' : '' %>" href="<%= url + '&section=hot' %>" alt="nav item"><span>默认</span></a></li>
+			<li><a class="<%= (section == 'boom') ? 'selected' : '' %>" href="<%= url + '&section=boom' %>" alt="nav item"><span>热销</span></a></li>
+			<li><a class="<%= (section == 'new') ? 'selected' : '' %>" href="<%= url + '&section=new' %>" alt="nav item"><span>上新</span></a></li>
+		</ul>
+	<% } %>
+
+	<ul class="goods_wall"></ul>
+	<div class="pullUp" status="loading"></div>
+	<ul id="goTop">
+	   <li class="none_f" id="go_top"><span class="icon-gotop"></span></li>
+	</ul>
+</div>
+<%# sq/posterSQ.html %>
+
+<script>
+	fml.vars.key = "<%== this.key %>";
+	fml.vars.shareInfo = {
+		"url" : location.href
+	};
+	fml.vars.pageId  = "<%= this.category ? 2 : 5 %>";
+	fml.vars.section = "<%= this.section %>";
+	fml.vars.DR      = "<%= this.DR %>";
+</script>
+
+<script src="http://pub.idqqimg.com/qqmobile/qqapi.js?_bid=152"></script>
+<%! 
+	$_ENGINE_SELF.callFn("useModule")(
+		"<<<_use:fml.use('wap/page/sq/search');_use:", 
+		this._JSstack, 
+		this._JSmods 
+	); 
+%>
+<%# sq/footer.html%>

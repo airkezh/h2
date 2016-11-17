@@ -1,0 +1,33 @@
+<%
+var query = this._Request_query;
+var getLink = _extFn.getLink;
+%>
+<%if(this.showAttr){%>
+<span class="left_f f14_f">热门：</span>
+<ul class="category sort">
+	<li>
+	<a class="<%if(!query.filterword){%>active<%}%>" href="<%=getLink({'section' : 'hot' , 'page' : '0' , 'price' : 'all' , 'filterword' : null} , query)%>">全部<%= this.attr_title_keywords.word_name%></a>
+	</li>
+	<% this.attr_style && this.attr_style.map(function(data){%>
+		<li>
+		<a class="<%if(query.filterword == data.word_name){%>active<%}%>" href="<%if(data.isBrand){%>/guang/brand/<%= data.word_name%><%}else{%>/guang/attr/<%=getLink({'section' : 'hot' , 'page' : '0' , 'price' : 'all' , 'filterword' : data.word_name} , query)%><%};%>" target="_self"><%= data.word_name%></a>
+			<%});%>
+		</li>
+</ul>
+<%}%>
+<span class="left_f f14_f">价格：</span>
+<ul class="category left_f">
+	<li><a <%if(query.price == 'all' || !query.price){%>class="active"<%}%> href="<%=getLink({'price' : 'all' ,'section' : 'hot' , 'page' : '0' ,} , query)%>">全部</a></li>
+	<li><a <%if(query.price == '0~50'){%>class="active"<%}%> href="<%=getLink({'price' : '0~50' , 'section' : 'hot' , 'page' : '0' ,} , query)%>">0~50</a></li>
+	<li><a <%if(query.price == '51~200'){%>class="active"<%}%> href="<%=getLink({'price' : '51~200' , 'section' : 'hot' , 'page' : '0' ,} , query)%>">51~200</a></li>
+	<li><a <%if(query.price == '201~500'){%>class="active"<%}%> href="<%=getLink({'price' : '201~500' , 'section' : 'hot' , 'page' : '0' ,} , query)%>">201~500</a></li>
+	<li><a <%if(query.price == '501~10000'){%>class="active"<%}%> href="<%=getLink({'price' : '501~10000' , 'section' : 'hot' , 'page' : '0' ,} , query)%>">500元以上</a></li>
+</ul>
+<%if(this.isShow){%>
+<ul class="category right_f">
+	<li><a class="<%if(query.section == 'hot' || !query.section){%>active<%}%>" href="<%=getLink({'section' : 'hot' , 'page' : '0'} , query)%>">最热</a></li>
+	<li><a class="<%if(query.section == 'new'){%>active<%}%>" href="<%=getLink({'section' : 'new' , 'page' : '0'} , query)%>">最新</a></li>
+</ul>
+<span class="right_f f14_f">排序：</span>
+<%}%>
+

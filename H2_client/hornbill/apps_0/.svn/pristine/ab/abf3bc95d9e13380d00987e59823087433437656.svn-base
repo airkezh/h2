@@ -1,0 +1,217 @@
+<%
+	var refund_info = this.refund_detail;
+	var refund_buyer = refund_info.refund_buyer_info,
+		contacts_info = refund_info.contacts_info,
+		_appeal_detail = this.appeal_data.info,
+		appeal_header = _appeal_detail.header;
+	if(_appeal_detail.appeal_info){
+		var appeal_buyer = _appeal_detail.appeal_info.buyer,
+			appeal_seller = _appeal_detail.appeal_info.seller,
+			appeal_result = _appeal_detail.appeal_result;
+	}
+	if(appeal_header.notice_text){
+		var appeal_displayText = appeal_header.notice_text.msg,
+			redmsg = appeal_header.notice_text.redmsg;
+		if(redmsg){
+			for(var i = 0;i<redmsg.length;i++){
+				appeal_displayText = appeal_displayText.replace('%s','<span class="red_f">'+redmsg[i]+'</span>');
+			}
+		}
+	}
+%>
+<%
+function getOriImgUrl(url, isNew, w, h){
+	if(isNew){
+		var param = '{"url":"'+url+'", "img_width":'+w+', "img_height" : '+h+' }';
+		var result = 'meilishuo://open_img.meilishuo?json_params=' + encodeURIComponent(param);
+		return result;
+	} 
+	return url;
+}
+var isNewest = this.isNewest;
+function getImgItem(e){
+%>
+	<a href="<%=getOriImgUrl(e.orig,isNewest,e.img_width,e.img_height) %>" class="img_item"><img src="<%= e.thumb %>" /></a>
+<%
+}
+%>
+
+<%#head.html%>
+<section class="container">
+	<!-- 申请仲裁 start -->
+	<% if(appeal_header.initiate == 1){ %>
+		<div class="arbitral_form js_prove_info">
+			<h3>申请美丽说仲裁，请顾客举证</h3>
+			<ul>
+				<li>
+					<label>顾客申诉说明（此项必填）</label>
+					<textarea name="description"></textarea>
+				</li>
+				<li>
+					<label>顾客举证（最多5张）</label>
+					<div class="upload_tip">您可以上传商品破损照片、客服聊天记录截屏、快递单照片等作为凭证</div>
+					<div class="img_list" id="img_wrapper">
+						<a class="pic pic_upload addBtn" href="javascript:;"></a>
+						<div class="clear_f"></div>
+					</div>
+					<%#app/low_version_tip.html%>
+				</li>
+				<li>
+					<label class="txt">联系人：</label><input name="concact" type="text">（此项必填）
+				</li>
+				<li>
+					<label class="txt">手机号：</label><input name="phone" type="text">（此项必填）
+				</li>
+				<div class="clear_f"></div>
+			</ul>
+			<div class="big_btn">
+				<span class="js_submit_appeal btn" type="button">提交举证</span>
+			</div>
+		</div>
+	<% } else { %>
+	<!-- 申请仲裁 end -->
+	<!-- 仲裁过程信息 start -->
+	<% if(_appeal_detail.appeal_info && appeal_result) { %>
+		<div class="status">
+			<h3>美丽说仲裁结果：<%= appeal_result.result %></h3>
+			<% if(appeal_result.price){ %>
+				<p>退款金额：<%= appeal_result.price %></p>
+			<% } %>
+			<% if(appeal_result.description){ %>
+				<p>仲裁说明：<%= appeal_result.description %></p>
+			<% } %>
+			<p>
+				如有异议，请拨打美丽说客服热线：400-080-0577
+			</p>
+		</div>
+	<% } else { %>
+		<div class="status">
+			<h3><%= appeal_header.status_text %></h3>
+			<p><%= appeal_displayText || ''%></p>
+		</div>
+	<%	} 
+	} 
+	%>
+	<!-- 仲裁过程信息 end -->
+	<% if(_appeal_detail.appeal_info && appeal_buyer){ %>
+		<div class="buyer_info">
+			<table>
+				<tbody>
+					<tr>
+						<th>顾客：</th>
+						<td><%= appeal_buyer.contact %></td>
+					</tr>
+					<tr>
+						<th>手机号：</th>
+						<td><%= appeal_buyer.phone %></td>
+					</tr>
+					<tr>
+						<th>顾客申诉说明：</th>
+						<td><%= appeal_buyer.description %></td>
+					</tr>
+					<tr>
+						<th>顾客举证：</th>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<div class="proof_list">
+							<% appeal_buyer.pics.map(function(e){ 
+								getImgItem(e);
+							}); %>
+								<div class="clear_f"></div>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	<% } %>
+	<% if(_appeal_detail.appeal_info && appeal_seller){ %>
+	<div class="seller_info">
+		<table>
+			<tr>
+				<th>商家昵称：</th>
+				<td><%= appeal_seller.contact %></td>
+			</tr>
+			<tr>
+				<th>商家QQ：</th>
+				<td>
+					<span><a href="javascript:;" class="qq"><%= contacts_info.seller_qq || '' %></a></span>
+				</td>
+			</tr>
+			<tr>
+				<th>手机号：</th>
+				<td><span><a href="tel:<%= appeal_seller.phone %>"><%= appeal_seller.phone %></span></a></td>
+			</tr>
+			<tr>
+				<th>商家申诉说明：</th>
+				<td><%= appeal_seller.description %></td>
+			</tr>
+			<tr>
+				<th>商家举证：</th>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<div class="proof_list">
+					<% appeal_seller.pics.map(function(e){
+						getImgItem(e);
+					}); %>
+						<div class="clear_f"></div>
+					</div>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<% } %>
+	<!-- 退款信息 start -->
+	<div class="refund_content">
+		<table>
+			<tbody>
+				<tr>
+					<th>退款金额：</th>
+					<td><%= refund_buyer.refund_price %>元</td>
+				</tr>
+				<tr>
+					<th>退款原因：</th>
+					<td><%= refund_buyer.select_reason %></td>
+				</tr>
+				<tr>
+					<th>退款说明：</th>
+					<td><%= refund_buyer.reason %></td>
+				</tr>
+				<% if(refund_buyer.refund_evidence && refund_buyer.refund_evidence.length){ %>
+				<tr>
+					<th>退款凭证：</th>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<div class="proof_list">
+						<% refund_buyer.refund_evidence.map(function(e){
+							getImgItem(e);
+						}); %>
+							<div class="clear_f"></div>
+						</div>
+					</td>
+				</tr>
+				<% } %>
+				<tr>
+					<th>退款编号：</th>
+					<td><%= refund_buyer.refund_id %></td>
+				</tr>
+				<tr>
+					<th>申请时间：</th>
+					<td><%= refund_buyer.apply_time %></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<!-- 退款信息 end -->
+</section>
+<%#app/mls_hotline.html%>
+<script>
+	Meilishuo.config.refundId = '<%= this.refundId %>';
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/client/page/appeal');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

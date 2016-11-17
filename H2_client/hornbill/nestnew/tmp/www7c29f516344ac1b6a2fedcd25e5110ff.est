@@ -1,0 +1,39 @@
+/*--/Users/MLS/Documents/H2/H2_client/hornbill/apps_0/www/views/common/nav.html--*/ 
+     var est = require(config.path.lib + 'est/est.js'); 
+     var _extFn = require('/Users/MLS/Documents/H2/H2_client/hornbill/nestnew/server/lib/est/extFn.js'); 
+     function requireFn(tpl) { return est.renderFile('/Users/MLS/Documents/H2/H2_client/hornbill/apps_0/www/views/' ,tpl , null , null ,'www' ,true); } ; 
+     function __getHtml (_data) { 
+       function jsRender(tpl , id) { return est.jsRender(requireFn(tpl)(_data), id  ); } ; 
+       var __htm ='';
+__htm += '<div id="com-nav">\n	<div id="def-nav">\n		<div class="inner">\n			';
+
+				var domain = _data.MAIN_SITE_DOMAIN;
+
+				var menus = [
+					{ name : '首页', tag : 'welcome', url : domain + '/welcome'},
+					{ name : '最热', tag : 'hot', url : domain + '/guang/hot?frm=daeh'},
+					{ name : '上衣', tag : 'jacket', url : domain + '/guang/catalog/dress?nid=210113&cata_id=2001000000000&frm=daeh'},
+					{ name : '裙子', tag : 'skirt', url : domain + '/guang/catalog/dress?nid=210115&cata_id=2004000000000&frm=daeh'},
+					{ name : '裤子', tag : 'pants', url : domain + '/guang/catalog/dress?nid=210117&cata_id=2006000000000&frm=daeh'},
+					{ name : '鞋子', tag : 'shoes', url : domain + '/guang/catalog/shoes?nid=210103&cata_id=6000000000000&frm=daeh'},
+					{ name : '包包', tag : 'bag', url : domain + '/guang/catalog/bag?nid=210105&cata_id=5000000000000&frm=daeh'},
+					{ name : '配饰', tag : 'access', url : domain +'/guang/catalog/access?nid=210111&cata_id=7000000000000&frm=daeh'},
+					{ name : '内衣', tag : 'underwear', url : domain + '/guang/catalog/dress?nid=210119&cata_id=2009000000000&frm=daeh'},
+					{ name : '美妆', tag : 'beauty', url : domain + '/beauty?frm=daeh'},
+					{ name : '男装', tag : 'man', url : domain + '/guang/catalog/man?nid=222645&cata_id=3000000000000&frm=daeh'},
+					{ name : '童装', tag : 'child', url : domain +'/guang/catalog/child?nid=222647&cata_id=2001054000000&frm=daeh'},
+					{ name : '家居', tag : 'jiaju', url : domain + '/guang/catalog/jiaju?nid=210107&cata_id=9000000000000&frm=daeh'},
+					{ name : '小家电', tag : 'household', url : domain + '/guang/catalog/household?nid=222641&cata_id=9008000000000&frm=daeh'},
+					{ name : '食品', tag : 'food', url : domain + '/guang/catalog/food?nid=222649&cata_id=10000000000000&frm=daeh'}
+				]
+			;__htm += '\n			<ul>\n				';
+ menus.forEach(function(item){ ;__htm += '\n					<li>\n						<a href="';
+__htm +=item.url;
+__htm += '" data-word="';
+__htm +=item.tag;
+__htm += '">';
+__htm +=item.name;
+__htm += '</a>\n					</li>\n				';
+ }); ;__htm += '\n			</ul>\n		</div>\n	</div>\n</div>';
+return __htm;} 
+ exports.html = __getHtml; 

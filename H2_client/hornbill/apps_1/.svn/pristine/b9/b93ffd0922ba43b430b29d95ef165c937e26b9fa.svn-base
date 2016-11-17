@@ -1,0 +1,109 @@
+<%# head_simple.html%>
+</head>
+<body>
+<div class="wap_body">
+	<%if(this.audio.audio.pic != ''){%>
+	<img src="<%= this.audio.audio.pic%>" />
+	<%}%>
+	<%if( this.audio.audio.audio_url && this.audio.audio.audio_duration != ''){%>
+	<div class="audio_box">
+		<%= requireFn('block/audio.html')({
+			'audio': {
+				'audio' :{
+					'audio_url':this.audio.audio.audio_url
+					,'audio_duration':this.audio.audio.audio_duration
+					,'avatar_url':this.audio.audio.avatar_url
+					,'nickname':this.audio.audio.nickname
+					,'title':this.audio.audio.title
+
+				}
+			}
+			, 'id' : 'top0'
+		});%>
+	</div>
+	<%}%>
+	<div class="clear_f"></div>
+</div>
+<div class="clear_f"></div>
+<% this.goods.data && this.goods.data.map(function(data, i) { %>
+<div class="part">
+	<div class="tle_bg">
+		<img src="<%= this.PICTURE_URL%>images/wap/activity/project/tle_bg1.gif" />
+		<div class="title">
+			<div class="title_box">
+				<div class="text_tle1">
+					<p><%= data.title%></p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="text_tle2">
+		<p><%= data.desc%></p>
+	</div>
+	<% data.pics && data.pics.map(function(data1, j) { %>
+	<ul class="type<%= data1.class%>">
+		<% data1.pic && data1.pic.map(function(data2, k) { %>
+			<li>
+				<% if( data2.voice){%>
+				<div class="audio_box">
+					<%= requireFn('block/audio.html')({
+						'audio': {
+								'audio' :{
+										'audio_url':data2.voice
+										,'audio_duration':data2.voice_times
+										,'avatar_url':data2.avatar_url
+										,'nickname':data2.nickname
+										,'title':data2.title
+								}
+							}
+						, 'id' : i + '-' +j + '-' + k
+					});%>
+				</div>
+				<%
+				data2.weblink ='javascript:void(0);';
+				//work后台必须输入
+				}%>
+				<div class="pic">
+					<a href="<%=data2.weblink%>"><%if(data2.desc){%><span class="price"><%=data2.desc%></span><%}%><img src="<%=data2.pic%>" /></a>
+					<%if(data2.subject){%><p><%=data2.subject%></p><%}%>
+				</div>
+			</li>
+		<% }); %>
+	</ul>
+	<% }); %>
+	<div class="clear_f"></div>
+	<%if(data.more){%>
+	<div class="more red_f"><a href="<%=data.more.weblink%>"><%=data.more.subject%> &gt;</a></div>
+	<%}%>
+	<div class="clear_f"></div>
+</div>
+<% }); %>
+<%if(this.bot){%>
+<div class="bot_bnr">
+	<h2><%= this.bot.data.title%></h2>
+	<div class="bnr">
+		<% this.bot.data.pics && this.bot.data.pics.map(function(data) { %>
+			<a href="<%=data.weblink || 'javascript:;'%>"><img src="<%=data.picurl%>" /></a>
+		<% }); %>
+	</div>
+</div>
+<%}%>
+<div class="clear_f"></div>
+<%if(this.supportShare){%>
+<div class="starBox">
+	<h2>选择分享到：</h2>
+	<div class="share_ico" id="share_ico">
+		<% this.share.data && this.share.data.map(function(data) { %> 
+			<a class="<%= data.type%><%if(data.type=='weibo'){%> active<%}%>" share_url="<%= data.share_url%>"><span class="sure"></span></a>
+		<% }); %>
+		<div class="clear_f"></div>
+		<span class="btn" id="shareBtn">分享</span>
+		<div class="clear_f"></div>
+	</div>
+</div>
+<%}%>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/audio');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot_simple.html%>

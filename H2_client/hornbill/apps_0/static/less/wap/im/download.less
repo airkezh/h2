@@ -1,0 +1,39 @@
+@import "../block.less";
+
+.bg100(@url){
+	background: url(@url) no-repeat top center;
+	background-size:100%;
+}
+
+html{
+	height: 100%;
+}
+body{background: none;.h(100%);}
+
+.main{.w(100%);.pt(30%);}
+
+.icon{.bg100("@{pic_url}/images/wap/web/im/download.png");.pt(302*@px);.w(328*@px);.auto;}
+
+.down_btn{.mt(120*@w);.indent;
+	.iphone, .android{
+		.pt(94*@px);.w(419*@px);.auto;.block;
+		.none;	
+	}
+	.iphone{.bg100("@{pic_url}/images/wap/web/im/iphone.png");}
+	.android{.bg100("@{pic_url}/images/wap/web/im/android.png");}
+}
+
+
+.mask, .mask_ios, .mask_android{.none;}
+.mask{
+	.bgc(rgba(0,0,0,.6));
+	.pf;top: 0;left: 0;.w(100%);.h(100%);
+}
+.mask_ios{
+	.bg100('@{pic_url}/images/wap/web/im/iphone_m.png');
+	.pa;top: 0;left: 0;.pt(48.59375%);.w(100%);
+}
+.mask_android{
+	.bg100('@{pic_url}/images/wap/web/im/android_m2.png');
+	.pa;top: 0;left: 0;.pt(48.59375%);.w(100%);
+}

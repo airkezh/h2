@@ -1,0 +1,68 @@
+<%#head.html%>
+
+<div class="medal">
+<div class="medal-all">
+<%#medal/sidebar.html%>
+
+
+
+<%
+var xzbox=this.xz_box;
+%>
+
+<div class="xz-right">
+<div class="xz-container">
+		<ul class="xz-tab">
+			<li><a class="active" href="#">所有勋章</a></li>
+			<li><a href="#">系统升级勋章</a></li>
+			<li><a href="#">兴趣勋章</a></li>
+			<li><a href="#">可申请勋章</a></li>
+			<li><a href="#">活动勋章</a></li>
+		</ul>
+
+	<div id="xz">
+			<ul class="on">
+		<% xzbox && xzbox.map(function(items,index){%>
+
+			<div class="xz-content">
+					<a href="" class="xz-info">
+						<span class="xz-pic" style='background: url("<%= items.imgsrc%>")no-repeat'></span>
+					</a>
+					<span class="xz-title"><%= items.title%></span>
+			</div>
+
+		<%})%>
+		</ul>
+
+		<ul>
+		<% xzbox && xzbox.map(function(items,index){%>
+
+			<div class="xz-content">
+					<a href="" class="xz-info">
+						<span class="xz-pic" style='background: url("<%= items.imgsrc%>")no-repeat'></span>
+					</a>
+					<span class="xz-title"><%= items.title%></span>
+			</div>
+			iiiiiii
+
+		<%})%>
+		</ul>
+
+	</div>
+		
+		
+
+	</div>
+</div>
+
+
+</div>
+
+
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use('page/medal/medal');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot.html%>
+

@@ -1,0 +1,208 @@
+<%# wx_new/header.html%>
+<%
+	var goodsInfo = this.goods_info || {}
+		, goods = this.goods || {}
+		, dcId = goodsInfo.dc_id
+		, commendInfo = this.commend.gInfo
+
+	var globalKey = this._Request_cookies.MEILISHUO_GLOBAL_KEY;
+
+%>
+<div class="content">
+	<figure class="goods goodsArea" goods_id="<%= goodsInfo.goods_id %>" twitter_id="<%= goodsInfo.twitter_id%>" pid="<%= goodsInfo.pid || 0%>">
+		<div id="imageSlide">
+			<ul>
+			<% var images = goodsInfo.image; %>
+			<% images.image && images.image.length && images.image.forEach(function (item, index){ %>
+				<li style="background-image: url(<%= item %>);"></li>
+			<% }) %>
+			</ul>
+			<div class="bookmark-wrap"><span class="bookmark"></span></div>
+		</div>
+		<figcaption>
+			<h2 class="goods-desc"><%= goodsInfo.goods_title%></h2>
+			<p class="goods-detail"><%= goodsInfo.goods_desc || ''%></p>
+			<div class="sale-info">
+				<p class="price">
+					<span class="ml_color now now_price">￥<%= goodsInfo.price%>
+						<%if(goodsInfo.price_max && (goodsInfo.price != goodsInfo.price_max)){%>
+							~ <%= goodsInfo.price_max%>
+						<%}%></span>
+						<% 
+							var hideOriginalPrice = false;
+							if(goodsInfo.price == goodsInfo.price_max && goodsInfo.original_price == goodsInfo.original_price_max && goodsInfo.price == goodsInfo.original_price){ hideOriginalPrice = true; } 
+						%>
+						<del class="normal"><% if (goodsInfo.original_price != '' && !hideOriginalPrice){%>￥<%= goodsInfo.original_price%>
+							<%if(goodsInfo.original_price_max && (goodsInfo.original_price != goodsInfo.original_price_max)){%>~ <%= goodsInfo.original_price_max%> <%}%>
+						<%}%> </del>
+				</p>
+				<ul class="sale-info-extra">
+					<li class="first">
+						<span><% if(goodsInfo.freight > 0){%>运费：￥<%= goodsInfo.freight%><%}else{%>包邮<%}%></span>
+					</li>
+					<li>
+						销量：<span><%= goodsInfo.sales%></span>
+					</li>
+				</ul>
+			</div>
+			<%if(this.banner_show){%>
+			<a href="//m-qiang.meilishuo.com/sq/coupon_zone?type=noqq">
+				<img src="//i.meilishuo.net/css//images/wap/web/sq/detail_banner916.jpg" alt="">
+			</a>
+			<%}%>
+		</figcaption>
+	</figure>
+	<div class="layer_wrap" id="propNotice"></div>
+	<section class="goods-attr">
+		<h3 class="show-or-not">
+			<span>选择颜色尺码</span>
+			<span class="order-icon"></span>
+		</h3>
+		<div class="goods_info" id="goods_attr">
+
+			<% if (goodsInfo.prop && goodsInfo.prop.color && goodsInfo.prop.color.is_show) { %>
+			<dl class="prop info_list">
+				<dt class="type"><%= goodsInfo.prop.color.name%>：</dt>
+				<dd class="info">
+					<ul id="colorList">
+						<% goodsInfo.prop.color.value.forEach(function(item , key){ %>
+							<li><span <%if(goodsInfo.prop.color.image && !goodsInfo.is_cosmetic){%>imgurl="<%= goodsInfo.prop.color.image[key] %>"<%}%>><%= goodsInfo.prop.color.value[key] %></span></li>
+						<%});%>
+					</ul>
+					<div style="display:none;"><div class="colorShow"></div></div>
+				</dd>
+			</dl>
+			<%}%>
+
+			<% if (goodsInfo.prop && goodsInfo.prop.size && goodsInfo.prop.size.is_show) { %>
+			<dl class="prop info_list pdtop sizes">
+				<dt class="type"><%= goodsInfo.prop.size.name%>：</dt>
+				<dd class="info">
+					<ul id="sizeList">
+						<% goodsInfo.prop.size.value.forEach(function(item , key){%>
+							<li><span><%= item%></span></li>
+						<%});%>
+					</ul>
+				</dd>
+			</dl>
+			<%}%>
+
+			<dl class="amount pdtop">
+				<dt class="type">数 量：</dt>
+				<dd class="info">
+					<div class="numBox">
+						<%if(!goodsInfo.in_seckill){%>
+							<span class="minus">-</span>
+						<%}%>
+						<span class="buy_num">1</span>
+						<input class="nums" title="请输入购买数量" type="text" value="1" <%if(goodsInfo.in_seckill){%>readonly="readonly" <%}%> />
+
+						<%if(!goodsInfo.in_seckill){%>
+						<span class="plus">+</span>
+						<%}%>
+					</div>
+					<span class="stock now_num">(库存<span>-</span>件)<%if(goodsInfo.in_seckill){%><b class="num_only">限购1件</b><%}%> </span>
+				</dd>
+			</dl>
+			<div class="msg_box">
+					<p class="msg_limit"><span class="msg_ico"></span>对不起！每人最多限购100件！</p>
+					<p class="msg_zero"><span class="msg_ico"></span>对不起，这件宝贝已经卖光啦！</p>
+					<p class="msg_over"><span class="msg_ico"></span>您所填写的宝贝数量超过库存！</p>
+			</div>
+			<%
+				var buy_style = 'non_buy'
+
+				if(goodsInfo.buy_button_status == 1){
+					buy_style = 'buy_btn';
+				}
+			%>
+			<div class="btn_box buy" >
+				<span class="<%= buy_style %>  go_buy">确定</span>
+			</div>
+	</section>
+	<% 
+		var shopInfo = goodsInfo.shop_info; 
+		var sname = this.shopName ? this.shopName : shopInfo.shop_name; 
+	%>
+	<% if(shopInfo){ %>
+	<div class="shop">
+		<div class="shop-info">
+			<i class="shop-logo"><img src="<%= shopInfo.shop_img %>" alt="shop" ></i>
+			<div class="shop-name">
+				<p><%= sname.length > 10 ? sname.slice(0,10) + '…' :  sname%></p>
+				<%if(this.goods_wd && this.goods_wd.partner_weixin){%>
+				<p class="shop-wx">微信号：<%= this.goods_wd.partner_weixin%></p>
+				<%}%>
+			</div>
+			<a class="shop-link" href="/mainapp/shop/<%= goodsInfo.shop_id %>?shop_name=<%= sname %>">进店逛逛</a>
+		</div>
+		<p class="shop-desc"> “ <%= (this.goods_wd && this.goods_wd.shop_desc) || "欢迎光临我的美丽微店！"%> ”</p>
+	</div>
+	<% } %>
+	<%# wx_new/circle_goods_detail.html %>
+	<%if(Array.isArray(commendInfo) && commendInfo.length){%>
+	<section class="commend">
+		<h3><span class="text-block">店铺热卖</span></h3>
+		<div class="goods-wrapper">
+		<%commendInfo.forEach(function (v,k){%>
+			<figure class="commend-goods">
+				<a class="image" href="/wx/detailCircle?tid=<%=v.twitter_id%>&page_name=circle<%if(v.dc_id != -1){%>&dc_id=<%=v.dc_id%><%}%>" style="background-image:url(<%= v.goods_img %>);"></a>
+				<figcaption>
+					<p class="title"><%= v.goods_title %></p>
+					<p class="price"><%= v.goods_price %></p>
+				</figcaption>
+			</figure>
+		<%})%>
+		</div>
+	</section>
+	<%}%>
+	<% if(0){ %>
+	<div class="weidian">
+		<a shref="//a.app.qq.com/o/simple.jsp?pkgname=com.meilishuo.circle&g_f=991653" id="wei-btn">
+			<figure class="wei-show">
+				<figure>
+					<img src="//d02.res.meilishuo.net/pic/_o/a1/af/f8150e8aff1c7a86f85d8233d234_108_108.cf.png" alt="微店logo">
+				</figure>
+				<span>美丽微店 提供技术支持</span>
+			</figure>
+		</a>
+	</div>
+	<% } %>
+</div>
+
+
+<%
+	var buy_text = ['不能购买', '立即购买','已下架','已抢光']
+		, buy_style = 'non_buy'
+
+	if(goodsInfo.buy_button_status == 1){
+		buy_style = 'buy_btn';
+	}
+%>
+
+<div class="btn_box buy pos-fixed-bottom" >
+	<span class="<%= buy_style %>  go_buy"><%= buy_text[goodsInfo.buy_button_status] %></span>
+</div>
+
+<% if(dcId != -1){ %>
+<script>
+fml.vars.dcId = <%= goodsInfo.dc_id %>;
+fml.vars.shopId = <%= goodsInfo.shop_id %>;
+</script>
+<% } %>
+
+<script>
+fml.vars.count_discuss = "<%= goodsInfo.twitter_stat.discuss_num%>";
+fml.vars.goods = {"id" : "<%=goodsInfo.goods_id %>" , "twitter_id": "<%= goodsInfo.twitter_id%>" ,"pid" :"<%= goodsInfo.pid || 0%>","price" : "<%= goodsInfo.price || 0 %>" , "price_max" : "<%= goodsInfo.price_max || 0%>", "original_price" : "<%= goodsInfo.original_price || 0 %>","original_price_max" : "<%= goodsInfo.original_price_max || 0 %>"};
+fml.vars.goods_stock = <%= JSON.stringify(goodsInfo.stock)%>;
+fml.vars.goods_prop = <%= JSON.stringify(goodsInfo.prop)%>;
+fml.vars.globalKey = '<%= globalKey %>';
+fml.vars.shareInfo = {"title" : "<%= goodsInfo.goods_title%>","price" : "售价：￥<%= goodsInfo.price%>","imgUrl" : "<%= goodsInfo.image.small_image[0]%>"};
+fml.vars.previewImage = <%=JSON.stringify(images.image)%>;
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/wx_new/detail_circle');
+_use:", this._JSstack , this._JSmods ); %>
+<%# wx_new/side.html%>
+<%# wx_new/footer.html%>

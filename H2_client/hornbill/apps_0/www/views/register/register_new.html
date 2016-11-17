@@ -1,0 +1,119 @@
+<%# head_simple.html %>
+</head>
+<body>
+<div class="wrap">
+	<div class="reg_wrap">	
+		<div class="head">
+			<a href="/" class="reg_logo"></a>
+			<a href="/" class="welcome_txt"></a>
+		</div>
+		<div class="main">
+			<div class="ad_wrap">
+				<img src="<%=this.PICTURE_URL%>images/register/ad_img.jpg" width="370" height="353" />
+			</div>
+			<div class="reg_form" id="mob_reg">
+				<form id="registerForm" method="post" onsubmit="return false" action="">
+					<h3>
+						<a href="/user/login">登录</a>
+						注册美丽说
+					</h3>
+					<div class="reg_list">
+						<p class="reg_box">
+							<input  class="reg_txt" id="mobile" name="mobile" type="text" placeholder="手机号" autocomplete="off" />
+							<span></span>
+							<span class="tel_icon"></span>
+						</p>
+						<!-- <p class="mlsUserEor red_f"></p> -->
+					</div>
+					<div class="reg_list">
+						<p class="reg_box">
+							<input class="reg_txt" id="nickname" name="nickname" type="text" placeholder="昵称" autocomplete="off" />
+							<span></span>
+							<span class="user_icon"></span>
+						</p>
+						<!-- <p class="mlsUserEor red_f"></p> -->
+					</div>
+					<div class="reg_list">
+						<p class="reg_box">
+							<input class="reg_txt" id="password" name="password" type="password" placeholder="密码" autocomplete="off" />
+							<span></span>
+							<span class="pwd_icon"></span>
+						</p>
+						<div class="pw_safe none_f">
+							<span class="txt">安全程度</span>
+							<div class="pw_strength pw_weak pw_medium pw_strong">
+								<div class="pw_bar"></div>
+								<div class="pw_letter">
+									<span class="strength_l">弱</span>
+									<span class="strength_m">中</span>
+									<span class="strength_h">强</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="reg_list confpass">
+						<p class="reg_box">
+							<input class="reg_txt" id="conf_password" name="conf_password" type="password" placeholder="确认密码" autocomplete="off" />
+							<span></span>
+							<span class="pwd_icon"></span>
+						</p>
+						<!-- <p class="mlsUserEor red_f"></p> -->
+					</div>
+					<!-- <div class="reg_list">
+						<p class="reg_box" id="checkBox">
+							<input type="text" class="reg_txt" id="checkcode" name="checkcode" value="" placeholder="请输入验证码" maxlength="4"/>
+							<span class="checkImage code_img">
+								<span class="codeImage" id="checkcodeImage">
+									<img width="92" height="36" isblank="true" src="<%= this.PICTURE_URL %>images/register/blank.jpg">
+								</span>
+								<span class="reload_icon"></span>
+							</span>
+							<span class="code_icon"></span>
+							<span class="success"></span>
+						</p>
+						<p class="checkCodeEor red_f"></p>
+					</div> -->
+					<div class="reg_list verifcode">
+						<p class="reg_box">
+							<input id="code" name="code" class="enter_code reg_txt"  type="text" placeholder="短信验证码" maxlength="6" />
+							<input id="get_code" class="get_code" value="获取短信验证码" />
+							<span></span>
+						</p>
+						<!-- <p class="sms_code_msg red_f"></p> -->
+					</div>
+					<div class="regErrorMessage none_f"></div>
+					<div class="reg_btn_wrap">
+						<input type="submit" class="reg_btn" value="立即注册"/>
+					</div>
+					<div class="agree_reg">
+						<input type="checkbox" checked="checked" id="agreement" name="agreement"/>同意<a href="/agree" target="_blank">《美丽说注册条款》</a><a target="_blank" href="/rule">《美丽说平台消费者规则》</a>
+					</div>
+				</form>
+				<div class="fast_login">
+					<h3>无需注册，即可登录</h3>
+					<div class="fast_way">
+						<a href="/connect/auth/qzone" class="qq_way"></a>
+						<a href="/connect/auth/weibo" class="sina_way"></a>
+						<a href="/connect/auth/weixin" class="weixin_way"></a>
+					</div>
+				</div>
+				<div class="more_way_wrap">
+					<h4 onselectstart="return false;">更多登录方式>></h4>
+					<div class="more_way none_f">
+						<a href="/connect/auth/txweibo" class="txweibo"></a>
+						<a href="/connect/auth/douban" class="douban"></a>
+						<a href="/connect/auth/renren" class="renren"></a>
+						<a href="/connect/auth/baidu" class="baidu"></a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/register');
+_use:", this._JSstack , this._JSmods ); %>
+<% this._disableThirdParty = true %>
+<%# foot_simple_cr.html %>
+
+

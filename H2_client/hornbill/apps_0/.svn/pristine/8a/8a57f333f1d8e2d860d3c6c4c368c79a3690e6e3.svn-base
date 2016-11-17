@@ -1,0 +1,436 @@
+<%
+	/**
+ 	 * @fileoverview 首页－会员晋级礼包
+     * @requires zepto
+     * @author kehuang@meilishuo.com
+     * @date 2015-11-02
+     */
+%>
+
+<%#head.html%>
+<%
+	var curUserIsLogin = this.isLogin;
+	var curPageData = this.pageData;
+	var curSignData = this.signData;
+	var curGiftData = this.giftData;
+	var curUserSignData = (curSignData && curSignData.data) ? curSignData.data : {};
+	var curUserGiftData = (curGiftData && curGiftData.data) ? curGiftData.data : {};
+	var curUserLevel = curUserSignData.level || 0;
+	var isShowTopNotice = curUserGiftData.show_tips || 0;
+%>
+
+<div class="main">
+	<%
+		if (curUserLevel && isShowTopNotice) {
+	%>
+	<div class="top_marqueen_wrap">
+		<%
+			var top_notice_text = (curUserLevel == 4) ? '在11月6日晋级礼包特权功能开放后晋级的妹纸，才可获得晋级礼包。11月6日前已完成V4升级的妹纸不要灰心，已为你准备了V4专属特权。' : '在11月6日晋级礼包特权功能开放后晋级的妹纸，可获得晋级礼包；11月6日前已完成升级的妹纸，不要忧桑，努力升级，下一级礼包等着你！';
+		%>
+		<div id="top_marqueen_box" class="top_marqueen_box">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通知：<%= top_notice_text %></div>
+
+		<!-- <div class="close_marqueen_btn"></div> -->
+	</div>
+	<%
+		}
+
+		var headBgObj = (curPageData && curPageData.head_bg) ? curPageData.head_bg : {},
+			headBgSrc = headBgObj.url || '',
+			headBgTitle = headBgObj.title || '',
+			headBgHref = headBgObj.link || 'javascript:;';
+
+		if (headBgSrc != '') {
+	%>
+	<div class="banner_wrap">
+		<a href="<%= headBgHref %>">
+			<img src="<%= headBgSrc %>" alt="<%= headBgTitle %>">
+		</a>
+	</div>
+	<%
+		}
+	%>
+
+	<div id="gift_list_container">
+		<div class="pullUp" status="loading"></div>
+	</div>
+
+	<%
+		var moreData = (curPageData && curPageData.more_data) ? curPageData.more_data : {},
+			moreText = moreData.text || '查看更多会员福利',
+			moreLink = moreData.link || '/member/club/';
+	%>
+	<div class="bottom_banner_wrap">
+		<div class="bottom_banner_btn" data-href="<%= moreLink %>"><%= moreText %></div>
+	</div>
+
+	<!-- <div class="gotop_wrap">
+		<a class="gotop">
+			<img src="http://d03.res.meilishuo.net/pic/_o/d0/68/f89d059f09d440f4ee7a37669383_80_80.cg.png" alt="">
+		</a>
+	</div> -->
+</div>
+
+<script type="text/html" id="j_gift_tpl">
+	<?
+		var pageData = this.pageData,
+			giftListArr = (this.data && this.data.gift_list) ? this.data.gift_list : [],
+			giftListArrLen = giftListArr.length || 0;
+
+		if (giftListArrLen > 0) {
+			var userLevel = this.userLevel || 0;
+	?>
+	<ul class="gift_list_wrap">
+		<?
+			for (var i = 0; i < giftListArrLen; i++) {
+				var data = giftListArr[i],
+					level = data.grade || 0,
+					gifts = data.gifts || [],
+					isReceive = data.is_receive || 0;
+
+				if (isReceive == 1) {
+		?>
+		<li class="gift_list">
+			<?
+					var giftsLen = gifts.length || 0;
+
+					if (giftsLen > 0) {
+			?>
+			<div class="gift_title"><p><i>V<?= level ?></i>会员晋级礼包</p></div>
+
+			<div class="item_title">&bull; 店铺优惠券 &bull;</div>
+
+			<ul class="shop_coupon_wrap">
+				<?
+						for (var j = 0; j < giftsLen; j++) {
+							var data = gifts[j],
+								shopUrl = data.shop_url || '',
+								shopName = data.shop_name || '',
+								couponImg = data.img_src || '',
+								startTime = data.start_time || '',
+								endTime = data.expire_time || '',
+								goodsTitle = data.img_title || '',
+								goodsImg = data.shop_hot_goods_img || '',
+								couponStyle = (couponImg == '') ? '' : 'background:url(' + couponImg + ') no-repeat;background-size:100%;';
+				?>
+				<li>
+					<?
+							if ((goodsImg != '') && (shopUrl != '')) {
+					?>
+					<div class="shop_wrap" data-href="<?= shopUrl ?>">
+						<div class="img_box">
+							<img src="<?= goodsImg ?>" alt="">
+						</div>
+
+						<div class="shop_box">
+							<p class="title"><?= shopName ?></p>
+							<p class="desc"><?= goodsTitle ?></p>
+						</div>
+					</div>
+					<?
+							}
+					?>
+					<div class="coupon" style="<?= couponStyle ?>">
+						<?
+							if ((startTime != '') && (endTime != '')) {
+								var expireTime = startTime + '-' + endTime;
+						?>
+						<p class="validity_text"><?= expireTime ?></p>
+						<?
+							}
+						?>
+					</div>
+				</li>
+				<?
+						}
+				?>
+			</ul>
+			<?
+					}
+
+					var interestsArr = (pageData && pageData['interests_level_' + level]) ? pageData['interests_level_' + level] : [],
+						interestsArrLen = interestsArr.length || 0;
+
+					if (interestsArrLen > 0) {
+			?>
+			<div class="item_title">&bull; V<?= level ?>会员优质特权 &bull;</div>
+
+			<div class="interests_wrap" id="interests_wrap_<?= level ?>">
+				<ul class="interests_iscroll" id="interests_iscroll_<?= level ?>" style="width:990px;">
+					<?
+						var counter = 0;
+
+						for (var k = 0; k < interestsArrLen; k++) {
+							var obj = interestsArr[k],
+								pic = (obj && obj.pic) ? obj.pic : '',
+								title = (obj && obj.title) ? obj.title : '';
+
+							if (pic != '') {
+								var interestsStyle = 'background:url(' + pic + ') no-repeat;background-size:50px auto;background-position:center;';
+
+								++counter;
+					?>
+					<li class="active" data-pos="<?= counter ?>" data-name="<?= title ?>">
+						<div class="member_interests" style="<?= interestsStyle ?>"></div>
+						<div class="text_title"><?= title ?></div>
+					</li>
+					<?
+							}
+						}
+					?>
+				</ul>
+			</div>
+			<?
+					}
+			?>
+		</li>
+		<?
+				} else if (isReceive == 2) {
+		?>
+		<li class="gift_list">
+			<div class="gift_title"><p><i>V<?= level ?></i>会员晋级礼包</p></div>
+
+			<div class="no_gift_bg"></div>
+
+			<?
+				var no_gift_text = (userLevel == 4) ? 'Sorry，本次晋级时，礼包功能暂未开放<br>但…<i>V4专属福利</i>已向你袭来，快去看看吧！' : 'Sorry，本次晋级时，礼包功能暂未开放<br>努力升级，<i>下一级礼包</i>等着你！';
+			?>
+			<p class="no_gift_text"><?= no_gift_text ?></p>
+
+			<?
+				var interestsArr = (pageData && pageData['interests_level_' + level]) ? pageData['interests_level_' + level] : [],
+					interestsArrLen = interestsArr.length || 0;
+
+				if (interestsArrLen > 0) {
+			?>
+			<div class="item_title">&bull; V<?= level ?>会员优质特权 &bull;</div>
+
+			<div class="interests_wrap" id="interests_wrap_<?= level ?>">
+				<ul class="interests_iscroll" id="interests_iscroll_<?= level ?>" style="width:990px;">
+					<?
+						var counter = 0;
+
+						for (var k = 0; k < interestsArrLen; k++) {
+							var obj = interestsArr[k],
+								pic = (obj && obj.pic) ? obj.pic : '',
+								title = (obj && obj.title) ? obj.title : '';
+
+							if (pic != '') {
+								var interestsStyle = 'background:url(' + pic + ') no-repeat;background-size:50px auto;background-position:center;';
+
+								++counter;
+					?>
+					<li class="active" data-pos="<?= counter ?>" data-name="<?= title ?>">
+						<div class="member_interests" style="<?= interestsStyle ?>"></div>
+						<div class="text_title"><?= title ?></div>
+					</li>
+					<?
+							}
+						}
+					?>
+				</ul>
+			</div>
+			<?
+				}
+			?>
+		</li>
+		<?
+				} else {
+		?>
+		<li class="gift_list">
+			<div class="gift_title"><p><i>V<?= level ?></i>会员晋级礼包</p></div>
+
+			<div class="receive_gift_bg"></div>
+
+			<div class="receive_gift_btn" data-level="<?= level ?>">领取</div>
+		</li>
+		<?
+				}
+			}
+		?>
+	</ul>
+	<?
+		} else {
+	?>
+	<p class="no_gift_list">页面空空如也，换个姿势重新试试看！</p>
+	<?
+		}
+	?>
+</script>
+
+<script type="text/html" id="j_gift_list_tpl">
+	<?
+		var gifts = this.data || [],
+			giftsLen = gifts.length || 0;
+
+		if (giftsLen > 0) {
+			var level = this.level || 0,
+				pageData = this.pageData;
+	?>
+	<div class="gift_title"><p><i>V<?= level ?></i>会员晋级礼包</p></div>
+
+	<div class="item_title">&bull; 店铺优惠券 &bull;</div>
+
+	<ul class="shop_coupon_wrap">
+		<?
+			for (var i = 0; i < giftsLen; i++) {
+				var data = gifts[i],
+					shopUrl = data.shop_url || '',
+					shopName = data.shop_name || '',
+					couponImg = data.img_src || '',
+					startTime = data.start_time || '',
+					endTime = data.expire_time || '',
+					goodsTitle = data.img_title || '',
+					goodsImg = data.shop_hot_goods_img || '',
+					couponStyle = (couponImg == '') ? '' : 'background:url(' + couponImg + ') no-repeat;background-size:100%;';
+		?>
+		<li>
+			<?
+				if ((goodsImg != '') && (shopUrl != '')) {
+			?>
+			<div class="shop_wrap" data-href="<?= shopUrl ?>">
+				<div class="img_box">
+					<img src="<?= goodsImg ?>" alt="">
+				</div>
+
+				<div class="shop_box">
+					<p class="title"><?= shopName ?></p>
+					<p class="desc"><?= goodsTitle ?></p>
+				</div>
+			</div>
+			<?
+				}
+			?>
+			<div class="coupon" style="<?= couponStyle ?>">
+				<?
+					if ((startTime != '') && (endTime != '')) {
+						var expireTime = startTime + '-' + endTime;
+				?>
+				<p class="validity_text"><?= expireTime ?></p>
+				<?
+					}
+				?>
+			</div>
+		</li>
+		<?
+			}
+		?>
+	</ul>
+	<?
+		}
+
+		var interestsArr = (pageData && pageData['interests_level_' + level]) ? pageData['interests_level_' + level] : [],
+			interestsArrLen = interestsArr.length || 0;
+
+		if (interestsArrLen > 0) {
+	?>
+	<div class="item_title">&bull; V<?= level ?>会员优质特权 &bull;</div>
+
+	<div class="interests_wrap" id="interests_wrap_<?= level ?>">
+		<ul class="interests_iscroll" id="interests_iscroll_<?= level ?>" style="width:990px;">
+			<?
+				var counter = 0;
+
+				for (var j = 0; j < interestsArrLen; j++) {
+					var obj = interestsArr[j],
+						pic = (obj && obj.pic) ? obj.pic : '',
+						title = (obj && obj.title) ? obj.title : '';
+
+					if (pic != '') {
+						var interestsStyle = 'background:url(' + pic + ') no-repeat;background-size:50px auto;background-position:center;';
+
+						++counter;
+			?>
+			<li class="active" data-pos="<?= counter ?>" data-name="<?= title ?>">
+				<div class="member_interests" style="<?= interestsStyle ?>"></div>
+				<div class="text_title"><?= title ?></div>
+			</li>
+			<?
+					}
+				}
+			?>
+		</ul>
+	</div>
+	<?
+		}
+	?>
+</script>
+
+<script type="text/html" id="j_layer_gift_tpl">
+	<div id="j_gift_layer" class="gift_layer">
+		<div class="layer_shade j_layer_shade"></div>
+		<div class="layer_main gift_main j_layer_main">
+			<div class="layer_bg">
+				<?
+					var level = this.level || 0;
+				?>
+				<p class="title"><i>V<?= level ?></i>会员晋级礼包</p>
+				<?
+					var giftPageData = this.giftPageData,
+						giftDataObj = (giftPageData && giftPageData['gift_level_' + level]) ? giftPageData['gift_level_' + level] : {},
+						giftImg = giftDataObj.pic || '',
+						giftName = giftDataObj.title || '';
+
+					if ((giftImg != '') && (giftName != '')) {
+				?>
+				<p class="gift_title">恭喜！获得优惠券</p>
+				<p class="gift_img">
+					<img src="<?= giftImg ?>" alt="">
+				</p>
+				<p class="gift_name"><i><?= giftName ?></i>元</p>
+				<?
+					}
+
+					var interestsArr = (giftPageData && giftPageData['interests_level_' + level]) ? giftPageData['interests_level_' + level] : [],
+						interestsArrLen = interestsArr.length || 0;
+
+					if (interestsArrLen > 0) {
+				?>
+				<p class="interests_title">晋级后将享受以下会员特权</p>
+				<div class="layer_interests_wrap" id="layer_interests_wrap">
+					<ul class="layer_interests_iscroll" id="layer_interests_iscroll" style="width:990px;">
+						<?
+							var counter = 0;
+
+							for (var i = 0; i < interestsArrLen; i++) {
+								var obj = interestsArr[i],
+									pic = (obj && obj.pic) ? obj.pic : '',
+									title = (obj && obj.title) ? obj.title : '';
+
+								if (pic != '') {
+									var interestsStyle = 'background:url(' + pic + ') no-repeat;background-size:50px auto;background-position:center;';
+
+									++counter;
+						?>
+						<li data-pos="<?= counter ?>" data-name="<?= title ?>">
+							<div class="member_interests" style="<?= interestsStyle ?>"></div>
+							<div class="text_title"><?= title ?></div>
+						</li>
+						<?
+								}
+							}
+						?>
+					</ul>
+				</div>
+				<?
+					}
+				?>
+				<p class="layer_receive_btn" data-level="<?= level ?>">立即领取</p>
+			</div>
+		</div>
+	</div>
+</script>
+
+<script>
+	fml.vars.r = '<%= this.xr.r || '' %>';
+	fml.vars.isLogin = <%= curUserIsLogin %>;
+	fml.vars.userLevel = <%= curUserLevel %>;
+	fml.vars.pageData = <%= JSON.stringify(curPageData) %>;
+</script>
+
+<!-- <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script> -->
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/member/promotion_gift');
+_use:", this._JSstack, this._JSmods); %>
+
+<%#foot_simple.html%>

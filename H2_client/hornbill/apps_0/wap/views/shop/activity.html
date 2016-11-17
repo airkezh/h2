@@ -1,0 +1,34 @@
+<%# head.html%>
+<% var data = this.act_info;%>
+<div class="banner">
+	<% if(data.banner.img.length && data.banner.link.length){ %>
+		<a href="<%= data.banner.link %>"><img src="<%= data.banner.img %>" alt="ad" /></a>
+	<% }else{ %>
+		<img src="<%= data.banner.img %>" alt="ad" />
+	<% } %>
+</div>
+<div class="couponsWrapper">
+	<!-- 目前页面只支持两张优惠券 -->
+<%if(data.coupons.length == 2){ %>
+	<div class="coupons">
+		<% var c_data = this.coupons; %>
+		<div class="c_left <% if(c_data.coupon['1'].can_use != 0){%>got<%} %>" id="<%= c_data.coupon['1'].coupon_code %>" dataType="<%= c_data.coupon['1'].coupon_type %>"><span class="full">满<%= data.coupons[0].condition %>全场通用</span><span class="cost">￥<%= data.coupons[0].credit %></span></div>
+		<div class="c_right <% if(c_data.coupon['2'].can_use != 0){%>got<%} %>" id="<%= c_data.coupon['2'].coupon_code %>" dataType="<%= c_data.coupon['2'].coupon_type %>"><span class="full">满<%= data.coupons[1].condition %>全场通用</span><span class="cost">￥<%= data.coupons[1].credit %></span></div>
+	</div>
+
+	<div class="applySteps"><% if(data.coupon_steps_img){ %><img src="<%= data.coupon_steps_img %>" alt=""/><%}%></div>
+<% } %>
+</div>
+<div class="goodsWall">
+	<% 
+		data.goods && data.goods.forEach(function (v,k){ 
+			var shop_url = _extFn.getAppLink('shop', {'shop_id' : v.shop_id}, this.os, this.r); 
+	%>
+		<div class="separate_tape"></div>
+		<div class="goods"><a href="<%= shop_url %>"><img src="<%= v.goods_img %>" alt="" /></a></div>
+	<% }); %>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use('wap/page/shop/activity');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

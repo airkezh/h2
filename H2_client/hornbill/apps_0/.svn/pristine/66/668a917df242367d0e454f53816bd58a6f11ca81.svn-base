@@ -1,0 +1,162 @@
+<%# head.html %>
+<%
+	var showInvalid = 0;
+	var global_r = this.xr.r || '';
+	var delete_cart = [];
+%>
+
+<%= requireFn('block/page_head.html')({
+	'pageTitle' : '购物车'
+	, 'right_type' : this.cartList.info.length ? 'cart' : ''
+	, 'xr' : this.xr
+	, '_JSstack' : this._JSstack
+	, '_JSmods' :  this._JSmods
+}); %>
+
+<div class="cart">
+<% if(this.cartList.info.length !== 0){ %>
+	<ul class="order_list_list">
+		<% this.cartList.info.forEach(function(shop, i){ %>
+			<% if(shop.valid){ %>
+				<li class="cart_list">
+					<div class="shop_title order_info" id="shop_<%= shop.shop_id %>">
+						<div class="box_btn">
+							<input type="checkbox" class="select_shop" name="shop[<%= i %>]" value="<%= shop.shop_id %>" id="select_<%= shop.shop_id %>" shopId = "<%= shop.shop_id%>"/>
+							<label for="select_<%= shop.shop_id %>"></label>
+							<input type="hidden" value="<%= shop.total_price %>" id="shop_total_<%= shop.shop_id %>"/>
+						</div>
+						<div class="shop_name"><a href="/shop/<%= shop.shop_id %>" xr="<%= global_r %>">店铺：<%= shop.shop_name %></a></div>
+						<div class="fold_btn">展开</div>
+						<div class="shop_tatol_price">合计：<span class="shop_price_text">¥0.00</span></div>
+					</div>
+					<ul class="order_goods_list">
+						<% shop.goods.forEach(function(goods, j){ %>
+							<% if(goods.stock !== "0" && goods.shelf !== "0"){ %>
+
+							<li id="goods_<%= goods.sid %>" class="goods">
+								<div class="box_btn">
+									<input type="checkbox" class="select_goods" name="shop[<%= i %>]goods[<%= j %>]" value="<%= goods.sid %>" id="select_<%= goods.sid %>"/>
+									<label for="select_<%= goods.sid %>"></label>
+								</div>
+								<div class="main">
+									<a class="pic_wrap" xr="<%= global_r%>" href="/share/item/<%= goods.twitter_id %>">
+										<img class="pic" src="<%= goods.b_pic_url %>"/>
+										<% if(+goods.stock <= 10){ %><p class="stock_nervous">仅剩<%= goods.stock %>件</p><% } %>
+									</a>
+									<div class="middle">
+										<a href="/share/item/<%= goods.twitter_id %>" xr="<%= global_r%>"><p class="title"><%= goods.goods_title %></p></a>
+										<p class="prop">
+											<% goods.prop.forEach(function(p,i){ %>
+												<% if(p.is_show === '1'){ %>
+												<span class="<%= i===0?'first':'' %>"><%= p.name %>：<%= p.value %></span>
+												<% } %>
+											<% }); %>
+										</p>
+										<div class="numBox">
+											<div class="minus">-</div>
+											<input type="text" class="amount nums" data-ori="<%= goods.amount %>" data-max="<%= goods.stock %>" value="<%= goods.amount %>"/>
+											<div class="add plus">+</div>
+											<div class="nums_mask"></div>
+										</div>
+									</div>
+									<div class="right">
+										<p class="goods_price" data-price="<%= goods.goods_activity_price %>">¥<%= Number(goods.goods_activity_price).toFixed(2) %></p>
+										<% if(goods.goods_activity_price != goods.goods_price_origial){ %><p class="origin_price">¥<%= Number(goods.goods_price_origial).toFixed(2) %></p><% } else { %><p class="origin_price"></p><% } %>
+										<div class="delete_btn js_single_delete_btn">删除</div>
+									</div>
+								</div>
+							</li>
+							<% } else {
+								showInvalid = 1;
+								delete_cart.push(goods);
+							} %>
+						<% }); %>
+					</ul>
+				</li>
+			<% } else {
+				showInvalid = 1;
+				shop.goods.forEach(function(goods, index){
+					delete_cart.push(goods);
+				});
+			} %>
+		<% }); %>
+
+		<% if(showInvalid){ %>
+			<li class="cart_list cart_delete">
+				<ul class="order_goods_list">
+					<% delete_cart.forEach(function(goods, j){ %>
+						<% if(goods.stock === "0" || goods.shelf === "0"){ %>
+							<li id="goods_<%= goods.sid %>" class="goods">
+								<div class="main">
+									<a class="pic_wrap" xr="<%= global_r%>" href="/share/item/<%= goods.twitter_id %>">
+										<img class="pic" src="<%= goods.b_pic_url %>"/>
+									</a>
+									<div class="middle">
+										<a xr="<%= global_r%>" href="/share/item/<%= goods.twitter_id %>">
+											<p class="title"><%= goods.goods_title %></p>
+											<p class="prop">
+												<% goods.prop.forEach(function(p, i){ %>
+													<% if(p.is_show === '1'){ %>
+													<span class="<%= i===0?'first':'' %>"><%= p.name %>：<%= p.value %></span>
+													<% } %>
+												<% }); %>
+											</p>
+										</a>
+									</div>
+									<div class="right">
+										<p class="goods_price"></p>
+										<p class="origin_price"></p>
+										<div class="delete_btn js_single_delete_btn">删除</div>
+									</div>
+								</div>
+							</li>
+						<% } %>
+					<% }); %>
+				</ul>
+
+				<div class="order_foot">
+					<a href="javascript:void(0)" id="removeInvalid" class="btnG">清除失效宝贝</a>
+				</div>
+			</li>
+		<% } %>
+	</ul>
+
+	<div class="float_ctrl_wrap">
+		<div id="float_ctrl" class="float_ctrl">
+			<div class="goods_check_box">
+				<div class="box_btn">
+					<input type="checkbox" class="select_all" id="select_all"/>
+					<label for="select_all"></label>
+				</div>
+				<span>全选</span>
+			</div>
+			<div class="go_charge">去结算<span class="js_charge_num"></span></div>
+			<div class="order_msg">
+				<p class="price">合计：<span class="total_price">¥0.00</span></p>
+				<p class="num msg">不含运费、优惠扣减</p>
+			</div>
+		</div>
+	</div>
+	<div class="none none_f">
+<% } else { %>
+	<div class="none">
+<% } %>
+		<div class="none_info">
+			<p>您的购物车还空着呢，</p>
+			<p>美物这么多，快去看看吧～</p>
+			<a xr="<%= global_r%>" href="/guang/hot?frm=cart" class="btn">去逛逛</a>
+		</div>
+	</div>
+</div>
+
+<form class="cartForm" action="/order/init/" method="get" accept-charset="utf-8" id="form"/>
+	<input type="hidden" name="source" id="source" value="5-0.0.1"/>
+	<input type="hidden" name="sid" id="sid"/>
+	<input type="hidden" name="shop_id" id="shop_id"/>
+</form>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/doota/cart_new');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot.html %>

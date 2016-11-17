@@ -1,0 +1,227 @@
+/**
+ * @fileoverview 首页－我的抽礼卡记录
+ * @requires
+ * @author kehuang@meilishuo.com
+ * @date 2016-01-11
+ */
+
+@import "../block.less";
+
+html{
+	.f(10*@f);
+}
+
+body{
+	.bgc(#f5f5f5);
+}
+
+img{
+	.block;
+	.w(100%);
+}
+
+a{
+	.block;
+	outline:none;
+}
+
+ul{
+	list-style:none;
+}
+
+i{
+	font-style:normal;
+}
+
+@750w: 1/750*100%;
+
+.no_data_bg{
+	.auto;
+	.w(188*@750w);
+	.pt(180*@750w);
+	.mt(180*@750w);
+	background:url("http://d02.res.meilishuo.net/pic/_o/cc/85/52aa64d0eb9998e37bbf7b19fbd7_188_180.cj.png") no-repeat;
+	background-size:100%;
+}
+
+.no_data_text{
+	.c;
+	.w(100%);
+	.mt(30*@750w);
+	.l(1.2);
+	.f(1.3rem);
+    .fc(#666);
+}
+
+.records_list_box{
+	.hidden;
+	.clearfix;
+
+	li{
+		.hidden;
+		.clearfix;
+		.bgc(#fff);
+		.mt(20*@750w);
+		padding:30*@750w;
+
+		.left_item{
+			.vm;
+			.left;
+			.w(76%);
+			.l(60px);
+			.h(60px);
+
+        	p{
+        		.hidden;
+        		.clearfix;
+        		white-space:nowrap;
+        		text-overflow:ellipsis;
+        	}
+
+			.title{
+				.l(24px);
+				.h(24px);
+    			.mt(8px);
+				.f(1.5rem);
+				.fc(#999);
+			}
+
+			.desc{
+				.l(20px);
+				.h(20px);
+				.mb(8px);
+				.f(1.2rem);
+				.fc(#999);
+			}
+
+			.icon_title{
+				.pr(16px);
+				background:url("http://d05.res.meilishuo.net/pic/_o/a2/d2/68e624b591da399c595b107baf75_18_28.cj.png") no-repeat;
+				background-size:9px auto;
+				background-position:right center;
+			}
+		}
+
+		.right_item{
+			.vm;
+			.right;
+
+			.status{
+				.h(60px);
+				.pr(59px);
+			}
+
+			.records_status_0{
+				background:url("http://d01.res.meilishuo.net/pic/_o/71/a1/2d901fa8103a7dd69fc1f792c851_118_98.cj.png") no-repeat;
+				background-size:59px auto;
+				background-position:center;
+			}
+
+			.records_status_1{
+				background:url("http://d01.res.meilishuo.net/pic/_o/7e/a6/a03fb8bcaab5ee125d8cff6454ea_118_98.cj.png") no-repeat;
+				background-size:59px auto;
+				background-position:center;
+			}
+
+			.records_status_2{
+				background:url("http://d05.res.meilishuo.net/pic/_o/31/8c/a41d6ba1d55a52b134e734bc776d_118_98.cj.png") no-repeat;
+				background-size:59px auto;
+				background-position:center;
+			}
+		}
+
+		.icon_goods{
+			.i_block;
+			.l(60px);
+			.h(60px);
+			.pl(70px);
+		}
+
+		.records_info{
+			.i_block;
+			.w(67%);
+			.l(60px);
+			.h(60px);
+		}
+	}
+}
+
+.pullUp{
+	.mt(20px);
+
+	.pullUpDown > .common;.pullUpDown > .loading;
+	&:before{
+		.nowrap;
+		.ml(-10px);
+	}
+	&[status="tap"]{
+		background:0 none;	
+	}
+	&[status="stop"]{
+		background:0 none;	
+	}
+}
+
+.gotop_wrap{
+	.pf;
+	.none;
+	.w(82*@w);
+	.pt(82*@w);
+	z-index:10;
+	right:10px;
+	bottom:40px;
+
+	.gotop{
+		.block;
+		.w(100%);
+	}
+
+	img{
+		.w(100%);
+	}
+}
+
+.windowDrive{
+	.dialog{
+		.border-r(6px);
+	}
+
+	.dialog-con{
+		.l(1.8);
+		.f(1.4rem);
+		.fc(#666);
+	}
+
+	.dialog-btn{
+	    border-top:1px solid #e5e5e5;
+
+	    span{
+	      	.f(1.5rem);
+	      	.fc(#f66);
+	    }
+	}
+}
+
+@media screen and (min-width:360px){
+	.records_list_box li {
+		.left_item{
+			.w(80%);
+		}
+
+		.records_info{
+			.w(72%);
+		}
+	}
+}
+
+@media screen and (min-width:400px){
+	.records_list_box li {
+		.left_item{
+			.w(82%);
+		}
+
+		.records_info{
+			.w(74%);
+		}
+	}
+}

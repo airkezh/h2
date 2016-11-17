@@ -1,0 +1,50 @@
+<%# wx_new/header.html%>
+<%
+	var getLink = _extFn.getLink
+		,query = this._Request_query
+		,typeName = {"hot" : "热卖","new" : "新品"}
+		,navTop = this.nav_top ? this.nav_top : [{'page_title':'开业盛典'},{'page_title':'服饰团购'},{'page_title':'美妆特卖'}]
+		,pageNameArr = [{"en":"daily"},{"en":"clothes"},{"en":"cosmetic"}]
+		,seckillBtn = ["整点开抢", "立即购买", "抢光了", "还有机会"]
+		,typeTop = this.nav_top[0].page_categories.itemes ? this.nav_top[0].page_categories.itemes : []
+%>
+<div>
+	<img src="<%=this.PICTURE_URL%>/images/wap/web/wx_new/happy/itemes1.jpg" />
+</div>
+<div class="posterWall wrap scroller">
+	<!-- typeTop -->
+	<div class="typeTop">
+		<p>
+			<%typeTop && typeTop.map(function(data, index){%>
+				<%var url =  "/wx/itemes" + getLink({'cate_id' : data.cate_id})%>
+				<a href=<%=url %> typeId='<%= data.cate_id%>' class='cosmetictap  <%= (this.cate_id == data.cate_id) ? 'type_select' : '' %>'><%= data.cate_name%></a>
+			<%})%>
+		</p>
+	</div>
+	<!-- 瀑布流 -->
+	<ul class="new_goods goods_wall">
+	</ul>
+	<div class="pullUp" status="loading"></div>
+	
+</div>
+<%# wx_new/posterWX.html%>
+
+<script>
+fml.vars.poster = {
+	'totalColNum':2,
+	'pageName' : '<%= this.pageName%>',
+	'cate_id' : '<%= this.cate_id%>'
+};
+</script>
+<script>
+fml.vars.pid = '<%= this.pid %>';
+fml.vars.r = '<%= this.r %>';
+<%= this.goods? 'Meilishuo.config.poster0 = '+JSON.stringify(this.goods)+';':'' ;%>
+fml.vars.goods_length = '<%= this.goods_length%>';
+</script>
+<script src="http://pub.idqqimg.com/qqmobile/qqapi.js?_bid=152"></script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/wx_new/mall');
+_use:", this._JSstack , this._JSmods ); %>
+<%# wx_new/side.html%>
+<%# wx_new/footer.html%>

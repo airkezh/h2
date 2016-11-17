@@ -1,0 +1,26 @@
+<%# head.html%>
+<p class="title">Image Editor with CSS Filters and jQuery</p>
+<div class="board attribute"><div class="attribute"><div class="attribute"><div class="attribute"><div class="attribute">
+<div class="attribute"><div class="attribute"><div class="attribute"><div class="attribute"><div class="attribute">
+	<img src="<%=this.PICTURE_URL%>/images/lark/pt/pt.png">
+</div></div></div></div></div></div></div></div></div></div>
+<div class="change">
+	<form>
+		<div class="point">opacity(透明度): <br/><input class="opacity" type="range" value="1" name="opacity" step="0.1" min="0" max="1" /></div>
+		<div class="point">blur(模糊度): <br/><input type="range" value="0" name="blur" step="1" min="0" max="10" /></div>
+		<div class="point">grayscale(灰度): <br/><input type="range" value="0" name="grayscale" step="0.1" min="0" max="1" /></div>
+		<div class="point">sepia(褐色滤镜): <br/><input type="range" value="0" name="sepia" step="0.1" min="0" max="1" /></div>
+		<div class="point">brightness(亮度): <br/><input type="range" value="0" name="brightness" step="0.1" min="0" max="10" /></div>
+		<div class="point">contrast(对比度): <br/><input type="range" value="0" name="contrast" step="0.1" min="0" max="10" /></div>
+		<div class="point">hue-rotate(色相): <br/><input type="range" value="0" name="hue-rotate" step="30" min="0" max="330" /></div>
+		<div class="point">invert(反相): <br/><input type="range" value="0" name="invert" step="0.1" min="0" max="1" /></div>
+		<div class="point">saturate(饱和度): <br/><input type="range" value="0" name="saturate" step="0.1" min="0" max="10" /></div>
+		<div class="point">drop-shadow(阴影): <br/><input type="range" value="0" name="drop-shadow" step="1" min="0" max="100" /></div>
+	</form>
+</div>
+<div class="reset">reset</div>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/lark/cssFilter');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

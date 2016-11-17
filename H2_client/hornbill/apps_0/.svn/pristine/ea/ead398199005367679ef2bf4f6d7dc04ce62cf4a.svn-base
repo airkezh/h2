@@ -1,0 +1,102 @@
+<%#head.html%>
+<section id="bannerBox">
+    <%if(this.b_banner&&this.b_banner.data.miaosha_new&&this.b_banner.data.miaosha_new.length){
+    	var t_banner = this.b_banner.data.miaosha_new;%>
+		<!--轮播-->
+		<%= requireFn('tuan/imgSlide.html')({
+			't_banner' : t_banner
+			,'_JSstack' : this._JSstack
+			,'_JSmods' : this._JSmods
+		});%>
+	<%}%>
+</section>
+<%var data = this.taginfo.data;
+if(data.area_info && data.area_info.tag_name && data.area_info.tag_name.length){
+	var listyle = 'lifour';
+	if(data.area_info.tag_name.length == 6){
+		listyle = 'lisix';
+	}else if(data.area_info.tag_name.length == 5){
+		listyle = 'lifive';
+	}
+%>
+<section class="nav_wap" id="nav_wap">
+	<div class="nav scrollout" id="m_ca">
+		<ul class="nav_tabs <%= listyle%>">
+		<%data.area_info.tag_name.forEach(function(v, k){%>
+			<li <%= k== 0 ? 'class=\'curr\'' : ''%> data-cata="<%= k%>"><a href="javascript:void(0);"><span><%= v%></span></a></li>
+		<%})%>
+		</ul>		
+	</div>
+</section>
+<%}%>
+<div class="pullUp" status="loading"></div>
+<section id="container" class="container" style="padding-top:10px; min-height:700px;">
+</section>
+<script type="text/javascript">
+	fml.vars.event_id = <%= this.event_id%>;
+	fml.vars.is_lazyload_poster = true;
+</script>
+<script type="text/html" id="seckillBox">
+	<?$.each(this.shop_info, function(k1, v1){?>
+		<div class="item">
+			<?if(v1.module_type == 'text'){?>
+			<h1><span><?= v1.module_name?></span></h1>
+			<?}else{?>
+			<img class="moduleimg" src="<?= v1.module_img?>" />
+			<?}?>
+			<div class="goods_wall">
+				<?$.each( v1.goods_list, function(k , v){ 
+					?>
+					<div class="productBox">
+					<?if(!v.is_hjf){?>			
+						<a class="link_box" href="<?= v.url_mob?>">
+							<figure>
+							    <?if(v.horizontal_mark.length){?>
+									<div class="new-png">
+									 	<?var _l = 0;?>
+										<? $.each(v.horizontal_mark , function(k1 , v1){ ?>
+											<div style="position:relative;left:<?= _l?>px"><img style="width:70%;" src="<?= v1.img_url?>" /></div>
+											<?_l += 2;?>
+										<?});?>
+									</div>
+								<?}?>
+								
+								<?if(v.soldout){?>
+									<img class="zeroflag" src="<%=this.PICTURE_URL%>/images/wap/activity/all/bs_over.png" width="40" />
+								<?}?>
+							    <?if(fml.vars.is_lazyload_poster){?><span class="bs_load_img" asrc="<?= v.show_pic_mob?>"></span>
+							    <?}else{?>
+							    	<img src="<?= v.show_pic_mob?>" alt="">
+						    	<?}?>	    	
+							</figure>
+							<figcaption>
+								<div class="proTitle"><?= v.ginfo.goods_title?></div>
+								<div class="proPrice">
+									<span class="new"><i>￥</i><?= v.ginfo.discount_goods_price?>
+									</span>
+									<?if(v.ginfo.goods_price){?>
+									<del class="old">¥<?= v.ginfo.goods_price ?></del>
+									<?}?>
+								</div>
+								<div class="proStatis">
+									<span><?= v.count_participants?>人喜欢</span>
+								</div>
+							</figcaption>
+						</a>
+					<?}else{?>
+						<a class="link_box hjfpos" href="<?= v.hjf_jump_url?>">
+					        <img src="<%=this._imgurlhead%>/images/huodong/tuan/prebg.png" />
+					        <figcaption class="ownh"></figcaption>
+					        <img class="adenter" src="<?=v.hjf_pic_url?>" /> 
+						</a>
+					<?}?>
+					</div>
+					<?});?>
+			</div>
+		</div>
+	<?});?>
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/tuan/activity/seckill');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html%>

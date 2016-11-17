@@ -1,0 +1,143 @@
+!window.MLSPassport && (window.MLSPassport = {});
+window.MLSPassport.risk = Risk
+
+function Risk(opts, passport){
+	var mSelf = this
+	this.opts = opts || {}
+    this.passport = passport || new Passport(opts)
+
+	this.risk_type = this.opts.risk_type || 'pic'
+	this.passport.setName.call(this, 'risk'+this.risk_type)
+	this.ruleid = this.opts.ruleid
+
+	this.opts.parents && (this.parents = this.opts.parents)
+	this.opts.success && (this.success = this.opts.success)
+
+	opts.watch && this.passport.bridge.addWatch(opts.watch)
+
+    this.dom = {}
+
+	this.initDom()
+	this.initInput()
+	this.setValidate(function(){mSelf.doRisk()});
+
+	this.updateCaptcha();
+}
+
+Risk.prototype.initDom = function(){
+	var mSelf = this
+	var passport = this.passport
+
+	var ui = {
+		captchaPlaceholder:'验证码'
+		,risk_type:this.risk_type
+		,name:this.name
+	}
+
+	if(this.parents){
+		ui.simple = 1	
+		this.ui = $.extend({},ui,this.parents.ui)
+	}else{
+		this.ui = ui	
+	}
+
+	var tpl = require('risk.html')
+	this.dom.outer = $(this.opts.outer || '#riskBox').html(passport.shareTmp(tpl, this.ui))
+	this.dom.captchaArea = this.dom.outer.find('.captchaArea')
+	this.dom.captchaImage = this.dom.captchaArea.find('img')
+
+	if(this.parents){
+		this.dom.msgArea = this.parents.dom.msgArea
+	}else{
+		this.dom.msgArea = this.dom.outer.find('.passport-form-message')
+	}
+
+	var isDelay;
+	this.dom.captchaArea.on('click', '.captchaImage', function(){
+		if(isDelay) return;
+
+		mSelf.updateCaptcha();
+
+		isDelay = 1;
+		setTimeout(function(){
+			isDelay = 0;
+		},500);
+	});
+
+}
+
+Risk.prototype.initInput = function(){
+	var inputList = ['captcha']
+	for(var i in inputList){
+		var inputname = inputList[i]
+		this.dom[inputname] = this.dom.outer.find('#'+inputname)
+	}
+}
+
+//表单操作
+Risk.prototype.setValidate = function(cbk){
+	var parents = this.parents
+
+	var validateRules = {
+		'captcha' : {}
+	}
+	validateRules.captcha['req=' + this.ui.captchaPlaceholder] = '请输入验证码'
+
+	var formName = 'riskForm'
+	var showStyle = {
+		'showmsgbyline=msg_error' : '',
+	}
+	var opts = {
+		'success' : 'span=msg_ok',
+		'error': 'span=msg_err'
+	}
+
+	if(parents){
+		if(parents.validate){
+			parents.validate.addValidate(validateRules)
+			parents.validate.addSubmit(cbk)
+
+		}else{
+			showStyle['showmsgforsubmit=passport-form-submit-' + parents.name] = cbk
+			this.validate = new Validate().validate(formName, validateRules, showStyle, opts)
+		}
+
+	}else{
+		showStyle['showmsgforsubmit=passport-form-submit-' + this.name] = cbk
+		this.validate = new Validate().validate(formName, validateRules, showStyle, opts)
+	}
+}
+
+Risk.prototype.doRisk = function (){
+	var mSelf = this
+	var passport = this.passport
+	var validate = passport.validate
+
+	var data = {
+		'app_id' : mSelf.passport.app_id,
+		'ruleid' : mSelf.ruleid,
+		'captcha': mSelf.dom.captcha.val(),
+		'expire_type':mSelf.passport.expire_type
+	};
+
+	passport.bridge.ajax('/risk'+this.risk_type, data , function(res){
+		mSelf.dom.msgArea.html(res.message).show()
+
+		if(res.error_code == 0){
+			
+			mSelf.success && mSelf.success()
+
+			validate.next()
+
+		}else{
+			mSelf.updateCaptcha();
+		}
+
+	})
+}
+
+Risk.prototype.updateCaptcha = function (callback){
+	this.dom.captchaImage.attr('src', this.passport.bridge.hosts.captcha + '&session='+(new Date()).valueOf());
+	callback && callback();
+}
+

@@ -1,0 +1,43 @@
+<!doctype html>
+<html <%if(this.cache){%>manifest="/cache/m.manifest"<%}%>>
+<head>
+	<meta charset="utf-8">
+    <title><%== this.pageTitle%></title>
+    <meta name="keywords" content="<%= this.keywords%>" />
+    <meta name="description" content="<%= this.meta_description%>" />
+	<meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1.0,minimum-scale=1.0">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <% if(!this.noBasecss){ %>
+	<link rel="stylesheet" type="text/css" href="<%= this.M_JCSTATIC_BASE %>css/wap/base.css?<%= this.SVERSION%>" />
+    <% } %>
+	<% this.user_id = (this.userInfo ? this.userInfo.user_id:0) || 0;%>
+	<%= (function(link){
+		var str = '';
+		var base = this.M_JCSTATIC_BASE;
+		var sversion = this.SVERSION;
+		link && link.map(function(src){
+			str += '<link rel="stylesheet" type="text/css" href="'+base+'css/wap/'+src+'.css?'+ sversion +'"/>';
+			});
+		return str;
+		})(this._CSSLinks)%>
+	<% if (this._CSSstack && this._CSSstack.length) { %>
+		<style>
+		<%= this._CSSstack.join("\n");%>
+		</style>
+	<% }
+	%>
+	<script type="text/javascript" src="<%= this.M_JCSTATIC_BASE + this.SCRIPT_BASE %>fml.js?<%= this.SVERSION%>" ></script>
+	<script>
+	fml.setOptions({'sversion' : '<%= this.SVERSION %>','defer' : <%= this.JS_Defer %> ,'modulebase' : '<%= this.M_JCSTATIC_BASE + this.SCRIPT_BASE %>'});
+    var Meilishuo = {
+        'config' : {
+			server_url : '<%= this.SERVER_BASE %>',
+			picture_url : '<%= this.PICTURE_URL %>',
+			controller : '<%== this.headTag%>',
+			os : <%= JSON.stringify(this.os) || '{}'%>,
+			user_id : <%= this.user_id%> 
+		}
+    };
+	fml.vars.screen = {};
+	</script>

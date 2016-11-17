@@ -1,0 +1,38 @@
+<%# sq/header.html %>
+<nav>
+	<ul class="nav-list">
+		<li class="nav_item active" id="hot"><span>热门单品</span></li>
+		<li class="nav_item" id="collocation"><span>时尚搭配</span></li>
+	</ul>
+</nav>
+<div class="section_wrap">
+	<section class="collocation toggle_content">
+		<% var cd = this.dataOfCollocation; %>
+		<section class="collocation-style">
+			<h2>风格<i>What's your style?</i></h2>
+			<% cd.style && cd.style.forEach(function (item){ %>
+			<a href="<%= item.url %>" style="background-image:url(<%= item.img %>);"></a>
+			<% }); %>
+		</section>
+		<section class="collocation-color">
+			<h2>颜色<i>Popular colors</i></h2>
+			<% cd.color && cd.color.forEach(function (item){ %>
+			<a href="<%= item.url %>" style="background-image:url(<%= item.img %>);"></a>
+			<% }); %>
+		</section>
+	</section>
+	<section class="hot toggle_content">
+		<% var hd = this.dataOfHot; %>
+		<% hd.forEach(function (item){ %>
+		<a href="/sq/category/level2?firstClass=<%= item.name %>&d_r=<%= item.d_r %>" style="background-image:url(<%= item.img %>);"></a>
+		<% }); %>
+	</section>
+</div>
+<%! 
+	$_ENGINE_SELF.callFn("useModule")(
+		"<<<_use:fml.use('wap/page/sq/category_level1');_use:", 
+		this._JSstack, 
+		this._JSmods 
+	); 
+%>
+<%# sq/footer.html %>

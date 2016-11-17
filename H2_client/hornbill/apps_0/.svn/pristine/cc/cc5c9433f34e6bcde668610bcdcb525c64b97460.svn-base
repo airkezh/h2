@@ -1,0 +1,24 @@
+<ul class="order_goods_list">
+	<% this.goods && this.goods.map(function(goods, i){ %>
+	<li id="goods_<%= goods.sid %>">
+		<div class="last">
+			<p class="price u_price"><%= goods.price || goods.goods_activity_price %></p>
+			<p class="num">X&nbsp;<%= goods.amount%></p>
+			<p class="status"><%= goods.goods_text || (Number(goods.amount)*Number(goods.price || goods.goods_activity_price)).toFixed(2) %></p>
+		</div>
+		<a href="/share/<%if(goods.is_doota == '1'){%>item/<%}%><%= goods.twitter_id %>">
+			<img class="pic" src="<%= goods.b_pic_url%>"/>
+			<div class="middle">
+				<p class="title"><%= goods.goods_title%></p>
+				<p class="prop">
+					<% goods.prop && goods.prop.map(function(prop){ %>
+					<%if(prop.is_show){%>
+					<span><%= prop.name%>：<%= prop.value%></span>
+					<%}%>
+					<%});%>
+				</p>
+			</div>
+		</a>
+	</li>
+	<%});%>
+</ul>

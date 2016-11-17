@@ -1,0 +1,35 @@
+<%#head.html%>
+<div class="wrap">
+	<img class="top_pic" src="<%= this.baseData.head_pic_question.pic_url%>">
+	<div class="cloth_box" xr="<%= this.xr.r%>">
+		<% this.baseData && this.baseData.sub_question && this.baseData.sub_question.map(function(data){ %>
+			<img select="<%= data.answer%>" src="<%= data.pic_url.pic_url%>">
+		<%});%>
+	</div>
+	<div class="pk">
+		<div class="text">
+			每日一题<br />
+			考察你的时尚眼光<br />
+			下面哪款<span><%= this.baseData.style%></span>更流行？
+		</div>
+	</div>
+</div>
+
+<script type="text/html" id="noLogin_pop">
+	<div class="noLogin_pop">
+		<p class="close closeDialog"></p>
+		<div class="clear_f"></div>
+		<div class="content">
+			<span class="login"></span>
+			<span class="again"></span>
+		</div>
+	</div>
+</script>
+
+<script>
+	fml.vars.p = '<%= this.p%>';
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/popular');
+_use:", this._JSstack, this._JSmods); %>
+<%#foot.html%>

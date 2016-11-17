@@ -1,0 +1,138 @@
+<%# head.html%>
+<%
+var query = this._Request_query;
+var getLink = _extFn.getLink;
+var mSubstr = _extFn.mSubstr;
+%>
+<%if(this.shop_info.shop_level == 1){%>
+<div class="auto_box top_bnr" style="background: #fff url(<%=(this.shop_info.shop_head_img || this.PICTURE_URL+'/images/shop/head-img.jpg') %>) no-repeat center;"></div>
+<%}%>
+<div class="s_p_tabs">
+	<h2 class="tabs_con"><%=this.shop_info.shop_nick%></h2>
+</div>
+<div class="auto_box">
+	<div class="shop_l">
+		<%# block/shop_info.html%>
+		<%if(this.shop_info.shop_level == 1){%>
+		<div class="shop_info">
+			<div class="redline2"></div>
+			<h3 class="f14_f mt14_f">全部分类</h3>
+			<ul class="cata_list">
+				<li class="first"><a <% if(this.shop_cata.categories.category_id == query.category_id){%>class="red_f"<%}%> href="<%== this.spid %>">店铺首页</a></li>
+				<% this.shop_cata.categories && this.shop_cata.categories.forEach(function(data) { %>
+					<li><a <%if( data.category_id == query.category_id ){%> class="red_f"<%}%> href="?category_id=<%=data.category_id  %>"><%= data.category_name %></a></li>
+				<% }); %>
+			</ul>
+		</div>
+		<%}%>
+	</div>
+	<div class="shop_r">
+		<%if(!query.category_id && !parseInt(query.page)  && this.shop_info.shop_level == 1){%>
+		<div class="right_box">
+			<div class="redline2"></div>
+			<h3 class="f14_f mt14_f">店铺橱窗</h3>
+			<div class="ad_bnr">
+				<div class="boxImg" style="width:220px;height:380px;">
+					<% var seclen = this.shop_wins.slide ? this.shop_wins.slide.length : 0; %>
+					<ul class="_img" style="position:absolute;left:0;width:<%= (seclen+1)*220 %>px;display:inline-block;">
+						<% this.shop_wins.slide && this.shop_wins.slide.map(function(data, index){ %>
+						<li class="left_f">
+							<div class="hoverpic pr_f">
+								<a target="_blank" href="<%= data.url%>"><img src="<%= data.img%>"></a>
+								<a class="onpic none_f" style="padding-top: 320px;" href="<%= data.url %>" target="_blank">
+									<b><%= data.title ||''%></b>
+									<b><%= data.price ||''%></b>
+								</a>
+							</div>
+						</li>
+						<% }); %>
+					</ul>
+				</div>
+				<div class="_num adType1 <% if(seclen == 1) { %>none_f<% } %>">
+					<% for (var i=1; i<=seclen; i++) { %>
+					<% var current = i==1 ? 'current' : ''; %>
+					<a class="<%= current %>"><span class="none_f"><%= i %></span></a>
+					<% } %>
+				</div>
+			</div>
+			<ul class="wins">
+				<% this.shop_wins.fix && this.shop_wins.fix.forEach(function(data) { %>
+					<li class="hoverpic">
+						<a><img src="<%= data.img %>" /></a>
+						<a class="onpic none_f" href="<%= data.url %>" target="_blank">
+							<b><%= data.title ||''%></b>
+							<b><%= data.price ||''%></b>
+						</a>
+					</li>
+				<% }); %>
+			</ul>
+			<div class="clear_f"></div>
+		</div>
+		<%}%>
+		<div class="clear_f"></div>
+		<div class="right_box">
+			<div class="redline2"></div>
+			<h3 class="f14_f mt14_f">
+				<%if(!query.category_id){%>所有宝贝<%}%>
+				<% this.shop_cata.categories && this.shop_cata.categories.forEach(function(data) { %>
+					<%if( data.category_id == query.category_id ){%><%= data.category_name %><%}%>
+				<% }); %>
+			</h3>
+			<ul class="all_goods">
+				<% var goods_count = 0; %>
+				<% this.goods.gInfo && this.goods.gInfo.forEach(function(data) { %>
+					<% var style = ++goods_count % 3 ? '' : 'class="last"' ; %>
+					<li class="poster_grid" <%= style %> twitter_id="<%=data.twitter_id%>" twitter_author_uid="<%=data.twitter_author_uid%>" twitter_source_tid="<%= data.twitter_source_tid%>" twitter_show_type="<%=data.twitter_show_type%>" like_twitter_id="<%=data.like_twitter_id%>">
+						<div class="hover_pic">
+						<a href="<%= data.url %>" target="_blank"><img class="goods_pic" src="<%= data.goods_img %>" /></a>
+							<div class="like_merge">
+								<a class="left_f poster_forward" href="javascript:void(0)"><em class="lm_shouji">&nbsp;</em>收进杂志&nbsp;<span class="poster_forward_num line_num"><%= data.count_forward %></span></a>
+							</div>
+						</div>
+						<p class="tle"><%= mSubstr(data.goods_title , 32 , '...')%></p>
+						<p class="comm_num l22_f">
+							<span class="f14_f left_f"><%= data.goods_price %></span>
+							<a isShowLike="<%= data.isShowLike%>" s_uid="<%=data.like_author_uid%>" class="right_f poster_likes likes <%if(data.is_liked){%>liked<%}%>" href="javascript:void(0)">
+								<b class="likes_status">
+									<%if(data.is_liked){%>
+									已喜欢
+									<%}else{%>
+									<i class="lm_love2">&nbsp;</i>喜欢
+									<%}%>
+								</b>
+								<span class="red_f f14_f poster_like_num"><%= data.count_like %></span>
+							</a>
+						</p>
+					</li>
+				<% }); %>
+			</ul>
+			<div class="clear_f"></div>
+			<div class="paging_panel c_f">
+				<%#paging.html%>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="clear_f"></div>
+<%if(0==1){%>
+<div class="auto_box">
+	<div class="other">
+		<div class="cmn_title">
+			<h3 class="f14_f">去其他店铺逛逛</h3>
+			<p><a href="/shop" target="_blank">更多推荐&gt;&gt;</a></p>
+		</div>
+		<div class="list">
+			<% this.other.recommends && this.other.recommends.forEach(function(data) { %>
+				<a href="<%=data.url%>" target="_blank"><img src="<%=data.shop_face_img%>" /></a>
+			<% }); %>
+		</div>
+	</div>
+</div>
+<%}%>
+<%# user/windows.html%>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/shop');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot.html%>
+

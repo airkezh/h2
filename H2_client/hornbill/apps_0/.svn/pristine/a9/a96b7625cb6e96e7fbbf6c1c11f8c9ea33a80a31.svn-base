@@ -1,0 +1,152 @@
+/*common*/
+require('wap/zepto/fastclick');
+
+var onscroll = require('wap/component/windowScroll'),
+	poster = require('wap/app/posterPa'),
+	posterWall = require('wap/app/posterWalls6'),
+	appShare = require('wap/app/appShare'),
+	openApp = require('wap/app/openApp'),
+	lazyLoad = require('wap/component/lazzyLoad'),
+	openAppLink = require('wap/app/openAppLink');
+
+var weixinBrowser = navigator.userAgent.indexOf('MicroMessenger'),
+	win = $(window),
+	tab = $('#tab'),
+	gotopObj = $('.top-box').find('a'),
+	wrap = $('#wrap'),
+	content = $('#content'),
+	limit = 6;
+var requestAnimationFrame = win[0].requestAnimationFrame ||
+	win[0].webkitRequestAnimationFrame ||
+	win[0].mozRequestAnimationFrame ||
+	oldStyleMove;
+var tabOffset = 0;
+requestAnimationFrame(function() {
+	tabOffset = tab.offset().top;
+})
+
+if (weixinBrowser != -1) {
+	openApp(location.href);
+}
+
+// 客户端类型的分享（客户端右上角）
+if (fml.vars.appShare) {
+	appShare(fml.vars.params, ['weixin', 'weixin_timeline']);
+}
+
+//一进页面加载数据
+getWall(2, '/aj/korea/waterFall/listWaterFall?limit=' + limit + '&sort=weight&cate_id=' + fml.vars.cid, 'posterWall', false);
+// tab
+tab.find('a').on('click', function() {
+	$('body')[0].scrollTop = tabOffset;
+	var self = $(this),
+		sort = self.data('sort');
+	if (self.hasClass('cur')) {
+		return;
+	}
+	tab.find('a').removeClass('cur');
+	self.addClass('cur');
+	resetPostwall();
+	getWall(2, '/aj/korea/waterFall/listWaterFall?limit=' + limit + '&sort=' + sort + '&cate_id=' + fml.vars.cid, 'posterWall', false);
+})
+
+//重置瀑布流
+function resetPostwall() {
+	content.find('.pullUp').remove();
+	content.append('<div class="pullUp" status="loading"></div>');
+	content.find('.goods_wall').height('0px').html('');
+}
+
+//拉取瀑布流
+function getWall(colNum, url, tmp, showBtn) {
+	var lazy_pic = colNum == 1 ? '.lazy_pic_big' : '.lazy_pic';
+	poster.set({
+		colNum: colNum
+	});
+	var date = {
+		url: url,
+		poster: poster,
+		tmp: tmp,
+		showBtn: showBtn,
+		posterMargin: $('#content').offset().top,
+		filterFun: function(res) {
+			return res.data.goodsinfo;
+		},
+		marginOffset: 0,
+		lazyLoad: lazyLoad.init({
+			xpath: lazy_pic
+		})
+	}
+	posterWall.scroll(date);
+};
+
+/*获取单品页链接*/
+function getDoneUrl(ele) {
+	var twitter_id = parseInt(ele.data('twitter_id')),
+		Url = Meilishuo.config.os.mlsApp ? openAppLink.getAppLink({
+			'protocol': 'twitter_single',
+			'param': {
+				"twitter_info": {
+					"twitter_id": twitter_id,
+					"is_doota": 1
+				}
+			}
+		}) : '/share/item/' + twitter_id;
+	window.location.href = window.__get_r(Url, ele.parents('.frame').data('xr'));
+}
+wrap.on('click', '.salelUrl', function() {
+	getDoneUrl($(this));
+});
+
+// 判断时候支持position：sticky
+function hasSticky() {
+	var element = document.createElement('div');
+	if ('position' in element.style) {
+		element.style['position'] = '-webkit-sticky';
+		element.style['position'] = '-moz-sticky';
+		element.style['position'] = '-o-sticky';
+		element.style['position'] = '-ms-sticky';
+		element.style['position'] = 'sticky';
+		return element.style['position'] === '-webkit-sticky' || element.style['position'] === '-moz-sticky' || element.style['position'] === '-o-sticky' || element.style['position'] === '-ms-sticky' || element.style['position'] === 'sticky'
+	} else {
+		return false;
+	}
+}
+
+// tab吸顶
+if (!hasSticky()) {
+	$(window).scroll(function() {
+		var t = $(window).scrollTop();
+		if (t > tabOffset) {
+			tab.css({
+				'position': 'fixed',
+				'left': 0,
+				"top": 0
+			});
+		} else {
+			tab.css({
+				'position': 'static'
+			});
+		}
+	});
+}
+/*登陆成功后的回掉函数*/
+window.MLS = {
+	didLogin: function() {
+		// 成功登录，跳转到下一步
+		window.location.reload();
+	}
+};
+/*gotop*/
+gotopObj.on("click", function(e) {
+	document.body.scrollTop = 0
+});
+onscroll.bind(gotop, 'gotop');
+
+function gotop(pos, isDown) {
+	if (pos < 30) {
+		gotopObj.hide()
+	} else {
+		gotopObj.show()
+	}
+};

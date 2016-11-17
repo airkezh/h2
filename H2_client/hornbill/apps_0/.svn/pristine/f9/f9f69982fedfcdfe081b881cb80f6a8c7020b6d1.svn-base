@@ -1,0 +1,205 @@
+@import "common.less";
+@import "../block/steps.less";
+
+.uploading();
+
+body{
+
+	//重置container样式
+	.container{
+		padding:0;
+	}
+
+	//不需要申请
+	.no-need-appeal{
+		text-align: center;
+		padding:50% 0.625%;
+		line-height: 20px;
+	}
+
+	//头部的温馨提示
+	.top-wrap{
+		padding:@common-padding-vertical @common-padding-horizontal;
+		text-align: center;
+	}
+
+	//底部温馨提示
+	.bottom-tips{
+		background-color: @yellow-tip;
+		border:@yellow-tip-border;
+		color:@yellow-tip-color;
+		padding:10px 10px;
+		line-height: 22px;
+		margin:0 @common-padding-horizontal;
+	}
+	.setpassword-tips{
+		background-color: @yellow-tip;
+		border:@yellow-tip-border;
+		color:@yellow-tip-color;
+		padding:10px 10px;
+		line-height: 22px;
+		margin:0 @common-padding-horizontal;
+		margin: 0px;
+		text-align: center;
+		margin-top: 10px;
+	}
+
+	//小贴士样式
+	.tips{
+		color:@primary;
+	}
+
+	//更多提示
+	.more-desc{
+		color:@desc-gray;
+	}
+
+	//上传图片
+	.upload-wrap {
+		margin-top:@common-margin-vertical;
+		.pic {
+			width:48px;
+			height: 48px;
+			float: left;
+			margin-right: 5px;
+			margin-bottom: 5px;
+			border-radius: 5px;
+			overflow: hidden;
+		}
+		.addBtn{
+			width:48px;
+			height:48px;
+			background:url("@{pic_url}/images/hirra/upload-cross.png") no-repeat;
+			background-size:100%;
+		}
+	}
+
+	//真正的apply表单
+	.apply-form{
+		ul.block-container{
+			&>li:nth-child(1){
+				margin-top:0;
+			} 
+			&>li{
+				background-color: @block-background-color;
+				border-top:1px solid @block-border-color;
+				border-bottom:1px solid @block-border-color;
+				padding:@common-padding-vertical @common-padding-horizontal;
+				margin:@common-margin-vertical 0;
+
+				&.one-line{
+					padding:15px 15px;
+				}
+
+				.label-wrap{
+					line-height:13px;
+					.icon-pink{
+						display: inline-block;
+						color:@primary;
+						padding:0 0 0 0;
+						vertical-align: middle;
+						font-size: 16px;
+						font-style:normal;
+						height: 10px;
+					}
+					&>span{
+						height: 14px;
+						vertical-align: middle;
+					}
+					.label-inner{
+						display: inline-block;
+						vertical-align: middle;
+					}
+
+					.money-input-wrap{
+						&>span{
+							margin-left: 5px;
+						}
+					}
+
+					.money-desc-wrap{
+						margin-left:6em;
+						margin-top: 5px;
+					}
+				}
+
+				.content-wrap{
+					margin-top:@block-margin-verctical;
+					&>div{
+						margin-top: @block-margin-verctical;
+					}
+					.refund-other{
+						margin-top: @common-margin-vertical;
+					}
+
+					&>textarea{
+						height:50px;
+					}
+
+					.refund-tip-text{
+						li{
+							line-height: 16px;
+							color:@primary;
+							list-style: none;
+						}
+					}
+					label{
+						&>input,&>span{
+							vertical-align: middle;
+						}
+					}
+				}
+
+				.coupon_tip{
+					margin-top: 5px;
+				}
+			}
+		}
+	}
+
+	//button的div
+	.button-wrap{
+		margin-top: @common-margin-vertical;
+		text-align: center;
+		.btn{
+			display: inline-block;
+			padding:10px 20px;
+			background-color: @btn-background-color;
+			color:#fff;
+			border-radius: 5px;
+		}
+	}
+
+	//退款到余额
+	.refund_way_li{
+		margin-top: 0px!important;
+		border-top: 0px!important;
+	}
+	.no-margin-bottom{
+		margin-bottom: 0px!important;
+	}
+	.refund-way-select{
+		.refund_way{
+			padding: 5px 0px;
+			.tips{
+				color: #f69;
+			}
+			p.more-tips{
+				padding-left: 20px;
+				color: #888;
+			}
+			&.disabled_ways{
+				label.mls-input-radio-label{
+					background-image:url("@{pic_url}/images/wilee/order/radio_grey.png?as23asfas2322");
+				}
+				color: #cccccc;
+				.tips {
+					color: #cccccc;
+				}
+				p.more-tips{
+					color: #cccccc;
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,66 @@
+<%
+	var prizeImage = {
+		sign:'http://i.meilishuo.net/css/images/staticbed/luhan.png'
+		,card30 : 'http://d02.res.meilishuo.net/pic/_o/6d/c6/7c79987331b312f4dbefadc8e28d_401_379.cf.png'
+		,card20 : 'http://d01.res.meilishuo.net/pic/_o/88/e3/534cdb0098998a7084322cd78987_401_379.cf.png'
+		,card15 : 'http://d01.res.meilishuo.net/pic/_o/fb/61/41d495910691d974c176015cc5c4_401_379.cf.png'
+	};
+	var runner_shake_init = this.runner_shake_init;
+	var has_mobile = runner_shake_init && runner_shake_init.phone;
+%>
+<%#head.html%>
+<div class="empty_red<%if(has_mobile){%> opend<%}%>">
+	<% 
+	var apply_info = this.gift_init.apply_info || {
+		
+		};
+	var imageCode = 'none';
+	if(apply_info){ 
+		imageCode = apply_info.type || 'none';
+		if(imageCode == 'card'){
+			if(apply_info.money){
+				imageCode += apply_info.money;
+			} else {
+				imageCode = 'none';
+			}
+		}
+	} 
+	%>
+	<% if(prizeImage[imageCode]){ %>
+	<div class="prize_img" style="background-image:url('<%=prizeImage[imageCode] %>');"></div>
+	<% } %>
+	<input type="tel" name="mobile" placeholder="输入手机号奖品才能找到你哟" class="mobile_input">
+	<p class="tip_wrapper">
+	<% if(imageCode=='none'){ %>
+	哎呀没抽到<br>去逛逛美丽说吧！
+	<% } else if(imageCode=='sign'){%>
+	恭喜您获得<br>鹿晗独家签名照片一张
+	<% } else { %>
+	恭喜您获得<br>美丽说<%=apply_info.money %>元代金券一张
+	<% } %>
+	</p>
+</div>
+<%if(!has_mobile){%>
+<div class="open_btn op_btn"></div>
+<%}%>
+<% if(imageCode=='none' || imageCode=='sign'){ %>
+<a class="go_to_mls op_btn" <%if(!has_mobile){%>style="display:none;"<%}%> href="/wx/mall">去逛流行</a>
+<% } else { %>
+<div class="get_coupon_btn op_btn" <%if(apply_info.has_apply|| !has_mobile){%>style="display:none;"<% } %>>去领券~</div>
+<a class="go_to_mls op_btn" <%if(!apply_info.has_apply){%>style="display:none;"<% } %> href="/wx/mall">去逛流行</a>
+<script type="text/javascript">
+	fml.vars.nonce_str = "<%=this.gift_init.nonce_str||'' %>";
+	fml.vars.card_sign = "<%=this.gift_init.card_sign||'' %>";
+	fml.vars.time_stamp = "<%=this.gift_init.time_stamp||'' %>";
+	fml.vars.wx_url = "<%=apply_info && apply_info.url ?apply_info.url:'' %>";
+	fml.vars.card_id = "<%=apply_info && apply_info.card_id?apply_info.card_id:'' %>";
+</script>
+<% } %>
+
+<% if(this.os.weixinBrowser){ %>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<% } %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/running_man/shake_vote_red_packet');
+_use:", this._JSstack, this._JSmods); %>
+<%#foot_frame.html%>

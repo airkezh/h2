@@ -1,0 +1,50 @@
+<%# head.html%>
+<%
+	var weixinBrowser = this.weixinBrowser;
+%>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<div class="main">
+	<img class="logo" src="<%=this.PICTURE_URL%>/images/activity/music_festival/logo.png">
+	<img class="text center" src="<%=this.PICTURE_URL%>/images/activity/music_festival/text_new.png">
+	<a href="/activity/music/question/"><img class="ticket-button button center" src="<%=this.PICTURE_URL%>/images/activity/music_festival/ticket_button.png"></a>
+	<% if(weixinBrowser){ %>
+		<img class="download-button button center goApp" src="<%=this.PICTURE_URL%>/images/activity/music_festival/download_button.png">
+	<% } %>
+	<img class="time center" src="<%=this.PICTURE_URL%>/images/activity/music_festival/time.png">
+
+</div>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/music/music',function(){
+		if(Meilishuo.config.os.weixinBrowser){
+			$.ajax({
+				url: '/aj/wx/sign'
+				, data: {
+					url:window.location.href
+				}   
+				, dataType: 'json'
+				, type: 'post'
+				, success : function(data){
+					wx.config({
+						debug:false
+						//debug:false 
+						, appId: data.info.appId
+						, timestamp: data.info.timestamp
+						, nonceStr: data.info.nonceStr
+						, signature: data.info.signature
+						, jsApiList: [
+							'checkJsApi',
+							'onMenuShareTimeline',
+							'onMenuShareAppMessage',
+							'onMenuShareQQ',
+							'onMenuShareWeibo'
+						]   
+					}); 
+				},
+				error: function(err){
+				}
+			})
+		}
+	});
+_use:", this._JSstack, this._JSmods); %>
+<%# foot.html%>

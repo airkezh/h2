@@ -1,0 +1,108 @@
+<%# head_simple.html%>
+
+	<%	
+	var welcome=this.welcome||{};
+	var error_code=welcome.error_code;
+	if(error_code==0){
+		var shareId=welcome.data.have_origed;
+		var fin_status=welcome.data.fin_status;
+	}else{
+		var shareId=-1;
+		var fin_status=-1;
+	}
+	%>
+		</head>
+
+		<body>
+			<script>
+				(function(win, doc) {
+					var docel = doc.documentElement;
+					var meta = doc.querySelectorAll('meta[name=viewport]');
+					meta[0].setAttribute('content', 'width=device-width,user-scalable=no,initial-scale=1');
+
+					function recalc() {
+						var width = docel.clientWidth;
+						docel.style.fontSize = 100 * width / 640 + 'px';
+					}
+					if (doc) {
+						recalc();
+						win.addEventListener('orientationchange', recalc, false);
+					} else if (doc.addEventListener) {
+						doc.addEventListener('DOMContentLoaded', recalc, false);
+					}
+				})(window, document)
+			</script>
+			<div class="first_main">
+				<div class="top_main"></div>
+				<div class="bottom_main">
+					<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/index_bg_bottom_01.png" class="bg_imgs" />
+					<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/index_bg_bottom_02.png" class="bg_imgs" />
+					<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/index_bg_bottom_03.png" class="bg_imgs" />
+					<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/index_bg_bottom_04.png" class="bg_imgs" />
+					<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/index_bg_bottom_05.png" class="bg_imgs" />
+				</div>
+				<div class="first_rules"></div>
+				<div class="first_popwin">
+					<img class="first-popwin-rules" src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/cb_rules.png" />
+					<div class="rules-content">
+						<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/guize_new_bg_01.jpg" />
+						<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/guize_new_bg_02.jpg" />
+						<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/guize_new_bg_03.jpg" />
+					</div>
+					<img class="first-popwin-know" src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/cb_rules_btn.png" />
+				</div>
+				<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/index_zhengk.png" class="runing_man rm_zhengk head_shake" />
+				<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/index_dengc.png" class="runing_man rm_dengc head_shake" />
+				<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/index_wangzl.png" class="runing_man rm_wangzl head_shake" />
+				<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/index-chenh.png" class="runing_man rm_chenh head_shake" />
+				<!--<a href="" class="runing_man brand_lh first_btn">
+					<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/index_luh_brand.png" />
+				</a>-->
+				<!-- 音效 -->
+				<audio id="audio_lh" hidden="true" preload="auto" autobuffer>
+					<source src="http://i.meilishuo.net/css/images/staticbed/6302.mp3">
+				</audio>
+				<div class="runing_man brand_lh first_btn" id="start_btn" style="display: none;">
+					<a href="/activity/crackbrand/start/?ass_gid=1" id="first_play">
+						<div class="cover">
+							<div class="cover_left">
+								<div class="cover_color">
+									<div class="cover_img"></div>
+								</div>
+								<div class="cover_black"></div>
+							</div>
+							<div class="cover_right">
+								<div class="cover_bgc"></div>
+							</div>
+						</div>
+					</a>
+				</div>
+				<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/index_hands.png" class="runing_man rm_hands hand_shake" />
+				<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/first_new_tips.png" class="runing_man first_new_tips" />
+				<audio src="http://i.meilishuo.net/css//images/wap/activity/crackbrand/friend_bgm2.MP3" autoplay="autoplay" loop="loop">
+					您的浏览器不支持audio标签
+				</audio>
+			</div>
+			<div id="success_tips" class="success_tips" style="display: none;">成功撕下20%的名牌！</div>
+			<a href="http://m-promotion.meilishuo.com/promotion/sale_1511/mv/?mid=419&frm=friend_help" id="hide_link" style="display: none;"></a>
+		</body>
+		<script>
+			fml.vars.isWxLogin = "<%= this.isWxLogin || false %>";
+			fml.vars.isWx = "<%= this.isWx %>";
+			fml.vars.ass_gid = "<%= shareId %>";
+			fml.vars.error_code = "<%=error_code%>";
+			fml.vars.state = "<%=fin_status%>";
+			var frm = fml.vars.isWx ? '&frm=isWx' : '&frm=isMLS';
+			/*if (fml.vars.error_code == 0 && fml.vars.ass_gid != 0) {
+				if (fml.vars.state == 0) {
+					window.location.href = '/activity/crackbrand/start/?ass_gid=' + fml.vars.ass_gid + frm;
+				} else if (fml.vars.state == 1) {
+					window.location.href = '/activity/crackbrand/award/?ass_gid=' + fml.vars.ass_gid + frm;
+				}
+			}*/
+		</script>
+		<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+		<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+		fml.use('wap/page/activity/crackbrand/crackbrand');
+		_use:", this._JSstack, this._JSmods); %>
+			<%# foot.html%>

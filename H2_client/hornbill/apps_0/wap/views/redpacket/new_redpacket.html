@@ -1,0 +1,135 @@
+<%# head.html %>
+<%
+var picInfo = this.picInfo;
+var bgimg = picInfo.bgpic_list;
+var result = picInfo.result_pic;
+var moneybag = picInfo.money_bag;
+var send_btn = picInfo.send_btn;
+var apply_btn = picInfo.apply_btn;
+var download_btn = picInfo.download_btn;
+var link = picInfo.link;
+var apply_desc = picInfo.apply_desc;
+var body_bgc = picInfo.bgc_color || '#fff';
+%>
+<style>
+	body {
+		background: <%= body_bgc %>;
+	}
+</style>
+<div class="before" >
+	<div class="bag">
+		<% if( bgimg.top_img ){ %>
+		<img class="top_img" src="<%= bgimg.top_img %>" alt="页面顶部图片">
+		<% } %>
+		<div class="msg">
+			<% if( bgimg.msg_bgpic ){ %>
+				<img class="msg_bg" src="<%= bgimg.msg_bgpic %>" alt="">
+			<% } %>
+			<div class="msg_content">
+				<input class="phonenum require box" placeholder="请输入你的手机号" maxlength="11">
+				<div class="cell">
+					<input class="code require box" placeholder="请输入短信验证码">
+					<% 
+						var send_content = send_btn.content || '发送验证';
+						var send_color = send_btn.color || '#ab6a3e';
+						var normal_color = send_btn.able_color || '#ffd83c';
+						var disable_color = send_btn.disable_color || '#bbb';
+						var border_color = send_btn.border_color || '#e93736';
+					%>
+					<div class="send_btn box" style="background:<%= normal_color %>; color: <%= send_color %>; border: 1px solid <%= border_color %>">
+						<%= send_content %>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="apply">
+	<% if( bgimg.applybtn_bgpic ){ %>
+		<img class="apply_bg" src="<%= bgimg.applybtn_bgpic %>" alt="">
+	<% } %>
+		<% 
+			var apply_content = apply_btn.content || '立即领取'
+			var apply_width = apply_btn.width || '70';
+	    	var apply_padding = apply_btn.padding || '0.26';
+		    var apply_bgcolor = apply_btn.background_color || '#f65235';
+	    	var apply_color = apply_btn.color || '#fff8dc';
+			var apply_font = apply_btn.font_size || '0.44';
+			var apply_left = (100 - apply_width)/2;
+			var apply_radius = apply_btn.radius || '.06';
+		%>
+		<div class="apply_wrap">
+			<div class="apply_inner" style="width:<%=  apply_width %>%;">
+				<div class="apply_btn" style="width:100%; padding: <%=  apply_padding %>rem 0; background:<%=  apply_bgcolor %>; font-size: <%= apply_font %>rem; color: <%= apply_color %>; left: <%= apply_left %>%; border-radius: <%= apply_radius %>rem">
+		              <%= apply_content %>
+				</div>
+				<% 
+					var desc_content = apply_desc.content;
+					var desc_color = apply_desc.color || '#a65722';
+					var desc_size = apply_desc.font_size || '.28';
+					var desc_top = apply_desc.padding_top || '.3'
+				%>
+				<% if( desc_content ) {%>
+				<p class="desc" style="color:<%= desc_color%>; font-size: <%= desc_size %>rem; padding-top:<%= desc_top %>rem"><%= desc_content %></p>
+				<%}%>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="after" style="display:none" >
+	<div class="middle_pic">
+		<img class="richbag" src="<%= moneybag.have_pic %>" alt="领取成功有优惠券图" style="display:none">
+		<img class="nonebag" src="<%= moneybag.none_pic %>" alt="领取失败无优惠券图" style="display:none">
+		<div class="result">
+			<img class="success rpic" src="<%= result.success %>" alt="领取成功" style="display:none">
+			<img class="applied rpic" src="<%= result.applied %>" alt="已经领取过" style="display:none">
+			<img class="empty rpic" src="<%= result.empty %>" alt="今日领完" style="display:none">
+			<img class="end rpic" src="<%= result.end %>" alt="" style="display:none">
+		</div>
+	</div>
+	<div class="download">
+		<img class="download_bg" src="<%= bgimg.downbtn_bgpic %>" alt="">
+		<% var download_content = download_btn.content || '下载客户端'
+		   var download_width = download_btn.width || '70';
+		   var download_padding = download_btn.padding || '0.26';
+		   var download_bgcolor = download_btn.background_color || '#f65235';
+		   var download_color = download_btn.color || '#fff8dc';
+		   var download_font = download_btn.font_size || '0.44';
+		   var download_left = (100 - download_width)/2;
+		   var download_radius = download_btn.radius || '.06';
+		 %>
+		<div class="download_btn" style="width:<%=  download_width %>%; padding: <%=  download_padding %>rem 0; background:<%=  download_bgcolor %>; font-size: <%= download_font %>rem; color: <%= download_color %>; left: <%= download_left %>%; border-radius: <%= download_radius %>rem">
+                <%= download_content %>
+		</div>
+	</div>
+	<img class="note" src="<%= picInfo.note_pic %>" alt="相关说明">
+</div>
+
+
+<div class="footer">
+	<% if( link ) { %>
+		<img class="link_bg" src="<%= bgimg.link_bgpic %>" alt="logo">
+		<% 
+			if( link.content ) {
+			var link_content = link.content;
+			var link_color = link.color || '#a65722';
+			var link_size = link.font_size || '.26';
+		%>
+		<div  class="link_btn download" style="color:<%= link_color %>; font-size: <%= link_size %>rem;">
+			<%= link_content %>
+		</div>
+	<% }} %>
+</div>
+
+<script>
+	fml.vars.cid = '<%= this.cid %>';
+	fml.vars.normal_color = '<%= normal_color %>';
+	fml.vars.disable_color = '<%= disable_color %>';
+	fml.vars.paper_id = '<%= picInfo.paper_id %>';
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+    fml.use('wap/page/redpacket/new_redpacket');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot_simple.html %>

@@ -1,0 +1,150 @@
+/*common*/
+/**
+ * wap页面直接调用客户端的分享Scheme,iPhone6.6.0+/Android6.6.0+ 才支持
+ * 7.3.1版本更改了scheme，现在是兼容了新老版本，等7.3.1覆盖一段时间再干掉老版本
+ * 老版本建议继续用WAP share
+ * @author 徐德明 demingxu@meilishuo.com
+ * @param {param} 分享的参数对象，一般有title，text，pic和url，每个字段可以是对象
+ * @param {channels} 分享去哪个平台，默认包括weibo，qzone，qq，weixin和weixin_timeline
+ * @param {shareType} 分享的类型，包括webpage, image, music, video，默认为webpage；可以为对象，如：{
+    'weixin':'webpage',
+    'weixin_timeline':'image'
+ }
+ */
+
+function appShare(param, channels, shareType) {
+    var shareObj = {
+        'share_items': {}
+    };
+    //7.3.1版本更改了scheme
+    var newShareObj = {
+        'buttons': [{
+            'type': 'share',
+            'share_items': {}
+        }]
+    };
+    param = param || {};
+    if (!channels) {
+        channels = ['weibo', 'qzone', 'qq', 'weixin', 'weixin_timeline'];
+    }
+    var shareTypeArr = ['webpage', 'image', 'music', 'video'];
+    if (!isObject(shareType)) {
+        if (!shareType || (shareTypeArr.indexOf(shareType) == -1)) {
+            shareType = 'webpage';
+        }
+        //image, music, video时只提供微信、朋友圈和QQ好友
+        if (shareType == 'image' || shareType == 'music' || shareType == 'video') {
+            channels = channels.join(',').replace(/(weibo|qzone)/gi, '').split(',');
+        }
+    }
+    channels.forEach(function(chan) {
+        chan = chan.trim();
+        if (!chan) {
+            return;
+        }
+        //默认分享值
+        var obj = {
+            'title': '美丽说',
+            'text': '美丽说',
+            'url': 'http://m.meilishuo.com',
+            'pic_url': 'http://i.meilishuo.net/css/images/header/logo_n4.png',
+            'message_type': shareType
+        }
+        obj['type'] = chan;
+        //考虑分享类型是对象的情况
+        if (isObject(shareType)) {
+            obj['message_type'] = shareType[chan] || shareType.default || 'webpage';
+        }
+        // 考虑不同平台不同的title，text，url和pic，即字段不是字符串，而是对象
+        getParam(param, 'title', obj, chan);
+        getParam(param, 'text', obj, chan);
+        getParam(param, 'url', obj, chan);
+        //为了向前兼容（WAP分享模式用的是pic），此处把pic赋值给pic_url
+        if (param.pic) {
+            if (isObject(param['pic'])) {
+                obj.pic_url = param.pic[chan] || param.pic.default || obj.pic_url;
+            } else {
+                obj.pic_url = param.pic;
+            }
+        }
+        //image分享类型需要提供thumb_url字段
+        if (shareType == 'image') {
+            obj.thumb_url = obj.pic_url;
+            // Android分享到QQ需要URL
+            // delete obj.url;
+        } else {
+            //QQ weixin weixin_timeline需要把pic_url字段换成thumb_url字段
+            if (chan == 'qq' || chan == 'weixin' || chan == 'weixin_timeline') {
+                obj.thumb_url = obj.pic_url;
+                if (!isObject(shareType)) {
+                    delete obj.pic_url;
+                }
+            }
+        }
+        shareObj.share_items[chan] = {
+            'url': 'meilishuo://share.meilishuo?json_params=' + encodeURIComponent(JSON.stringify(obj))
+        };
+        //7.3.1版本更改了scheme
+        newShareObj.buttons[0].share_items[chan] = {
+            'url': 'meilishuo://share.meilishuo?json_params=' + encodeURIComponent(JSON.stringify(obj))
+        };
+    });
+    //调用scheme
+    var href = 'meilishuo://menu.meilishuo?json_params=' + encodeURIComponent(JSON.stringify(shareObj));
+    //7.3.1版本更改了scheme
+    if (isNewest('7.3.1')) {
+        href = 'meilishuo://menu.meilishuo?json_params=' + encodeURIComponent(JSON.stringify(newShareObj));
+    }
+    var iframe = document.createElement('iframe');
+    iframe.src = href;
+    iframe.height = 0;
+    iframe.style.display = 'none';
+    document.body.appendChild(iframe);
+}
+
+//
+function isObject(param) {
+    return ({}).toString.call(param) === '[object Object]';
+}
+
+//
+function getParam(param, field, obj, chan) {
+    if (param[field]) {
+        if (isObject(param[field])) {
+            obj[field] = param[field][chan] || param[field].default || obj.title;
+        } else {
+            obj[field] = param[field];
+        }
+    }
+}
+//isNewest
+function isNewest(newthan) {
+    var ua = navigator.userAgent || '',
+        app_version = Meilishuo.config.os.app_version
+
+    function ver2Num(ver) {
+        if (!ver) return 0
+        var verArr = ver.toString().split('.')
+        if (verArr.length < 2) verArr.push(0)
+        if (verArr.length < 3) verArr.push(0)
+        var vn = verArr[0] * 1e6 + verArr[1] * 1e3 + verArr[2] * 1
+        if (verArr.length > 3) vn += verArr[3] / 100
+        return vn
+    }
+    if (newthan) {
+        // if(Array.isArray(app_version))
+        if (({}).toString.call(app_version) === '[object Array]') app_version = app_version.pop()
+        app_version = ver2Num(app_version)
+        newthan = ver2Num(newthan)
+        return app_version >= newthan
+    }
+
+    if (!!ua.match('iPhone'))
+        return '3.0.6' == app_version
+    else if (!!ua.match('Android'))
+        return '3.7.5' == app_version
+    else
+        return null
+}
+
+return appShare;

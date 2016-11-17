@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>美丽说双十二尖货</title>
+	<meta name="description" content="美丽说，专注时尚新款发布。海量新款每日上新，每周五新款大促火热进行中！旗下海淘品牌“HIGO”挑选全球时尚好货，满足你全方位的时尚购物体验！" />
+	<meta name="keywords" content="美丽说,higo,衣服,鞋子,包包,配饰,家居,美妆,搭配,团购,美丽说higo" />
+	<meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1" />
+	<style type="text/css">
+		table{font-size: 15px;}
+		tr{height: 24px;}
+		td{overflow:hidden;}
+		.catalog{
+			font-weight: bold;
+			text-align: center;
+		}
+	</style>
+</head>
+<body>
+	<% var ginfo = [
+		{
+			'kindname' : '衣服',
+			'bgcolor' : '#75923C',
+			'list' : [
+				{'gname' : '流苏加绒卫衣','cata' : '上衣','oldprice' : '170', 'actprice' : '69','link' : 'http://www.meilishuo.com/share/item/3290510565'}
+				,{'gname' : '2014秋冬款羊羔毛麂皮绒 毛领棉衣','cata' : '上衣','oldprice' : '166', 'actprice' : '156','link' : 'http://www.meilishuo.com/share/item/3300007465'}
+				,{'gname' : '冰淇淋色系拼色呢大衣送腰带，秋冬韩国火爆单品','cata' : '呢大衣','oldprice' : '399', 'actprice' : '185','link' : 'http://www.meilishuo.com/share/item/3009160607'}
+				,{'gname' : '卡通唐老鸭印花宽松外套粉红卫衣','cata' : '上衣','oldprice' : '118', 'actprice' : '49','link' : 'http://www.meilishuo.com/share/item/3035367455'}
+				,{'gname' : '【小萝莉】新款韩系西装领中长款棕色百搭外套时尚毛呢大衣','cata' : '上衣','oldprice' : '316', 'actprice' : '148','link' : 'http://www.meilishuo.com/share/item/3254598677'}
+				,{'gname' : '培大人 碎花长袖秋冬连衣裙气质时尚2014新款娃娃裙','cata' : '裙子','oldprice' : '138', 'actprice' : '59','link' : 'http://www.meilishuo.com/share/item/3280544691'}
+				,{'gname' : '天使小妖冬季新款套头毛衣韩版时尚针织衫保暖打底衫','cata' : '毛衣','oldprice' : '138', 'actprice' : '59','link' : 'http://www.meilishuo.com/share/item/3222943927'}
+				,{'gname' : '冬季新品欧美范涂鸦雪纺拼接袖宽松短款休闲针织衫上衣','cata' : '上衣','oldprice' : '178', 'actprice' : '79','link' : 'http://www.meilishuo.com/share/item/3299522969'}
+				,{'gname' : '2014秋季新款韩版甜美优雅打底格子修身长袖连衣裙','cata' : '裙装','oldprice' : '243', 'actprice' : '89.5','link' : 'http://www.meilishuo.com/share/item/3126839043'}
+				,{'gname' : '2014秋冬新款女装 韩版宽松套头毛衣加厚高领长袖杂色针织粗毛线','cata' : '上衣','oldprice' : '219', 'actprice' : '108','link' : 'http://www.meilishuo.com/share/item/3238564961'}
+				,{'gname' : '【阿斯玛】2014韩版新秋装套头 复古长袖显瘦毛衣','cata' : '上衣','oldprice' : '156', 'actprice' : '48','link' : 'http://www.meilishuo.com/share/item/3213757141'}
+				,{'gname' : '小潘潘家2014新款秋冬百搭修身细腻水洗棉黑色竖条纹气质弹力休闲裤铅笔裤小脚裤打底裤 送腰带','cata' : '小脚裤','oldprice' : '178', 'actprice' : '75','link' : 'http://www.meilishuo.com/share/item/3213878151'}
+				,{'gname' : '【秋冬美裙！时尚气质半身裙毛呢裙！】2014冬装新款韩版名媛气质亮丝呢分割多片短裙','cata' : '裙子','oldprice' : '138', 'actprice' : '55','link' : 'http://www.meilishuo.com/share/item/3331861775'}
+				,{'gname' : '百里挑衣！秋冬装新款韩版学院风宽松外套加厚羊羔绒牛仔外套保暖棉衣棉服','cata' : '棉服','oldprice' : '258', 'actprice' : '115','link' : 'http://www.meilishuo.com/share/item/3246538855'}
+				,{'gname' : '伊蔻美帝 韩版秋冬复古渐变领粗针高领毛衣拼接色套头针织毛衣','cata' : '上衣','oldprice' : '160', 'actprice' : '65','link' : 'http://www.meilishuo.com/share/item/3331190181'}
+				,{'gname' : '秋冬新款中厚显瘦堆堆袜套拼接打底裤','cata' : '打底裤','oldprice' : '90', 'actprice' : '29.9','link' : 'http://www.meilishuo.com/share/item/3233508155'}
+				,{'gname' : '西西小可 秋冬新品 时尚重工暗夜哥特风 个性蛇纹显品位毛衣斜门襟舒适棉衣棉服苏出街秀 强烈造型感连衣裙','cata' : '毛衣','oldprice' : '186', 'actprice' : '93','link' : 'http://www.meilishuo.com/share/item/3306280289'}
+				,{'gname' : '西西小可 复古铆钉品质感 舒适麂皮流苏出街秀 强烈造型感连衣裙','cata' : '连衣裙','oldprice' : '186', 'actprice' : '93','link' : 'http://www.meilishuo.com/share/item/3302957539'}
+				,{'gname' : '韩版马卡龙色两面穿中长款棉衣','cata' : '上衣','oldprice' : '699', 'actprice' : '179','link' : 'http://www.meilishuo.com/share/item/3147493045'}
+				,{'gname' : '【高品质】羊毛呢外套女韩版女装2014新款呢子大衣秋冬装中长款外套风衣','cata' : '上衣','oldprice' : '376', 'actprice' : '160','link' : 'http://www.meilishuo.com/share/item/3331877857'}
+				,{'gname' : '【高品质】欧美街头格子呢大衣女 加棉中长款毛呢外套 秋冬外套女新款','cata' : '上衣','oldprice' : '356', 'actprice' : '160','link' : 'http://www.meilishuo.com/share/item/3332101343'}
+				,{'gname' : '2014冬装新款女士保暖加厚韩式修身奢华貉子毛领中长款羽绒服','cata' : '上衣','oldprice' : '658', 'actprice' : '310','link' : 'http://www.meilishuo.com/share/item/3331707707'}
+				,{'gname' : '【韩怪怪】2014秋装新款 韩版百搭印花大圆点波点长袖舒适休闲圆领套头卫衣女上衣','cata' : '上衣','oldprice' : '199', 'actprice' : '59.7','link' : 'http://www.meilishuo.com/share/item/3253403663'}
+				,{'gname' : '【小萝莉HOME】冬季新款韩版撞色宽松毛呢外套中长款大衣','cata' : '上衣','oldprice' : '316', 'actprice' : '138','link' : 'http://www.meilishuo.com/share/item/3290528499'}
+				,{'gname' : '米谷子 高品质呢料灰色格子长裤','cata' : '裤子','oldprice' : '196', 'actprice' : '78','link' : 'http://www.meilishuo.com/share/item/3283242387'}
+				,{'gname' : '韩国代购2014秋冬装新款 韩版修身羊羔毛棉衣冬装加厚棉衣外套','cata' : '外套','oldprice' : '499', 'actprice' : '139','link' : 'http://www.meilishuo.com/share/item/3277701303'}
+				,{'gname' : '2014冬季新款 韩系简约纯色气质中长款羽绒棉服显示休闲带帽连帽保暖棉衣大衣外套女','cata' : '棉服','oldprice' : '318', 'actprice' : '129','link' : 'http://www.meilishuo.com/share/item/3330212687'}
+				,{'gname' : 'METIME 实拍 冬季新品 针织带帽假二件 橘色 羊毛呢 大衣外套 推荐','cata' : '上衣','oldprice' : '590', 'actprice' : '259','link' : 'http://www.meilishuo.com/share/item/3332229583'}
+				,{'gname' : '虎牙家学院风英伦复古绿格子毛呢大衣 杭帮正版','cata' : '上衣','oldprice' : '399', 'actprice' : '139','link' : 'http://www.meilishuo.com/share/item/3197205011'}
+				,{'gname' : '印象日记 秋季新款韩版时尚卡通动物印象日记 秋季新款韩版时尚卡通动物图案超品质休闲卫衣','cata' : '卫衣','oldprice' : '149', 'actprice' : '69','link' : 'http://www.meilishuo.com/share/item/3040178555'}
+				,{'gname' : '2014秋季新款 韩版长款西装外套','cata' : '上衣','oldprice' : '376', 'actprice' : '99','link' : 'http://www.meilishuo.com/share/item/3079411711'}
+			]
+		},
+		{
+			'kindname' : '鞋子',
+			'bgcolor' : '#D99795',
+			'list' : [
+				{'gname' : '2014冬季加绒保暖雪地靴韩版休闲棉靴棉鞋厚底加绒女鞋冬靴潮短靴','cata' : '雪地靴','oldprice' : '296', 'actprice' : '98','link' : 'http://www.meilishuo.com/share/item/3319566627'}
+				,{'gname' : '2014冬季新款高防狐狸毛雪地靴奢华高档短靴 保暖雪地靴 女靴子超大毛口女鞋子冬靴','cata' : '雪地靴','oldprice' : '210', 'actprice' : '89','link' : 'http://www.meilishuo.com/share/item/3314160769'}
+				,{'gname' : '汶汶家 2014冬季新品韩范美鞋时尚潮流显瘦尖头搭扣英伦风皮带扣中跟短靴显瘦女靴子','cata' : '靴子','oldprice' : '316', 'actprice' : '139','link' : 'http://www.meilishuo.com/share/item/3225450043'}
+				,{'gname' : '2014韩版显瘦女长靴百搭金属装饰粗跟鞋流苏后系带尖头鞋套筒靴子中跟加绒过膝靴','cata' : '长靴','oldprice' : '336', 'actprice' : '155','link' : 'http://www.meilishuo.com/share/item/3314477895'}
+				,{'gname' : '新款真皮豹纹短靴','cata' : '雪地靴','oldprice' : '296', 'actprice' : '128','link' : 'http://www.meilishuo.com/share/item/3304892517'}
+				,{'gname' : '【柳岩代言】莫蕾蔻蕾2014冬新款加绒保暖高跟短筒靴女时尚尖头粗跟短女靴','cata' : '靴子','oldprice' : '398', 'actprice' : '175','link' : 'http://www.meilishuo.com/share/item/3264143859'}
+				,{'gname' : '韩版女鞋防水台粗高跟短靴侧拉链时尚休闲女靴保暖雪地靴靴子','cata' : '靴子','oldprice' : '356', 'actprice' : '170','link' : 'http://www.meilishuo.com/share/item/3332286477'}
+				,{'gname' : '2014冬季新款欧美复古拼色料 皮带扣双侧拉链机车款中靴子','cata' : '靴子','oldprice' : '460', 'actprice' : '148','link' : 'http://www.meilishuo.com/share/item/3331827053'}
+				,{'gname' : '【设计师款】全国包邮秋冬新品韩版甜美淑女毛毛单鞋 真皮豹纹磨砂牛皮舒适休闲鞋 可爱翻毛平底休闲鞋便鞋','cata' : '靴子','oldprice' : '358', 'actprice' : '169','link' : 'http://www.meilishuo.com/share/item/3330211889'}
+			]
+		},
+		{
+			'kindname' : '包包',
+			'bgcolor' : '#E46D0A',
+			'list' : [
+				{'gname' : '2014秋冬新款包包萌物单肩包买手精选新品包包 超高人气必败潮包斜跨包 小包韩版包化妆包趣味包链条包','cata' : '斜跨包','oldprice' : '200', 'actprice' : '56','link' : 'http://www.meilishuo.com/share/item/3273279795'}
+				,{'gname' : '2014韩版新款女包潮欧美单肩手提大包包复古时尚简约女式包包 保暖雪地靴 女靴子超大毛口女鞋子冬靴','cata' : '单肩包','oldprice' : '58', 'actprice' : '24','link' : 'http://www.meilishuo.com/share/item/3203456375'}
+				,{'gname' : '买手精选冬季新款十字纹简约贝壳包包女士单肩包红色黑色手提斜跨女包包邮','cata' : '手提包','oldprice' : '236', 'actprice' : '55','link' : 'http://www.meilishuo.com/share/item/3318362955'}
+				,{'gname' : 'ELL艾尔包包/2014冬季新款小香风菱格丝绒面料mini链条小包','cata' : '单肩包','oldprice' : '331', 'actprice' : '107','link' : 'http://www.meilishuo.com/share/item/3330695527'}
+				,{'gname' : '【都市箱包】2014新款 买手精选款时尚韩版潮枕头包包复古美女圆桶波士顿明星手提包女包','cata' : '女包','oldprice' : '178', 'actprice' : '69','link' : 'http://www.meilishuo.com/share/item/3267637919'}
+			]
+		},
+		{
+			'kindname' : '配饰',
+			'bgcolor' : '#31849B',
+			'list' : [
+				{'gname' : 'M标牌-欧美风法国优雅气质秋冬黑色羊毛呢大檐爵士珍珠礼帽子','cata' : '帽子','oldprice' : '99', 'actprice' : '48','link' : 'http://www.meilishuo.com/share/item/3017873963'}
+				,{'gname' : '潮牌蕾哈娜蕾丝水钻可爱猫耳朵针织帽 手工毛线帽 帽子','cata' : '帽子','oldprice' : '70', 'actprice' : '28','link' : 'http://www.meilishuo.com/share/item/3258449811'}
+				,{'gname' : '特价！韩版潮流new york字母刺绣针织帽尖头翻边毛线帽','cata' : '帽子','oldprice' : '39.8', 'actprice' : '16.8','link' : 'http://www.meilishuo.com/share/item/3211607833'}
+				,{'gname' : '【时尚风向标】创意卡通蘑菇头不锈钢真空保温杯 260ML','cata' : '保温杯','oldprice' : '78', 'actprice' : '29.9','link' : 'http://www.meilishuo.com/share/item/3261982089'}
+				,{'gname' : '【时尚风向标】Hello Kitty不锈钢保温杯子 水杯 360ML','cata' : '保温杯','oldprice' : '78', 'actprice' : '28.8','link' : 'http://www.meilishuo.com/share/item/3162576815'}
+				,{'gname' : '【双11最后疯抢】秋冬新款保暖法兰绒四件套 200*2301.5- 1.8床','cata' : '四件套','oldprice' : '398', 'actprice' : '158','link' : 'http://www.meilishuo.com/share/item/3215682735'}
+				,{'gname' : '【5双装】新年袜 本命年大红袜 袜子 女 日系 包邮','cata' : '袜子','oldprice' : '70', 'actprice' : '28','link' : 'http://www.meilishuo.com/share/item/3267405047'}
+				,{'gname' : '2014秋冬新款保暖显瘦打底袜修身锁骨纹连裤袜','cata' : '打底袜','oldprice' : '74.75', 'actprice' : '19.9','link' : 'http://www.meilishuo.com/share/item/3326796595'}
+			]
+		}
+	];%>
+	<table cellspacing="0" cellpadding="0" style="width: 1200px;">
+		<thead>
+			<tr style="background:yellow; height:30px;">
+				<th align="left" style="width: 550px;">商品名称</th>
+				<th align="left" style="width: 120px;">分类</th>
+				<th align="left" style="width: 85px;">原价</th>
+				<th align="left" style="width: 75px;">活动价</th>
+				<th align="left">宝贝链接</th>
+			</tr>
+		</thead>
+		<tbody>
+			<!-- 衣服  -->
+			<% ginfo.forEach(function(g){%>
+				<tr>
+					<td class="catalog" style="background:<%= g.bgcolor%>"><%= g.kindname%></td>
+				</tr>
+				<% g.list.forEach(function(data){%>
+					<tr>
+						<td><%= data.gname%></td>
+						<td><%= data.cata%></td>
+						<td><%= data.oldprice%></td>
+						<td><%= data.actprice%></td>
+						<td>
+							<a href="<%= data.link%>" target="_blank"><%= data.link%></a>
+						</td>
+					</tr>
+				<%})%>
+			<%})%>
+
+		</tbody>
+	</table>
+</body>
+</html>

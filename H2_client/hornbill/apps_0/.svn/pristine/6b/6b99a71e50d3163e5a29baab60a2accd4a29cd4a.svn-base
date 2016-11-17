@@ -1,0 +1,31 @@
+<%#head.html%>
+   <script type="text/javascript">
+        (function (doc, win) {
+            var resizeEvt = "onorientationchange" in win ? "onorientationchange" : "onresize",
+                base_size = 640,
+                docE = doc.documentElement,
+                ua = navigator.userAgent,
+                recalc = function () {
+                    var triggerRepaints = docE.clientWidth;
+                    var clientWidth = win.innerWidth;
+                    var _fontSize = 100 * (clientWidth / base_size);
+                    if(ua.indexOf("iphone") == -1 && ua.indexOf("android") == -1 && ua.indexOf("Windows Phone")){
+                        _fontSize > 125 && ( _fontSize = 125 );
+                    }
+                    docE.style.fontSize = _fontSize + "px";
+                };
+            recalc();
+            win.addEventListener(resizeEvt.slice(2), recalc, false);
+        })(document, window);
+
+    </script>
+<style>
+ .roadrunnerText{
+    font-size: 200% !important;
+ }
+</style>
+<%if  (this.pagebody) {%>
+	<%= this.pagebody.body %>
+	<!-- cacheTime:<%= this.pagebody.cacheTime %> -->
+<%}%>
+<%#foot.html%>

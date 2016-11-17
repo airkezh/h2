@@ -1,0 +1,128 @@
+<div class="coupon_wrap">
+	<div class="coupon_nor">
+		<% 	var couponData = this.couponData,
+				pageData = this.pageData;
+		%>
+		<% couponData && pageData.coupon.forEach(function(data, index){
+			var couponData_now = {};
+			var tip_aa = false;
+			for(var i = 0;i < 2;i++){
+				if(couponData[i] && couponData[i].type == data.type){
+					tip_aa = true;
+					couponData_now = {
+						can_use : couponData[i].can_use,
+						left_amount : couponData[i].left_amount,
+						coupon_apply_code : couponData[i].coupon_apply_code,
+						next_time : couponData[i].next || ''
+					}
+				}
+			}
+			if(!tip_aa){
+				couponData_now = {
+					can_use : 1,
+					left_amount : 0,
+					coupon_apply_code : 0,
+					next_time : ''
+				};
+			}
+			var user_status = '';
+			var text = '';
+			var cur_time = new Date();
+
+			if(couponData_now.can_use == 0){
+				user_status = ' can_get';
+				text = '立即领取';
+			} else {
+				if(couponData_now.can_use == 2){
+					if(cur_time.getDate() >= 18){
+						user_status = ' has_get';
+					} else {
+						user_status = ' again_get';
+					}
+					text = '已领取';
+				} else if(couponData_now.can_use == 1){
+					user_status = ' zero'; text = '已领光';
+				}
+				var end_time = new Date(couponData_now.next_time.begin_time);
+				var lastDate = (end_time - cur_time)/1000+1 || 0;
+			}
+		%>
+			<div class="coupon_box">
+				<img src="<%= data.img_src %>" alt="">
+				<div class="coupon_con <%= user_status %>"  type_coupon="0" code="<%= couponData_now.coupon_apply_code %>" coupon="<%= data.type %>">
+					<% if(couponData_now.left_amount != 0){ %>
+						<p>本时段还有<span><%= couponData_now.left_amount %></span>张</p>
+					<%}else{%>
+						<p>本时段<%= data.tatol %>已领完</p>
+					<%}%>
+					<div class="btn_status"><%= text %></div>
+				</div>
+				<div class="coupon_time_wrap">
+					<% if(lastDate){ %>
+						<p class="timeStamp_wrap coupon_timeStamp" time="<%= lastDate %>">距下一场开抢还有&nbsp;&nbsp;<span class="hour">00</span>：<span class="sec">00</span>：<span class="min">00</span></p>
+					<% } else if(couponData_now.left_amount == 0) { %>
+						<p class="timeStamp_wrap coupon_timeStamp">本时段<%= data.tatol %>已领完</p>
+					<% } %>
+				</div>
+			</div>
+		<% }); %>
+	</div>
+	<%
+		var action_class = '';
+		if(this.coupon_new){
+			var link = 'href="###"';
+			if(!this.isLogin){
+				action_class = 'js_login';
+			} else if(this.coupon_new.can_use == 2){
+				action_class = 'has_get_c nc_has_get';
+			} else if(this.coupon_new.can_use == 1){
+				action_class = 'zero_c';
+			} else if(this.coupon_new.can_receive == 0){
+				action_class = 'on_no_get';
+			} else {
+				action_class = 'can_get_c';
+				link = 'href="/activity/sale/ncoupon618/"';
+			}
+	%>
+		<a class="new_user_c <%= action_class %>" <%= link %> ><span class="status_c"></span><img src="<%= pageData.coupon_new %>"></a>
+		<p class="none_f">每人限一张，今日还剩<%= this.coupon_new.left_amount || 0 %>/3000</p>
+	<% } %>
+	<%
+		if(this.coupon_old){
+			var link = 'href="###"';
+			if(!this.isLogin){
+				action_class = 'js_login';
+			} else if(this.coupon_old.status == 1){
+				action_class = 'has_get_c oc_has_get';
+			} else if(this.coupon_old.remaind == 0){
+				action_class = 'zero_c';
+			} else if(this.coupon_old.status == 0) {
+				action_class = 'can_get_c';
+				link = 'href="/activity/sale/ocoupon618/?page_from=main618"';
+			}
+	%>
+		<a class="old_user_c <%= action_class %>" <%= link %> ><span class="status_c"></span><img src="<%= pageData.coupon_old %>"></a>
+		<p class="none_f">每日限量<%= this.coupon_old.total %>，每人限一次，今日还剩<%= this.coupon_old.remaind || 0 %>/<%= this.coupon_old.total || 0 %></p>
+	<% } %>
+</div>
+
+<script type="text/html" id="toupdate">
+	<div class="toupdate">
+		<p>只有最新版美丽说客户端才可以享受优惠喔，亲快去升级吧。</p>
+		<a class="btn3zi delayclose" href="/goto/download/">去升级</a>
+	</div>
+</script>
+<script type="text/html" id="alertMsg">
+	<div class="toupdate">
+		<p style="text-align: center;"><?= this.msg?></p>
+		<a class="btn3zi delayclose" href="javascript:;">确定</a>
+	</div>
+</script>
+
+<script>
+	fml.vars.isLogin = '<%= this.isLogin %>';
+	fml.vars.isNewest = '<%= this.isNewest %>';
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/March_apparel_sale_1');
+_use:", this._JSstack , this._JSmods ); %>

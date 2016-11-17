@@ -1,0 +1,212 @@
+/*common*/
+
+require('wap/zepto/scroll')
+require('wap/app/dialog')
+
+var $ = require('wap/zepto')
+	, order_cancel = require('wap/app/doota/cancel')
+	, shareTmp = require('wap/component/shareTmp')
+	, onscroll = require('wap/component/windowScroll')
+
+/**
+ * to do: 绑定事件到父级元素
+ */
+$('.list_wrap').on('click', '.cancel_order', order_cancel)
+
+
+/* tab加载和切换 */
+var pullUp = $('.pullUp')
+	, topContent = $('.tab_content')
+	, fragment = {}
+	, nums = fml.vars.nums
+
+for (var i = 0, k = 4; i < k; i++) {
+	if(nums[i]){
+		var DEFAULTDOM = $('<div class="list_wall"></div>')
+	} else {
+		var DEFAULTDOM = $('<div class="list_wall"><div class="noOrder"><img src="http://d01.res.meilishuo.net/pic/_o/2f/4a/59b3492fcb71ef77db5dad228e32_153_166.cg.png" /><p>你还没有相关的订单</p></div></div>')
+	}
+	fragment['fragment' + i] = document.createDocumentFragment()
+	fragment['fragment' + i].appendChild(DEFAULTDOM[0])
+}
+topContent.prepend(fragment['fragment0'])
+
+var $order_status = $('.order_status')
+
+function tabPageSwitch(num, active_num, $active){
+	$active.removeClass('current')
+	$order_status.eq(num).addClass('current')
+
+	fragment['fragment'+active_num].appendChild(topContent.find('.list_wall')[0])
+	topContent.append(fragment['fragment'+num])
+}
+
+var scrollData = {
+	'all' : {'url': '/aj/doota/order/list_info', 'data' : {'page': 0, 'status': 0}, 'isEnd' : false}
+	, 'payment' : {'url': '/aj/doota/order/list_info', 'data' : {'page': 0, 'status': 1}, 'isEnd' : false}
+	, 'send' : {'url': '/aj/doota/order/list_info', 'data' : {'page': 0, 'status': 5}, 'isEnd' : false}
+	, 'get' : {'url': '/aj/doota/order/list_info', 'data' : {'page': 0, 'status': 2}, 'isEnd' : false}
+}
+var scrollType = 'all'
+var stopScrollList = false
+var win_h = $(window).height()
+
+function addList(){
+	var scrollNow = scrollData[scrollType]
+	if(scrollNow.isEnd){
+		pullUp.attr('status', 'stop')
+		return true
+	}
+
+	stopScrollList = true
+	pullUp.attr('status', 'loading')
+
+	$.get(scrollNow.url, scrollNow.data, function(res){
+		pullUp.attr('status', 'tap')
+		$('.list_wall').append(shareTmp('poster', {'order_list' : res}))
+
+		scrollNow.data.page += 1
+		stopScrollList = false
+
+		if(res.info.length <= 0) {
+			scrollNow.isEnd = true
+		}
+	}, 'json')
+}
+
+var scrollList = function () {
+	function scrollList(pos, isDown) {
+	if (isDown) {
+		pullUp_top = pullUp[0].getBoundingClientRect().top
+		if (pullUp_top - 100 <= win_h && stopScrollList === false)
+			addList()
+		}
+	}
+	onscroll.bind(scrollList, 'scrollList')
+}
+
+var tabAllInit = function(){
+	$('.list_wall').append(shareTmp('poster', {'order_list' : fml.vars.poster0}))
+	scrollData['all'].data.page += 1
+	pullUp.attr('status', 'tap')
+
+	$('.orderTab .all').on('click', navChange)
+}
+
+var tabCheck = function(){
+	var mSelf = $(this)
+	var num = +$(this).data('num')
+	var fragment_num = $(this).index()
+		, $active = $('.orderTab .current')
+		, active_num = $active.index()
+
+	pullUp.attr('status', 'tap')
+	if(num){
+		$('.list_wrap').removeClass('list_order_none')
+		scrollType = mSelf.data('type')
+		stopScrollList = false
+		var scrollNow = scrollData[scrollType]
+
+			stopScrollList = true
+			pullUp.attr('status', 'loading')
+
+			$active.removeClass('current')
+			$order_status.eq(fragment_num).addClass('current')
+
+			fragment['fragment'+active_num].appendChild(topContent.find('.list_wall')[0])
+			topContent.append(fragment['fragment'+fragment_num])
+
+			$.get(scrollNow.url, scrollNow.data, function(res){
+				pullUp.attr('status', 'tap')
+
+				$('.list_wall').append(shareTmp('poster', {'order_list': res}))
+
+				scrollNow.data.page += 1
+				stopScrollList = false
+
+				if(res.info.length < 20) {
+					scrollNow.isEnd = true
+					pullUp.attr('status', 'stop')
+				}
+				mSelf.off('click', tabCheck).on('click', navChange)
+			}, 'json')
+	} else {
+
+		$('.list_wrap').addClass('list_order_none')
+		tabPageSwitch(fragment_num, active_num, $active)
+
+		mSelf.off('click', tabCheck).on('click', navChange)
+	}
+}
+
+var navChange = function(){
+	var num = $(this).index()
+		, $active = $('.orderTab .current')
+		, active_num = $active.index()
+
+	if(num == active_num) return
+
+	if(+$(this).data('num')){
+		$('.list_wrap').removeClass('list_order_none')
+	} else {
+		$('.list_wrap').addClass('list_order_none')
+	}
+
+	tabPageSwitch(num, active_num, $active)
+
+	switch(num){
+		case 0 :
+			stopScrollList = false
+			scrollType = 'all'
+			break
+		case 1 :
+			stopScrollList = false
+			scrollType = 'payment'
+			break
+		case 2 :
+			stopScrollList = false
+			scrollType = 'send'
+			break
+		case 3 :
+			stopScrollList = false
+			scrollType = 'get'
+			break
+		default :
+			stopScrollList = false
+			scrollType = 'all'
+	}
+}
+
+var downloadApp = function() {
+	$('.noDownload').on('click', shotDwon)
+
+	$('.downloadBtn').on('click', function(){
+		window.open('/goto/open/?bg=' + encodeURIComponent('http://m.meilishuo.com/download/latest/?channel=30902&frm=dingdan') + '&url=' + encodeURIComponent('meilishuo://open.meilishuo'))
+	})
+}
+function shotDwon(){
+	$('body').off('touchmove', stopMove)
+	$('.fixed_download').remove()
+}
+function stopMove(e){
+	e.preventDefault();
+	return false
+}
+var download_show = function(){
+	var tpl = shareTmp('downloadApp');
+	$('body').append(tpl);
+	$('body').on('touchmove', stopMove)
+	$('.fixed_download .black_mask').on('click', shotDwon);
+
+	downloadApp()
+}
+
+;(function(){
+
+	tabAllInit()
+	scrollList()
+	$('.orderTab .payment, .orderTab .send, .orderTab .get').on('click', tabCheck)
+	$('.tab_content').on('click', '.js_download_btn', download_show)
+
+})()
+

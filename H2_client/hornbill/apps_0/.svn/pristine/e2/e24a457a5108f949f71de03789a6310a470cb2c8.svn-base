@@ -1,0 +1,86 @@
+<%#head.html%>
+<%
+	var pageData = this.pageData;
+	var mSubstr = _extFn.mSubstr;
+%>
+<div class="main" style="background-color: <%= pageData.pageControl.body_bgc %>;">
+	<% pageData.top_banner.length > 0 && pageData.top_banner.map(function(data, index){ %>
+		<div class="head_bg" style="background-image:url('<%= data.img_src %>');height:<%= data.h %>px;"></div>
+	<% }); %>
+	<div class="content">
+		<% pageData.intro.length > 0 && pageData.intro.map(function(data, index){ %>
+			<% if(data.link){ %>
+				<a href="<%= data.link || 'javascript:;' %>" target="_blank"><img src="<%= data.img_src%>"></a>
+			<% } else{ %>
+				<img src="<%= data.img_src%>">
+			<% } %>
+		<% }); %>
+
+		<img src="<%= pageData.club_title %>">
+		<div class="top_rank">
+			<% this.top_rank && this.top_rank.length && this.top_rank.forEach(function(data, index){ %>
+				<div class="t_rank">
+					<div class="img_wrap"><a href="/club/single/<%= data.article_id %>" target="_blank"><img src="<%= data.pinfo[0].pic_url %>" alt=""><span class="mz_icon"></span></a></div>
+					<div class="tr_con">
+						<p class="title">明星Show Gril：</p>
+						<p class="name"><a href="/person/u/<%= data.uinfo.user_id %>" target="_blank"><%= data.uinfo.nickname %></a></p>
+						<p class="text_t">对小美盒的评价：</p>
+						<p class="text"><a href="/person/u/<%= data.uinfo.user_id %>" target="_blank"><%== mSubstr(data.article_htmlcontent, 94, '...')%></a></p>
+						<p class="like mz_icon">喜欢<span><%= data.count_like %></span><i data="<%= data.uinfo.follower_num %>">粉丝数  <%= data.uinfo.follower_num %></i></p>
+						<p class="like_follow"><a class="c_like mz_icon <%= data.like ? 'liked': '' %>" href="javascript:;" aid="<%= data.article_id %>"><%= data.like ? '已支持': '<b class="mz_icon">&nbsp;</b>支持她' %></a><a class="mz_icon <%= data.follow ? 'removeUserFollow' : 'addUserFollow' %>" fuid="<%= data.uinfo.user_id %>" href="javascript:;"><%= data.follow ? '已关注' : '+ 加关注' %></a></p>
+					</div>
+				</div>
+			<% }); %>
+		</div>
+
+		<img src="<%= pageData.goods_title %>">
+		<div class="rank">
+			<div class="goods_wall" style="height:1000px; width:100%;">
+			</div>
+			<div class="clear_f"></div>
+			<div class="paging_panel c_f">
+				<%#paging.html%>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/html" id="posterWall">
+<? $.each(tInfo , function(k, data){ ?>
+	<div class="poster_grid">
+		<div class="new_poster">
+			<div class="np_pic hover_pic">
+				<a class="pic_load" href="/club/single/<?= data.article_id ?>" target="_blank" ><img class="goods_pic" width="226" height="<?=  226/data.pinfo[0].n_pic_width*data.pinfo[0].n_pic_height ?>" src="<?= data.pinfo[0].pic_url ?>"></a>
+			</div>
+			<div class="title">
+				<p><a href="/club/single/<?= data.article_id ?>" target="_blank"><?= data.article_title ?></a></p>
+			</div>
+			<div class="clear_f"></div>
+			<div class="comm_num twiiter_box">
+				<a class="pl" href="/club/single/<?= data.article_id ?>#reply" target="_blank">回复数（<?= data.count_reply ?>）</a>
+				<a class="left_f poster_likes likes" href="javascript:void(0)" aid="<?= data.article_id ?>">
+				<b class="likes_status <?= data.like ? 'liked': '' ?>" aid="<?= data.article_id ?>"><?= data.like ? '已喜欢': '<i class="lm_love2">&nbsp;</i>喜欢' ?></b>
+				<span class="red_f f14_f poster_like_num"><?= data.count_like ?></span>
+				</a>
+			</div>
+			<div class="np_share comment_panel">
+				<a class="avatar32_f trans07 userInfoTips" href="/person/u/<?= data.uinfo.user_id ?>" user_id="<?= data.uinfo.user_id ?>" target="_blank"><img src="<?= data.uinfo.avatar_c ?>"></a>
+				<p class="ml42_f"><a href="/person/u/<?= data.uinfo.user_id ?>" target="_blank"><?= data.uinfo.nickname ?></a></p>
+				<p class="commentHover t_idt"><a href="/club/single/<?= data.article_id ?>" target="_blank"><?= data.article_htmlcontent ?></a></p>
+				<div class="clear_f"></div>
+			</div>
+		</div>
+	</div>
+	<? }); ?>
+</script>
+
+
+
+<script>
+	<%= this.nor_rank ? 'Meilishuo.config.poster0 = '+JSON.stringify(this.nor_rank)+';':'' ;%>
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("fml.use('page/poster0');", this._JSstack , this._JSmodsFast ); %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/huodong/mz_beautyBoxShow');
+_use:", this._JSstack, this._JSmods); %>
+<%#foot.html%>
+

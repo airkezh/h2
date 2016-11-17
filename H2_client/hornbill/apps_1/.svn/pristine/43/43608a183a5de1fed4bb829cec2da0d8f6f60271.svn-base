@@ -1,0 +1,65 @@
+<%# head_simple.html%>
+	<script> 
+            (function(win,doc){
+                var docel = doc.documentElement;
+                var meta = doc.querySelectorAll('meta[name=viewport]');
+                meta[0].setAttribute('content','width=device-width,user-scalable=no,initial-scale=1');
+                function recalc(){
+                    var width = docel.clientWidth;
+                    docel.style.fontSize = 100 * width/640+'px';
+                }
+                if(doc){
+                    recalc();
+                    win.addEventListener('orientationchange',recalc,false);
+                }else if (doc.addEventListener){
+                    doc.addEventListener('DOMContentLoaded', recalc, false);
+                }
+            })(window,document)
+     </script>
+</head>
+<% var customActivity = this.customActivity
+	var info  =  this.customActivity.data %>
+<div class="wrap">
+	<div class="imgWrap">
+		<img src="<%= info.pic_url.pic_url %>"/>
+	</div>
+	<div class="testWrap">
+		<div class="testTitle"><%= info.title %></div>
+		<div class="testDesc"><%= info.desc %></div>
+	</div>
+	<div class="inputWrap">
+		<form action="/activity/testGame/testGameResult/<%= this.testId %>" method="get">
+			<input class="inputName" maxlength="11" name="name" type="text" placeholder="<%= info.appendName %>"/>
+			<input class="subBtn" type="submit" value="开始测试">
+		</form>
+	</div>
+	<div class="testBtn">
+		<div class="testInfo"><span class="num"><%= info.num %></span>人已测试</div>
+			<% if(info.more_test != 0 ){
+			 %>
+			<div class="moreTest">
+				<span class="greyLine"></span>
+				<span class="moreText">更多测试</span> 
+			</div>
+			<div class="moreTestInfo">
+				<% info.more_test && info.more_test.forEach(function(data){ %>
+				<a href="<%= data.jump_url %>"><img src="<%= data.pic_url %>"></a>
+				<% }) %>
+			</div>
+			<% } %>
+		</div>
+	</div>
+</div>
+<script>
+	fml.vars.shareData = <%= JSON.stringify(info.shareData) %>;
+	fml.vars.isWxLogin= <%= this.isWxLogin || false %>   ;
+
+    fml.vars.isWx = <%= this.isWx %>;
+    fml.vars.alertText = <%= JSON.stringify(info.appendName) %>;
+</script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use('wap/page/activity/testGame');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot.html%>

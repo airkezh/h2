@@ -1,0 +1,42 @@
+/*common*/
+require('m/zepto/touch');
+
+var signWX = require('wx/sign')
+	, shareWX = require('wx/share')
+
+if ( Meilishuo.config.os.weixinBrowser ) {
+    signWX()
+    shareWX.bind( {
+        'desc':    fml.vars.CONFIG_SHARE.desc,
+        'title':   fml.vars.CONFIG_SHARE.title,
+        'imgUrl':  fml.vars.CONFIG_SHARE.imgUrl,
+        'link':    fml.vars.CONFIG_SHARE.link
+    } )
+}
+
+// 滑动切页
+var slipPageFn = require('cooper/component/slipPage');
+window.slipPage = slipPageFn.init({
+	outer:'.wrap .main'
+	, page:'.page'
+	, direction : '-x'
+});
+
+var t = setTimeout(function(){
+	slipPage.deletePage(0)
+	var musicOn = $('audio')[0];
+	if(musicOn) musicOn.play();
+
+	var url = "http://m.meilishuo.com/runningMan/chat/"
+
+	slipPage.getPage(1).on('pageShow', function(){
+		location.href = url 
+	})
+	slipPage.getPage(0).on('pageHide', function(){
+		location.href = url 
+	})
+
+}, 3400)
+
+
+

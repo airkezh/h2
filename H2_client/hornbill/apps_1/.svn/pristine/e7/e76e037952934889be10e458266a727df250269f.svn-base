@@ -1,0 +1,178 @@
+@import "block.less";
+
+.frame;
+//.ios;
+body{ .bgwhite;}
+.wrapper{
+	&.normal{
+		.mt(0);
+	}
+}
+
+.poster;
+.poster > ._pa;
+.poster_pa;
+
+.goods_wall{ 
+	.poster_grid{
+        border-radius: 0;
+
+		figure{
+			border: 0; .pr;
+			.pic_load{
+				.border-r-tr(0*@px);.border-r-tl(0*@px);
+				img{
+					.border-r-tr(0*@px);.border-r-tl(0*@px);
+				}
+			}
+		}
+	}
+	.clothesTitle{
+		padding: 0 7/155*100%;
+		color:#80737A;
+		.pt(5/155*100%);
+		.f(1.2rem);
+		.w(90%); 
+		.ellipsis;
+	}
+	figcaption{
+		.h(44*@px);.pt(16*@px);
+		.f(1.2rem);
+		.price{
+			.left;
+			color:#FF6597;
+
+		}
+		.like{
+			.pl(15/155*100%);
+			.ml(12/155*100%);
+			.mr(2*@px);
+			color:#999;
+			background:url("http://d04.res.meilishuo.net/pic/_o/0b/af/01f834bdf72c210229a9d6277440_27_24.cg.jpg") no-repeat;
+			background-size: 24*@px 20*@px;
+			background-position: 0 38%;
+		}
+		.likecounts{
+			color: #999;
+		}
+	}
+
+	.mark { 
+		.pa; top: 0; left: 0;
+		img { .block; .w(70%);}
+	}
+}
+
+.pullUp{
+	.pullUpDown > .common;.pullUpDown > .loading;
+	&:before{
+		.nowrap;
+		.ml(-10px);
+	}
+	&[status="tap"]{
+		background:0 none;	
+		&:before{
+			content:"上拉查看更多..."	
+		}
+	}
+	&[status="stop"]{
+		background:0 none;	
+		&:before{
+			content:"木有了...";	
+		}
+	}
+}
+
+/* gotop */
+.top-box{
+	.pf; right: 10px; z-index: 10; .w(11%);
+	.gotop{ .none;}
+	img { .block; .w(100%);}
+}
+
+
+
+// page
+.s_page:after,.mod_itemgrid .sku:after,.mod_itemlist_small .sku:after,.mod_itemlist_small.mod_search_rec .remain_time:after {
+	clear: both;
+	content: '\20';
+	display: block
+}
+.s_page:after,.mod_itemgrid .sku:after,.mod_itemlist_small .sku:after,.mod_itemlist_small.mod_search_rec .remain_time:after {
+	clear: both;
+	content: '\20';
+	display: block
+}
+.s_page {
+	padding: 10px;
+	position: relative;
+	background-color: white;
+}
+
+.s_page > a,.s_page .selector,.s_page .selector_popup {
+	border: solid 1px #CCC;
+	border-radius: 4px;
+	-webkit-border-radius: 4px;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	height: 40px;
+	line-height: 38px;
+	background-color: white
+}
+
+.s_page a {
+	color: #666
+}
+
+.s_page > a {
+	display: block;
+	width: 82px;
+	height: 40px;
+	line-height: 38px;
+	text-align: center
+}
+
+.s_page > a:first-child {
+	float: left
+}
+
+.s_page > a:last-child {
+	float: right
+}
+
+.s_page > a.disabled {
+	color: #999;
+	background-color: #ddd
+}
+
+.s_page .selector {
+	text-align: center;
+	position: absolute;
+	bottom: 10px;
+	left: 97px;
+	right: 97px
+}
+
+.s_page .selector .arrow {
+	display: inline-block;
+	width: 7px;
+	height: 7px;
+	border-right: solid 2px #C7C7CC;
+	border-bottom: solid 2px #C7C7CC;
+	transform: rotate(-135deg);
+	-webkit-transform: rotate(-135deg);
+	vertical-align: -3px;
+	margin-left: 3px
+}
+
+.s_page .selector_select {
+	-webkit-tap-highlight-color: transparent;
+	-webkit-text-size-adjust: none;
+	-webkit-touch-callout: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	opacity: 0
+}

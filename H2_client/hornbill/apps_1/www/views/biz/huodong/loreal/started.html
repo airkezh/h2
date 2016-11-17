@@ -1,0 +1,33 @@
+<%#head.html%>
+<%
+	var  goods_status_css = ["sale_out","replenish","started"];
+%>
+<div class="loreal">
+	<div class="top started"></div>
+	<div class="wraper">
+		<div class="lo3_1"></div>
+		<div class="countdown none_f">
+			<%if(this.is_ended){%>
+				活动已结束
+			<%}else{%>
+			距抢购结束：还剩
+			<span class="time" time="<%= this.loreal.data[0].end_time - new Date().getTime() / 1000%>">-天-小时-分-秒-</span>
+			<%}%>
+		</div>
+		<div class="loreal_link <%= goods_status_css[this.loreal.data[0].goods_status] %>">
+			<a href="http://www.meilishuo.com/share/item/2837529063?d_r=<%=this.loreal.data[0].d_r%>" target="_blank"></a>
+		</div>
+		<div class="loreal_bg bg1"></div>
+		<div class="loreal_bg bg2"></div>
+		<div class="loreal_link1 <%= goods_status_css[this.loreal.data[0].goods_status] %>">
+			<a href="http://www.meilishuo.com/share/item/2837686835?d_r=<%=this.loreal.data[1].d_r%>" target="_blank"></a>
+		</div>
+		<div class="loreal_bg bg3"></div>
+		<div class="loreal_bg bg4"></div>
+	</div>
+</div>
+<input type="hidden" id="started"/>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+     fml.use('page/huodong/loreal');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

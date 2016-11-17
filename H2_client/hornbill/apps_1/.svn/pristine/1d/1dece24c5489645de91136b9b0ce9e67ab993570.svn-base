@@ -1,0 +1,76 @@
+<%#head_simple.html%>
+<%
+	
+%>
+</head>
+<body <% if (this.os.ios) { %>class="ios"<% } %>>
+
+<section id="wrapper_main" class="wrapper">
+	<div class="scroller">
+		<span class="colFlag"></span>
+		<div class="goods_wall"></div>
+		<div class="pullUp" status="loading"></div>
+		<div class="s_page" id="pageBox"></div>
+	</div>
+</section>
+<div class="top-box" style="bottom:<%if(this.isIphone){%>100<%}else{%>60<%}%>px">
+	<a class="gotop">
+		<img src="http://i.meilishuo.net/css//images/wap/tuan/gotop.png" />
+	</a>
+</div>
+</div>
+
+<script type="text/html" id="posterWall">
+<? $.each(this.tInfo , function(k , v){ 
+	var pic_height = v.poster_height * fml.vars.poster.scale;
+?>
+<div class="poster_grid poster_wall" twitter_id="<?=v.twitter_id?>" style="width:<?= fml.vars.poster.colWidth?>px;" poster_height="<?= pic_height + 45?>">
+	<figure>
+		<a class="pic_load" href="<?= v.url ?>" style="height:<?= pic_height ?>px;">
+			<img src="<?= v.show_pic ?>" alt="<?= v.ginfo.goods_title ?>" title="<?= v.ginfo.goods_title ?>"/>
+		</a>
+		<? if(v.ginfo.goods_title){?>
+			<p class="clothesTitle"><?=v.ginfo.goods_title?></p>
+		<?}?>
+		<figcaption>
+			<? if(v.ginfo.goods_price){?>
+			<span class="price"><?= v.ginfo.goods_price?></span>
+			<? }?>
+			<span class="like icon-heart"><?= v.count_like?></span>
+		</figcaption>
+		<?if(v.horizontal_mark.length != 0){?>
+			<div class="mark">
+				<img src="<?= v.horizontal_mark[0].img_url ?>" />
+			</div>
+		<?}?>
+	</figure>
+</div>
+<? }); ?>
+
+</script>
+
+<script type="text/html" id="pageTpl">
+	<a class="disabled" href="javascript:;" id="pagePre">上一页</a>
+	<div class="selector" id="selectorBox">
+		<? var totlePage=this.totlePage; ?>
+		<span id="selectorInfo"><span id="curPage">1</span>/<?= totlePage ?></span>
+	    <i class="arrow"></i>
+	    <select class="selector_select" id="selSelect">
+	    	<? for(var i=1;i<=totlePage;i++){ ?>
+	    		<option value='<?= i ?>'>"第<?= i ?>页"</option>
+	    	<? }; ?>
+	    </select>
+    </div>
+    <a href="javascript:;" id="pageNext">下一页</a>
+</script>
+
+<script>
+	fml.vars.poster = {};
+	<%= this.poster0? 'Meilishuo.config.poster0 = ' + JSON.stringify(this.poster0) + ';' : ''; %>
+</script>
+
+<% $_ENGINE_SELF.callFn("useModule")("fml.use('wap/page/poster0');", this._JSstack, this._JSmodsFast); %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/special');
+_use:", this._JSstack, this._JSmods); %>
+<%# foot_simple.html%>

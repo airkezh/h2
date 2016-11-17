@@ -1,0 +1,23 @@
+function runningMan(){
+	return this;
+}
+var controlFns = {
+	'index' : function(){
+		var php = {
+			'rm_info' : '/customactivity/CustomActivity_common_tool_single?cid=15419&id=running_man_info'
+		};
+		var self = this;
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			data.use_rem_screen = true;
+			data._CSSLinks = ['runningMan'];
+			data.pageTitle = data.rm_info.page_title;
+			return self.render('runningMan/index.html',data);
+		});
+	}
+	
+};
+
+
+exports.__create = controller.__create(runningMan , controlFns);

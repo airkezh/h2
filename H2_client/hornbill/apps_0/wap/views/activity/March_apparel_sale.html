@@ -1,0 +1,51 @@
+<%#head.html%>
+<% var pageData = this.pageData; %>
+<div class="top">
+	<% pageData.head.forEach(function(data){ %>
+		<img src="<%= data.img_src %>" />
+	<% }); %>
+</div>
+<div class="countdown">
+	<img src="<%= pageData.countdown_bg. img_src %>" />
+</div>
+<div class="coupon_link">
+	<a href="<%= pageData.top_link.link %>"><img src="<%= pageData.top_link.img_src %>" alt=""></a>
+</div>
+<div class="shop_wrap">
+	<div class="title"><img src="<%= pageData.type_title.img_src %>" alt=""><a href="<%= pageData.type_title.link %>"></a></div>
+	<div class="shop_con">
+		<% pageData.shop.forEach(function(data, index){ %>
+			<div class="shop_box <%= index%2 ? 'odd' : ''%>">
+				<a href="<%= _extFn.getAppLink('shop' , {'shop_id':'101027'} , this.os, this.r) %>"><img src="<%= data.img_src %>" alt=""><span>收藏领券</span></a>
+			</div>
+		<% }); %>
+	</div>
+</div>
+<div class="spring_clothing">
+	<% pageData.bottom_links.forEach(function(data){ %>
+		<a href="<%= data.link %>"><img src="<%= data.img_src %>" alt=""></a>
+	<% }); %>
+</div>
+
+<% if(this.share){ %>
+	<%= requireFn('wapShare.html')({
+		'share' : this.share 
+	    , 'shareTitle' : '选择分享到'
+	    , '_JSstack' : this._JSstack
+		, '_JSmods' : this._JSmods
+	}); %>
+<%}%>
+<script type="text/html" id="toupdate">
+<div class="toupdate">
+	<p>只有最新版本才可以享受优惠喔，亲快去升级吧。</p>
+	<a class="btn3zi delayclose" href="/goto/download/">去更新</a>
+</div>
+</script>
+<script>
+	fml.vars.isNewest = "<%=this.isNewest%>";
+	fml.vars.isLogin = "<%=this.isLogin%>";
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/March_sale');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

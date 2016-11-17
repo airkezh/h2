@@ -1,0 +1,76 @@
+<%#head.html%>
+<div class="banner">
+	<div class="txt_weixin">
+		<img src="<%= this.PICTURE_URL%>images/wap/biz/groundnew/txt_weixin.png" alt="" />
+	</div>
+</div>
+<div class="promise">
+	所有商品均由美丽说验货 质量保证
+</div>
+<section class="container">
+	<figure class="buyers_box">
+		<img src="<%= this.content.image%>" alt="" />
+		<div class="audio_box">
+			<div class="jp-jplayer" id="jp-jplayer-top0" audio_url="<%= this.content.audio_url%>">
+			</div>
+			<div class="audio_control" id="jp_container_0">
+				<div class="audio_info" >
+					<p class="audio_duration"><span class="time"><%= this.content.audio_time%></span>”</p>
+					<p class="control_btn jp-play" style="display:none;">
+						<span class="start"><img src="<%= this.PICTURE_URL%>images/wap/biz/groundnew/i_play.png" alt="" /></span>
+					</p>
+					<p class="control_btn jp-pause">
+						<span class="pause"><img src="<%= this.PICTURE_URL%>images/wap/biz/groundnew/i_pause.png" alt="" /></span>
+					</p>
+				</div>
+			</div>
+		</div>
+	</figure>
+	<div class="productContent">
+		<div class="goods_wall">
+		</div>
+		<div class="clear_f"></div>
+		<div class="pullUp" status="loading"></div>
+	</div>
+	<div class="keyword_box">
+		<h3>
+			<img src="<%= this.PICTURE_URL%>images/wap/biz/groundnew/t_keyword.jpg" alt="" />
+		</h3>
+		<nav class="keyword_nav">
+			<ul>
+				<%this.hot.forEach(function(v,k){%>
+				<li><a href="<%= v.link%>"><%= v.txt%></a></li>
+				<%});%>
+			</ul>
+		</nav>
+	</div>
+	<div class="clear_f"></div>
+	<div class="s_banner">
+		<a href="/biz/groundnew/ground/">
+			<img src="<%= this.PICTURE_URL%>images/wap/biz/groundnew/s_banner.jpg" alt="" />
+		</a>
+	</div>
+</section>
+<%= requireFn('wapShare.html')({
+	'share' : this.share
+	,'shareID' : 'groundnew'
+	, 'shareTitle' : '选择分享到：'
+	, '_JSstack' : this._JSstack
+	, '_JSmods' : this._JSmods
+}); %>
+<%= requireFn('biz/groundnew/ground_li.html')({
+	'os' : this.os
+	, 'apk' : ''
+	,'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+});%>
+<script>
+fml.vars.poster = {
+
+};
+fml.vars.type = "<%= this.type%>";
+<%= this.list? 'Meilishuo.config.poster0 = '+JSON.stringify(this.list)+';':'' ;%>
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/groundnew');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

@@ -1,0 +1,413 @@
+@import "../block.less";
+
+html, body { .bgwhite; .break-word; }
+
+html, body { .f(10px); .fc(#010101); .l(1.2rem); }
+
+.windowDrive { .f(1.4rem);
+  .dialog-con { .l(1.6rem); }
+}
+
+.page {
+  .pa; top           : 0px; .w(100%); left : 0px;
+  .bgwhite;
+  min-height         : 100%;
+  -webkit-transition : -webkit-transform 360ms ease-out 0s;
+}
+
+#chatPage {
+  .f(1.5rem);
+  .bgc(#ebebeb);
+
+  &.open {
+    .tools {
+      .morePal { .block; }
+    }
+    .messageList {
+      .mb(86*@w);
+      .pb(778/1242 * 100%);
+    }
+  }
+
+  .sys, .user {
+    .pt(0.8rem);
+    .pb(1.2rem);
+    .pr;
+    margin : 10*@w 20*@w;
+    .l(1.4);
+    .left;
+    .w((640-20-20)*@w);
+
+    .headimg {
+      .w(4.4rem); .h(4.4rem);
+      .pa;
+      background-repeat : no-repeat;
+      background-size   : 100%;
+      border            : 1px solid #dbdbdb;
+    }
+    .message {
+      .ml(6rem);
+      .mr(6rem);
+      &Con {
+        .bgwhite; .pr;
+        .border-r(6px);
+        border : 1px solid #dbdbdb;
+
+        &:after {
+          content           : ' ';
+          background-repeat : no-repeat;
+          background-size   : contain;
+          .w(17*@px); .h(17*@px);
+          top               : 0px;
+          .pa; .mt(1.6rem);
+        }
+
+        img, .audio {
+          .border-r(6px);
+        }
+        p {
+          padding : 1rem 0.8rem;
+        }
+        a {
+          .fc(blue);
+        }
+        img { .block; max-width : 100%; .pr; z-index : 1;
+        }
+        audio { .pa; }
+        .audio {
+          .h(3.4rem);
+          .w(100px);
+          background-repeat : no-repeat;
+          background-size   : contain;
+          background-image  : url('http://d05.res.meilishuo.net/pic/_o/20/2b/ed0a784161aca76e576999faadb5_59_59.ch.png');
+
+          &on {
+            background-image : url('http://d04.res.meilishuo.net/pic/_o/7e/af/fdbb4a5e1fa917e0ebeee28bc39a_59_59.cg.gif');
+          }
+
+          &time { .pa; left : 110px; top : 1rem; .fc(#999); }
+
+        }
+      }
+    }
+  }
+  .sys {
+    .message {
+      &Con {
+        .left;
+        &:after {
+          left             : 0px; .ml(-14*@px);
+          background-image : url('http://d04.res.meilishuo.net/pic/_o/5f/09/1be6bbfee6a9e6b86d54638800ae_17_17.ch.png');
+        }
+
+      }
+    }
+    .headimg {
+      left : 0px;
+    }
+  }
+  .user {
+    .message {
+      &Con {
+        .right;
+        &:after {
+          background-image : url('http://d04.res.meilishuo.net/pic/_o/4f/91/3eb93683c5abbbf78c718e550005_17_17.cg.png');
+          right            : 0px; .mr(-14*@px);
+        }
+      }
+    }
+    .headimg {
+      right : 0px;
+    }
+  }
+
+  .shaizi {
+    .block; .w(100*@px); .h(100*@px);
+    background-repeat    : no-repeat;
+    background-size      : 100%;
+    background-image     : url('http://d01.res.meilishuo.net/pic/_o/14/90/7df736e2e14dc2e9f7b563b3d2eb_100_100.ch.gif');
+
+    &
+    1 { background-image : url('http://d03.res.meilishuo.net/pic/_o/e6/f7/4e7e0d946988967820e883f967b7_100_100.ch.png'); } & 2 { background-image: url('http://d02.res.meilishuo.net/pic/_o/68/93/f3d408567006b13d9e93151fe699_100_100.cf.png'); } & 3 { background-image: url('http://d02.res.meilishuo.net/pic/_o/68/93/f3d408567006b13d9e93151fe699_100_100.cf.png'); } & 4 { background-image: url('http://d05.res.meilishuo.net/pic/_o/37/a0/e236b44801636ef4d3be0e95126a_100_100.ch.png'); } & 5 { background-image: url('http://d05.res.meilishuo.net/pic/_o/6d/60/380966fc07e994b735e0c23572da_100_100.ch.png'); }
+  }
+
+  .messageList {
+    .mt(40*@px);
+    .mb(86*@w);
+    .hidden;
+  }
+
+  .messageInfo {
+    .auto;
+    background-image  : url('http://d04.res.meilishuo.net/pic/_o/ef/d5/e448566cad4abd63c9f2fd74bb70_546_95.cf.png');
+    background-size   : 100%;
+    background-repeat : no-repeat;
+    .w(546*@w); .pt(95*@w);
+    .mt(20*@w);
+  }
+
+  .tools {
+    z-index           : 10;
+    .pf; bottom       : 0px; .w(100%);
+    background-image  : url('http://d06.res.meilishuo.net/pic/_o/51/e1/40355d4ec0bbd42a0e75ddd9d574_640_86.ch.png');
+    background-repeat : no-repeat;
+    background-size   : 100%;
+    .pt(86*@w);
+
+    .input, .game {
+      .pa; top : 0px; .mt(16*@w);
+      .pt(56*@w);
+    }
+
+    .input {
+      left : 0px;
+      .ml(78*@w);
+      .w(420*@w);
+      span {
+        .pa; top : 0px;
+        .f(1.6rem);
+        .l(2);
+      }
+    }
+
+    .game {
+      right : 0px;
+      .w(130*@w);
+    }
+
+    .morePal {
+      border-top : 1px solid #ddd;
+      .bgc(#f3f3f5);
+      .none;
+      .pr;
+      .pt(778/1242 * 100%);
+      &[state=number] {
+        .numberPal { .block; }
+      }
+      &[state=game] {
+        .gamePal { .block; }
+      }
+      &[state=keynote] {
+        .keynotePal { .block; }
+      }
+    }
+
+    .numberPal, .gamePal, keynotePal {
+      .none; .pa; top : 0px; .h(100%); .w(100%);
+    }
+
+    .numberPal {
+      background-repeat : no-repeat;
+      background-size   : 100%;
+      background-image  : url('http://imgtest.meiliworks.com/pic/_o/35/bf/1250e836a9ba3c2ae9ff617a73e3_1242_778.cg.png');
+      .h(100%);
+
+      .number {
+        .w(75%);
+        .h(100%);
+      }
+      p {
+        .left; .w(100%/3); .h(100%/4);
+      }
+      span {
+        .block; .w(100%); .h(100%);
+      }
+    }
+
+    .gamePal {
+      p {
+        .left; .w(100%/5);
+      }
+      span {
+        margin : 16%; .pr; .block; .pr;
+        .pt(80%);
+        img { .w(100%); .pa; top : 0px; }
+      }
+      .shaiziBtn {
+      }
+
+    }
+  }
+}
+
+.mask { .none; .pf; top : 0px; left : 0px; right : 0px; bottom : 0px; z-index : 98;
+  .bgc(rgba(0, 0, 0, 0.68));
+}
+
+.shareWXMask {
+  z-index             : 99;
+  .none;
+  background-repeat   : no-repeat;
+  background-position : center 6%;
+  background-image    : url("http://i.meilishuo.net/css/images/wap/activity/baoyang/shareLead.png");
+  background-size     : 68%;
+}
+
+[class^="emoji"] {
+  display         : inline-block;
+  width           : 3.6rem;
+  height          : 3.3rem;
+  background      : no-repeat center;
+  background-size : contain;
+  vertical-align  : middle;
+}
+
+.emoji-bai {
+  background-image : url("http://d04.res.meilishuo.net/pic/_o/ac/42/8e37ce96496aa0eb04dcb8c567f2_37_32.cg.png");
+}
+
+.emoji-wicked {
+  background-image : url("http://d03.res.meilishuo.net/pic/_o/fa/f7/480eaa5c1201e8c0e233878786da_36_33.cf.png");
+}
+
+.emoji-boring {
+  background-image : url("http://d01.res.meilishuo.net/pic/_o/75/e6/07ae85c49b2e09a428439c6a6aa7_36_32.cg.png");
+}
+
+.emoji-hold {
+  background-image : url("http://d03.res.meilishuo.net/pic/_o/e2/da/fb328b7a62a8ad6fc4aa54f5f8c8_52_54.ch.png");
+}
+
+.emoji-pity {
+  background-image : url("http://d05.res.meilishuo.net/pic/_o/6b/79/7f9ce4193151c13d7cf717b9f8a2_43_39.cf.png");
+}
+
+.emoji-hand-left {
+  //  background-image : url("http://d02.res.meilishuo.net/pic/_o/81/7d/d415c99bafda3f666b8f187e33bd_30_36.cg.jpg");
+  //background-image : url("http://d04.res.meilishuo.net/pic/_o/7a/ab/e96735ed30f65a144116d31b8a85_36_33.ch.jpg");
+  background-image : url("http://d02.res.meilishuo.net/pic/_o/0a/94/5ce2e7d95a7a9646afc8ae94cee0_36_33.cf.jpg");
+}
+
+.emoji-hand-right {
+  //  background-image : url("http://d02.res.meilishuo.net/pic/_o/88/3f/a92b27ab25f49ebdc9f4e75222fb_30_36.ch.jpg");
+  //background-image : url("http://d04.res.meilishuo.net/pic/_o/21/dd/d8479fb276cf6d55f197ca0fd7c3_36_33.ch.jpg");
+  background-image : url("http://d06.res.meilishuo.net/pic/_o/d8/3e/e120b255eb34444927332f97c198_36_33.cf.jpg");
+}
+
+.morePal {
+  position        : relative;
+  display         : none;
+  width           : 100%;
+  background      : url("http://d02.res.meilishuo.net/pic/_o/e1/47/b9ca75d3529cb45b4f21cd23e1c0_640_431.ch.png") no-repeat center;
+  background-size : cover;
+}
+
+/*
+  keyboard:
+    w640 h431
+
+  keyboard A/B/C/D
+    w55 h80
+*/
+[class^="keyboard-"] {
+  position : absolute;
+  width    : 8.59%;
+  height   : 18.56%;
+}
+
+.keyboard-a {
+  left : 6.25%;
+  top  : 30.5%;
+}
+
+.keyboard-b {
+  left : 56.718%;
+  top  : 56.148%
+}
+
+.keyboard-c {
+  top  : 56.148%;
+  left : 35.9375%;
+}
+
+.keyboard-d {
+  top  : 30.5%;
+  left : 25.9375%;
+}
+
+#chatPage .chat-img .messageCon:after {
+  display : none;
+}
+
+.redMask {
+  .hidden;
+  top : -40px;
+  .none;
+}
+
+.blueMask, .yellowMask {
+  position          : absolute;
+  left              : 50%;
+  top               : 50%;
+  width             : 70%;
+  padding-top       : 70.3125%;
+  .hidden;
+  background        : center no-repeat;
+  background-size   : contain;
+  -webkit-transform : translate3d(-50%, -50%, 0);
+  -moz-transform    : translate3d(-50%, -50%, 0);
+  -ms-transform     : translate3d(-50%, -50%, 0);
+  -o-transform      : translate3d(-50%, -50%, 0);
+  transform         : translate3d(-50%, -50%, 0);
+}
+
+/* 已领过 */
+.blueMask {
+  background-image : url("http://d02.res.meilishuo.net/pic/_o/28/bb/c1c984f72f42a09965c12ce8fb6c_390_473.cf.png");
+}
+
+/* 抢光了 */
+.yellowMask {
+  background-image : url("http://d01.res.meilishuo.net/pic/_o/3f/cc/84fa9a4e44ba3fd3d240008ee321_375_473.cf.png");
+}
+
+.mask-link {
+  position : absolute;
+  left     : 0;
+  bottom   : 0;
+  width    : 100%;
+  height   : 16%;
+}
+
+.mobileArea {
+  background-image  : url('http://d04.res.meilishuo.net/pic/_o/cf/9b/68724a285b9fbe0255b03005ee1a_640_758.cg.png');
+  background-repeat : no-repeat;
+  background-size   : 100%;
+  .pt(450*@w); .pa; .w(100%);
+  .pb(100*@w);
+
+  .mobileBox { .pr; .auto; .w(400*@w); .pt(56*@w); .mb(40*@w); }
+  .mobileInput { .pa; top : 0px; .h(100%); .w(100%); padding : 0px; margin : 0px; border : 0 none; background : none; .c; color : #ec132c; .f(1.6rem); }
+  .mobileBtn { .h(40px); .w(400px); .auto; .block; .mb(40*@w); }
+}
+
+#chatPage .chat-img {
+  .messageCon {
+    background-color : #ebebeb;
+    border           : none;
+  }
+
+  .chat-inner-img {
+    position          : relative;
+    left              : -1rem;
+    padding-right     : 1rem;
+    -webkit-clip-path : polygon(10px 0, 100% 0, 100% 100%, 10px 100%, 10px 20px, 5px 15px, 10px 10px)
+  }
+}
+
+.nickname {
+  display       : block;
+  margin-bottom : .3rem;
+  font-size     : 1.3rem;
+  color         : #868686;
+}
+
+.user .nickname {
+  text-align : right;
+}
+
+.video {
+  video {
+    .pa; .w(100%); top : 30%; left : 0px; z-index : 100; .none;
+  }
+}

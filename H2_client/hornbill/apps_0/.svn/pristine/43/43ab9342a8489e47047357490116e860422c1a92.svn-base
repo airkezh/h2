@@ -1,0 +1,53 @@
+<%# wx_new/header.html%>
+<%
+	var getLink = _extFn.getLink;
+	var defaultGoods = this.defaultInfo.tInfo || [];
+	var shareInfo = this.defaultInfo.share || {};
+%>
+
+<div class="main js-tab">
+	<%if( this.defaultInfo.banner && this.defaultInfo.banner.img){%>
+		<a href="<%=this.defaultInfo.banner.url || 'javascript:;' %>"><img src="<%=this.defaultInfo.banner.img %>" /></a>
+	<%}%>
+
+	<% var menu = this.defaultInfo.menu; %>
+	<% if(menu){ %>
+    <div class="tab">
+    	<% menu.forEach(function(data){ %>
+			<div class="tab-item js-tab-item <%= data.type == 0 ? 'active' : '' %>"  data-type="<%=data.type %>" ><%=data.title %></div>
+		
+    	<% }); %>
+    </div>
+    <%}else{%>
+    	<div class="m20"></div>
+    <%}%>
+
+	<div class="content-wrap">
+		<ul class="new_goods goods-wall">
+		</ul>
+		<div class="pullUp" status="loading"></div>
+	</div>
+</div>
+
+<%# wx_new/waterfall.html%>
+<script>
+fml.vars.defaultGoods = <%= JSON.stringify( defaultGoods )%>;
+fml.vars.cid = <%= this.cid %>;
+
+<%if ( shareInfo && shareInfo.img ) {%>
+fml.vars.shareData = {
+	'imgUrl' : '<%= shareInfo.img %>',
+	'title' : document.title,
+	'desc' : '<%= shareInfo.desc || "专属达人挑款师带你开启美丽说时尚之旅！加入我们，发现流行，占有世界！" %>'
+};
+<% }; %>;
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/wx_new/ad_temp');
+_use:", this._JSstack , this._JSmods ); %>
+<%# wx_new/side.html%>
+<%# wx_new/footer.html%>
+
+
+

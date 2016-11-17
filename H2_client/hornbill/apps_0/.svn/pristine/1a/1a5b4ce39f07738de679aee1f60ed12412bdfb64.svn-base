@@ -1,0 +1,71 @@
+<%# head.html%>
+<% this.headName = '收银台';
+	this.noHomeBtn = 1;
+	this.headNameRight = '<span class="icon-right" id="jumpToHome">首页</span>'
+	var showInvalid = 0
+%>
+<%# head_share.html%>
+<%
+	var global_r    = this.xr.r || '';
+	var channels    = this.channels,
+		gatewayList = channels && channels.info.gatewaylist;
+%>
+<div class="wrap">
+	<ul class="item-list">
+		<%
+		gatewayList && gatewayList.forEach(function( bank ){
+			var className = 'item js-bank';
+			if ( bank.checked == 1 ) {
+				className += ' state-check'
+			}
+
+			var pmcode = bank.pmcode;
+			if ( pmcode == 'WECHATMOB' ) {
+				pmcode = 'WAPGWCARD'
+			}
+		%>
+		<li class="<%= className %>" data-pmcode="<%= pmcode %>" data-bankcode="<%= bank.bankcode %>" data-paytype="2">
+			<i class="icon-bank" style="background-image:url(<%= bank.bankimg %>)"></i>
+			<p class="item-desc">
+				<span class="item-name"><%= bank.bankname %><% if ( bank.isshowicon == 1 ) { %><i class="label-hot">HOT</i><% } %></span>
+				<% if ( bank.remark ) {
+					var textClassName = bank.isshowcolor == 1 ? 'item-highlight' : 'item-normal';
+				%>
+				<span class="<%= textClassName %>"><%= bank.remark %></span>
+				<% } %>
+			</p>
+		</li>
+		<% }); %>
+	</ul>
+</div>
+<div class="js-pay-form" style="display:none;"></div>
+<footer class="cashier-ft">
+	<span class="price">应支付金额:<i class="price-num js-pay-price">￥<%= channels.payamount %></i></span>
+	<button class="btn-pay" id="pay">去支付</button>
+</footer>
+
+<script type="text/html" id="pay_form">
+  <form method="post" action="/cashier/pay/" target="_blank">
+    <input type="hidden" name="access_token" value="<?= this.access_token ?>"/>
+    <input type="hidden" name="orderno" value="<?= this.orderno ?>"/>
+    <input type="hidden" name="merchantcode" value="<?= this.merchantcode ?>"/>
+    <input type="hidden" name="source" value="<?= this.source ?>"/>
+    <input type="hidden" name="version" value="<?= this.version ?>"/>
+    <input type="hidden" name="bankcode" value="<?= this.bankcode ?>"/>
+    <input type="hidden" name="pmcode" value="<?= this.pmcode ?>"/>
+    <? if(typeof this.password != 'undefined'){ ?><input type="hidden" name="password" value="<?= this.password ?>"/><? } ?>
+    <? if(typeof this.usedamount != 'undefined'){ ?><input type="hidden" name="usedamount" value="<?= this.usedamount ?>"/><? } ?>
+    <input type="hidden" name="payamount" value="<?= this.payamount ?>"/>
+    <input type="hidden" name="paytype" value="<?= this.paytype ?>"/>
+    <input type="hidden" name="sign" value="<?= this.sign ?>"/>
+    <input type="hidden" name="key" value="<?= this.key ?>"/>
+  </form>
+</script>
+
+<script>
+	fml.vars.order = <%= JSON.stringify(this.order) %>;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/doota/cashier');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

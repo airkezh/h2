@@ -1,0 +1,32 @@
+<%# head_simple.html%>
+<%
+var mSubstr = _extFn.mSubstr;
+%>
+</head>
+<body>
+<div class="appBox">
+	<div class="pic">
+		<div class="p_con">
+			<img src="<%=this.uinfo.data.pic_url%>" />
+		</div>
+	</div>
+	<h1 class="tle"><%= mSubstr(this.uinfo.data.nickname , 4 , '...')%>和她的闺蜜</h1>
+	<ul class="num_info">
+		<li><span>目前票数</span><b><%=this.uinfo.data.score%></b></li>
+		<li><span>还差<strong class="red_f"><%=this.uinfo.data.nextScore%></strong>票</span><span style="margin-top: 4px;">排名就能上升一位啦！</span></li>
+	</ul>
+	<div class="clear_f"></div>
+	<%if(this.install){%>
+		<a class="btn mtb vote_gl" uid="<%=this.uinfo.data.user_id%>">投票</a>
+	<%}else{ %>
+		<a class="btn mtb" href="/goto/download/?apk=/u/EIeagp">下载app帮她投票</a>
+	<% } %>
+</div>
+<script>
+fml.vars.mac = '<%=this.mac%>';
+fml.vars.app_version = '<%=this.app_version%>';
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/girlfriends');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html%>

@@ -1,0 +1,132 @@
+<%# head.html%>
+<%
+	var banner = this.banner || {};
+	var bannerData = banner.data || {};
+	var bannerArr = bannerData.banner || [];
+	var bannerRightArr = bannerData.right_banner || [];
+	var shop = this.shop || {};
+	var shopArr = shop.shopArr || [];
+	var brand = this.brand || {};
+	var brandData = brand.brandArr || [];
+	var tag = this.tag || {};
+	var tagArr = tag.tagArr || [];
+%>
+<% var getLink = _extFn.getLink; %>
+<% var addTrace = this.ViewTools.addTrace; %>
+
+<div class="wrap">
+	<div class="banner-box">
+		<% if(bannerArr.length){ %>
+			<div class="banner" id="banner">
+				<ul>
+					<% bannerArr.forEach(function(data , index){ %>
+						<li>
+							<a target="_blank" href="<%= addTrace(data.url,'korea_banner_'+index) || 'javascript:;' %>">
+								<img src="<%= data.image_url %>" alt="">
+							</a>
+						</li>
+					<% }); %>
+				</ul>
+				<div class="num"></div>
+			</div>
+		<% } %>
+		<% if(bannerRightArr.length){ %>
+			<div class="list">
+				<ul>
+					<% bannerRightArr.forEach(function(data , index){ %>
+						<li class="<%= index==1 ? 'mt' : '' %>">
+							<a target="_blank" href="<%= addTrace(data.url,'korea_right_'+index) || 'javascript:;' %>">
+								<img src="<%= data.image_url %>" alt="">
+							</a>
+						</li>
+					<% }); %>
+				</ul>
+			</div>
+		<% } %>
+	</div>
+	<a target="_blank" href="<%= bannerData.tips && bannerData.tips.url || 'javascript:;' %>">
+		<img src="<%= bannerData.tips && bannerData.tips.img %>" alt="" class="selling">
+	</a>
+	<% if(shopArr.length){ %>
+		<div class="shop-box">
+			<h3><%= shop.title %></h3>
+			<ul>
+				<% shopArr.forEach(function(data , index){ %>
+					<li>
+						<a target="_blank" href="<%= addTrace(data.url,'korea_hotbrand_'+index) || 'javascript:;' %>">
+							<img src="<%= data.src %>" alt="">
+						</a>
+					</li>
+				<% }); %>
+			</ul>
+		</div>
+	<% } %>
+	<% if(brandData.length){ %>
+		<div class="brand-box">
+			<h3><%= brand.title %></h3>
+			<ul>
+				<% brandData.forEach(function(data , index){ %>
+					<li>
+						<div class="brand-big">
+							<a target="_blank" href="<%= addTrace(data.url,'korea_hanfan_'+index+'_0') || 'javascript:;' %>">
+								<img src="<%= data.src %>" alt="">
+							</a>
+						</div>
+						<div class="brand-small">
+							<% data.small && data.small.length && data.small.forEach(function(data , smallIndex){ %>
+								<a target="_blank" href="<%= addTrace(data.url,'korea_hanfan_'+index+'_'+(smallIndex+1)) || 'javascript:;' %>">
+									<img src="<%= data.src %>" alt="">
+								</a>
+							<% }); %>
+						</div>
+					</li>
+				<% }); %>
+			</ul>
+		</div>
+	<% } %>
+	<div class="postwall-title" id="postwallTitle">
+		<div class="inner">
+			<h3><%= tag.title %></h3>
+			<% if(tagArr.length){ %>
+				<div class="tag-box">
+					<% tagArr.forEach(function(data , index){ %>
+						<a href="/korea/<%=getLink({'cata':index,'sort':this.sort})%>#postwallTitle" class="<%= this.cata == index ? 'active' : '' %>"><%= data.txt %></a>
+					<% }); %>
+				</div>
+			<% } %>
+			<div class="sort-box">
+				<a href="/korea/<%=getLink({'cata':this.cata,'sort':0})%>#postwallTitle" class="<%= this.sort == 0 ? 'active' : '' %>">
+					流行
+				</a>
+				<a href="/korea/<%=getLink({'cata':this.cata,'sort':1})%>#postwallTitle" class="<%= this.sort == 1 ? 'active' : '' %>">
+					热销
+				</a>
+				<a href="/korea/<%=getLink({'cata':this.cata,'sort':2})%>#postwallTitle" class="<%= this.sort == 2 ? 'active' : '' %>">
+					上新
+				</a>
+				<a href="/korea/<%=getLink({'cata':this.cata,'sort':this.sort == 3 ? 4 : 3})%>#postwallTitle" class="<%= (this.sort == 3 || this.sort == 4) ? 'active' : '' %>">
+					价格
+					<i class="<%= this.sort == 3 ? 'arrow_t' : 'arrow_d' %>">&nbsp;</i>
+				</a>
+			</div>
+		</div>
+	</div>
+	<div class="goods_wall_box">
+		<div class="spinner midSpinner"></div>
+		<div class="goods_wall"></div>
+	</div>
+	<div class="spinner botSpinner none_f"></div>
+	<div class="paging_panel c_f none_f">
+		<%#paging.html%>
+	</div>
+	<div class="clear_f"></div>
+	<%#korea/poster.html%>
+</div>
+<script>
+	fml.vars.page_size = <%= this.groupPg.page_size || 220 %>;
+</script>
+<% $_ENGINE_SELF.callFn("useModule")("fml.use('page/poster0');", this._JSstack , this._JSmodsFast ); %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/korea/new');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

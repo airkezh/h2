@@ -1,0 +1,57 @@
+@import "../block.less";
+@w:1/640 * 100%;
+@px:1/2px;
+@f:1/16rem;
+html{.f(10*@f);}
+
+.gostart{.bgwhite;.w(100%);.hidden;
+	div{.pr;.pt(920*@w);}
+	img{.w(100%);.pa;top:0px;}
+		
+}
+.game{.bgwhite;.w(100%);
+	div{.hidden;
+		div{.pr;}
+	}
+	img{.w(100%);.pa;top:0px;}
+}
+.gostart, .game{
+	&:before{
+		.pa;.c;.f(20*@f);.w(100%);top:40%;
+		content:"加载中...";
+	}
+}
+.btn{
+	&_start{.pa;left:100*@w;bottom:20/920*100%;.w(480*@w);.pt(120*@w);}	
+	&_next{.pa;left:80*@w;top:410/820*100%;.w(480*@w);.pt(130*@w);}	
+	&_share{.pa;left:80*@w;top:0px;.w(480*@w);.pt(130*@w);}
+	&_download, &_open{.pa;left:30*@w;.w(560*@w);.pt(130*@w);}
+	&_open{top:610/920*100%;}
+	&_download{top:(610+130)/920*100%;}
+}
+.start{
+	div{.pt(920*@w);}
+}
+.question{
+	div{ 
+		&:nth-child(1){.pt(870*@w);.mt(20*@w);.mb(30*@w);}
+		span{.pa;.h(105/870*100%);.w(50%);
+			&:hover{.bgred;opacity:0.1;}
+			.active{.bgred;opacity:0.4;}
+			&:nth-of-type(1){bottom:105/870*100%;left:0px;}
+			&:nth-of-type(2){bottom:105/870*100%;right:0px;}
+			&:nth-of-type(3){bottom:0px;left:0px;}
+			&:nth-of-type(4){bottom:0px;right:0px;}
+		}
+	}
+}
+.answer{
+	div{ .pt(820*@w);.mt(60*@w);.mb(40*@w); }
+	&.a5{ .btn_next{top:370/820*100%;}	}
+}
+.result{
+	div{
+		&:nth-child(1){.pt(795*@w);}
+		&:nth-child(2){.pt(90*@w);.mb(35*@w);}
+	}
+}

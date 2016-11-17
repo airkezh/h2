@@ -1,0 +1,902 @@
+@import "../atom.less";
+/**
+* css reset
+**/
+html, body, div, h1, h2, h3, h4, h5, h6, ul, ol, dl, li, dt, dd, p,	blockquote, pre, form, fieldset, table, th, td, map{margin:0;padding:0;}
+* html,* html body{background-image:url(about:blank);}
+ul, ol, dl, li{list-style:none;}
+textarea{resize:none;}
+fieldset, img{border:0;} 
+legend{.none;}
+a{color:#666;.tnone;
+	&:hover{.red;}
+}
+a:focus{outline:none;}
+em{font-style:normal;}
+html{_overflow-x:hidden;}
+body{background:#333;color:#666;.f(12px);font-family:Arial, "微软雅黑", "黑体";}
+html, body, div, p, span, a, img, ul, li, header, section, footer, nav, canvas, figure, figcaption{-webkit-user-select:none;}
+
+.penone(){pointer-events:none;}
+.undo{.penone;}
+
+@w:980px;@h:768px;
+//头部
+.header(){
+	.pr;.hidden;height:50px;display:-webkit-box;width:100%;
+	border-bottom:3px double #333;
+	background:-webkit-linear-gradient(top, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 80%), url("@{pic_url}/images/app/summer/body_top3.png") 0px 0px repeat-x;
+	.back{
+		.none;.cursor;.white;.pa;.hidden;.c;.f(18px);height:42px;width:60px;.l(42px);
+		top:4px;left:6px;padding-left:8px;
+		background:url("@{pic_url}/images/app/summer/btn3.png") 0px -174px repeat-x;
+		text-shadow:0px -1px 1px #000, 0px 1px 1px #000;
+//		-webkit-transition:opacity 0.2s ease-in 0.1s;
+//		opacity:0;
+		&.undo{opacity:0.4;}
+	}
+	.logo{.pa;right:0px;margin:5px;width:100px;height:38px;background:url("@{pic_url}/images/app/summer/body_top3.png") no-repeat -60px -358px;}
+	h2{.c;.white;.hidden;width:1024px;text-shadow:0px -1px 1px #000, 0px 2px 2px #000;height:48px;line-height:50px;font-size:34px;font-weight:normal;}
+}
+//导航
+@lna:0.2s;
+.nav(){
+	.pr;.cursor;.hidden;.c;height:40px;line-height:40px;background:url("@{pic_url}/images/app/summer/body_top3.png") 0px -150px repeat-x;
+	box-shadow:0px 2px 2px rgba(0,0,0,0.2);
+	ul{
+		.pr;z-index:2;
+		li{
+			.i_block;.f(18px);width:(@w / 6);
+			&:hover, &.isThis{color:#000;}
+		}
+	}
+	.focus(@i) when (@i < 5){
+		-webkit-transform:translateX((@w / 6) * @i);
+	}
+	.focus(@i) when (@i = 5){
+		-webkit-transform:translateX(@w - (@w / 6) + 0.2px);
+	}
+	.focus{
+		.pa;bottom:0px;height:60px;width:(@w / 6);
+		background:-webkit-linear-gradient(top, rgba(255,255,255,0),rgba(255,255,255,1));
+		-webkit-transition:-webkit-transform @lna ease-out;
+		box-shadow:4px 8px 8px rgba(0,0,0,0.2) inset, -4px 8px 8px rgba(0,0,0,0.2) inset;
+		.border{line-height:94px;width:0;height:0;border-bottom:6px #000 solid;border-left:10px transparent solid;border-right:10px transparent solid;}	
+	}
+	.f0{.focus(0);}
+	.f1{.focus(1);}
+	.f2{.focus(2);}
+	.f3{.focus(3);}
+	.f4{.focus(4);}
+	.f5{.focus(5);}
+}
+//主体
+.section(){		
+	height:716px;width:@w;
+	display:table-cell;vertical-align:middle;
+}
+
+//第一页
+@l:0.4s;
+.init(){
+	.action(@i, @n){
+		&:nth-child{
+		//	-webkit-animation:action @l ease-in (@n * @l), stay (@ls - (@n * @l)) ease-in ((@n + 1) * @l);
+		//	animation:action @l ease-in (@n * @l), stay (@ls - (@n * @l)) ease-in ((@n + 1) * @l);
+			-webkit-transition:opacity @l ease-in (@l / 3) * @n;
+		}
+	}
+	.init{
+		.hidden;width:1024px + 4;height:@h + 4;margin:-2px 0px 0px -24px;
+	//	background-color:#f2f0f0;
+		.bgwhite;
+		li{
+			.i_block;opacity:0;margin:2px;
+			background:url("@{pic_url}/images/app/summer/init.png") no-repeat;
+			&:nth-child(1), &:nth-child(2), &:nth-child(3), &:nth-child(14), &:nth-child(15), &:nth-child(16){width:196px;height:160px;}
+			&:nth-child(4), &:nth-child(5), &:nth-child(17), &:nth-child(18){width:210px;height:160px;}
+			&:nth-child(7), &:nth-child(8), &:nth-child(12), &:nth-child(13){width:210px;height:218px;}
+			&:nth-child(9), &:nth-child(10), &:nth-child(11){width:196px;height:218px;}
+			&:nth-child(6){width:596px;height:218px;}
+
+			&:nth-child(1), &:nth-child(2), &:nth-child(3), &:nth-child(4), &:nth-child(5){background-position-y:0px;}
+			&:nth-child(6), &:nth-child(7), &:nth-child(8){background-position-y:-164px;}
+			&:nth-child(9), &:nth-child(10), &:nth-child(11), &:nth-child(12), &:nth-child(13){background-position-y:-386px;}
+			&:nth-child(14), &:nth-child(15), &:nth-child(16), &:nth-child(17), &:nth-child(18){background-position-y:-606px;}
+
+			&:nth-child(1), &:nth-child(6), &:nth-child(9), &:nth-child(14){background-position-x:0px;}
+			&:nth-child(2), &:nth-child(10), &:nth-child(15){background-position-x:-200px;}
+			&:nth-child(3), &:nth-child(11), &:nth-child(16){background-position-x:-400px;}
+			&:nth-child(4), &:nth-child(7), &:nth-child(12), &:nth-child(17){background-position-x:-600px;}
+			&:nth-child(5), &:nth-child(8), &:nth-child(13), &:nth-child(18){background-position-x:-810px;}
+
+
+
+		//	@-webkit-keyframes action{0%{opacity:0;}100%{opacity:1;}}
+		//	@keyframes action{0%{opacity:0;}100%{opacity:1;}}
+
+		//	@-webkit-keyframes stay{0%{opacity:1;}100%{opacity:1;}}
+		//	@keyframes stay{0%{opacity:1;}100%{opacity:1;}}
+
+			.init>.action(1,1);
+			.init>.action(2,2);
+			.init>.action(3,3);
+			.init>.action(4,4);
+			.init>.action(5,5);
+			.init>.action(8,6);
+			.init>.action(13,7);
+			.init>.action(18,8);
+			.init>.action(17,9);
+			.init>.action(16,10);
+			.init>.action(15,11);
+			.init>.action(14,12);
+			.init>.action(9,13);
+			.init>.action(10,14);
+			.init>.action(11,15);
+			.init>.action(12,16);
+			.init>.action(7,17);
+			.init>.action(6,18);
+		}
+	}	
+}
+
+//book类
+@wb:440px;@hb:662px;
+.book(){
+	.setPo(@i) when (@i < 7){
+		top:20px;left:(@i - 1) * (140px + 22px);
+	}
+	.setPo(@i) when (@i > 6)and( @i < 13){
+		top:200px + 20px + 20px;left:(@i - 6 - 1) * (140px + 22px);
+	}
+	.setPo(@i) when (@i > 12){
+		top:400px + 40px + 20px;left:(@i - 12 - 1) * (140px + 22px);
+	}
+	.setBg(@i) when (@i < 7){
+		background-position:-(220px * (@i - 1)) 0px;
+	}
+	.setBg(@i) when (@i > 6)and( @i < 13){
+		background-position:-(220px * (@i - 6 - 1)) -280px;
+	}
+	.setBg(@i) when (@i > 12){
+		background-position:-(220px * (@i - 12 - 1)) -560px;
+	}
+	.setItems(@i) when (@i < 7){
+		background-position:-(140px * (@i - 1))+2 -10px;
+	}
+	.setItems(@i) when (@i > 6)and( @i < 13){
+		background-position:-(140px * (@i - 6 - 1))+2 -190px;
+	}
+	.setItems(@i) when (@i > 12){
+		background-position:-(140px * (@i - 12 - 1))+2 -370px;
+	}
+	.setItemBg(@i){
+		background-image:url("@{pic_url}/images/app/summer/bs_big_@{i}.png");
+	} 
+	.setBgSmall(@i){
+		&:nth-child{
+			>span:nth-child(1):after{.book>.setBg(@i);}
+			.book>.setPo(@i);	
+		}
+	}
+	.setBd(@i){
+		-webkit-border-top-left-radius:@i;
+		-webkit-border-bottom-left-radius:@i;
+	}
+	.setOuter(@i, @s){
+		background-image:url("@{pic_url}/images/app/summer/oute_@{s}_@{i}.jpg");
+	} 
+	.small(){
+		.pa;
+		box-shadow:8px 2px 8px rgba(0,0,0,0.2);
+		width:140px;height:200px;
+		-webkit-transition:opacity 0.4s ease-out 0s, z-index 0.2s ease-in 0.4s, -webkit-transform 0.4s ease-out 0s, top 0.4s ease-out 0s, left 0.4s ease-out 0s;
+		opacity:1;
+		.cursor;
+		>span{
+			.pa;.block;
+			width:140px;height:200px;
+			.bgwhite;box-shadow:2px 0px 1px rgba(153,153,153,0.2);
+			-webkit-transform:translateX(10px) scale(0.96);
+			&:before{
+				.pa;.block;
+				.bgwhite;box-shadow:2px 0px 1px rgba(153,153,153,0.4);
+				content:"";
+				width:140px;height:200px;
+				-webkit-transform:translateX(-5px) scale(1.02);
+			}
+			&:after{
+				.pa;.block;
+				box-shadow:2px 0px 1px rgba(153,153,153,0.4);
+				content:"";
+				width:140px;height:200px;
+				-webkit-transform:translateX(-10px) scale(1.04);
+				background:url("@{pic_url}/images/app/summer/body_section1.png") no-repeat;
+				.book>.setBd(4px);
+			}
+		}
+		>p{
+			.pa;.block;
+			width:140px;height:200px;
+			&:before{
+				.pa;.block;
+				.book>.setBd(4px);
+				content:"";
+				width:20px;height:200px;
+				background:-webkit-linear-gradient(left, rgba(0,0,0,0.1) 0%, rgba(255,255,255,0.2) 30%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 90%);
+			}
+			&:after{
+				.pa;.block;
+				content:"";
+				width:20px;height:200px;
+				background:url("@{pic_url}/images/app/summer/body_top3.png") -28px -320px no-repeat;
+				top:0px;left:0px;
+			}
+			>span{
+				width:140px;
+				&:nth-child(1){
+					.block;
+					.book>.setBd(4px);
+					background-repeat:no-repeat;
+					margin-top:10px;
+					width:140px;height:200px - 10px - 40px;
+					background-size:838px;
+				}
+				&:nth-child(2){
+					width:140px;height:30px;
+					.f(16px);.l(18px);.c;padding:0px 8px;color:#333;
+					display:table-cell;vertical-align:middle;
+					text-shadow:0px 1px 1px rgba(255, 255, 255, 0.6);
+					&.isIn{
+						&:after{
+							.pa;
+							content:"";
+							top:0px;left:0px;height:56px;width:56px;margin:-1px 0px 0px -1px;
+							background:url("@{pic_url}/images/app/summer/body_top3.png") no-repeat -62px -412px;
+							z-index:2;
+						}
+					}
+				}
+			}
+		}
+		.book>.setBgSmall(1);
+		.book>.setBgSmall(2);
+		.book>.setBgSmall(3);
+		.book>.setBgSmall(4);
+		.book>.setBgSmall(5);
+		.book>.setBgSmall(6);
+		.book>.setBgSmall(7);
+		.book>.setBgSmall(8);
+		.book>.setBgSmall(9);
+		.book>.setBgSmall(10);
+		.book>.setBgSmall(11);
+		.book>.setBgSmall(12);
+		.book>.setBgSmall(13);
+		.book>.setBgSmall(14);
+		.book>.setBgSmall(15);
+		.book>.setBgSmall(16);
+		.book>.setBgSmall(17);
+		.book>.setBgSmall(18);
+		&.isPop{
+			-webkit-transition:opacity 0.6s ease-out 0.2s, -webkit-transform 0.4s ease-out 0s, top 0.4s ease-out 0s, left 0.4s ease-out 0s;
+			-webkit-transform:scale(3.18);
+			top:216px;
+			left:424px;
+			z-index:4;
+		//	opacity:0;
+			box-shadow:none;
+		}
+	}
+	.big(){
+		width:@wb;height:@hb;
+		.auto;.pr;
+//		box-shadow:2px 2px 12px rgba(0,0,0,0.6);
+		-webkit-transition:-webkit-transform 0.6s ease-out 0s;
+		&.load{
+			-webkit-transform:translateX((@wb / 2) - 20px);
+			>ul{
+				&.book_tab{
+					right:-94px;	
+					//opacity:1;
+					-webkit-transition:right 0.2s ease-out 0s;
+				}	
+			}
+		}
+		&.open{
+			>div{
+				&.page_inner{
+					&.wall{
+						left:-432px;
+					}
+				}
+			}
+		}
+		>div{
+			.pa;
+			&.page{
+				.hidden;
+				z-index:0;
+				right:-32px;top:-10px;
+				width:468px;
+				height:@hb + 20px;
+				//-webkit-border-top-left-radius:8px;
+				//-webkit-border-bottom-left-radius:8px;
+				>span{
+					top:10px;
+					right:0px;
+					height:@hb;
+					.pa;.bgwhite;.block;
+					&:nth-child(1){
+						-webkit-transform:translateX(0px) scale(0.99);
+						box-shadow:0px 2px 8px rgba(0,0,0,0.6);
+						width:932px;
+						&:after{
+							.pa;.block;
+							height:@hb;width:894px;
+							content:"";
+							.bgwhite;
+							-webkit-transform:translateX(19px) scale(1.008);
+							box-shadow:0px 2px 8px rgba(0,0,0,0.6);
+						}
+						&:before{
+							.pa;.block;
+							height:@hb;width:914px;
+							content:"";
+							.bgwhite;
+							-webkit-transform:translateX(9px) scale(1.004);
+							box-shadow:0px 2px 8px rgba(0,0,0,0.6);
+						}
+					}
+					&:nth-child(2){
+						.hidden;
+						-webkit-transform:translateX(-28px) scale(1);
+						box-shadow:0px 2px 8px #999;
+						width:876px;
+						&:before, &:after{
+							.pa;.block;
+							content:"";
+							height:@hb;
+							box-shadow:0px 0px 20px #ddd;
+						}
+						&:after{
+							width:@wb + 4px;
+							right:0px;
+						}
+						&:before{
+							width:@wb - 10px;
+							left:0px;
+						}
+					}
+				}
+			}
+			&.page_inner{
+				.pa;.hidden;
+				height:@hb - 20px;
+				width:0px;
+				margin-top:10px;
+				z-index:3;
+				&::-webkit-scrollbar-button {.none;}
+				&::-webkit-scrollbar-button:increment {.none;}
+				&::-webkit-scrollbar-button:decrement {.none;}
+				&::-webkit-scrollbar-track-piece{
+					background-color:#ccc;
+					&:start, &:end{border-left:3px solid #fff;border-right:3px solid #fff;}
+				}
+				&::-webkit-scrollbar-corner{.none;}
+				&::-webkit-scrollbar-resizer{.none;}
+				&::-webkit-scrollbar-button{&:start, &:end{&:increment, &:decrement{.none;}}}
+				&::-webkit-scrollbar{width:8px;height:8px;}
+				&::-webkit-scrollbar-track{background-color:#ccc;border-left:3px solid #fff;border-right:3px solid #fff;}
+				&::-webkit-scrollbar-thumb{background-color:#ccc;border-radius:4px;}
+				&.wall{right:4px;}
+				&.wall2{
+					right:0px;
+					>div{.pa;right:20px;}
+				}
+				>div{width:(@wb * 2) - 28px;}
+				.spinner, .spinnerBig{
+					.none;
+					>span{
+						.pa;.h(32px);
+						background:url("@{pic_url}/images/indicator_medium.gif") no-repeat scroll 50% 0;
+						&:first-child{left:0px;}
+						&:last-child{left:432px;}
+						&:first-child, &:first-child:after{width:430px;}
+						&:last-child, &:last-child:after{width:444px;}
+					}
+				}
+				.spinner{.h(32px);margin:20px 0px;}
+				.spinnerBig{
+					height:@hb - 20px;
+					>span{
+						top:40%;
+						&:after{
+							.pa;.c;.l(22px);
+							top:40px;color:#999;
+							content:"加载中，请稍候...";
+						}
+					}
+				}
+				.goods_wall1, .goods_wall2{
+					margin:0px 15px 0px 5px;
+					width:(@wb * 2) - 28px;
+					right:0px;
+				}
+			}
+			&.page_outer{
+				width:@wb + 2px + 4px;height:@hb + 2px;
+				.hidden;left:0px;margin:-2px 0px 0px -2px;
+				.book>.setBd(6px);
+				z-index:4;
+			//	-webkit-transition:width 0.3s ease 0s;
+				box-shadow:1px 0px 2px rgba(0,0,0,0.1);
+				>div{
+					.pr;margin:2px 0px 0px 2px;
+					width:@wb + 2px;height:@hb;
+					>div{
+						.pa;
+						&:nth-child(1){
+							.bgwhite;
+							width:@wb + 2px;height:@hb;
+							box-shadow:1px 0px 2px #ddd;
+							//background:url("@{pic_url}/images/app/summer/body_section1.png") no-repeat;
+							.book>.setBd(6px);
+							&:before{
+								.pa;.block;
+								content:"";
+								width:60px;height:@hb;
+								.book>.setBd(6px);
+								background:-webkit-linear-gradient(left, rgba(0,0,0,0.4) 0%, rgba(255,255,255,0.1) 40%, rgba(255,255,255,0.1) 60%, rgba(255,255,255,0) 90%);
+							}
+							&:after{
+								.pa;.block;
+								content:"";
+								margin-top:80px;width:20px;height:480px;
+								background:url("@{pic_url}/images/app/summer/body_top3.png") 1px -350px no-repeat;
+							}
+						}
+						&:nth-child(2){
+							bottom:0px;right:-2px;
+							p{
+								.hidden;
+								&:first-child{
+									.c;.white;
+									text-shadow:0px -1px 1px #000, 0px 2px 2px #000;
+									width:188px;height:134px;padding:10px;
+									font-size:34px;line-height:45px;
+									display:table-cell;vertical-align:middle;
+									background:url("@{pic_url}/images/app/summer/body_top3.png") repeat 0px 0px;
+								}
+								&:last-child{
+									width:208px;height:268px;
+									background-image:url("@{pic_url}/images/app/summer/body_section1.png");
+									background-repeat:no-repeat;
+									&:after{
+										.pa;
+										content:"";
+										width:208px;height:268px;
+										background-repeat:no-repeat;
+									}
+								}
+							}
+						}
+					}
+					&.isIn{
+						&:after{
+							.pa;.block;
+							content:"";
+							top:0px;height:156px;width:156px;margin:-2px 0px 0px -2px;
+							background:url("@{pic_url}/images/app/summer/body_top3.png") no-repeat -2px -202px;
+						}
+					}
+				}
+			}
+		}
+		>ul{
+			&.book_tab{
+				.pa;
+				margin:10px 0px;
+				width:90px;height:@hb - 20px;right:0px;
+				z-index:2;
+				//opacity:0;
+				-webkit-transition:right 0.2s ease-out 0.8s;
+				li{
+					.f(16px);.white;.block;.pa;.c;.cursor;
+					@ht:((@hb - 22px) / 4);@lpt:8px;
+					padding:14px 36px 0px 8px;
+					width:16px;
+					height:126px;
+					background:url("@{pic_url}/images/app/summer/btn3.png") -4px -240px no-repeat;
+					>span{
+						display:table-cell;vertical-align:middle;
+						height:126px;
+					}
+					&[y="4"]{top:@ht * 3;}
+					&[y="3"]{top:@ht * 2;}
+					&[y="2"]{top:@ht * 1;}
+					&[y="1"]{top:@ht * 0;}
+					&[x="4"]{z-index:4;left:@lpt * 3;}
+					&[x="3"]{z-index:3;left:@lpt * 2;}
+					&[x="2"]{z-index:2;left:@lpt * 1;}
+					&[x="1"]{
+						.penone;
+						z-index:1;left:@lpt * 0;
+						color:#000;
+						background-position:-6px -440px;
+						&:after{
+							background-position:-6px -584px;
+						}
+					}
+					&:after{
+						.pa;.block;
+						content:"";
+						width:60px;height:36px;
+						left:0px;
+						bottom:-36px;
+						background:url("@{pic_url}/images/app/summer/btn3.png") -4px -384px no-repeat;
+					}
+				}
+			}
+		}
+		>canvas{
+			&.pageflip{
+				.none;.pa;right:-2px;top:-80px;z-index:8;
+			}
+		}
+	}
+}
+
+//
+.poster(){
+	.poster_grid{
+		.inline;.left;.hidden;.cursor;
+		width:132px;margin:0px 5px 10px 5px;
+		-webkit-transform:scale(1);
+		opacity:1;
+		-webkit-transition:opacity 0.4s ease-out 0, z-index 0.2s ease-in 0.4s, -webkit-transform 0.4s ease-in 0s;
+		img{
+			border:1px solid #ccc;
+			background-color:#f2f0f0;width:130px;	
+		}
+		&.isPop{
+			top:216px;
+			left:426px;
+			z-index:4;
+			opacity:0;
+			-webkit-transform:scale(2);
+			box-shadow:none;
+		}
+	}	
+}
+
+//goods
+@wg:450px;@hg:450px;@lgo:0.4s;
+.goods(){
+	.pr;
+	figure{
+		.bgwhite;.pa;.block;.hidden;width:@wg + 28px;height:@hg + 68px + 14px;margin:0px;padding:0px;
+		-webkit-transition:box-shadow @lgo ease-out 0s, opacity 0.2s ease-out 0s, -webkit-transform @lgo ease-out 0s, z-index 0.2s ease-out 0s;
+//		-webkit-transition:box-shadow @lgo ease-out 0s, opacity 0.2s ease-out 0s, -webkit-transform @lgo ease-out 0s, -webkit-filter @lgo ease-out 0s, z-index 0.2s ease-out 0s;
+//		-webkit-filter:blur(4px);
+	//	opacity:0;
+//		-webkit-transform:translateX((0.64 + 0.48 + 0.32 + 0.16) * @wg) scale(0.16);
+		box-shadow:0px 0px 14px rgba(0,0,0,0.4);
+		.cursor;
+		img{
+			.pa;.bgwhite;.penone;
+			opacity:0.4;
+			width:@wg;padding:14px 14px 68px 14px;	
+			-webkit-transition:opacity 0.2s ease-out 0s;
+		}
+		>a{
+			-webkit-transition:opacity @lgo ease-out 0s;
+			.block;.pa;.penone;
+			opacity:0;.none;
+			bottom:68px + 14px;right:14px + 14px + 22px;
+			height:54px;
+			background:url("@{pic_url}/images/app/summer/btn3.png") 0px 0px repeat-x;
+			>span{
+				.white;.fb;.c;font-size:22px;.l(34px);.i_block;
+				text-shadow:0px -1px 1px #000, 0px 1px 1px #000;
+				&:nth-child(1){
+					padding:8px 8px 8px 0px;
+					&:after{
+						.block;.pa;
+						content:"";
+						background:url("@{pic_url}/images/app/summer/btn3.png") -6px -108px no-repeat;
+						height:54px;width:6px;
+						right:94px;top:0px;
+					}	
+				}
+				&:nth-child(2){
+					padding:8px 0px 8px 8px;
+				}
+			}
+			&:before{
+				.block;.pa;
+				content:"";
+				background:url("@{pic_url}/images/app/summer/btn3.png") 0px -54px no-repeat;
+				height:54px;width:16px;
+				left:-16px;top:0px;
+			}
+			&:after{
+				.block;.pa;
+				content:"";
+				background:url("@{pic_url}/images/app/summer/btn3.png") -66px -54px no-repeat;
+				height:54px;width:22px;
+				right:-22px;top:0px;
+			}	
+		}
+		>figcaption{
+			.white;.bgwhite;.pa;.hidden;.f(14px);.l(20px);
+			bottom:0px;padding:14px;
+			width:@wg;height:68px - 28px;
+			>a{
+			//	-webkit-transition:opacity @lgo ease-out 0s;
+				.hidden;.penone;
+				opacity:0;.none;
+				height:40px;
+				color:#000;
+				//text-overflow:ellipsis;
+				&.isTaobao{
+					&:after{
+						.i_block;.pa;
+						content:"";
+						background:url("http://stc-tx.meiliworks.com/css/images/header/head_ico4.png") no-repeat -145px -20px;
+						padding:8px;margin-left:4px;
+					}	
+				}
+			}
+		}
+		&[z="0"], &[z="1"], &[z="2"], &[z="7"], &[z="8"]{opacity:1;}
+		&[z="3"], &[z="4"], &[z="5"], &[z="6"]{opacity:0;}
+		&[z="0"]{
+			-webkit-transform:translateX(0px) scale(1);
+			box-shadow:0px 0px 36px rgba(0,0,0,0.6);
+//			-webkit-filter:blur(0px);	
+			z-index:5;cursor:auto;
+			img{opacity:1;}
+			>a,	>figcaption>a{.i_block;opacity:1;pointer-events:auto;}
+		}
+		&[z="1"]{-webkit-transform:translateX(0.64 * @wg) scale(0.64);z-index:4;}
+		&[z="2"]{-webkit-transform:translateX((0.64 + 0.48) * @wg) scale(0.48);z-index:3;}
+		&[z="3"]{-webkit-transform:translateX((0.64 + 0.48 + 0.32) * @wg) scale(0.32);z-index:2;}
+		&[z="4"]{-webkit-transform:translateX((0.64 + 0.48 + 0.32 + 0.16) * @wg) scale(0.16);z-index:1;}
+		&[z="5"]{-webkit-transform:translateX(-((0.64 + 0.48 + 0.32 + 0.16) * @wg)) scale(0.16);z-index:1;}
+		&[z="6"]{-webkit-transform:translateX(-((0.64 + 0.48 + 0.32) * @wg)) scale(0.32);z-index:2;}
+		&[z="7"]{-webkit-transform:translateX(-((0.64 + 0.48) * @wg)) scale(0.48);z-index:3;}
+		&[z="8"]{-webkit-transform:translateX(-(0.64 * @wg)) scale(0.64);z-index:4;}
+	/*
+		&[z="0"], &[z="1"], &[z="2"], &[z="3"], &[z="4"]{opacity:1;}
+		&[z="7"], &[z="8"], &[z="5"], &[z="6"]{opacity:0;}
+		&[z="0"]{
+			-webkit-transform:translateX(0px) scale(1);
+			box-shadow:0px 0px 18px rgba(0,0,0,0.6);
+			-webkit-filter:blur(0px);	
+			z-index:5;cursor:auto;
+			>a,	>figcaption>a{.i_block;opacity:1;pointer-events:auto;}
+		}
+		&[z="1"]{-webkit-transform:translateX(0.64 * @wg) scale(0.64);z-index:4;}
+		&[z="3"]{-webkit-transform:translateX((0.64 + 0.48) * @wg) scale(0.48);z-index:3;}
+		&[z="5"]{-webkit-transform:translateX((0.64 + 0.48 + 0.32) * @wg) scale(0.32);z-index:2;}
+		&[z="7"]{-webkit-transform:translateX((0.64 + 0.48 + 0.32 + 0.16) * @wg) scale(0.16);z-index:1;}
+		&[z="8"]{-webkit-transform:translateX(-((0.64 + 0.48 + 0.32 + 0.16) * @wg)) scale(0.16);z-index:1;}
+		&[z="6"]{-webkit-transform:translateX(-((0.64 + 0.48 + 0.32) * @wg)) scale(0.32);z-index:2;}
+		&[z="4"]{-webkit-transform:translateX(-((0.64 + 0.48) * @wg)) scale(0.48);z-index:3;}
+		&[z="2"]{-webkit-transform:translateX(-(0.64 * @wg)) scale(0.64);z-index:4;}
+	*/
+	}
+}
+
+//
+body{height:100%;width:100%;display:table;}
+.body{display:table-cell;vertical-align:middle;}
+.activity_window{.auto;.hidden;width:@w;height:@h;}
+.init_window{.pa;.bgwhite;.auto;.hidden;width:@w;height:@h;z-index:100;}
+.itemsObj{z-index:11;.none;}
+.bookObj{
+	.hidden;
+	z-index:21;
+//	opacity:0;
+//	-webkit-transition:opacity 0.6s ease-out 0s;
+	&.load{opacity:1;}
+}
+.goodsObj{
+	.hidden;
+	z-index:31;
+	opacity:0;
+	-webkit-transition:opacity 0.4s ease-out 0s;
+	&.load{opacity:1;}
+}
+header{
+	.header();.none;
+	~div{.pa;}
+}
+section{
+	.section();
+	background:-webkit-gradient(radial,center center,600,center center,200, from(#eee),to(#fff)) ;
+}
+nav{
+	.nav();
+	~section{
+		.block;
+		width:@w - 20px;height:676px;padding:0px 10px;
+		ul{
+			.pr;
+			li{
+				.i_block;
+				&:nth-child(6), &:nth-child(12), &:nth-child(18){margin-right:0px;}
+				.book>.small();
+			}
+		}
+	}
+}
+.init();
+.copyright{.auto;.bgwhite;.l(22px);.f(14px);.c;width:372px;height:22px;opacity:0.9;margin-top:-34px;}
+.book_body{.book>.big();}
+.poster();
+.goods_body{
+	.auto;width:@wg + 28px;height:@hg + 68px + 14px;
+	.goods();
+}
+.itemsObj .s0, .bookObj .s0:after{.book>.setItemBg(0);}
+.itemsObj .s1, .bookObj .s1:after{.book>.setItemBg(1);}
+.itemsObj .s2, .bookObj .s2:after{.book>.setItemBg(2);}
+.itemsObj .s3, .bookObj .s3:after{.book>.setItemBg(3);}
+.itemsObj .s4, .bookObj .s4:after{.book>.setItemBg(4);}
+.itemsObj .s5, .bookObj .s5:after{.book>.setItemBg(5);}
+
+.bookObj .i1, .bookObj .i1:after{.book>.setBg(1);}
+.bookObj .i2, .bookObj .i2:after{.book>.setBg(2);}
+.bookObj .i3, .bookObj .i3:after{.book>.setBg(3);}
+.bookObj .i4, .bookObj .i4:after{.book>.setBg(4);}
+.bookObj .i5, .bookObj .i5:after{.book>.setBg(5);}
+.bookObj .i6, .bookObj .i6:after{.book>.setBg(6);}
+.bookObj .i7, .bookObj .i7:after{.book>.setBg(7);}
+.bookObj .i8, .bookObj .i8:after{.book>.setBg(8);}
+.bookObj .i9, .bookObj .i9:after{.book>.setBg(9);}
+.bookObj .i10, .bookObj .i10:after{.book>.setBg(10);}
+.bookObj .i11, .bookObj .i11:after{.book>.setBg(11);}
+.bookObj .i12, .bookObj .i12:after{.book>.setBg(12);}
+.bookObj .i13, .bookObj .i13:after{.book>.setBg(13);}
+.bookObj .i14, .bookObj .i14:after{.book>.setBg(14);}
+.bookObj .i15, .bookObj .i15:after{.book>.setBg(15);}
+.bookObj .i16, .bookObj .i16:after{.book>.setBg(16);}
+.bookObj .i17, .bookObj .i17:after{.book>.setBg(17);}
+.bookObj .i18, .bookObj .i18:after{.book>.setBg(18);}
+
+.itemsObj .i1{.book>.setItems(1);}
+.itemsObj .i2{.book>.setItems(2);}
+.itemsObj .i3{.book>.setItems(3);}
+.itemsObj .i4{.book>.setItems(4);}
+.itemsObj .i5{.book>.setItems(5);}
+.itemsObj .i6{.book>.setItems(6);}
+.itemsObj .i7{.book>.setItems(7);}
+.itemsObj .i8{.book>.setItems(8);}
+.itemsObj .i9{.book>.setItems(9);}
+.itemsObj .i10{.book>.setItems(10);}
+.itemsObj .i11{.book>.setItems(11);}
+.itemsObj .i12{.book>.setItems(12);}
+.itemsObj .i13{.book>.setItems(13);}
+.itemsObj .i14{.book>.setItems(14);}
+.itemsObj .i15{.book>.setItems(15);}
+.itemsObj .i16{.book>.setItems(16);}
+.itemsObj .i17{.book>.setItems(17);}
+.itemsObj .i18{.book>.setItems(18);}
+
+.bookObj .i1s0 {.book>.setOuter(1,0);}
+.bookObj .i2s0 {.book>.setOuter(2,0);}
+.bookObj .i3s0 {.book>.setOuter(3,0);}
+.bookObj .i4s0 {.book>.setOuter(4,0);}
+.bookObj .i5s0 {.book>.setOuter(5,0);}
+.bookObj .i6s0 {.book>.setOuter(6,0);}
+.bookObj .i7s0 {.book>.setOuter(7,0);}
+.bookObj .i8s0 {.book>.setOuter(8,0);}
+.bookObj .i9s0 {.book>.setOuter(9,0);}
+.bookObj .i10s0 {.book>.setOuter(10,0);}
+.bookObj .i11s0 {.book>.setOuter(11,0);}
+.bookObj .i12s0 {.book>.setOuter(12,0);}
+.bookObj .i13s0 {.book>.setOuter(13,0);}
+.bookObj .i14s0 {.book>.setOuter(14,0);}
+.bookObj .i15s0 {.book>.setOuter(15,0);}
+.bookObj .i16s0 {.book>.setOuter(16,0);}
+.bookObj .i17s0 {.book>.setOuter(17,0);}
+.bookObj .i18s0 {.book>.setOuter(18,0);}
+
+.bookObj .i1s1 {.book>.setOuter(1,1);}
+.bookObj .i2s1 {.book>.setOuter(2,1);}
+.bookObj .i3s1 {.book>.setOuter(3,1);}
+.bookObj .i4s1 {.book>.setOuter(4,1);}
+.bookObj .i5s1 {.book>.setOuter(5,1);}
+.bookObj .i6s1 {.book>.setOuter(6,1);}
+.bookObj .i7s1 {.book>.setOuter(7,1);}
+.bookObj .i8s1 {.book>.setOuter(8,1);}
+.bookObj .i9s1 {.book>.setOuter(9,1);}
+.bookObj .i10s1 {.book>.setOuter(10,1);}
+.bookObj .i11s1 {.book>.setOuter(11,1);}
+.bookObj .i12s1 {.book>.setOuter(12,1);}
+.bookObj .i13s1 {.book>.setOuter(13,1);}
+.bookObj .i14s1 {.book>.setOuter(14,1);}
+.bookObj .i15s1 {.book>.setOuter(15,1);}
+.bookObj .i16s1 {.book>.setOuter(16,1);}
+.bookObj .i17s1 {.book>.setOuter(17,1);}
+.bookObj .i18s1 {.book>.setOuter(18,1);}
+
+.bookObj .i1s2 {.book>.setOuter(1,2);}
+.bookObj .i2s2 {.book>.setOuter(2,2);}
+.bookObj .i3s2 {.book>.setOuter(3,2);}
+.bookObj .i4s2 {.book>.setOuter(4,2);}
+.bookObj .i5s2 {.book>.setOuter(5,2);}
+.bookObj .i6s2 {.book>.setOuter(6,2);}
+.bookObj .i7s2 {.book>.setOuter(7,2);}
+.bookObj .i8s2 {.book>.setOuter(8,2);}
+.bookObj .i9s2 {.book>.setOuter(9,2);}
+.bookObj .i10s2 {.book>.setOuter(10,2);}
+.bookObj .i11s2 {.book>.setOuter(11,2);}
+.bookObj .i12s2 {.book>.setOuter(12,2);}
+.bookObj .i13s2 {.book>.setOuter(13,2);}
+.bookObj .i14s2 {.book>.setOuter(14,2);}
+.bookObj .i15s2 {.book>.setOuter(15,2);}
+.bookObj .i16s2 {.book>.setOuter(16,2);}
+.bookObj .i17s2 {.book>.setOuter(17,2);}
+.bookObj .i18s2 {.book>.setOuter(18,2);}
+
+.bookObj .i1s3 {.book>.setOuter(1,3);}
+.bookObj .i2s3 {.book>.setOuter(2,3);}
+.bookObj .i3s3 {.book>.setOuter(3,3);}
+.bookObj .i4s3 {.book>.setOuter(4,3);}
+.bookObj .i5s3 {.book>.setOuter(5,3);}
+.bookObj .i6s3 {.book>.setOuter(6,3);}
+.bookObj .i7s3 {.book>.setOuter(7,3);}
+.bookObj .i8s3 {.book>.setOuter(8,3);}
+.bookObj .i9s3 {.book>.setOuter(9,3);}
+.bookObj .i10s3 {.book>.setOuter(10,3);}
+.bookObj .i11s3 {.book>.setOuter(11,3);}
+.bookObj .i12s3 {.book>.setOuter(12,3);}
+.bookObj .i13s3 {.book>.setOuter(13,3);}
+.bookObj .i14s3 {.book>.setOuter(14,3);}
+.bookObj .i15s3 {.book>.setOuter(15,3);}
+.bookObj .i16s3 {.book>.setOuter(16,3);}
+.bookObj .i17s3 {.book>.setOuter(17,3);}
+.bookObj .i18s3 {.book>.setOuter(18,3);}
+
+.bookObj .i1s4 {.book>.setOuter(1,4);}
+.bookObj .i2s4 {.book>.setOuter(2,4);}
+.bookObj .i3s4 {.book>.setOuter(3,4);}
+.bookObj .i4s4 {.book>.setOuter(4,4);}
+.bookObj .i5s4 {.book>.setOuter(5,4);}
+.bookObj .i6s4 {.book>.setOuter(6,4);}
+.bookObj .i7s4 {.book>.setOuter(7,4);}
+.bookObj .i8s4 {.book>.setOuter(8,4);}
+.bookObj .i9s4 {.book>.setOuter(9,4);}
+.bookObj .i10s4 {.book>.setOuter(10,4);}
+.bookObj .i11s4 {.book>.setOuter(11,4);}
+.bookObj .i12s4 {.book>.setOuter(12,4);}
+.bookObj .i13s4 {.book>.setOuter(13,4);}
+.bookObj .i14s4 {.book>.setOuter(14,4);}
+.bookObj .i15s4 {.book>.setOuter(15,4);}
+.bookObj .i16s4 {.book>.setOuter(16,4);}
+.bookObj .i17s4 {.book>.setOuter(17,4);}
+.bookObj .i18s4 {.book>.setOuter(18,4);}
+
+.bookObj .i1s5 {.book>.setOuter(1,5);}
+.bookObj .i2s5 {.book>.setOuter(2,5);}
+.bookObj .i3s5 {.book>.setOuter(3,5);}
+.bookObj .i4s5 {.book>.setOuter(4,5);}
+.bookObj .i5s5 {.book>.setOuter(5,5);}
+.bookObj .i6s5 {.book>.setOuter(6,5);}
+.bookObj .i7s5 {.book>.setOuter(7,5);}
+.bookObj .i8s5 {.book>.setOuter(8,5);}
+.bookObj .i9s5 {.book>.setOuter(9,5);}
+.bookObj .i10s5 {.book>.setOuter(10,5);}
+.bookObj .i11s5 {.book>.setOuter(11,5);}
+.bookObj .i12s5 {.book>.setOuter(12,5);}
+.bookObj .i13s5 {.book>.setOuter(13,5);}
+.bookObj .i14s5 {.book>.setOuter(14,5);}
+.bookObj .i15s5 {.book>.setOuter(15,5);}
+.bookObj .i16s5 {.book>.setOuter(16,5);}
+.bookObj .i17s5 {.book>.setOuter(17,5);}
+.bookObj .i18s5 {.book>.setOuter(18,5);}
+
+
+

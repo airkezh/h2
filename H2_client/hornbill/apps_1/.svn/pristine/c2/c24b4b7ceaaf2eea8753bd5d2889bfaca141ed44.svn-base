@@ -1,0 +1,190 @@
+@import "../atom.less";
+@import "../block/page.less";
+@import "../store/datepicker.less";
+
+textarea {.border-1(@color:#d2d2d2);}
+table {border-collapse:collapse;border-spacing:0;}
+.store_ico {background:url("@{pic_url}/images/store/mls_store131110_1.png")no-repeat;}
+.redBtn,.grayBtn {.h(24px);.l(24px);.border-r(@radius:2px);.block;.white;.pl(20px);.pr(20px);}
+.redBtn {.bgred;}
+.grayBtn {background:#CCC;}
+.h3_title {.f(16px);.h(47px);.l(47px);.pl(20px);.bgc(#f7f6f6);}
+.must {.red;.pr(8px);}
+.dotted_line {.h(1px);border-bottom:1px dotted #b5b5b5;.ml(20px);.mr(20px);}
+.button_uploadImg {.store_ico;.bp(0,-88px);.w(76px);.h(25px);}
+.group_icon () {
+	.arrowDown,.arrowTop,.reUpload,.btnDelete,.btnEdit{.store_ico;.w(20px);.h(20px);.block;}
+	.arrowDown {.bp(0,-23px);}
+	.arrowTop {.bp(-25px,-23px);}
+	.reUpload {.bp(-50px,-23px);}
+	.btnDelete {.bp(-75px,-23px);}
+	.btnEdit {.bp(-100px,-23px);}
+}
+.upImage(){
+	.upload_area{
+		.w(100%);.h(100%);.pa;top: 0;left: 0;.hidden;
+		input{.cursor;.f(295px);.pa;left: -3em;top: 0;.h(344px);.w(auto);z-index: 20;}
+	}
+	.up_image{.pr;}
+}
+.nav_bar() {
+	.left_column {.left;.w(168px);.mr(10px);}
+	.health_wrapper{
+		.nav_health{.right; .pr(18px); 
+	    	a{.red;}
+	    }
+		.navhealth{.pb(5px);.mt(10px);.pl(17px);
+	    	li{.h(20px);}
+	    }
+	}
+	.tools{.c;margin: 10px 0;
+		.hideAll{.w(48px);padding: 5px 10px;.bggray;.l(24px);.white;.cursor;.border-r(5px);
+			&.h{.bgred;}
+		}
+	}
+	.navBar {.w(168px);.border-1(@color:#e6e6e6);.bgwhite;
+		h1 {.h(48px);.bgred;.l(48px);.f(16px);.white;.c;}
+		.navCon {.l(32px);border-top:1px solid #e6e6e6;
+			h3 {.f(14px);.fn;.h(32px);padding:5px 0 5px 18px;.cursor;
+				&:hover{.bgred;a{.white;}}
+			}
+			.second_nav {.pb(5px);
+				li {.h(32px);
+					a {.h(32px);.pl(46px);.block;.gray;
+						&:hover {.bgpink;color:#333;}
+						}
+					&.active {.fb;
+						a {.red;}
+						}
+					}
+				}
+			.minus,.plus {.left;.w(8px);.mt(12px);.mr(20px);.store_ico;}
+			.minus {.bp(-76px,-76px);.h(2px);}
+			.plus {.bp(-76px,-73px);.h(8px);}
+			}	
+		.grayline {.border-bd2(@style:solid);.w(130px);.auto;}
+	}
+	.contact {.border-1(@color:#e6e6e6);.bgwhite;.mt(10px);padding:20px 18px;
+		h3 {border-bottom:1px dotted #bfbfbf;.f(14px);.pl(26px);.pb(15px);.mb(15px);background:url('@{pic_url}/images/store/i_contact.png') no-repeat;}
+		span {.l(18px);.block;.pb(8px);}
+		}
+}
+.flow_step (){
+	.flowStep {.ml(20px);.mr(20px);.pt(25px);.pb(15px);
+		.current {.f(14px);.red;.ml(20px)}
+		li {.left;.c;.gray;
+			span {.w(12px);.h(12px);.pr;.block;.auto;.store_ico;.bp(-109px,-48px);}
+		}
+		.redline {.h(2px);.mt(-8px);.bgred;}
+		.whiteline {.w(50%);.h(2px);.bgwhite;.right;}
+		.step_name {.h(40px);.l(40px);}
+		.step_done {
+			span {.bp(-92px,-48px);}
+			.step_name {.red;}
+		}
+		.step_first {
+			.whiteline {.left;}
+		}
+	}
+}
+.approve(){
+	.imgWrapper(){.w(98px);.h(98px);.border-1(#e6e6e6);.pr;
+		img{.w(98px);.h(98px);border: none;}
+		.removeBtn(){
+			.rm_btn{.pa;background:url('@{pic_url}/images/store/mls_store131110_1.png') no-repeat -75px -23px;.w(20px);.h(20px);top: 2px; right: 2px;.none;.cursor;}
+			&:hover{.rm_btn{.block;}}
+		}
+	}
+	.rmBtn(){.right;background:url('@{pic_url}/images/store/mls_store131110_1.png') no-repeat -75px -23px;.w(20px);.h(20px);}
+	.approveWrapper(){.bgwhite;padding: 0 20px;.mb(20px);};
+	.itemTitle(){.f(12px);.fn;.h(54px);.l(54px);border-bottom:1px dotted #bfbfbf;.mb(10px);
+		b {.f(14px);.fb;}
+	}
+	.brand_prove{.approveWrapper();
+		h6{.itemTitle();}
+		.brand_prove_content,.brand_show_content,.brand_edit_content{.mt(10px);.pb(20px);border-bottom:1px dotted #b5b5b5;.pr;
+			td{vertical-align: top;}
+			.t_td{.w(60px);}
+			.brand_td{.w(140px);
+				.img_wrapper{.imgWrapper;.mb(10px);}
+				.brand_upload{.redBtn;.w(60px);.c;}
+			}
+			.auth_td{.w(550px);
+				.img_wrapper,.add_upload{.imgWrapper;.imgWrapper>.removeBtn;.left;.mr(10px);.mb(10px);}
+				.add_upload{.c;.red;.l(98px);}
+			}
+			.brand_name_wrapper{.mt(20px);}
+			.rm_content_btn{.rmBtn();}
+		}
+		.prove_foot{padding: 15px 0;
+			.add_brand{.redBtn;.left;padding: 0 10px;.cursor;}
+			p{.left;
+				&.cont{.ml(20px);.left;.w(760px);}
+			}
+		}
+	}
+	.other_prove{.approveWrapper();
+		h6{.itemTitle();}
+		.prove_foot{padding: 15px 0;
+			.add_other{.redBtn;.left;padding: 0 10px;.cursor;}
+		}
+		.other_prove_content,.other_show_content,.other_edit_content{.mt(10px);.pb(20px);border-bottom:1px dotted #b5b5b5;.pr;
+			.img_wrapper{.imgWrapper();.mt(10px);}
+		}
+		.rm_content_btn{.rmBtn();}
+	}
+	.wrong_always,.qual_wrong_tips{.warning();.mb(10px);}
+	.qual_wrong_tips{.none;}
+	.re_upload_wrapper{.mt(5px);
+		.re_upload{.redBtn;.w(58px);.c;}
+	}
+}
+.subBtn(){
+	.c;.h(46px);.l(46px);.bgred;.white;.f(18px);.auto;.border-r(3px);.cursor;
+}
+.warning(){.l(48px);.mt(-1px); .pl(56px);
+		background:url('@{pic_url}/images/store/modify_warning.png') no-repeat 20px 16px; .bgc(#ffe8f0);
+}
+.strength(){
+	.strength{.bgwhite;.mb(20px);
+		table{
+			td{.l(28px);
+				&.t_tle{vertical-align: top;.c;}
+			}
+		}
+		.tb_goods_url{.w(500px);}
+		.strength_s_wrapper{.l(50px);
+			label{.ml(30px);}
+		}
+		.store_content{
+			.desc{.l(24px);}
+			.btn_wrapper{padding: 10px;
+				.uploadBtn{.redBtn;.w(48px);}
+			}
+			.photos{.hidden;
+				.img_wrapper{.w(100px);.left;.mr(30px);.mb(20px);.pr;
+					img{.w(100px);.h(100px);}
+					input{.w(48px);}
+					.rm_btn{.pa;background:url('@{pic_url}/images/store/mls_store131110_1.png') no-repeat -75px -23px;.w(20px);.h(20px);top: 5px; right: 2px;.none;.cursor;}
+					&:hover{.rm_btn{.block;}}
+				}
+			}
+		}
+	}
+}
+.goQQ(){
+	.goqq { .cursor; .border-1(#f69); .h(23px); .l(23px); .c; .left; .red; .w(86px);
+		.qqico { background: url("@{pic_url}/images/doota/doota_im1.gif") no-repeat; .pt(2px); .pb(3px); .pl(18px); }
+	}
+}
+.navCommon(){
+	.nav_bar;
+	.page_title {.h3_title;.fb;.border-1(#e6e6e6);}
+	.content_wrapper{.bgwhite;padding: 10px;.border-1(#e6e6e6);.mt(-1px);}
+}
+
+/*标签*/
+.tabWrap(){.mt(10px);border-bottom: 2px #f69 solid;
+	a{.left;.w(112px);.h(38px);.l(38px);.c;.fb;.red;.bgwhite;}
+	.selected{.bgred;.white;}
+}

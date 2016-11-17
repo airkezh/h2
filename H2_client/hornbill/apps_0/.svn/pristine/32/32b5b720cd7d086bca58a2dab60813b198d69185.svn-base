@@ -1,0 +1,136 @@
+/*common*/
+
+var $ = require('wap/zepto')
+	, onscroll = require('wap/component/windowScroll')
+
+/**
+ * 搜索提交
+ */
+var $input = $('.js_input')
+	, click_cate_hack = false
+	, click_search_hack = false
+
+$('.js_search_form').on('submit', function(e){
+	event.preventDefault();
+
+	var keyword = $.trim($input.val())
+	if(!keyword)
+		return false;
+	else{
+		window.location.href = '/search/?keyword=' + encodeURIComponent(keyword);
+	}
+})
+
+$input.on('focus', function(e){
+	e.stopPropagation()
+
+	click_search_hack = true
+	maskTab()
+
+	var search_t = $('.js_input_decorate span').html()
+	$('.js_input_decorate span').css('text-indent', '-9999em')
+	if(search_t == '搜索宝贝'){
+		$(this).attr('placeholder', '搜索宝贝')
+	} else {
+		$(this).val(search_t)
+	}
+}).on('blur', function(e){
+	e.stopPropagation()
+
+	click_search_hack = false
+	maskTab()
+
+	var search_t = $(this).val()
+	if(search_t == ''){
+		search_t = '搜索宝贝'
+	}
+	$(this).attr('placeholder', '')
+	$(this).val('')
+	$('.js_input_decorate span').html(search_t).css('text-indent', '0')
+})
+$input.on('click', function(e){
+	e.stopPropagation()
+
+	$('.nav_route').hide()
+	$('.js_cate').data('status', 'hide')
+	click_cate_hack = false
+})
+
+/**
+ * 搜索Android兼容
+ */
+var ua = navigator.userAgent
+	, os = ua.match(/(Android)\s+([\d.]+)/)
+	, os_vision = os && os[2]
+	, $input_decorate = $('.js_input_decorate')
+
+if(os_vision && os_vision <= '4.1.1'){
+	$input.on('focus', function(){
+		$input_decorate.addClass('input_focus')
+	}).on('input', function(){
+		if($input.val()){
+			$input_decorate.addClass('input_valid')
+		} else {
+			$input_decorate.removeClass('input_valid')
+		}
+	}).on('focusout', function(){
+		$input_decorate.removeClass('input_focus')
+	})
+}
+
+/**
+ * 下拉分类列表
+ */
+$('.js_cate').on('click', function(){
+	if($(this).data('status') != 'show'){
+		click_cate_hack = true
+		maskTab()
+		$('.nav_route').show()
+		$(this).data('status', 'show')
+	} else {
+		click_cate_hack = false
+		maskTab()
+		$('.nav_route').hide()
+		$(this).data('status', 'hide')
+	}
+	return false
+})
+$('.wap_head_mask, .mls_desc, .wap_nav').on('click', function(){
+	if($(this).hasClass('js_cate')) return false
+	$('.nav_route').hide()
+	$('.js_cate').data('status', 'hide')
+	click_search_hack = false
+	click_cate_hack = false
+	maskTab()
+})
+
+var hideMaskT = ''
+function maskTab(action){
+	var $mask = $('.wap_head_mask')
+	if(click_cate_hack || click_search_hack){
+		clearTimeout(hideMaskT)
+		$mask.show().attr('status', 'show')
+	} else {
+		$mask.attr('status', 'hide')
+		hideMaskT = setTimeout(function(){
+			$mask.hide()
+		}, 300)
+	}
+}
+
+/**
+ * 安卓有吸顶效果
+ */
+if(!Meilishuo.config.os.ios){
+	var $wap_head = $('.wap_head')
+		, h = $wap_head.offset().top
+
+	function navSticky(pos,isDown){
+		if(pos < h){
+			$wap_head.removeClass('sticky_an')
+		} else {
+			$wap_head.addClass('sticky_an')
+		}
+	}
+	onscroll.bind(navSticky, 'navSticky')
+}

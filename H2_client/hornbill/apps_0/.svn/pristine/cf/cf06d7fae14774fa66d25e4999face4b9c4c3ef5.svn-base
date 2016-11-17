@@ -1,0 +1,102 @@
+<!--
+/**
+ * @fileoverview 首页 － 每日签到
+ * @requires zepto
+ * @author kehuang@meilishuo.com
+ * @date 2015-03-26
+ */
+-->
+
+<%#head.html%>
+<%
+	var curSignDateInfo = this.signDateInfo.data;
+	var curSignUserInfo = this.signUserInfo.data;
+	var curUserTempCoin = curSignUserInfo.temp || 0;
+	var curServerDate = this.serverDate;
+	var curServerTime = curServerDate.getTime();
+	var curServerYear = curServerDate.getFullYear();
+	var curServerMonth = curServerDate.getMonth() + 1;
+	var curServerDay = curServerDate.getDate();
+	var strServerMonth = (curServerMonth < 10) ? '0' + curServerMonth : curServerMonth;
+	var strServerDay = (curServerDay < 10) ? '0' + curServerDay : curServerDay;
+	var curServerDateStr = curServerYear + '-' + strServerMonth + '-' + strServerDay;
+%>
+
+<div class="top_wrap">
+	<div class="pig_text">
+		<div class="pig_txt">亲爱的主人，你不来看我，我快饿死了！快抢救我一下吧，使用一张补签卡，可挽回<em><%= curUserTempCoin %>天签到记录</em>！！</div>
+	</div>
+
+	<div class="btn_box">
+		<div class="p_patch_btn"></div>
+		<div class="p_start_btn"></div>
+	</div>
+
+	<div class="p_rule_btn"></div>
+</div>
+
+<div class="date_box">
+	<%
+		var calPrevYear = 2015,
+			calNextYear = 2015,
+			calPrevMonth = 1,
+			calNextMonth = 1,
+			calCurYear = curServerYear,
+			calCurMonth = curServerMonth;
+
+		if (calCurMonth == 1) {
+			calPrevYear = calCurYear - 1;
+			calNextYear = calCurYear;
+			calPrevMonth = 12;
+			calNextMonth = calCurMonth + 1;
+		} else if (calCurMonth == 12) {
+			calPrevYear = calCurYear;
+			calNextYear = calCurYear + 1;
+			calPrevMonth = calCurMonth - 1;
+			calNextMonth = 1;
+		} else {
+			calPrevYear = calCurYear;
+			calNextYear = calCurYear;
+			calPrevMonth = calCurMonth - 1;
+			calNextMonth = calCurMonth + 1;
+		}
+
+		calPrevMonth = (calPrevMonth < 10) ? '0' + calPrevMonth : calPrevMonth;
+		calNextMonth = (calNextMonth < 10) ? '0' + calNextMonth : calNextMonth;
+	%>
+	<div class="prev_btn j_calander_btn" data-flag="prev" data-year="<%= calPrevYear %>" data-month="<%= calPrevMonth %>"></div>
+	<div class="icon_cal"></div>
+	<div class="month"><%= curServerDateStr %></div>
+	<div class="next_btn j_calander_btn" data-flag="next" data-year="<%= calNextYear %>" data-month="<%= calNextMonth %>"></div>
+</div>
+
+<div class="calanderWrap">
+	<div class="cTop"></div>
+	<div class="calander"></div>
+	<div class="cBottom"></div>
+</div>
+
+<script>
+	/*fml.vars.isNewest = "<%=this.isNewest%>";
+
+	 if(Meilishuo.config.os && Meilishuo.config.os.mlsApp){
+	 fml.vars.isApp = true;
+	 }*/
+	fml.vars.isLogin = <%=this.isLogin%>;
+
+	var curServerTime = <%=curServerTime%>;
+	var curServerYear = <%=curServerYear%>;
+	var curServerMonth = <%=curServerMonth%>;
+	var curSignedArr = <%=JSON.stringify(curSignDateInfo.signed)%>;
+	var curFutureArr = <%=JSON.stringify(curSignDateInfo.future)%>;
+	var curUserTempCoin = <%=curUserTempCoin%>;
+	var curServerDateStr = '<%=curServerDateStr%>';
+	var curUserInitDate = '<%=curSignUserInfo.initDate%>';
+	var curFirstSignDate = '<%=curSignUserInfo.firstSignDate%>';
+	var curLastSignDate = '<%=curSignUserInfo.lastSignDate%>';
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/sign_out3');
+_use:", this._JSstack , this._JSmods); %>
+<%# foot_simple.html%>

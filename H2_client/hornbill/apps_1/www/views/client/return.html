@@ -1,0 +1,45 @@
+<%	var link_iphone = 'http://itunes.apple.com/cn/app/meilishuo/id431023686'
+		, link_ipad = 'http://itunes.apple.com/cn/app//id492006720?mt=8'
+		, link_android = 'http://img.meilishuo.net/css/images/AndroidShare/Meilishuo_3.7.1_10006.apk'
+	var link = link_iphone;
+	if(this.isAndroid) link = link_android;
+	if(this.isIpad) link = link_ipad;
+%>
+<% if(this.isMobile){ %>
+	<%# head_simple.html%>
+	<div class="wap_body">
+		<div class="audio_body">
+			<%# client/audio.html%>
+		</div>
+		<div class="download_body">
+			<div class="download_txt">
+				<div class="logo"></div>
+				<p class="intro">安装<span>美丽说客户端</span>，更多时尚解说每天收听还有海量的衣服饰物不间断推荐哦！</p>
+			</div>
+			<a class="download_btn" target="_blank" href="<%= link %>">马上下载</a>
+		</div>
+	</div>
+<% }else{ %>
+	<%# head.html%>
+	<div class="return_body">
+		<div class="download_body">
+			<span class="code_android"></span>
+			<a class="download_iphone" target="_blank" href="<%= link_iphone %>"></a>
+			<a class="download_android" target="_blank" href="<%= link_android %>"></a>
+		</div>
+		<div class="audio_body">
+			<%# client/audio.html%>
+		</div>
+	</div>
+<% } %>
+
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/client/audio');
+_use:", this._JSstack , this._JSmods ); %>
+
+<% if(this.isMobile){ %>
+	<%# foot_simple.html%>
+<% }else{ %>
+	<%# foot.html%>
+<% } %>

@@ -1,0 +1,32 @@
+<%#head.html%>
+<div class="p_main">
+	<div class="p_center">
+		<div class="top">
+			<div class="yd_ban ban1"></div>
+			<ul class="yd_box yd_rec_seller">
+				<%this.good_shop && this.good_shop.data && this.good_shop.data.length && this.good_shop.data.forEach(function(data){%>
+					<li>
+						<a class="go_seller" href="/shop/<%=data.shop_id%>" target="_blank"><img width="230px" height="382px" src="<%=data.src%>"/></a>
+						<div><a href="javascript:;" class="coupon" data-coupon-id="<%=data.coupon.coupon_apply_code%>"><span><%=data.coupon.credit%>元优惠劵</span>领取</a><a href="javascript:;" data-shop-id="<%=data.shop_id%>" class="<%=data.is_follow ? 'followed' : 'follow'%> p_f"><%=data.is_follow ? '已关注' : '+关注'%></a></div>
+					</li>
+				<%});%>
+			</ul>
+			<div class="yd_ban ban2"></div>
+			<ul class="yd_box yd_rec_brand">
+				<%this.fashion_shop && this.fashion_shop.data && this.fashion_shop.data.length && this.fashion_shop.data.forEach(function(data){%>
+					<li>
+						<a class="go_seller" href="/shop/<%=data.shop_id%>" target="_blank"><img width="228px" height="124px" src="<%=data.src%>"/></a>
+						<div><a href="javascript:;" class="coupon" data-coupon-id="<%=data.coupon.coupon_apply_code%>"><span><%=data.coupon.credit%>元优惠劵</span>领取</a><a href="javascript:;" data-shop-id="<%=data.shop_id%>" class="<%=data.is_follow?'followed':'follow'%> p_f"><%=data.is_follow ? '已关注':'+关注'%></a></div>
+					</li>
+				<%});%>
+				
+			</ul>
+		</div>		
+	</div>
+</div>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+     fml.use('page/huodong/youdian');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot.html%>

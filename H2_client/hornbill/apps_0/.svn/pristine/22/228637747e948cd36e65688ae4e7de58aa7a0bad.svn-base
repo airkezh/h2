@@ -1,0 +1,61 @@
+<%#head.html%>
+<%
+		var flashid = 'XNjMzODMwNTgw'
+%>
+<div class="main">
+	<div class="aupres1">
+		<a href="http://www.meilishuo.com/u/ENsWnT?frm=oubolai1" target="_blank" class="href1"></a>
+	</div>
+	<div class="aupres2">
+		<a href="http://www.meilishuo.com/u/ENsWnT?frm=oubolai2" target="_blank" class="href2"></a>
+		<a href="http://www.meilishuo.com/u/ENsWnT?frm=oubolai3" target="_blank" class="href3"></a>
+		<a href="http://www.meilishuo.com/u/ENsWnT?frm=oubolai4" target="_blank" class="href4"></a>
+		<a href="http://www.meilishuo.com/u/ENsWnT?frm=oubolai5" target="_blank" class="href5"></a>
+		<a isshowlike="1" s_uid="<%= this.twitter.data[0].twitter_id%>" class="likes" href="javascript:void(0)">
+		    <b class="likes_status">
+		    	<%if(!this.twitter.data[0].is_liked){%>
+		    	<i class="lm_love2">&nbsp;</i>
+		    	喜欢
+		    	<%}else{%>
+		    	已喜欢
+		    	<%}%>
+		    </b>
+			<span class="red_f f14_f poster_like_num"><%= this.twitter.data[0].count_like%></span>
+		</a>
+		<a href="http://www.meilishuo.com/u/ENsWnT?frm=oubolai5" target="_blank" class="buynow"></a>
+		<div class="video">
+			<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" id="storage" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,19,0" width="308" height="232">
+				<param name="movie" value="http://player.youku.com/player.php/sid/<%= flashid %>/v.swf?VideoIDS=<%= flashid %>&isAutoPlay=true" />
+				<param name="quality" value="high" />
+				<param name="wmode" value="transparent" />
+				<embed src="http://player.youku.com/player.php/sid/<%= flashid %>/v.swf?VideoIDS=<%= flashid %>&isAutoPlay=true" id="cache2" quality="high" wmode="transparent" pluginspage="http://www.macromedia.com/go/getflashplayer" allowScriptAccess="always" allowFullScreen="false" type="application/x-shockwave-flash" width="308" height="232"></embed>
+			</object>
+		</div>
+	</div>
+	<div class="aupres3"></div>
+	<div class="aupres4">
+		<a href="<%= this.PICTURE_URL%>images/activity/aupres/pop01.jpg" rel="group1">
+			<img src="<%= this.PICTURE_URL%>images/activity/aupres/aupres_04.jpg" />
+		</a>
+	</div>
+	<div class="aupres5">
+		<a href="<%= this.PICTURE_URL%>images/activity/aupres/pop02.jpg" rel="group2">
+			<img src="<%= this.PICTURE_URL%>images/activity/aupres/aupres_05.jpg" />
+		</a>
+	</div>
+	<div class="aupres6"></div>
+	<div class="aupres7">
+		<script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js" type="text/javascript" charset="utf-8"></script>
+		<div class="weibo">
+			<wb:follow-button uid="1780057863" type="red_1" width="67" height="24" ></wb:follow-button>
+		</div>
+		<div class="weibolive">
+			<iframe width="930" height="275"  frameborder="0" scrolling="no" src="http://widget.weibo.com/livestream/listlive.php?language=zh_cn&width=930&height=275&uid=2657616741&skin=1&refer=1&appkey=&pic=0&titlebar=1&border=1&publish=1&atalk=1&recomm=0&at=0&ptopic=%E5%94%87%E8%86%8F%EF%BC%8C%E6%88%91%E8%A6%81%E5%8A%A0%E9%A2%97%E8%9B%8B&atopic=%E5%94%87%E8%86%8F%EF%BC%8C%E6%88%91%E8%A6%81%E5%8A%A0%E9%A2%97%E8%9B%8B&dpc=1"></iframe>
+		</div>
+	</div>
+</div>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/huodong/aupres');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

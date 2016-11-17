@@ -1,0 +1,50 @@
+<%* head.html%>
+<html>
+<head>
+<script type="text/javascript" src="http://static.meilishuo.com/script-ss/fml.js?22242874" ></script>
+<script >
+fml.setOptions({'modulebase' : 'http://static.meilishuo.com/script-ss/'});
+</script>
+</head>
+<body>
+<div onclick="ttt()">i111</div>
+<div class="ccc">ccc</div>
+<div id = 't' class = 'cc' test='abc' style="height:500px;overflow:auto;">
+	<div>div <span>inner span </span></div>
+
+	<span>span</span>
+</div>
+<p>
+
+<script>
+function ttt(){
+	this.name = 'close';
+	console.log(this.name);
+	}
+fml.use('core/weave' , function(){
+	var t = this('div#t.cc[test]>div span');
+	console.log(t , this.extend);
+	
+	});
+/*
+   var t = document.getElementById('t');
+   fml.use('component/windowResize' , function(){
+   this.bind(function(){
+   t.innerHTML += 'on resize<br/>';
+   });
+
+   });
+   fml.use('component/msgbus' ,function(mod){
+   this.pickUp('/msg/getmsg' , function(data){console.log('msg' , data);} , 2 , 8);
+   this.pickUp('/msg/getnewsharenotice' , function(data){
+   console.log('share' , data);
+   } , 4 ,4);
+   });
+ */
+</script>
+</p>
+<p>
+</p>
+</body>
+</html>
+<%* foot.html%>

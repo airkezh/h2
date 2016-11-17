@@ -1,0 +1,148 @@
+<%#head.html%>
+<%
+	var search = this.search || {};
+	var searchNum = this.searchNum || {};
+	var numData = searchNum.data || {};
+	var num = parseInt(numData.usable_num) || 0;
+	var recommend= this.recommend || {};
+	var recommendData = recommend.data || {};
+	var recommendArr = recommendData.recommend || [];
+	var list = this.list || {};
+	var listData = list.data || {};
+	var listArr = listData.search || [];
+%>
+<div class="wrap" id="wrap">
+	<%= requireFn('zulily/searchHead.html')({
+		'search' : this.search,
+		'keyword': this.keyword,
+		'common_r' : this.common_r_XR,
+		'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+	});%>
+	<% if(num==0){ %>
+		<p class="num gray">抱歉！没有找到合适得商品<br>我们为您推荐了些热销商品</p>
+	<% }else { %>
+		<p class="num">"<span><%= this.keyword %></span>"为你找到<%= num %>款商品</p>
+		<% if(num<6){ %>
+			<div class="posterWall2 wall">
+				<ul class="goods_wall goods" data-xr="<%= this.list_XR %>">
+					<% listArr.length && listArr.forEach(function(v,index){ %>
+						<li class="most_wrap salelUrl" data-twitter_id="<%= v.twitter_id %>">
+							<div class="goods_info">
+								<div class="most">
+									<div class="lazy_pic img-box" asrc="<%= v.poster_small_img %>">
+									</div>
+									<div class="tips-box">
+										<span class="tips">
+											<b><%= parseInt(v.count_like) %>人想买
+											</b>
+										</span>
+									</div>
+								</div>
+								<p class="most_intro sale-title"><%= v.title %></p>
+								<p class="price">
+									<span><%= v.sale_price %></span>
+									<del><%= v.price %></del>
+								</p>
+							</div>
+							<% v.horizontal_mark.forEach(function(marks_data, index) { %>
+		                        <div class="mark<%= index %>">
+		                        	<img src="<%= marks_data && marks_data.img_url %>" />
+		                        </div>
+		                    <% }); %>
+						</li>
+					<% }); %>
+				</ul>
+			</div>
+		<% }else{ %>
+			<div class="posterWall wall" id="content">
+				<ul class="goods_wall goods"></ul>
+				<div class="pullUp" status="loading"></div>
+			</div>
+		<% } %>
+	<% } %>
+	<% if(num<6 && recommendArr.length){ %>
+		<div class="guess-like">
+			<div class="box-title">
+				<div class="line"></div>
+				<h3>
+					<p>推荐商品</p>
+				</h3>
+			</div>
+			<div class="posterWall2 wall">
+				<ul class="goods_wall goods" data-xr="<%= this.recommend_XR %>">
+					<% recommendArr.length && recommendArr.forEach(function(v,index){ %>
+						<li class="most_wrap salelUrl" data-twitter_id="<%= v.twitter_id %>">
+							<div class="goods_info">
+								<div class="most">
+									<div class="lazy_pic img-box" asrc="<%= v.poster_small_img %>">
+									</div>
+									<div class="tips-box">
+										<span class="tips">
+											<b><%= parseInt(v.count_like) %>人想买
+											</b>
+										</span>
+									</div>
+								</div>
+								<p class="most_intro sale-title"><%= v.title %></p>
+								<p class="price">
+									<span><%= v.sale_price %></span>
+									<del><%= v.price %></del>
+								</p>
+							</div>
+							<% v.horizontal_mark.forEach(function(marks_data, index) { %>
+		                        <div class="mark<%= index %>">
+		                        	<img src="<%= marks_data && marks_data.img_url %>" />
+		                        </div>
+		                    <% }); %>
+						</li>
+					<% }); %>
+				</ul>
+			</div>
+		</div>
+	<% } %>
+	<div class="top-box" style="bottom:<%if(this.isIphone){%>60<%}else{%>20<%}%>px">
+		<a class="gotop" href="javascript:;">
+			<img src="http://d02.res.meilishuo.net/img/_o/41/62/c1d9e0f159bfb506b27dea648ccb_80_80.cg.png" />
+		</a>
+	</div>
+</div>
+<script type="text/html" id="posterWall">
+	<li class="most_wrap salelUrl" data-styleId="<?= this.v.goods_id ?>" data-twitter_id="<?= this.v.twitter_id ?>">
+		<? var imgBoxHeight=parseInt($(window).width()/2-10)* 400 / 320 +'px'; ?>
+		<div class="goods_info">
+			<div class="most">
+				<div class="lazy_pic img-box" asrc="<?= this.v.poster_small_img ?>" style="height:<?= imgBoxHeight ?>;padding-top:0">
+				</div>
+				<div class="tips-box">
+					<span class="tips">
+						<b><?= parseInt(this.v.count_like) ?>人想买</b>
+					</span>
+				</div>
+			</div>
+			<p class="most_intro sale-title"><?= this.v.title ?></p>
+			<p class="price">
+				<span><?= this.v.sale_price ?></span>
+				<del><?= this.v.price ?></del>
+			</p>
+		</div>
+	</li>
+</script>
+<% if(!this.appShare){ %>
+	<%= requireFn('wapShare.html')({
+		'share' : this.share 
+	    , 'shareTitle' : '选择分享到'
+	    , '_JSstack' : this._JSstack
+		, '_JSmods' : this._JSmods
+	}); %>
+<% } %>
+<script>
+	fml.vars.num = <%= num %>; 
+	fml.vars.keyword = '<%= this.keyword %>'; 
+	fml.vars.appShare = <%= this.appShare %>; 
+	fml.vars.params = <%= JSON.stringify(this.params) %>; 
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/zulily/result');
+_use:", this._JSstack, this._JSmods); %>
+
+<%# foot.html%>

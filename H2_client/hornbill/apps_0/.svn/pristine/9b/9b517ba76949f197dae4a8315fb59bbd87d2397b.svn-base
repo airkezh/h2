@@ -1,0 +1,15 @@
+<%# head.html%>
+<%if(this.success){%>
+<div class="banner_600" style="background-image:url('<%= this.award.data[2]%>');%>"></div>
+<%}else{%>
+<div class="banner_600" style="background-image:url('<%= this.award.data[3]%>');%>"></div>
+<p class="go_ico" style="background-image:url('<%= this.PICTURE_URL%>images/wap/activity/act91/go.png');" /></p>
+<%}%>
+<div class="inner">
+	<a id="closemls" class="btn">返回美丽说</a>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/close');
+_use:", this._JSstack , this._JSmods);%>
+
+<%# foot_simple.html%>

@@ -1,0 +1,64 @@
+function hiGoods(){
+	return this;
+}
+
+var controlFns = {
+	'index': function() {
+		// this.debugSnake({'target': 'maoanli.rdlab'});
+		var self = this;
+		var pageShareURL = encodeURIComponent('/hiGoods/index');
+		var shareURL = 'http://m.meilishuo.com/goto/open/?appUrl=' + pageShareURL + '&bg=' + pageShareURL + '&bg2=' + encodeURIComponent('http://www.meilishuo.com/welcome/');
+		var wapMod = self.loadModel('tools.js');
+		var os = wapMod.uaos(this.req, wapMod.getMobToken(this.req, this.res));
+		var mlsApp = os.mlsApp;
+		var php = {
+			'classify' : '/street/shop_classes?offset=0&limit=5'
+			,'banner' : '/street/Shop_hi_banner?offset=0&limit=10&__get_r=1'
+			,'hiGoods' : '/street/Shop_hi_goods?__get_r=1'
+			,'spike' : '/street/Shop_hi_spike?__get_r=1'
+			,'hishare' : '/street/Shop_hi_share?__get_r=1'
+		};
+		var ua = this.req.headers['user-agent']
+		var platform = false;
+		if (/(iPhone|iPod|iOS|iPad)/i.test(ua)){
+			platform = true;
+		}
+		self.setMDefault(php);
+		self.bridgeMuch(php);
+		self.listenOver(function(data){
+			var shareParam = data.hishare.data || {};
+			var params = {
+				'title': shareParam.title,
+				'text': shareParam.text,
+				'pic': {
+					"weixin": shareParam.image_url,
+					"weixin_timeline": shareParam.image_url,
+					"default": shareParam.image_url
+				},
+				'url': shareURL
+			};
+			console.log(params);
+			if (wapMod.isNewest(this.req, '6.6.0')) {
+				data.appShare = true;
+				data.params = params;
+			} else {
+				data.appShare = false;
+				data.share = wapMod.shareTo(self.req, params);
+			}
+			data.XR = true;
+			data.isIphone = platform;
+			data.pageTitle = 'Hi范儿';
+			data._CSSLinks = ['hiGoods'];
+			this.render('hiGoods.html', data);
+		})
+	},
+	'aj': function(params){
+		// this.debugSnake({'target': 'maoanli.rdlab'});
+		var php = {
+			'classList' : '/street/Shop_hi_shop'
+		};
+		this.ajaxTo(php[params]);
+	}
+};
+
+exports.__create = controller.__create(hiGoods, controlFns);

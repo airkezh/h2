@@ -1,0 +1,14 @@
+<%# head.html %>
+<% this.brand && this.brand.data.forEach(function(list,i){ %>
+<div class="goods">
+	<% list.brand.forEach(function(data,index){ %>
+		<a data-shop="<%= data.shop_id %>" style="background:url('<%= data.shop_mg %>');background-size:100% 100%;"></a>
+	<% }); %>
+</div>
+<% }); %>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/beauty/brand');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot.html %>

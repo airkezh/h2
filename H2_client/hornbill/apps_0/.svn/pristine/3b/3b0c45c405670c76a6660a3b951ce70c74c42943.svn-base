@@ -1,0 +1,93 @@
+@import "../block.less";
+@media screen and (max-width:1200px){
+    body{ .w(1200px);}
+}
+body{ .bgwhite;}
+.wrap{
+   .banner{ .w(100%); .h(420px);}
+   .rush_nav{ .h(78px);}
+   .goods_wall_box{ .w(1200px); .auto; .hidden;}
+   .goods_wall{ .pr; .w(100%);}
+}
+
+.nav_box{ .w(100%); .bgwhite;
+  .nav_cont{ .w(1162px); .pt(22px); .pb(22px); .auto; .clearfix;}
+}
+.nav_tabs{ .left;
+   li{ .w(100px); .h(34px); .l(34px); .c; .left; .f(18px); .pr(40px);
+      a{ .block; .h(34px);}
+   }
+   li.curr{
+      a{ .bgc(#f69); .white; .border-r(3px);}
+   }
+}
+.range { .right; .l(34px);
+   .special{.ml(20px);}
+   .p_total{.fc(#666);}
+   .t_tuan{.mt(-10px);}
+   li {.left;span {.gray;}
+      &.active a {.red;}
+      a {padding:0 0 0 20px;.cursor;}
+   }
+   .arrow_t, .arrow_d, a:hover .arrow_t, a:hover .arrow_d, li.active .arrow_t, li.active .arrow_d {
+      .w(10px);.h(10px);padding:0 3px;.ml(10px);background:url("@{pic_url}/images/doota/huodong/shareact/i_4arrow.gif") no-repeat 0 0; 
+   }
+   .arrow_t {.bp(0, 1px);}
+   .arrow_d {.bp (-10px, 1px);}
+   a:hover .arrow_t, li.active .arrow_t {.bp(-20px, 1px);}
+   a:hover .arrow_d, li.active .arrow_d {.bp(-30px, 1px);}
+}
+.shadow{
+   box-shadow: 0 -7px 0 white,-7px 0px 0 white,7px 0 0 white,0px 2px 7px #e6e6e6;
+   /*兼容IE6、 7、8*/
+   .w(100%);
+   filter: progid:DXImageTransform.Microsoft.Shadow(Strength=7, Direction=180, Color='#e6e6e6'); 
+   /*for ie6,7,8*/
+}
+
+.goodsItem { .left; .mb(10px); .w(222px); border: solid 1px #e6e6e6;
+   .new-png{ .pa; top:0px; left: 0px; z-index:10;}
+   .s_pic { .h(310px); .w(222px); .block; .c; .vm;.pr;
+      background: url("http://i.meilishuo.net/css/images/group/g_loading1.gif") no-repeat center;
+      img {.w(222px); .h(310px); .vm;  }
+   }
+   .desc_box{ .mr(10px); .ml(10px); .hidden; }
+   p{.mt(10px); .pb(10px);}
+   .txt { .block; .h(14px); .hidden;.pb(0px);}
+   .info-goods{ .red;.f(14px); .h(33px); .l(30px); border-bottom: 1px dotted #d2d2d2;
+      .f-18{ .yahei; font-size:17px; .fb; .l(34px); } 
+      .f-14{ .f(26px); vertical-align: top; }
+      .num{ .right;.mt(3px);
+         i{ .fc(#999);}
+      }                      
+   }
+   .pold{.fc(#999);.pb(0px);.mt(16px);}
+   i{font-style:normal;}
+}
+li.goodsItem:hover{ border: solid 1px #f69; outline: solid 1px #f69;}
+
+@import "../app/addToCart.less";
+
+/* 修复因为结构引起的文字折行 */
+.btn-addToCart {
+  display: inline-block;
+  zoom: 1;
+}
+
+
+// 右侧浮栏
+.nav_right{.pf;z-index:999;display:none;top:45px;right:0;
+   .nav_a{.block;.w(100%);.h(100%);
+      img{.w(100%);.h(100%);}
+   }
+   .menu_main{.pr;.w(100%);.clearfix;
+      div{.left;}
+   }
+   .go_top,.code_m{.cursor}
+}
+// double rightmenu
+.d-nav{right:0;
+   .menu_main{.clearfix;
+      div{background: red;.left;}
+   }
+}

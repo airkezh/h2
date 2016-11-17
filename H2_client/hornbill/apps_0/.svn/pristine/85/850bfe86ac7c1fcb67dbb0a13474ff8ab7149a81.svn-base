@@ -1,0 +1,213 @@
+<!--
+/**
+ * @fileoverview 美美豆换好礼 － 会员中心
+ * @requires zepto
+ * @author kehuang@meilishuo.com
+ * @date 2015-06-24
+ */
+-->
+
+<%#head.html%>
+<%
+	var curPageData = this.pageData || {};
+	var curServerDate = this.serverDate;
+	var curServerTime = curServerDate.getTime();
+	var curServerHours = curServerDate.getHours();
+	var curActivityHours = curPageData.hour || 12;
+%>
+
+<div class="main">
+	<div class="mall_wrap"></div>
+
+	<section id="container" class="container">
+		<ul class="even goods_wall"></ul>
+		<div class="pullUp" status="loading"></div>
+		<!-- <div class="more_bar" data-href="">查看全部金币抵扣商品 ></div> -->
+    </section>
+
+	<div class="gotop_wrap">
+		<a class="gotop">
+			<img src="http://d03.res.meilishuo.net/pic/_o/d0/68/f89d059f09d440f4ee7a37669383_80_80.cg.png" alt="">
+		</a>
+	</div>
+</div>
+
+<script type="text/html" id="j_swipe_tpl">
+	<?
+		var jsonData = this.data,
+			top_banner_data = jsonData.top_banner || [],
+			top_banner_len = top_banner_data.length;
+
+		if (top_banner_len > 0) {
+	?>
+	<div id="j_imgSwipe" class="swipe">
+		<div class="swipe_wrap" style="width: 32000px;">
+			<?
+				for (var i = 0; i < top_banner_len; i++) {
+					var data = top_banner_data[i],
+						img_src = data.img_src || '',
+						img_title = data.img_title || '',
+						img_link = data.img_link || 'javascript:void(0);';
+			?>
+			<div class="swipe_pic">
+				<a href="<?= img_link ?>">
+					<img src="<?= img_src ?>" alt="<?= img_title ?>">
+				</a>
+			</div>
+			<?
+				}
+			?>
+		</div>
+		<?
+			if (top_banner_len > 1) {
+		?>
+		<ul class="swipe_num">
+			<?
+				for (var j = 0; j < top_banner_len; j++) {
+					var className = (j == 0) ? 'active' : '';
+			?>
+			<li class="<?= className ?>"></li>
+			<?
+				}
+			?>
+		</ul>
+		<?
+			}
+		?>
+	</div>
+	<?
+		}
+	?>
+
+	<div class="exchange_tips">每日<%= curActivityHours %>点开放抢兑，先到先得哦～</div>
+
+	<div class="ex_tips_bg"></div>
+</script>
+
+<script type="text/html" id="posterWall">
+	<?
+		$.each(this.data.list, function(index, data){
+	    	var img = data.img || '',
+	    		beans = data.beans || 0,
+	    		stock = data.stock || 0,
+	    		title = data.title || '',
+	    		origin_price = data.origin_price || 0,
+	    		href = data.url || 'javascript:void(0);';
+	?>
+	<li>	
+		<a class="link_box" href="<?= href ?>">
+			<figure>
+				<?
+					if (stock < 1) {
+				?>
+				<div class="soldout"></div>
+				<?
+					}
+
+			    	if (fml.vars.is_lazyload_poster) {
+			    		if (index < 4) {
+			    ?>
+			    <span class="df_show_img" style="opacity: 1;background-image: url(<?= img ?>);"></span>
+			    <?
+			    		} else {
+			    ?>
+			    <span class="bs_load_img" asrc="<?= img ?>"></span>
+			    <?
+			    		}
+					} else {
+				?>
+			    <img src="<?= img ?>" alt="">
+			    <?
+					}
+			    ?>
+			</figure>
+			<figcaption>
+				<div class="proTitle"><?= title ?></div>
+				<div class="proTotal">仅剩<?= stock ?>份</div>
+				<div class="proPrice">
+					<span class="word">原价 </span><i>￥</i><?= origin_price ?>
+				</div>
+				<div class="proDiscount"><span class="bean"><?= beans ?>换购</span></div>
+			</figcaption>
+		</a>
+	</li>
+	<?
+		});
+	?>
+</script>
+
+<script>
+	var curServerTime = <%=curServerTime%>;
+	var curPageData = <%=JSON.stringify(curPageData)%>;
+
+	var tempTabListArr = [];
+	var tempSwipeBannerArr = [];
+	var curTabListArr = curPageData.cate_list || [];
+    var curSwipeBannerArr = curPageData.top_banner || [];
+    var curTabListLen = curTabListArr.length;
+	var curSwipeBannerLen = curSwipeBannerArr.length;
+	var cur_server_time = parseInt(curServerTime / 1000);
+
+	for (var i = 0; i < curTabListLen; i++) {
+		var tab_status = true,
+			curTabListData = curTabListArr[i],
+			tab_begin_time = Date.parse(curTabListData.begin_time || '') / 1000,
+			tab_end_time = Date.parse(curTabListData.end_time || '') / 1000;
+
+		if (tab_begin_time) {
+			if (!tab_end_time || (tab_end_time && (cur_server_time >= tab_begin_time) && (cur_server_time <= tab_end_time))) {
+				tab_status = true;
+			} else {
+				tab_status = false;
+			}
+		} else {
+			if (!tab_end_time || (tab_end_time && (cur_server_time <= tab_end_time))) {
+				tab_status = true;
+			} else {
+				tab_status = false;
+			}
+		}
+
+		tab_status && tempTabListArr.push(curTabListData);
+	}
+
+	for (var j = 0; j < curSwipeBannerLen; j++) {
+		var banner_status = true,
+			curSwipeBannerData = curSwipeBannerArr[j],
+			banner_begin_time = Date.parse(curSwipeBannerData.begin_time || '') / 1000,
+			banner_end_time = Date.parse(curSwipeBannerData.end_time || '') / 1000;
+
+		if (banner_begin_time) {
+			if (!banner_end_time || (banner_end_time && (cur_server_time >= banner_begin_time) && (cur_server_time <= banner_end_time))) {
+				banner_status = true;
+			} else {
+				banner_status = false;
+			}
+		} else {
+			if (!banner_end_time || (banner_end_time && (cur_server_time <= banner_end_time))) {
+				banner_status = true;
+			} else {
+				banner_status = false;
+			}
+		}
+
+		banner_status && tempSwipeBannerArr.push(curSwipeBannerData);
+	}
+
+	curPageData.cate_list = tempTabListArr;
+	curPageData.top_banner = tempSwipeBannerArr;
+
+	fml.vars.tid = (curPageData.cate_list.length > 0) ? (curPageData.cate_list[0].tid || '') : '';
+	fml.vars.isLogin = <%=this.isLogin%>;
+	fml.vars.serverHours = <%=curServerHours%>;
+	fml.vars.activityHours = <%=curActivityHours%>;
+	fml.vars.is_lazyload_poster = true;
+</script>
+
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/member/ransom');
+_use:", this._JSstack, this._JSmods); %>
+
+<%#foot_simple.html%>

@@ -1,0 +1,90 @@
+/*common*/
+require( 'circle/zepto/fastclick' )
+
+var btnDown = $( '.download' )
+	,sendBtn = $( '.send_btn' )
+	,applyBtn = $( '.apply_btn')
+
+/* 发送手机号，获取短信验证码 */
+function getVerityCode() {
+		var phoneNum = $( '.phonenum' ).val().trim();
+		if( phoneNum != "" ){
+			$.ajax({
+				url: '/aj/redpacket/getCode',
+				type: 'POST',
+				data: {
+					mobile: phoneNum
+				},
+				dataType: 'json',
+				success: function( data ){
+					if(data.error_code != 0){
+						alert( data.message )
+					}
+				},
+				error: function(){
+					alert("系统繁忙，请稍后再试");
+				}	
+			})
+		}	
+}
+
+/*收集手机号和验证码，发送到后台*/
+function goAndGet() {
+	var phoneNum = $( '.phonenum' ).val().trim();
+	var verityCode = $( '.code').val();
+	if( phoneNum !="" && verityCode != ""){
+		$.ajax({
+			url: '/aj/redpacket/getPaper',
+			type: 'POST',
+			dataType: 'json',
+			data: {
+				mobile: phoneNum,
+				code: verifyCode,
+				cid: 10507
+			},
+			success: function( data ){
+				if(data.error_code != 0){
+				alert( data.message )
+				}else {
+				showRsult( data.data.state );
+				}
+			},
+			error:function(){
+				alert("系统繁忙，请稍后再试");
+			}	
+		});
+	}
+}
+
+/* 展示申请结果（ 返回数据对应的申请结果 ），隐藏前一页（申请页）*/
+function showResult( state ) {
+	$( '.before' ).hide();
+	$( '.after' ).show();
+	if( state == '领取成功' && state == '已领过') {
+		$( '.richbag' ).show();
+	}else {
+		$( '.nonebag' ).show();
+	}
+} 
+
+
+// start
+;
+
+(function() {
+	//点击发送验证按钮，发送短信验证码到手机
+	sendBtn.on( 'click', function() {
+		getVerityCode();
+	})
+ 
+	applyBtn.on( 'click', function() {
+		goAndGet();
+	})
+
+	showResult( 1 );
+
+	btnDown.on( 'click', function() {
+		window.location.href = 'http://m.meilishuo.com/download/latest';
+	})  
+
+}())

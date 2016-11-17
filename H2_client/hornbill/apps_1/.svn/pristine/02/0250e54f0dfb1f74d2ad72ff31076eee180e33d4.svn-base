@@ -1,0 +1,92 @@
+<%# head.html%>
+<%
+	var exchange_type = {
+		'1' : '已兑完',
+		'0' : '去兑换'
+	}
+%>
+<div class="wrap">
+	<% if( this.userInfo.user_id == 0 || this.hasGet_status.data.free_point == 0 ){%>
+	<div class="get_info">
+		<a class="get_btn">
+			<img src="<%=this.PICTURE_URL%>/images/wap/member/get_banner.jpg">
+		</a>
+	</div>
+	<%}else {%>
+	<div class="user_info">
+		<a href="" class="user_pic">
+			<img src="<%= this.user_info.data.avatar_b%>">
+		</a>
+		<div class="user_main">
+			<h3><a><%= this.user_info.data.nickname%></a></h3>
+			<p class="jifen">
+				<span class="user_point"><%= this.user_info.data.point%></span>积分
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<a href="/member/list">积分明细 &gt;</a>
+			</p>
+			<a href="<%= _extFn.getAppLink('twitter_list' , {'method':'twitter/popular'} , this.os, this.r) %>" class="more_good">
+				<!--<b><img src="<%=this.PICTURE_URL%>/images/wap/member/shop_icon.png"></b>-->
+				去购物领取更多积分 &gt;
+			</a>
+		</div>
+	</div>
+	<%}%>
+	<div class="intro">
+		<h3>
+			<a class="hide_icon">
+				<img src="<%=this.PICTURE_URL%>/images/wap/member/hide.png">
+			</a>
+			<a class="show_icon">
+				<img src="<%=this.PICTURE_URL%>/images/wap/member/show.png">
+			</a>
+			<b><img src="<%=this.PICTURE_URL%>/images/wap/member/intro_icon1.png"></b>
+			会员积分介绍
+		</h3>
+		<ul class="intro_list">
+			<li>1、美丽说用户均可免费领取10积分，每用户限领一次；</li>
+			<li>2、会员购物可再获积分，实际支付每满10元可获得一个积分，不满10元不计（积分需确认收货后方可获得）；</li>
+			<li>3、已购物的会员会根据你交易成功的历史支付额度计入积分，每10元计1积分，最高可获得1000初始积分；</li>
+			<li>4、兑换商品时减去所需积分，每件商品，每用户仅能兑换一次；</li>
+			<li>5、积分不可转让或出售，如经发现并证实的，积分将予以作废处理；</li>
+			<li>6、如发现商家有刷单等作弊行为，将被限制参与美丽说的一切商家活动，且积分将予以作废处理。
+		</ul>
+	</div>
+	<div class="exchange_t">
+		<span class="line line_r"></span>
+		<span class="line line_l"></span>
+		<h3>精选积分兑换商品（兑完即止）</h3>
+	</div>
+	<div class="goods_wrap">
+		<!-- <h3><%= this.act_info.new_goods_info.tag_name%></h3> -->
+		<ul class="goods_list" type="new">
+			<% this.act_info.new_goods.length && this.act_info.new_goods.map(function(data, idx){%>
+			<li twitter_id="<%= data.twitter_id %>">
+				<div class="li_line">
+					<a class="good_img">
+						<img src="<%= data.pic_url %>">
+					</a>
+					<div class="good_info">
+						<p class="good_t">
+							<%= data.goods_titile %>
+						</p>
+						<p class="good_msg">
+							需<span class="integral"><%= data.point %>积分</span>
+							<span class="good_money">价值:
+								<span>￥<%= data.value %></span>
+							</span>
+						</p>
+						<a href="javascript:void(0)" point="<%= data.point%>" exchangeNum ="<%= data.exchangeNum%>"  class="btn <%= this.exchange_status.data.new_goods[data.twitter_id] ? 'have_go' : 'go' %>"><%= exchange_type[this.exchange_status.data.new_goods[data.twitter_id]] %></a>
+					</div>
+				</div>
+			</li>
+			<%});%>
+		</ul>
+	</div>
+</div>
+<script>
+	fml.vars.no_ka = true;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/member/member');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

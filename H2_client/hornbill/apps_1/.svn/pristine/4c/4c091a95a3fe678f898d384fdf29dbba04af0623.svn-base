@@ -1,0 +1,18 @@
+<% this.shop_poster && this.shop_poster.map(function(data){ %>
+	<div class="groupBox">
+		<div class="groupCon">
+			<h2 class="s_tle"><a href="/shop/<%=data.shop_id%>" target="_blank"><%=data.shop_nick%></a></h4>
+			<a href="/shop/<%=data.shop_id%>" target="_blank" class="imgBox">
+				<img class="goods_pic_b" src="<%=data.goods_img %>" />
+			</a>
+			<div class="lookBox">
+				<a class="btn" href="/shop/<%=data.shop_id%>" target="_blank">去逛逛</a>
+				<span class="tex">总销量<%=data.sales_num%>件</span>
+			</div>
+			<%= requireFn('mark.html')({
+				'marks' : data.horizontal_mark
+			}); %>
+			<div class="clear_f"></div>
+		</div>
+	</div>
+<%});%>

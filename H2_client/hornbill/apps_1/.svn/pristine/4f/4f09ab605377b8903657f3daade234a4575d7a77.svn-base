@@ -1,0 +1,318 @@
+@import "../block.less";
+@import "icons.import.less";
+@import "voice-btn.import.less";
+@import "tag.import.less";
+
+body {
+  background-color : #f8f8f8;
+}
+
+.has-audio .picture {
+  margin-bottom: 68*@px;
+  &:after {
+    content : '';
+    width: 100%;
+    height: 68*@px;
+    display: block;
+    background: #fff;
+    position: absolute;
+    z-index: -1;
+  }
+}
+
+.picture {
+  background  : #fff;
+  position    : relative;
+  padding-top : 100%;
+
+  img {
+    width : 100%;
+  }
+  span { opacity : 1; }
+  /* 标签 */
+  .tag();
+
+  .code {
+    .pa; right: 20px; bottom: 20px;
+    .w(24px);
+    .h(24px);
+  }
+}
+
+.imageSlide {
+  .pa; top: 0; left: 0;
+  &, ul, li { .w(100%); .h(100%); }
+  ul {
+    .box;
+  }
+  li {
+    .pr; top: 0;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    .price-tag { z-index: 11; }
+  }
+  .onmove {
+    -webkit-transition: -webkit-transform .2s ease-out 0s;
+    transition: transform .2s ease-out 0s;
+  }
+  .bookmark {
+    .none; .pa; bottom: 10px; right: 40px;
+    padding: 0 4px;
+    .f(11px);
+    .l(24px);
+    .white;
+    .bgc(rgba(51, 51, 51, .8));
+    .border-r(2px);
+    z-index: 10;
+  }
+}
+
+.seller-info {
+  background : #fff;
+  padding    : 20*@px 20*@px 20*@px 20*@px;
+  margin-top: 20*@px;
+  .head {
+    position : relative;
+    display  : inline-block;
+    width    : 52*@px;
+    height   : 52*@px;
+  }
+  .seller-head {
+    display        : inline-block;
+    width          : 100%;
+    border-radius  : 50%;
+    vertical-align : middle;
+
+  }
+  .seller-desc {
+    display        : inline-block;
+    vertical-align : middle;
+    line-height    : 52*@px;
+    color          : #666666;
+    font-size      : 26*@px;
+    margin-left    : 6*@px;
+  }
+  .icon-vip-small {
+    position : absolute;
+    right    : 0;
+    bottom   : 0;
+  }
+}
+
+.notice {
+    background: #fff;
+    padding      : 20*@px;
+    color       : #333333;
+    font-size   : 24*@px;
+    line-height : 34*@px;
+}
+
+.publish-info {
+    background: #fff;
+    padding: 10*@px 20*@px 20*@px;
+    color : #80737b;
+    font-size      : 22*@px;
+}
+.time {
+    display: inline-block;
+    .time-ico {
+      display                 : inline-block;
+      width                   : 20*@px;
+      height                  : 20*@px;
+      background              : url("http://d01.res.meilishuo.net/pic/_o/59/fa/2b63f962ff2736082fdfbb0478da_19_19.cf.png") no-repeat;
+      background-size         : contain;
+      -webkit-background-size : contain;
+      vertical-align          : middle;
+    }
+    .date {
+      height: 20*@px;
+      display        : inline-block;
+      vertical-align : middle;
+    }
+}
+
+.address {
+  display: inline-block;
+   margin-left: 30*@px;
+  .address-name {
+    display: inline-block;
+    height: 21*@px;
+    vertical-align : middle;
+  }
+
+}
+
+.sku-list {
+  background : #fff;
+  padding    : 0 10px;
+  .from-info {
+    font-size   : 24*@px;
+    color       : #ccc2c9;
+    line-height : 60*@px;
+    height      : 60*@px;
+    padding     : 30*@px 0;
+  }
+  .pink {
+    color : #FF8DB3;
+  }
+  .chat {
+    display      : inline-block;
+    width        : 44*@px;
+    height       : 60*@px;
+    color        : #80737b;
+    font-size    : 20*@px;
+    position     : absolute;
+    right        : 20*@px;
+    border-left  : 1px solid rgba(204, 194, 201, .5);
+    padding      : 0 40*@px 0 40*@px;
+    margin-right : -10*@px;
+    .chat-ico {
+      content           : '';
+      position          : absolute;
+      width             : 36*@px;
+      height            : 30*@px;
+      top               : 0;
+      right             : 50%;
+      transform         : translate3d(50%, 0, 0);
+      -webkit-transform : translate3d(50%, 0, 0);
+      background        : url("http://d03.res.meilishuo.net/pic/_o/46/3f/5fc04433c260b22c0891e12af14b_40_34.cg.png") no-repeat;
+      background-size   : contain;
+    }
+    span:nth-child(2) {
+      display    : inline-block;
+      margin-top : 20*@px;
+    }
+  }
+  .goods-info {
+    padding       : 10px 0;
+    border-bottom : 1px solid rgba(204, 194, 201, .5);
+    &::after {
+      clear      : both;
+      content    : ".";
+      display    : block;
+      visibility : hidden;
+      height     : 0;
+    }
+    .info-wrap {
+      float : left;
+      img {
+        vertical-align : middle;
+        width          : 64*@px;
+        height         : 64*@px;
+      }
+    }
+    .buy-wrap {
+      float       : right;
+      line-height : 62*@px;
+      .ico-car {
+        width          : 53*@px;
+        height         : 53*@px;
+        vertical-align : middle;
+      }
+      .buy-btn {
+        display        : inline-block;
+        margin-left    : 20*@px;
+        width          : 100*@px;
+        height         : 52*@px;
+        background     : #FE7A9A;
+        border-radius  : 4*@px;
+        font-size      : 26*@px;
+        color          : #fff;
+        line-height    : 52*@px;
+        text-align     : center;
+        vertical-align : middle;
+      }
+      .non-buy {
+        background-color : #c1c1c1;
+      }
+    }
+  }
+  .goods-info:last-child {
+    border : none;
+  }
+  .item-info {
+    display        : inline-block;
+    line-height    : 64*@px;
+    height         : 64*@px;
+    margin-left    : 20*@px;
+    vertical-align : middle;
+    .title {
+      font-size   : 22*@px;
+      line-height : 12px;
+      padding     : 4*@px;
+      color       : #80737B;
+    }
+    .price {
+      font-size   : 26*@px;
+      line-height : 26*@px;
+      color       : #595056;
+      padding     : 4*@px;
+    }
+  }
+}
+
+.trans {
+  display    : block;
+  padding    : 20*@px;
+  // margin-top : 20*@px;
+  font-size  : 24*@px;
+  color      : #666666;
+  padding    : 30*@px 20*@px;
+  .tans-ico {
+    display           : inline-block;
+    width             : 28*@px;
+    height            : 28*@px;
+    vertical-align    : middle;
+    background-image  : url('http://d05.res.meilishuo.net/pic/_o/1d/66/40b1af296711bf11341652df70c7_28_29.cf.png');
+    background-size   : contain;
+    background-repeat : no-repeat;
+  }
+  p {
+    display        : inline-block;
+    line-height    : 28*@px;
+    vertical-align : middle;
+  }
+  .num {
+    color : #FF8DB3;
+  }
+
+  .go-ico {
+    display           : inline-block;
+    width             : 20*@px;
+    height            : 28*@px;
+    vertical-align    : middle;
+    background-image  : url('http://d03.res.meilishuo.net/pic/_o/76/ed/e05c2160ab8868f00a243d01eb33_15_25.cf.png');
+    background-repeat : no-repeat;
+    background-size   : contain;
+    position          : absolute;
+    right             : 20*@px;
+  }
+}
+
+#audio {
+  display : none;
+}
+
+.pink {
+  color : #FF7A9A;
+}
+
+.voice-btn();
+
+.post-voice {
+  width  : 100*@px;
+  height : 100*@px;
+  .voice-bg {
+    width  : 120*@px;
+    height : 120*@px;
+  }
+}
+
+.banner {
+  display    : block;
+  margin-top : 20*@px;
+  img {
+    width : 100%;
+  }
+}

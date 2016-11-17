@@ -1,0 +1,28 @@
+/*common*/
+var $ = require('wap/zepto')
+	, confirmFn = require('wap/app/doota/confirm_new')
+
+confirmFn()
+
+var goBackPage = function(dom){
+	var $mSelf = dom
+	if(document.referrer){
+		$mSelf.show()
+		$mSelf.on('click', function(){
+			window.history.back()
+		})
+	} else {
+		$mSelf.hide()
+	}
+}
+
+goBackPage($('#back_btn'))
+
+$('.fold_i').on('click', function(){
+	var parents = $(this).parents('.order_goods')
+	if(parents.hasClass('folded')){
+		parents.removeClass('folded')
+	} else {
+		parents.addClass('folded')
+	}
+})

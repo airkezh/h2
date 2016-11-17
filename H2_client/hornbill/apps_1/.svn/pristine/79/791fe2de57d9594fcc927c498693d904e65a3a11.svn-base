@@ -1,0 +1,30 @@
+<%#head.html%>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<%
+	var pageData = this.pageData || {}
+		, userInfo = this.getUserInfo || {}
+%>
+
+<div class="wrap" user_id="<%= userInfo.user_id %>">
+	<img src="<%= pageData.head_img %>" class="head_bg"/>
+	<header>
+		<div class="avatar"><img src="<%= userInfo.from_user_info.headimgurl %>" /></div>
+		<h2><%= userInfo.from_user_info.nickname %></h2>
+		<img src="<%= pageData.introMain %>" class="intro"/>
+	</header>
+	<a href="/activity/redPaper/list/?from_id=<%= this.from_id%>&from_weixin=1">
+		<% pageData && pageData.main && pageData.main.map(function(data){ %>
+		<img src="<%= data.image_src %>" />
+		<%}); %>
+	</a>
+</div>
+
+<script>
+	fml.vars.mlsHost = "<%= this.mlsHost%>";
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/redPaper/index');
+_use:", this._JSstack, this._JSmods); %>
+
+<%# foot.html%>

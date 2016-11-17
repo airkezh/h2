@@ -1,0 +1,156 @@
+<!--
+/**
+ * @fileoverview 首页 － 每日签到
+ * @requires zepto
+ * @author kehuang@meilishuo.com
+ * @date 2015-01-09
+ */
+-->
+
+<%#head.html%>
+<%
+	var curSignUserData = this.signUserData;
+	var curSignUserInfo = this.signUserInfo.data;
+	var curUserTotalMoney = curSignUserInfo.bonus || 0;
+	var curConSignDays = curSignUserInfo.continuous || 0;
+	var curServerDate = this.serverDate;
+	var curServerTime = curServerDate.getTime();
+	var curServerYear = curServerDate.getFullYear();
+	var curServerMonth = curServerDate.getMonth() + 1;
+	var curServerDay = curServerDate.getDate();
+	var strServerMonth = (curServerMonth < 10) ? '0' + curServerMonth : curServerMonth;
+	var strServerDay = (curServerDay < 10) ? '0' + curServerDay : curServerDay;
+	var curServerDateStr = curServerYear + '-' + strServerMonth + '-' + strServerDay;
+%>
+<div class="top_box">
+	<div class="money signout in_down">
+		<div class="total"><%= curUserTotalMoney %>元</div>
+	</div>
+</div>
+
+<div class="pig_text">
+	<div class="txt">狠心的主人，你好久没来，我快饿死了！损失了<%= curUserTotalMoney %>元的金币，累觉不爱，元气大伤，我需要你的抢救~~</div>
+</div>
+
+<div class="pig_signout"></div>
+
+<div class="btn_box up_down">
+	<a href="javascript:;" class="patch_btn"></a>
+	<a href="javascript:;" class="start_btn"></a>
+</div>
+
+<div class="rule_box">
+	<a href="/activity/sign/sign_rule/" class="rule_btn"></a>
+</div>
+
+<div class="date_top"></div>
+
+<div class="date_box">
+	<%
+		var calPrevYear = 2015,
+			calNextYear = 2015,
+			calPrevMonth = 1,
+			calNextMonth = 1,
+			calCurYear = curServerYear,
+			calCurMonth = curServerMonth;
+
+		if (calCurMonth == 1) {
+			calPrevYear = calCurYear - 1;
+			calNextYear = calCurYear;
+			calPrevMonth = 12;
+			calNextMonth = calCurMonth + 1;
+		} else if (calCurMonth == 12) {
+			calPrevYear = calCurYear;
+			calNextYear = calCurYear + 1;
+			calPrevMonth = calCurMonth - 1;
+			calNextMonth = 1;
+		} else {
+			calPrevYear = calCurYear;
+			calNextYear = calCurYear;
+			calPrevMonth = calCurMonth - 1;
+			calNextMonth = calCurMonth + 1;
+		}
+
+		calPrevMonth = (calPrevMonth < 10) ? '0' + calPrevMonth : calPrevMonth;
+		calNextMonth = (calNextMonth < 10) ? '0' + calNextMonth : calNextMonth;
+	%>
+	<div class="prev_btn j_calander_btn" data-flag="prev" data-year="<%= calPrevYear %>" data-month="<%= calPrevMonth %>"></div>
+	<div class="icon_cal"></div>
+	<div class="month"><%= curServerDateStr %></div>
+	<div class="totals">连续第<span class="num" id="j_sign_days"><%= curConSignDays %></span>天签到</div>
+	<div class="next_btn j_calander_btn" data-flag="next" data-year="<%= calNextYear %>" data-month="<%= calNextMonth %>"></div>
+</div>
+
+<div class="calanderWrap">
+	<div class="cTop"></div>
+	<div class="calander"></div>
+	<div class="cBottom"></div>
+</div>
+
+<div class="remind_box">
+	<div class="remind">
+		<a href="javascript:;" class="remind_switch <% if (this.remind == 1) { %> open <% } %>"></a>
+	</div>
+</div>
+
+<script type="text/html" id="patch_card_layer">
+	<div class="shade j_layer_shade"></div>
+	<div class="win_box win_card j_layer_main">
+		<?
+  			var superData = this.data,
+  				total = superData.total || 0,
+  				bonus = superData.bonus || 0;
+  		?>
+		<p class="title">恭喜你发现一张<br><em>超级补签卡</em></p>
+		<p class="desc"><em>除夕~今天</em>，一次补齐你<?= total ?>天的漏签<br>奖金将恢复到<em><?= bonus ?></em>元</p>
+		<div class="bg">
+			<img src="<%= this.PICTURE_URL %>images/wap/activity/may_sale/super_patch_card.jpg" alt="">
+		</div>
+		<p class="tip">立即使用，过期无效</p>
+		<div class="patch j_patch_btn"></div>
+		<p class="close j_close_btn">不使用补签卡</p>
+	</div>
+</script>
+
+<script type="text/html" id="patch_success_layer">
+	<div class="shade j_layer_shade"></div>
+	<div class="win_box win_patch j_layer_main">
+		<?
+  			var chance = this.chance || 0;
+  		?>
+		<p class="title">补签成功！</p>
+		<p class="desc">节日期间使用的<em><?= chance ?></em>张补签卡<br>现在退还给你，记得常来签到~</p>
+		<div class="bg">
+			<img src="<%= this.PICTURE_URL %>images/wap/activity/may_sale/sign_patch_card2.jpg" alt="">
+			<span><b>X</b><?= chance ?></span>
+		</div>
+		<div class="know j_know_btn"></div>
+	</div>
+</script>
+
+<script>
+	/*fml.vars.isNewest = "<%=this.isNewest%>";
+
+	 if(Meilishuo.config.os && Meilishuo.config.os.mlsApp){
+	 fml.vars.isApp = true;
+	 }*/
+	fml.vars.isLogin = <%=this.isLogin%>;
+
+	var curServerTime = <%=curServerTime%>;
+	var curServerYear = <%=curServerYear%>;
+	var curServerMonth = <%=curServerMonth%>;
+	var curServerDateStr = '<%=curServerDateStr%>';
+	var curSignData = <%=JSON.stringify(curSignUserData.data)%>;
+	var curSignedArr = curSignData.signed;
+	var curConvertedArr = curSignData.converted;
+	var curConSignDays = <%=curConSignDays%>;
+	var curUserTotalMoney = <%=curUserTotalMoney%>;
+	var curFirstSignDate = '<%=curSignUserInfo.firstSignDate%>';
+	var curLastSignDate = '<%=curSignUserInfo.lastSignDate%>';
+	var curUserSuperData = <%=JSON.stringify(curSignUserInfo.super)%>;
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/sign_out2');
+_use:", this._JSstack , this._JSmods); %>
+<%# foot_simple.html%>

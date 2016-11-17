@@ -1,0 +1,87 @@
+<%#head_simple.html%>
+	<script type="text/javascript" charset="utf-8" src="http://fusion.qq.com/fusion_loader?appid=100657684&platform=qzone">
+	</script>
+	<script>
+	Meilishuo.config.headTag = '<%= this.headTag %>';
+	Meilishuo.config.qq_userInfo = {
+		isFans : '<%= this.qq_userInfo.isFans %>',
+		isValid : '<%= this.qq_userInfo.isValid %>',
+		userInfo : {}
+    };
+	</script>
+</head>
+<body>
+<%
+var mSubstr = _extFn.mSubstr;
+var aInfo = this.activitySingle.activityInfo;
+%>
+<div class="qqwelfare">
+	<div class="top_box">
+		<span class="inviteBtn"></span>
+	</div>
+	<div class="nav">
+		<a class="goHome" href="/qqwelfare/?frm=qzoneapp_list">首页</a>><span class="red_f">活动详情</span>
+	</div>
+	<div class="free_box" aid="<%=aInfo.activity_id%>">
+		<div class="begin_bg"><%= aInfo.date%>开始</div>
+		<div class="pic"><img src="<%= aInfo.activity_banner%>"/></div>
+		<div class="bewrite">
+			<h3 class="bw_tle"><%= aInfo.title%></h3>
+			<p class="time"><span>共</span><strong class="red_f"><%= aInfo.trynumber%></strong><span>份</span>
+			<%if(aInfo.products_price){%>
+				<span class="ml10_f">价值：</span><strong class="red_f">￥<del><%= aInfo.products_price%></del></strong>
+			<%}%>
+			</p>
+			<p>
+				<% if(aInfo.valid == 0){ %>
+					<p class="timeStamp" end-date="<%= aInfo.end_time%>"><span>剩余时间：</span><strong id="day">0</strong><span>天</span><strong id="hour">0</strong><span>时</span><strong id="minute">0</strong><span>分</span><strong id="seconds">0</strong><span>秒</span></p>
+					<span class="wf_ico2"></span>
+				<% }else if(aInfo.valid == 1){ %>
+					<p class="timeStamp" end-date="<%= aInfo.end_time%>"><span>剩余时间：</span><strong id="day">0</strong><span>天</span><strong id="hour">0</strong><span>时</span><strong id="minute">0</strong><span>分</span><strong id="seconds">0</strong><span>秒</span></p>
+					<span class="wf_ico1"></span>
+				<% }else if(aInfo.valid == 2){ %>
+					<span class="wf_ico3"></span>
+				<% } %>
+			</p>
+			<div class="intro">
+				<% var num = aInfo.activity_url ? 48 : 54;%>
+				产品介绍：<%= mSubstr(aInfo.products_introduction , num , '...') %>
+				<% if(aInfo.activity_url){ %>
+				<a class="red_f" href="<%= aInfo.activity_url %>" target="_blank">详细介绍>></a>
+				<% } %>
+			</div>
+		</div>
+		<div class="clear_f"></div>
+	</div>
+
+	<div class="intro_box"><%= aInfo.summary %></div>
+
+	<div class="talk_box">
+		<h3>MM都在说</h3>
+		<div class="talk_content">
+		<%this.activitySingle && this.activitySingle.users.map(function(data , index){%>
+			<div class="twitter_box<%if(++index == this.activitySingle.users.length){%> last<%}%>">
+				<span class="avatar64_f"><img alt="<%= data.real_name %>" src="<%= data.img_url %>"></span>
+				<div class="t_body">
+					<div class="t_ico"></div>
+					<span class="t_user"><%= data.real_name %></span>
+					<p class="t_con"><%= data.reason %></p>
+					<p class="t_info">
+						<em><%= data.ctime %></em>
+					</p>
+				</div>
+				<div class="clear"></div>
+			</div>
+		<%});%>
+		</div>
+	</div>
+	<div class="record">版权所有&nbsp;©&nbsp;美丽说&nbsp;联系QQ：1789096599</div>
+</div>
+
+<%#app/qq/windows.html%>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/app/qqwelfare');
+_use:", this._JSstack , this._JSmods); %>
+<%#foot_simple.html%>
+

@@ -1,0 +1,30 @@
+<%
+var query = this._Request_query;
+var getLink = _extFn.getLink;
+%>
+<div class="route">
+	<%if(this.navigate_route){%>
+	<div class="route_bread">
+		<span>我的位置</span><span>：</span>
+		<%
+			var len = this.navigate_route.length;
+			this.navigate_route.map(function(route, index){ %>
+			<a <%if(index == len-1){%>class="gray_f"<%}%> href="<%= route.url %>"><%= route.word %></a>
+			<%if(index != len-1){%>
+			<span>&gt;</span>
+			<%}%>
+		<%});%>
+	</div>
+	<%}%>
+
+	<%if(this.attr_title_keywords && !this.attr_description){%>
+	<h1 class="route_title"><%= this.attr_title_keywords.word_name%></h1>
+	<%}%>
+
+	<%if(this.isShow){%>
+	<div class="route_hotornew">
+		<span>排序：</span>
+		<a class="<%if(query.section == 'hot' || !query.section){%>active<%}%> first" href="<%=getLink({'section' : 'hot' , 'page' : '0'} , query)%>">最热</a><a class="<%if(query.section == 'new'){%>active<%}%> last" href="<%=getLink({'section' : 'new' , 'page' : '0'} , query)%>">最新</a>
+	</div>
+	<%}%>
+</div>

@@ -1,0 +1,24 @@
+<% if(this.fluid == true){ %>
+	<%# head.html %>
+<% }else{ %>
+	<%# head_simple.html %>
+	</head>
+	<body>
+	<div class="header">
+		<a class="logo_new" href="/welcome"></a>
+	</div>
+<% } %>
+<% if(this.headTag == 'register_success'){ %>
+	<%# user/register_success.html %>
+<% }else if(this.headTag == 'register_step3' || this.headTag == 'register_step4'){ %>
+	<%# user/register_like.html %>
+<% }else{ %>
+	<%# user/register_form.html %>
+<% } %>
+
+<%# user/windows.html%>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/register');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html %>

@@ -1,0 +1,70 @@
+<div class="goods_list">
+	<table border="0" cellspacing="0" cellpadding="0">
+		<thead>
+			<tr>
+				<th class="first" width="20px">&nbsp;</th>
+				<th width="20px">&nbsp;</th>
+				<th width="420px">商品信息</th>
+				<th width="156px">单价（元）</th>
+				<th width="196px">数量</th>
+				<th>小计（元）</th>
+				<th class="last" width="20px">&nbsp;</th>
+			</tr>
+		</thead>
+		<tbody class="shop">
+			<tr>
+				<td class="first">&nbsp;</td>
+				<td colspan="6" class="last">
+					<% refund_info = this.refund.info; %>
+					<span>商家：<a class="red_f" href="<%=this.DOMAIN.www%>/shop/<%= refund_info.shop_id %>" target="_blank"><%== refund_info.shop %></a></span>
+					<% if(refund_info.im || refund_info.qq){ %><a class="getserviceqq knilmi" href="<%= this.ViewTools.callIM(refund_info.im , refund_info.qq) %>" target="_blank">&nbsp;</a><% } %>
+				</td>
+			</tr>
+		</tbody>
+		<% if(this.refund.info.goods.length){ %>
+		<tbody>
+			<% this.refund.info.goods.forEach(function(g,i){ %>
+				<tr class="goods <%= (i===this.refund.info.goods.length-1) ? 'last':'' %>" >
+					<td class="first">&nbsp;</td>
+					<td colspan="2" class="content">
+						<a target="_blank" href="<%=this.DOMAIN.www%>/share/item/<%= g.twitter_id %>">
+							<img src="<%= g.b_pic_url %>">
+							<span class="t"><%= g.goods_title %></span>
+							<span class="props">
+								<% g.prop.forEach(function(p){ %>
+								<% if(p.is_show === '1'){ %>
+								<span><%= p.name %>：<%= p.value %></span>
+								<% } %>
+								<% }); %>
+							</span>
+						</a>
+					</td>
+					<td class="price"><%= g.price %></td>
+					<td>
+						<%= g.amount %>
+					</td>
+					<td class="goods_total"><%= (Number(g.price)*Number(g.amount)).toFixed(2) %></td>
+					<td class="last">&nbsp;</td>
+				</tr>
+			<% }); %>
+		</tbody>
+		<% } %>
+		<tbody>
+			<tr class="last txt">
+				<td class="first">&nbsp;</td>
+				<td colspan="6" class="last">*如果您使用了优惠券，那么退款中会优先计算扣减您使用的优惠券金额</td>
+			</tr>
+		</tbody>
+		<tbody>
+			<tr class="last txt">
+				<td class="first">&nbsp;</td>
+				<td colspan="6" class="last result">
+					<span>运费补贴：<span id="trans_fee"><%= this.refund.info.money.trans_fee.toFixed(2) %></span>元</span>
+					<span class="ml">优惠券扣减：<span id="coupon_fee"><%= this.refund.info.money.coupon_fee.toFixed(2) %></span>元</span>
+					<span class="ml">运费扣减：<span id="express_fee"><%= this.refund.info.money.express_fee.toFixed(2) %></span>元</span>
+					<span class="total">总计退款金额：<span class="money">￥<span id="refund_fee"><%= this.refund.info.money.refund_fee.toFixed(2) %></span></span></span>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

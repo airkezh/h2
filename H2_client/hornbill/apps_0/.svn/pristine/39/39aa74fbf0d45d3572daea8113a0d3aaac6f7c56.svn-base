@@ -1,0 +1,17 @@
+<%
+	var status = this.status || 1;
+	var bannerImg = this.bannerImg;
+	var query = this._Request_query || {};
+	var pageR = query.r ? encodeURI(query.r) : '';
+
+%>
+<div class="nav tabbox">
+	<a <%if(status == 1){%>href="javascript:void(0)"<%}else{%>href="/activity/region99/rush/?r=<%= pageR%>"<%}%> class="tabArea <%= status == 1 ? 'curr' : ''%>">限时抢购</a>
+	<a <%if(status == 2){%>href="javascript:void(0)"<%}else{%>href="/activity/region99/tuan/?r=<%= pageR%>"<%}%> class="tabArea <%= status == 2 ? 'curr' : ''%>">超值团购</a>
+	<a <%if(status == 3){%>href="javascript:void(0)"<%}else{%>href="/activity/region99/clearance/?r=<%= pageR%>"<%}%> class="tabArea <%= status == 3 ? 'curr' : ''%>">清仓热卖</a>
+</div>
+<%if(bannerImg){%>
+<div class="banner">
+	<a href="<%= bannerImg.link%>"><img src="<%= bannerImg.show_pic %>"></a>
+</div>
+<%}%>

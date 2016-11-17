@@ -1,0 +1,102 @@
+var querystring = require('querystring')
+function goto(){
+	return this;
+}
+var controlFns = {
+	t: function (p){
+		var urlMap = {
+			'dot99' : 'appUrl=http%3A%2F%2Fm.meilishuo.com%2Factivity%2Fdot99%2Fdownload%2Fshare&apk=%2Fu%2FEIeaMh%20&bg=http%3A%2F%2Fm.meilishuo.com%2Factivity%2Fdot99%2Fdownload%2F&bg2=http%3A%2F%2Fwww.meilishuo.com%2Fbiz%2Fhuodong%2Fdot99%2F'
+			}
+		
+		if (urlMap[p])
+			return this.redirectTo('/goto/open/?' + urlMap[p])
+		else{
+			this.errorPage()
+			// console.log('wrong short t :', p)
+			}
+
+		},
+	'land' : function(plat){
+		//#6271
+		var toDown = {
+			'uc' : '?apk='+ encodeURIComponent('/u/EJFtJh')+'&frm=GD_WAPDL130906_360'
+			}
+		return this.redirectTo('/goto/download/' + (toDown[plat] || ''))
+		},
+	count: function(p){
+		var p = this.readData('p') || p;
+
+		//return this.res.end('<a href="' + p + '">' + p + '</a>')
+		return  this.res.end('This service end!');
+
+		/*
+		var php = {
+			'stat' : '/stat/stat'
+			}
+		var mSelf = this
+		this.setMDefault(php)
+		this.bridgeMuch(php)
+		//p = 'http://rwdev.meilishuo.com/gooo/tbapp/?link='+encodeURIComponent(p)
+		this.listenOver(function(data){
+			mSelf.redirectTo(p)
+			})
+		*/
+		},
+	download : function(plat){
+		var ua = this.req.headers['user-agent']
+			,frm = this.req.__get.frm || ''
+		if (/(iPhone|iPad|iPod|iOS)/i.test(ua)){
+			//return this.redirectTo('https://itunes.apple.com/cn/app/mei-li-shuo-shi-shang-nu-sheng/id431023686?mt=8')
+			//return this.redirectTo('itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=431023686&mt=8')
+			return this.redirectTo('/download/ios/'  ,true)
+		}else  if( /(Android)/i.test(ua)){
+			var refer = this.req.headers.referer
+			var qparam = {}
+			if (refer)
+				qparam.refer = refer
+			if (plat)
+				qparam.plat = plat
+			refer = querystring.stringify(qparam)
+			if (refer.length) refer = '?'+refer
+			return this.redirectTo('/download/android/' + refer ,true)
+		}
+	
+		this.redirectTo('http://meilishuo.com/client/',true)
+	},
+	open : function(){
+		var wapMod = base.loadModel('wap/tools.js')
+		// var os = wapMod.uaos(this.req)
+		var os = wapMod.uaos(this.req, wapMod.getMobToken(this.req,this.res))
+		var mlsApp = os.mlsApp
+		//gotoLead 针对vote活动在微信、微博中出浏览器导流页
+		var gotoLead = this.readData('gotoLead',this.res.__get ,'')
+		var toOpenUrl = this.readData('url') || '/'
+		var apk = this.readData('apk') || ''
+			,frm = this.readData('frm') || 'wapweb'
+			,appUrl = this.readData('appUrl') 
+			,bgPage = this.readData((os.iphone || os.android)?'bg':'bg2') || ('/download/latest/')
+		if (appUrl && appUrl.indexOf('http://') == -1)  appUrl = 'http://' + this.req.headers.host.replace('m.meilishuo','mapp.meilishuo') + appUrl
+		delete this.req.__get.url
+		delete this.req.__get.appUrl
+		delete this.req.__get.bg
+		delete this.req.__get.bg2
+		var qparam = querystring.stringify(this.req.__get)
+		
+		if (appUrl && qparam) appUrl += (appUrl.indexOf('?') > 0? '&':'?') + qparam 
+		if (bgPage  && qparam) bgPage += (bgPage.indexOf('?') > 0? '&':'?') + qparam 
+		var  weixinBrowser = this.req.headers['user-agent'].indexOf('MicroMessenger')>0
+		var  weiboBrowser = this.req.headers['user-agent'].indexOf('Weibo')>0
+		this.render('open.html' , {'url': toOpenUrl 
+									,'weixinBrowser' : weixinBrowser
+									,'weiboBrowser' : weiboBrowser
+									,'gotoLead' : gotoLead
+									,'bgPage' : bgPage
+									,'appUrl' : appUrl 
+									,'isAndroid' : os.android
+									,'apk' : apk 
+									,'frm' : frm
+									,'mlsApp' : mlsApp
+								})
+	}
+}
+exports.__create = controller.__create(goto , controlFns);

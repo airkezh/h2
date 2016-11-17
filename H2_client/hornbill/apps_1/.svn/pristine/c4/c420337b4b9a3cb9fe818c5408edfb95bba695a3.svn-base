@@ -1,0 +1,679 @@
+/*
+* Z-INDEX:
+*    mine bullet:  20
+*    bonus bullet: 30
+*    Rule: 40
+*    Panel: 50
+*/
+@import "../../atom";
+
+@mineZIndex: 20;
+@bonusZIndex: 30;
+@ruleZIndex: 40;
+@panelZIndex: 50;
+@ftIndex: 35;
+
+@dmBg: "@{pic_url}/images/activity/danmu/newcomer/dm_bg.png";
+@balloon1: "@{pic_url}/images/activity/danmu/newcomer/balloon_1.png";
+@balloon2: "@{pic_url}/images/activity/danmu/newcomer/balloon_2.png";
+@balloon3: "@{pic_url}/images/activity/danmu/newcomer/balloon_3_1.png";
+@balloonM: "@{pic_url}/images/activity/danmu/newcomer/balloon_m.png";
+@bonus: "@{pic_url}/images/activity/danmu/newcomer/bonus2.png";
+@bonus_tip: "@{pic_url}/images/activity/danmu/newcomer/bonus_tip.png";
+@official: "@{pic_url}/images/activity/danmu/aquarius/official.png";
+@successFace: "@{pic_url}/images/activity/danmu/newcomer/success.png";
+@failFace1: "@{pic_url}/images/activity/danmu/newcomer/fail2.png";
+@failFace2: "@{pic_url}/images/activity/danmu/aquarius/fail2.png";
+@failFace3: "@{pic_url}/images/activity/danmu/aquarius/fail3.png";
+@wxTipBg: '@{pic_url}/images/activity/danmu/wxTip.png';
+@freshBtn: "@{pic_url}/images/activity/danmu/aquarius/flesh_btn.png";
+
+* {
+  -webkit-box-sizing : border-box;
+  -moz-box-sizing    : border-box;
+  box-sizing         : border-box;
+}
+
+html, body, #danmu {
+  height     : 100%;
+  max-height : 100%;
+  width      : 100%;
+  overflow   : hidden;
+}
+
+body {
+  position : fixed;
+  width    : 100%;
+  top      : 0;
+  bottom   : 0;
+}
+
+html {
+  font-size : 62.5%; /* 10/16 = 62.5% */
+}
+
+@media (-webkit-min-device-pixel-ratio : 1.5) {
+  html {
+    font-size : 50%; /* 8/16 = 50% */
+  }
+}
+
+@media (-webkit-min-device-pixel-ratio : 2) {
+  html {
+    font-size : 43.75%; /* 7/16 = 43.75% */
+  }
+}
+
+@media (-webkit-min-device-pixel-ratio : 3) {
+  html {
+    font-size : 43.75%; /* 5/16 = 31.25% */
+  }
+}
+
+#danmu {
+  position                : absolute;
+  top                     : 0;
+  left                    : 0;
+  width                   : 100%;
+  background              : #feeae0 url(@dmBg) no-repeat center center;
+  background-size         : 100% auto;
+  overflow                : hidden;
+
+  .ft {
+    position : fixed;
+    bottom   : 0;
+    left     : 0;
+    width    : 100%;
+    z-index  : @ftIndex;
+    height   : 30%;
+  }
+
+  .wrap {
+    position : relative;
+    width    : 90%;
+    height   : 28%;
+    margin   : auto;
+  }
+}
+
+#stage {
+  position      : relative;
+  height        : 70%;
+  margin-bottom : 5%;
+
+  div {
+    position : absolute;
+    left     : 100%;
+  }
+}
+
+.hack_for_keyboard_bug {
+  position: absolute;
+  .bgc(red);
+  #danmu {
+    bottom: 0;
+    .ft {
+      position : absolute;
+    }
+  }
+
+}
+
+/*------------------------------------*\
+
+    弹幕中显示的信息
+    bg-color: #3c453a
+
+\*------------------------------------*/
+[class^="bullet"] {
+  position          : relative;
+  height            : 5.4rem;
+  line-height       : 5.4rem;
+  padding           : 0 5.4rem 0 8.4rem;
+  font-size         : 2.6rem;
+  color             : #fff;
+  background-color  : rgba(255, 89, 89, .65);
+  border-radius     : 2.5rem;
+  text-align        : center;
+  white-space       : nowrap;
+  z-index           : 0;
+  -webkit-transform : translateZ(0);
+  -moz-transform    : translateZ(0);
+  -ms-transform     : translateZ(0);
+  -o-transform      : translateZ(0);
+  transform         : translateZ(0);
+}
+
+/*
+  在代码中有特殊用途
+*/
+#bullet-signal {
+  position   : absolute;
+  left       : -100%;
+  visibility : hidden;
+}
+//官方发的子弹
+.bullet-o {
+  color            : #fff;
+  //padding-left     : 8.4rem;
+  background-color : rgba(211,36,115,.8);
+  z-index          : @mineZIndex;
+  i { 
+    .pa; top: 0; left: 3rem; .w(3.4rem); .h(100%); 
+    background-image: url(@official);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 100% auto; 
+  }
+  span { position  : relative; left: 2rem; }
+}
+
+//自己发的子弹
+.bullet-m {
+  color            : #ff5959;
+  background-color : #fff;
+  z-index          : @mineZIndex;
+  padding-left     : 11.4rem;
+
+  span { position  : relative; }
+}
+
+//气泡
+[class^="balloon"] {
+  position                : absolute;
+  left                    : 2rem;
+  top                     : -1rem;
+  -webkit-background-size : contain;
+  background-size         : contain;
+}
+
+.balloon-1 {
+  width            : 4.2rem;
+  height           : 4.1rem;
+  background-image : url(@balloon1);
+}
+
+.balloon-2 {
+  width            : 4.6rem;
+  height           : 3.2rem;
+  background-image : url(@balloon2);
+}
+
+.balloon-3 {
+  width            : 5.2rem;
+  height           : 4.1rem;
+  background-image : url(@balloon3);
+}
+
+.balloon-m {
+  width            : 7.6rem;
+  height           : 5.6rem;
+  background-image : url(@balloonM);
+}
+
+/*------------------------------------*\
+
+    红包
+    HACK：
+    bullet 在移动过程中会设置 transform，下方设置的 transform 会被覆盖。
+    为了 JS 代码简单，这里设置了子元素 span
+
+\*------------------------------------*/
+.bullet-b {
+  width            : 15.6rem;
+  height           : 12.9rem;
+  z-index          : @bonusZIndex;
+  background-color : transparent;
+
+  i {
+    position                : absolute;
+    left                    : 8.5rem;
+    background-repeat       : no-repeat;
+    background-position     : center center;
+    -webkit-background-size : contain;
+    background-size         : contain;
+  }
+
+  span {
+    position                : absolute;
+    left                    : 0;
+    width                   : 10.5rem;
+    height                  : 12.9rem;
+    background              : url(@bonus) no-repeat center center;
+    -webkit-background-size : contain;
+    background-size         : contain;
+  }
+}
+
+/**
+* 红包点击过一次，就不再显示『点击我有惊喜』
+*/
+.global-bullet-clicked .bullet-b i {
+  display : none;
+}
+
+//红包被打开
+.bullet-b-opened {
+  visibility : hidden;
+}
+
+.bonus-0 {
+  i {
+    top              : -6.2rem;;
+    left             : 6rem;
+    background-image : url(@bonus_tip);
+    width            : 15.9rem;
+    height           : 8.1rem;
+  }
+}
+
+.bonus-1 {
+  i {
+    top              : -6.6rem;
+    left             : 6rem;
+    background-image : url(@bonus_tip);
+    width            : 15.9rem;
+    height           : 8.1rem;
+  }
+
+  span {
+    top               : 1rem;
+    -webkit-transform : rotate(20deg);
+    -moz-transform    : rotate(20deg);
+    -ms-transform     : rotate(20deg);
+    -o-transform      : rotate(20deg);
+    transform         : rotate(20deg);
+  }
+}
+
+.bonus-2 {
+  i {
+    top              : -6.6rem;
+    left             : 4rem;
+    width            : 15.9rem;
+    height           : 8.1rem;
+    background-image : url(@bonus_tip);
+  }
+
+  span {
+    -webkit-transform : rotate(-20deg);
+    -moz-transform    : rotate(-20deg);
+    -ms-transform     : rotate(-20deg);
+    -o-transform      : rotate(-20deg);
+    transform         : rotate(-20deg);
+  }
+}
+
+//TODO 信息
+#error-msg {
+  position         : absolute;
+  top              : 0;
+  display          : none;
+  width            : 100%;
+  height           : 3.7rem;
+  line-height      : 3.7rem;
+  margin-bottom    : 1rem;
+  font-size        : 2.1rem;
+  color            : #fff;
+  background-color : rgb(89, 70, 71);
+  background-color : rgba(89, 70, 71, .8);
+  border-radius    : .3rem;
+  text-align       : center;
+}
+
+/*------------------------------------*\
+
+    活动规则与分享按钮
+
+\*------------------------------------*/
+.ft {
+  -webkit-transform : translateZ(0);
+  -moz-transform    : translateZ(0);
+  -ms-transform     : translateZ(0);
+  -o-transform      : translateZ(0);
+  transform         : translateZ(0);
+
+  .btn {
+    display    : inline-block;
+    color      : #fff;
+    text-align : center;
+  }
+
+  .btns {
+    width     : 88%;
+    height    : 100%;
+    margin    : auto;
+    font-size : 0;
+
+    .btn {
+      width            : 44%;
+      height           : 4.8rem;
+      line-height      : 4.8rem;
+      color            : #fff;
+      background-color : #afe065;
+      font-size        : 2.3rem;
+      border-radius    : 2.8rem;
+      border           : .2rem solid #fff;
+      vertical-align   : top;
+    }
+
+    .invite .btn {
+      width : 100%;
+      background-color : #fc0;
+    }
+  }
+}
+
+.invite {
+  display     : inline-block;
+  width       : 44%;
+  margin-left : 12%;
+
+  p {
+    color       : #fff;
+    font-size   : 1.8rem;
+    line-height : 2;
+    text-align  : center;
+    white-space : nowrap;
+  }
+}
+
+/*------------------------------------*\
+
+    输入框及发射按钮
+
+\*------------------------------------*/
+.inputs {
+  height     : 71%;
+  margin-top : 1%;
+  border-top : .2rem solid rgba(89, 80, 86, .15);
+  padding    : 1.5% 3% 1.5% 3%; 
+  background-color: #fff;
+
+  .title {
+    width            : 20%;
+    height           : 5rem;
+    line-height      : 5rem;
+    margin-right     : 2%;
+    color            : #80737b;
+    font-size        : 2.5rem;
+  }
+
+  input {
+    width          : 54%;
+    height         : 5rem;
+    padding        : 1rem;
+    font-size      : 2.3rem;
+    border         : .2rem solid rgba(89, 80, 86, .15);
+    border-radius  : .5rem;
+    vertical-align : top;
+  }
+
+  .btn {
+    width            : 20%;
+    height           : 5rem;
+    line-height      : 5rem;
+    margin-left      : 2%;
+    font-size        : 2.5rem;
+    border-radius    : .5rem;
+    background-color : #c1b7be;
+  }
+
+  .btn-on {
+    background-color : #ff5959;
+  }
+}
+
+/*------------------------------------*\
+
+    快速发射按钮及刷新按钮
+
+\*------------------------------------*/
+.ft {
+  .wrapper { margin-top: 1rem; }
+}
+
+#fast_shoot_btns {
+  height: 30%;
+  width: 76%;
+  display: inline-block;
+  vertical-align: top;
+  span { margin: 0; background-color: #feebe2; .fc(#f2c0a7); .hidden; }
+  .fs-btn1 { width: 32%; }
+  .fs-btn2 { width: 31%; margin-left: 1%; margin-right: 1%; }
+  .fs-btn3 { width: 32%; }
+}
+#fresh {
+  width: 20%;
+  background: #ffcc00 url(@freshBtn) center center no-repeat;
+  background-size: auto 60%
+}
+/*------------------------------------*\
+
+     规则说明
+
+\*------------------------------------*/
+#rule {
+  position         : absolute;
+  top              : 0;
+  left             : 0;
+  right            : 0;
+  bottom           : 0;
+  display          : none;
+  height           : 100%;
+  background-color : rgb(0, 0, 0);
+  background-color : rgba(0, 0, 0, .8);
+  z-index          : @ruleZIndex;
+
+  .bd {
+    height : 100%;
+  }
+
+  .content {
+    box-sizing              : border-box;
+    width                   : 92%;
+    max-height              : 70%;
+    margin                  : 5% auto 0;
+    padding                 : 3.5rem 4rem;
+    color                   : #fff;
+    background-color        : #ce320b;
+    border-top-left-radius  : 1.6rem;
+    border-top-right-radius : 1.6rem;
+    font-size               : 1.7rem;
+    line-height             : 1.2;
+    overflow                : scroll;
+  }
+
+  h3 {
+    margin-bottom : 1.2rem;
+    font-size     : 2.5rem;
+  }
+
+  h4 {
+    margin    : 3rem auto .8rem;
+    font-size : 2rem;
+    color     : #f3cb8d;
+  }
+
+  h4:before {
+    content        : "●";
+    margin-right   : 1.2rem;
+    font-size      : 1.3rem;
+    vertical-align : middle;
+  }
+
+  ol {
+    margin-left : 2.5rem;
+  }
+
+  .btn {
+    width                      : 92%;
+    min-height                 : 7rem;
+    height                     : 10vh;
+    line-height                : 7rem;
+    line-height                : 10vh;
+    margin                     : auto;
+    font-size                  : 2.8rem;
+    color                      : #fff;
+    background-color           : #af2a0a;
+    border-bottom-left-radius  : 1.6rem;
+    border-bottom-right-radius : 1.6rem;
+    text-align                 : center;
+  }
+}
+
+/*------------------------------------*\
+
+     弹层
+     Flex 支持情况：http://caniuse.com/#feat=flexbox
+
+     Old flexbox:
+        display    : box;
+        box-pack   : center;
+        box-orient : vertical;
+
+\*------------------------------------*/
+@color1: #b23636;
+@color2: #ff5959;
+#panel {
+  position         : fixed;
+  top              : 0;
+  left             : 0;
+  right            : 0;
+  bottom           : 0;
+  display          : none;
+  color            : #fff;
+  background-color : rgb(0, 0, 0);
+  background-color : rgba(0, 0, 0, .8);
+  z-index          : @panelZIndex;
+
+  .bd {
+    display                 : -webkit-box;
+    display                 : -moz-box;
+    display                 : -ms-flexbox;
+    display                 : -webkit-flex;
+    display                 : flex;
+    -webkit-box-pack        : center;
+    -moz-box-pack           : center;
+    -ms-flex-pack           : center;
+    -webkit-justify-content : center;
+    justify-content         : center;
+    -webkit-box-orient      : vertical;
+    -webkit-flex-direction  : column;
+    flex-direction          : column;
+    position                : relative;
+    width                   : 90%;
+    height                  : 100%;
+    max-height              : 47.4rem;
+    margin                  : 15% auto 0;
+    background-position     : center center;
+    background-repeat       : no-repeat;
+    -webkit-background-size : contain;
+    background-size         : contain;
+    text-align              : center;
+    overflow                : hidden;
+  }
+
+  .btns {
+    width      : 100%;
+    margin     : 2.5rem auto 0;
+    text-align : center;
+  }
+
+  .btn {
+    display       : inline-block;
+    width         : 40%;
+    height        : 5.2rem;
+    line-height   : 5.2rem;
+    font-size     : 2.8rem;
+    border-radius : 2rem;
+    text-align    : center;
+  }
+}
+
+.bd {
+  .wrapper {
+    .pr;
+    .bgc(@color2);
+    .border-r(1.5rem);
+    .pt(2rem);
+    .pb(2rem);
+    &::before {
+      content : "";
+      .pa; 
+      top: -17%; 
+      left: 0; 
+      .w(100%);
+      .h(30%); 
+    }
+  }
+  .wow::before { background: url(@successFace) center bottom no-repeat; background-size: auto 100%; }
+  .face1::before { background: url(@failFace1) center bottom no-repeat; background-size: auto 100%; }
+  .face2::before { background: url(@failFace2) center bottom no-repeat; background-size: auto 100%; }
+  .face3::before { background: url(@failFace3) center bottom no-repeat; background-size: auto 100%; }
+}
+
+#panel-title {
+  height     : 15%;
+  margin-top : 25rem;
+  font-size  : 4.4rem;
+  .block;
+  .l(200%);
+}
+
+.ios #panel-title {
+  margin-top : 10rem;
+}
+
+.panel-success #panel-title,
+.panel-fail #panel-title {
+  margin : 0;
+}
+
+#panel-desc {
+  height    : 10%;
+  font-size : 2.1rem;
+  color     : #fff;
+}
+
+#hide-panel-btn {
+  color            : @color1;
+  border           : 2px solid @color1;
+  background-color : @color2;
+}
+
+#close-panel-btn {
+  display          : none;
+  color            : #fff;
+  border           : 2px solid #fff;
+  background-color : @color2;
+  width            : 46%;
+  height           : 5.2rem;
+  line-height      : 5.2rem;
+  font-size        : 2.8rem;
+  border-radius    : 2rem;
+  margin           : 0 auto;
+  text-align       : center;
+}
+
+#share-panel-btn {
+  margin-left      : 3%;
+  color            : #fff;
+  border           : 2px solid #fff;
+  background-color : @color2;
+}
+
+/**
+* 微信分享提示
+*/
+#wx-tips {
+  display                 : none;
+  position                : fixed;
+  top                     : 0;
+  bottom                  : 0;
+  width                   : 100%;
+  background              : url(@wxTipBg) no-repeat top center;
+  -webkit-background-size : cover;
+  background-size         : cover;
+  z-index                 : @panelZIndex;
+}

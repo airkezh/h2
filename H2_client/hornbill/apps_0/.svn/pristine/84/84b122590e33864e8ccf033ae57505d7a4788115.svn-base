@@ -1,0 +1,162 @@
+<%#head.html%>
+<%
+	var wlInfoRenderFn = requireFn('welfare/welfare_info.html');
+	var coupon10 = 'http://meilishuo.com/u/EK3z7b?frm=xiaogou10',
+		coupon20 = 'http://meilishuo.com/u/EK30BJ?frm=xiaogou11',
+		coupon50 = 'http://meilishuo.com/u/EK30Fx?frm=xiaogou12',
+		flash = 'http://player.youku.com/player.php/sid/XNjIyOTM2MDQ0/v.swf?VideoIDS=XNjIyOTM2MDQ0&isAutoPlay=true'
+%>
+<div class="main">
+	<div class="bg0">
+		<a href="#welfare_bg" class="detail"></a>
+	</div>
+	<div class="bg1">
+		<div class="video">
+			<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" id="storage" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,19,0" width="431" height="268">
+				<param name="movie" value="<%=flash %>" />
+				<param name="quality" value="high" />
+				<param name="wmode" value="transparent" />
+				<embed src="<%=flash %>" id="cache2" quality="high" wmode="transparent" pluginspage="http://www.macromedia.com/go/getflashplayer" allowScriptAccess="always" allowFullScreen="false" type="application/x-shockwave-flash" width="431" height="268"></embed>
+			</object>
+		</div>
+	</div>
+	<div class="bg2" id="welfare_bg" name="welfare_bg">
+		<div class="wel_fil">
+			<%=wlInfoRenderFn(this.wl_header)%>
+		</div>
+	</div>
+	<div class="bg3">
+		<a href="<%=coupon10 %>" target="_blank" class="y10"></a>
+		<a href="<%=coupon20 %>" target="_blank" class="y20"></a>
+		<a href="<%=coupon50 %>" target="_blank" class="y50"></a>
+	</div>
+	<div class="bg4">
+		<div class="wb_table">
+			<script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js?appkey=" type="text/javascript" charset="utf-8"></script>
+			<wb:livestream skin="silver" topic="%E8%BF%9B%E5%87%BB%E7%9A%84%E5%B0%8F%E7%8B%97|%E8%BF%9B%E5%87%BB%E7%9A%84%E5%B0%8F%E7%8B%97" width="auto" height="631" ></wb:livestream>
+		</div>
+	</div>
+</div>
+
+<%*弹窗部分--转发到微博@好友--通过绑定%>
+<script type="text/html" id="welfare_apply">
+<div class="welfare_apply" id="welfare_apply_after">
+	<p class="wf_explain">我们会优先选择有真人头像的姑娘获奖~</p>
+	<form class="wf_form" onsubmit="return false;" action="">
+		<input type="hidden" name="activity_id" value="<%=this.wl_header.activity_id%>">
+		<p>
+			<span class="wa_info">真实姓名：</span>
+			<input id="real_name" class="wfipt1" type="text" value="<?=info.realname?>" name="real_name">
+		</p>
+		<p>
+			<span class="wa_info">联系电话：</span>
+			<input id="telephone" class="wfipt1" type="text" value="<?=info.mobile?>" name="telephone">
+		</p>
+		<p>
+			<span class="wa_info">收货地址：</span>
+			<input id="address" class="wfipt2" type="text" value="<?=info.shipping_address?>" name="address">
+		</p>
+		<p>
+			<span class="wa_info">申请理由：</span>
+			<textarea id="reason" class="wfipt3" name="reason"></textarea>
+		</p>
+		<p>
+			<span class="wa_info">备注：</span>
+			<input id="note" class="wfipt2" type="text" placeholder="非必填选项，按此活动需求，请填写你衣服或鞋子的尺寸" name="note">
+		</p>
+		<p class="l22_f">
+			<span class="wa_info">同步：</span>
+			<div id="weibo_area">
+				<p>
+					<?if(fans && fans.length>0) {?><span id="weibo_area_change">换一组</span>同步到我的微博，并@美丽说和我的好友
+					<?} else {?>
+					同步到我的微博，并@美丽说。
+					<?}?>
+				</p>
+				<div class="mt5_f">
+					<?fans && $.each(fans, function(k, v){?>
+					<img class="avatar48_f" alt="<?=v.screen_name?>" src="<?=v.image_url?>">
+					<?});?>
+					<div class="clear_f"></div>
+				</div>
+				<?if(fans && fans.length>0) {?>
+				<p class="mt5_f">你@了<span id="weibo_area_info">0</span>位微博好友</p>
+				<?}?>
+			</div>
+		</p>
+		<p>
+			<label class="cursor_f"><input fuid="<%=this.wl_info.userInfo.user_id%>" id="fol_actor" type="checkbox" checked>关注<%=this.user_list.nickname%></label>
+			<br/>
+			<label class="cursor_f"><input id="share_home" type="checkbox" checked>分享到我的首页</label>
+		</p>
+		<p>
+			<input id="applying_submit" type="submit" value="提交申请">
+			<a class="wf_cancel" href="javascript:void(0)">取消</a>
+		</p>
+	</form>
+</div>
+</script>
+<%*弹窗部分--转发到微博@好友--未绑定%>
+<script type="text/html" id="welfare_apply_before">
+<div class="welfare_apply_before">
+	<p class="c_f">亲，绑定以下任意微博就能参加活动啦！</p>
+	<div class="mt14_f wf_bind">
+		<a class="wfr_ico1" href="/settings/syncBind/weibo"></a>
+		<a class="wfr_ico2" href="/settings/syncBind/txweibo"></a>
+		<div class="clear_f"></div>
+	</div>
+</div>
+</script>
+<%*弹窗部分--转发到微博@好友--绑定失败%>
+<script type="text/html" id="welfare_apply_error">
+<div class="c_f">
+	<p class="erro_info">授权失败，请再试一次吧！</p>
+	<p>
+		<span class="btn sure" id="welfare_sure">确定</span>
+		<span class="" id="welfare_return">返回</span>
+	</p>
+</div>
+</script>
+<%*申请成功提示%>
+<script type="text/html" id="welfare_apply_success">
+<div class="apply_success">
+	<p>你已经成功提交申请了，我们会尽快处理，</p>
+	<%*207号福利社定制功能 4.16下线%>
+	<%if(this.wl_header.activity_id == 207){%>
+	<p>来<a class="red_f fb_f" href="http://c.admaster.com.cn/c/a13079,b200160760,c1981,i0,m101,h" target="_blank">ORBIS官网</a>浏览，寻找更多惊喜。</p>	
+	<%}else{%>
+	<p>获得试用资格的MM将收到系统消息通知，</p>
+	<p>请注意查收哦～</p>
+	<%}%>
+	<%if(this.wf_girl.followed == 0){%>
+	<p>想获得更多福利情报，请关注福利花小美^_^</p>
+	<div class="mt8_f clearfix_f" style="margin-left:20px;">
+		<a class="left_f" target="_blank" href="/person/u/<%=this.wf_girl.user_id%>">
+			<img width="86" height="86" src="<%=this.wf_girl.avatar_a%>">
+		</a>
+		<div class="wf_girl_r">
+			<a class="f14_f fb_f block_f" target="_blank" href="/person/u/<%=this.wf_girl.user_id%>"><%=this.wf_girl.nickname%>
+				<span class="identity_big_style">
+				<%= jsRender('identity.html')(this.wf_girl) ;%>
+				</span>
+			</a>
+			<span class="red_follow add_follow_ok" fuid="<%= this.wf_girl.user_id%>" following=<%= this.wf_girl.following%> followed="<%= this.wf_girl.followed%>">+ 加关注</span>
+		</div>
+	</div>
+	<%}else{%>
+	<p class="mt14_f" style="margin-left:100px;"><input class="apply_success_ok cursor_f btn sure" type="button" value="确定"/></p>
+	<%}%>
+</div>
+</script>
+<script>
+	Meilishuo.config.begin = <%=this.wl_header.begin%>;
+	Meilishuo.config.activity_id = <%=this.wl_header.activity_id%>;
+	Meilishuo.config.editor = <%=this.wl_header.editor%>;
+	Meilishuo.config.pid = <%=this.wl_header.twitter_images_id%>;
+	Meilishuo.config.wl_title = '<%=this.wl_header.title%>';
+	Meilishuo.config.topic_title = '<%=this.wl_header.topic_title%>';
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/huodong/xiaogou');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

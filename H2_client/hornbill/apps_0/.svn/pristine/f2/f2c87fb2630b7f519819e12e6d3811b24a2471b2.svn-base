@@ -1,0 +1,32 @@
+<%#head.html%>
+	<img src="<%= this.PICTURE_URL%>images/wap/activity/exo/top.jpg" />
+	<img src="<%= this.PICTURE_URL%>images/wap/activity/exo/pic1.jpg" />
+	<ul class="news">
+		<% this.exo_img.news_section && this.exo_img.news_section.map(function(data){ %>
+			<li>
+				<p class="lp"><%=data.time%></p>
+				<p class="rp"><%=data.text%></p>
+			</li>
+		<%});%>
+	</ul>
+	<img src="<%= this.PICTURE_URL%>images/wap/activity/exo/pic2.jpg" />
+	<ul class="exo_group">
+		<% this.exo_img.news_section && this.exo_img.group_section.map(function(data){ %>
+			<li><a href="<%= _extFn.getAppLink('group' , {'group_id':data.group_id} , this.os, this.r) %>" target="_blank"><img src="<%=data.pic_url%>" /></a></li>
+        <%});%>
+	</ul>
+	<img src="<%= this.PICTURE_URL%>images/wap/activity/exo/pic4.jpg" />
+	<div class="guanzhu">
+		<a href="http://meilishuo.qzone.qq.com" class="left_f"><img src="<%= this.PICTURE_URL%>images/wap/activity/exo/pic5.jpg" /></a>
+		<a href="http://m.weibo.cn/u/1718455577" class="left_f"><img src="<%= this.PICTURE_URL%>images/wap/activity/exo/pic6.jpg" /></a>
+	</div>
+	<img src="<%= this.PICTURE_URL%>images/wap/activity/exo/pic7.jpg" />
+	<% if(this.share){ %>
+		<%= requireFn('wapShare.html')({
+			'share' : this.share 
+		    , 'shareTitle' : '选择分享到'
+		    , '_JSstack' : this._JSstack
+		    , '_JSmods' : this._JSmods
+		}); %>
+	<%}%>
+<%#foot_simple.html%>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<%# lang.conf%>
+<!--[if IE 7]><html class="ie7 lt-ie10"><![endif]-->
+<!--[if IE 8]><html class="ie8 lt-ie10"><![endif]-->
+<!--[if IE 9]><html class="ie9 lt-ie10"><![endif]-->
+<!--[if gt IE 9]><!-->
+<html>
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8" />
+	<title><%== this.pageTitle%></title>
+    <meta name="description" content="<%= this.meta_description%>" />
+    <meta name="keywords" content="<%= this.keywords%>" />
+	<link rel="dns-prefetch" href="http://s.meilishuo.net/">
+	<link rel="dns-prefetch" href="http://i.meilishuo.net/">
+	<link rel="dns-prefetch" href="http://d01.res.meilishuo.net/">
+	<link rel="dns-prefetch" href="http://d02.res.meilishuo.net/">
+	<link rel="dns-prefetch" href="http://d03.res.meilishuo.net/">
+	<link rel="dns-prefetch" href="http://d04.res.meilishuo.net/">
+	<link rel="dns-prefetch" href="http://d05.res.meilishuo.net/">
+    <%if(this.author){%>
+		<meta name="author" content="<%= this.author%>"/>
+    <%}%>
+    <meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1" />
+    <meta property="qc:admins" content="173137167465514130576375" />
+    <meta name="chinaz-site-verification" content="500e4417-e595-40ac-98da-dec66c97a9e5" />
+    <% if (this._mobileAgent) { %>
+		<meta name="mobile-agent" content="format=html5;url=http://m.meilishuo.com<%=this._mobileAgent%>">
+	<% } %>
+	<% if (this._canonical) { %>
+		<link rel="canonical" href="http://www.meilishuo.com<%=this._canonical%>"/>
+	<% } %>
+	<% if(!this.noBasecss){ %>
+    <link rel="stylesheet" type="text/css" href="<%= this.JCSTATIC_BASE %>css/base.css?<%= this.SVERSION%>" />
+    <!--[if IE 6]><link rel="stylesheet" type="text/css" href="<%= this.JCSTATIC_BASE %>css/ie6.css?<%= this.SVERSION %>" /><![endif]-->
+	<%  } %>
+    <link rel="apple-touch-icon-precomposed" href="<%= this.CSS_JS_BASE_URL%>css/images/custom_icon_precomposed.png"/>
+    <%
+		this.user_id = (this.userInfo ? this.userInfo.user_id:0) || 0;
+	%>
+	<% this.user_id = (this.userInfo ? this.userInfo.user_id:0) || 0;%>
+	<%= (function(link){
+		var str = '';
+		var base = this.JCSTATIC_BASE;
+		var sversion = this.SVERSION;
+		link && link.map(function(src){
+			str += '<link rel="stylesheet" type="text/css" href="'+base+'css/'+src+'.css?'+ sversion +'"/>';
+			});
+		return str;
+		})(this._CSSLinks)%>
+	<% if (this._CSSstack && this._CSSstack.length) { %>
+		<style>
+		<%= this._CSSstack.join("\n");%>
+		</style>
+	<% }
+	%>
+	<script type="text/javascript" src="<%= this.JCSTATIC_BASE  %>~fml?<%= this.SVERSION%>" ></script>
+	<%
+		var globalSideBarURL = this.isHTTPS ? 'https://zhifu.newlab.meilishuo.com/~order:common/biu?v2' : 'http://biz.newlab.meilishuo.net/~order:common/biu?v2';
+	%>
+	<script type="text/javascript" src="<%= globalSideBarURL %>"></script>
+	<script>
+	fml.setOptions({'sversion' : '<%= this.SVERSION %>','defer' : <%= this.JS_Defer %> ,'modulebase' : '<%= this.JCSTATIC_BASE + this.SCRIPT_BASE %>'});
+	<%
+	var MeilishuoConfig = {
+		config : {
+			nt : this.nToken,
+			main_site_domain: this.MAIN_SITE_DOMAIN,
+			server_url : this.SERVER_BASE,
+			picture_url : this.PICTURE_URL,
+			captcha_url : this.CAPTCHA_ULR,
+			im_url : this.IM_ULR,
+			user_id : this.user_id ,
+			nickname : this.userInfo.nickname || '',
+			fairy_id : 219,
+			forSale : !!this.SaleChannel,
+			qzone_notfans : this.userInfo.qzone_notfans,
+			is_actived : typeof this.userInfo.is_actived !== 'undefined' ? this.userInfo.is_actived : 1,
+			controller : this.headTag,
+			avatar_c : this.userInfo.avatar_c,
+			level :this.userInfo.level || 0,
+			weibo_bind : this.userInfo.weibo,
+			weibo_act : this.userInfo.weibo_act,
+			block_remain : this.userInfo.block_remain || 0,
+			mobile_is_actived : this.userInfo.mobile_is_actived || 0,
+			need_active : this.userInfo.need_active || 0 ,
+			is_iPad : this.is_iPad || false ,
+			is_service : this.userInfo.is_service || 0,
+			apiHost : this.apiHost,
+			proxyPath : '/ja/proxy/'
+		}
+	}
+	%>
+    var Meilishuo = <%=JSON.stringify(MeilishuoConfig) %>;
+	<%if(this.staticize == 1){%>
+		Meilishuo.config.login_state = 0;
+	<%}%>
+	</script>
+</head>

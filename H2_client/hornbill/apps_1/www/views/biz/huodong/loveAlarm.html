@@ -1,0 +1,63 @@
+<%#head.html%>
+<div class="banner">
+	<a class="download" target="_blank" href="http://m.meilishuo.com/download/latest/web"></a>
+	<a href="javascript:;" id="share" class="share"></a>
+	<img class="quickmark" src="http://i.meilishuo.net/css/images/huodong/juneSale/quickmark.jpg" alt="美丽说安卓版"/>
+</div>
+<div class="shareTo">
+	分享给你的好友为你点赞吧！分享到
+	<span class="i_qzone">&nbsp;</span>
+	<span class="i_tx">&nbsp;</span>
+</div>
+<div class="casePic">
+
+</div>
+<div class="wall">
+	<div class="container">
+		<div class="shop_auto">
+			<div class="goods_wall">
+			</div>
+			<div class="paging_panel c_f">
+				<%#paging.html%>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="wall_bottom"></div>
+<div class="left_heart_bg"></div>
+<div class="right_heart_bg"></div>
+<script>
+	<%= this.poster0? 'Meilishuo.config.poster0 = '+JSON.stringify(this.poster0)+';':'' ;%>
+</script>
+<script type="text/html" id="posterWall">
+	<? $.each(tInfo , function(k, data){?>
+	<? var cHeight = parseInt(data.pic_height/data.pic_width*226);?>
+	<div>
+		<div class="unit">
+			<a href="/share/<?=data.twitter_id?>?d_r=0__0-1-1-10" target="_blank">
+				<img src="<?= data.pic_url ?>" width="226px" height="<?=cHeight?>px"/>
+			</a>
+			<div class="desc">
+				<a target="_blank" href="/person/u/<?= data.user_id ?>?frm=headerprofile">
+					<img height="32px" src="<?= data.avatar_url ?>"/>
+				</a>
+				<p>
+					<span class="nick_name"><?= data.nickname ?></span>
+					<span class="desc"><?= data.user_desc ?></span>
+				</p>
+			</div>
+			<div class="heart <?if(data.is_like){?>liked<?}?>" data-sid="<?=data.twitter_id?>" style="top:<?=cHeight-61?>px">
+				<?= data.count_like ?>
+			</div>
+		</div>
+	</div>
+	<? }); ?>
+</script>
+<script>
+	var share_info = <%= JSON.stringify(this.share_info) || "{}" %>;
+</script>
+<% $_ENGINE_SELF.callFn("useModule")("fml.use('page/poster0');", this._JSstack , this._JSmodsFast ); %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use('page/huodong/loveAlarm');
+_use:", this._JSstack , this._JSmodtrs ); %>
+<%#foot.html%>

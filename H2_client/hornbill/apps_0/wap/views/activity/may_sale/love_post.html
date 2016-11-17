@@ -1,0 +1,42 @@
+<div class="goods_wall pic_box">
+</div>
+<div class="pullUp" status="loading"></div>
+
+<script type="text/html" id="posterWall">
+<?
+/*fml.vars.twitter_load = fml.vars.twitter_load || {};*/
+$.each(this.tInfo , function(k , v){ 
+	/*if(!v || fml.vars.twitter_load[v.twitter_id]){return}
+	fml.vars.twitter_load[v.twitter_id] = true;*/
+	var pic_height = v.pic_height * fml.vars.poster.scale;
+?>
+	<figure class="small_pic"  style="width:<?= fml.vars.poster.colWidth-12?>px;" poster_height="<?= pic_height + 65?>">
+		<a class="pic_load" href="<?= v.share_url ?>" style="padding-top: <?= pic_height ?>px;"><img src="<?= v.pic_url ?>" /></a>
+		<figcaption>
+			<a class="js_approve <?= v.is_like == 1 ? 'approved' : 'approve' ?>" data_id="<?= v.twitter_id ?>"><span class="nums"><?= v.count_like ?></span><span><?= v.is_like == 1 ? '已赞' : '赞' ?></span></a>
+			<a class="face"><img src="<?= v.avatar_url ?>" /></a>
+			<p><?= v.nickname ?></p>
+			<p class="txt"><?= v.user_desc ?></p>
+		</figcaption>
+	</figure>
+<? }); ?>
+</script>
+<script>
+fml.vars.poster = {};
+<%= this.goods? 'Meilishuo.config.poster0 = '+JSON.stringify(this.goods)+';':'' ;%>
+</script>
+
+<% $_ENGINE_SELF.callFn("useModule")("fml.use('wap/page/poster0');", this._JSstack , this._JSmodsFast ); %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use(['wap/app/posterWalls'] , function(){
+		var posterWall = this.posterWalls;
+
+		var urlData = { 'frame' : 1 };
+		var pullUpAction = function(){
+			posterWall.ajaxPoster('/aj/may_sale/goods')
+		}
+
+		posterWall.testPoster0(urlData ,pullUpAction);
+		posterWall.scrollPoster(true);
+	});
+_use:", this._JSstack , this._JSmods ); %>

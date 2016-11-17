@@ -1,0 +1,73 @@
+function fashion(){
+	return this;	
+}
+var controlFns = {
+	'main' : function(){
+		var cid = this.readData('cid',this.req.__get, 0)|0;
+		var php = {
+			'fuide' : '/customactivity/CustomActivity_fuider_pc_special?cid='+cid		
+		}
+		var mSelf = this;
+		this.setDefaultData(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			if(!data.fuide) return this.errorPage();
+			data.pageTitle = data.fuide.page_title;
+			data._CSSLinks = ['activity/fuide_mode'];
+			mSelf.render('activity/fuide_mode.html' , data);	
+			
+		});
+	},
+	'list' : function(){
+		var page = this.readData('page',this.req.__get, 0)|0;
+		var php = {
+			'list' : '/customactivity/CustomActivity_fuider_pc_special_list'
+		}
+		, mSelf = this
+		this.setDefaultData(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			//获取分页总数
+			data.groupPg = {}; 
+			data.groupPg.total_num = data.list.totalNum;
+			data.groupPg.page_size = 10;
+			data.groupPg.current_page = page; 
+
+			data.pageTitle = '美丽说时尚专题';
+			data._CSSLinks = ['activity/seasonList'];
+			mSelf.render('activity/seasonList.html' , data);	
+		});	
+	},
+	'goods' : function(seaid){
+		var php = {
+			'attribute' : '/customactivity/CustomActivity_seasonal_special_attribute'
+			, 'audio' : '/customactivity/CustomActivity_seasonal_special_header'
+			, 'keywords' : '/customactivity/CustomActivity_seasonal_special_popular_keyword'
+			, 'calendar' : '/customactivity/CustomActivity_seasonal_special_calendar'
+			, 'attr' : '/customactivity/CustomActivity_seasonal_special_attribute'
+			, 'friend' : '/customactivity/CustomActivity_seasonal_special_brand'
+			, 'goods' : '/customactivity/CustomActivity_seasonal_special_hotrecommend'
+			,'logo' : '/customactivity/CustomActivity_wap_seasonal_special_partner'
+		}
+		var mSelf = this;
+		this.setDefaultData(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			//base.var_dump(data.calendar, false, 5);
+			var params = {
+				'title' : data.audio.page_title,
+				'text' : data.audio.description,
+				'pic' : data.audio.share_pic,
+				'url' : 'http://m.meilishuo.com/goto/open/?appUrl='+encodeURIComponent('/activity/season/list/')+'&bg2='+encodeURIComponent('http://www.meilishuo.com//activity/season/goods/?banner_id='+mSelf.req.__get.banner_id)
+			};
+			data.share_info = params;
+			//console.log(params);
+			//console.log(data.audio);
+			data.pageTitle = '2013秋冬换季月 美丽说【30天换季进行时】';
+			data._CSSLinks = ['activity/season'];
+			mSelf.render('activity/season.html' , data);	
+		});	
+	}
+
+};
+exports.__create = controller.__create(fashion , controlFns);

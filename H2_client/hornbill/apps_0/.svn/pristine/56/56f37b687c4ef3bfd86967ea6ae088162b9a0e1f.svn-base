@@ -1,0 +1,320 @@
+<%
+	var geneData = this.gene_index.data || {};
+	var feature_list = geneData.feature_list || []; 
+	var style_list = geneData.style_list || []; 
+	var goods_list = geneData.goods_list || []; 
+	var isMine = this.isMine;
+	var pageR = this.gene_index.r;
+	var styleInfoList = {
+	    "1": {
+	        "name": "民族",
+	        "color": "#BC0A0A"
+	    },
+	    "2": {
+	        "name": "原宿",
+	        "color": "#3067BB"
+	    },
+	    "3": {
+	        "name": "日系",
+	        "color": "#60CAB0"
+	    },
+	    "4": {
+	        "name": "森女",
+	        "color": "#147E54"
+	    },
+	    "5": {
+	        "name": "运动",
+	        "color": "#50C1F5"
+	    },
+	    "6": {
+	        "name": "文艺",
+	        "color": "#FF971C"
+	    },
+	    "7": {
+	        "name": "街头",
+	        "color": "#466BCA"
+	    },
+	    "8": {
+	        "name": "名媛",
+	        "color": "#5D374B"
+	    },
+	    "9": {
+	        "name": "甜美",
+	        "color": "#FF1C9C"
+	    },
+	    "10": {
+	        "name": "复古",
+	        "color": "#5D3937"
+	    },
+	    "11": {
+	        "name": "韩范",
+	        "color": "#FF416C"
+	    },
+	    "12": {
+	        "name": "欧美",
+	        "color": "#374A5D"
+	    },
+	    "13": {
+	        "name": "萌系",
+	        "color": "#FF301B"
+	    }
+	};
+%>
+<%#head.html%>
+<% function genTle(txt){ %>
+<div class="tle<%if(!isMine){%> other<%}%>"><%=txt||'' %></div>
+<div class="arrow_wrap">
+	<div class="arrow1"></div>
+	<div class="arrow2"></div>
+</div>
+<% } %>
+<div id="preventTouchMasker"></div>
+<div id="win_loading">
+	<div class="center_wrapper">
+		<div class="ufo_icon_ani">
+			<div class="ufo_first"></div>
+			<div class="ufo_second">
+				<div class="dark_circle"></div>
+				<div class="dark_circle"></div>
+				<div class="dark_circle"></div>
+				<div class="dark_circle"></div>
+				<div class="dark_circle"></div>
+			</div>
+			<div class="ufo_third"></div>
+			<div class="ufo_forth"></div>
+		</div>
+		<p>正在加载<%=isMine? '您' : geneData.user_profile.nickname %>的时尚基因</p>
+	</div>
+</div>
+<div class="main_container" style="display:none;">
+	<div class="step_wrapper_1">
+		<div class="my_head_wrapper">
+			<div class="head_border">
+				<img src="<%=geneData.user_profile.avatar_a %>" class="my_head_img">
+			</div>
+			<% if(isMine){ %>
+			<div class="add_btn">+</div>
+			<div class="add_fashion_gene">完善时尚基因</div>
+			<% } %>
+		</div>
+		<div class="page1_view_wrapper">
+			<%
+				var positionClassArr = ['tt02000200','tt12000300','tt02401200','tt12401100','tt01000300','tt12400200','tt02401170','tt12401200','tt02400200','tt10500300','tt12400100','tt02401200','tt12001200'];
+			%>
+			<% style_list.forEach(function(item, i, arr){%>
+				<% if([0,4,8].indexOf(i)!==-1){%>
+				<div class="view">
+				<% } %>
+					<div class="cata_circle_wrapper <%=positionClassArr[i] %>" <%if(item.change){%>data-change="<%=item.change %>"<%}%> data-style_id="<%=item.id %>" data-r="<%=item.r ||'' %>">
+						<div class="line"></div>
+						<% var tmpSize= 2*item.weight/100; tmpSize=tmpSize<0.6?0.6:tmpSize;%>
+						<div class="scale_wrap" style="width:<%=tmpSize %>rem;height:<%=tmpSize %>rem;">
+							<div class="img_wrapper">
+								<img src="<%=item.img_url %>" class="cata_img">
+								<%if(item.change){%>
+								<div class="change_value">
+									<span>+<%=item.change %></span>
+								</div>
+								<% } %>
+							</div>
+						</div>
+						<div class="tle_wrap">
+							<span><%=item.name %></span>
+						</div>
+					</div>
+				<% if([3,7].indexOf(i)!==-1 || i===arr.length-1){%>
+				<%* end with class view %>
+				</div>
+				<% } %>
+			<%});%>
+			<div class="bg_item_wrapper on_ani">
+				<div class="bg_fig planet_shake_1 planet1"></div>
+				<div class="bg_fig planet_shake_1 planet2"></div>
+				<div class="bg_fig planet_shake_1 planet3"></div>
+				<div class="bg_fig planet_shake_2 earth"></div>
+				<div class="bg_fig planet_shake_2 ufo"></div>
+				<div class="bg_fig planet_shake_2 satellite"></div>
+				<div class="star bg_yellow bp00560720 scale14 twinkle_1"></div>
+				<div class="star bg_yellow bg00860750 scale10 twinkle_5"></div>
+				<div class="star bg_yellow bg00560244 scale10 twinkle_3"></div>
+				<div class="star bg_yellow bg01800244 scale20 twinkle_2"></div>
+				<div class="star bg_yellow bg05480610 scale24 twinkle_5"></div>
+				<div class="star bg_yellow bg05660638 scale10 twinkle_1"></div>
+				<div class="star bg_yellow bp01720444 scale10 twinkle_4"></div>
+
+				<div class="star bg_red bp04840990 scale14 twinkle_1"></div>
+				<div class="star bg_red bp04800970 scale06 twinkle_2"></div>
+				<div class="star bg_red bp05961004 scale10 twinkle_3"></div>
+				<div class="star bg_red bp06140846 scale06 twinkle_4"></div>
+				<div class="star bg_red bp06300850 scale14 twinkle_5"></div>
+
+				<div class="star bg_yellow bp00860324_2 scale14 twinkle_5"></div>
+				<div class="star bg_yellow bp02060324_2 scale20 twinkle_4"></div>
+				<div class="star bg_yellow bp02200346_2 scale10 twinkle_3"></div>
+				<div class="star bg_yellow bp01660976_2 scale20 twinkle_2"></div>
+				<div class="star bg_yellow bp01961008_2 scale10 twinkle_1"></div>
+				<div class="star bg_yellow bp02801000_2 scale10 twinkle_5"></div>
+				<div class="star bg_yellow bp05680524_2 scale30 twinkle_1"></div>
+				<div class="star bg_yellow bp06000540_2 scale10 twinkle_4"></div>
+
+				<div class="star bg_red bp05340940_2 scale14 twinkle_1"></div>
+				<div class="star bg_red bp05300920_2 scale06 twinkle_2"></div>
+				<div class="star bg_red bp06460954_2 scale10 twinkle_3"></div>
+				<div class="star bg_red bp06640796_2 scale06 twinkle_4"></div>
+				<div class="star bg_red bp06800800_2 scale14 twinkle_5"></div>
+
+				<div class="star bg_yellow bp00560720_3 scale14 twinkle_5"></div>
+				<div class="star bg_yellow bg00860750_3 scale20 twinkle_4"></div>
+				<div class="star bg_yellow bg00560244_3 scale10 twinkle_3"></div>
+				<div class="star bg_yellow bg01800244_3 scale20 twinkle_2"></div>
+				<div class="star bg_yellow bg05480610_3 scale10 twinkle_1"></div>
+				<div class="star bg_yellow bg05660638_3 scale10 twinkle_5"></div>
+				<div class="star bg_yellow bp01720444_3 scale30 twinkle_1"></div>
+
+				<div class="star bg_red bp05340940_3 scale14 twinkle_1"></div>
+				<div class="star bg_red bp05300920_3 scale06 twinkle_2"></div>
+				<div class="star bg_red bp06460954_3 scale10 twinkle_3"></div>
+				<div class="star bg_red bp06640796_3 scale06 twinkle_4"></div>
+				<div class="star bg_red bp06800800_3 scale14 twinkle_5"></div>
+			</div>
+		</div>
+	</div>
+	<div class="step_others_wrapper">
+		<div class="step_others">
+			<div class="translate_wrapper">
+				<div class="step_wrapper_2">
+					<% genTle(feature_list.length); %>
+					<ul class="page2_ul">
+						<% feature_list.forEach(function(item, i){%>
+						<li class="page2_item style<%=item.style_id %>" data-styleid="<%=item.style_id %>">
+							<div class="nav_con">
+								<div class="nav_l"></div>
+								<div class="nav_c"><%=i+1 %></div>
+								<div class="nav_r"></div>
+							</div>
+							<div class="con">
+								<div class="vc_wrapper">
+									<h3 class="con_tle"><%=item.title %></h3>
+									<p class="con_desc"><%=item.desc %></p>
+									<div class="bottom_wrapper">
+										<div class="cata_icon"></div>
+										<ul class="cata_ul">
+											<% item.cata_list && item.cata_list.forEach(function(cataItem){%>
+											<li class="cata_li" data-keywords="<%=cataItem.key_words %>">
+												<img src="<%=cataItem.img_url %>">
+												<div class="cata_name_wrap">
+													<span class="cata_name"><%=cataItem.name %></span>
+												</div>
+											</li>
+											<%});%>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</li>
+						<%});%>
+					</ul>
+				</div>
+				<div class="step_wrapper_3">
+					<% genTle(); %>
+					<div class="page3_show_wrapper">
+						<div class="page3_ul">
+							<%
+								goods_list.push({type:'more'});
+							%>
+							<% goods_list.forEach(function(item, i, arr){%>
+							<% if(i%2===0){%>
+							<div class="column">
+								<div class="flex_box">
+							<% } %>
+								<% if(item.type!='more'){%>
+									<div class="page3_item" data-twitter_id="<%=item.twitter_id %>">
+										<div class="goods_wrapper">
+											<div class="goods_img" style="background:url('<%=item.img_url %>') no-repeat center center;background-size:100% auto;"></div>
+											<% if(styleInfoList[item.style_id]){ %>
+											<div class="lt_icon style<%=item.style_id %>"><%=styleInfoList[item.style_id].name %></div>
+											<% } %>
+											<p class="goods_title"><%=item.goods_title %></p>
+											<p class="goods_price"><%=item.goods_price %></p>
+										</div>
+									</div>
+								<% } else { %>
+									<div class="page3_item see_more">
+										<div class="see_more_txt">查看更多</div>
+									</div>
+								<% } %>
+									
+							<% if(i%2===1 || i===arr.length-1){ %>
+								</div>
+							</div>
+							<% } %>
+							<% });%>
+						</div>
+					</div>
+				</div>
+				<div class="step_wrapper_4">
+					<% genTle(); %>
+					<div class="page4_logo">
+						<div class="ufo_icon">
+							<div class="ufo_first"></div>
+							<div class="ufo_second">
+								<div class="dark_circle"></div>
+								<div class="dark_circle"></div>
+								<div class="dark_circle"></div>
+								<div class="dark_circle"></div>
+								<div class="dark_circle"></div>
+							</div>
+							<div class="ufo_third"></div>
+							<div class="ufo_forth"></div>
+						</div>
+						<img src="http://d01.res.meilishuo.net/pic/_o/45/ae/9fd1d42a7944a85e0103f02c7e57_136_47.cj.png" alt="" class="logo">
+						<ul class="goods_thumb_list">
+							<% 
+							var thumbPicArr = [
+								"http://d01.res.meilishuo.net/pic/_o/43/67/f571939a3bcf0f4369fb3c7d40fa_60_60.cj.png"
+								,"http://d04.res.meilishuo.net/pic/_o/c1/12/010ede2e0b8b1007e2a8e4c9aa01_70_70.cj.png"
+								,"http://d02.res.meilishuo.net/pic/_o/77/c9/bc5dc307ab2e89ec671432b7b6c3_110_110.cj.png"
+								,"http://d04.res.meilishuo.net/pic/_o/c9/fb/254ee09d30fcb257671bf44a6c94_100_100.cj.png"
+								,"http://d05.res.meilishuo.net/pic/_o/63/c8/bb169652d2df29c9498d8f7f0b34_70_70.cj.png"
+							];
+							%>
+							<% for(var i=0;i<thumbPicArr.length;i++){ %>
+							<li class="thumb_item">
+								<img class="thumb_item_img" src="<%= thumbPicArr[i] %>" alt="">
+							</li>
+							<% } %>
+						</ul>
+					</div>
+					<% if(this.os.mlsApp){%>
+					<div class="share_btn shareBtn"></div>
+					<% } else {%>
+					<a class="download_btn"></a>
+					<% } %>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	fml.vars.appShare = <%= this.appShare %>; 
+	fml.vars.params = <%= JSON.stringify(this.params) %>; 
+	fml.vars.user_id = <%= geneData.user_profile.user_id|0 %>;
+	fml.vars.page_r = '<%=pageR %>';
+	Meilishuo.config.isMine = <%=!!isMine %>;
+</script>
+<% if(!this.appShare){ %>
+	<%= requireFn('wapShare.html')({
+		'share' : this.share 
+	    , 'shareTitle' : '选择分享到'
+	    , '_JSstack' : this._JSstack
+		, '_JSmods' : this._JSmods
+	}); %>
+<% } %>
+<% if(this.os.weixinBrowser){ %>
+<div class="mask shareWXMask"></div>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<% } %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/fashion_gene_mine');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

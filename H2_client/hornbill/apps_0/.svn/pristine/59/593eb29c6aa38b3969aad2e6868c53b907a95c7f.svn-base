@@ -1,0 +1,49 @@
+<!doctype html>
+
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<script>
+			window.onload = function(){
+				var	pages = <%= JSON.stringify(this.pages) %> , d = document , c = document.cookie.split('; ') , cookie = {} , is_delete = <%= this.is_delete || 0 %>;
+
+				for(var i = 0 ; i < c.length; i++){
+					var index = c[i].indexOf('='), k = c[i].substr(0,index), v = c[i].substr(index+1);
+					cookie[k] = v;
+				}
+
+				c = decodeURIComponent('<%= this.c %>');
+
+				function forceJump(){ 
+					location.href = c; 
+				}
+				var timer = setTimeout(forceJump,3000);
+
+				var count = pages.length; 
+				function countdown(){
+					count--;
+					if(count === 0){
+						clearTimeout(timer);
+						forceJump();
+					}
+				};
+
+				for(var i = 0 ; i < pages.length ; i ++){
+
+					var p = pages[i];
+					if(p.indexOf('?') === -1){ p += '?'; }
+					var cookie_str = [cookie.MEILISHUO_MM,cookie.santorini_mm].join(',');
+					
+					if(is_delete) p += '&is_delete=1';
+					else p += '&cookies='+encodeURIComponent(cookie_str);
+
+					var script = d.createElement('script');
+					script.onload = script.onerror = countdown;
+					d.body.appendChild(script);
+					script.src=p;
+				};
+			};
+		</script>
+	</head>
+	<body></body>
+</html>

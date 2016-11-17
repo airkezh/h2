@@ -1,0 +1,54 @@
+@icon_bg: 'http://d03.res.meilishuo.net/img/_o/91/4c/7e7b92cde0c6eb57af6776129ef8_89_1110.ch.png';
+@cate: 'http://d03.res.meilishuo.net/img/_o/bb/12/1fb0a885744ff045c03a6c8f153b_60_760.ch.png';
+
+.wap_head(){
+	.wap_head_mask{ .pa; /*top: 1rem;*/left: 0;z-index: 699;.w(100%);.h(100rem);.bgc(rgba(0,0,0,.5));-webkit-transtion: opacity .5s; }
+	.wap_head_mask[status='hide']{ opacity: 0; }
+	.wap_head_mask[status='show']{ opacity: 1; }
+
+	.wap_head{ .pr;.w(100%);.h(1rem);z-index: 500; }
+	.wap_nav{
+		.bgc(#fff);.h(1rem);.f(.22rem);.pr;top: 0;left: 0;
+
+		.home_btn{ .left;.w(.48rem);.h(1rem);margin: 0 .2rem;background: url('http://d05.res.meilishuo.net/pic/_o/46/c2/7545d5f20d276e84af0f034b0287_92_94.cf.png') no-repeat center;background-size: .46rem;.c;.f(.22rem);.fc(#666); }
+		.search_wrap{
+			.w(4.64rem);.h(.6rem);.bgc(#F2F2F2);.border-r(.4rem);.c;.left;.mt(.2rem);.pr;outline: none;
+
+			input{ .bgc(transparent);outline: none;border: none;.w(100%);.h(.6rem);.pl(.5rem);.f(.22rem);.fc(#999);.pr;z-index: 100; }
+			input:focus~.word_hack, .input_focus{
+				.ml(0);text-align: left;
+			}
+			.word_hack{ .pa;top: .19rem;left: .2rem;.w(4.1rem);.c;.f(.22rem);.fc(#999); }
+			.word_hack span{ .i_block;.pl(.3rem);.h(.22rem);.l(.22rem);background: url(@icon_bg) no-repeat -.12rem 41.8%;background-size: .45rem; }
+		}
+		.cate{ .left;.w(.48rem);.h(.72rem);.l(.72rem);margin: .14rem .2rem 0 .2rem;.c;.f(.22rem);.fc(#666); }
+	}
+}
+
+.wap_foot(){
+	.wap_foot{ .pr;.h(1rem);.w(100%); }
+	.foot_fixed_wrap{
+		.pf;bottom: 0;left: 0;z-index: 600;.w(100%);.h(.98rem);border-top: 1px solid rgba(0,0,0,.2);.f(.2rem);.fc(#666);.bgc(#FFF);
+
+		a{ .left;.w(1.6rem);.c;.pb(.12rem); }
+		span{ .block;.w(.5rem);.h(.4rem);.auto;.mt(.15rem);.mb(.06rem);background: url('http://d02.res.meilishuo.net/pic/_o/78/85/cc0cc3bc64c60b92fab53471f001_1280_284.ch.png') no-repeat;background-size: 6.4rem; }
+		.i_home{ background-position: 8.7% bottom; }
+		.i_catalog{ background-position: 36.5% bottom; }
+		.i_cart{ background-position: 63.3% bottom; }
+		.i_myCenter{ background-position: 90.6% bottom; }
+		.active{
+			.fc(#FF7A9A);
+
+			.i_home{ background-position: 8.7% top; }
+			.i_catalog{ background-position: 36.5% top;.h(.42rem); }
+			.i_cart{ background-position: 63.3% top; }
+			.i_myCenter{ background-position: 90.6% top; }
+		}
+		.promotion{ .none; }
+		&.promotion_active{
+
+			a{ .w(1.28rem); }
+			.promotion{ .block;.w(1.28rem);.h(1.1rem);background: center no-repeat;background-size: contain;box-sizing: border-box;.pr;top: -.11rem; }
+		}
+	}
+}

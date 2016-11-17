@@ -1,0 +1,21 @@
+<%# head_simple.html%>
+</head>
+<body>
+<div class="spinner midSpinner pa_f" style="top:250px;"></div>
+<div class="content_fluid v_hidden">
+	<div class="goods_wall" style="height:1000px; width:100%;">
+	</div>
+	<div class="spinner botSpinner none_f"></div>
+	<div class="clear_f"></div>
+	<div class="paging_panel c_f">
+	<%#paging.html%>
+	</div>
+</div>
+<%# poster.html%>
+<script>
+	<%= this.poster0? 'Meilishuo.config.poster0 = '+JSON.stringify(this.poster0)+';':'' ;%>
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+		fml.use('page/poster0');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html%>

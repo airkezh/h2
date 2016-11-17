@@ -1,0 +1,31 @@
+<%# head.html %>
+<div class="registerSuccess">
+	<%= this.wordTitle%>
+	<div>
+		<%= this.words%>
+		<a href="javascript:void(0)" id="send_email">点击发邮件</a>
+		<span class="red_f send_sucess none_f">发送成功！</span>
+	</div>
+	<p>还没有收到确认邮件？</p>
+	<ul>
+		<li>可以尝试到垃圾邮件里找找看</li>
+		<li>还是搞不定，请<a href="http://www.meilishuo.com/help/feedback">联系客服</a></li>
+	</ul>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('jquery' , function($){
+		$('#send_email').bind('click' , function(){
+			var url = '/aj/forcemail/';	
+			var data = {};
+			var callback = function(){
+				$('#send_email').html('重新发送');
+				$('.send_sucess').show();				
+				window.setTimeout(function(){
+					 $('.send_sucess').hide();
+				} , 2000)
+			};
+			$.get(url , data , callback);
+		});
+	});
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

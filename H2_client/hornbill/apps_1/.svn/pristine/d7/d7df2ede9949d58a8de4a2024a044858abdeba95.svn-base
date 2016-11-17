@@ -1,0 +1,101 @@
+<%# head.html%>
+<% if (!this.mlsApp) {%>
+	 <%= requireFn('slider.html')({
+		'os' : this.os
+		, 'footBanner' : true
+		,'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+		, 'showZhiDing' : this.showZhiDing
+		, 'leadApp' : this.leadApp
+		, 'mlsApp' : this.mlsApp
+		, 'appUrl' : this.appUrl
+		, 'article_id' : this.article_id
+		, 'club_article' : 'club_article'
+	});%>
+<%}%>
+<figure>
+	<%if(this.detail){
+		var uinfo = this.detail.uinfo;
+	%>
+	<figcaption>
+		<p class="info">
+			<span class="avatar"><img src="<%= uinfo.avatar_c %>"></span>
+			<span class="nickname"><%= uinfo.nickname %></span>
+			<span class="time"><%* this.detail.article_create_time //#23138%></span>
+		</p>
+		<p class="descrip"><%if(this.detail.article_htmlcontent){%><%= this.detail.article_htmlcontent %><%}%></p>
+	</figcaption>
+	<%}%>
+	<% this.detail && this.detail.tinfo && this.detail.tinfo.forEach(function(data){%>
+	<a class="pic">
+		<img src="<%= data.show_pic%>" alt="晒图">
+	</a>
+	<%if(data.twitter_htmlcontent){%>
+		<p class="descrip"><%= data.twitter_htmlcontent.replace("target='_blank'", '') %></p>
+	<%}%>
+	<%});%>
+</figure>
+<%if( this.detail && this.detail.dootaInfo){%>
+<div class="goods">
+	<p class="tips">晒单商品</p>
+	<% this.detail.dootaInfo.forEach(function(data){%>
+	<a href="/share/item/<%= data.twitter_id%>">
+		<img class="image" src="<%= data.show_pic%>">
+		<div class="middle">
+			<p class="title"><%= data.goods_title%></p>
+			<p class="price">价格：<span class="red"><%= data.goods_price %></span></p>
+		</div>
+		<div class="last"> > </div>
+	</a>
+	<%});%>
+</div>
+<%}%>
+<div class="wrap">
+<% if(this.reply_list.ainfo){%>
+	<ul class="comment">
+		<% this.reply_list && this.reply_list.ainfo && this.reply_list.ainfo.map(function(data,index,array){%>
+		<figcaption <% if(index==array.length-1 && this.reply_list.ainfo.length == this.reply_list.pages.totalNum ){%>style="border:none;"<%}%>>
+			<p class="info">
+				<span class="avatar"><img src="<%= data.uinfo.avatar_a%>"></span>
+				<span class="nickname"><%= data.uinfo.nickname%></span>
+				<span class="time"><%= data.article_create_time%></span>
+			</p>
+			<p class="descrip"><%= data.tinfo[0].twitter_htmlcontent ? data.tinfo[0].twitter_htmlcontent : '*图片链接*' %></p>
+		</figcaption>
+		<%});%>
+	</ul>
+	<% if(this.reply_list.ainfo.length < this.reply_list.pages.totalNum){%>
+	<p class="more">
+		查看更多评论
+		<span class="xiala_icon">
+			<img src="http://i.meilishuo.net/css/images/wap/web/wx/xiala.png">
+		</span>
+	</p>
+	<%}%>
+<%}%>
+</div>
+
+<script type="text/html" id="replyListTpl">
+<? item && $.each(item , function(key , data){ 
+	var tinfo = data.tinfo[0];
+	var creaTime = data.article_create_time
+		, order = data.order
+		,uinfo = data.uinfo;
+?>
+	<figcaption <?if(key == item.length-1){?> style="border:none;" <?}?> >
+		<p class="info">
+			<span class="avatar"><img src="<?= uinfo.avatar_c ?>"></span>
+			<span class="nickname"><?= uinfo.nickname ?></span>
+			<span class="time"><?= creaTime ?></span>
+		</p>
+		<p class="descrip"><?= tinfo.twitter_htmlcontent ? tinfo.twitter_htmlcontent : '*图片链接*' ?></p>
+	</figcaption>
+<?});?>
+</script>
+<script>
+fml.vars.aid = "<%= this.aid %>";
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/doota/single');
+_use:", this._JSstack , this._JSmods ); %>
+<%# block/foot.html%>
+<%# foot_simple.html%>

@@ -1,0 +1,15 @@
+<%if(this.rec_poster && this.rec_poster.recommends != ''){%>
+<div class="catalog_rec_simple none_f">
+	<div class="catalog_rec_simple_list fitwidth">
+		<h3>人气<%=this.rec_poster.title%>推荐：</h3>
+		<p>
+		<% this.rec_poster.recommends && this.rec_poster.recommends.map(function(data, i) { %>
+			<a <%if(i == 0){%>class="first"<%}%> href="<%=data.url%>"><%=data.name%>
+		<%});%>
+			</a>
+		</p>
+		<div class="clear_f"></div>
+	</div>
+</div>
+<%}%>
+

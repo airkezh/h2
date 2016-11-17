@@ -1,0 +1,20 @@
+<%# head.html%>
+<%
+var query = this._Request_query;
+%>
+<div class="banner_400" style="background-image:url('<%= this.award.data.pic[1]%>');%>"></div>
+<div class="info">
+	<form action="" method="get" id="user_form">
+		<input class="ipt" type="text" placeholder="姓名：" id="name" name="name"/>
+		<input class="ipt" type="tel" placeholder="手机：" id="tel" name="tel" pattern="[0-9]{11}" />
+		<input class="ipt" type="text" placeholder="地址：" id="address" name="address"/>
+		<input class="app_mac" type="hidden" value="<%== this.app_mac%>" name="app_mac"/>
+		<input class="banner_id" type="hidden" value="<%== query.banner_id%>" name="banner_id"/>
+		<p class="sure"><input class="submit btn" type="submit" value="确认" /></p>
+	</form>
+</div>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/act/bdapp');
+_use:", this._JSstack , this._JSmods);%>
+<%# foot_simple.html%>

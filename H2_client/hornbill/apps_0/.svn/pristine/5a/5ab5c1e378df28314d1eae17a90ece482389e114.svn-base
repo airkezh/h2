@@ -1,0 +1,56 @@
+<%#head.html%>
+<%
+	var pageData = this.pageData;
+%>
+<style>
+	body{
+		background: <%= pageData.pageControl.main_bg || '#ff4d88' %>;
+		padding-top: <%= (pageData.pageControl.main_top/640*100 || 0) + '%' %>;
+	}
+</style>
+<div class="top">
+	<% pageData.head.forEach(function(data){ %>
+		<img src="<%= data.img_src %>" />
+	<% }); %>
+</div>
+<div class="shop_wrap">
+	<% if(pageData.type_title.img_src){ %>
+		<div class="title"><img src="<%= pageData.type_title.img_src %>" alt=""><a href="<%= pageData.type_title.link %>"></a></div>
+	<% } %>
+	<div class="shop_con">
+		<% pageData.shop.forEach(function(data, index){ %>
+			<div class="shop_box <%= index%2 ? 'odd' : ''%>">
+				<a href="<%= _extFn.getAppLink('shop' , {'shop_id': data.link } , this.os, this.r); %>"><img src="<%= data.img_src %>" alt=""><img  class="mask" src="<%= pageData.pageControl.mask %>"></a>
+			</div>
+		<% }); %>
+	</div>
+</div>
+<div class="spring_clothing">
+	<% pageData.bottom_links.forEach(function(data){ %>
+		<a href="<%= data.link %>"><img src="<%= data.img_src %>" alt=""></a>
+	<% }); %>
+</div>
+
+<% if(this.share){ %>
+	<%= requireFn('wapShare.html')({
+		'share' : this.share 
+	    , 'shareTitle' : '选择分享到'
+	    , '_JSstack' : this._JSstack
+		, '_JSmods' : this._JSmods
+	}); %>
+<%}%>
+<script type="text/html" id="toupdate">
+<div class="toupdate">
+    <p>只有最新版美丽说客户端才可以享受优惠喔，亲快去升级吧。</p>
+    <a class="btn3zi delayclose" href="/goto/download/">去升级</a>
+</div>
+</script>
+<script>
+	fml.vars.isNewest = "<%=this.isNewest%>";
+	fml.vars.isLogin = "<%=this.isLogin%>";
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+     fml.use('wap/app/hackWeixin');
+     fml.use('wap/page/activity/March_apparel_sale_update');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

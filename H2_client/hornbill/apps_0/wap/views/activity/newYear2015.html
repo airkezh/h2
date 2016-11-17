@@ -1,0 +1,80 @@
+<%# head.html %>
+
+<%
+    var hour    = (new Date).getHours(),
+        noBonus = this.ViewTools.timeStuff( { '2014/12/26 00:00:00' : 1 }, 0 )
+
+    if ( hour >= 6 && hour < 20 ) {
+        className = 'danmu-day'
+    } else {
+        className = 'danmu-night'
+    }
+%>
+<div id="danmu" class="<%=className%>" data-nobonus="<%=noBonus%>">
+    <div id="stage">
+        <div id="bullet-signal" class="bullet"></div>
+    </div>
+    <div class="ft">
+        <div class="wrap">
+            <p id="error-msg"></p>
+            <div class="btns">
+                <span class="btn" data-action="showRule">活动规则</span>
+                <div class="invite">
+                    <span class="btn" data-action="share">邀请好友许愿</span>
+                </div>
+            </div>
+            <div class="inputs">
+                <input id="input" type="text" maxlength="30" placeholder="去许愿池写下新年愿望">
+                <span  id="shoot" class="btn" data-action="shoot">许愿</span>
+            </div>
+        </div>
+    </div>
+    <div id="rule">
+        <div class="bd">
+            <div class="content">
+                <h3>活动规则</h3>
+                <p>通过手机美丽说for iOS v5.0及以上和 for Android v5.0及以上版本用户参与。</p>
+
+                <h4>元旦弹幕:</h4>
+                <ol>
+                    <li>活动时间:2014 年 12 月31 日10:00——2015 年 1 月 1日24:00</li>
+                    <li>在活动期间,用户可发射弹幕,弹幕全站可见。每人发射弹幕的次数不限制,每条弹幕最多支持 30 个汉字（建议发布亲们2015年的新年愿望的文字内容）；</li>
+                    <li>弹幕的内容严禁黄赌毒及违反国家政策,一经查出立即封号。</li>
+                </ol>
+            </div>
+            <div class="btn" data-action="closeRule">知道了</div>
+        </div>
+    </div>
+    <div id="panel-mask"></div>
+    <div id="panel">
+        <div class="bd">
+            <h3 id="panel-title"></h3>
+            <h3 id="panel-desc"></h3>
+            <div class="btns">
+                <span id="hide-panel-btn" class="btn" data-action="hidePanel"></span>
+                <span id="share-panel-btn" class="btn" data-action="sharePanel"></span>
+            </div>
+        </div>
+    </div>
+    <div id="wx-tips" data-action="hideWxTip"></div>
+</div>
+<div id="welcome2015" class="welcome2015"><img src="http://d05.res.meilishuo.net/img/_o/a8/f3/ff43134c1a6e8d95cc4a6066a0b9_640_667.cf.png" alt=""></div>
+<div id="newYearTime"></div>
+<script>
+    fml.vars.isLogin = <%= this.userInfo.user_id %>;
+    fml.vars.danmakuDatas = <%= JSON.stringify( this.danmu.data.info ) %>;
+
+    /*var imgUrl      = 'http://i.meilishuo.net/css/images/activity/danmu/wxBarrageShare.jpg',
+        lineLink    = 'http://' + location.host + '/wx/christmas2014/',
+        customAppId = 'wxd00a5f16e02bed58',
+        descContent,
+        shareTitle,
+        shareTimelineText;
+
+    descContent = shareTitle = shareTimelineText = '美丽说圣诞弹幕来啦!更有 1225 元直接减券等你来抓~'*/
+</script>
+<!--script src="<%= this.JCSTATIC_BASE  %>/js/open/shareCollect.js?<%= this.SVERSION%>"></script-->
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+    fml.use('wap/page/activity/newYear2015');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html %>

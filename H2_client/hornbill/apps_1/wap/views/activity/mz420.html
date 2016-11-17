@@ -1,0 +1,98 @@
+<%#head.html%>
+<%
+    var getTimeRemain = function(time){
+        if(time && time > this.cur_time){
+            return time - this.cur_time;
+        }else{
+            return ''; 
+        }
+    }
+%>
+<div class="top">
+	<img src="<%= this.PICTURE_URL%>images/huodong/sale420/top_wap2.jpg" />
+	<div class="down">
+		<% if(this.status == 'nostart'){ %>
+            距离热卖&nbsp;还有<span class="time" remain="<%= getTimeRemain(this.start_time)%>">-天--时--分</span>
+        <%}else if(this.status == 'saling'){%>
+            距离结束&nbsp;还有<span class="time" remain="<%= getTimeRemain(this.end_time)%>">-天--时--分</span>
+        <%}else{%>
+            活动已结束
+        <%}%>
+	</div>
+</div>
+<% if(!this.has_coupon){ %>
+	<%# activity/March_sale/March_apparel_coupon.html %>
+<% } %>
+<div class="main_box">
+	<div class="tit">
+		<img src="<%= this.PICTURE_URL%>images/huodong/sale420/mtit1.jpg" />
+		<a href="/biz/shareact/beautySale/?ac_id=523"></a>
+	</div>
+	<div class="goods_wrap">
+		<% this.temai1[0].twitters.length = 12 %>
+		<%= requireFn("biz/beauty_sale/goods_show.html")({
+			'goods': this.temai1[0].twitters,
+			'os': this.os,
+			'r': this.r
+		});%>
+	</div>
+	<a href="/biz/shareact/beautySale/?ac_id=523" class="moreBtn"><img src="<%= this.PICTURE_URL%>images/huodong/sale420/more1.png" /></a>
+	<div class="tit">
+		<img src="<%= this.PICTURE_URL%>images/huodong/sale420/mtit2.jpg" />
+		<a href="/biz/shareact/beautySale/?ac_id=525"></a>
+	</div>
+	<div class="goods_wrap">
+		<% this.temai2[0].twitters.length = 4 %>
+		<%= requireFn("biz/beauty_sale/goods_show.html")({
+			'goods': this.temai2[0].twitters,
+			'os': this.os,
+			'r': this.r
+		});%>
+	</div>
+	<a href="/biz/shareact/beautySale/?ac_id=525" class="moreBtn"><img src="<%= this.PICTURE_URL%>images/huodong/sale420/more2.png" /></a>
+	<div class="tit">
+		<img src="<%= this.PICTURE_URL%>images/huodong/sale420/mtit3.jpg" />
+		<a href="/biz/shareact/beautySale/?ac_id=527"></a>
+	</div>
+	<div class="goods_wrap">
+		<% this.temai3[0].twitters.length = 4 %>
+		<%= requireFn("biz/beauty_sale/goods_show.html")({
+			'goods': this.temai3[0].twitters,
+			'os': this.os,
+			'r': this.r
+		});%>
+	</div>
+	<a href="/biz/shareact/beautySale/?ac_id=527" class="moreBtn"><img src="<%= this.PICTURE_URL%>images/huodong/sale420/more3.png" /></a>
+	<div class="tit">
+		<img src="<%= this.PICTURE_URL%>images/huodong/sale420/mtit4.jpg" />
+		<a href="/biz/shareact/beautySale/?ac_id=529"></a>
+	</div>
+	<div class="goods_wrap">
+		<% this.temai4[0].twitters.length = 4 %>
+		<%= requireFn("biz/beauty_sale/goods_show.html")({
+			'goods': this.temai4[0].twitters,
+			'os': this.os,
+			'r': this.r
+		});%>
+	</div>
+	<a href="/biz/shareact/beautySale/?ac_id=529" class="moreBtn"><img src="<%= this.PICTURE_URL%>images/huodong/sale420/more4.png" /></a>
+	<a href="/activity/four_years/prepare/?cid=823" class="moreBtn1"><img src="<%= this.PICTURE_URL%>images/huodong/sale420/rule.png" /></a>
+	<a href="/activity/lorealBox/hot/" class="banPic" ><img src="<%= this.PICTURE_URL%>images/huodong/sale420/ban7.jpg" /></a>
+	<a href="/biz/shareact/beautySale/?ac_id=523" class="banPic"><img src="<%= this.PICTURE_URL%>images/huodong/sale420/ban2.jpg" /></a>
+	<a href="/biz/shareact/beautySale/?ac_id=525" class="banPic"><img src="<%= this.PICTURE_URL%>images/huodong/sale420/ban3.jpg" /></a>
+	<a href="/biz/shareact/beautySale/?ac_id=527" class="banPic"><img src="<%= this.PICTURE_URL%>images/huodong/sale420/ban4.jpg" /></a>
+	<a href="/biz/shareact/beautySale/?ac_id=529" class="banPic"><img src="<%= this.PICTURE_URL%>images/huodong/sale420/ban6.jpg" /></a>
+</div>
+<% if(this.share){ %>
+	<%= requireFn('wapShare.html')({
+		'share' : this.share 
+		, 'shareTitle' : '选择分享到'
+		, '_JSstack' : this._JSstack
+		, '_JSmods' : this._JSmods
+	}); %>
+<%}%>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/app/hackWeixin');
+	fml.use('wap/page/activity/mz420');
+_use:", this._JSstack , this._JSmods); %>
+<%#foot_simple.html%>

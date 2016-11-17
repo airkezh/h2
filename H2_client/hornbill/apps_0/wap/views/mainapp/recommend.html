@@ -1,0 +1,28 @@
+<%# head.html%>
+<div class="top-notice">
+    关注她们，发现流行
+</div>
+
+<%# mainapp/recommend_list.html%>
+
+<div class="choose-all">
+    <span class="round-btn js-round-btn">
+    </span>
+    <span class="notice">关注全部</span>
+    <span class="finish-btn js-finish ready">
+        完成
+    </span>
+</div>
+
+<div class="alert js-alert">
+    请至少关注一个达人~
+</div>
+
+<script>
+fml.vars.list = <%= JSON.stringify(this.list) %>
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/mainapp/recommend');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html%>

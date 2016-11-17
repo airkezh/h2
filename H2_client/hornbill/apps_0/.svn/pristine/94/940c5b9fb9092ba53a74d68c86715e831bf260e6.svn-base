@@ -1,0 +1,136 @@
+<%# head_simple.html %>
+<%
+	var headTag = this.headTag;
+	var phone= this.mobile;
+	var email=this.email;
+%>
+
+</head>
+<body>
+<div class="header">
+	<a class="logo_new" href="/welcome"></a>
+</div>
+<div class="content">
+	<div class="flowStep">
+		<ul>
+			<li class="current">
+				<span></span>
+				<div class="redline"></div>
+				<p>找回密码</p>
+			</li>
+			<li <%if(headTag == 'find_pwd_send_email' || headTag == 'find_pwd_send_sms' ||
+				headTag == 'find_pwd_reset' || headTag == 'find_pwd_success'){%>class="current"<%}%>>
+				<span></span>
+				<div class="redline"></div>
+				<p>身份验证</p>
+			</li>
+			<li <%if(headTag == 'find_pwd_reset' || headTag == 'find_pwd_success'){%>class="current"<%}%>>
+				<span></span>
+				<div class="redline"></div>
+				<p>重置密码</p>
+			</li>
+			<li <%if(headTag == 'find_pwd_success'){%>class="current"<%}%>>
+				<span></span>
+				<p class="last">完成</p>
+			</li>
+		</ul>
+		<div class="clear_f"></div>
+	</div>
+	<div class="findPwdForm">
+		<% if(headTag == 'find_pwd_form' || headTag == ''){ %>
+		<div class="item">
+			<label>账&nbsp;&nbsp;&nbsp;&nbsp;号：</label>
+			<input id="login_name"  name="login_name" class="username" type="text" placeholder="邮箱或手机号或昵称" />
+		</div>
+		<div class="item">
+			<label>验证码：</label>
+			<input id="check_code" name="check_code" class="checkcode" type="text" maxlength="4" />
+			<div class="checkImage">
+				<span id="checkcodeImage">
+					<img width="90" height="36" isblank="true" src="<%= this.PICTURE_URL %>images/register/blank.jpg">
+				</span>
+				<span class="red_f">换一张</span>
+			</div>
+			<div class="clear_f"></div>
+		</div>
+		<div class="errorMessage"></div>
+		<div class="item">
+			<input id="submit_btn" class="submit" type="button" value="下一步" />
+		</div>
+		<%} else if(headTag == 'find_pwd_send_email'){ %>
+
+		<div class="success">
+			<span>操作成功！</span><br />
+			一封邮件已发送至你的邮箱 <a href="<%==this.email_host %>" target="_blank"><%== this.email %></a>，请点击邮件中的链接重置你的密码。<br />
+			<div class="big_btn">
+				<em class="big_btnr"></em><a href="<%==this.email_host%>" target="_blank">去邮箱查看</a>
+			</div>
+		</div>
+		<%} else if(headTag == 'find_pwd_send_sms'){ %>
+		<div class="item msgcode">
+			<p class="p-nicheng">您正在为账号<%==this.nicheng%>找回密码，请在下方输入验证码</p>
+			<label>短信验证码：</label>
+			<input type="hidden" id="mobile" value="<%==this.mobile%>" />
+			<input id="captcha" class="codetxt" type="text" maxlength="6" />
+			<input id="submit_btn" type="button" class="submit" value="确认" />
+			<span class="red_f time_box"></span>
+			<div class="clear_f"></div>
+			<div class="errorMessage errorMessageSendsms"></div>
+		</div>
+		<% } else if(headTag == 'find_pwd_reset'){ %>
+		<div class="item resetPwd">
+			<input type="hidden" id="validate_code" value=<%==this.validate_code%> />
+			<label>新密码：</label>
+			<input id="new_password" class="newPwd" type="password" />
+			<div class="pw_safe">
+				<span class="txt">安全程度</span>
+				<div class="pw_strength pw_weak pw_medium pw_strong">
+					<div class="pw_bar"></div>
+					<div class="pw_letter">
+						<span class="strength_l">弱</span>
+						<span class="strength_m">中</span>
+						<span class="strength_h">强</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="item resetPwd">
+			<label>请确认密码：</label>
+			<input id="confirm_password" class="newPwd" type="password" />
+		</div>
+		<div class="errorMessage"></div>
+		<div class="item resetPwd">
+			<div class="big_btn">
+				<em class="big_btnr"></em>
+				<input id="submit_btn" type="submit" value="修改密码" />
+			</div>
+		</div>
+		<%} else if(headTag == 'find_pwd_success'){%>
+		<div class="success">
+			<span>恭喜你，密码修改成功！</span><br />
+			<a href="/user/login">立即登录</a>美丽说，去发现、收藏、分享你的美丽点滴！
+		</div>
+		<%} else if(headTag == 'find_pwd_check'){ %>
+		<div class="bie">
+
+			<p class="title">您正在为帐号<%==this.nicheng%>找回密码,请选择密码找回方式:</p>
+			<div class="bie-email" style="display:<%= email ? 'block' : 'none'%>">
+				<input type="radio" value="<%==this.nicheng%>" data-type="email" name="check">
+				已绑定邮箱<span class="email"><%== email%></span>
+			</div>
+			<div class="bie-phone" style="display:<%= phone ? 'block' : 'none'%>">
+				<input type="radio" value="<%==this.nicheng%>"  data-type="moblie" name="check" >
+				已绑定手机<span class="phone"><%= phone%></span>
+			</div>			
+		</div>
+		<div class="errorMessage errorshow"></div>
+		<div class="item" value="phone">
+				<input id="bie_btn" class="submit" type="button" value="下一步" />
+		</div>
+		<%}%>
+	</div>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/findPwd');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html %>

@@ -1,0 +1,51 @@
+<%#head.html%>
+<img src="http://d01.res.meilishuo.net/pic/_o/0f/69/27e4d787c8603d6a9b017cdfc44a_640_581.ch.jpg" />
+<img src="http://d01.res.meilishuo.net/pic/_o/f0/09/d7024154ae44b2a0581e35bddfc7_640_559.cf.jpg" />
+<img src="http://d05.res.meilishuo.net/pic/_o/7c/ad/e0a23bef2cb1b373d8f1c8cb8ebb_640_686.cg.jpg" />
+<img class="lpic" src="http://d03.res.meilishuo.net/pic/_o/bb/7f/23d4b026c06cce26788ae61977a9_640_726.cf.jpg" />
+
+<a id="jqz" class="jqz"><img src="http://d02.res.meilishuo.net/pic/_o/2a/61/4c9b180a7738be81dd2a96638e97_640_134.cg.jpg"/></a>
+
+<script>
+    <%
+        var myCircles = this.mycircles
+    %>
+    fml.vars.hasCircle = !!<%= myCircles && myCircles.length %>;
+    fml.vars.islogin = <%= this.userInfo.user_id %>
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use( 'wap/app/openApp', function() {
+    var that   = this,
+        el     = document.getElementById('jqz'),
+        timestamp = +new Date,
+        url    = 'http://circle.meilishuo.com/circle/create',
+        params = '{"url":"' + url + '","inApp":"1"}',
+        href   = 'meilishuo://openURL.meilishuo/?json_params=' + encodeURIComponent( params ),
+        timeoutID
+
+    el.addEventListener( 'touchstart', function( e ) {
+        e.preventDefault()
+
+        if ( fml.vars.hasCircle ) {
+            return alert( '您已开通过圈子' )
+        }
+
+        if ( Meilishuo.config.os.mlsApp ) {
+            if ( !fml.vars.islogin ) {
+                location.href = 'meilishuo://login.meilishuo/'
+            } else {
+                location.href = href
+            }
+        } else {
+            //去下载
+            that( url )
+        }
+    })
+    window.MLS = {
+        didLogin: function() {
+            location.href = href
+        }
+    }
+});
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

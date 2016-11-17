@@ -1,0 +1,76 @@
+@import "storeAtom.less";
+@bds: 1px solid #e6e6e6;
+
+.nav_bar;
+.upImage;
+
+.content{
+	.w(780px);.left;
+	.shop_title{.h3_title;.border-1(#e6e6e6);.fb;.mb(-1px);}
+
+	.shop_table, .shop_view{padding: 20px;.bgc(#fff);.border-1(#e6e6e6);}
+
+	.shop_settings{.mb(10px);}
+	.o_sep{.h(10px);}
+	table{.w(100%);border-collapse: collapse;}
+	th,td{.border-1(#e6e6e6);border-left: none;border-right: none;}
+	th{.fb;.l(48px);}
+	.th_first{border-left: @bds;}
+	.th_last{border-right: @bds;}
+	.odd{.bgc(#F7F6F6);}
+	.items_num{.w(80px);background: url('@{pic_url}/images/store/q_w_c.png') no-repeat center center;.c;.auto;.fc(#fff);.h(20px);.l(20px);}
+	.img_wrap{
+		.left;.w(50px);.h(50px);.mt(8px);
+		img{.w(50px);.h(50px);}
+	}
+	.goods_wrap{.w(286px);.h(67px);.pr;}
+	.goods_name{
+		.left;.l(20px);padding: 13px 14px;.w(120px);.h(30px);.hidden;}
+	.items_move{
+		.w(84px);.pa;top: 20px;right: 0;
+		.go_up, .go_down{.none;.w(20px);.h(20px);.border-r(2px);.bgc(#f69);.mr(12px);.left;background: url('@{pic_url}/images/store/icon_addGoods.png') no-repeat;.cursor;}
+		.go_up{.bp(0px, -170px);}
+		.go_down{.bp(0px, -145px);}
+	}
+	.items_action{
+		.w(370px);
+		a{padding: 7px 12px;.border-r(2px);.bgc(#ccc);.fc(#fff);.mr(10px);.cursor;.left;}
+		span{.fc(#999);.right;.mr(10px);}
+		.quit_goods, .upload_images, .recommends{
+			visibility: hidden;
+		}
+	}
+	.choosed{
+		.quit_goods, .upload_images, .recommends{
+			visibility: visible;
+		}
+	}
+	tr:hover{
+		.items_action a{.bgc(#f69);}
+		.go_up, .go_down{.block;}
+		.items_num{background: url('@{pic_url}/images/store/q_r_c.png') no-repeat center center;}
+	}
+
+	.shop_view{
+		img{.w(220px);}
+	}
+	.left_img{
+		.w(220px);.h(380px);.hidden;.left;.ml(27px);.pr;.border-1(#e6e6e6);
+		.image_wrap{.w(500px);.h(380px);}
+		.img_block{.w(220px);.h(380px);.hidden;.left;margin: 0;border: none;}
+	}
+	.link_num{
+		.pa;.w(36px);.h(9px);bottom: 10px;right: 0;
+		span{.block;background: url('@{pic_url}/images/store/q_w_c.png') no-repeat;background-size: 8px;.mr(5px);.left;.w(8px);.h(8px);.cursor;}
+		.link_actived{background: url('@{pic_url}/images/store/q_r_c.png') no-repeat;background-size: 8px;}
+	}
+	.right_img{.h(382px);.w(470px);.hidden;}
+	.img_block{
+		.w(220px);.h(184px);.hidden;.left;.ml(12px);.mb(10px);.border-1(#e6e6e6);
+	}
+	#confirm{
+		padding:5px 20px;
+		float:right;
+		.mr(30px);
+	}
+}

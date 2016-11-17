@@ -1,0 +1,20 @@
+<%# head_simple.html%>
+<%
+	var red_url = "meilishuo://openURL.meilishuo?json_params=%7B%22url%22%3A%22http%3A%5C%2F%5C%2Fwap.meilishuo.com%5C%2Factivity%5C%2Fmarioaward%5C%2Faward%5C%2Fuserinfo%22%2C%22inApp%22%3A%221%22%2C%22require_app_info%22%3A%221%22%2C%22r%22%3A%22test-r%22%7D"
+%>
+</head>
+<body>
+<div class="top_bnr">
+	<img src="<%= this.PICTURE_URL%>images/wap/activity/mario/award_1.jpg" />
+	<a class="award_ico openBtn" red_url="<%if(this.isIphone){%>/download/iphone/<%}else if(this.isAndroid){%>/goto/download/?apk=/u/EIJ3W3<%}%>" href="<%= red_url %>">
+		<img src="<%= this.PICTURE_URL%>images/wap/activity/mario/award_ico1.png" />
+	</a>
+</div>
+<div class="inner">
+	<p class="pro"><img src="<%= this.PICTURE_URL%>images/wap/activity/mario/award_d1.png" /></p>
+	<a href="<%if(this.isIphone){%>/download/iphone/<%}else if(this.isAndroid){%>/goto/download/?apk=/u/EIJ3W3<%}%>"><img src="<%= this.PICTURE_URL%>images/wap/activity/mario/award_d.jpg" /></a>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/openClient');
+_use:", this._JSstack , this._JSmods);%>
+<%# foot_simple.html%>

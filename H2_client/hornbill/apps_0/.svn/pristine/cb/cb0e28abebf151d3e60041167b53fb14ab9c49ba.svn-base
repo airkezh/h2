@@ -1,0 +1,100 @@
+<%# head_simple.html%>
+<% var introInfo = this.detail.data.dress,
+	goodsInfo = this.detail.data.goods,
+	moreInfo = this.detail.data.more,
+	data_r = this.detail.r,
+	os = this.os,
+	isApp = this.os.mlsApp,
+	tids = '',
+	unlikedtids = '',
+	canCollectAll = false,
+	isLogin = this.userInfo.user_id ? true : false,
+	common_r = this.xr.r;%>
+<div class="intro-box">
+	<a href="javascript:void(0);"><img src="<%= introInfo.pic%>"/></a>
+	<p><%= introInfo.tips%></p>
+</div>
+<div class="goods-box">
+	<h1><span class="top">搭配单品</span><span class="bottom">Collocation</span></h1>
+	<div class="line"></div>
+	<%if(goodsInfo.tInfo.length){%>
+	<div class="wrap">
+		<%
+		var tidsarr = [],unlikedtidsarr = [];
+		goodsInfo.tInfo.forEach(function(item){
+			var link_url = _extFn.getAppLink('twitter_single', {'twitter_info' : {'twitter_id' : item.twitter_id, 'is_doota' : 1}}, os, data_r, '/share/item/' + item.twitter_id);
+			var similar_url = _extFn.getAppLink("openURL", {"url": "http://mapp.meilishuo.com/similar?tid=" + item.twitter_id, "inApp" : "1"}, os, null, "http://m.meilishuo.com/similar?tid=" + item.twitter_id);
+			tidsarr.push(item.twitter_id);
+			if(!item.is_liked){
+				unlikedtidsarr.push(item.twitter_id);
+			}
+			%>
+		<div class="item">
+			<div class="inner">
+				<a class="item-mainpic<%= item.shelf != 1 ? ' down-shelf' : ''%>" data-xr="<%= item.r%>" href="<%= link_url%>" style="background-image: url(<%= item.big_pic %>)"></a>
+				<div class="item-desc">
+					<a class="item-title" href="<%= link_url%>" data-xr="<%= item.r%>"><%= item.title %></a>
+					<div class="item-info">
+						<span class="item-price">￥<%= item.price %></span>
+						<span class="item-like"><i class="icon-like<%= item.is_liked ? ' liked' : ''%>"></i><%= item.count_like %></span>
+						<div>
+							<a xr="<%= item.r%>" href="<%= similar_url%>" class="find-similar">找相似</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<%})%>
+		<%if(goodsInfo.tInfo.length % 2){%>
+		<div class="item">
+			<div class="nomore">
+				<img src="http://d02.res.meilishuo.net/pic/_o/f0/d6/bd329cb686dd38b6340e5c74dd09_330_330.ch.png" />
+			</div>
+		</div>
+		<%}%>
+	</div>
+	<%}%>
+</div>
+
+
+<%if(moreInfo.length){%>
+<div class="more-box">
+	<h1>更多推荐</h1>
+	<div class="slide-list">
+		<div class="wraper">
+			<%moreInfo.forEach(function(item){
+				var detail_url = _extFn.getAppLink("openURL", {"url": "http://mapp.meilishuo.com/collocation/detail/?tag_word=" + encodeURIComponent(item.word) + "&dress_id=" + item.id, "inApp" : "1"}, os, null, "http://m.meilishuo.com/collocation/detail/?tag_word=" + encodeURIComponent(item.word) + "&dress_id=" + item.id);
+			%>
+			<a xr="<%= data_r%>" href="<%= detail_url%>"><img src="<%= item.pic%>" /></a>
+			<%})%>
+		</div>
+	</div>
+</div>
+<%}%>
+
+<div class="btn_box">
+	<%
+	tids = tidsarr.join(',');
+	unlikedtids = unlikedtidsarr.join(',');
+	var buy_url = 'meilishuo://entire_stock.meilishuo/?json_params=' + encodeURIComponent(JSON.stringify({'twitter_ids' : tids }));
+	if(unlikedtids.length){
+		canCollectAll = true;
+	}
+	if(canCollectAll){%>
+		<a href="javascript:void(0);" class="collect">喜欢搭配</a>
+	<%}else{%>
+		<a href="javascript:void(0);" class="uncollect">已收藏到喜欢宝贝</a>
+	<%}%>
+	<a xr="<%= common_r%>" href="<%= buy_url%>" class="buy">整套加车</a>
+	
+</div>
+<script type="text/javascript">
+	fml.vars.unlikedtids = "<%== unlikedtids%>";
+	fml.vars.common_r = "<%== common_r%>";
+	fml.vars.isLogin = "<%== this.userInfo.user_id%>";
+	fml.vars.dress_id = "<%== this.dress_id%>"
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/collocation/detail');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

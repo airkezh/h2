@@ -1,0 +1,73 @@
+<%#head.html%>
+	<div class="mc-bd" id="warp">
+		<div class="mc-bg1">
+			<div class="game_tips">
+				<p class="tips_box">把原图深深的记在脑海里奥！</p>
+				<p class="time_down">拼图倒计时<span class="time_box">15</span>秒</p>
+			</div>
+			<div id="countDown" class="countDown"></div>
+			<div id="game" class="game_con"></div>
+		</div>
+	</div>
+	<script type="text/html" id="dialogTips">
+		<div class="dialog_box">
+			<div class="dialog_con dia_style1">
+				<div class="step1 steps">
+					<p class="game_result">只用了<span class="js_countTime"></span>秒完成拼图，打败了<span class="js_countPre"></span>%的用户，特此奖励一次抽奖机会！ </p>
+					<div class="btnWrap">
+						<a class="shareBtn" id="shareBtn">分享</a>
+						<a class="luckyBtn" id="luckyBtn">抽奖</a>
+					</div>
+					<p class="game_tips">(分享好友，将增加中奖机会)</p>
+				</div>
+				<div class="step1_1 steps">
+					<p class="game_result">我知道您刚刚手慢了，加油再来一次</p>
+					<div class="btnWrap">
+						<a class="luckyBtn" id="luckyBtn" href="http://pages.w.meilishuo.com/cooper/97993">再来一次</a>
+					</div>
+				</div>
+				<div class="step2 steps">
+					<div class="step2_con">
+						<p id="user_address" class="no_addres"></p>
+					</div>
+					<div class="address_btn">
+						<a href="javascript:;" id="add_address" class="btn_style btn_style1">填写地址</a>
+						<a href="javascript:;" id="upt_address" class="btn_style btn_style2">修改地址</a>
+						<a href="javascript:;" id="ok_address" class="btn_style btn_style2">确定</a>
+					</div>
+				</div>
+				<div class="step3 steps">
+					<div class="step2_con">
+						<p id="user_address" class="no_addres">提交成功，奖品将在活动结束后7个工作日寄出</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<span id="addr_id" data_id="0"></span>
+		<span id="record_id" data_id="0"></span>
+	</script>
+	<script type="text/html" id="sms_captcha_tpl">
+		<div class="checkBox">
+			<div class="shade j_layer_shade"></div>
+			<div class="captchasSmsBox j_layer_main">
+				<div class="smsTop">
+					<div class="getSmsCaptcha">点击发送</div>
+				</div>
+				<div class="smsCenter"></div>
+				<div class="smsBottom">
+					<input class="captchaInput" name="checkcode" type="text" value="" maxlength="10" placeholder="请输入验证码">
+					<div class="captchaCheck">验证</div>
+				</div>
+				<div class="smsClose"></div>
+			</div>
+		</div>
+	</script>
+	<script>
+		fml.vars.isLogin = "<%= this.userInfo.user_id%>";
+		fml.vars.isNewest = <%= this.isNewest %> ;
+		fml.vars.isAndroid = <%= this.isAndroid %> ;
+	</script>
+	<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/free_m');
+_use:", this._JSstack , this._JSmods ); %>
+		<%#foot.html%>

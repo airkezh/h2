@@ -1,0 +1,160 @@
+/*common*/
+require('wap/zepto/fastclick');
+
+var poster = require('wap/app/posterPa'),
+	openAppLink = require('wap/app/openAppLink'),
+	onscroll = require('wap/component/windowScroll'),
+	posterWall = require('wap/app/posterWalls6');
+
+var wrap = $('#wrap'),
+	tabNew = $('#tabNew'),
+	content = $('#content'),
+	prevTabNew = $('#prevTabNew'),
+	nextTabNew = $('#nextTabNew'),
+	specialTabNew = $('#specialTabNew'),
+	topBox = $('.top-box'),
+	gotopObj = topBox.find('a'),
+	limit = 10,
+	page = 0,
+	status = "done";
+
+var tabHeight = $('#banner').height();
+location.hash = location.hash ? location.hash : '#tab1';
+//一进页面加载数据
+loadFun();
+
+function loadFun() {
+	tabNew.find('div').removeClass('cur');
+	var index;
+	if (location.hash == '#tab1') {
+		prevTabNew.addClass('cur');
+		index = 0;
+	} else if (location.hash == '#tab2') {
+		nextTabNew.addClass('cur');
+		index = 1;
+	} else {
+		specialTabNew.addClass('cur');
+		index = 2;
+	}
+	getWall(2, '/aj/zulilyOld/Style_push_page?cid=' + fml.vars.cid + '&page_type=list' + '&limit=' + limit + '&tab=' + index, 'posterWall', true, 'Desire卖场 查看更多');
+}
+
+//tab click
+prevTabNew.on('click', function() {
+	tabFun($(this), '#tab1');
+})
+nextTabNew.on('click', function() {
+	tabFun($(this), '#tab2');
+})
+specialTabNew.on('click', function() {
+	tabFun($(this), '#tab3');
+})
+wrap.on('click', '#btnAll', function() {
+	window.location.href = window.__get_r("/zulilyOld", fml.vars.common_r_XR);
+})
+
+// tabFun
+function tabFun(self, hash) {
+	if (self.hasClass('cur')) {
+		return;
+	}
+	if ($('.pullUp').attr('status') != 'loading') {
+		location.hash = hash;
+		$('body')[0].scrollTop = 0;
+		resetPostwall();
+		loadFun();
+	}
+};
+
+//重置瀑布流
+function resetPostwall() {
+	content.find('.pullUp').remove();
+	content.find('#btnAll').remove();
+	content.append('<div class="pullUp" status="loading"></div>');
+	content.find('.goods_wall').height('0px').html('');
+}
+
+//拉取瀑布流
+function getWall(colNum, url, tmp, showBtn, showBtnText) {
+	poster.set({
+		colNum: colNum
+	});
+	var date = {
+		url: url,
+		poster: poster,
+		tmp: tmp,
+		showBtn: showBtn,
+		showBtnText: showBtnText,
+		filterFun: function(res) {
+			return res.data.list
+		},
+		posterMargin: $('#content').offset().top,
+		marginOffset: 1000
+	}
+	posterWall.scroll(date);
+};
+
+// 判断是否支持position：sticky
+function hasSticky() {
+	var element = document.createElement('div');
+	if ('position' in element.style) {
+		element.style['position'] = '-webkit-sticky';
+		element.style['position'] = '-moz-sticky';
+		element.style['position'] = '-o-sticky';
+		element.style['position'] = '-ms-sticky';
+		element.style['position'] = 'sticky';
+		return element.style['position'] === '-webkit-sticky' || element.style['position'] === '-moz-sticky' || element.style['position'] === '-o-sticky' || element.style['position'] === '-ms-sticky' || element.style['position'] === 'sticky'
+	} else {
+		return false;
+	}
+};
+// tab吸顶
+if (!hasSticky()) {
+	$(window).scroll(function() {
+		var t = $(window).scrollTop();
+		if (t > tabHeight) {
+			tabNew.css({
+				'position': 'fixed',
+				'left': 0,
+				"top": 0
+			});
+		} else {
+			tabNew.css({
+				'position': 'static'
+			});
+		}
+	});
+}
+
+/*获取单品页链接*/
+function getDoneUrl(ele, isBtn) {
+	var style_id = parseInt(ele.data('styleId')),
+		twitter_id = parseInt(ele.data('twitter_id')),
+		Url = Meilishuo.config.os.mlsApp ? openAppLink.getAppLink({
+			'protocol': 'twitter_single',
+			'param': {
+				"twitter_info": {
+					"twitter_id": twitter_id,
+					"is_doota": 1
+				}
+			}
+		}) : '/share/item/' + twitter_id;
+	window.location.href = window.__get_r(Url, ele.parents('.frame').data('xr'));
+}
+wrap.on('click', '.salelUrl', function() {
+	getDoneUrl($(this), false);
+})
+
+/*gotop*/
+gotopObj.on("click", function(e) {
+	document.body.scrollTop = 0
+});
+onscroll.bind(gotop, 'gotop');
+
+function gotop(pos, isDown) {
+	if (pos < 30) {
+		gotopObj.hide()
+	} else {
+		gotopObj.show()
+	}
+};

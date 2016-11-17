@@ -1,0 +1,39 @@
+<script type="text/html" id="book">
+<div id="bookObj" class="bookObj">
+<section>
+	<div class="book_body">
+		<div class="page"><span></span><span></span></div>
+		<ul class="book_tab">
+			<li x="1" y="1"><span><?= data.name ?></span></li>
+		<? $.each(data.tab, function(k, v){ ?>
+			<li x="<?= k + 2 ?>" y="<?= k + 2 ?>"><span><?= v ?></span></li>
+		<?});?>
+		</ul>
+		<div class="page_inner wall">
+			<div class="image_wall">
+				<div class="goods_wall1"></div>
+			</div>
+			<div class="spinner"><span></span><span></span></div>
+			<div class="spinnerBig"><span></span><span></span></div>
+		</div>
+		<div class="page_inner wall2">
+			<div class="image_wall">
+				<div class="goods_wall2"></div>
+			</div>
+			<div class="spinner"><span></span><span></span></div>
+			<div class="spinnerBig"><span></span><span></span></div>
+		</div>
+		<div class="page_outer">
+			<div<? if(data.isIn){ ?> class="isIn"<? } ?>>
+				<div class="i<?= index.j + 1?>s<?= index.i ?>"></div>
+				<div>
+					<p><?= data.name ?></p>
+					<p class="i<?= index.j + 1 ?> s<?= index.i ?>"></p>
+				</div>
+			</div>
+		</div>
+		<canvas id="pageflip" class="pageflip" width="874" height="882" ></canvas>
+	</div>
+</section>
+</div>
+</script>

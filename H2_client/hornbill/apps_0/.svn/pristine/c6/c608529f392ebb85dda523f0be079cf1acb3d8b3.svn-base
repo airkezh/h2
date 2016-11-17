@@ -1,0 +1,127 @@
+<%# head_simple.html%>
+	<%	
+	var welcome = this.welcome || {};
+	var error_code = welcome.error_code;
+
+if(error_code == 0){
+	var arrFriend = welcome.data.assistant;
+	var role = welcome.data.role;
+	var status = welcome.data.originator.fin_status;
+	var have_origed = welcome.data.have_origed;
+	var originatorId = welcome.data.originator.user_id;
+	var extra = welcome.data.extra;
+	var award_id=welcome.data.extra[0].award_id
+	var is_app=welcome.data.originator.is_app;
+}else{
+	var arrFriend = [];
+	var role = '';
+	var status = '';
+	var have_origed = '';
+	var originatorId = '';
+	var extra = [];
+	var award_id=0;
+	var is_app=-1;
+}
+%>
+		</head>
+
+		<body>
+			<div class="award_main">
+				<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/out.png" class="lh_out move_big" />
+				<%if(award_id==0){%>
+					<div class="award_no">
+						<span class="first_user"><%=welcome.data.originator.nick_name%></span>
+						<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/award_no_user_tips.png" class="award_no_user_tips" />
+						<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/award_no_bg_01.jpg" class="bg_imgs" />
+						<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/award_no_bg_02.jpg" class="bg_imgs" />
+						<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/award_no_bg_03.jpg" class="bg_imgs" />
+						<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/award_no_bg_04.jpg" class="bg_imgs" />
+						<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/award_no_bg_05.jpg" class="bg_imgs" />
+					</div>
+					<div class="award_no_tips">
+						<a href="" class="btn_guan btn_other_guang"><img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/btn_guangguang.png" /></a>
+						<%if(have_origed==0){%>
+							<a href="/activity/crackbrand/first/" class="btn_share">
+								<%}else{%>
+									<a href="/activity/crackbrand/start/?ass_gid=<%=have_origed%></a>" class="btn_share">
+										<%}%>
+											<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/btn_jinzhan.png" />
+									</a>
+					</div>
+					<%}else{%>
+						<div class="awarding">
+							<span class="first_user"><%=welcome.data.originator.nick_name%></span>
+							<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/award_user_tips.png" class="award_user_tips" />
+							<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/awarding_bg_01.jpg" class="bg_imgs" />
+							<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/awarding_bg_02.jpg" class="bg_imgs" />
+							<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/awarding_bg_03.jpg" class="bg_imgs" />
+							<%if(award_id==477){%>
+								<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/awarding_new_quan_5.jpg" class="bg_imgs" />
+							<%}else if(award_id==475){%>
+								<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/awarding_new_quan_10.jpg" class="bg_imgs" />
+							<%}else if(award_id==489){%>
+								<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/awarding_quan_50.jpg" class="bg_imgs" />
+							<%}else if(award_id==487){%>
+								<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/awarding_new_quan_25.jpg" class="bg_imgs" />
+							<%}else if(award_id==485){%>
+								<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/awarding_new_quan_10.jpg" class="bg_imgs" />
+							<%}else if(award_id==477){%>
+								<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/awarding_new_quan_10_1.jpg" class="bg_imgs" />
+							<%}else{%>
+								<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/awarding_new_quan_5.jpg" class="bg_imgs" />
+							<%}%>
+						</div>
+
+						<div class="award_tips">
+							<p class="award_p">TA得到一张美丽说优惠券,11.11又能愉快的买买买啦~</p>
+							<div class="btn_wrap">
+								<a href="" class="btn_guan btn_other_guang"><img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/btn_guangguang.png" /></a>
+								<%if(have_origed==0){%>
+									<a href="/activity/crackbrand/first/" class="btn_share">
+										<%}else{%>
+											<a href="/activity/crackbrand/start/?ass_gid=<%=have_origed%>" class="btn_share">
+												<%}%>
+													<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/btn_jinzhan.png" />
+											</a>
+							</div>
+						</div>
+						<%}%>
+
+			</div>
+			<div class="friend_list">
+				<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/start_icon_01.jpg" class="friend_img" />
+				<!--描述：没有好友-->
+				<% if(arrFriend.length == 0){ %>
+					<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/start_icon_02.jpg" class="friend_img" />
+					<%}else{%>
+						<!--描述：好友列表-->
+						<div class="friends-list">
+							<% arrFriend.forEach(function(item,index){%>
+								<div class="friends-msg">
+									<img class="friend-img" src="<%=item.user_pic%>">
+									<span class="friend-name"><%=item.nick_name%></span>
+									<span class="friend-desc">&nbsp;&nbsp;&nbsp;<%= item.ass_desc %></span>
+								</div>
+								<% }) %>
+						</div>
+						<%}%>
+			</div>
+			<div class="first_rules"></div>
+			<div class="first_popwin">
+				<img class="first-popwin-rules" src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/cb_rules.png" />
+				<div class="rules-content">
+					<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/guize_bg_01.jpg" />
+					<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/guize_bg_02.jpg" />
+					<img src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/guize_bg_03.jpg" />
+				</div>
+				<img class="first-popwin-know" src="<%= this.PICTURE_URL%>/images/wap/activity/crackbrand/cb_rules_btn.png" />
+			</div>
+		</body>
+		<script>
+			fml.vars.have_origed = "<%=have_origed%>";
+		</script>
+		<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+		<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/crackbrand/award');
+_use:", this._JSstack, this._JSmods); %>
+			<%# foot.html%>

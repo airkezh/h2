@@ -1,0 +1,15 @@
+<div>
+	<h3><span style="background-position:0px -224px;"></span>社区热荐</h3>
+	<a class="<%if(this.attrName == 'hot'){%> active <%};%>" href="/guang/hot">今日最热</a>
+	<a class="<%if(this.attrName == 'popular'){%> active <%};%>" href="/guang/popular">本周最热</a>
+	<a class="<%if(this.attrName == 'new'){%> active <%};%>" href="/guang/new">最新</a>
+</div>
+<% this.attr_hot_keywords.sub && this.attr_hot_keywords.sub.group_map.map(function(group_name, index){ %>
+<div>
+	<h3><%=group_name%></h3>
+		<%for(var data in this.attr_hot_keywords.sub.group_keywords[group_name]){%>
+			<% var group_info = this.attr_hot_keywords.sub.group_keywords[group_name][data]; %>
+			<a class="<%if(this.currentWord == group_info.word_name){%>active<%}else{%><%= group_info.isred == 1?'ishot':''%><%}%>" href="<%= group_info.url ? group_info.url : '/guang/'+encodeURIComponent(group_info.word_name)%>" ><%= group_info.word_name %></a>
+		<%}%>
+</div>
+<%});%>

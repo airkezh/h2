@@ -1,0 +1,39 @@
+<%#head.html%>
+<figure class="wxShareImg none_f">
+	<img src="http://i.meilishuo.net/css/images/jobs/share_logo.jpg"/>
+</figure>
+<div class="content">
+	<img src="http://i.meilishuo.net/css/images/jobs/m_jobs_bg01.png" alt="recruitment infomation" />
+	<img src="http://i.meilishuo.net/css/images/jobs/m_jobs_bg02.png" alt="recruitment infomation" />
+	<img src="http://i.meilishuo.net/css/images/jobs/m_jobs_bg03.png" alt="recruitment infomation" />
+	<img src="http://i.meilishuo.net/css/images/jobs/m_jobs_bg04.png" alt="recruitment infomation" />
+	<img src="http://i.meilishuo.net/css/images/jobs/m_jobs_bg05.png" alt="recruitment infomation" />
+	<img src="http://i.meilishuo.net/css/images/jobs/m_jobs_bg06.png" alt="recruitment infomation" />
+	<a href="/jobs/jobs_detail/#android" id="btn1"></a>
+	<a href="/jobs/jobs_detail/#gj_ios" id="btn2"></a>
+	<a href="/jobs/jobs_detail/#sjpt" id="btn3"></a>
+	<a href="/jobs/jobs_detail/#fe" id="btn4"></a>
+	<a href="/jobs/jobs_detail/#gj_php" id="btn5"></a>
+	<a href="/jobs/jobs_detail/#sfsj" id="btn6"></a>
+	<a href="/jobs/jobs_detail/#sjfx" id="btn7"></a>
+	<a href="/jobs/jobs_detail/#cs" id="btn8"></a>
+	<a href="/jobs/jobs_detail/#gj_cs" id="btn9"></a>
+	<a href="/jobs/jobs_detail/#wxcs" id="btn10"></a>
+	<a href="/jobs/jobs_detail/#yw" id="btn11"></a>
+	<a href="/jobs/jobs_detail/#mysql_dba" id="btn12"></a>
+</div>
+<div>
+	<% if(this.share){ %>
+		<%= requireFn('wapShare.html')({
+			'share' : this.share,
+			'shareTitle' : '选择分享到：',
+			'_JSstack' : this._JSstack,
+			'_JSmods' : this._JSmods
+		}); %>
+	<% } %>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/jobs_welcome');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot.html%>

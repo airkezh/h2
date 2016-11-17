@@ -1,0 +1,35 @@
+<%if(this.banner){
+	var banner0 = this.banner[0] || '';	
+%>
+<div class="banner-slider" <%if(banner0.image_width){%>style="max-width:<%= banner0.image_width%>px"<%}%>>
+	<ul class="banner-slider-wrap">
+		<% this.banner.map(function(v,k){ %>
+		<li ahref="<%= v.url %>" data-xr="<%= this.banner_r || '' %>">
+			<a href="<%= v.url || 'javascript:;'%>" data-xr="<%= this.banner_r || '' %>"><img src="<%= v.image_url%>"/></a>
+		</li>
+		<%});%>
+		<%if(this.banner.length == 2){%>
+		<% this.banner.map(function(v,k){ %>
+		<li ahref="<%= v.url %>" data-xr="<%= this.banner_r || '' %>">
+			<a href="<%= v.url || 'javascript:;'%>" data-xr="<%= this.banner_r || '' %>"><img src="<%= v.image_url%>"/></a>
+		</li>
+		<%});%>
+		<%}%>
+	</ul>
+
+	<%if(!this.hide_btn){%>
+	<ul class="banner-slider-point">
+		<% this.banner.map(function(v,k){ %>
+		<li<%if(k==0){%> class="curr"<%}%>></li>
+		<%});%>
+	</ul>
+	<%}%>
+</div>
+<%}%>
+<script>
+	fml.vars.moveY = '<%= this.moveY ? this.moveY : 0%>'
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/app/banner');
+_use:", this._JSstack , this._JSmods ); %>

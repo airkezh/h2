@@ -1,0 +1,131 @@
+<%# head_simple.html%>
+<%
+var posters = this.firstTabs;
+var barrageStyle = this.ViewTools.timeStuff({"2014/12/24 20:00:00" : "barrage2", "2014/12/25 10:00:00" : "barrage3" } , "barrage1");
+%>
+<script>
+	if (window.location.search.indexOf("isFromShare") >= 0) {
+		isPc();
+	}
+	function isPc() {
+		//平台、设备和操作系统
+		var system ={
+			win : false,
+			mac : false,
+			xll : false
+		};
+		//检测平台
+		var p = navigator.platform;
+
+		system.win = p.indexOf("Win") == 0;
+		system.mac = p.indexOf("Mac") == 0;
+		system.x11 = (p == "X11") || (p.indexOf("Linux") == 0);
+		//跳转语句
+		if(system.win||system.mac||system.xll){//转向后台登陆页面
+			window.location.href = "http://promotion.meilishuo.com/promotion/sale_1501/act125/"
+		}
+	}
+</script>
+<style>
+	#scrollerArea{position: absolute; top:0;right: 0; width: 1.5%; height: 100%;visibility: hidden;}
+	#scroller{position: absolute; top:0; width: 100%;  background-color: #aaa;}
+</style>
+</head>
+<body id="bb">
+<div class="main">
+
+	<div class="banner" >
+		<div class="rule"></div>
+		<div class="countdown" >
+			<div class="bannerText"></div>
+			<div class="timerArea">
+				<dl class="timeStamp" end-date="" now="">
+					<dd id="day0"><span >-</span></dd>
+					<dd id="day1"><span>-</span></dd>
+					<dd id="hour0"><span >-</span></dd>
+					<dd id="hour1"><span >-</span></dd>
+					<!--<dt class="bigmao">：</dt>-->
+					<dd id="minute0"><span >-</span></dd>
+					<dd id="minute1"><span >-</span></dd>
+					<!--<dt class="bigmao">：</dt>-->
+					<dd id="seconds0"><span >-</span></dd>
+					<dd id="seconds1"><span >-</span></dd>
+				</dl>
+			</div>
+
+		</div>
+	</div>
+
+
+	<div class="postWall">
+		<%
+		if (posters) {
+		for (var i = 0; i < posters.length; i++) { var p = posters[i];
+		%>
+		<figure class="poster">
+			<a class="loadingImg" href="<%=_extFn.getAppLink("openURL", {"url": p.tar_url, "title": p.title || "圣诞分会场"}, this.os, null, p.tar_url)%>" style="">
+			<span class="bs_load_img" asrc="<%=p.img_url%>"  ></span>
+			</a>
+		</figure>
+		<%}
+		}
+		%>
+	</div>
+
+	<%= requireFn('wapShare.html')({
+	'share' : this.share
+	, 'shareTitle' : '选择分享到'
+	, '_JSstack' : this._JSstack
+	, '_JSmods' : this._JSmods
+	}); %>
+
+
+
+</div>
+<script type="text/html" id="temp_poster">
+	<?for (var i = 0; i < this.posters.length; i++) { var poster = this.posters[i];?>
+	<figure class="poster">
+		<a class="loadingImg" href="<?=poster.tar_url?>" style="">
+			<span class="bs_load_img" asrc="<?=poster.img_url?>"  ></span>
+		</a>
+	</figure>
+	<?}?>
+</script>
+
+
+
+<script type="text/html" id="rule_tpl">
+	<div class="shade"></div>
+	<?
+		var bg = this.ruleData.background;
+		var tBtn = this.ruleData.top_close_btn;
+		var bBtn = this.ruleData.footer_close_btn;
+	?>
+	<div class="rule_dialog" style="width:<?=bg.width+'%'?>;padding-top:<?=bg.height?>%;left:<?=(100-bg.width)/2+'%'?>;background: url(<?=this.ruleData.background.img?>) no-repeat top center;background-size: 100%;">
+		<div class="rule_dialog_btn" style="bottom:<?=bBtn.height?>%"></div>
+		<div class="rule_close_btn" style="width:<?=tBtn.width?>%; height:<?=tBtn.height?>%; top:<?=tBtn.horizontal?>%; right:<?=tBtn.vertical?>%">
+			<img src="<?=this.ruleData.top_close_btn.img?>" alt=""/>
+		</div>
+	</div>
+</script>
+
+<script>
+	fml.vars.tabsData = <%=JSON.stringify(this.tabsData.data)%>;
+
+	var imgUrl = '<%=this.shareInfo.pic%>';
+	var lineLink = '<%=this.shareInfo.url%>';
+	var descContent = '<%=this.shareInfo.content%>';
+	var shareTitle = '<%=this.shareInfo.pengyou_title%>';
+	var shareTimelineText = '<%=this.shareInfo.pengyouquan_title%>';
+	var customAppId = 'wxd00a5f16e02bed58';
+</script>
+<script src="<%= this.JCSTATIC_BASE  %>/js/open/shareCollect.js?<%= this.SVERSION%>"></script>
+
+
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+
+fml.use('wap/page/activity/promotion/mv_1501_clearance_2');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot_simple.html%>

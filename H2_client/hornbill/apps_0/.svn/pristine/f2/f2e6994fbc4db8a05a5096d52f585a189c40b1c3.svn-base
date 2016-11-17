@@ -1,0 +1,157 @@
+<%# wx_new/header.html%>
+
+<!-- 搜索模块 -->
+<%= requireFn('wx_new/mdl_search.html')({
+	'data' : this.ad_ban.search_default_word || '立即搜索你想要的商品'
+});%>
+
+<div class="posterWall wrap">
+	<!-- 分享隐藏图 -->
+	<figure class="wxShareImg none_f">
+		<img src="<%=this.PICTURE_URL%>/images/wap/web/wx/shareWXB.jpg"/>
+	</figure>
+	<!-- 砸彩蛋 -->
+	<% if(0 && this.can_hit && this.can_hit.ret == 0){%>
+	<section id="egg">
+		 <img src="<%=this.PICTURE_URL%>/images/wap/sq/box-1.png" class="egg"/>
+		<img src="<%=this.PICTURE_URL%>/images/wap/sq/box-2.png" class="egg-open"/>
+	</section>
+	<%}%>
+
+	<% if(this.banner.head){%>
+	<section style="-webkit-transform: translateZ(0);">
+		<%= requireFn('block/banner.html')({
+			'banner' :this.banner.head
+			,'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+		});%>
+	</section> 
+	<% } %>
+
+	<%
+		var Now       = new Date()
+		var startTime = new Date('2015/09/25 00:00:00')
+		var endTime   = new Date('2015/09/26 00:00:00')
+		var actShow   = (startTime <= Now && endTime > Now)
+
+
+		var _rm = [{
+			link:'http://m-promotion.meilishuo.com/promotion/sale_1508/sv/?aid=3614&cid=14813&pid=5780',
+			src:'http://d04.res.meilishuo.net/pic/_o/76/51/a387dcf65a8bfa5bef3ccddb9295_521_650.cf.png'
+			},{
+			link:'http://m-promotion.meilishuo.com/promotion/sale_1508/sv/?aid=3612&cid=14815&pid=5782',
+			src:'http://d05.res.meilishuo.net/pic/_o/a9/ad/d069a07f0b1ce623b92c1e202a1d_521_650.cg.png'
+			},{
+			link:'http://m-promotion.meilishuo.com/promotion/sale_1508/sv/?aid=3616&cid=14811&pid=5778',
+			src:'http://d04.res.meilishuo.net/pic/_o/ad/68/742860ccf9f988ee17d61f0c051b_348_348.cg.png'
+			},{
+			link:'http://m-promotion.meilishuo.com/promotion/sale_1508/sv/?aid=3618&cid=14809&pid=5776',
+			src:'http://d02.res.meilishuo.net/pic/_o/fc/e4/c4e5638aef72274df6a6c9609021_348_348.cg.png'
+			},{
+			link:'http://m-promotion.meilishuo.com/promotion/sale_1508/sv/?aid=3620&cid=14789&pid=5774',
+			src:'http://d01.res.meilishuo.net/pic/_o/32/96/e5d9a90ef3d518392c578d4d68c9_348_348.cf.png'
+			}];
+		if(actShow){
+	%>
+	<div class="rm">
+		<div class="rm-up">
+			<a href="<%= _rm[0].link%>"><img src="<%= _rm[0].src%>"></a>
+			<a href="<%= _rm[1].link%>"><img src="<%= _rm[1].src%>"></a>
+		</div>
+		<div class="rm-down">
+			<a href="<%= _rm[2].link%>"><img src="<%= _rm[2].src%>"></a>
+			<a href="<%= _rm[3].link%>"><img src="<%= _rm[3].src%>"></a>
+			<a class="lastC" href="<%= _rm[4].link%>"><img src="<%= _rm[4].src%>"></a>
+		</div>
+	</div>
+	<%}%>
+
+	<% if(this.ad_ban){%>
+	<div class="ad-box">
+		<h3 class="ad-title">每日9.9元时尚优选</h3>
+		<%if(this.ad_ban.hook_list){
+			var hook = this.ad_ban.hook_list;
+			var banner = hook.banner;
+			var items = hook.items;
+		%>
+		<ul class="ul-box">
+			<li class="li-box">
+				<a href="<%=banner.url %>" class="w-normal"><img src="<%=banner.image.pic_url %>" alt=""></a>
+			</li>
+			<% items && items.map(function(data,idx){ %>
+				<li class="li-box">
+					<a href="<%=data.url %>"  class="w-normal"> <img src="<%=data.image.pic_url %>" alt="">
+					</a>
+				</li>
+			<% });%>
+		</ul>
+		<%};%>
+
+		<%if(this.ad_ban.hook_product){
+			var items = this.ad_ban.hook_product.item;
+		%>
+		<ul class="ul-box" style="clear:both;">
+			<% items && items.map(function(data,idx){ %>
+				<li class="li-box">
+					<a href="<%=data.url %>"  class="w-normal"> <img src="<%=data.img %>" alt="">
+					</a>
+				</li>
+			<% });%>
+		</ul>
+		<%};%>
+	</div>
+	<%};%>
+	
+	<%if(this.ad_ban && this.ad_ban.popular){
+			var items = this.ad_ban.popular.item;
+		%>
+	<div class="ad-box pd-10">
+		<h3 class="ad-title">流行聚焦</h3>
+		<div class="popular-box">
+			<% items && items.map(function(data,idx){%>
+				<a href="<%=data.url %>"  class="w-normal"> <img src="<%=data.img%>" alt="">
+				</a>
+			<%});%>
+		</div>
+	</div>
+	<%};%>
+	
+	<!-- 99女神-搭配暂时下掉 -->
+	<%if(0 && this.ad_ban && this.ad_ban.godness){
+		var items = this.ad_ban.godness.item;
+		%>
+	<div class="ad-box pd-10">
+		<div class="more-box">
+			<h3 class="ad-title">99元变女神</h3>
+			<a href="<%=items.more_url %>" class="a-more">更多</a>
+		</div>
+		<a href="/wx/dapei_detail/?dress_id=<%=items.dress_id %>">
+			<img src="<%=items.image.pic_url %>" alt="">
+		</a>
+	</div>
+	<%};%>
+
+	<div class="ad-box g-wall">
+		<h3 class="ad-title">买手精选</h3>
+	</div>
+
+	<ul class="goods_wall new_goods">
+
+
+	</ul>
+	
+	<div class="pullUp" status="loading"></div>
+</div>
+
+<%# wx_new/waterfall.html %>
+
+
+<!--  fml.vars.isShare = true; 微信分享 -->
+<script>
+fml.vars.isShare = true;
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/wx_new/daily');
+_use:", this._JSstack , this._JSmods ); %>
+<%# wx_new/side.html%>
+<%# wx_new/footer.html%>

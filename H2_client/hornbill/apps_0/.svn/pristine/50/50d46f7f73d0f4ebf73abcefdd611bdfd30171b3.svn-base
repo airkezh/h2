@@ -1,0 +1,136 @@
+/*common*/
+require('wap/zepto/fastclick');
+window.$                  = require('wap/zepto');
+var waterFall             = require( 'circle/component/waterfall' );
+var biWaterFallPlugin     = require( 'circle/component/biWaterfallPlugin' );
+var waterFallReflowPlugin = require( 'circle/component/waterfallReflowPlugin' );
+var optimiseFn            = require('circle/component/waterfallOptimise');
+var Alert                 = require('wap/ui/alert')
+var lazy                  = require( 'm/component/lazyLoad' );
+var UrlHandle             = require('wap/component/urlHandle');
+var sticky                = require('wap/component/sticky');
+var $pullUp               = $('.pullUp');
+var $gShelf               = $('.goods-wall');
+var $sortItem             = $('.s_item');
+var gNav                  = $( '#goods-tab' );
+var $price                = $sortItem.last(); 
+var flag                  = true
+var Wf                    = null
+var cashe                 = {}
+var scrollH               = 0;
+var setH                  = 0;
+var navTop                = 0;
+var href                  = location.href;
+var urlParams             = UrlHandle.getParams( href );
+var sortBy                = urlParams['tab'] || 'base';
+var lazyLoad              = lazy.init({xpath:'.pic_load'});
+
+/* tab吸顶 */
+sticky.init( '.fir-class' , {'infinity' : true ,'checkEle' : false});
+/* 预先绑定懒加载事件 */
+lazyLoad.scroll()
+/* 初始时手动出发一次瀑布流 */
+switchWaterfall( sortBy ) //goods_ctime
+
+/* 瀑布流tab */
+$sortItem.on('click', function (){
+	var _this = $(this)
+	var type = _this.data('type')
+	var isActive = _this.hasClass('active')
+
+	if(!flag){ return; }// 避免点击过快创建多个瀑布流对象
+	flag = false;
+
+	switch (type){
+		case 'price':
+		case 'price-h':
+			type = 'price-l'
+			_this.data('type','price-l')
+			break;
+		case 'price-l' : 
+			type = 'price-h'
+			_this.data('type','price-h')
+			break;
+		default:
+			if(isActive) return
+			$price.data('type', 'price') //恢复price
+	}
+	$sortItem.removeClass('active');
+	_this.addClass('active');
+	scrollH = window.scrollY;
+	navTop = navTop || ( parseInt( gNav.offset().top ) + 15 ) ;/* 这里的15是试出来 用于美观平衡值 */
+	setH = scrollH < navTop ? scrollH : navTop
+	// waterFall.reset(); //重置url参数
+	urlParams['tab'] = type; /* 更新tab值 */
+	history.pushState( null,  '' , '?' + UrlHandle.http_build_query( urlParams ) ); 
+	
+	switchWaterfall( type )
+	window.scrollTo(0,setH);
+});
+
+/* 加载瀑布流 */
+function switchWaterfall(type){
+	if(Wf){
+		Wf.destroy()
+		Wf = null
+	}
+	resetLayout()  //重置
+	Wf = waterFall.init({
+		el: '.goods-wall',
+		url: '/aj/wx/search/waterfall',
+		data : {
+				'key_word' : fml.vars.q_word || '上衣',
+				'orderby' :  type,
+				// 'is_recommend' : 0,
+				'limit' : 10
+		},
+		isAutoUpdateURL : false, //专为微信分享url定制（有分享设置）
+		dataName: 'tInfo',
+		plugins: [ biWaterFallPlugin, waterFallReflowPlugin ],
+		keywords: [{ 'keyword' : 'tab', 'default' : 'base' }], //tab的默认值是base
+		colNum: 2,
+		tabType : type, //没有实际意义，是为了wfDataFilter里面能取到type值
+		colGap : "10 8",
+		hasSideGap : true,
+		dataFilter: function(data){
+			var gd = this._config.dataName;
+			//缓存第一帧的数据
+			if(data.frame == 0){
+				cashe[type] = data;
+			}
+			return data[gd];
+		},
+		onFetchSuccess: function(data){
+			if(data.length === 0){
+				$pullUp.attr('status','stop')
+				this.destroy();
+				Wf = null
+			}
+		},
+		onFetchFinished: function(data){
+			lazyLoad.load();
+			flag = true;
+		},
+		optimiseFn: optimiseFn
+	})
+
+	Wf.start(cashe[sortBy])
+}
+
+//专为微信分享url定制 global
+$( window ).on('wx-sign-over', function(event) {
+	waterFallInstance.updateParam( 'isAutoUpdateURL' , true);
+});
+
+
+function resetLayout(){
+	$pullUp.attr('status','loading')
+	$gShelf.empty();
+}
+
+function myAlert(ct, cbk){
+	return new Alert({ 
+		content: ct,
+		onSure : cbk
+	})
+}

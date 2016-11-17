@@ -1,0 +1,93 @@
+<div class="per_modules">
+	<%*{ 4.18 暂时下线%>
+	<% if(this.user_label.length == 0 && this.userInfo.user_id == this.user_list.user_id){%>
+	<div class="e_tabs">
+		<p class="labelList c_f">
+			<a class="showLabel btn" href="javascript:void(0)">贴上描述自己的标签</a>	
+		</p>
+		<div class="clear_f"></div>
+		<p class="mt8_f none_f firstLabel"><a class="showLabel gray_f" href="javascript:void(0)">编辑</a></p>
+	</div>
+	<%}%>
+	<%*}%>
+	<%*{ 4.18 暂时下线%>
+	<% if(this.user_label.length > 0){%>
+	<div class="e_tabs">
+		<p class="labelList">
+		<% this.user_label && this.user_label.map(function(data){%>
+			<a class="label active" labelid="<%= data.label_id%>"><%= data.label_name%></a>
+		<%});%>
+		</p>
+		<div class="clear_f"></div>
+		<% if(this.userInfo.user_id == this.user_list.user_id){%>
+		<p class="mt8_f"><a class="showLabel gray_f" href="javascript:void(0)">编辑</a></p>
+		<%}%>
+	</div>
+	<%}%>
+	<%*}%>
+		<%*{ 4.16 王羲  15:18:20
+		把个人页面的美丽宣言下了吧%>
+	<div class="e_tabs">
+		<h2 class="xy_font">
+			<span class="dotleft_n"></span>
+			<span id="about_me">
+			<% if(this.user_list.about_me){%>
+				<%= this.user_list.about_me%>
+			<%}else{%>
+				<%if(this.userInfo.user_id == this.user_list.user_id){%>
+					这里是你在美丽说的签名档，宣布你的美丽态度。
+				<%}else{%>
+					在美丽说，我们要变漂亮，变美丽，还要变时尚！	
+				<%}%>
+			<%}%>
+			</span>
+			<span class="dotright_n"></span>
+		</h2>
+		<p class="xy_bg mt8_f">
+		<% if(this.userInfo.user_id == this.user_list.user_id){%>
+			<a class="gray_f" id="showBeauty" href="javascript:void(0)">编辑</a>
+		<%}%>
+		</p>
+	</div>
+		<%*} %>
+	<% if(this.user_medal && this.user_medal.length > 0 || this.user_list.user_id == this.userInfo.user_id){%>
+	<div class="e_tabs last">
+		<div class="cmn_title">
+			<p><a target="_blank" href="/medal/u/<%= this.user_list.user_id%>">更多<samp>&gt;&gt;</samp></a></p>
+			<h3 class="f14_f"><%if(this.user_list.user_id == this.userInfo.user_id){%>我<%}else{%>她<%}%>的美丽说勋章</h3>
+		</div>
+		<% var mSelf = this;%>
+		<div class="medal">
+			<% if(this.user_medal && this.user_medal.length > 0){%>
+			<% this.user_medal.map(function(data , index){%>
+			<span>
+			<a href="/medal/detail/<%= data.medal_id%>" target="_blank"><span class="medal_pic" style="background: url(<%= this.PICTURE_URL%>images/medal/icons/small_<%= data.medal_icon%>) no-repeat center; _filter:progid:DXImageTransform.Microsoft.AlphaImageLoader( src='<%= this.PICTURE_URL%>images/medal/icons/small_<%= data.medal_icon%>', sizingMethod='scale'); _background-image: none;"> </span></a>
+			<%*{%>
+			<script type="text/html" id="medalItem<%= index%>">
+			<div class="face_pop">
+				<div class="corner_t none_f"></div>
+				<div class="pop_con">
+					<div class="medals">
+						<div class="medal_top">
+							<span class="ico" style="background: url(<%= this.PICTURE_URL%>images/medal/icons/<%= data.medal_icon%>) no-repeat center; _filter: progid:DXImageTransform.Microsoft.AlphaImageLoader( src=<%= this.PICTURE_URL%>images/medal/icons/<%= data.medal_icon%>,sizingMethod=scale); _background-image: none;"> </span>
+							<p class="m_tle"><%= data.medal_title%></p>
+							<p class="mt5_f"><%= data.medal_details.replace(/'/g , '')%></p>
+						</div>
+						<div class="get_time"><span><%if(this.user_list.user_id == this.userInfo.user_id){%>您<%}else{%>她<%}%>于<%= data.update_time%>获得</span></div>
+						<a class="mymedal" id="mymedal" href="javascript:void(0)">查看我的勋章</a>
+						<div class="clear_f"></div>
+					</div>
+					<div class="corner_b none_f"></div>
+				</div>
+			</div>
+			</script>
+			<%*}%>
+			</span>
+			<%});%>
+			<%}else{%>
+				你还没有获得过勋章
+			<%}%>
+		</div>
+	</div>
+	<%}%>
+</div>

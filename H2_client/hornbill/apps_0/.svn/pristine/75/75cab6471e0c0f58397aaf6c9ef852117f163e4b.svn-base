@@ -1,0 +1,108 @@
+<script type="text/html" id="release">
+<?
+var riskInfo = riskInfo || {};
+var query = {
+	'rule_id': rule_id
+};
+var actionUrl = '';
+switch (riskInfo.punish_type){
+	case 'p3':
+	case 'p4':
+	case 'p5':
+			actionUrl = '/aj/check_code_aj/check_code/pic_dfz';
+		break;
+	case 'p2':
+			actionUrl = '/aj/check_code_aj/check_code/sms_dfz';
+		break;
+	case 'p1':
+		break;
+	default:
+		break;
+}
+?>
+
+<div class="release_fengkong">
+	<section>
+		<form onsubmit="return false" id="risk_form" action="<?=actionUrl ?>">
+			<?
+			var captchaType;
+			switch (riskInfo.punish_type){
+				case 'p3':
+					captchaType = 2;
+					break;
+				case 'p4':
+					captchaType = 1;
+					break;
+				case 'p5':
+					captchaType = 3;
+					break;
+			};
+			switch( riskInfo.punish_type ){
+				case 'p3':
+				case 'p4':
+				case 'p5':
+			?>
+				<p class="note_word">请输入验证码，完成加车</p>
+				<div class="pic_code_wrapper">
+					<input type="hidden" name="ruleid" value="<?= riskInfo.rule_id || query.rule_id ||'' ?>">
+					<input type="text" value="" placeholder="请输入验证码" name="captcha" class="pic_captcha_input captcha_input" min="1" max="10">
+					<img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="验证码" id="pic_code_img" data-ctype="<?= captchaType ?>">
+					<span class="refresh_btn">刷新</span>
+				</div>
+				<div>
+					<button type="submit" class="submit_btn">确定</button>
+					<span class="error_tip" ></span>
+				</div>
+			<? 
+				break;
+				case 'p2':
+			?>
+				<% mobile = this.userInfo.mobile; %>
+				<% if( mobile ){ %>
+				<div class="sms_wrapper">
+					<p class="note_word">请输入验证码，完成加车</p>
+					<div class="mobile_info">
+						<span><%=mobile.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2') %></span>
+						<button type="button" class="send_sms">获取验证码</button>
+					</div>
+					<div class="input_wrapper">
+						<input type="text" value="" placeholder="请输入短信验证码" name="captcha" class="sms_captcha_input captcha_input" min="1" max="10">
+						<input type="hidden" name="smstype" value="active_sm_captcha">
+						<input type="hidden" name="ruleid" value="<?= riskInfo.rule_id|| query.rule_id  || '' ?>">
+					</div>
+					<div>
+						<button type="submit" class="submit_btn">确定</button>
+						<span class="error_tip" ></span>
+					</div>
+				</div>
+				<% } else { %>
+				<p class="note_word">系统检测到您的行为异常，暂时无法加车，请绑定手机后，重新加车。</p>
+				<div class="set_center">
+					<a href="/settings/bindMobile" class="go_to_bindmobile">去绑定手机</a>
+				</div>
+				<div class="set_center">
+					<a href="/cart" class="go_to_shopcar_btn">去整理购物车</a>
+				</div>
+				<% }; %>
+			<?
+					break;
+				case 'p1':
+			?>
+				<p class="note_word">系统检测到您的行为异常，暂时无法加车，请联系客服或稍后重试。</p>
+				<div class="set_center">
+					<a href="/cart" target="_blank" class="go_to_shopcar_btn">去整理购物车</a>
+				</div>
+			<? 
+				break;
+				default:
+			?>
+				<p class="note_word">服务器开小差啦～ 请稍后再试</p>
+			<?
+					break;
+			?>
+			<? }; ?>
+			
+		</form>
+	</section>
+</div>
+</script>

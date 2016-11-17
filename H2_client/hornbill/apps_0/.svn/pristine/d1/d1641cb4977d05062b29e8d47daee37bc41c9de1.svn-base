@@ -1,0 +1,26 @@
+/*common*/
+
+require('wap/zepto')
+
+var $navItems       = $('.js-tab-item')
+var $toggleContents = $('.js-content')
+var locationHash    = location.hash
+var SELECTED        = 'selected'
+
+$navItems.on('click', function (){
+	var $target = $(this)
+
+	if( $target.hasClass(SELECTED) ) return
+
+	$navItems.toggleClass(SELECTED)
+	$toggleContents.toggle()
+	location.hash = $target.data('id')
+})
+
+if(locationHash.indexOf('collocation') != -1){
+	$navItems.eq(1).addClass(SELECTED)
+	$toggleContents.eq(1).show()
+}else{
+	$navItems.eq(0).addClass(SELECTED)
+	$toggleContents.eq(0).show()
+}

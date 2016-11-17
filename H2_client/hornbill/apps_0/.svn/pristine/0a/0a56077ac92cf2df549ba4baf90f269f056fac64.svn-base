@@ -1,0 +1,62 @@
+<script type="text/html" id="posterWall">
+	<?
+		function getStringLengthArr(s , len){
+			var w = 0;
+			var time = 0;
+			for(length=s.length; time<length; ){
+				if(/[^\x00-\xff]/.test(s[time])){
+					w+=2;
+				}else{
+					w+=1;
+				}	
+				time ++;
+				if(w >= (len*2)){
+					break;
+				}
+			}
+			return time;
+		}
+		function getAppLink(tid){
+			if(!<%= this.os.mlsApp ? true : false %>){
+				return '/share/item/'+tid;
+			} else {
+				return 'meilishuo://twitter_single.meilishuo?json_params='+encodeURIComponent(JSON.stringify({"twitter_info" : {"twitter_id":tid, "is_doota":1}, "r":'<%= this.r %>'}));
+			}
+		}
+		function mSubstr(str , len , pad){
+			if (!str || 0 == str.length) return '';
+			if (undefined == pad ) pad = '...';
+			len = getStringLengthArr(str , len);
+			return str.substr( 0 , len) + ((pad && str.length> len) ? pad : '');
+		}
+		var colWidth = this.posterSettings.colWidth;
+		var scale = this.posterSettings.scale;
+		this.data.tInfo && this.data.tInfo.forEach(function(data){
+			var pic_height = data.poster_height * scale;
+			var link= getAppLink(data.twitter_id);
+			var img_height = data.poster_height * (colWidth * 270 / 320) / data.poster_width;
+	?>
+		<div class="goods_box"  style="width:<?= colWidth ?>px;" poster_height="<?= pic_height+42 ?>">
+			<a class="goods_img" href="<?=link?>" style="height: <?= img_height ?>px;">
+				<span class="bs_load_img" asrc="<?= data.show_pic ?>"></span>
+				<?if(data.horizontal_mark && data.horizontal_mark[0]){
+						var _l = 0; var style = '';
+						data.horizontal_mark.forEach(function(marks_data, index){
+							if(index > 1) return;
+					?>
+							<div class="Farm" style="<?= style ?>">
+								<img class="Standard" src="<?= marks_data.img_url?>" style="width:<?= marks_data.img_width/1.3 ?>px;"/>
+							</div>
+					<?		style = 'left: ' + (parseInt(marks_data.img_width/1.3) + 6) + 'px;';
+					});
+				} ?>
+			</a>
+			<div class="desc_box">
+				<p class="desc"><a href="<?= link ?>"><?= mSubstr(data.ginfo.goods_title, 20, '...') ?></a></p>
+				<p class="price"><span class="red_f now_price"><?= data.ginfo.goods_price ?></span><? if(data.ginfo.origin_price){ ?><span class="sequence"><del><?= data.ginfo.origin_price ?></del></span><? } ?></p>
+				<div class="like_buy"><p class="buy_num"><span class="red_f"><?= data.count_like || 0 ?></span>人在抢购</p></div>
+				
+			</div>
+		</div>
+	<? }); ?>
+</script>

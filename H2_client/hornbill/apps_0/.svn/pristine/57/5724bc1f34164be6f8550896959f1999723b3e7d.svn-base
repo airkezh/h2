@@ -1,0 +1,99 @@
+<%#head_simple.html%>
+	<script type="text/javascript" charset="utf-8" src="http://fusion.qq.com/fusion_loader?appid=100657684&platform=qzone">
+	</script>
+	<script>
+	Meilishuo.config.headTag = '<%= this.headTag %>';
+	Meilishuo.config.current_page = '<%= this.groupPg.current_page %>';
+	Meilishuo.config.qq_userInfo = {
+		isFans : '<%= this.qq_userInfo.isFans %>',
+		isValid : '<%= this.qq_userInfo.isValid %>',
+		userInfo : {}
+    };
+	</script>
+</head>
+<body>
+<%
+var mSubstr = _extFn.mSubstr;
+var ca = this.getIncoming;
+%>
+<div class="qqwelfare">
+	<div class="top_box">
+		<span class="inviteBtn"></span>
+	</div>
+	<div class="notice_box">
+		<div class="notice"<% if(ca.products_preview_img){ %> style="background: url('<%= ca.products_preview_img %>') no-repeat;"<% } %> caid="<%= ca.activity_id %>" cavalid="<%= ca.valid %>">
+			<div class="notice_bg"></div>
+			<% if( ca.valid ){ %>
+			<div class="bewrite">
+				<h3 class="bw_tle"><%= ca.title %></h3>
+				<p class="time"><span>共</span><strong class="red_f"><%= mSubstr(ca.trynumber , 2 , '..') %></strong><span>份</span>
+				<%if(ca.products_price){%>
+					<span class="ml10_f">价值：</span><strong class="red_f">￥<del><%= mSubstr(ca.products_price , 3 , '..') %></del></strong>
+				<%}%>
+				</p>
+				<p class="timeStamp"><span>上线时间：</span><strong><%= ca.date %></strong></p>
+				<p><span class="wf_advance"></span></p>
+			</div>
+			<% } %>
+		</div>
+		<div class="tryon">
+			<h3>累计<%= this.activityList.userTotalNum %>人获得免费宝贝，共计<%= this.activityList.totalPrice %>元</h3>
+			<ul id="tryonMarquee">
+				<% this.carouselUserList && this.carouselUserList.map(function(data , index){%>
+					<li>
+						<span class="avatar32_f"><img src="<%= data.img_url%>"></span>
+						<p><span class="time"><%= data.ctime%></span><span class="red_f"><%= data.real_name%></span></p>
+						<p class="try_tle"><%= data.reason%></p>
+					</li>
+				<%});%>
+			</ul>
+		</div>
+		<div class="clear_f"></div>
+	</div>
+
+	<%this.activityList && this.activityList.activityInfo.map(function(data){%>
+		<div class="free_box" aid="<%= data.activity_id %>" avalid="<%= data.valid %>">
+			<div class="begin_bg"><%= data.date%>开始</div>
+			<div class="pic cursor_f"><img width="315" height="220" src="<%= data.activity_banner%>"/></div>
+			<div class="bewrite">
+				<h3 class="bw_tle cursor_f"><%= data.title%></h3>
+				<p class="time"><span>共</span><strong class="red_f"><%= data.trynumber%></strong><span>份</span>
+				<%if(data.products_price){%>
+					<span class="ml10_f">价值：</span><strong class="red_f">￥<del><%= data.products_price%></del></strong>
+				<%}%>
+				</p>
+				<p>
+				<% if(data.valid == 0){ %>
+					<p class="timeStamp" end-date="<%= data.end_time%>"><span>剩余时间：</span><strong id="day">0</strong><span>天</span><strong id="hour">0</strong><span>时</span><strong id="minute">0</strong><span>分</span><strong id="seconds">0</strong><span>秒</span></p>
+					<span class="wf_ico2 cursor_f"></span>
+				<% }else if(data.valid == 1){ %>
+					<p class="timeStamp" end-date="<%= data.end_time%>"><span>剩余时间：</span><strong id="day">0</strong><span>天</span><strong id="hour">0</strong><span>时</span><strong id="minute">0</strong><span>分</span><strong id="seconds">0</strong><span>秒</span></p>
+					<span class="wf_apply"></span>
+				<% }else if(data.valid == 2){ %>
+					<p class="timeOut"><span>剩余时间：</span><strong>已结束</strong></p>
+					<span class="wf_ico3 cursor_f"></span>
+				<% } %>
+				</p>
+				<%if(data.user_info && data.user_info.length > 0){%>
+					<p><b class="red_f"><%= data.num%></b>人申请</p>
+					<p class="face">
+						<% data.user_info.map(function(item){%><img src="<%= item.img_url%>"/><%});%>
+					</p>
+				<%}%>
+			</div>
+			<div class="clear_f"></div>
+		</div>
+	<%});%>
+	<div class="paging_panel c_f">
+		<%#paging.html%>
+	</div>
+	<div class="record">版权所有&nbsp;©&nbsp;美丽说&nbsp;联系QQ：1789096599</div>
+</div>
+
+<%#app/qq/windows.html%>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/app/qqwelfare');
+_use:", this._JSstack , this._JSmods); %>
+<%#foot_simple.html%>
+

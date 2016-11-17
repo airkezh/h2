@@ -1,0 +1,102 @@
+<%#head.html%>
+<%
+	var pageData = this.pageData;
+	var list = this.list;
+	var apparelData = [];
+	pageData.apparel.forEach(function(data){
+		var new_data = data;
+		for(var i = 0, k = list.length;i < k; i++){
+			if(list[i].name == data.name){
+				new_data.attrData = list[i].list;
+				break;
+			}
+		}
+		apparelData.push(new_data);
+	});
+	var getPosterLink = function(pid){
+		var poster_link = "/activity/March_sale/guang/?pid=" + pid + "&type=mob";
+		if(this.app_access_token){
+			poster_link += '&app_access_token=' + this.app_access_token;
+		}
+		return poster_link;
+	}
+%>
+<div class="top">
+	<% pageData.head.forEach(function(data){ %>
+		<img src="<%= data.img_src %>" />
+	<% }); %>
+</div>
+
+<div class="apparel_wrap">
+	<div class="content">
+		<% apparelData.forEach(function(data){ %>
+			<div class="apparel_title <%= data.name %>"><img src="<%= data.title_bg %>" alt=""></div>
+			<div class="apparel_con">
+				<% data.good_list.forEach(function(sec_data, index){ %>
+					<% if(index > 3) return; %>
+					<div class="apparel_box <%= index%2 ? 'odd' : ''%>">
+						<a href="<%= _extFn.getAppLink('twitter_single', {'twitter_info' : {'twitter_id' : sec_data.twitter_id, 'is_doota' : 1}}, this.os, this.r, '/share/item/'+sec_data.twitter_id); %>" class="goods_img">
+							<img src="<%= sec_data.show_pic %>" alt="">
+						</a>
+						<div class="goods_box_con">
+							<p class="goods_price red_f">￥<span class="tuan_price"><%= sec_data.ginfo.goods_price.substr(1) %></span><del class="o_price">￥<%= sec_data.ginfo.origin_price.substr(1) %></del></p>
+							<p class="goods_num">限量<span class="red_f"><%= sec_data.repertory %></span>件</p>
+							<%
+								var sale_class = 'not_start';
+								var text = '抢先加入购物车';
+								if(sec_data.repertory == 0){ 
+									sale_class = 'sale_out';
+									text = '已售完';
+								} else if(this.status == 'saling'){
+									sale_class = 'saling';
+									text = '立即购买';
+								}
+							%>
+							<a class="go_shop <%= sale_class %>" href="<%= _extFn.getAppLink('twitter_single', {'twitter_info' : {'twitter_id' : sec_data.twitter_id, 'is_doota' : 1}}, this.os, this.r, '/share/item/'+sec_data.twitter_id); %>"><%= text %></a>
+						</div>
+					</div>
+				<% });%>
+				<% data.attrData.forEach(function(sec_data, index){ %>
+					<div class="apparel_box <%= index%2 ? 'odd' : ''%>">
+						<a href="<%= getPosterLink(sec_data.attrid); %>" class="goods_img">
+							<img src="<%= sec_data.img %>">
+						</a>
+						<div class="box_con">
+							<p><em></em><a href="<%= getPosterLink(sec_data.attrid); %>" class="goods_title"><%= sec_data.title %></a><em></em></p>
+							<p class="goods_num">精选<span class="red_f"><%= sec_data.amount %></span>款&nbsp;&nbsp;&nbsp;&nbsp;全场<span class="red_f"><%= sec_data.discount %></span>折起</p>
+							<%
+								var sale_class = 'not_start';
+								var text = '抢先看';
+								if(this.status == 'saling'){
+									sale_class = 'saling';
+									text = '去抢购';
+								}
+							%>
+							<a class="go_shop <%= sale_class %>" href="<%= getPosterLink(sec_data.attrid); %>"><%= text %></a>
+						</div>
+					</div>
+				<% });%>
+			</div>
+			<div class="unfold"><a href="<%= data.more_link %>"><img src="<%= data.more_bg %>" alt=""></a></div>
+		<% });%>
+	</div>
+</div>
+
+<div class="spring_clothing">
+	<% pageData.bottom_links.forEach(function(data){ %>
+		<a href="<%= data.link %>"><img src="<%= data.img_src %>" alt=""></a>
+	<% }); %>
+</div>
+
+<% if(this.share){ %>
+	<%= requireFn('wapShare.html')({
+		'share' : this.share 
+		, 'shareTitle' : '选择分享到'
+		, '_JSstack' : this._JSstack
+		, '_JSmods' : this._JSmods
+	}); %>
+<%}%>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/app/hackWeixin');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

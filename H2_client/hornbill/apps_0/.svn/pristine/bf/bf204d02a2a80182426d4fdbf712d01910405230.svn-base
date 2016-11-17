@@ -1,0 +1,49 @@
+<%# head.html%>
+<% var focus = this.banner && this.banner.data && this.banner.data.focus; %>
+<% focus.forEach(function(data){  %>
+	<div class="top">
+		<img src="<%= data.img_url%>">
+		<p class="ac_rule">活动规则</p>
+	</div>
+<% }); %>
+<div class="goods_wall"></div>
+<div class="pullUp" status="loading"></div>
+<script type="text/html" id="posterWall">
+	<? 
+		function getAppLink(tid){
+			if(!<%= this.os.mlsApp ? true : false %>){
+				return '/share/item/'+tid;
+			} else {
+				return 'meilishuo://twitter_single.meilishuo?json_params='+encodeURIComponent(JSON.stringify({"twitter_info" : {"twitter_id":tid, "is_doota":1}, "r":'<%= this.r %>'}));
+			}
+		}
+	?>
+	<? $.each(this.data.posters , function(k , v){ ?>
+		<? 
+			var link= getAppLink(v.twitter_id);
+		?>
+		<a href="<?= link?>" class="goods_box">
+			<img src="<?= v.ginfo.goods_pic_url?>">
+			<p><?= v.ginfo.sale_num?>个美丽的姑娘已购买</p>
+		</a>
+	<?});?>
+</script>
+<script type="text/html" id="rule">
+	<div class="dialog_box rule">
+		<div class="closeDialog chacha"></div>
+		<img src="<?= this.rule_pic?>">
+		<div class="closeDialog iknow"></div>
+	</div>
+</script>
+<a class="gotop" style="bottom:<%if(this.isIphone){%>60<%}else{%>20<%}%>px">
+	<img src="<%= this.PICTURE_URL%>/images/wap/tuan/gotop.png" />
+</a>
+<script>
+	fml.vars.vip_id = '<%= this.vip_id%>';
+	fml.vars.rule_pic = '<%= this.banner.data.stmt.img_url%>'
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use("wap/page/new_user");
+_use:", this._JSstack , this._JSmods); %>
+<%# foot_simple.html%>

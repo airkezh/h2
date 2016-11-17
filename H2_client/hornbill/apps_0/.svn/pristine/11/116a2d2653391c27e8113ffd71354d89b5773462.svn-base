@@ -1,0 +1,16 @@
+<%#head.html%>
+
+<%
+	var pageData = this.pageData;
+%>
+
+<div class="main">
+	<% this.pageData.banners && this.pageData.banners.forEach(function(desc, index){ %>
+			<a href="<%= desc.link || 'javascript:;' %>">
+				<% if(desc.src){ %><img src="<%= desc.src %>"><% } %>
+				<% if(desc.text){ %><p><%= desc.text %></p><% } %>
+			</a>
+	<% }); %>
+</div>
+
+<%#foot.html%>

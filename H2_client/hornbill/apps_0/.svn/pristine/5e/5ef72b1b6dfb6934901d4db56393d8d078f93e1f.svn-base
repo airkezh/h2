@@ -1,0 +1,46 @@
+<%#head.html%>
+<% var rm_info = this.rm_info; %>
+<% if(rm_info.banner){ %>
+	<%= requireFn('block/banner.html')({
+		'banner' : rm_info.banner 
+		,'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+	});%>
+<%}%>
+
+<% if(rm_info.calendar){ %>
+	<div class="rm_news">
+		<% if(rm_info.calendar_pic){ %>
+			<img src="<%= rm_info.calendar_pic%>" class="title">
+		<%}%>
+		<table class="news_box">
+			<% rm_info.calendar && rm_info.calendar.map(function(data){  %>
+				<tr>
+					<td class="dot_box"><p class="dot"></p></td>
+					<td class="time"><%= data.time%></td>
+					<td class="pic"><img src="<%= data.pic%>"></td>
+					<td class="content">
+						<p class="title"><%= data.title%></p>
+						<p><%= data.wording%></p>
+					</td>
+				</tr>
+			<%});%>
+		</table>
+	</div>
+<%}%>
+<% if(rm_info.same_pic){ %>
+	<img src="<%= rm_info.same_pic%>" class="title">
+<%}%>
+<% if(rm_info.same){ %>
+	<div class="same_box">
+		<% rm_info.same && rm_info.same.map(function(data){  %>
+			<a href="<%= data.url%>" class="single_box">
+				<img src="<%= data.pic%>">
+				<div class="bottom">
+					<p class="name"><%= data.title%></p>
+					<p><%= data.wording%></p>
+				</div>
+			</a>
+		<%});%>
+	</div>
+<% } %>
+<%#foot.html%>

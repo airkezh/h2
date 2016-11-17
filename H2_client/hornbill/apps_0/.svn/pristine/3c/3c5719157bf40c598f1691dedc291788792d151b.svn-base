@@ -1,0 +1,22 @@
+<%# head.html %>
+<div class="main">
+    <h2>经营者营业执照信息</h2>
+    <p>美丽说网络平台经营者营业执照信息</p>
+    <p>根据国家工商总局《网络交易管理办法》要求对网络平台商户营业执照信息公式如下:</p>
+    <div class="checkBox">
+        <input id="checkcode" class="mls-txt" name="checkcode" value="" maxlength="4"/>
+        <div class="checkImage">
+            <span id="checkcodeImage">
+                <img isblank="true" src="<%= this.PICTURE_URL %>images/register/blank.jpg">
+            </span>
+            <span>看不清</span>
+        </div>
+        <a class="btn" href="javascript:;" id="btn"/>确定</a>
+    </div>
+</div>
+<input type="hidden" value="<%=this.shop_id%>" id="shop_id"/>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+        fml.use('page/license');
+_use:", this._JSstack , this._JSmods); %>
+<%# foot.html %>

@@ -1,0 +1,122 @@
+<%#head_simple.html%>
+<%
+	var answer = this.answer;
+	var homeInfo = answer.homeInfo;
+	var audioInfo = answer.audioInfo;
+	var start = answer.start;
+	var banner = answer.banner;
+	var question = answer.question;
+	var questionInfo = answer.questionInfo;
+	var questionPic = answer.questionPic;
+	var questionCont = answer.questionCont;
+	var homeShare = answer.homeShare;
+	var resultLink = answer.resultLink;
+
+	var homeStyle = ['background-image:url(' + homeInfo.bg + ')'].join(';');
+	var musicStyle = [
+		'background-image:url(' + audioInfo.img + ')',
+		coordStyle(audioInfo.top,1),
+		coordStyle(audioInfo.left),
+		'width:' + audioInfo.width,
+		'height:' + audioInfo.height
+	].join(';');
+	var startStyle = [
+		'background-image:url(' + start.img + ')',
+		coordStyle(start.top,1),
+		coordStyle(start.left),
+		'width:' + start.width,
+		'height:' + start.height
+	].join(';');
+	var questionStyle=['background-image:url(' + questionInfo.bg + ')'].join(';');
+
+	function coordStyle(str,dir){
+		var rtn = '';
+		var side = dir ? 'top:' : 'left:'; 
+		if(str){
+			rtn = side + str;
+		}else{
+			rtn = side + '50%;';
+			if(dir){
+				rtn += '-webkit-transform:translateY(-50%)';
+			}else{
+				rtn += '-webkit-transform:translateX(-50%)';
+			}
+		}
+		return rtn;
+	}
+
+	function bannerStyle(item){
+		var style = [
+			'background-image:url(' + item.img + ')',
+			coordStyle(item.top,1),
+			coordStyle(item.left),
+			'width:' + item.width,
+			'height:' + item.height,
+			'z-index:' + (item['z-index'] || 1)
+		].join(';');
+		return style;
+	}
+
+	function questionPicStyle(item){
+		var style = [
+			'background-image:url(' + item.img + ')',
+			coordStyle(questionPic.top,1),
+			coordStyle(questionPic.left),
+			'width:' + questionPic.width,
+			'height:' + questionPic.height
+		].join(';');
+		return style;
+	}
+
+	function questionContStyle(item){
+		var style = [
+			coordStyle(questionCont.top,1),
+			coordStyle(questionCont.left),
+			'width:' + questionCont.width,
+			'height:' + questionCont.height
+		].join(';');
+		return style;
+	}
+
+%>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+
+<div class="doc" >
+	<div class="home" style="<%=homeStyle %>">
+		<% banner.forEach(function(item){ %>
+			<a class="banner" data-link="<%=item.link %>" style="<%=bannerStyle(item) %>"></a>
+		<% }); %>
+		<a class="start" style="<%=startStyle %>"></a>
+	</div>
+	<div class="question" style="<%=questionStyle %>">
+		<% question.forEach(function(item,index){ %>
+			<div class="item" <% if(index != 0){%>style="display:none"<%}%> >
+				<div class="pic" style="<%=questionPicStyle(item) %>">
+				</div>
+				<div class="cont" style="<%=questionContStyle(item) %>">
+					<h3><%=(index + 1) + '、' + item.title %></h3>
+					<ul>
+					<% item.items.forEach(function(answer){ %>
+						<li data-correct="<%=answer.correct %>">
+							<%=answer.answer %>
+						</li>
+					<% }); %>
+					</ul>
+				</div>
+			</div>
+		<% }); %>
+	</div>
+	<div class="music" style="<%=musicStyle %>"></div>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+  	fml.use('wap/page/activity/answer');
+_use:", this._JSstack , this._JSmods ); %>
+<script>
+	fml.vars.homeShare = <%=JSON.stringify(homeShare) %>;
+	fml.vars.resultLink = '<%=resultLink%>';
+	fml.vars.audioInfo = <%=JSON.stringify(audioInfo) %>;
+</script>
+<%#foot_simple.html%>
+

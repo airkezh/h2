@@ -1,0 +1,448 @@
+/**
+ * @fileoverview 会员半价购 － 会员中心
+ * @requires
+ * @author kehuang@meilishuo.com
+ * @date 2015-06-24
+ */
+
+@import "../block.less";
+
+html,body{
+	.w(100%);
+	.f(10px);
+	.bgc(#fff);
+}
+
+// 0.5的水平线
+.line-h05(@lw){
+	.w(@lw);
+	.h(1px);
+	-webkit-transform:scaleY(.5);
+	background-color:rgb(213, 213, 213);
+}
+
+// 0.5的垂直线
+.line-v05(@lh, @lt){
+	.pa;
+	.w(1px);
+	.h(@lh);
+	top:@lt;
+	right:0px;
+	-webkit-transform:scaleX(.5);
+	background-color:rgb(213, 213, 213);
+}
+
+img{
+	.block;
+	.w(100%);
+}
+
+ul{
+	list-style:none;
+}
+
+i{
+	font-style:normal;
+}
+
+.nav_wrap{
+	min-height:3.6rem;
+}
+
+.nav_box{
+	.none;
+	.w(100%);
+	.f(1.4rem);
+	.fc(#a09e9f);
+	.bgc(#fff);
+}
+
+.scrollin{
+	.pf;
+	left:0;
+	top:-1px;
+	margin:0 auto;
+	z-index:100;
+}
+
+.scrollout{
+	.pr;
+}
+
+.navbl{
+	.mt(-16px);
+}
+
+.lhp100{
+	.line-h05(100%);
+}
+
+.points{
+	.pr;
+	.hidden;
+	.h(58px);
+	.w(100%);
+	margin:0 auto;
+
+	s{
+		.pa;
+		.w(52px);
+		.h(58px);
+		left:50%;
+		.ml(-26px);
+		background:url('http://d02.res.meilishuo.net/pic/_o/79/f7/fb2751ad391504db79146a5738fa_86_92.cg.png') top center no-repeat;
+		background-size:100%;
+		z-index:10;
+	}
+
+	s.active{
+		background:url('http://d01.res.meilishuo.net/pic/_o/a3/b6/8bb71ec3cdaaa33a8a8c47120dc4_90_92.cg.png') top center no-repeat;
+		background-size:104%;
+	}
+
+	ul{
+		.pr;
+		.hidden;
+		.w(1000px);
+		list-style:none;
+		-webkit-transform:translate3d(0,0,0);
+		-webkit-transition:all .3s ease-in-out;
+		z-index:10;
+
+		li{
+			.left;
+			.l(17px);
+
+			a{
+				.c;
+				.block;
+				.mt(5px);
+				.f(1.4rem);
+				.fc(#a6a4a5);
+				outline:0;
+				font-weight:400;
+				text-decoration:none;
+				font-family:"Helvetica Neue";
+
+				label{
+					.block;
+					.f(1rem);
+				}
+			}
+		}
+
+		.curr a{
+			.fc(#fff);
+		}
+	}
+}
+
+.caption_wrap{
+	.l(1.5);
+	.hidden;
+	clear:both;
+	.f(1.2rem);
+	padding:15*@w;
+
+	.time{
+		.left;
+		.fc(#fe6054);
+	}
+
+	.level{
+		.right;
+		.fc(#999);
+		.i_block;
+		.pl(20px);
+	}
+
+	.level0{
+		background:url("http://d03.res.meilishuo.net/pic/_o/38/d8/f8b3847dd1d9ac6bc2a1717b82ed_30_30.ch.png") no-repeat;
+		background-size:auto 16px;
+	}
+
+	.level1{
+		background:url("http://d01.res.meilishuo.net/pic/_o/1f/f7/f9194ab82d5d4446b1c7718a6dcd_30_30.cf.png") no-repeat;
+		background-size:auto 16px;
+	}
+
+	.level2{
+		background:url("http://d04.res.meilishuo.net/pic/_o/f1/7d/916b6cfb8e6b0cf50379677991d2_30_30.cg.png") no-repeat;
+		background-size:auto 16px;
+	}
+
+	.level3{
+		background:url("http://d01.res.meilishuo.net/pic/_o/41/e6/3c1e91e239f2f5e4c76fc9eeabe2_30_30.ch.png") no-repeat;
+		background-size:auto 16px;
+	}
+
+	.level4{
+		background:url("http://d01.res.meilishuo.net/pic/_o/ce/f8/99c0b0cbc0478f54c5bc22a925aa_30_30.cf.png") no-repeat;
+		background-size:auto 16px;
+	}
+}
+
+.goods_wrap{
+	.hidden;
+	min-height:700px;
+	margin:0 15*@w;
+}
+
+.goods_item{
+	.pr;
+	.mt(15*@w);
+	.bgc(#fff);
+	min-height:104px;
+	border-bottom:1px solid rgba(221,221,221,.3);
+
+	figure{
+		.pr;
+		.w(33%);
+		.i_block;
+		.mt(2px);
+		.mb(15*@w);
+
+		span.bs_load_img{
+			.block;
+			.w(100%);
+			.pt(100%);
+			opacity:.75;
+			background-image:url("http://d05.res.meilishuo.net/pic/_o/33/cf/a618bae2cdf43bc03289e82cb53f_290_290.cg.png");
+			background-size:cover;
+		}
+
+		span.df_show_img{
+			.block;
+			.w(100%);
+			.pt(100%);
+			opacity:.75;
+			background-image:url("http://d05.res.meilishuo.net/pic/_o/33/cf/a618bae2cdf43bc03289e82cb53f_290_290.cg.png");
+			background-size:cover;
+		}
+	}
+
+	.desc{
+		.right;
+		.w(67%);
+
+		li{
+			.pa;
+			.hidden;
+			.w(65%);
+			margin:0 15*@w;
+		}
+
+		li:nth-child(1){
+			top:1%;
+			.hidden;
+			.mt(1px);
+			.f(1.3rem);
+            white-space:nowrap;
+            text-overflow:ellipsis;
+
+            a{
+            	.fc(#333);
+            }
+		}
+
+		li:nth-child(2){
+			top:20%;
+		}
+
+		li:nth-child(3){
+			top:42%;
+		}
+
+		li:nth-child(4){
+			bottom:1px;
+			.mb(15*@w);
+		}
+
+		.status_btn{
+			.c;
+			.block;
+			.fc(#fff);
+			.pt(.6rem);
+			.pb(.6rem);
+			.f(1.4rem);
+			.bgc(#fe6054);
+
+			a{
+				.block;
+				.w(100%);
+				.h(100%);
+				.fc(#fff);
+			}
+		}
+
+		.over_btn{
+			.bgc(#ffac5c);
+		}
+
+		.empty_btn{
+			.bgc(#ddd);
+		}
+
+		.buy_btn{
+			.bgc(#fe6054);
+		}
+
+	}
+
+	.now_price{
+		.mr(0);
+		.ml(-4px);
+		.fc(#333);
+		.f(1.4rem);
+	}
+
+	.old_price{
+		.ml(0);
+		.fc(#999);
+		.f(1rem);
+	}
+
+	.gcata{
+		.l(2);
+		.ml(1px);
+		.bgc(#ffbb34);
+		padding:3px 5px;
+
+		.beans{
+			.fc(#fff);
+			.f(1rem);
+			.pl(36*@px);
+			background:url("http://d01.res.meilishuo.net/pic/_o/25/83/d07b832cd5f98618d1813ade01a8_24_22.ch.png") no-repeat;
+			background-size:16px auto;
+		}
+	}
+
+	.sale_info{
+		p{
+			.f(1rem);
+			.l(1.4rem);
+			.fc(#80737b);
+		}
+
+		.sale{
+			.mb(4px);
+			.f(1.1rem);
+			.fc(#999);
+		}
+
+		.level{
+			.c;
+			.w(50%);
+			.f(1.1rem);
+			.fc(#fff);
+			.bgc(#ffa600);
+		}
+	}
+}
+
+/* 下拉刷新 */
+.pullUp{
+	.pullUpDown > .common;.pullUpDown > .loading;
+	&:before{
+		.nowrap;
+		.ml(-10px);
+	}
+	&[status="tap"]{
+		background:0 none;	
+	}
+	&[status="stop"]{
+		background:0 none;	
+	}
+}
+
+/* 返回顶部 */
+.gotop_wrap{
+	.pf;
+	.none;
+	.w(82*@w);
+	.pt(82*@w);
+	z-index:10;
+	right:10px;
+	bottom:40px;
+
+	.gotop{
+		.block;
+		.w(100%);
+	}
+
+	img{
+		.w(100%);
+	}
+}
+
+/* 组图 */
+.swipe{
+	.pr;
+	.c;
+	.hidden;
+	min-height:180*@px;
+}
+
+.swipe_wrap{
+	.pr;
+	.hidden;
+	-webkit-backface-visibility:hidden;
+	-moz-backface-visibility:hidden;
+	-ms-backface-visibility:hidden;
+	-o-backface-visibility:hidden;
+	backface-visibility:hidden;
+	/* Fix of Webkit flickering */
+	z-index:1;
+}
+
+.swipe_wrap > div{
+	.pr;
+	.left;
+	.w(100%);
+}
+
+.swipe_pic{
+	.pr;
+	.hidden;
+	.w(100%);
+	.bgc(#fff);
+	min-height:180*@px;
+}
+
+.swipe_pic img{
+	.w(100%);
+	min-height:180*@px;
+}
+
+.swipe_num{
+	.pa;
+	left:0;
+	.w(100%);
+	bottom:3px;
+	z-index:9;
+
+	li{
+		.vm;
+		.w(4px);
+		.h(4px);
+		.mr(2px);
+		.i_block;
+		float:none;
+		.bgc(#e2e2e2);
+		.border-r(50%);
+	}
+
+	li.active{
+		.bgc(#f66);
+	}
+}
+
+@media screen and (min-width:360px){
+	html,body{
+		.f(12px);
+	}
+
+	.goods_item .now_price{
+		.f(1.8rem);
+	}
+}

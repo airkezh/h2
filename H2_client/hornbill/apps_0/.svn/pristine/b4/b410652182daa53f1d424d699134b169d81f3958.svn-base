@@ -1,0 +1,165 @@
+<% if (this.board_list && this.board_list.ainfo){
+	var len = this.board_list.ainfo.length;
+ 	this.board_list.ainfo.map(function(data, index){ %>
+	<div class="cnt_item">
+		<%if(this.headTag == 'club' && data.top){%>
+			<div class="top_content_cl">
+				<span class="top">置顶</span>
+				<a class="nickname" href="/person/u/<%=data.uinfo.user_id%>" target="_blank"><%=data.uinfo.nickname%></a>
+				<h3><a href="/club/single/<%=data.article_id%>" target="_blank"><%=data.article_title%></a></h3>
+		<%} else if(this.headTag == 'club') {%>
+			<% if(this.clubTest.isAdminer){ %>
+				<div class="super_club">
+					<% if(data.shopping_check){ %>
+						<span class="to_shopcheck" data_id="<%=data.article_id%>">通过晒单审核</span>
+					<% } %>
+					<span class="to_blacklist" data_id="<%=data.uinfo.user_id%>" data_name="<%=data.uinfo.nickname%>">添加至黑名单</span>
+					<span class="to_sort" data_id="<%=data.article_id%>" data_bid="<%=data.board_id%>" data_name="<%=data.board_name%>">移至其他分类</span>
+				</div>
+			<% } %>
+			<a href="/person/u/<%=data.uinfo.user_id%>" target="_blank" class="left_f"><img class="ava_r" src="<%=data.uinfo.avatar_a%>" width="48" height="48"></a>
+			<div class="content_cl">
+				<p class="user_time">
+					<a href="/person/u/<%=data.uinfo.user_id%>" target="_blank"><%=data.uinfo.nickname%></a>
+					<span class="time"><%= data.article_create_time%></span>
+				</p>
+				<%if(data.highlight){%><span class="best_title"></span><%}%>
+				<h3><a href="/club/single/<%=data.article_id%>" target="_blank"><%=data.article_title%></a></h3>
+				<div class="clear_f"></div>
+		<%} else {%>
+		<div class="content_ps">
+			<%if(data.top){%>
+			<span class="top">置顶</span>
+			<%}%>
+			<%if(data.highlight){%><span class="best_title"></span><%}%>
+			<h3><a href="/club/single/<%=data.article_id%>" target="_blank"><%=data.article_title%></a></h3>
+			<span class="time"><%=data.article_create_time%></span>
+			<div class="clear_f"></div>
+		<%}
+		if(!data.top){
+		%>
+			<div class="detail">
+			<% if(data.count_pic == 0){ %>
+				<%if(data.article_htmlcontent){%>
+				<div class="clearfix_f">
+					<div class="left_f"><span class="cl_i_lquote">&nbsp;</span></div>
+					<p class="cnt_r"><%=data.article_htmlcontent%><em class="cl_i_rquote">&nbsp;</em></p>
+				</div>
+				<%}%>
+			<% } else if(data.count_pic == 1){ %>
+				<a href="/club/single/<%=data.article_id%>" target="_blank" class="left_f"><img src="<%=data.pinfo[0].g_show_pic || data.pinfo[0].pic_url%>" width="190" height="190"></a>
+				<%if(data.article_htmlcontent){%>
+				<div class="desp">
+					<div class="hack">
+						<div class="cnt clearfix_f">
+							<div class="left_f"><span class="cl_i_lquote">&nbsp;</span></div>
+							<p class="cnt_r">
+								<%=data.article_htmlcontent%><em class="cl_i_rquote">&nbsp;</em>
+							</p>
+						</div>
+					</div>
+				</div>
+				<%}%>
+			<% } else if(data.count_pic > 1) {%>
+				<%if(data.article_htmlcontent){%>
+				<div class="clearfix_f mb20_f">
+					<div class="left_f"><span class="cl_i_lquote">&nbsp;</span></div>
+					<p class="cnt_r"><%=data.article_htmlcontent%><em class="cl_i_rquote">&nbsp;</em></p>
+				</div>
+				<%}%>
+				<div class="cnt_imgs clearfix_f">
+					<%data.pinfo && data.pinfo.map(function(pic, index){%>
+					<% if(index < 3){ %>
+					<a href="/club/single/<%=data.article_id%>" target="_blank"<%if(index==0){%> style="margin-left: 0;"<%}%>><img src="<%=pic.g_show_pic || pic.pic_url%>" width="190" height="190"></a>
+					<% } %>
+					<%});%>
+				</div>
+			<% } %>
+				<%
+					if(data.dootaInfo.length){
+						var dootaInfo = data.dootaInfo[0];
+				%>
+					<div class="clear_f"></div>
+					<div class="good_info">
+						<a href="/share/item/<%= dootaInfo.twitter_id %>?frm=club_h_shopping&x_pid=al:l-<%= data.article_id %>" target="_blank"><img src="<%= dootaInfo.show_pic %>" width="50" height="50"></a>
+						<a class="go_shop" href="/share/item/<%= dootaInfo.twitter_id %>?frm=club_h_shopping&x_pid=al:l-<%= data.article_id %>" target="_blank">去购买</a>
+						<p class="goods_title"><a href="/share/item/<%= dootaInfo.twitter_id %>?frm=club_h_shopping&x_pid=al:l-<%= data.article_id %>" target="_blank"><%= dootaInfo.goods_title %></a></p>
+						<p class="goods_price red_f">价格：<%= dootaInfo.goods_price || 0 %></p>
+					</div>
+				<% } %>
+			</div>
+			<div class="bar">
+				<% if(data.pinfo.length && data.article_htmlcontent){ %>
+					<p class="share left_f" data_url="http://www.meilishuo.com/club/single/<%=data.article_id%>" data_title="<%=data.article_title%>" data_desc="<%==data.article_htmlcontent%>" data_img="<%= data.pinfo[0].g_show_pic || data.pinfo[0].pic_url %>">
+						分享到 <a class="i_sina cursor_f">&nbsp;</a><a class="i_qzone cursor_f">&nbsp;</a><a class="i_tx cursor_f">&nbsp;</a>
+					</p>
+				<% } %>
+				<span class="right_f pr_f">
+					<% var isLike = data.like == 1 ? 'cl_love' : 'cl_unlove';%>
+					<a class="btn_bar cl_read" href="/club/single/<%=data.article_id%>" target="_blank"><em class="cl_views">&nbsp;</em>浏览<em><%=data.count_read||''%></em></a>
+					<a class="btn_bar cl_like" uid="<%=data.uinfo.user_id%>" aid="<%=data.article_id%>" href="javascript:;"><em class="<%=isLike%>">&nbsp;</em>喜欢<em><%=data.count_like||''%></em></a>
+					<a class="btn_bar cl_reply" href="/club/single/<%=data.article_id%>#reply" target="_blank"><em class="cl_i_comment">&nbsp;</em>回复<%=data.count_reply||''%></a>
+					<%if (data.canDel == 1){%>
+					<a class="btn_bar cl_delete" aid="<%=data.article_id%>" href="javascript:;">删除</a>
+					<%}%>
+					<%if (this.user_id == data.uinfo.user_id){%>
+					<a class="love_pro none_f">这是你自己的晒单哦！</a>
+					<%}%>
+				</span>
+			</div>
+		<% } %>
+		</div>
+		<div class="clear_f"></div>
+		<%if(index !== len-1) {%>
+		<div class="separation"></div>
+		<%}%>
+	</div>
+	<% }); %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('app/clubAction' , function(){
+		this.clubLike('.cl_like', '.cnt_item');
+		this.replyDelete('.cl_delete', '.cnt_item', '.cnt_item');
+		this.clubLikeHover('.cl_like', '.cnt_item');
+	});
+_use:", this._JSstack, this._JSmods); %>
+
+<% if(this.clubTest.isAdminer){ %>
+	<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+		fml.use('page/club/clubSuperUser');
+	_use:", this._JSstack , this._JSmods ); %>
+
+	<script type="text/html" id="superClubList">
+		<div class="board_list">
+			<p class="mb14_f">当前帖子所在分类：<span class="red_f"><?= now_sort ?></span></p>
+			<%this.board_info && this.board_info.map(function(data){%>
+				<label style="margin: 5px;display:block"><input name="sortList" type="radio" data_id="<%=data.board_id%>" data_title="<%=data.board_title%>"><%=data.board_title%></label>
+			<%});%>
+		</div>
+	</script>
+<% } %>
+
+<%}%>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use(['jquery' , 'app/shareTo'] , function(){
+		var getShareMsg = function (dom){
+			return shareData = {
+				url : dom.attr('data_url'),
+				title : dom.attr('data_title'),
+				desc : dom.attr('data_desc'),
+				img : dom.attr('data_img')
+			}
+		}
+		$('.i_qzone').bind('click' , $.proxy(function(event){
+			var shareData = getShareMsg($(event.currentTarget).parents(':first'));
+			this.shareTo.shareToQzone(shareData.url , '' , shareData.desc , shareData.title , shareData.img);
+		} , this));
+		$('.i_sina').bind('click' , $.proxy(function(event){
+			var shareData = getShareMsg($(event.currentTarget).parents(':first'));
+			this.shareTo.shareToWeibo(shareData.url, shareData.desc, shareData.img);
+		} , this));
+		$('.i_tx').bind('click' , $.proxy(function(event){
+			var shareData = getShareMsg($(event.currentTarget).parents(':first'));
+			this.shareTo.shareToQQ(shareData.url , shareData.desc , shareData.img);
+		} , this));
+	});
+_use:", this._JSstack , this._JSmods); %>

@@ -1,0 +1,20 @@
+<% pageData = this.pageData; %>
+<% if(pageData.shop && pageData.shop.length){ %>
+
+<div class="shop_wrap">
+	<div class="title"><img src="<%= pageData.shop_title.shop_title_bg %>" alt=""></div>
+	<div class="clear_f"></div>
+	<div class="content">
+		<div class="title">
+			<img src="<%= pageData.shop_title.title_bg %>" alt="">
+			<span id="shop" class="fix_target"></span><a href="<%= pageData.shop_title.more_link %>" target="_blank" class="shop_title_more"></a>
+		</div>
+		<div class="shop_content">
+			<% var mask = pageData.shop_title.mask; %>
+			<% pageData.shop && pageData.shop.forEach(function(data){ %>
+				<div class="shop_box"><a href="/shop/<%= data.link %>" target="_blank"><img src="<%= data.src %>" alt=""><img class="shop_attention" src="<%= mask %>"></a></div>
+			<% }); %>
+		</div>
+	</div>
+</div>
+<% } %>

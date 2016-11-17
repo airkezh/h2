@@ -1,0 +1,35 @@
+<%#head.html%>
+<%
+	var Activity_oldTimey = this.Activity_oldTimey
+		, main_figure = Activity_oldTimey && Activity_oldTimey.data && Activity_oldTimey.data.main_figure;
+%>
+<div class="main">
+	<div class="title">往期回顾</div>
+	<div class="container">
+		<%if(main_figure && main_figure.length > 0){
+			main_figure.forEach(function(item, i){
+		%>
+		<div class="topic-box <%= (i+1)%3 ? '' : 'mr0_f'%>">
+			<p class="topic-tit"><span><%= item.show_time%></span> <%= item.title %></p>
+			<dl>
+				<dt>
+					<a class="big-pic" href="<%= item.image.url%>"><img src="<%= item.image.pic_url%>"></a>
+				</dt>
+				<dd>
+					<%if(item.sub_figure && item.sub_figure.length > 0){
+						for(var i = 0; i<item.sub_figure.length; i++){
+					%>
+					<a class="small-pic" href="<%= item.sub_figure[i].image.url%>"><img src="<%= item.sub_figure[i].image.pic_url%>"></a>	
+					<%	}
+					}%>
+				</dd>
+			</dl>
+		</div>
+		<%	});
+		}%>
+	</div>
+	<div class="paging_panel c_f">
+		<%#paging.html%>
+	</div>
+</div>
+<%#foot.html%>

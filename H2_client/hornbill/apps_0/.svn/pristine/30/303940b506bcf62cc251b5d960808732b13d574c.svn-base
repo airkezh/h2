@@ -1,0 +1,22 @@
+<%# head_simple.html %>
+	<script>
+	Meilishuo.config.headTag = '<%= this.headTag %>';
+	Meilishuo.config.logon_360 = <%= this.userInfo.logon_360 || 0 %>;
+	Meilishuo.config.base64 = '<%= this.userInfo.base64 %>';
+	</script>
+</head>
+<body>
+<div class="win_success">
+	<h4>恭喜你成功登录美丽说！</h4>
+	<p>您将获得如下特权：</p>
+	<ul class="gray_f">
+		<li>1. 自动登录更方便，免去输入帐号密码的繁琐</li>
+		<li>2. 消息提醒更及时，第一时间收到关注的动态</li>
+	</ul>
+	<p><span class="closeBtn">关闭</span></p>
+</div>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/app/360dev');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html %>

@@ -1,0 +1,161 @@
+@import "../block.less";
+@bg_icon: 'http://d03.res.meilishuo.net/pic/_o/c6/fc/9b0ba6f3238a9af4b4b576ebe6d6_580_678.cf.png';
+
+.frame_simple;
+.navBan;
+body {
+	background: #F4F4F4;
+}
+
+.icon_bg(@x:0, @y:0){
+	background: url(@bg_icon) no-repeat;
+	background-size: 2.9rem;
+	background-position: @x @y;
+}
+
+.page_head;
+
+.page_head {
+	.mb(.12rem);
+}
+.addr_new {
+	.item_wrap {
+		background: #fff;
+	}
+	label,.set_wrap {
+		display: block;
+		border-bottom: 1px solid #ccc;
+		line-height: .8rem;
+		height: .8rem;
+		vertical-align: middle;
+		font-size: 0px;
+		margin-left: .28rem;
+		input[type="text"],input[type="tel"],select{
+			font-size: .26rem;
+			color : #000;
+			width: 95%;
+			outline: none;
+			height: .5rem;
+			border: none;
+			text-indent: 0px;
+			padding:0;
+			text-align: left;
+		}
+		span {
+			font-size: .26rem;
+			color: #666;
+		}
+	}
+	.set_wrap {
+		margin-top: .12rem;
+		border-bottom: none;
+	}
+	select {
+	    background-color: transparent;
+	    text-indent: 1px;
+	    text-overflow: '';
+	    -webkit-appearance: none;
+	    appearance: none;
+	    .default {
+	    	color : #ccc;
+	    }
+	}
+	.select_box {
+		position: relative;
+		.notice {
+			color : #bbb;
+			height: .5rem;
+			line-height: .5rem;
+			position: absolute;
+			top: 50%;
+			margin-top: -0.25rem;
+			left: 0;
+		}
+		.note_show {
+			display: inline-block;
+		}
+		.note_hidden {
+			display: none;
+		}
+		select {
+			position: absolute;
+			top: 50%;
+			margin-top: -0.25rem;
+			left: 0;
+		}
+		.select_btn {
+			float: right;
+			margin-right: .3rem;
+			color: #FF7A9A;
+			font-size: .24rem;
+			&:after {
+				display: inline-block;
+				vertical-align: middle;
+				content: ""; 
+  				color: green;
+  			 	width: .13rem;
+  				height: .26rem;
+  				margin-left: .22rem;
+  				margin-top: -.04rem;
+  				background: url('http://d04.res.meilishuo.net/pic/_o/77/bb/dbd7ad7f864ff1e044ba4be189c8_13_26.ch.png') no-repeat center;
+  				background-size: contain;
+			}
+		}
+	}
+}
+
+#save_address {
+	color : #FF7A9A;
+}
+
+.remove_addr_btn {
+	margin-top: .12rem;
+	background: #fff;
+	font-size: .26rem;
+	color : #FF6666;
+	padding: 0 .28rem ;
+	line-height: .8rem;
+}
+
+.switch_btn {
+	display: block;
+	position: relative;
+	width: .88rem;
+	height: .44rem;
+	border-radius: .22rem;
+	float: right;
+	margin-top: .18rem;
+	margin-right: .3rem;
+	.inner_circle {
+		width: .44rem;
+	    height: .44rem;
+	    background: #fff;
+	    display: inline-block;
+	    border-radius: .22rem;
+	}
+}
+
+.switch_check {
+	background: #86E653;
+	.inner_circle {
+		position: absolute;
+		right: .02rem;
+		top: 0;
+	}
+}
+
+.switch_uncheck {
+	background: #DEDAD9;
+	.inner_circle {
+		position: absolute;
+		left: .02rem;
+		top: 0;
+	}
+}
+
+.addressErrorMessage{
+	color:#FF7A9A;
+	margin: .12rem 0;
+	text-align: center;
+	font-size: .24rem;
+}

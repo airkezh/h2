@@ -1,0 +1,18 @@
+<%this.recommend && this.recommend.forEach(function(v,k){%>
+<div class="groupBox">
+	<div class="groupCon">
+		<h2 class="s_tle"><a href="/shop/<%=v.shop_id%>" target="_blank"><%=v.shop_nick%></a></h2>
+		<a href="/shop/<%=v.shop_id%>" target="_blank" class="imgBox">
+			<img class="goods_pic_b" src="<%=v.goods_img %>" />
+		</a>
+		<div class="lookBox">
+			<a class="btn" href="/shop/<%=v.shop_id%>" target="_blank">去逛逛</a>
+			<span class="tex">总销量<%=v.sales_num%>件</span>
+		</div>
+		<%= requireFn('mark.html')({
+			'marks' : v.horizontal_mark
+		}); %>
+		<div class="clear_f"></div>
+	</div>
+</div>
+<%});%>

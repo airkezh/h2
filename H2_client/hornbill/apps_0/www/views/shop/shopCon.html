@@ -1,0 +1,153 @@
+<%# head.html%>
+<%
+var query = this._Request_query;
+var getLink = _extFn.getLink;
+var mSubstr = _extFn.mSubstr;
+var defaultShopHead = this.PICTURE_URL + 'images/shop/head-img.jpg';
+var shop_head_img = (this.shop_info.shop_level==1 && this.shop_info.shop_head_img) ? this.shop_info.shop_head_img : defaultShopHead;
+var shop_name = this.shop_info.shop_nick;
+var categories = this.shop_cata.categories;
+var showcase_slide = this.shop_wins.slide
+	, showcase_fix = this.shop_wins.fix;
+var hasShowcase = false;
+if(showcase_slide && showcase_fix){
+	hasShowcase = (showcase_slide.length>=2 && showcase_fix.length>=4);
+}
+var category_id = this.category_id;
+
+var shop1111 = this.ViewTools.timeStuff( {'2014/12/2 12:50:23' : false , '2014/12/8 09:59:59' : this.shop1111_coupon , '2014/12/14 23:59:59' : false } , false);
+
+%>
+<div class="main">
+	<%= requireFn('shop/shop_header.html')({
+		'shop_info' : this.shop_info,
+		'shop_rate' : this.shop_rate,
+		'shop_intro' : this.shop_intro,
+		'shop1111_coupon' : shop1111,
+		'shop1111_black_list' : this.shop1111_black_list,
+		'_serviceIM' : this._serviceIM ? this.ViewTools.callIM(this._serviceIM) : '',
+		'shop_id' : this.spid,
+		'category_id' : category_id,
+		'categories' : this.shop_cata.datas,
+		'shop_banner' : this.shop_banner,
+		'user_module' : this.user_module,
+		'PIC_URL' : this.PICTURE_URL,
+		'_JSstack' : this._JSstack,
+		'_JSmods' : this._JSmods,
+		'query' : query,
+		'is_show': 0,
+		'is_query' : this.isQuery
+	}); %>
+	<% if(query.page){ %>
+	<div class="new_page_line"></div>
+	<% } else if(hasShowcase) { %>
+	<% if(!category_id && !this.isQuery ){%>
+	<div class="showcase">
+		<div class="big1">
+			<a href="<%=showcase_slide[0].url %>" target="_blank">
+				<img src="<%=showcase_slide[0].img %>" alt="" width="100%" height="100%"/>
+			</a>
+			<a class="s_hat" href="<%=showcase_slide[0].url %>" target="_blank">
+				<b class="s_title"><%=showcase_slide[0].title || '' %></b>
+				<b class="s_price"><%=showcase_slide[0].price || '' %></b>
+			</a>
+		</div>
+		<div class="big2">
+			<a href="<%=showcase_slide[1].url %>" target="_blank">
+				<img src="<%=showcase_slide[1].img %>" alt="" width="100%" height="100%"/>
+			</a>
+			<a class="s_hat" href="<%=showcase_slide[1].url %>" target="_blank">
+				<b class="s_title"><%=showcase_slide[1].title || '' %></b>
+				<b class="s_price"><%=showcase_slide[1].price || '' %></b>
+			</a>
+		</div>
+		<div class="small1">
+			<a href="<%=showcase_fix[0].url %>" target="_blank">
+				<img src="<%=showcase_fix[0].img %>" alt="" width="100%" height="100%"/>
+			</a>
+			<a class="s_hat" href="<%=showcase_fix[0].url %>" target="_blank">
+				<b class="s_title"><%=showcase_fix[0].title || '' %></b>
+				<b class="s_price"><%=showcase_fix[0].price || '' %></b>
+			</a>
+		</div>
+		<div class="small2">
+			<a href="<%=showcase_fix[1].url %>" target="_blank">
+				<img src="<%=showcase_fix[1].img %>" alt="" width="100%" height="100%"/>
+			</a>
+			<a class="s_hat" href="<%=showcase_fix[1].url %>" target="_blank">
+				<b class="s_title"><%=showcase_fix[1].title || '' %></b>
+				<b class="s_price"><%=showcase_fix[1].price || '' %></b>
+			</a>
+		</div>
+		<div class="small3">
+			<a href="<%=showcase_fix[2].url %>" target="_blank">
+				<img src="<%=showcase_fix[2].img %>" alt="" width="100%" height="100%"/>
+			</a>
+			<a class="s_hat" href="<%=showcase_fix[2].url %>" target="_blank">
+				<b class="s_title"><%=showcase_fix[2].title || '' %></b>
+				<b class="s_price"><%=showcase_fix[2].price || '' %></b>
+			</a>
+		</div>
+		<div class="small4">
+			<a href="<%=showcase_fix[3].url %>" target="_blank">
+				<img src="<%=showcase_fix[3].img %>" alt="" width="100%" height="100%"/>
+			</a>
+			<a class="s_hat" href="<%=showcase_fix[3].url %>" target="_blank">
+				<b class="s_title"><%=showcase_fix[3].title || '' %></b>
+				<b class="s_price"><%=showcase_fix[3].price || '' %></b>
+			</a>
+		</div>
+		<div class="clear_f"></div>
+	</div>
+	<%
+		}
+	}
+	%>
+	<div class="clear_f"></div>
+	<% if(this.goods && this.goods.tInfo && this.goods.tInfo.length){ %>
+	<div class="goods_list">
+		<div class="order_by">
+			<% if(!category_id){
+
+			%>
+			<div class="g_title">全部商品（<%=this.goods.totalNum %>）</div>
+			<% } %>
+			<% if(!this.isQuery) {%>
+			<ul class="orderby_list">
+				<li class="<%=!query.order || query.order == 'hot' ? 'red_f' : '' %>"><a href="<%=getLink(this.current_date ? {'current_date':query.current_date} : {'category_id':query.category_id})%>&order=hot&to_c=1">销量</a></li>
+				<li class="o_item <%=query.order == 'new' ? 'red_f' : '' %>"><a href="<%=getLink(this.current_date ? {'current_date':query.current_date} : {'category_id':query.category_id})%>&order=new&to_c=1">最新</a></li>
+			</ul>
+			<% } %>
+			<div class="clear_f"></div>
+		</div>
+		<div class="goods_wall"></div>
+	</div>
+	<% } else {%>
+	<div class="has_no_goods">
+		<div class="no_goods_bg"></div>
+	</div>
+	<% } %>
+	<div class="clear_f"></div>
+	<div class="paging_panel c_f">
+		<%#paging.html%>
+	</div>
+	<div class="pro_line"></div>
+	<%# doota/promise.html%>
+</div>
+<%# poster.html%>
+<%# doota/shop_search.html%>
+<script>
+<%= this.poster0? 'Meilishuo.config.poster0 = '+JSON.stringify(this.goods)+';':'' ;%>
+fml.vars.shop_id = <%= this.spid %>;
+fml.vars.notFluid = true;
+</script>
+<%# user/windows.html%>
+<%# shop/shop_coupon.html%>
+<% $_ENGINE_SELF.callFn("useModule")("fml.use('page/poster0');", this._JSstack , this._JSmodsFast ); %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/shop_new');
+	fml.use('page/poster_guang');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot.html%>
+

@@ -1,0 +1,88 @@
+<%#head.html%>
+<%
+	var desireList = this.desireList.data || [];
+%>
+<div class="wrap" id="wrap">
+	<%= requireFn('zulily/header2.html')({
+		'status' : 3,
+		'common_r' : this.common_r_XR,
+		'userInfo' : this.userInfo,
+		'appShare' : this.appShare,
+		'params' : this.params,
+		'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+	});%>
+	<%= requireFn('block/banner.html')({
+		'banner' : this.banner,
+		'banner_r':this.banner_XR,
+		'hide_btn':false,
+		'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+	});%>
+	<% if(desireList.length){ %>
+		<div class="kinds-box">
+			<ul class="kinds" id="kinds">
+				<% desireList.forEach(function(item,index){ %>
+					<li>
+						<a href="javascript:;" data-url="<%= item.url %>" data-xr="<%= this.desireList_XR %>"><img src="<%= item.pic %>" alt=""></a>
+					</li>
+				<% }) %>
+			</ul>
+		</div>
+	<% } %>
+	<div class="sort-box" id="sortBox">
+		<a href="javascript:;" id="sortDefault" class="cur">默认</a>
+		<a href="javascript:;" id="sortSale">销量</a>
+		<a href="javascript:;" id="sortDate">上新</a>
+		<a href="javascript:;" id="sortPrice">价格<b><i></i></b></a>
+	</div>
+	<div class="posterWall wall" id="content">
+		<ul class="goods_wall goods"></ul>
+		<div class="pullUp" status="loading"></div>
+	</div>
+</div>
+<% if(!this.appShare){ %>
+	<%= requireFn('wapShare.html')({
+		'share' : this.share 
+	    , 'shareTitle' : '选择分享到'
+	    , '_JSstack' : this._JSstack
+		, '_JSmods' : this._JSmods
+	}); %>
+<% } %>
+<script type="text/html" id="posterWall">
+	<li class="most_wrap salelUrl" data-styleId="<?= this.v.id ?>" data-twitter_id="<?= this.v.twitter_id ?>" data-status="<?= this.v.status ?>">
+		<? var imgBoxHeight=parseInt($(window).width()/2-10)* 400 / 320 +'px'; ?>
+		<div class="goods_info">
+			<div class="most">
+				<div class="lazy_pic img-box" asrc="<?= this.v.poster_small_img ?>" style="height:<?= imgBoxHeight ?>;padding-top:0">
+					<? if(parseInt(this.v.status)==5){ ?>
+						<span class="sold"></span>
+					<? } ?>
+				</div>
+				<%*如果不要延迟加载就这样
+				<div class="most" style="height:<?= imgBoxHeight ?>">
+					<img src="<?= this.v.poster_small_img?>" alt="">
+					<? if(parseInt(this.v.status)==5){ ?>
+						<span class="sold"></span>
+					<? } ?>
+				</div>
+				%>
+				<div data-index="<?= this.v.id ?>" class="danmu d<?= this.v.id ?>"></div>
+				<div class="tips-box">
+					<span class="tips">
+						<b><?= parseInt(this.v.want_base) +  parseInt(this.v.want_num) ?>人想买
+						</b>
+					</span>
+				</div>
+			</div>
+			<p class="most_intro sale-title"><?= this.v.title ?></p>
+			<p class="price">
+				<span><?= this.v.sale_price ?></span>
+				<del><?= this.v.price ?></del>
+			</p>
+		</div>
+	</li>
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/zulily/allList');
+_use:", this._JSstack, this._JSmods); %>
+
+<%# foot.html%>

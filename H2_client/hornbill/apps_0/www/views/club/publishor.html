@@ -1,0 +1,72 @@
+<%# head.html%>
+<div class="wrap">
+	<ul class="breadcrumb">
+		<li>
+			<a href="/club/">爱美丽Club</a>
+		</li>
+		<li>
+			<span class="divider">&gt;</span>
+			发帖
+		</li>
+	</ul>
+	<div class="clear_f"></div>
+	<div class="wraper_l">
+		<div class="redline2"></div>
+		<h1>发帖</h1>
+		<div class="subject">
+			<div class="hint_msg"></div>
+			<!--div class="btn_group">
+				<p class="dropdown_tog">请选择</p>
+				<ul class="dropdown_menu">
+					<li>购物晒单</li>
+					<li>时尚LOOK</li>
+					<li>街拍穿搭</li>
+					<li>求支招</li>
+				</ul>
+			</div-->
+			<p class="cata_title">
+			<select class="catalog">
+				<option value="0">请选择</option>
+				<%this.board_info && this.board_info.map(function(data){%>
+				<option value="<%=data.board_id%>"><%=data.board_title%></option>
+				<%});%>
+			</select>
+			<input type="text" class="title" maxlength="40" placeholder="请输入标题">
+			</p>
+			<div class="clear_f"></div>
+			<textarea class="content" placeholder="在这里输入正文..."></textarea>
+			<div class="add_con">
+				<span class="add_pic"><em>+&nbsp;</em>添加图片</span>
+				<span class="add_goods ml10_f"><em>+&nbsp;</em>宝贝链接</span>
+			</div>
+			<ul class="main_con">
+				<textarea class="none_f cl_i_close arrow_up arrow_down" placeholder="图片描述..."></textarea>
+			</ul>
+			<div class="submit_con">
+				<span class="submit">立即发布</span>
+			</div>
+		</div>
+		<script type="text/html" id="addCon">
+			<li class="item pr_f">
+				<div class="item_arrow">
+					<p class="arrow_up <?=hide_up?>">▲</p>
+					<p class="arrow_down v_hidden">▼</p>
+				</div>
+				<? if (isPic) {?>
+				<img src="<?=pic_url?>" width="128" height="128" pid="<?=pic_id?>">
+				<? } else {?>
+				<img src="<?=data.gInfo.image?>" width="128" height="128">
+				<div class="price_tx">￥<?=data.gInfo.price?></div>
+				<? } ?>
+				<textarea class="desp" placeholder="图片描述..."></textarea>
+				<div class="cl_i_close"></div>
+			</li>
+		</script>
+	</div>
+</div>
+
+<%# user/windows.html%>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/club/newTopic');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

@@ -1,0 +1,268 @@
+<%#head.html%>
+<%
+function markLast(data){
+	if (data && data.length){
+		data[data.length-1].isLast = true
+		}
+}
+var addTrace = this.ViewTools.addTrace
+%>
+<div class="top_bnr">
+	<ul class="banner">
+		<% this.top_bnr && this.top_bnr.forEach(function(data , i){ 
+	data.links = addTrace(data.links , 'wlc_banner_top_'+i)		
+	%>
+		<li>
+			<a class="pic" href="<%= data.links%>" target="_blank" data-img ="<%= data.img_url%>" style="background: repeat center top;"></a>
+		</li>
+		<% }); %>
+	</ul>
+</div>
+<div class="top_wrap">
+	<div class="top_box">
+		<div class="bnr_btn_wrap">
+			<span class="bnr_btn bnr_btn_left"></span>
+			<span class="bnr_btn bnr_btn_right"></span>
+		</div>
+		<ul class="nav_attr">
+			<% 
+			markLast(this.attrs);
+			this.attrs && this.attrs.map(function(data,i,k) { 
+			data.link = addTrace(data.link , 'wlc_attr_'+i)		
+			%>
+			<li <%= data.isLast?'class="last"':'' %>>
+				<h3 class="nav_tle"><a href="<%= data.link%>" target="_blank"><%= data.title%></a></h3>
+				<p>
+					<% data.words && data.words.map(function(data, j){ %>
+					<a <% if(data.red == 1){%> class="red_f"<%}%> href="/guang/attr/<%= addTrace(data.attrid,'wlc_words_'+i+'_'+j)%>" target="_blank"><%= data.word%></a>
+					<% }); %>
+				</p>
+			</li>
+			<% }); %>
+		</ul>
+		<div class="banner">
+			<% this.bnr_right && this.bnr_right.map(function(data,i){ %>
+			<a href="<%= addTrace(data.links,'wlc_bnr_right_'+i)%>" target="_blank"><img src="<%= data.img_url%>" /></a>
+			<% }); %>
+		</div>
+		<div class="round">
+			<div class="adType">
+				<% this.top_bnr && this.top_bnr.length>1  && this.top_bnr.forEach(function(data){ %>
+				<a></a>
+				<% }); %>
+			</div>
+		</div>
+		<div class="bnr_box">
+			<ul class="pic_attr">
+				<% this.bnr_ct && this.bnr_ct.map(function(data, i){
+				data.links = addTrace(data.links , 'wlc_bnr_ct_'+i)		
+					%>
+				<li><a href="<%= data.links%>" target="_blank"><img src="<%= data.img_url%>" /></a></li>
+				<% }); %>
+			</ul>
+			<div class="ads_one">
+				<% this.ads_one && this.ads_one.map(function(data,i){ 
+				data.links = addTrace(data.links , 'wlc_ads_one_'+i)		
+					%>
+				<a href="<%= data.links%>" target="_blank"><img src="<%= data.img_url%>" /></a>
+				<% }); %>
+			</div>
+		</div>
+	</div>
+</div>
+<div style="height: 154px;"></div>
+<div class="auto_wrap">
+	<div class="wel_tle">
+		<h2 class="tle"><span class="ico1"></span>人气推荐单品</h2>
+	</div>
+	<ul class="rec_sku">
+		<%
+		markLast(this.rec_sku);
+		this.rec_sku && this.rec_sku.map(function(data,i,k) { 
+			var link = '/' + (1 == data.is_cosmetic ? 'prom':'share') +'/item/' + addTrace(data.twitter_id,'wlc_rec_'+i) 
+		%>
+		<li <%= data.isLast || !((i+1) % 6) ?'class="last"':'' %>>
+			<div class="s_picBox">
+				<a class="s_pic" href="<%= link%>" target="_blank" title="<%= data.item_title%>"><img src="<%= data.item_image%>" /></a>
+			</div>
+			<p class="txt"><a href="<%= link%>" target="_blank"><%= data.item_title%></a></p>
+			<p class="price_box">
+				<span class="price_red">¥<%= data.price%></span>
+				<%if(data.discount > 0){%>
+				<span class="price">¥<%= data.original_price%></span>
+				<%}%>
+			</p>
+			<p><%= data.sales%>人已购买</p>
+		</li>
+		<% }); %>
+	</ul>
+</div>
+<div class="auto_wrap">
+	<div class="wel_tle">
+		<a class="more" href="/tuan/" target="_blank">查看所有团购<samp> &gt;</samp></a>
+		<h2 class="tle"><span class="ico7"></span>每日超值团购</h2>
+	</div>
+	<ul class="rec_sku pb20">
+		<%
+		markLast(this.tuan_sku);
+		this.tuan_sku && this.tuan_sku.map(function(data,i,k) { 
+			var link = '/' + (1 == data.is_cosmetic ? 'prom':'share') +'/item/' + addTrace(data.twitter_id,'wlc_tuan_'+i) 
+		%>
+		<li <%= data.isLast || !((i+1) % 6) ?'class="last"':'' %>>
+			<div class="s_picBox">
+				<a class="s_pic" href="<%= link%>" target="_blank" title="<%= data.item_title%>"><img src="<%= data.item_image%>" /></a>
+			</div>
+			<p class="txt"><a href="<%= link%>" target="_blank"><%= data.item_title%></a></p>
+			<p class="price_box">
+				<span class="price_red">¥<%= data.price%></span>
+				<%if(data.discount > 0){%>
+				<span class="price">¥<%= data.original_price%></span>
+				<%}%>
+			</p>
+			<p><%= data.sales%>人已参加</p>
+		</li>
+		<% }); %>
+	</ul>
+</div>
+<div class="auto_wrap">
+	<%if(this.adm65 && this.adm65.ad){%>
+		<%
+		this.adm65.admId = 'adm_top';
+		this.adm65._JSstack = this._JSstack;
+		this.adm65._JSmods = this._JSmods;
+		%>
+		<%= requireFn('commerce/adm_banner.html')(this.adm65);%>
+	<% } %>
+</div>
+<%if(1==2 && this.adm65){%>
+<div class="auto_wrap">
+	<div class="banner2014">
+		<ul class="banner">
+			<% this.adm65 && this.adm65.forEach(function(data , i){ 
+				data.links = addTrace(data.links , 'wlc_adm65')		
+				%>
+			<li>
+				<% if (0 === i ) { %>
+				<a class="pic" href="<%= data.links%>" target="_blank" style="background:url(<%= data.img_url%>) repeat center top;"></a>
+				<% } else {%>
+				<a class="pic" href="<%= data.links%>" target="_blank" data-img ="<%= data.img_url%>" style="background: repeat center top;"></a>
+				<% } %>
+			</li>
+			<% }); %>
+		</ul>
+		<div class="adType1">
+			<% this.adm65 && this.adm65.forEach(function(data){ %>
+			<a></a>
+			<% }); %>
+		</div>
+	</div>
+</div>
+<%}%>
+<%
+var secText = ['衣服', '鞋子', '包包', '配饰'];
+var secIco = ['2', '3', '4', '5'];
+[this.clothes , this.shoes , this.bags , this.access ].forEach(function(secData , sec){
+	if (!secData) return
+	//console.log(secData)
+	var trc = secText[sec]
+%>
+<div class="auto_wrap line">
+	<div class="wel_tle">
+		<a class="more" href="<%= addTrace(secData.section_url_showall,'wlc_'+trc+'_more')%>" target="_blank">查看所有<%= secText[sec] %> <samp>&gt;</samp></a>
+		<h2 class="tle"><span class="ico<%= secIco[sec] %>"></span><%= secText[sec] %></h2><span class="today">今日上新<strong><%= secData.section_num_puton%></strong>件</span>
+	</div>
+	<div class="attr_box">
+		<ul class="pic_box">
+			<% 
+			secData.items && secData.items.map(function(data , i) {
+				data.item_url = addTrace(data.item_url , 'wlc_'+ trc + '_'+i)		
+				%>
+			<li>
+				<a class="bar" href="<%= data.item_url%>" target="_blank"><%= data.item_title%></a>
+				<a class="pic" href="<%= data.item_url%>" target="_blank" title="<%= data.item_title%>"><img src="<%= data.item_image%>" /></a>
+			</li>
+			<% }); %>
+		</ul>
+		<ul class="attr_words">
+			<% 
+			markLast(secData.attr);
+			secData.attr && secData.attr.map(function(data,i,k) { 
+				 if (!data.title) return
+			%>
+			<li <%= data.isLast?'class="last"':'' %>>
+				<h3><a href="<%= addTrace(data.title.link, 'wlc_'+trc+ '_attrttl_'+i)%>" target="_blank"><%= data.title.name%></a></h3>
+				<p>
+					<% data.words && data.words.map(function(data , j) { %>
+					<a href="<%= addTrace(data.link, 'wlc_'+trc+'_attr_'+i+'_'+j) %>" target="_blank"><%=data.name%></a>
+					<% }); %>
+				</p>
+			</li>
+			<% }); %>
+		</ul>
+	</div>
+	<div class="shop">
+		<div class="cmn_title">
+			<p class="f14_f"><a href="<%= addTrace(secData.section_url_moreshop,'wlc_'+trc)%>" target="_blank">更多好店<samp> &gt;</samp></a></p>
+			<h3 class="f16_f">最热<%= secText[sec] %>好店</h3>
+		</div>
+		<ul class="list">
+			<%
+			markLast(secData.shops);
+			secData.shops && secData.shops.map(function(data,i,k) {
+				data.item_url = addTrace(data.item_url,'wlc_'+trc+'_shop_'+i)
+			%>
+			<li <%= data.isLast?'class="last"':'' %>>
+				<a class="avatar32_f" href="<%= data.item_url%>" target="_blank"><img src="<%= data.item_image%>" /></a>
+				<p class="name"><a href="<%= data.item_url%>" target="_blank"><%= data.item_title%></a></p>
+				<p class="txt"><%= data.goods_num%>件商品/总销量<%= data.sales_num%></p>
+			</li>
+			<% }); %>
+		</ul>
+	</div>
+</div>
+<% });%>
+
+<div class="auto_wrap">
+	<div class="cmn_title mt20_f" style="height:22px;">
+		<p class="f14_f">
+			<% this.group.attr_words && this.group.attr_words.forEach(function(data , i){ %>
+			<a class="words" href="<%= addTrace(data.url,'wlc_mgz_'+i)%>" target="_blank"><%= data.name%></a>
+			<% }); %>
+			<a class="ml10_f" href="/magazine?trc=wlc_mgz_more" target="_blank">更多杂志<samp> &gt;</samp></a>
+		</p>
+		<h3><span class="ico6"></span></h3>
+	</div>
+	<% 
+	markLast(this.group.group_info);
+	this.group.group_info && this.group.group_info.map(function(data,i,k) { 
+	%>
+	<div class="groupBox <%= data.isLast?'last':'' %>">
+		<div class="groupCon">
+			<div class="gc_title">
+				<h4><a href="/group/<%= addTrace(data.group_id,'wlc_mgz_info')%>" target="_blank"><%= data.name%></a></h4>
+			</div>
+			<a href="/group/<%= addTrace(data.group_id,'wlc_mgz_info_'+i)%>" target="_blank" class="imgBox">
+				<span asrc="<%= data.mixpic%>" class="maxpic" ></span>
+			</a>
+			<div class="lookBox">
+				<a class="btn" href="/group/<%= data.group_id%>" target="_blank">去看看</a>
+				<span class="tex"><%= data.num%>个分享</span>
+			</div>
+		</div>
+	</div>
+	<% }); %>
+</div>
+<div class="auto_wrap mt20_f">
+	<%if(this.adm67 && this.adm67.ad){%>
+		<%
+		this.adm67.admId = 'adm_bot';
+		this.adm67._JSstack = this._JSstack;
+		this.adm67._JSmods = this._JSmods;
+		%>
+		<%= requireFn('commerce/adm_banner.html')(this.adm67);%>
+	<%}%>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/welcome2014');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

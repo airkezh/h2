@@ -1,0 +1,66 @@
+<%#head.html%>
+<% 	
+	var pageData = this.pageData;
+	var getTimeRemain = function(time){
+        if(time && time > this.cur_time){
+            return time - this.cur_time;
+        }else{
+            return ''; 
+        }
+    }   
+%>
+<style>
+	body{background-color: <%= pageData.page || '#ff4d88'%>;}
+</style>
+<div class="top">
+	<% pageData.head.forEach(function(data){ %>
+		<img src="<%= data.img_src %>" />
+	<% }); %>
+</div>
+<% if(pageData.countdown_bg.img_src){ %>
+<div class="countdown">
+	<img src="<%= pageData.countdown_bg.img_src %>" />
+	<% if(this.start_time && this.end_time){ %>
+		<div class="down">
+			<% if(this.status == 'nostart'){ %>
+				距离热卖&nbsp;还有<span class="time" remain="<%= getTimeRemain(this.start_time)%>">-天--时--分</span>
+			<%}else if(this.status == 'saling'){%>
+				距离结束&nbsp;还有<span class="time" remain="<%= getTimeRemain(this.end_time)%>">-天--时--分</span>
+			<%}else{%>
+				活动已结束
+			<%}%>
+		</div>
+	<%}%>
+</div>
+<% } %>
+<div class="coupon_link">
+	<a href="<%= pageData.top_link.link %>"><img src="<%= pageData.top_link.img_src %>" alt=""></a>
+</div>
+<% if(!this.has_coupon){ %>
+	<%# activity/March_sale/March_apparel_coupon.html %>
+<% } %>
+<div class="spring_clothing">
+	<% pageData.bottom_links.forEach(function(data){ %>
+		<a href="<%= data.link %>"><img src="<%= data.img_src %>" alt=""></a>
+	<% }); %>
+</div>
+
+<% if(this.share){ %>
+	<%= requireFn('wapShare.html')({
+		'share' : this.share 
+	    , 'shareTitle' : '选择分享到'
+	    , '_JSstack' : this._JSstack
+		, '_JSmods' : this._JSmods
+	}); %>
+<%}%>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/app/hackWeixin');
+	fml.use('wap/page/activity/mz420');
+_use:", this._JSstack , this._JSmods); %>
+<% if(this.cid == '759'){ %>
+	<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+		fml.use('wap/page/activity/mz420');
+	_use:", this._JSstack , this._JSmods); %>
+<%}%>
+<%#foot_simple.html%>

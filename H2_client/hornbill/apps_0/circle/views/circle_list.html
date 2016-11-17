@@ -1,0 +1,153 @@
+<%# head.html %>
+<%
+    var cirInfo = this.cirInfo.data || {}
+    ,bannerInfo = this.banner || {}
+    ,paramR = decodeURIComponent( this.r || '' )
+    ,isInApp = this.os.mlsApp
+    ,isInWx = this.os.weixinBrowser
+%>
+<header>
+    <% if( !isInApp && !isInWx ){%>
+        <div class="back_wrap">
+            <span class="back">返回</span><span><%= cirInfo.name%></span>
+        </div>
+    <%}%>
+    <nav id="nav">
+        <span class="hot">最热</span>
+        <span class="new">最新</span>
+    </nav>
+</header>
+<div class="content">
+    <% var bInfo = bannerInfo.banner %>
+    <% if(bInfo && bInfo.length && bInfo[0].pic){ %>
+        <div class="banner">
+            <a href="<%= bInfo[0].url %>"><img src="<%= bInfo[0].pic %>" alt="top banner"></a>
+        </div>
+    <% } %>
+    <div class="posterWall wrap scroller <%= isInApp ? 'in-app' : ''%>">
+        <!-- 瀑布流 -->
+        <ul class="new_goods goods_wall wall">
+        </ul>
+        <!-- loading style -->
+        <div class="pull-up">
+            <div class="face">
+                <span class="candies c0"></span>
+                <span class="candies c1"></span>
+                <span class="candies c2"></span>
+                <span class="candies c3"></span>
+                <span class="candies c4"></span>
+            </div>
+        </div>
+
+    </div> 
+</div>
+
+<a class="gotop" style="bottom:<%if(this.isIphone){%>60<%}else{%>20<%}%>px">
+	<img src="<%= this.PICTURE_URL%>/images/wap/tuan/gotop.png" />
+</a>
+
+<script type="text/html" id="posterWall">
+<?
+
+var pt = 100,
+    r  = '<%= paramR %>',
+    environment = Meilishuo.config.os.mlsApp ? 'app': 'wap',
+    rholder = /{([^}]+)}/g,
+    rcurls  = /{|}/g,
+    linkConfig = {
+        goods: {
+            wap: '//m.meilishuo.com/share/item/',
+            app: 'twitter_single'
+        },
+
+        textpic: {
+            wap: '//circle.meilishuo.com/circle/textpic/{msg_id}?r={r}',
+            app: 'rich_message'
+        },
+
+        miscpic: {
+            wap: '//m.meilishuo.com/mainapp/detail/{msg_id}?r={r}',
+            app: 'rich_message'
+        }
+    };
+
+
+function convertLink( protocol, params ) {
+    var url = linkConfig[ protocol ][ environment ];
+    params.r = r;
+
+    if ( environment == 'wap' ) {
+        if ( protocol == 'goods' ) {
+            url += params.twitter_info.twitter_id + '?r=' + r;
+        } else {
+            url.match( rholder ).forEach( function( str ) {
+                url = url.replace( str, params[ str.replace( rcurls, '' ) ] );
+            });
+        }
+
+        return url;
+    } else {
+        return 'meilishuo://' + url + '.meilishuo?json_params=' + encodeURIComponent( JSON.stringify( params ) );
+    }
+}
+
+var v = this.v,
+    msgType = v.msg_type,
+    multimedia = 'multimedia_' + msgType,
+    sale_num = 0,
+    bgPic, url, title, tagNum, tags;
+
+if ( msgType == 'goods' ) {
+    bgPic = v[multimedia].goods_img;
+    url = convertLink( msgType, {
+        twitter_info: { twitter_id: v[multimedia].twitter_id, is_doota: "1"}
+    });
+   title = v[multimedia].goods_title;
+} else if( msgType == 'textpic' || msgType == 'miscpic' ) {
+    bgPic = v[multimedia][0].picurl;
+    url = convertLink( msgType, { type: msgType, msg_id: v.msg_id } );
+    title = v.msg_text;
+    tags = v[multimedia][0].tags;
+    tagNum = tags ? tags.length : 0;
+    
+    tags && tags.forEach(function ( item, index ){
+        sale_num += +item.goods.sale_num;
+    });
+}
+?>
+<li class="goods_li poster_grid poster_wall msg-<?= msgType ?>">
+    <div class="li_border">
+        <a data-image="<?= bgPic ?>" style="padding-top:<?= pt ?>%" href="<?= url ?>" class="lazy-bg">
+        </a>
+        <? if( tagNum && tagNum > 0 ){ ?>
+        <div class="tag">
+            <span class="tag-icon"></span>
+            <span class="num"><?= tagNum ?></span>
+        </div>
+        <? } ?>
+        <div class="list_info">
+            <p class="list_title"><?= title ?></p>
+            <p class="list_cost">
+                <span class="normal_lick"><?= v.count_like?></span>
+                <span class="repin_num"><?= v.count_repin?></span>
+                <? if( sale_num > 0 ){ ?>
+                <span class="sale_num"><?= sale_num ?></span>
+                <? } ?>
+            </p>
+        </div>
+    </div>
+</li>
+</script>
+<script>
+	fml.vars.circle_id = <%= this.circle_id %>;
+    fml.vars.shareInfo = {
+        "title" : "<%= cirInfo.name %>",
+        "image" : "<%= cirInfo.small_img %>"
+    };
+</script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+    fml.use('circle/page/circle_list');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html %>
+

@@ -1,0 +1,173 @@
+<%#head.html%>
+<%
+   var s_list=this.special_list.data;
+%>
+
+<div class="main">
+	<!--topbanner-->
+	<%if(this.b_banner&&this.b_banner.data.mob_tuan_jingximiaosha_top_banner&&this.b_banner.data.mob_tuan_jingximiaosha_top_banner.length){
+	    	var t_banner = this.b_banner.data.mob_tuan_jingximiaosha_top_banner;%>
+		<!--轮播-->
+		<div class="slideWraper">
+			<%= requireFn('tuan/imgSlide.html')({
+				't_banner' : t_banner
+				,'_JSstack' : this._JSstack
+				,'_JSmods' : this._JSmods
+			});%>
+		</div>
+	<%}%>
+	<%if(s_list.qiang_info.tab && s_list.qiang_info.tab.length){
+		var tablen = s_list.qiang_info.tab.length,
+		tabobjs = s_list.qiang_info.tab;
+	%>
+	<section class="nav_wap" id="nav_wap">
+		<section class="navbox">
+			<div class="points">
+				<s></s>
+				<ul>
+					<%tabobjs.forEach(function(data,k){
+						var s_content = '已结束';
+						switch(data.status){
+							case 0:
+								s_content = '已结束';
+								break;
+							case 1:
+								s_content = '抢购中';
+								break;
+							case 2:
+								s_content = '即将开始';
+								break;
+						}
+						%>
+							<li name="tab_<%=k%>" data-hour="<%=data.server_time%>" data-status=<%= data.status%> data-unix=<%= data.unix_time%> <%=data.lightspot ? 'class="curr"' : ''%>>
+								<a href="javascript:void(0);">
+									<span><%=data.server_time%>:00<label><%=s_content%></label></span>
+								</a>
+							</li>
+					<%});%> 
+						<li class="tomorrow" name="tab_6" data-hour="" data-status="2" data-unix="">
+							<a href="javascript:void(0);">
+								<span>明日<label>预告</label></span>
+							</a>
+						</li>
+				</ul>
+			</div>
+		</section>
+	</section> 
+	<div class="act-tip">限量好货 限时疯抢
+		<div class="t-c time-box">
+			<span class="c-tip">距离本场结束</span>
+			<span class='time' time='0'>
+				<i class="t-hour time-bg">00</i> : <i class="t-minute time-bg">00</i> : <i class="t-seconds time-bg">00</i>
+			</span>
+		</div>
+	</div>
+	<section id="content_box"></section>
+	<script type="text/html" id="zd_info">
+		<%= requireFn("activity/tuan/special-list-goods.html")({
+	});%>
+	</script>
+	<script type="text/html" id="foreshow_info">
+		<%= requireFn("activity/tuan/special-list-foreshow-goods.html")({
+		});%>
+	</script>
+	<%}%>
+	<%
+
+	%>
+	<div class="foreshow">
+		<div class="colorbar"></div>
+		<div class="fore-tit">
+			<span class="f_14">明日预告</span>
+			<span class="activity-rule"><img src="http://d05.res.meilishuo.net/pic/_o/77/45/4773847f9fb9eea6041ea1c28f39_103_44.cg.png"></span>
+		</div>
+		<div class="fore-list">		
+			<div class="fore-list-wrap">
+				<a href="http://syxm.fedevot.meilishuo.com/share/item/3577110703" class="goodsInfo">
+					<figure>
+						<img src="http://d04.res.meilishuo.net/pic/_o/1e/75/43a069fde22294a052307a31b2bc_290_290.cf.png">
+					</figure>
+					<div class="desc">
+						 <span>￥29.90</span>
+						 <del>￥99.90</del>
+					</div>
+				</a>
+				<a href="http://syxm.fedevot.meilishuo.com/" class="goodsInfo">
+					<figure>
+						<img src="http://d04.res.meilishuo.net/pic/_o/1e/75/43a069fde22294a052307a31b2bc_290_290.cf.png">
+					</figure>
+					<div class="desc">
+						 <span>￥29.90</span>
+						 <del>￥99.90</del>
+					</div>
+				</a>
+				<a href="http://m.meilishuo.com/guang/selected?r=index-index" class="goodsInfo">
+					<figure>
+						<img src="http://d04.res.meilishuo.net/pic/_o/1e/75/43a069fde22294a052307a31b2bc_290_290.cf.png">
+					</figure>
+					<div class="desc">
+						 <span>￥29.90</span>
+						 <del>￥99.90</del>
+					</div>
+				</a>
+				<a href="http://m.meilishuo.com/guang/selected?r=index-index" class="goodsInfo">
+					<figure>
+						<img src="http://d04.res.meilishuo.net/pic/_o/1e/75/43a069fde22294a052307a31b2bc_290_290.cf.png">
+					</figure>
+					<div class="desc">
+						 <span>￥29.90</span>
+						 <del>￥99.90</del>
+					</div>
+				</a>
+				<a href="http://m.meilishuo.com/share/item/3630631379" class="goodsInfo">
+					<figure>
+						<img src="http://d04.res.meilishuo.net/pic/_o/1e/75/43a069fde22294a052307a31b2bc_290_290.cf.png">
+					</figure>
+					<div class="desc">
+						 <span>￥29.90</span>
+						 <del>￥99.90</del>
+					</div>
+				</a>
+				<a href="http://m.meilishuo.com/biz/shareact/main/?hdtrc=tmpd_homeTopBanner&r=index-index%3Amodule%3Dbanner%3Aaction%3Dhome_banner_m" class="goodsInfo">
+					<figure>
+						<img src="http://d04.res.meilishuo.net/pic/_o/1e/75/43a069fde22294a052307a31b2bc_290_290.cf.png">
+					</figure>
+					<div class="desc">
+						 <span>￥29.90</span>
+						 <del>￥99.90</del>
+					</div>
+				</a>
+				<a class="goodsInfo seemore">
+					<p>查看更多<br/>- more -</p>
+				</a>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	fml.vars.event_id='<%=this.event_id%>';
+	fml.vars._os= <%=this.os.mlsApp%>;
+	fml.vars._r='<%=this.r%>';
+	fml.vars.tids= <%=JSON.stringify(this.remind_get.tids)%>;
+	fml.vars.fakeData = <%= JSON.stringify(this.foreshow.data) %>
+</script>
+<script type="text/html" id="alertMsg">
+  <div class="dialog_box">
+    <p style="text-align: center;"><?= this.msg?></p>   
+    <a class="mask_btn l_btn" href="<?=this.detail_url?>">看此商品</a>
+    <a class="mask_btn r_btn" href="<?=this.shop_url?>"><?=this.btn_str?></a>
+  </div>
+</script>
+<script type="text/html" id="errorMsg">
+  <div class="dialog_box">
+    <p style="text-align: center;"><?= this.msg?></p>   
+  </div>
+</script>
+<script type="text/html" id="ruleMsg">
+   <img style="min-height:310px" class="rules" src="<%= s_list.q8_ruler%>" />
+   <div class="rbclose"></div>
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/tuan/activity/special_new2');
+_use:", this._JSstack , this._JSmods); %>
+<%#foot_simple.html%>

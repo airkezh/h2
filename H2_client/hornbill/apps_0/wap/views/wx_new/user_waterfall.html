@@ -1,0 +1,43 @@
+
+<script type="text/html" id="posterWall">
+	<?var data = this.v;var num = 4;dataP = data.msg_data;
+	var link = 'http://circle.meilishuo.com/circle/circle_highlight_list?circle_id='+data.id;
+	?>
+		<div class="circle <?= (this.index % 2) ? 'right' : 'left'?>">
+			<div class="title">
+				<a href="<?=link?>">
+					<p><?= data.name ?></p>
+					<p><span><?= data.hightlight_num?>分享|</span><span><?= data.member_num?>成员</span></p>
+				</a>
+			</div>
+			<div class="container">
+				<a href="<?=link?>">
+				<ul class="qun-list">
+				<? for(var i = 0; i < num; i++ ) {
+                    pic = dataP[ i ];
+                    if ( pic ) {
+                        pt = pic.height / pic.width * 50;
+                ?>
+                <li class="item" style="background-image:url(<?= pic.picurl ?>);padding-top:50%;">
+                </li>
+                <? } else {?>
+                <li class="item blank"></li>
+                <? } ?>
+                <? } ?>
+				</ul>
+			</a>
+			</div>
+			
+			
+		</div>
+	
+</script>
+
+<div id="loading" class="loading-bar"></div>
+<script>
+	Meilishuo.vars = Meilishuo.vars || {};
+	Meilishuo.vars.wx_user_id = <%=this.wx_user_id%>;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/wx_new/user_c');
+_use:", this._JSstack , this._JSmods ); %>

@@ -1,0 +1,73 @@
+/*common*/
+var banner = require('app/focus_banner'),
+	scroll = require('component/windowScroll'),
+	timedown = require('app/doota/timedown');
+
+//倒计时
+$('.time').each(function(index) {
+	var self = $(this);
+	timedown.down(self, self.attr('time'), '0h-0i-0s-0e', ['<b>%v</b>时', '<b>%v</b>分', '<b>%v</b>秒', '<b>%v</b>'])
+		.onTimeOver(function() { 
+			// window.location.reload();
+		})
+		.onAction(function() {
+			var t = arguments[2];
+			// day=t.d&&t.d!=0? (t.d<10 ? "0"+t.d+"天" : t.d +"天"):"";
+			hour = t.h ? (t.h < 10 ? "0" + t.h : t.h) : "00";
+			min = t.i ? (t.i < 10 ? "0" + t.i : t.i) : "00";
+			sec = t.s ? (t.s < 10 ? "0" + t.s : t.s) : "00";
+			ms = t.e;
+			self.html("<b>" + hour + "</b>时<b>" + min + "</b>分<b>" + sec + "</b>秒<b>0" + ms + "</b>");
+		}).setHeartHum(100);
+});
+
+//轮播图
+// banner.bind({
+// 	'unit': '.banner li',
+// 	'btn': '.focus a',
+// 	'transition': 'fade'
+// });
+//posterWalls
+fml.use(['jquery', 'app/posterWalls', 'component/shareTmp', 'component/urlHandle'], function() {
+	var shareTmp = this.shareTmp
+	var query = this.urlHandle.getParams(window.location.href.toString());
+	var urlData = {
+		'frame': query.frame || 0,
+		'page': query.page || 0
+	};
+	var opts = this.jquery.extend({}, urlData, query);
+	this.posterWalls(opts, '/aj/desire_push/index/waterFall');
+});
+fml.use('component/lazyLoad', function() {
+	this.load('.ad_pic span.h270', 'asrc');
+});
+// like
+// fml.use('app/like', function() {
+// 	this.posterLike('.goods_wall', '.poster_likes');
+// });
+
+
+//menu
+var menuBox = $('#menuBox'),
+	subNav = menuBox.find('.menu-inner'),
+	subHolder = $('#navbar .topnav'),
+	wheader = $('#navbar').find('.topnav,.sale_nav'),
+	frstNavHeight = $('#navbar').find('.topnav').height(),
+	y = subNav.offset().top - frstNavHeight;
+scroll.yIn(y, function() {
+	subHolder.after(subNav)
+	wheader.stop().animate({
+			'margin-top': -frstNavHeight
+		}, function() {
+			if (subNav.parent().is(subHolder)) $(this).hide()
+		})
+		// menuBox.css('height', '96px');
+	subNav.addClass('shadow');
+}, function() {
+	menuBox.prepend(subNav)
+	wheader.show().stop().animate({
+			'margin-top': 0
+		})
+		// menuBox.css('height', subNav.height());
+	subNav.removeClass('shadow');
+})

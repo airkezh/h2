@@ -1,0 +1,74 @@
+<?if(this.item.length){?>
+   <ul>
+   <?for(var v=0;v<this.item.length;v++){
+      data=this.item[v];
+      var _url="javascript:void(0);",
+         detail_url=fml.vars.joinurl('twitter_single', {'twitter_info' : {'twitter_id' : data.twitter_id , 'is_doota' : 1}}, fml.vars._os, fml.vars._r, '/share/item/'+data.twitter_id),
+         shop_url = fml.vars.joinurl('shop', {'shop_id':data.shop_id}, fml.vars._os, fml.vars._r, '/shop/'+data.shop_id),
+         status_sum="";
+      if(fml.vars.isexit(fml.vars.tids,data.twitter_id)){
+         var btn_content="<i class='clock'></i>已提醒",
+            btn_class="reminded_btn",
+            status_sum="status_sum_reminded";
+      }else{
+         if(fml.vars.timeunix<=600){
+            var btn_content="<i class='clock'></i>马上开抢",
+               btn_class="reminded_btn",
+               status_sum="status_sum_reminded";
+         }else{
+            var btn_content="<i class='clock'></i>即将开抢",
+               btn_class="remind_btn",
+               status_sum="status_sum_remind";
+         }
+      }
+      switch(data.status){
+         case 1:       
+            btn_content="立即抢";
+            btn_class="buy_btn";
+            _url=detail_url;
+            status_sum="";
+            break;
+         case 2:
+            btn_content="去店铺";
+            _url=shop_url;
+            btn_class="over_btn";
+            status_sum="status_sum_over";
+            break;
+         case 3:
+            btn_content="去店铺";
+            _url=shop_url;
+            btn_class="empty_btn";
+            status_sum="status_sum_empty";
+            break;
+      } 
+   ?>
+         <li class="zhengdian-new good_box <?if(v == 0){?>fir<?}?>" twid="<?=data.twitter_id?>" shopid="<?=data.shop_id?>" stime="<?=data.start_time?>">
+            <figure>
+               <a href="<?=detail_url?>"><img src="<?=data.goods_image?>" /></a>
+            </figure>
+            <ul class="desc">
+               <li class="li-a f_15"><a href="<?=detail_url?>"><?=data.goods_name?></a></li>
+               <li class="li-b">
+                  <span class="f_20 now_price">￥<?= data.off_price?></span>
+                  <del class="old_price">￥<?= data.origin_price?></del>
+                  <span class="discout">省10块</span>
+               </li>
+               <li class="li-c saleinfo"><p><?= data.joiner_num?>人想买</p></li>
+               <li class="li-d">
+                  <a class="statusinfo <?= status_sum?>" href="<?= _url ?>">
+                     <div class="staus-bar">
+                        <?if(data.status==0){?>
+                           <p class="scale">仅限<?= data.total_limit ?>件</p>   
+                        <?}else{?>
+                           <p class="scale">已售出<?= data.sales?>/<?= data.total_limit?>件</p>
+                           <span class="progress" style="width:<?=data.sales/data.total_limit*100?>%"></span>
+                        <?}?>
+                     </div>
+                     <div class="status-btn f_15 <?= btn_class?>" strtype="<?=data.type?>"><?= btn_content?></div>
+                  </a>
+               </li>
+            </ul> 
+         </li>            
+   <?}?>           
+   </ul> 
+<?}?>

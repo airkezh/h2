@@ -1,0 +1,38 @@
+<%if(this.collocation){%>
+<div class="tab_combo">
+    <h2 class="tab_top">
+    	<% this.collocation && this.collocation.map(function(data , index){%>
+	        <a href="javascript:void(0)" class="tabCombo1 <%if(index == 0){%>cur<%}%>">优惠套餐<%= index + 1%>
+	        	<%if(index != this.collocation.length - 1){%>
+	        		<span>|</span>
+	        	<%}%>
+	        </a>
+        <%})%>
+    </h2>
+</div>
+<% this.collocation && this.collocation.map(function(data , index){%>
+	<ul class="like_list_new contentCombo1 <%if(index > 0){%>none_f<%}%>">
+		<% data && data.tInfo.map(function(item, idx){%>
+			<li>
+				<div class="s_picBox">
+					<a class="s_pic" href="<%= item.url%>" target="_blank" title="<%= item.goods_title %>"><img src="<%= item.show_pic%>" /></a>
+				</div>
+				<a class="txt" target="_blank" href="<%= item.url%>"><%= item.goods_title%></a>
+				<div class="info-box">
+					<span class="info-box-price">¥ <%= item.goods_price%></span>
+					<span class="info-original-price">￥ <%= item.origin_price%></span>
+				</div>
+			</li>
+			<%if(idx != data.tInfo.length - 1){%>
+				<li class="plus_icon">+</li>
+			<%}%>
+		<%})%>
+		<li class="plus_icon">=</li>
+		<li class="total_price">
+			<p class="combo_price">套餐价:<span>￥<%= data.collocation_price%></span>	</p>
+			<p class="save_all">共节省:<span>￥<%= data.discount_price%></span></p>
+			<a href="/share/combo/?twitter_id=<%= this.tid%>&collocation_id=<%= data.collocation_id%>" class="buy_now">立即购买</a>
+		</li>
+	</ul>
+<%})%>
+<%}%>

@@ -1,0 +1,60 @@
+<% var data = this.hdshop;%>
+	<%
+	for(var v in data){
+		var shop_url = _extFn.getAppLink('shop', {'shop_id' : data[v].shop_id}, this.os, this.r);
+	%>
+	<section class="list-item">
+		<div class="shop-intro">
+			<div class="shop-info">
+				<div class="sp-wrap">
+					<div class="shop-logo">
+						<a href="<%=shop_url%>"><img src="<%= data[v].shop_face_img%>"/></a>
+					</div>
+					<div class="shop-word">
+						<p><%=data[v].shop_nick%></p>
+						<p><%=data[v].shop_desc%></p>
+					</div>
+				</div>
+
+			</div>
+			<!-- <div class="discount-info">限时全场6折</div> -->
+		</div>
+		<%if(data[v].coupon_list.length==0){%>
+			<div class="shop-coupon" style="display:none;">
+			</div>
+		<%}else{%>
+			<div class="shop-coupon">
+				店铺优惠:
+				<% var coupon_array=data[v].coupon_list.slice(0,3);%>
+			<% data[v] && data[v].coupon_list && coupon_array.map(function(i){%>
+		<a href="<%=shop_url%>">满<span><%=i.threshold%></span>减<span><%=i.credit%></span></a>
+			<%});%>
+				
+			</div>
+
+		<%}%>
+		<div class="shop-item">
+			<div class="item-box"> 
+				<% data[v] && data[v].twitter_list && data[v].twitter_list.map(function(i){%>
+<%var db_url= _extFn.getAppLink('twitter_single', {'twitter_info' : {'twitter_id' : i.twitter_id, 'is_doota' : 1}}, this.os, this.r);%>
+					<a href="<%=db_url%>">
+						<span class="lazy_pic" asrc ="<%=i.twitter_img%>"></span>	
+						<%if(i.twitter_id==3167682231 || i.twitter_id==3103308321 || i.twitter_id==3241807863 || i.twitter_id==3261657035 || i.twitter_id==3191500683|| i.twitter_id==3220314255|| i.twitter_id==3238828003|| i.twitter_id==3204423821|| i.twitter_id==3127053061|| i.twitter_id==3026262511|| i.twitter_id==3228779027 || i.twitter_id==3213596119|| i.twitter_id==3322635771 || i.twitter_id==3118037363){%>
+							<div class="promotion"></div>
+							<%}%>	
+							<%if(i.campaign_price==''){%>
+						<div class="price"><span>￥<%=i.twitter_price%></span></div>
+							<%}else{%>
+						<div class="price"><span>￥<%=i.campaign_price%></span><del>￥<%=i.twitter_price%></del></div>
+							<%}%>
+					</a>
+				<%});%>
+			</div>	
+		</div>
+
+</section>
+<%}%>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use("wap/page/hdstreet/index");
+_use:", this._JSstack , this._JSmods ); %>

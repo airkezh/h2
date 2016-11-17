@@ -1,0 +1,16 @@
+<script type="text/html" id="posterWall">
+<? $.each(tInfo , function(k , v){ ?>
+<?if(!v){return}?>
+<?var goods_title = v.ginfo ? v.ginfo.goods_title : "";?>
+<figure class="poster_grid poster_wall" twitter_id="<?=v.twitter_id?>">
+	<div class="new_poster">
+		<?if(v.isShowPrice && v.ginfo){?>
+			<div class="price"><?if(v.isShowTime){?><?= v.twitter_create_time?>&nbsp;&nbsp;&nbsp;&nbsp;<?}?><?= v.ginfo.goods_price?></div>
+		<?}?>
+		<? var show_pic = v.show_pic ? v.show_pic : v.ginfo ? v.ginfo.goods_pic_url : ''; ?>
+		<? var goodsUrl = v.url ? v.url : '/share/' + v.like_twitter_id; ?>
+		<a class="pic_load" href="<?= goodsUrl?>"><img class="goods_pic" src="<?= show_pic ?>" title="<?= goods_title?>" alt="<?= goods_title?>" /></a>
+	</div>
+</figure>
+<? }); ?>
+</script>

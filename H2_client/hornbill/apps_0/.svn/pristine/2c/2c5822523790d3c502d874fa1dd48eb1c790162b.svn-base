@@ -1,0 +1,409 @@
+/*common*/
+/**
+ * @name: biWaterfallPlugin
+ * @desc: bi = bidirectional 双向滚动瀑布流
+ *
+ *        瀑布流会记录 col 在每一帧中的位置信息，通过 getColsHistoryInfo() 获取
+ *        该插件将信息存储在 sessionStorage 中
+ *
+ *        biWaterfallPlugin 相比 Waterfall 增加如下配置参数:
+ *          forceClearBackup: boolean  瀑布流是否需要清空之前存储的定位数据
+ *          isAutoUpdateURL: boolean 是否自动更新 url, 默认是 true
+ *
+ *
+ *       isAutoUpdateURL:
+ *          在微信的页面中, 如果需要进行自定义的分享操作, 那么就需要签名验证, 而签名验证成功的前提是
+ *          验证前后的 URL 不能发生变化.
+ *          biWaterfallPlugin 默认会更新 URL, 所以会导致签名验证失败.
+ *          isAutoUpdateURL 如果设置成 false, 那么地址栏的 URL 不会发生变化
+ *          只有当手动调用 waterfallInstance.updateParam( 'isAutoUpdateURL', true ) 后, URL 才会恢复更新
+ */
+var Waterfall          = require( 'circle/component/waterfall' ),
+    URLHandle          = require( 'component/urlHandle' ),
+
+    win                = window,
+    Loc                = win.location,
+    $win               = $( win ),
+    $winHeight         = $win.height(),
+
+    scrollData         = {
+        scroll:   0, //滚动条位置
+        frame:    0,
+        height:   0, //容器高度
+        remember: 1
+    },
+    framesData         = [],
+    elOffsetTop        = 0,
+    requestFrame       = 0,
+
+    CONS               = Waterfall.CONS,
+    NORMAL             = CONS.NORMAL,
+    REVERSE            = CONS.REVERSE,
+    EVENT_CLEAR_BACKUP = CONS.EVENT_CLEAR_BACKUP,
+    FORCE_CHECK        = CONS.FORCE_CHECK,
+
+    DEFAULT_OFFSET     = $winHeight / 2,
+    DATA_KEY_PREFIX    = 'waterfall-cache:',
+    isFirstLoaded      = true,
+    isLayoutFinished   = true,
+    isTriggerFinish    = false,
+    initLoadingParam   = [ 'up', 'down' ],
+    defaultConfig      = {
+        forceClearBackup: false,
+        isAutoUpdateURL:  true
+    },
+    colsHistoryInfo, waterfallInstance
+
+function init( instance ) {
+    var oldConfig                 = instance._config,
+        oldLayoutFinishedCallback = oldConfig.onLayoutFinished,
+        config, urlObj
+
+    $win.on( EVENT_CLEAR_BACKUP, manualClearBackup )
+
+    instance.start = function() {
+        return instance
+    }
+
+
+    elOffsetTop = instance.$el.offset().top
+
+    config = instance._config = $.extend( instance._config, {
+        canFetch: scrollFn,
+
+        onFetchStart: function( config ) {
+            config.data.frame = requestFrame
+        },
+
+        onLayoutFinished: function() {
+            scrollData.height = this.$el.height()
+
+            updateURL( config )
+            backupColsData()
+            isLayoutFinished = true
+            colsHistoryInfo  = waterfallInstance.getColsHistoryInfo()
+
+            updateFrameData()
+
+            /**
+             * 第一次加载的时候，判断所处的位置，是不是处于两帧之间，避免屏幕部分出现空白
+             * 两次 trigger 应该有间隔，如果同时触发，isLayoutFinished 会阻止第二次触发的检测
+             */
+            if ( isFirstLoaded ) {
+                isFirstLoaded = false
+
+                //在某些 Android 机器上，获取的屏幕高度会有问题，所以在这里再次获取
+                $winHeight     = $win.height()
+                DEFAULT_OFFSET = $winHeight / 2
+
+                setTimeout( function initTrigger() {
+                    waterfallInstance.triggerScroll( initLoadingParam.shift() )
+                    if ( !requestFrame && !isTriggerFinish ) {
+                        isTriggerFinish = true
+                        initTrigger()
+                    } else if ( initLoadingParam.length ) {
+                        isFirstLoaded = true
+                    }
+                }, 0 )
+
+                /**
+                 * 某些手机下, 恢复原位置后, 页面显示空白
+                 * 这时候需要强制调用下 optimise
+                 */
+                setTimeout( function() {
+                    //TODO
+                    $win.triggerHandler( FORCE_CHECK )
+                }, 50 )
+            }
+
+            oldLayoutFinishedCallback && oldLayoutFinishedCallback.call( instance )
+        },
+
+        onFetchError: function() {
+            isLayoutFinished = true
+        }
+    } )
+
+    urlObj     = parseURL( Loc.search )
+    scrollData = $.extend( {}, scrollData, urlObj )
+
+    if ( !urlObj.remember ) {
+        reset()
+    }
+
+    config.sessionKey = generateStorageKey()
+    initPage()
+    updateURL( config )
+
+    return instance
+}
+
+// TODO
+function manualClearBackup() {
+    colsHistoryInfo = []
+    reset()
+}
+
+/**
+ * 判断是否为稠密数组，如果不是，证明存储的数据有问题，无法正常使用
+ * @param arr
+ * @returns {boolean}
+ */
+function isDenseArray( arr ) {
+    var flag = !!arr.length
+    arr.forEach( function( v ) {
+        if ( !v ) {
+            return flag = false
+        }
+    } )
+    return flag
+}
+
+function initPage() {
+    if ( waterfallInstance._config.forceClearBackup ) {
+        clearBackup()
+    }
+
+    colsHistoryInfo = getColsData()
+
+    var $el             = waterfallInstance.$el,
+        containerHeight = +scrollData.height,
+        scroll          = +scrollData.scroll,
+        frame           = +scrollData.frame,
+        colsHisotoryLen = colsHistoryInfo.length,
+        colsData, index
+
+    requestFrame = frame
+    updateFrameData()
+
+    if ( !isDenseArray( colsHistoryInfo ) ) {
+        colsHisotoryLen = 0
+        reset()
+    } else {
+        if ( containerHeight != 0 ) {
+            $el.height( containerHeight )
+        }
+
+        if ( scroll != 0 ) {
+            window.scrollTo( 0, scroll )
+        }
+    }
+
+    if ( frame && colsHisotoryLen ) {
+        waterfallInstance.setColsHistoryInfo( colsHistoryInfo )
+        index    = frame >= colsHisotoryLen ? ( colsHisotoryLen - 1) : frame
+        colsData = colsHistoryInfo[ index ]
+        waterfallInstance.setColsInfo( colsHistoryInfo[ frame - 1 ] )
+
+        framesData[ index ] = colsData.sort( function( a, b ) {
+            return b.max - a.max
+        } )[ 0 ].max
+    }
+
+    waterfallInstance.fetch()
+}
+
+//topObj:{scroll:val}
+function reset( topObj ) {
+    var urlObj = parseURL( Loc.search )
+    scrollData = $.extend( {}, urlObj, {
+        scroll:   0, //滚动条位置
+        frame:    0,
+        height:   0, //容器高度
+        remember: 1
+    }, topObj )
+
+    requestFrame = 0
+    window.scrollTo( 0, scrollData.scroll )
+    updateURL( waterfallInstance._config )
+    clearBackup()
+}
+
+function updateFrameData() {
+    colsHistoryInfo.forEach( function( history, i ) {
+        if ( !history ) {
+            return
+        }
+
+        framesData[ i ] = history.sort( function( a, b ) {
+            return ( b.max - a.max ) || ( a.left - b.left )
+        } )[ 0 ].max
+    } )
+}
+
+function backupColsData() {
+    try {
+        sessionStorage.setItem( waterfallInstance._config.sessionKey, JSON.stringify( waterfallInstance.getColsHistoryInfo() ) )
+    } catch ( e ) {
+    }
+}
+
+/**
+ * 清除缓存
+ */
+function clearBackup() {
+    try {
+        sessionStorage.removeItem( waterfallInstance._config.sessionKey )
+    } catch ( e ) {
+    }
+}
+
+/**
+ * 获取列信息
+ * @returns {Array}
+ */
+function getColsData() {
+    var colsData = sessionStorage.getItem( waterfallInstance._config.sessionKey )
+
+    return colsData ? JSON.parse( colsData ) : []
+}
+
+function parseURL( url ) {
+    return URLHandle.getParams( url )
+}
+
+function updateURL( config ) {
+    config.isAutoUpdateURL && history.replaceState( null, '', '?' + URLHandle.http_build_query( scrollData ) + Loc.hash )
+}
+
+/**
+ * 根据 URL 与 keywords 生成 sessionStorage 中的 key
+ *
+ * keywords 类型:
+ *  string 关键字名
+ *  Array  关键字数组
+ *      string 关键字名
+ *      object 关键字对象
+ *          keyword 关键字名
+ *          default 关键字默认值
+ *
+ *  Function 动态生成 key
+ *
+ *  eg.
+ *      keywords: 'shop_id'
+ *      keywords: [ 'tid', 'type' ]
+ *      keywords: [{
+ *          keyword: 'search',
+ *          default: 'test'
+ *      }]
+ *      keywords: function() {
+ *          return "only_for_test"
+ *      }
+ */
+function generateStorageKey() {
+    var keywords        = waterfallInstance._config.keywords,
+        defaultValue    = Loc.pathname,
+        defaultValueLen = defaultValue.length,
+        params          = parseURL( Loc.search ),
+        custom          = ''
+
+    // 清除最后面的斜杠
+    if ( defaultValue[ defaultValueLen - 1 ] == '/' ) {
+        defaultValue = defaultValue.substring( 1, defaultValueLen - 1 )
+    }
+
+    if ( keywords ) {
+        if ( typeof keywords == 'function' ) {
+            return DATA_KEY_PREFIX + defaultValue + '?' + keywords()
+        }
+
+        if ( !Array.isArray( keywords ) ) {
+            keywords = [ keywords ]
+        }
+
+        keywords.forEach( function( v ) {
+            var name, value, defaultVal
+
+            if ( v ) {
+                if ( typeof v == 'object' ) {
+                    name       = v.keyword
+                    defaultVal = v.default
+                } else {
+                    name = v
+                }
+
+                value = params[ name ] || defaultVal
+
+                if ( value ) {
+                    custom += name + '=' + value + '&'
+                }
+            }
+        } )
+
+
+        if ( custom ) {
+            defaultValue += '?' + custom.substring( 0, custom.length - 1 )
+        }
+    }
+
+    return DATA_KEY_PREFIX + defaultValue
+}
+
+function scrollFn( scrollTop, isDown ) {
+    var relativeTop = scrollTop - elOffsetTop,
+        len         = framesData.length,
+        areaBox     = colsHistoryInfo[ requestFrame ],
+        flag
+
+    if ( !areaBox ) {
+        areaBox = {
+            min: 0,
+            max: 0
+        }
+    } else {
+        //@TODO 默认瀑布流所有元素都是等高的，所以取第一个。这样处理比较简单
+        areaBox = {
+            min: areaBox[ 0 ].min,
+            max: areaBox[ 0 ].max
+        }
+    }
+
+    /**
+     * 判断当前视口显示的数据属于哪一帧
+     */
+    if ( isLayoutFinished ) {
+        while ( len-- ) {
+            if ( framesData[ len ] - DEFAULT_OFFSET > relativeTop ) {
+                requestFrame = scrollData.frame = len
+            }
+        }
+    }
+
+    /**
+     * 是否需要获取新数据
+     */
+    if ( isDown ) {
+        if ( areaBox.max - $winHeight - relativeTop < DEFAULT_OFFSET ) {
+            if ( isLayoutFinished ) {
+                requestFrame++
+                waterfallInstance.updateLayoutDirection( NORMAL )
+            }
+        }
+    } else if ( areaBox.min > 0 ) {
+        if ( relativeTop - areaBox.min < 2 * DEFAULT_OFFSET ) {
+            if ( isLayoutFinished ) {
+                requestFrame--
+                if ( requestFrame < 0 ) {
+                    requestFrame = 0
+                }
+                waterfallInstance.updateLayoutDirection( REVERSE )
+            }
+        }
+    }
+
+    /**
+     * 判断数据是否已经加载过
+     */
+    flag = !waterfallInstance.isFrameLoaded( requestFrame )
+    scrollData.scroll = scrollTop
+    updateURL( waterfallInstance._config )
+    //isLayoutFinished 不要重复赋值
+    return isLayoutFinished && flag
+}
+exports.reset = reset
+exports.init  = function( config ) {
+    config.isBiWaterfall = true
+    return init( waterfallInstance = Waterfall.init( $.extend( {}, defaultConfig, config ) ) )
+}
+
+exports.takeOver = true

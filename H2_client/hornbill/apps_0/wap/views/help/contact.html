@@ -1,0 +1,36 @@
+<%#head.html%>
+<div class="main">
+	<div class="service">
+		<%this.contact && this.contact.data.forEach(function(item){%>
+		<h3><%=item.title%></h3>
+		<div class="box"><%=item.content%></div>
+		<%});%>
+	</div>
+</div>
+<div class="speak">
+	<p><em></em>这个解决方案我有发言权<em></em></p>
+	<p>投票了，请参考哦。</p>
+</div>
+<div class="evaluation" id="vote">
+	<strong class="yes">有用</strong>
+	<strong class="no">没用</strong>
+	<p>感谢您的反馈</p>
+	<p id="feedback">补充反馈</p>
+</div>
+
+<input type="hidden" value="<%=this.userInfo.user_id%>">
+<script id="revise" type="text/html">
+	<div class="useless">
+		<div style="height:25px;"><strong id="canCel">取消</strong><strong id="submit">提交</strong></div>
+		<p>您觉得没有用的原因是</p>
+		<p><input type="radio" name="useless_type" value="1" id="r1"/><label for="r1">解决方案看不懂</label></p>	
+		<p><input type="radio" name="useless_type" value="2" id="r2"/><label for="r2">操作后不成功</label></p>
+		<p><input type="radio" name="useless_type" value="3" id="r3"/><label for="r3">其他</label></p>	
+		<textarea id="textArea" placehold="留下您宝贵建议" style="display:none;" rows="4" cols="30" ></textarea>	
+	</div>	
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:	
+	fml.use('wap/page/contact');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot.html%>

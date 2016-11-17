@@ -1,0 +1,124 @@
+<%#head.html%>
+<%
+	var userInfo = this.userInfo||{};
+	var style = this.style.data||{};
+	var founder_publicity=style.founder_publicity||[];
+	var founder=style.founder||{};
+	var recomment=style.recomment||[];
+	var picData=this.picData||{};
+	var picDataImg=picData.data||[];
+%>
+<div class="main">
+	<div class="goods">
+		<p class="goodsTitle"><%= style.title%></p>
+		<img src="<%= style.detail_big_img %>" />
+		<div class="danmu"></div>
+		<div class="send">
+		<form onsubmit="return false;">
+			<input id="comment" type="text" class="txt" maxlength="50" placeholder="说点什么，biubiu～" />
+			<span id="send" class="cancel">发射</span>
+		</form>
+		</div>
+	</div>
+	<div class="jizan">
+		<% if(style.twitter_id == '0'){ %>
+			<p class="want">在你之前，有<span class="num"><%= parseInt(style.want_base)+parseInt(style.want_num) %></span>位美人儿想买，</br>加把劲让TA生产吧!</p>
+		<% } else{%>
+			<p class="buy">已有<span class="num"><%= parseInt(style.want_base)+parseInt(style.want_num) %></span>位美人儿想买TA，</br>定制成功!</p>
+			<a href="javascript:;" class="buyNow" id="buyNow" twitter_id="<%= style.twitter_id%>">立即购买</a>
+		<% }%>
+			
+	</div>
+	<div class="wrap">
+		<div class="intro">
+			<!--<% if(founder_publicity.length){ %>
+				<img src="<%= founder.avatar_a %>" alt="" class="pic">
+				<p class="name">资深买手<span><%= founder.nickname %></span></p>
+			<% } %>-->
+
+			<% founder_publicity && founder_publicity.forEach(function(data,i){ %>
+				<% if(data.txt){ %>
+					<p class="word">
+						<span class="introIcon"></span>
+						<span class="txt"><%= data.txt %></span>
+					</p>
+					<p class="maishou"><span><%= founder.nickname %></span>资深买手</p>
+				<% } %>
+				<% if(data.img){ %>
+					<img src="<%= data.img %>" class="goods_pic"/>
+				<% } %>
+			<% }); %>
+		</div>
+		<div class="recommend">
+			<% if(recomment.length){ %>
+				<div class="title">
+					<span class="line line_l"></span>recommend &nbsp;&nbsp;<p class="reTitle">搭配推荐</p><span class="line line_r"></span>
+				</div>
+				
+			<% } %>
+			<% recomment && recomment.forEach(function(data,i){ %>
+				<% if(data.txt){ %>
+					<p class="reTxt"><%= data.txt %></p>
+				<% } %>
+				<% if(data.img){ %>
+					<img src="<%= data.img %>" class="goods_pic"/>
+				<% } %>
+			<% }); %>
+		</div>
+		<div class="support">
+			<div class="linkInfo">
+				<span class="share">
+					<img src="<%=this.PICTURE_URL%>/images/wap/web/zulily/shareFriend.png" />
+				</span>
+				<a href="/zulily" class="link">
+					<img src="<%=this.PICTURE_URL%>/images/wap/web/zulily/goIndex.png" />
+				</a>
+			</div>
+			<div class="want">
+				<span class="handel">
+					<span class="heart <%= style.is_mywant ? 'heartRed' : '' %>"></span>
+				</span>
+				<p class="buy"><span class="num"><%= parseInt(style.want_base)+parseInt(style.want_num) %></span>人想要</p>
+			</div>
+		</div>
+	</div>
+	<div class="dl-box">
+		<dl class="supportList">
+			<% if(picDataImg.length){ %>
+				<dt>Ta们都想买</dt>
+			<% } %>
+				<% picDataImg && picDataImg.forEach(function(data,i){ %>
+					<dd>
+						<img src="<%= data.avatar_a %>" />
+					</dd>
+				<% }); %>
+		</dl>
+		<a href="/zulily" id="back"></a>
+	</div> 
+</div>
+<script type="text/html" id="shareLead">
+	<div class="dialog_box">
+		<span class="share_pic"></span>
+	</div>
+</script>
+<script>
+	var imgUrl = 'http://d06.res.meilishuo.net/img/_o/7a/ea/d25fee3f7f1c1d3106d9d14f811d_200_200.ch.jpg';
+	var lineLink = 'http://m.meilishuo.com/zulily/detail/?style_id=' + <%= this.styleId%>;
+	var descContent = '潮衣高级定制！一起来定制潮流！';
+	var shareTitle = '潮衣高级定制！一起来定制潮流！';
+	var shareTimelineText = '潮衣高级定制！一起来定制潮流！';
+    var customAppId = 'wxd00a5f16e02bed58';
+</script>
+
+<script>
+	fml.vars.isLogin = <%= this.userInfo.user_id %>; 
+	fml.vars.danmu = <%= JSON.stringify(this.danmu.data) %>;
+	fml.vars.styleId=<%= this.styleId %>; 
+</script>
+
+<script src="<%= this.JCSTATIC_BASE  %>/js/open/shareCollect.js?<%= this.SVERSION%>"></script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/zulily/detail');
+_use:", this._JSstack, this._JSmods); %>
+
+<%# foot.html%>

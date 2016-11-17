@@ -1,0 +1,143 @@
+@import "../block.less";
+
+/** color pick */
+@mls_red: #ff6699;
+@gap_color: #f8f8f8;
+@border_color: #ebebeb;
+@font_color: #ff7a9a;
+
+/** width 的百分值换算 */
+@w580: 1/580*100%;
+@w600: 1/600*100%;
+
+/** common style */
+body { .f(.24rem); }
+body, div { .bgwhite; }
+h1,h2,h3 { .fn; }
+.red { font-weight: normal; font-style:normal; color: @font_color; }
+
+.main_can_buy { 
+	.mb(1rem); 
+	border-bottom: .2rem solid @gap_color;
+}
+
+.goods_unscramble {
+	figure {  
+		img { .w(100%); }
+	}
+	figcaption {
+		padding: .3rem .46rem .3rem .66rem;
+		line-height: .32rem;
+		background: url(//d03.res.meilishuo.net/pic/_o/a1/cf/a1fccb7d2768d90c42b36f859d59_19_15.cg.png) .3rem .3rem no-repeat;
+		background-size: .24rem .18rem;
+	}
+}
+
+.goods_on_sale {
+	border-top: .2rem solid @gap_color;
+	h2 {
+		.ml(30*@w);
+		.mr(30*@w);
+		.pt(30*@w);
+		.pb(30*@w);
+		.c;
+		background: url(//d04.res.meilishuo.net/pic/_o/03/74/00646c2286fb4258445ed558e223_1_1.ch.png) left center repeat-x;
+	}
+	.text_wrap {
+		.i_block;
+		.pl(.26rem);
+		.pr(.26rem);
+		.f(.26rem);
+		.l(100%);
+		vertical-align: middle;
+		.bgwhite;
+		span { .block; }
+		.en { .mt(-.02rem); .f(.1rem); }
+	}
+	
+}
+
+.more {
+	.pl(22*@w); 
+	.pr(22*@w);
+	.pb(30*@w);
+	.w(100%);
+	border-collapse: separate;
+	caption { 
+		.pt(30*@w); 
+		.pl(30*@w);
+		.pb(12*@w);
+		.tl;
+		border-top: .2rem solid @gap_color;
+	}
+	tbody { .f(0); }
+	td { 
+		.w(182*@w);
+		padding: 8*@w;
+		a { 
+			.block;
+			.pt(140%);
+			background-size: cover;
+			background-repeat: no-repeat;
+			background-position: center center; 
+		}	
+	}
+}
+
+#goods_shelf {
+	.pl(20*@w);
+	.pr(20*@w);
+	.clearfix;
+	.goods {
+		.left;
+		.w(280*@w600);
+		.mb(14*@w600);
+		.ml(10*@w600);
+		.mr(10*@w600);
+		img { .w(100%); }
+		figcaption {
+			.pt(16*@w600);
+			.pb(16*@w600);
+			.bgwhite; 
+		}
+	}
+	.goods-desc { .l(.28rem); .h(.56rem); .hidden; }
+	.goods-price { .pt(16*@w600); }
+}
+
+
+.buy {
+	.pf; 
+	bottom: 0; 
+	left: 0;
+	.w(100%); 
+	.l(1rem);	
+	.clearfix;
+	.price,
+	.save_money { 
+		.left; 
+		.fc(#999); 
+		i { .ml(.06rem); }
+	}
+	.price { 
+		.mr(.3rem); 
+		.ml(30*@w); 
+		.pl(.76rem); 
+		.f(.36rem); 
+		.fc(@font_color);
+		background: url(//d04.res.meilishuo.net/pic/_o/e9/40/4acf69c1b766fff233cd8d74d177_54_50.cg.png) left center no-repeat;
+		background-size: .56rem .56rem;
+	}
+	#buy_btn { 
+		.right;
+		.mt(.22rem);
+	    .mr(.3rem);	
+		.pl(.24rem);
+		.pr(.24rem);
+		.l(.56rem);
+		.fc(#fff);
+		border-radius: .04rem;
+		.bgc(@mls_red);
+	}
+	
+}

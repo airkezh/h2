@@ -1,0 +1,81 @@
+<%#head.html%>
+<div class="actWapper lenovoBg">
+<div class="len_top">
+	<!--新浪微博关注组件-->
+	<script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js" type="text/javascript" charset="utf-8"></script>
+	<div class="sina"><wb:follow-button uid="2189927107" type="red_1" width="67" height="24" ></wb:follow-button></div>
+	<p class="len_btn"></p>
+</div>
+<div class="len_group">
+	<% 
+		var showimg = 0;
+		var magItemRenderFn = requireFn('group/magitem.html');
+		this.len_group && this.len_group.map(function(magazine){ %>
+			<%= magItemRenderFn(magazine , showimg++)%>	
+		<% });%>
+</div>
+<ul class="len_tab" id="tab">
+	<a href="?type=0#tab"><li <%if(!this.type){%>class="tab_red"<%}%>>最 &nbsp; &nbsp; 新</li></a>
+	<a href="?type=1#tab"><li <%if(this.type){%>class="tab_red"<%}%> style="margin-right:0;">最 &nbsp; &nbsp; 热</li></a>
+</ul>
+<div id="phone" class="phone">
+	<ul>
+		<li class="len_bgred">首页</li>
+		<li id="len_rule">活动说明</li>
+		<li><a href=" http://meilishuo.com/u/EIcv9F?frm=yaochuse05" target="_blank">参与更多活动</a></li>
+	</ul>
+	<img src="<%= this.PICTURE_URL%>images/huodong/lenovo/2wei.jpg" />
+</div>
+<%#biz/huodong/basic.html%>
+<div id="len_bot">
+	<div class="video">
+		<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,19,0" width="380" height="280">
+			<param name="movie" value="http://p.you.video.sina.com.cn/swf/quotePlayer20130711_V4_4_42_2.swf?autoPlay=1&actlogActive=1&as=1&vid=108581365&uid=2189927107&tokenURL=http%3A%2F%2Fyou.video.sina.com.cn%2Fapi%2FsinawebApi%2Foutplayrefer.php%2Fvid%3D108581365_2189927107_Px61GiBqCzTK%2Bl1lHz2stqlF%2B6xCpv2xhGi1s1utJwlYVQuYJMXNb9wH6CzeAcxE9HoLHcwydP4u0hUsa6xd%2Fs.swf&tHostName=" />
+			<param name="quality" value="high" />
+			<param name="wmode" value="transparent" />
+			<embed src="http://p.you.video.sina.com.cn/swf/quotePlayer20130711_V4_4_42_2.swf?autoPlay=1&actlogActive=1&as=1&vid=108581365&uid=2189927107&tokenURL=http%3A%2F%2Fyou.video.sina.com.cn%2Fapi%2FsinawebApi%2Foutplayrefer.php%2Fvid%3D108581365_2189927107_Px61GiBqCzTK%2Bl1lHz2stqlF%2B6xCpv2xhGi1s1utJwlYVQuYJMXNb9wH6CzeAcxE9HoLHcwydP4u0hUsa6xd%2Fs.swf&tHostName=" quality="high" wmode="transparent" pluginspage="http://www.macromedia.com/go/getflashplayer" allowScriptAccess="always" allowFullScreen="false" type="application/x-shockwave-flash" width="380" height="280">
+			</embed>
+		</object>
+	</div>
+	<a href="http://meilishuo.com/u/EIVwm7?frm=yaochuse14" class="len_link"></a>
+</div>
+
+</div>
+
+<!--弹窗-->
+<script type="text/html" id="rule">
+	<div class="rule">
+		<span id="close_btn2" class="len_close"></span>
+	</div>
+</script>
+<script type="text/html" id="model1">
+	<div class="model">
+		<span id="close_btn" class="len_close"></span>
+		<ul id="3model" class="clearfix_f">
+			<li class="mod1"></li>
+			<li class="mod2"></li>
+			<li class="mod3"></li>
+		</ul>
+	</div>
+	<div class="upbox">
+	</div>
+	<div class="succeed">
+		<span id="close_btn2" class="len_close"></span>
+		<span class="share_sina"></span>
+	</div>
+</script>
+<script type="text/html" id="model2">
+		<span id="close_btn1" class="len_close"></span>
+		<%= requireFn('biz/huodong/upload_photo.html')({
+			'upload_style' : 'lenUpWapper',
+			'reload_style' : 'len_reup'
+		}); %>
+		<textarea>#我要出色#秀出我最夺目的红</textarea>
+		<span id="len_pre" class="len_pre"></span>
+		<button id="len_sure" class="len_sure"></button>
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+    fml.use('page/huodong/lenovo');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

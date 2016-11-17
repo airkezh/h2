@@ -1,0 +1,435 @@
+@import "../block.less";
+
+@from: rotate(10deg);
+@to: rotate(-10deg);
+
+* {
+  padding : 0;
+  margin  : 0;
+}
+
+img {
+  display : block;
+  width   : 100%;
+}
+
+body {
+  background : #fec538;
+}
+
+.start {
+  position : relative;
+  .bg_img {
+    width : 100%;
+  }
+  .start_btn {
+    position    : absolute;
+    top         : 980/1140*100%;
+    left        : 50%;
+    margin-left : -115*@w;
+    width: 270*@w;
+    .animation(peng .6s linear 0s infinite alternate);
+  }
+  .car {
+    position: absolute;
+    top: 4.8rem;
+    left: 50%;
+    margin-left: -248*@w;
+    width: 496*@w;
+    padding-top: 3.95rem;
+    background: url('http://d01.res.meilishuo.net/pic/_o/72/1d/1e54241ebad5b1a581e0cf86815f_496_395.cf.png') no-repeat center;
+    background-size: 100%;
+    .head {
+      width: 2.03rem;
+      height: 2.99rem;
+      position: absolute;
+      top: -.35rem;
+      left: 36%;
+      -ms-transform-origin     : 50% 100%;
+      -webkit-transform-origin : 50% 100%;
+      transform-origin         : 50% 100%;
+      .animation(swing 1s ease-in-out 0s infinite alternate);
+    }
+  }
+}
+
+
+@-webkit-keyframes peng {
+  from {
+   -webkit-transform: scale(1,1);
+  }
+  to {
+    -webkit-transform:scale( 1.2, 1.2 );
+  }
+}
+
+@keyframes peng {
+  from {
+    transform: scale(1,1);
+  }
+
+  to {
+    transform: scale( 1.2, 1.2 );
+  }
+}
+
+
+@-webkit-keyframes swing {
+  from {
+    -webkit-transform : @from;
+  }
+
+  to {
+    -webkit-transform : @to;
+  }
+}
+
+@keyframes swing {
+  from {
+    transform : @from;
+  }
+
+  to {
+    transform : @to;
+  }
+}
+
+.ques1 {
+  .options .item {
+    box-shadow : 0 .1rem .02rem rgba(235, 163, 38, 100%);
+  }
+  .next_btn {
+    position    : absolute;
+    top         : 7.24rem;
+    left        : 50%;
+    margin-left : -115*@w;
+    width: 270*@w;
+    .animation(peng .6s linear 0s infinite alternate);
+  }
+  .btn_wrapper {
+    margin-top : .2rem;
+  }
+  .options .item.choosed {
+    box-shadow       : 0 -0.1rem 0.02rem rgba(247, 198, 76, .6) inset;
+    background-color : #fff0b2;
+  }
+}
+
+.ques2 {
+  .options .item {
+    box-shadow : 0 .1rem .02rem rgba(44, 145, 198, 100%);
+  }
+  .next_btn {
+    position    : absolute;
+    top         : 6.5rem;
+    left        : 50%;
+    margin-left : -115*@w;
+    width: 270*@w;
+    .animation(peng .6s linear 0s infinite alternate);
+  }
+  .btn_wrapper {
+    margin-top : .6rem;
+  }
+  .options .item.choosed {
+    box-shadow       : 0 -0.1rem 0.02rem rgba(85, 181, 231, .6) inset;
+    background-color : #b8e7ff;
+  }
+}
+
+.ques3 {
+  .options .item {
+    box-shadow : 0 .1rem .02rem rgba(226, 67, 100, 100%);
+  }
+  .result_btn {
+    position    : absolute;
+    top         : 7.3rem;
+    left        : 50%;
+    margin-left : -115*@w;
+    width: 270*@w;
+    .animation(peng .6s linear 0s infinite alternate);
+  }
+  .btn_wrapper {
+    margin-top : .6rem;
+  }
+  .options .item.choosed {
+    box-shadow       : 0 -0.1rem 0.02rem rgba(252, 155, 175, .6) inset;
+    background-color : #fed0da;
+  }
+}
+
+.page .content {
+  width    : 100%;
+  position : absolute;
+  top      : 0;
+  left     : 0;
+}
+
+.page .question {
+  width       : 460*@w;
+  padding-top : .4rem;
+  margin      : auto;
+}
+
+.options {
+  .item {
+    position         : relative;
+    width            : 4.7rem;
+    height           : .8rem;
+    color            : black;
+    background-color : #fff;
+    margin           : .12rem auto;
+    font-size        : .28rem;
+    font-weight      : bolder;
+    line-height      : .68rem;
+    text-align       : center;
+    border           : .06rem solid black;
+    border-radius    : .8rem;
+    box-sizing       : border-box;
+  }
+  .decorate {
+    display         : inline-block;
+    position        : absolute;
+    top             : -0.1rem;
+    right           : -0.3rem;
+    width           : .34rem;
+    height          : .47rem;
+    background      : url('http://d03.res.meilishuo.net/pic/_o/3d/8f/c2bb10071e971744ff663b221dce_34_47.cg.png') no-repeat center;
+    background-size : 100%;
+  }
+}
+
+.waiting {
+  img {
+    width  : 190*@w;
+    margin : 3.76rem 0 0 2.4rem;
+    .animation(peng .6s linear 0s infinite alternate);
+  }
+  p {
+    font-size   : .36rem;
+    text-align  : center;
+    color       : #000;
+    font-weight : bold;
+    margin-top  : .6rem;
+  }
+}
+
+.result {
+  .title_img {
+    margin-top : .4rem;
+  }
+  .re_content {
+    img {
+      width         : 386*@w;
+      height        : 3.42rem;
+      margin        : .1rem auto 0;
+      border        : .04rem solid black;
+      border-radius : 0.06rem;
+      box-shadow    : 0 .1rem 0 rgba(248, 149, 36, .77);
+    }
+    .re_desc {
+      width       : 520*@w;
+      font-size   : .24rem;
+      color       : #000;
+      text-align  : center;
+      margin      : .26rem auto 0;
+      line-height : .32rem;
+    }
+  }
+  .share_title {
+    position   : relative;
+    z-index    : 0;
+    margin-top : .2rem;
+    .line {
+      background : #000;
+    }
+    .show_up {
+      background : #fec538;
+    }
+  }
+}
+
+.result .share_box {
+  margin-top : .16rem;
+  text-align : center;
+  font-size  : 0;
+  a {
+    display : inline-block;
+    width   : 184*@w;
+    height  : .92rem;
+  }
+  .share_pengyou {
+    background      : url('http://d04.res.meilishuo.net/pic/_o/02/d7/b668bb1a7a9d85fe5854ed5f170c_184_92.cg.png') no-repeat center;
+    background-size : 100%;
+  }
+  .share_quan {
+    background      : url('http://d01.res.meilishuo.net/pic/_o/e3/d8/735bee2faf5668c45a242dc1f2d0_184_92.cg.png') no-repeat center;
+    background-size : 100%;
+    margin-left     : .6rem;
+  }
+}
+
+.result .recommend {
+  position   : relative;
+  background : #fff;
+  padding    : .6rem 0 .3rem;
+  .eage_border {
+    position : absolute;
+    top      : 0;
+    width    : 100%;
+  }
+  .rec_title {
+    position : relative;
+    z-index  : 0;
+    .line {
+      background : #ccc;
+    }
+    .show_up {
+      background : #fff;
+    }
+  }
+  .act_words {
+    font-size   : .24rem;
+    color       : #666;
+    line-height : .4rem;
+    margin      : .1rem .4rem;
+    span {
+      color : #f69;
+    }
+  }
+  .rec_list {
+    font-size  : 0;
+    text-align : center;
+    .item {
+      display       : inline-block;
+      width         : 3.04rem;
+      text-align    : center;
+      margin-bottom : .3rem;
+      .item_pic {
+        width             : 100%;
+        padding-top       : 3.8rem;
+        background-size   : cover;
+        background-repeat : no-repeat;
+      }
+      .item_title {
+        font-size : .22rem;
+        color     : #666;
+        padding   : .14rem 0;
+      }
+      .item_price {
+        font-size : .22rem;
+        color     : #999;
+      }
+      .old_price {
+        text-decoration : line-through;
+      }
+      .new_price {
+        color : #f69;
+      }
+    }
+    .item:nth-child(even) {
+      margin-left : .14rem;
+    }
+  }
+  .more_btn {
+    width         : 580*@w;
+    font-size     : .28rem;
+    color         : #666;
+    padding       : .14rem 0;
+    border        : 2px solid rgba(102, 102, 102, .8);
+    border-radius : .1rem;
+    margin        : auto;
+    text-align    : center;
+    .word {
+      vertical-align : middle;
+    }
+    .icon {
+      width           : .14rem;
+      height          : .26rem;
+      display         : inline-block;
+      vertical-align  : middle;
+      background      : url('http://d01.res.meilishuo.net/pic/_o/e3/50/db956550bc6733c2608ec591ef6a_14_26.ch.png') no-repeat center;
+      background-size : 100%;
+    }
+  }
+}
+
+.share_mask {
+  position   : fixed;
+  top        : 0;
+  left       : 0;
+  width      : 100%;
+  height     : 100%;
+  background : rgba(0, 0, 0, .8);
+  .arrow {
+    width    : .88rem;
+    position : absolute;
+    right    : .26rem;
+  }
+  .desc {
+    padding-top : 2.7rem;
+    text-align  : center;
+    font-size   : .32rem;
+    color       : #fff;
+    line-height : .4rem;
+  }
+  .icons {
+    margin-top : .2rem;
+    font-size  : 0;
+    text-align : center;
+    .pengyou {
+      width        : .89rem;
+      display      : inline-block;
+      margin-right : 1.82rem;
+    }
+    .quan {
+      width   : .7rem;
+      display : inline-block;
+    }
+  }
+}
+
+//覆盖引入的默认alert的样式
+.windowDrive {
+  .dialog {
+    font-size   : .32rem;
+    line-height : 1;
+    width       : 70%;
+  }
+  .dialog-con {
+    padding : .3rem 0;
+  }
+  .dialog-btn {
+    line-height : 1;
+    span {
+      padding : .3rem 0;
+    }
+  }
+}
+
+// 公共样式
+.line {
+  height      : .02rem;
+  position    : absolute;
+  top         : 50%;
+  left        : 0;
+  width       : 588*@w;
+  margin-top  : -0.01rem;
+  margin-left : .26rem;
+  z-index     : -1;
+}
+
+.show_up {
+  width       : 168/588*100%;
+  height      : .62rem;
+  z-index     : 10;
+  font-size   : .32rem;
+  color       : #000;
+  line-height : .62rem;
+  text-align  : center;
+  margin      : auto;
+  z-index     : 0;
+  font-weight : bolder;
+}
+
+
+

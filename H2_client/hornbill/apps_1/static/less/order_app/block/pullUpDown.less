@@ -1,0 +1,90 @@
+.pullUpDown(){
+	.common(){
+		.w(100%);.c;.h(40px);.l(40px);.f(14px);color:#888;.pr;
+		.auto;
+//		&:before{
+			background:url("@{pic_url}/images/webwap/pull-icon@2x.png") 0 0 no-repeat;
+			-webkit-background-size:40px 80px; background-size:40px 80px;
+			-webkit-transition:-webkit-transition 0.25s ease-out 0;
+			.w(40px);.h(40px);
+//			.pa;left:300*@w;
+//			content:"";
+//		}
+	}
+	.loading(){
+		&[status="loading"]{
+//			&:before{
+				background-position:0 100%;
+				.transform(rotate(0deg) translateZ(0));
+				-webkit-transition-duration:0ms;
+				-webkit-animation-name:loading;
+				-webkit-animation-duration:2s;
+				-webkit-animation-iteration-count:infinite;
+				-webkit-animation-timing-function:linear;
+//			}
+		}
+		@-webkit-keyframes loading {
+			from { .transform(rotate(0deg) translateZ(0)); }
+			to { .transform(rotate(360deg) translateZ(0)); }
+		}
+		&[status="tap"], &[status="stop"]{
+			-webkit-animation-name: none;
+		}
+	}
+
+	.down(){
+//		&:before{
+			.transform(rotate(0deg) translateZ(0));
+//		}
+		&[status="flip"]{
+//			&:before{
+				.transform(rotate(-180deg) translateZ(0));
+//			}
+		}
+		&[status="stop"]{ 
+//			&:before{
+			//	.transform(scale(0));	
+				.none;
+//			}
+		}
+	}
+
+	.up(){
+//		&:before{
+			.transform(rotate(-180deg) translateZ(0));
+//		}
+		&[status="flip"]{
+//			&:before{
+				.transform(rotate(0deg) translateZ(0));
+//			}
+		}
+		&[status="stop"]{ 
+//			&:before{
+				.transform(scale(0));	
+//			}
+		}
+	}
+}
+
+.pullUp(){
+	.pullUp{
+		.pullUpDown > .common;
+		.pullUpDown > .loading;
+		&:before{
+			.nowrap;
+			.ml(-10px);
+		}
+		&[status="tap"]{
+			background:0 none;	
+			&:before{
+				content:"上拉看更多..."	
+			}
+		}
+		&[status="stop"]{
+			background:0 none;	
+			&:before{
+				content:"木有了...";	
+			}
+		}
+	}
+}

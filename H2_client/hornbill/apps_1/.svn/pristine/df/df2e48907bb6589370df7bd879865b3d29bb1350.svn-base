@@ -1,0 +1,41 @@
+<%#head.html%>
+<%
+	var shareData = this.onSale.share || {};
+%>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script>
+	fml.vars.share = <%= JSON.stringify(shareData) %>;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/onSale/shareJs',function(){
+		if(Meilishuo.config.os.weixinBrowser){
+			$.ajax({
+				url: '/aj/wx/sign'
+				, data: {
+					url:window.location.href
+				}   
+				, dataType: 'json'
+				, type: 'post'
+				, success : function(data){
+					wx.config({
+						debug:false
+						//debug:false 
+						, appId: data.info.appId
+						, timestamp: data.info.timestamp
+						, nonceStr: data.info.nonceStr
+						, signature: data.info.signature
+						, jsApiList: [
+							'checkJsApi',
+							'onMenuShareTimeline',
+							'onMenuShareAppMessage',
+							'onMenuShareQQ',
+							'onMenuShareWeibo'
+						]   
+					}); 
+				},
+				error: function(err){
+				}
+			})
+		}
+	});
+_use:", this._JSstack, this._JSmods); %>

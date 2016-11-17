@@ -1,0 +1,41 @@
+<%# mlslm/headLm.html%>
+<%
+	var banner =  this.webCps && this.webCps.head_banner || '';
+	var navbgc = this.webCps && this.webCps.navi_background || '';
+%>
+<div class="topPic" style="background: url('<%=banner.img%>') no-repeat top center; height:<%=banner.height%>px;">
+</div>
+<div class="head" id="head">
+	<div class="head-top" style="background-color:<%=navbgc.color%>; height:<%=navbgc.height%>px;">
+		<ul class="head-icon" id="headIcon">
+			<% this.webCps.navi_links && this.webCps.navi_links.forEach(function(item,index){%>
+			<li>
+				<a href="javascript:;" class="active<%=index%>">
+					<img src="<%=item.ori_img%>" class="normal">
+					<img src="<%= item.hover_img%>" class="none_f hover">
+				</a>
+			</li>
+			<%});%>
+		</ul>
+	</div>	 
+</div>
+<div class="main">
+	<% this.webCps && this.webCps.categorys.forEach(function(item,index){%>
+    	<div class="goods_wall" id="active<%=index%>">
+			<div class="goods_banner" style="background:url('<%=item.banner_img%>') no-repeat top center; height:<%=item.banner_height%>px">
+			</div>
+	  		<div class="new_goods">
+	  			<%item && item.items.forEach(function(data){%>
+		  			<a href="<%=data.link%>" target="_blank">
+		  				<img src="<%=data.img%>" style="width:<%=this.webCps.category_item.width%>px; height:<%=this.webCps.category_item.height%>px;">
+		  			</a>
+	  			<%})%>	
+	  		</div>
+  		</div>	  	
+	<%});%>
+</div>
+<%# wins/top.html %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+  	fml.use('page/huodong/mlslm_list');
+_use:", this._JSstack , this._JSmods ); %>
+<%# mlslm/footLm.html%>

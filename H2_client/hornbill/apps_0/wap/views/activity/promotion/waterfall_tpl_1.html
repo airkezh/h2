@@ -1,0 +1,128 @@
+<%#head.html%>
+<%
+var pageData = this.pageData;
+var pageRootUrl = this.locationUrl.substring(0, this.locationUrl.indexOf("?"));
+%>
+
+<style>
+	body{background-color: <%= pageData.pageControl.main_bg || '#fff' %>;}
+</style>
+
+<% if(pageData.banner_word.length){ %>
+<div class="banner_word_nav top_nav" id="bannerWord">
+		<% var wc = 0,orgWidth = 0;
+		pageData.banner_word.forEach(function(data){
+			orgWidth += parseInt(data.width);
+		})
+		orgWidth <= 100 ? wc = 1 : wc = 100/orgWidth;
+		%>
+		<div id="bannerInner" class="banner_inner" style="width:<%=wc==1?100:orgWidth%>%" >
+			<% pageData.banner_word.forEach(function(data, index){ %>
+			<div class="<%= index == pageData.bannar_s.num ? 'active' : '' %>"  style="width: <%= parseInt(data.width)*wc %>%; padding:<%=5*wc%>% 0; padding-top: <%=6*wc%>%;">
+				<%
+				var navLink = pageRootUrl + data.link.substr(data.link.indexOf("?")) + "&pageIndex=" + this.pageIndex;
+				%>
+				<a class="text js_nav" href='<%=navLink%>'><span><%= data.word %></span><%= data.num ? '('+data.num+')' : '' %></a>
+			</div>
+			<% }); %>
+		</div>
+	<div class="nav_more" ><span class="placeholder">h</span></div>
+</div>
+<% } %>
+
+<% pageData.header && pageData.header.forEach(function(data){ %>
+<%if (data.src) {%>
+<a class="bannar" href="<%= data.link || 'javascript:;' %>" >
+
+	<img src="<%= data.src %>">
+</a>
+<% if (this.nowTime && this.endTime) {%>
+<div class="countTime">
+	<span class="cdText"><%= this.bannerText %></span>
+
+	<dl class="timeStamp" end-date="<%= this.endTime %>" now="<%= this.nowTime %>">
+		<dd id="day0"><span >-</span></dd>
+		<dd id="day1"><span >-</span></dd>
+		<span class="day">天</span>
+
+		<dd id="hour0"><span >-</span></dd>
+		<dd id="hour1"><span >-</span></dd>
+		<span class="hour">小时</span>
+
+		<dd id="minute0"><span >-</span></dd>
+		<dd id="minute1"><span >-</span></dd>
+		<span class="min">分</span>
+
+		<dd id="seconds0"><span >-</span></dd>
+		<dd id="seconds1"><span >-</span></dd>
+		<span class="sec">秒</span>
+	</dl>
+
+</div>
+<%} else if (this.bannerText){%>
+<div class="countTime">
+	<p style="width: 100%; text-align: center;padding-top: 5%"><%= this.bannerText %></p>
+</div>
+<%}%>
+<%}%>
+<% }); %>
+
+<% if(pageData.banner_word.length){ %>
+<div class="banner_word" >
+	<div class="nav_close"></div>
+	<div class="bannar_wrap">
+		<div class="banner_inner" id="banner_inner_float">
+			<% pageData.banner_word.forEach(function(data, index){ %>
+			<div class="<%= index == pageData.bannar_s.num ? 'active' : '' %>" style="width: <%= data.width %>;">
+				<%
+				var navLink = pageRootUrl + data.link.substr(data.link.indexOf("?")) + "&pageIndex=" + this.pageIndex;
+				%>
+				<a class="text js_nav" href='<%=navLink%>'><span><%= data.word %></span><%= data.num ? '('+data.num+')' : '' %></a>
+			</div>
+			<% }); %>
+		</div>
+	</div>
+</div>
+<% } %>
+<% if(pageData.shops && pageData.shops.length > 0) {%>
+<div class="shops">
+	<% pageData.shops.forEach(function(s){  %>
+	<a class="shop" href="<%=s.link%>">
+		<img src="<%=s.src%>" alt=""/>
+	</a>
+	<% }) %>
+</div>
+<%}%>
+<%if (this.pid) {%>
+<section class="container" style="padding-top:10px; position: relative">
+	<div class="content">
+		<div class="goods_wall">
+		</div>
+		<div class="pullUp" status="loading"></div>
+	</div>
+</section>
+<%}%>
+<a class="gotop" style="bottom:<%if(this.isIphone){%>60<%}else{%>20<%}%>px">
+	<img src="http://i.meilishuo.net/css/images/wap/tuan/gotop.png" />
+</a>
+<% pageData.footer && pageData.footer.forEach(function(data){ %>
+<a class="bannar" href="<%= data.link || 'javascript:;' %>" style="margin-bottom: 3.125%;display:block;"><img src="<%= data.src %>"></a>
+<% }); %>
+
+<%= requireFn('activity/promotion/waterfall_tpl_1_sub.html')({
+'os' : this.os
+, 'apk' : ''
+,'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+});%>
+<script>
+	fml.vars.pid = '<%= this.pid %>';
+	fml.vars.poster = {};
+	fml.vars.pageTitle = '<%=pageData.pageControl.title%>';
+	<%= this.list? 'Meilishuo.config.poster0 = '+JSON.stringify(this.list)+';':'' ;%>
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use('wap/app/hackWeixin');
+fml.use('wap/page/activity/promotion/waterfall_tpl_1');
+fml.use('wap/app/countdown2', function(){this();});
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html%>

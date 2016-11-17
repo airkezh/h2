@@ -1,0 +1,520 @@
+/**
+ * @fileoverview 大转盘抽奖－会员中心
+ * @requires
+ * @author kehuang@meilishuo.com
+ * @date 2015-06-23
+ */
+
+@import "../block.less";
+
+html{
+    .f(10*@f);
+}
+
+body{
+    .bgc(#1a1c52);
+}
+
+img{
+    .block;
+    .w(100%);
+}
+
+a{
+    .block;
+    outline:none;
+}
+
+ul{
+    list-style:none;
+}
+
+i,em{
+    font-style:normal;
+}
+
+.main{
+    .pr;
+    background:url("http://d01.res.meilishuo.net/pic/_o/f1/da/193852646134c5d2f5309b08a2f4_640_987.ch.png") no-repeat top center;
+    background-size:100%;
+
+    /* 我的美美豆样式 */
+    .user_info{
+        .c;
+        .pr;
+        .l(2);
+        .pt(10%);
+        .f(1.4rem);
+        .fc(#fff);
+
+        span{
+            .fb;
+            .f(2rem);
+            .fc(#ffa600);
+        }
+
+        .add_beans{
+            .pa;
+            top:28%;
+            left:58%;
+            /*.i_block;
+            z-index:9;*/
+            .opacity(0);
+            .fc(#ffa600);
+            -webkit-transform:scale(1.5,1.5);
+            -moz-transition:scale(1.5,1.5);
+            -o-transform:scale(1.5,1.5);
+            -ms-transform:scale(1.5,1.5);
+            transform:scale(1.5,1.5);
+            -webkit-transition:all .5s ease-in;
+            -moz-transition:all .5s ease-in;
+            -o-transition:all .5s ease-in;
+            -ms-transition:all .5s ease-in;
+            transition:all .5s ease-in;
+        }
+
+        .login_tips{
+            .w(36%);
+            .f(1.2rem);
+            padding:1px;
+            .border-r(16px);
+            margin:2% auto 8%;
+            border:1px solid rgba(255,255,255,.5);
+        }
+    }
+
+    /* 大转盘样式 */
+    .turntable_wrap{
+        .auto;
+        .block;
+        .w(92%);
+        .mt(6%);
+
+        .turntable{
+            .pr;
+            .block;
+            .w(100%);
+            background:url("http://d05.res.meilishuo.net/pic/_o/25/2e/767238e9a3685868dda0cd771470_589_589.cf.png") no-repeat top center;
+            background-size:100% 100%;
+
+            canvas.item{
+                .w(100%);
+            }
+
+            .pointer{
+                .pa;
+                top:30%;
+                left:37%;
+                .w(26%);
+                .pt(34%);
+                .hidden;
+                background:url("http://d03.res.meilishuo.net/pic/_o/d2/99/0430c8c7ac674ba07603d0659a29_178_232.cg.png") no-repeat top center;
+                background-size:100%;
+                -webkit-backface-visibility:hidden;
+                -moz-backface-visibility:hidden;
+                -ms-backface-visibility:hidden;
+                -o-backface-visibility:hidden;
+                backface-visibility:hidden;
+                /* Fix of Webkit flickering */
+                z-index:1;
+            }
+
+            .pointer.login{
+                background:url("http://d04.res.meilishuo.net/pic/_o/25/89/4a56ef7b3c91b2c24b3469c47173_178_232.cg.png") no-repeat top center;
+                background-size:100%;
+            }
+
+            .pointer.inactive{
+                background:url("http://d03.res.meilishuo.net/pic/_o/4d/37/39f1532b330bda34194d51d028eb_178_232.cg.png") no-repeat top center;
+                background-size:100%;
+            }
+
+            .threshold{
+                .pa;
+                .tr;
+                .w(20%);
+                .hidden;
+                top:43.5%;
+                right:48%;
+                .f(2rem);
+                .fc(#fff);
+                z-index:9;
+            }
+        }
+    }
+
+    /* 中奖区域样式 */
+    .person_main{
+        .pr;
+        .auto;
+        .hidden;
+        .w(64%);
+        .mt(3%);
+        .h(120*@px);
+
+        .person_box{
+            .pa;
+            .auto;
+            .block;
+            .w(100%);
+
+            li{
+                .pr;
+                .block;
+                .hidden;
+                .w(100%);
+                .h(120*@px);
+                clear:both;
+
+                .top{
+                    .pa;
+                    .w(18%);
+                    left:5%;
+                    top:18%;
+                    .border-r(50%);
+                    border:2px solid #fff;
+                }
+
+                .text{
+                    .pa;
+                    .block;
+                    .hidden;
+                    .l(1.5);
+                    .w(72%);
+                    top:20%;
+                    left:28%;
+                    .fc(#fff);
+
+                    p{
+                        .hidden;
+                        white-space:nowrap;
+                        text-overflow:ellipsis;
+                    }
+
+                    .t{
+                        .f(1.4rem);
+                    }
+
+                    .m{
+                        .f(1.1rem);
+                    }
+                }
+            }
+        }
+    }
+
+    .bottom_blank{
+        .pr;
+        .w(100%);
+        .pt(19%);
+    }
+
+    /* 底部banner样式 */
+    .bottom_banner{
+        .pf;
+        left:0;
+        bottom:0;
+        .w(100%);
+        clear:both;
+        overflow:hidden;
+        background:url("http://d05.res.meilishuo.net/pic/_o/fe/84/cf91be0944a8a6b8388af4b7a9ab_640_82.cg.png") no-repeat top center;
+        background-size:100%;
+        z-index:99;
+
+        .my_prize,.activity_rule{
+            .left;
+            .w(50%);
+            .pt(12%);
+        }
+    }
+}
+
+/* 弹层样式 */
+.layer_shade{
+    .pf;
+    top:0;
+    left:0;
+    .w(100%);
+    .h(100%);
+    z-index:999;
+    background:rgba(0,0,0,.85);
+}
+
+.layer_main{
+    .pf;
+    top:0;
+    left:0;
+    .w(100%);
+    .h(auto);
+    z-index:999;
+
+    .m{
+        .pr;
+
+        p{
+            .c;
+            .pa;
+            .w(70%);
+            left:15%;
+            .fc(#fff);
+        }
+
+        .title{
+            top:38%;
+            .l(1.6);
+            .f(1.6rem);
+            
+            i{
+                .fc(#fee503);
+            }
+        }
+
+        .sub_title{
+            top:45%;
+            .f(1.6rem);
+            .fc(#ffb4ae);
+
+            .icon{
+                padding-left:22px;
+                background:url("http://d01.res.meilishuo.net/pic/_o/86/c1/e2ae0dd849f61e58b421eed652e0_28_25.ch.png") no-repeat;
+                background-size:17px auto;
+            }
+        }
+
+        .info{
+            top:49%;
+            .w(50%);
+            left:25%;
+            .l(1.4);
+            .f(1.4rem);
+        }
+
+        .desc{
+            top:50%;
+            .l(1.4);
+            .f(1.4rem);
+        }
+
+        .address{
+            .c;
+            top:45%;
+            .w(50%);
+            left:25%;
+            .l(1.4);
+            .f(1.4rem);
+        }
+
+        .buttons{
+            .pa;
+            .w(70%);
+            .h(9%);
+            top:74%;
+            left:15%;
+
+            div{
+                .left;
+                .w(50%);
+                .h(100%);
+            }
+        }
+
+        .write_btn{
+            .pa;
+            .w(40%);
+            .h(10%);
+            top:74%;
+            left:30%;
+        }
+    }
+}
+
+.checkBox{
+    .shade{
+        .pf;
+        top:0;
+        left:0;
+        .w(100%);
+        .h(100%);
+        z-index:10;
+        background:rgba(0,0,0,.5);
+    }
+
+    .captchaImgBox{
+        .pf;
+        .w(76%);
+        top:25%;
+        left:12%;
+        z-index:1000;
+        background:#fff;
+
+        .imgTop{
+            .pr;
+            .w(100%);
+            .pt(35%);
+            background:url("http://d02.res.meilishuo.net/pic/_o/d0/55/d6af30741598b4497e51b8d1aa58_570_180.ch.png") no-repeat top center;
+            background-size:100%;
+
+            input{
+                .pa;
+                .w(30%);
+                .h(30%);
+                top:50%;
+                left:14%;
+                .f(10px);
+                border:1px solid #d9d9d9;
+            }
+
+            .captchaImg{
+                .pa;
+                .w(26%);
+                top:50%;
+                right:25%;
+            }
+
+            .newImg{
+                .pa;
+                .w(15%);
+                .pt(10%);
+                top:58%;
+                right:9%;
+                border:0px solid red;
+            }
+        }
+
+        .imgCenter{
+            .none;
+            .w(100%);
+            .pt(10%);
+            background:url("http://d02.res.meilishuo.net/pic/_o/09/d2/235259ee81d3976a359b425ed66b_570_48.cg.png") no-repeat top center;
+            background-size:100%;
+        }
+
+        .imgBottom{
+            .pr;
+            .w(100%);
+            .pt(18%);
+            background:url("http://d05.res.meilishuo.net/pic/_o/0b/ae/e13932dbfc6864970bc8bcf8c599_570_101.cg.png") no-repeat top center;
+            background-size:100%;
+
+            .imgCaptchaCheck{
+                .pa;
+                .w(50%);
+                top:0;
+                right:0;
+                .pt(18%);
+                border:0px solid red;
+            }
+
+            .imgCaptchaClose{
+                .pa;
+                .w(50%);
+                top:0;
+                left:0;
+                .pt(18%);
+                border:0px solid red;
+            }
+        }
+    }
+
+    .captchaSmsBox{
+        .pf;
+        .w(76%);
+        left:12%;
+        top:25%;
+        z-index:1000;
+        background:#fff;
+
+        .smsTop{
+            .mb(2%);
+            .w(100%);
+            .pt(35%);
+            background:url("http://d04.res.meilishuo.net/pic/_o/c1/69/a20b15570647e6d78105065b4b1c_570_199.cf.png") no-repeat top center;
+            background-size:100%;
+
+            .getSmsCaptcha{
+                .c;
+                .w(86%);
+                .ml(7%);
+                .pt(5%);
+                .pb(5%);
+                .fc(#ff95b6);
+                .border-r(4%);
+                border:1px solid #ff94b7;
+            }
+        }
+
+        .smsCenter{
+            .none;
+            .w(100%);
+            .pt(10%);
+            background:url("http://d02.res.meilishuo.net/pic/_o/7a/2b/f2385920609e67d33d292cb4fabf_570_59.cf.png") no-repeat top center;
+            background-size:100%;
+        }
+
+        .smsBottom{
+            .pr;
+            .mt(2%);
+            .w(100%);
+            .pt(30%);
+
+            .captchaInput{
+                .pa;
+                .block;
+                top:0;
+                left:7%;
+                .w(50%);
+                .h(30%);
+                .border-r(4%);
+                border:1px solid #e6e5e6;
+            }
+
+            .captchaCheck{
+                .c;
+                .pa;
+                .w(32%);
+                top:0;
+                right:7%;
+                .fc(#fff);
+                padding:3% 0;
+                .bgc(#e6e5e6);
+                .border-r(4%);
+            }
+        }
+
+        .smsClose{
+            .pa;
+            .w(20%);
+            .pt(20%);
+            top:-13%;
+            right:-14%;
+            background:url("http://d02.res.meilishuo.net/pic/_o/fe/d4/041dd4cdce2245eecb4f7dbf46de_45_45.ch.png") no-repeat top center;
+            background-size:50%
+        }
+    }
+}
+
+@media screen and (min-width:360px){
+    .main .person_main{
+        .mt(6%);
+        .h(70px);
+    }
+
+    .main .person_main .person_box li{
+        .h(70px);
+
+        .text{
+            .l(1.7);
+        }
+    }
+}
+
+@media screen and (min-width:400px){
+    .main .person_main .person_box li .text{
+        .l(1.9);
+    }
+
+    .main .turntable_wrap .turntable .threshold{
+        top:44%;
+        .f(2.4rem);
+    }
+}

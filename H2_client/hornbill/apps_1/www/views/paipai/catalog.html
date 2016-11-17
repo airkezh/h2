@@ -1,0 +1,62 @@
+<%# paipai/head.html%>
+<%
+var query = this._Request_query;
+var getLink = _extFn.getLink;
+%>
+<div class="spinner midSpinner pa_f" style="top:250px;"></div>
+<div class="content_fluid v_hidden">
+	<div class="paipai_banner"></div>
+	<div class="cata_title">
+		<h2><%= this.catalog.currentWord %></h2>
+	</div>
+	<div class="goods_wall">
+		<%if(this.catalog.sub){%>
+		<div class="corner_notic">
+			<div class="rec_nav red_tb">
+				<% if (this.secondNav && this.showSecNavCatalog) { %>
+				<div class="sec_nav_c">
+					<ul class="guide">
+						<li><a class="<%if(query.cata_id == 2000000000000 || !query.cata_id){%>guide_d<%}%>" href="?cata_id=2000000000000">衣服<span></span></a></li>
+						<li><a class="<%if(query.cata_id == 2001000000000){%>guide_d<%}%>" href="?cata_id=2001000000000">上衣<span></span></a></li>
+						<li><a class="<%if(query.cata_id == 2004000000000){%>guide_d<%}%>" href="?cata_id=2004000000000">裙子<span></span></a></li>
+						<li><a class="<%if(query.cata_id == 2006000000000){%>guide_d<%}%>" href="?cata_id=2006000000000">裤子<span></span></a></li>
+						<li><a class="<%if(query.cata_id == 2009000000000){%>guide_d<%}%>" href="?cata_id=2009000000000">内衣<span></span></a></li>
+					</ul>
+				</div>
+				<%}%>
+				<div class="catacon">
+				<% this.catalog.sub.group_map.map(function(group_name, index){ %>
+					<% var group_icon = this.catalog.sub.group_info[group_name].ico_sortno - 1,
+							group_iconX = -((group_icon % 6) * 38),
+							group_iconY = -((Math.floor(group_icon / 6)) * 32);
+					%>
+					<h2><span style="background-position:<%= group_iconX %>px <%= group_iconY %>px;"></span><%=group_name%></h2>
+					<div class="category">
+						<%for(var data in this.catalog.sub.group_keywords[group_name]){%>
+							<% var group_info = this.catalog.sub.group_keywords[group_name][data]; %>
+                            <a class="<%if(query.word == group_info.word_id){%>active<%}else{%><%= group_info.isred == 1?'ishot':''%><%}%>" href="<%=getLink({'word':group_info.word_id , 'price' : 'all' , 'page' : '0' , 'section' : 'hot'} , query)%>"><%= group_info.word_name%></a>
+						<%}%>
+						<div class="clear_f"></div>
+					</div>
+				<%});%>
+				</div>
+			</div>
+		</div>
+		<%}%>
+	</div>
+	<div class="paging_panel c_f none_f">
+	<%#paging.html%>
+	</div>
+	<div class="spinner botSpinner none_f"></div>
+	<div class="clear_f"></div>
+</div>
+<%# paipai/poster.html%>
+<script>
+<%= this.poster0? 'Meilishuo.config.poster0 = '+JSON.stringify(this.poster0)+';':'' ;%>
+</script>
+<% $_ENGINE_SELF.callFn("useModule")("fml.use('page/poster0');", this._JSstack , this._JSmodsFast ); %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/paipai/catalog');
+	fml.use('page/poster_guang');
+_use:", this._JSstack , this._JSmods ); %>
+<%# paipai/foot.html%>

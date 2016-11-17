@@ -1,0 +1,52 @@
+<%#head.html%>
+<div class="route">
+	<div class="route_bread">
+		<a href="/">美丽说</a>
+		<samp>&gt;</samp>
+		<a href="/order/list/">我的美丽说订单</a>
+		<samp>&gt;</samp>
+		<span class="red_f">我的收货地址</span>
+	</div>
+</div>
+<div id="coupon" class="coupon_area">
+	<div class="coupon_nav">
+		<ul>
+			<li class="first"><a href="/order">已买到的商品</a></li>
+			<li><a href="/cart/">我的购物车</a></li>
+			<li><a href="/address/">我的收货地址</a></li>
+			<li class="selected"><a href="/coupon/">我的优惠券</a></li>
+		</ul>
+	</div>
+	<div class="coupon_content">
+		<% if(this.coupon.couponInfo.length > 0){ %>
+		<p class="t">我的优惠券：</p>
+		<% this.coupon.couponInfo.forEach(function(c){ %>
+		<div class="card">
+			<div class="coupon_info">
+				<div class="con">
+					<div class="title"><%== c.code_desc %></div>
+					<div class="des"><%== c.description %></div>
+					<div class="date"><%== c.get_time %></div>
+				</div>
+				<div class="expires"><%== c.time_desc %></div>
+			</div>
+			<% if(c.status === 30){ %><div class="cover">已使用</div><% } %>
+			<% if(c.status === 40){ %><div class="cover">已过期</div><% } %> 
+		</div>
+		<% }); %>
+		<% }else{ %>
+		<div class="empty">
+			<div class="icon"></div>
+			<div class="con">您目前还没有获得优惠券哦~</div>
+		</div>
+		<% } %>
+		<div class="clear"></div>
+	</div>
+	<div class="paging_panel c_f">
+	<%#paging.html%>
+	</div>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+		fml.use('page/doota/coupon');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

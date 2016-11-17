@@ -1,0 +1,328 @@
+<%
+	/**
+ 	 * @fileoverview 会员信息补全－会员中心
+     * @requires zepto
+     * @author kehuang@meilishuo.com
+     * @date 2015-09-07
+     */
+%>
+
+<%#head.html%>
+<%
+	var curUserBaseData = null;
+	var curUserContactData = null;
+	var curUserEduData = null;
+	var curUserWorkData = null;
+	var curUserStyleData = null;
+	var curUserBaseNickname = '';
+	var curUserBaseRealname = '';
+	var curUserBaseGender = '';
+	var curUserBaseBirthday = '';
+	var curUserBaseBonus = 0;
+	var curUserBaseStatus = 0;
+	var curUserContactMobile = '';
+	var curUserContactQQ = '';
+	var curUserContactBonus = 0;
+	var curUserContactStatus = 0;
+	var curUserEdu = '';
+	var curUserEduBonus = 0;
+	var curUserEduStatus = 0;
+	var curUserWork = '';
+	var curUserWorkBonus = 0;
+	var curUserWorkStatus = 0;
+	var curUserStyle = [];
+	var curUserStyleBonus = 0;
+	var curUserStyleStatus = 0;
+	var curUserIsLogin = this.isLogin;
+	var curUserInfo = this.getUserInfo;
+	var curUserInfoData = (curUserInfo && (curUserInfo.error_code == 0)) ? curUserInfo.data : null;
+
+	if (curUserInfoData) {
+		curUserBaseData = curUserInfoData.base;
+		curUserContactData = curUserInfoData.contact;
+		curUserEduData = curUserInfoData.education;
+		curUserWorkData = curUserInfoData.work;
+		curUserStyleData = curUserInfoData.style;
+	}
+
+	if (curUserBaseData) {
+		curUserBaseNickname = curUserBaseData.nickname || '';
+		curUserBaseRealname = curUserBaseData.realname || '';
+		curUserBaseGender = curUserBaseData.gender || '';
+		curUserBaseBirthday = curUserBaseData.birthday || '';
+		curUserBaseBonus = curUserBaseData.bonus || 0;
+		curUserBaseStatus = curUserBaseData.status || 0;
+	}
+
+	if (curUserContactData) {
+		curUserContactMobile = curUserContactData.mobile || '';
+		curUserContactQQ = curUserContactData.qq || '';
+		curUserContactBonus = curUserContactData.bonus || 0;
+		curUserContactStatus = curUserContactData.status || 0;
+	}
+
+	if (curUserEduData) {
+		curUserEdu = curUserEduData.education || '';
+		curUserEduBonus = curUserEduData.bonus || 0;
+		curUserEduStatus = curUserEduData.status || 0;
+	}
+
+	if (curUserWorkData) {
+		curUserWork = curUserWorkData.work || '';
+		curUserWorkBonus = curUserWorkData.bonus || 0;
+		curUserWorkStatus = curUserWorkData.status || 0;
+	}
+
+	if (curUserStyleData) {
+		curUserStyle = curUserStyleData.style || [];
+		curUserStyleBonus = curUserStyleData.bonus || 0;
+		curUserStyleStatus = curUserStyleData.status || 0;
+	}
+%>
+
+<div class="main">
+	<div id="j_loading_status" class="pullUp" status="loading"></div>
+
+	<div id="j_step_wrap" class="step_wrap">
+		<div class="step step_0 show"></div>
+		<div class="step step_1"></div>
+		<div class="step step_2"></div>
+		<div class="step step_3"></div>
+		<div class="step step_4"></div>
+
+		<ul id="step_area" class="step_area">
+			<li data-index="0">&nbsp;</li>
+			<li data-index="1">&nbsp;</li>
+			<li data-index="2">&nbsp;</li>
+			<li data-index="3">&nbsp;</li>
+			<li data-index="4">&nbsp;</li>
+		</ul>
+	</div>
+
+	<div id="j_step_swipe" class="swipe">
+		<div class="swipe_wrap" style="width: 320000px;">
+			<div class="swipe_pic">
+				<p class="step_title">基础信息</p>
+
+				<ul class="input_wrap">
+					<li>
+						<label class="uname_icon"></label>
+						<input id="nickname_input"  class="nickname_input" name="username" type="text" value="<%= curUserBaseNickname %>" placeholder="请填写昵称">
+					</li>
+					<li>
+						<label class="rname_icon"></label>
+						<input id="realname_input" class="realname_input" name="realname" type="text" value="<%= curUserBaseRealname %>" placeholder="请填写真实姓名">
+					</li>
+					<li>
+						<%
+							var genderClass = (curUserBaseGender == '男') ? 'man_icon' : '';
+						%>
+						<label class="gender_icon <%= genderClass %>"></label>
+						<select id="gender_select" class="gender_select" name="gender">
+							<%
+								if (curUserBaseGender == '女') {
+							%>
+							<option value="">请选择性别</option>
+							<option value="女" selected="true">女</option>
+							<option value="男">男</option>
+							<%
+								} else if (curUserBaseGender == '男') {
+							%>
+							<option value="">请选择性别</option>
+							<option value="女">女</option>
+							<option value="男" selected="true">男</option>
+							<%
+								} else {
+							%>
+							<option value="" selected="true">请选择性别</option>
+							<option value="女">女</option>
+							<option value="男">男</option>
+							<%
+								}
+							%>
+						</select>
+					</li>
+					<li>
+						<label class="birth_icon"></label>
+						<input id="birthday_input" class="birthday_input" type="text" name="birthday" value="<%= curUserBaseBirthday %>" placeholder="请输入生日，格式为yyyy-mm-dd">
+					</li>
+				</ul>
+
+				<p class="caption">您的信息将会保密，在生日的时候会收到<br>会员专属的生日礼包哦！</p>
+
+				<%
+					var oneStepBtnText = (curUserBaseStatus == 0) ? '保存并获得' + curUserBaseBonus + '美美豆' : '保存';
+				%>
+				<div class="confirm_btn save_btn" data-index="0" data-status="<%= curUserBaseStatus %>" data-bonus="<%= curUserBaseBonus %>"><%= oneStepBtnText %></div>
+			</div>
+
+			<div class="swipe_pic">
+				<p class="step_title">联系方式</p>
+
+				<ul class="input_wrap">
+					<%
+						if (curUserContactMobile == '') {
+					%>
+					<li>
+						<label class="mobile_icon"></label>
+						<input id="mobile_input" class="mobile_input" name="checkmobile" type="text" value="<%= curUserContactMobile %>" placeholder="输入手机号">
+						<div class="blank_area"></div>
+					</li>
+					<li>
+						<label class="captcha_icon"></label>
+						<input id="captcha_input" class="captcha_input" name="checkcaptcha" type="text" value="" placeholder="输入验证码">
+						<div id="send_captcha" class="send_captcha">发送验证码</div>
+					</li>
+					<%
+						} else {
+					%>
+					<li>
+						<label class="mobile_icon"></label>
+						<input id="mobile_input" class="mobile_input" name="checkmobile" type="text" value="<%= curUserContactMobile %>" placeholder="输入手机号" disabled="true">
+						<div id="change_mobile" class="change_mobile">更换手机号</div>
+					</li>
+					<%
+						}
+					%>
+					<li>
+						<label class="qq_icon"></label>
+						<input id="qq_input" class="qq_input" name="checkqq" type="text" value="<%= curUserContactQQ %>" placeholder="请填写常用QQ号">
+						<div class="blank_area"></div>
+					</li>
+				</ul>
+
+				<p class="caption">亲放心哟，你的信息我们将严格保密。并且会不定期<br>将一些专属优惠信息发送到你的手机号和邮箱~</p>
+
+				<%
+					var twoStepBtnText = (curUserContactStatus == 0) ? '保存并获得' + curUserContactBonus + '美美豆' : '保存';
+				%>
+				<div class="confirm_btn save_btn" data-index="1" data-status="<%= curUserContactStatus %>" data-bonus="<%= curUserContactBonus %>"><%= twoStepBtnText %></div>
+			</div>
+
+			<div class="swipe_pic">
+				<p class="step_title">美丽说基因-教育程度（单选）</p>
+
+				<ul id="option_education" class="option_wrap option_education">
+					<%
+						var educationHtml = '',
+							educationArray = ['博士', '研究生', '本科', '大专', '中专', '高中', '初中', '小学', '其它'],
+							educationArrayLen = educationArray.length;
+
+						for (var i = 0; i < educationArrayLen; i++) {
+							var education = educationArray[i] || '';
+
+							if (education == curUserEdu) {
+								educationHtml += '<li class="active">' + education + '</li>';
+							} else {
+								educationHtml += '<li class="">' + education + '</li>';
+							}
+						}
+					%>
+
+					<%= educationHtml %>
+				</ul>
+
+				<p class="caption mt10">您的信息将会保密，我们将会根据你的基因<br>推荐更适合你的商品和福利~</p>
+
+				<%
+					var threeStepBtnText = (curUserEduStatus == 0) ? '保存并获得' + curUserEduBonus + '美美豆' : '保存';
+				%>
+				<div class="gene_confirm_btn save_btn" data-index="2" data-status="<%= curUserEduStatus %>" data-bonus="<%= curUserEduBonus %>"><%= threeStepBtnText %></div>
+			</div>
+
+			<div class="swipe_pic">
+				<p class="step_title">美丽说基因-职业（单选）</p>
+
+				<ul id="option_profession" class="option_wrap option_profession">
+					<%
+						var workHtml = '',
+							workArray = ['学生', '个体经营', 'IT', '互联网', '金融', '环境', '服务业', '咨询', '文娱媒体', '制造加工', '建筑', '教育', '政府机关', '贸易零售', '能源', '自由职业', '其它'],
+							workArrayLen = workArray.length;
+
+						for (var j = 0; j < workArrayLen; j++) {
+							var work = workArray[j] || '';
+
+							if (work == curUserWork) {
+								workHtml += '<li class="active">' + work + '</li>';
+							} else {
+								workHtml += '<li class="">' + work + '</li>';
+							}
+						}
+					%>
+
+					<%= workHtml %>
+				</ul>
+
+				<p class="caption mt10">您的信息将会保密，我们将会根据你的基因<br>推荐更适合你的商品和福利~</p>
+
+				<%
+					var fourStepBtnText = (curUserWorkStatus == 0) ? '保存并获得' + curUserWorkBonus + '美美豆' : '保存';
+				%>
+				<div class="gene_confirm_btn save_btn" data-index="3" data-status="<%= curUserWorkStatus %>" data-bonus="<%= curUserWorkBonus %>"><%= fourStepBtnText %></div>
+			</div>
+
+			<div class="swipe_pic">
+				<p class="step_title">美丽说基因-风格（最多5项）</p>
+
+				<ul id="option_style" class="option_wrap option_style">
+					<%
+						var counter = 0,
+							styleHtml = '',
+							colorArray = ['#ffa279', '#ffcf59', '#9ea7f6', '#70d2ef', '#bbe080'],
+							styleArray = ['潮流街头', '复古文艺', '个性原宿', '韩范', '萌系', '名媛', '欧美', '日系', '森女', '甜美', '文艺', '小清新'],
+							styleArrayLen = styleArray.length,
+							curUserStyleLen = curUserStyle.length;
+
+						for (var k = 0; k < styleArrayLen; k++) {
+							var style = styleArray[k] || '';
+
+							for (var l = 0; l < curUserStyleLen; l++) {
+								var curStyle = curUserStyle[l] || '';
+
+								if (style == curStyle) {
+									break;
+								}
+							}
+
+							if (style == curStyle) {
+								var color = colorArray[counter] || '';
+
+								styleHtml += '<li class="active active_' + counter + '" data-color="' + color + '">' + style + '</li>';
+
+								++counter;
+							} else {
+								styleHtml += '<li class="" data-color="">' + style + '</li>';
+							}
+						}
+					%>
+
+					<%= styleHtml %>
+				</ul>
+
+				<p class="caption mt10">您的信息将会保密，我们将会根据你的基因<br>推荐更适合你的商品和福利~</p>
+
+				<%
+					var fiveStepBtnText = (curUserStyleStatus == 0) ? '开启全新会员体验并获得' + curUserStyleBonus + '美美豆' : '开启全新会员体验';
+				%>
+				<div class="gene_confirm_btn save_btn" data-index="4" data-status="<%= curUserStyleStatus %>" data-bonus="<%= curUserStyleBonus %>"><%= fiveStepBtnText %></div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/html" id="j_error_prompt_tpl">
+	<div id="j_error_prompt_layer" class="prompt_main j_layer_main">
+		<div class="prompt_text"><?= this.text ?></div>
+	</div>
+</script>
+
+<script>
+	fml.vars.isLogin = <%= curUserIsLogin %>;
+	fml.vars.isAndroid = <%= this.isAndroid %>;
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/member/complement_info');
+_use:", this._JSstack, this._JSmods); %>
+
+<%#foot_simple.html%>

@@ -1,0 +1,32 @@
+<%# head_simple.html%>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+		fml.use('page/meilishuo_goods');
+_use:", this._JSstack , this._JSmods ); %>
+</head>
+<body style="background-color:transparent">
+<div id="waitFor" style="text-align:center;position:absolute;left:50%;top:29px;margin-left:-50px;z-index:9999999;display:block;background:#FF6699;padding:3px; color:#fff;" >正在加载,请稍候...</div>
+<%# wins/windows.html%>
+<%= (function(link , jsmods){ 
+		var str = '';
+		var SVERSION = this.SVERSION;
+		var base = this.JCSTATIC_BASE;
+		link && link.map(function(src){
+			str += '<script src="' + src + '?'+SVERSION+'"></script>';
+			});
+		if (jsmods.length) {
+		jsmods = '~'  +  jsmods.join('+');
+		str += '<script  src="' + base + jsmods + '?'+SVERSION+'"></script>';
+		}
+		return str;
+		})(this._JSLinks ,this._JSmods) %>
+<script>
+<% if (this._JSstack && this._JSstack.length) { %>
+	<%= this._JSstack.join(";\n"); %>
+		<% }
+		if (this.JS_Defer) {
+		%>    
+	;fml.iLoad();
+<%}%>
+</script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<%#head.html%>
+<%
+	var miaosha = this.miaosha && this.miaosha.data
+		, now_info = miaosha && miaosha.now_info
+		, goods_list = now_info && now_info.goods_list;
+
+	function joinurl(protocol, param, isosapp, wapHref){
+		if (!protocol || !param) return false;
+		if (!isosapp) return wapHref || '###noapp';
+		var link = 'meilishuo';
+		link += '://'+ protocol +'.meilishuo?json_params='+ encodeURIComponent(JSON.stringify(param));
+		return link;
+	}
+%>
+<section>
+	<div class="nav tabbox">
+		<a class="tabArea curr">限时抢购</a>
+		<a class="tabArea">超值团购</a>
+		<a class="tabArea">清仓热卖</a>
+	</div>
+	<div class="banner"><a href=""><img src="http://d02.res.meilishuo.net/pic/_o/6d/02/192847bc0ea4ab8a89692246a913_640_200.ch.png"></a></div>
+</section>
+<div class="main">
+	<div class="actTip">
+		<span class="tipTxt">宝贝限时疯抢中</span>
+		<div class="timeBox">
+			<span>距本场结束</span>
+			<span class="time">
+				<i class="hour">00</i> :
+				<i class="minute">00</i> :
+				<i class="second">00</i>
+			</span>
+		</div>
+	</div>
+	<%if(goods_list && goods_list.length > 0){%>
+		<div class="content_box">
+			<ul>
+				<li class="goodsList">
+			   		<figure>
+			   			<a href=""><img src="http://imgtest.meiliworks.com/pic/_o/a0/7a/0faa0e25c52e8e970f5c0929778e_290_290.ch.jpg"></a>
+			   		</figure>
+			   		<ul class="goodsInfo">
+			   			<li class="title"><a href="">夏季条纹宽松百搭T恤夏季条纹宽松百搭T恤</a></li>
+			   			<li class="pricebox">
+			   				<span class="now_price"><i>￥</i>29.90</span>
+			   				<del>￥299.90</del>
+			   				<span class="discount">2.7折</span>
+			   			</li>
+			   			<li class="buyernum"><p>12321人想买</p></li>
+			   			<li>
+			   				<a class="statusInfo" href="">
+			   					<div class="statusBar">
+			   						<p class="scale">已抢51/100件</p>
+			   						<p class="progress" style="width:20%;"></p>
+			   					</div>
+			   					<div class="statusBtn">立即抢</div>
+			   				</a>
+			   			</li>
+			   		</ul>
+			   	</li>
+				<% 
+				var len = goods_list.length;
+				for(var v = 0; v < len; v++){
+			      	item = goods_list[v];
+				    var _url = "javascript:void(0);",
+				        detail_url = joinurl('twitter_single', {'twitter_info' : {'twitter_id' : item.twitter_id , 'is_doota' : 1}}, this.mlsApp, '/share/item/'+ item.twitter_id),
+				        shop_url = joinurl('shop', {'shop_id': item.shop_id}, this.mlsApp, '/shop/'+ item.shop_id),
+				        status_sum="";
+			      	
+			      	switch(item.status){
+			         	case 1:       
+				            btn_content = "立即抢";
+				            btn_class = "buy_btn";
+				            _url = detail_url;
+				            status_sum = "";
+				            break;
+			         	case 2:
+				            btn_content = "去店铺";
+				            _url = shop_url;
+				            btn_class = "over_btn";
+				            status_sum = "status_sum_over";
+				            break;
+			         	case 3:
+				            btn_content="去店铺";
+				            _url = shop_url;
+				            btn_class = "empty_btn";
+				            status_sum = "status_sum_empty";
+				            break;
+			      	} 
+			   	%>
+
+			   	<li class="goodsList">
+			   		<figure>
+			   			<a href=""><img src="http://imgtest.meiliworks.com/pic/_o/a0/7a/0faa0e25c52e8e970f5c0929778e_290_290.ch.jpg"></a>
+			   		</figure>
+			   		<ul class="goodsInfo">
+			   			<li class="title"><a href="">夏季条纹宽松百搭T恤夏季条纹宽松百搭T恤</a></li>
+			   			<li class="pricebox">
+			   				<span class="now_price"><i>￥</i>29.90</span>
+			   				<del>￥299.90</del>
+			   				<span class="discount">2.7折</span>
+			   			</li>
+			   			<li class="buyernum"><p>12321人想买</p></li>
+			   			<li>
+			   				<a class="statusInfo <%= status_sum %>" href="">
+			   					<div class="statusBar">
+			   						<p class="scale">已抢51/100件</p>
+			   						<p class="progress" style="width:100%;"></p>
+			   					</div>
+			   					<div class="statusBtn <%= btn_class%>"><%= btn_content %></div>
+			   				</a>
+			   			</li>
+			   		</ul>
+			   	</li>
+			       
+			   <%}%>           
+			</ul>
+		</div>
+	<%}%>
+	<div class="seemore">
+		<a class="linkBtn" href="">去抢下一场</a>
+	</div>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/region99/rush');
+_use:", this._JSstack , this._JSmods); %>
+<%# foot.html%>

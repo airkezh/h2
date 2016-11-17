@@ -1,0 +1,146 @@
+<%#head.html%>
+<%
+        var resData={
+            static: {
+                content_dress: {
+                    image: "http://img.meilishuo.net/css/images/wap/biz/groundnew/buyers_1.jpg",
+                    audio_time: "34",
+                    audio_url: "http://d03.res.meilishuo.net/audio/2f1c508062f22c49e006e1e31959333a.c6.mp3",
+                    content: "无论是动物图案印花还是具象花朵都是今季上衣中必不可少的流行元素；透明感更强的果冻色代替了以往流行的马卡龙色，让款式繁多的上衣添了份新花样；更具有异域建筑廓型的薄外套看似难驾驭，实则修饰比例功效极强，不妨在今季时髦尝鲜华丽变身吧！"
+                },
+                content_skirt: {
+                    image: "http://img.meilishuo.net/css/images/wap/biz/groundnew/buyers_2.jpg",
+                    audio_time: "39",
+                    audio_url: "http://d04.res.meilishuo.net/audio/3129f2e62d53abbf7ad23f120a37b27e.c6.mp3",
+                    content: "雪纺、蕾丝、印花这些你能想到有关春夏的浪漫元素通通都可以在裙装上体现，今季大势的流苏更是出其不意，质地轻盈的裙摆随风摆动，像极了韩剧女一号；粉嫩颜色迷你裙露出纤纤美腿，让人羡慕你时髦度的同时还渴望拥有如你般霹雳的美腿。"
+                },
+                content_pants: {
+                    image: "http://img.meilishuo.net/css/images/wap/biz/groundnew/buyers_3.jpg",
+                    audio_time: "40",
+                    audio_url: "http://d05.res.meilishuo.net/audio/492aecafd136437e5a3e7a3cfeb38682.c6.mp3",
+                    content: "经久不衰的牛仔裤是时髦人士必备款，今季在基础款上加有拼贴和撞色，让牛仔有了新风貌。将70年代阔腿裤进行翻边及廓型的时髦变形，不会显得过于成熟还很有范儿。甜嫩嫩的果冻色短裤搭配同色系上衣，展现活力的同时还能穿出潇洒不羁之感。"
+                },
+                content_shoes: {
+                    image: "http://img.meilishuo.net/css/images/wap/biz/groundnew/buyers_4.jpg",
+                    audio_time: "30",
+                    audio_url: "http://d06.res.meilishuo.net/audio/6f82d3e239ea24d7cf1e7f692a69771e.c6.mp3",
+                    content: "春夏一直是高跟鞋抛头露脸的时刻，今季亚克力粗跟与玛丽珍绑带依旧能展现童话公主般唯美气质，多缠绕绑带凉鞋让你清爽之余又不失时髦度，不同以往的多元素杂糅运动鞋作为本季一大亮点，连老佛爷都赞誉其舒适与时髦的完美契合，你怎能不买账？"
+                },
+                content_bag: {
+                    image: "http://img.meilishuo.net/css/images/wap/biz/groundnew/buyers_5.jpg",
+                    audio_time: "39",
+                    audio_url: "http://d02.res.meilishuo.net/audio/7bc330fe0cb2f54b55e4ed45a903853d.c6.mp3",
+                    content: "今季包包可谓大小不一，单肩包、斜挎包、双肩包等均以超大Size闻名，满足实用需求的同时还能随意凹造型，小包多集中于手提，誓要打造娇小可人名媛质感。蕾丝与流苏的完美结合，多了灵动之感，哪怕随便穿个大T恤上街，有了它的帮忙依旧完胜俗款惊艳出彩。"
+                },
+                content_other: {
+                    image: "http://img.meilishuo.net/css/images/wap/biz/groundnew/buyers_6.jpg",
+                    audio_time: "32",
+                    audio_url: "http://d03.res.meilishuo.net/audio/cf125f13446c6ef46a6c37eb6db5b05b.c6.mp3",
+                    content: "连优雅派的珍珠今季都变得如夜明珠般又闪又大了，你还好意思带着小玩意儿出街吗？手工编织流苏饰品让人体会一把异域风情，而亚克力超夸张项链炫彩吸睛的功力也不差，只要记住万“饰”皆大，时尚Icon还不非你莫属？"
+                }
+            }
+        }
+    %>
+
+<div class="banner">
+	<div class="txt">
+		<img src="<%= this.PICTURE_URL%>images/wap/biz/groundnew/txt_fashion.png" alt="" />
+	</div>
+</div>
+
+<nav class="nav_box">
+	<a href="#content_dress">上衣</a><span>·</span>
+	<a href="#content_skirt">裙子</a><span>·</span>
+	<a href="#content_pants">裤子</a><span>·</span>
+	<a href="#content_shoes">鞋子</a><span>·</span>
+	<a href="#content_bag">包包</a><span>·</span>
+	<a href="#content_other">配饰</a>
+</nav>
+
+<section class="container">
+	<%
+        var data = resData.static;
+        ['content_dress','content_skirt','content_pants','content_shoes','content_bag','content_other'].forEach(function(attr,key){
+		var item = data[attr]
+	%>	
+	<figure class="buyers_box" id="<%= attr%>">
+		<a class="run" href="/biz/groundnew/list/?type=<%= key%>">
+		<img src=<%= item.image %> alt="" />
+		</a>
+		<a class="arrow_right" href="/biz/groundnew/list/?type=<%= key%>">
+			<img src="<%= this.PICTURE_URL%>images/wap/biz/groundnew/arrow_right.png" alt="" />
+		</a>
+		<div class="audio_box">
+			<div class="jp-jplayer" id="jp-jplayer-<%= attr%>" audio_url = <%= item.audio_url %>>
+			</div>
+			<div class="audio_control" id="jp_container_<%= attr%>">
+				<div class="audio_info" >
+					<p class="audio_duration"><span class="time"><%= item.audio_time %></span>”</p>
+					<p class="control_btn jp-play" style="display:none;">
+						<span class="start"><img src="<%= this.PICTURE_URL%>images/wap/biz/groundnew/i_play.png" alt="" /></span>
+					</p>
+					<p class="control_btn jp-pause">
+						<span class="pause"><img src="<%= this.PICTURE_URL%>images/wap/biz/groundnew/i_pause.png" alt="" /></span>
+					</p>
+				</div>
+			</div>
+		</div>
+	</figure>
+	<%});%>
+	<!-- <figure class="buyers_box" id="skirt">
+		<img src="<%= this.PICTURE_URL%>images/wap/biz/groundnew/buyers_2.jpg" alt="" />
+		<a class="arrow_right" href="#">
+			<img src="<%= this.PICTURE_URL%>images/wap/biz/groundnew/arrow_right.png" alt="" />
+		</a>
+		<div class="audio_box">
+			<div class="jp-jplayer" id="jp-jplayer-top1" audio_url="http://d03.res.meilishuo.net/audio/2f1c508062f22c49e006e1e31959333a.c6.mp3">
+			</div>
+			<div class="audio_control" id="jp_container_1">
+				<div class="audio_info" >
+					<p class="audio_duration"><span class="time">23</span>”</p>
+					<p class="control_btn jp-play" style="display:none;">
+						<span class="start"><img src="<%= this.PICTURE_URL%>images/wap/biz/groundnew/i_play.png" alt="" /></span>
+					</p>
+					<p class="control_btn jp-pause">
+						<span class="pause"><img src="<%= this.PICTURE_URL%>images/wap/biz/groundnew/i_pause.png" alt="" /></span>
+					</p>
+				</div>
+			</div>
+		</div>
+	</figure>
+	<figure class="buyers_box" id="pants">
+		<img src="<%= this.PICTURE_URL%>images/wap/biz/groundnew/buyers_3.jpg" alt="" />
+	</figure>
+	<figure class="buyers_box" id="shoes">
+		<img src="<%= this.PICTURE_URL%>images/wap/biz/groundnew/buyers_4.jpg" alt="" />
+	</figure>
+	<figure class="buyers_box" id="bag">
+		<img src="<%= this.PICTURE_URL%>images/wap/biz/groundnew/buyers_5.jpg" alt="" />
+	</figure>
+	<figure class="buyers_box" id="accessories">
+		<img src="<%= this.PICTURE_URL%>images/wap/biz/groundnew/buyers_6.jpg" alt="" />
+	</figure> -->
+	<div class="mls_buyers"></div>
+	<div class="flowstep"></div>
+	<div class="weixin_pay">
+		<div class="pic"></div>
+		<h3>换季扮美 美丽说悉心为你的荷包考虑：</h3>
+		<p>
+			在享受活动页面新品尝鲜价的基础上，<br />
+			选择微信支付，每人每日首单立刻再减10元呦~<br />
+			春夏最流行款式，高品质保证，超值价格三位一体<br />
+			不买美丽说好东西，你家里人知道吗？
+		</p>
+	</div>
+</section>
+<%= requireFn('wapShare.html')({
+	'share' : this.share
+	,'shareID' : 'groundnew'
+	, 'shareTitle' : '选择分享到：'
+	, '_JSstack' : this._JSstack
+	, '_JSmods' : this._JSmods
+}); %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/audio');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

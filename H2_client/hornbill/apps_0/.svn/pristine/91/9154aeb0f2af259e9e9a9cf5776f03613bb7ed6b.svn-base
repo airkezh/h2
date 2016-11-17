@@ -1,0 +1,58 @@
+<%#head.html%>
+<%
+	var data = this.contact_friends_data
+	var status = this.status
+	var isIos = this.os.ios
+	var msg = { message: "我在美丽说发现很多漂亮的东东，你也快来玩儿吧！在美丽说里搜“" + this.userInfo.nickname + "”，加我！" }
+%>
+<% if(status == 'authorized'){ %>
+<div class="case3">
+	<figure class="no-one">
+		<img src="//d01.res.meilishuo.net/pic/_o/0e/e7/3fa0947c440668898ecbc13201ba_318_252.cf.png" alt="no data" >
+	</figure>
+	<section class="is-aimeilier">
+		<h2>已在美丽说好友</h2>
+		<ul>
+		<% data.forEach(function (item){ %>
+			<li class="a-friend">
+				<span class="head-img"><img src="<%= item.avatar_a %>"></span>
+				<ul class="a-friend-info-list">
+					<li class="name"><%= _extFn.mSubstr(item.nickname, 10, '...') %></li>
+					<li class="desc"><%= _extFn.mSubstr(item.label, 14, '...') %></li>
+				</ul>
+				<% if(item.is_followed == 1){ %>
+				<i class="focus done js-focus" data-clicked=false  data-id="<%= item.user_id %>">取消关注</i>
+				<% }else{ %>
+				<i class="focus ready js-focus" data-clicked=false  data-id="<%= item.user_id %>">关注</i>
+				<% } %>
+			</li>
+		<% }); %>
+		</ul>
+	</section>
+	<section class="invite-your-friend">
+		<h1>邀请通讯录好友来美丽说玩儿</h1>
+		<a class="invite-btn" href="meilishuo://send_sms.meilishuo?json_params=<%= encodeURIComponent(JSON.stringify(msg)) %>">邀请</a>
+	</section>
+</div>
+<% }else{ %>
+<% if(status == 'denied' && isIos){ %>
+<div class="case2">
+	<firure>
+		<img src="//d03.res.meilishuo.net/pic/_o/5c/6a/2c1c064491d4ab7f5d5719ebe120_640_504.cf.png" alt="show the steps of how to allow the iphone to visit your contact">
+	</firure>
+</div>
+<% }else{ %>
+<div class="case1">
+	<figure>
+		<img src="//d02.res.meilishuo.net/pic/_o/6b/18/088f0e759f6fdc6fb1210d10d253_160_160.cf.png" alt="logo">
+		<figcaption>
+			<p>上传手机通讯录后，如果你的通讯录中有朋友注册了美丽说，系统会通知你哦</p>
+		</figcaption>
+	</figure>
+	<a class="up-load-contacts" href="meilishuo://upload_contacts.meilishuo">添加通讯录好友</a>
+</div>
+<% }} %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/mainapp/contacts');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

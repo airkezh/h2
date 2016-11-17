@@ -1,0 +1,48 @@
+<div class="new_nav">
+	<ul id="sidebarNav" class="items">
+		<%
+			var navClass = {
+				'热门' : ['navHot' , '/guang/hot'],
+				'衣服' : ['clothes' , '2000000000000','dress'],
+				'上衣' : ['coat' , '2001000000000' , 'dress'],
+				'裙子' : ['skirt', '2004000000000' , 'dress'],
+				'裤子' : ['pants', '2006000000000' , 'dress'],
+				'内衣' : ['bra', '2009000000000' , 'dress'],
+				'鞋子' : ['shoes', '6000000000000' , 'shoes'],
+				'包包' : ['bag', '5000000000000' , 'bag'],
+				'配饰' : ['access', '7000000000000' , 'access'],
+				'家居' : ['jiaju', '9000000000000' , 'jiaju'],
+				'美容' : ['beauty', '8000000000000' , 'beauty']
+			}
+		%>
+		<%for(item in this.catalog_nav){%>
+			<li itemname="<%= item%>">
+				<%if(item == '热门'){%>
+				<a class="<%= navClass[item][0]%>" href="/guang?fromnav"><span class="navTitle"><%= item%></span></a>
+				<%}else{%>
+				<a class="<%= navClass[item][0]%>" href="/guang/catalog/<%= navClass[item][2]%>?cata_id=<%= navClass[item][1]%>&fromnav"><span class="navTitle"><%= item%></span></a>
+				<%}%>
+				<div class="sidebarItem">
+					<p class="navContent">
+						<% for(data in this.catalog_nav[item]){%>
+							<span class="none_f sideTitle"><%= data%></span>
+							<%this.catalog_nav[item][data].length && this.catalog_nav[item][data].map(function(data){%>
+							<%if(item == '热门'){%>
+								<a class="<%if(data.isred == '1'){%>red_f<%}%> <%if(this.currentWord == data.word_name){%>active<%}%>" target="_self" href="/guang/<%=data.word_name%>?fromnav"><%= data.word_name%></a>
+							<%}else{%>
+								<a class="<%if(data.isred == '1'){%>red_f<%}%> <%if(this.catalog && this.catalog.currentWord == data.word_name){%>active<%}%>" target="_self" href="/guang/catalog/<%= navClass[item][2]%>?cata_id=<%=data.catalog_id%>&word=<%=data.word_id%>&fromnav"><%= data.word_name%></a>
+							<%}%>
+							<%});%>
+						<%};%>
+					</p>
+				</div>
+			</li>
+		<%}%>
+	</ul>
+</div>
+<script type="text/html" id="sidebarNavTpl">
+<div class="navhover none_f">
+	<p class="sidebarContent">
+	</p>
+</div>
+</script>

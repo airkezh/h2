@@ -1,0 +1,44 @@
+<%
+var mSubstr = _extFn.mSubstr;
+var html_encode = _extFn.html_encode;
+%>
+<% var isRoute = this.route && this.route.length != 0; %>
+<nav class="nav_route" id="navRoute">
+	<ul>
+		<li><a href="/welcome">首页</a></li>
+		<li><a href="/guang/selected">流行</a></li>
+		<li><a href="/guang/hot">最热</a></li>
+		<li><a href="/guang/new">最新</a></li>
+		<li><a href="/guang/catalog/?nid=837">上衣</a></li>
+		<li><a href="/guang/catalog/?nid=835">裙子</a></li>
+		<li><a href="/guang/catalog/?nid=855">裤子</a></li>
+		<li><a href="/guang/catalog/?nid=865">鞋子</a></li>
+		<li><a href="/guang/catalog/?nid=895">包包</a></li>
+		<li><a href="/guang/catalog/?nid=2725">配饰</a></li>
+	</ul>
+	<div class="route_bg"></div>
+</nav>
+<header class="header" id="header" status="<%if(isRoute || this.headTag == 'goods'){%>normal<%}else{%>hide<%}%>">
+	<nav class="nav_ban" id="navBan">
+		<%if(this.bread && this.bread.length && this.ptype != 'goods'){
+			var len = this.bread.length
+			var v = this.bread[len-1]	
+		%>
+		<h1><a href="/guang/catalog/?nid=<%= v.nid%>&pnid=<%= v.pnid%>"><%= v.word_name%></a></h1>
+
+		<%}else{%>
+		<h1><a class="logo" href="/welcome"></a></h1>
+		<%}%>
+		<span class="icon-search" id="searchBtn"></span>
+		<span class="icon-menu" id="navRouteBtn"/></span>
+	</nav>
+	<div class="search" id="search">
+		<form action="/search" method="get" >
+			<p class="input">
+				<span class="icon-search-input"></span>
+				<input name="keyword" type="search" autocomplete="off" placeholder="搜索宝贝" />
+			</p>
+			<span class="btn_cancel" id="cancelBtn">取消</span>
+		</form>
+	</div>
+

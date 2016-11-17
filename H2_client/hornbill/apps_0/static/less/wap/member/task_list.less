@@ -1,0 +1,272 @@
+/**
+ * @fileoverview 首页－评价商品赚美美豆
+ * @requires
+ * @author kehuang@meilishuo.com
+ * @date 2015-12-28
+ */
+
+@import "../block.less";
+
+html{
+	.f(10*@f);
+}
+
+body{
+	.bgc(#f5f5f5);
+}
+
+img{
+	.block;
+	.w(100%);
+}
+
+a{
+	.block;
+	outline:none;
+}
+
+ul{
+	list-style:none;
+}
+
+i{
+	font-style:normal;
+}
+
+@750w: 1/750*100%;
+
+.top_nav_wrap{
+	.hidden;
+	.clearfix;
+	.w(100%);
+	.bgc(#fff);
+	
+    li{
+    	.c;
+    	.left;
+    	.w(25%);
+    	padding:18px 0;
+
+    	.text{
+    		.f(1.4rem);
+    		.fc(#666);
+    		border-right:1px solid #ccc;
+    	}
+    }
+
+    li.last .text{
+    	border:none;
+    }
+
+    li.active .text{
+    	.f(1.4rem);
+    	.fc(#ff604e);
+    }
+}
+
+.no_data_bg{
+	.auto;
+	.w(205*@750w);
+	.pt(162*@750w);
+	.mt(100*@750w);
+	background:url("http://d01.res.meilishuo.net/pic/_o/47/78/6a779605d0d9e8518b38872be5f3_205_162.cj.png") no-repeat;
+	background-size:100%;
+}
+
+.no_data_text{
+	.c;
+	.w(100%);
+	.mt(30*@750w);
+	.l(1.2);
+	.f(1.3rem);
+    .fc(#666);
+}
+
+.evaluate_list_box{
+	.hidden;
+	.clearfix;
+
+	li{
+		.hidden;
+		.clearfix;
+		.bgc(#fff);
+		.mt(20*@750w);
+		padding:30*@750w 0 0 30*@750w;
+
+		.task_item{
+			.hidden;
+			.clearfix;
+			padding:0 30*@750w 30*@750w 0;
+			border-bottom:1px solid #e6e6e6;
+		}
+
+		.left_item{
+			.vm;
+			.left;
+			.w(52%);
+			.l(40px);
+			.h(40px);
+
+        	p{
+        		.hidden;
+        		white-space:nowrap;
+        		text-overflow:ellipsis;
+        	}
+
+			.title{
+				.l(16px);
+    			.mt(4px);
+				.f(1.5rem);
+				.fc(#666);
+			}
+
+			.desc{
+				.l(20px);
+				.f(1.2rem);
+				.fc(#999);
+			}
+		}
+
+		.right_item{
+			.vm;
+			.right;
+
+			.btn{
+				.c;
+				.w(84px);
+				.f(1.5rem);
+				.fc(#fff);
+				.mt(7px);
+				.border-r(16px);
+				padding:6px 0;
+			}
+
+			.ended_btn{
+				.bgc(#ccc);
+			}
+
+			.receive_btn{
+				.bgc(#ff604e);
+			}
+
+			.received_btn{
+				.w(82px);
+				.mt(6px);
+				.fc(#ff605a);
+				border:1px solid #ff605a;
+			}
+		}
+
+		.icon_goods{
+			.l(40px);
+			.h(40px);
+			.pl(50px);
+		}
+
+		.explain_text{
+			.tl;
+			.l(30px);
+			.h(30px);
+			.f(1.2rem);
+			.fc(#666);
+		}
+	}
+}
+
+/* 组图 */
+.swipe{
+	.pr;
+	.hidden;
+}
+
+.swipe_wrap{
+	.pr;
+	.hidden;
+	-webkit-backface-visibility:hidden;
+	-moz-backface-visibility:hidden;
+	-ms-backface-visibility:hidden;
+	-o-backface-visibility:hidden;
+	backface-visibility:hidden;
+	/* Fix of Webkit flickering */
+	z-index:1;
+}
+
+.swipe_wrap > div{
+	.pr;
+	.left;
+	.w(100%);
+}
+
+.swipe_pic{
+	.pr;
+	.hidden;
+	.w(100%);
+}
+
+.pullUp{
+	.mt(20px);
+
+	.pullUpDown > .common;.pullUpDown > .loading;
+	&:before{
+		.nowrap;
+		.ml(-10px);
+	}
+	&[status="tap"]{
+		background:0 none;	
+	}
+	&[status="stop"]{
+		background:0 none;	
+	}
+}
+
+.gotop_wrap{
+	.pf;
+	.none;
+	.w(82*@w);
+	.pt(82*@w);
+	z-index:10;
+	right:10px;
+	bottom:40px;
+
+	.gotop{
+		.block;
+		.w(100%);
+	}
+
+	img{
+		.w(100%);
+	}
+}
+
+.windowDrive{
+	.dialog{
+		.border-r(6px);
+	}
+
+	.dialog-con{
+		.l(1.8);
+		.f(1.4rem);
+		.fc(#666);
+	}
+
+	.dialog-btn{
+	    border-top:1px solid #e5e5e5;
+
+	    span{
+	      	.f(1.5rem);
+	      	.fc(#f66);
+	    }
+	}
+}
+
+@media screen and (min-width:360px){
+	.evaluate_list_box li .left_item{
+		.w(58%);
+	}
+}
+
+@media screen and (min-width:400px){
+	.evaluate_list_box li .left_item{
+		.w(62%);
+	}
+}

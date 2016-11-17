@@ -1,0 +1,60 @@
+<%if(this.order_info && this.order_info.data){
+	var order = this.order_info.data.order
+		, status = order.pc_status;
+%>
+<div class="order_status">
+	<% status = '' + status; %>
+	<% switch (status){
+	 case '10': %>
+	<p>您已经提交订单！快去付款吧～</p>
+	<a class="payOrder" target="_blank" href="/order/pay/?order_id=<%= this.order.order_id %>&total_price=<%= this.order.total_price %>">立即付款</a>
+	<% break; %>
+	<% case '20': %>
+	<p>您已经成功付款。即将为您发货！</p>
+	<% break; %>
+	<% case '29': %>
+	<p>您的退款申请已成功受理！</p>
+	<% break; %>
+	<% case '30': %>
+	<p>已经发货！请您注意查收快递。</p>
+	<a href="javascript:void(0)" class="recvOrder" order_id="<%= order.order_id %>">确认收货</a>
+	<% break; %>
+	<% case '36': %>
+	<p>已收到退货，即将为您完成退款！</p>
+	<% break; %>
+	<% case '37': %>
+	<p>您的退款申请已经成功提交。</p>
+	<% break; %>
+	<% case '38': %>
+	<p>您的退款申请已通过审核，请尽快填写退货信息。</p>
+	<% break; %>
+	<% case '39': %>
+	<p>您的退款申请已经成功提交，我们会尽快完成退款申请的审核。</p>
+	<% break; %>
+	<% case '40':
+	case '41': %>
+	<p>交易成功</p>
+	<% break; %>
+	<% case '49': %>
+	<p>您的退款申请已经成功提交，我们会尽快完成退款申请的审核。</p>
+	<% break; %>
+	<% case '51': %>
+	<p>订单已经关闭。</p>
+	<% break; %>
+	<% case '52':
+	case '57': %>
+	<p>交易已关闭。已成功为您完成退款。</p>
+	<% break; %>
+	<% case '54': %>
+	<p>订单已经关闭。</p>
+	<% break; %>
+	<% case '55': %>
+	<p>您已经关闭了这笔订单。</p>
+	<% break; %>
+	<% case '56': %>
+	<p>很抱歉，不能为您完成退款！</p>
+	<% break; %>
+	<% } %>
+</div>
+<%}%>
+

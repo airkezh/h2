@@ -1,0 +1,88 @@
+@import "../block.less";
+
+html{.f(10px);}
+
+.testArea,.resultArea{
+	.pa;top:0px;bottom:0px;.w(100%);
+	background-repeat:no-repeat;
+	background-size:cover;
+	.c;
+}
+
+.bannerBox{
+	.pt(270*@w);
+}
+	
+.selectBox{
+	.w(532*@w);
+	.pr;
+	.i_block;
+	
+	.border{
+		.eventNone;z-index:1;.pr;
+	}
+
+	.cols{
+		.pa;top:0px;left:0px;bottom:0px;right:0px;
+		padding:10*@w;
+	}
+
+	.col{
+		.h(100%/3);
+		div{
+			.w(100%/3);.h(100%);.left;
+			background-position:center center;
+			background-repeat:no-repeat;
+			background-size:contain;
+			.bgc(#ffeff5);
+
+			&.cur{
+				.bgc(@white);
+				.pr;
+				&:after{
+					content:" ";
+					.pa;left:4px;top:4px;
+					.w(53*@px * 1.4);.pt(55*@px * 1.4);
+					background-image:url('http://d05.res.meilishuo.net/pic/_o/2a/71/4a776b1701856f1c4189c3ddff98_53_55.cg.png');
+					background-repeat:no-repeat;
+					background-size:100%;
+					
+				}
+			}
+		}
+	}
+}
+
+.mobileBox{
+	.pr;
+	.mobileInput, .mobileBtn{.pa;top:0px;bottom:0px;}
+	.mobileInput{.fc(@red);.f(1.4rem);.w(55%);.border-n;padding:0px;margin:10px;background:none;left:0px;}
+	.mobileBtn{.w(38%);right:0px;}
+}
+
+.roleBox{
+	.pt(650*@w);.pr;
+	p{.pa;bottom:0px;left:0px;right:0px;}
+}
+.resultBox{
+	.pa;top:0px;left:0px;right:0px;
+	.mt(110*@w);
+	img{.w(400*@w);}
+	.scaleFromCenterStart;
+}
+
+.logo{ .pa;bottom:0px;.w(100%); .eventNone;z-index:10;}
+
+.resultBtn, .shareBtn, .mobileBox, .link{ .i_block;}
+
+.resultBtn, .shareBtn, .mobileBox, .link, .logo, .border{
+	img{.w(100%);.block;}
+}
+
+.mobileBox{ .w(549*@w); .mt(20*@w);}
+.shareBtn{ .w(549*@w); .mt(14*@w);}
+.resultBtn{ .w(489*@w); .mt(40*@w);}
+.link{ .w(345*@w); .mt(40*@w);}
+
+
+@-webkit-keyframes scaleFromCenter{0%{opacity:0;-webkit-transform:scale3d(0, 0, 0);transform:scale3d(0, 0, 0)}100%{opacity:1;-webkit-transform:scale3d(1, 1, 1);transform:scale3d(1, 1, 1)}}@keyframes scaleFromCenter{0%{opacity:0;-webkit-transform:scale3d(0, 0, 0);transform:scale3d(0, 0, 0)}100%{opacity:1;-webkit-transform:scale3d(1, 1, 1);transform:scale3d(1, 1, 1)}}.scaleFromCenter{-webkit-animation:scaleFromCenter 1s ease 0s 1 normal;animation:scaleFromCenter 1s ease 0s 1 normal;-webkit-animation-fill-mode:both;animation-fill-mode:both}.scaleFromCenterStart{opacity:0;-webkit-transform:scale3d(0, 0, 0);transform:scale3d(0, 0, 0)}.scaleFromCenterEnd{opacity:1;-webkit-transform:scale3d(1, 1, 1);transform:scale3d(1, 1, 1)}

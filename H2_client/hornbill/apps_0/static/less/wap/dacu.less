@@ -1,0 +1,54 @@
+@import "block.less";
+
+body{ .bgc(#fff);.f(.24rem); }
+
+.banner{
+	.hidden;
+
+	img{ .left; }
+}
+
+.nav{
+	padding: 20*@w;.bgc(#f5f5f5);.hidden;position: -webkit-sticky;position: sticky;top: 0;
+
+	.item{
+		.left;.w(25%);.f(.2rem);.fc(#666);.c;
+
+		span{ .block;margin: 0 4px;.border-r(4px);padding: 4%; }
+	}
+	.active span{ .fc(#fff);.bgc(#ff1361); }
+}
+
+.poster_wrap{
+	.bgc(#fff);.mt(.2rem);
+
+	.title{ .f(.26rem);.fc(#666);padding: .2rem;.c; }
+	.goods_wall{ .pr; }
+	.poster_grid{ .pa;.c;.pb(.25rem); }
+	.pic_load{ .w(3.05rem); }
+	.bs_load_img{ .block;.w(100%);.pt(3.95rem);background: no-repeat;background-size: cover;opacity: 0; }
+	.clothesTitle{ .w(90%);.auto;.mt(.1rem);.mb(.14rem);.f(.22rem);.fc(#666);.ellipsis; }
+	.price{ .f(.26rem);.fc(#FF7A9A); }
+	.o_price{ .f(.2rem);.fc(#999);text-decoration: line-through;.pr(.18rem); }
+	.discount{ padding: 0 .1rem;.bgc(#ff1361);.fc(#fff); }
+}
+
+.pullUp{
+	.pullUpDown > .common;.pullUpDown > .loading;
+	&:before{
+		.nowrap;
+		.ml(-10px);
+	}
+	&[status="tap"]{
+		background:0 none;
+		&:before{
+			content:"上拉看更多..."
+		}
+	}
+	&[status="stop"]{
+		background:0 none;
+		&:before{
+			content:"木有了...";
+		}
+	}
+}

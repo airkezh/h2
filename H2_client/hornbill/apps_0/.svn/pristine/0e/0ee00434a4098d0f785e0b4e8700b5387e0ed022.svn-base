@@ -1,0 +1,42 @@
+<%
+	var domain = this.MAIN_SITE_DOMAIN;
+	var promoLogo = this.promotionData && this.promotionData.promoLogo[0];
+%>
+<div id="com-search">
+	<div class="inner">
+		<a href="<%=domain%>" class="logo">
+			<img src="http://d05.res.meilishuo.net/img/_o/67/24/65bc4ebfe22d0c2eca1702c9736c_117_43.ch.png" alt="">
+		</a>
+		<a href="<%=promoLogo.url%>" class="sublogo">
+			<img src="<%=promoLogo.img%>" alt="">
+		</a>
+		<div class="search">
+			<div class="search-tab">
+				<span class="active" data-type="0">宝贝</span><span data-type="1">店铺</span>
+			</div>
+			<div class="search-box">
+				<input type="text" class="search-txt" placeholder="搜流行宝贝" data-placeholder="搜流行宝贝">
+				<span class="search-btn"></span>
+				<div class="suggest-box"></div>
+			</div>
+			<div class="hotword">
+				<% this.word_recommend && this.word_recommend.forEach(function(item){ 
+					var link = domain + "/search/baobei?searchKey=" + encodeURIComponent(item.words) + 
+							   '&pstrc=' + encodeURIComponent('_search='+ item.words) + 
+							   '&filter=goods&frm=searchsuggestion';
+				%>
+					<a target="_blank" href="<%= link %>" class="<%= item.is_red == '1' ? 'red_f' : '' %>">
+						<%=item.words%>
+					</a>
+				<% }); %>
+			</div>
+		</div>
+		<% var dataAds = this.ads_one && this.ads_one[0];
+		   if(dataAds){
+		%>
+			<a class="spread" href="<%=dataAds.links%>" target="_blank">
+				<img src="<%=dataAds.img_url%>" />
+			</a>
+		<% } %>
+	</div>
+</div>

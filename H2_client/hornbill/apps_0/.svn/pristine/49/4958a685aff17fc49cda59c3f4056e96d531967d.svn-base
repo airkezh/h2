@@ -1,0 +1,37 @@
+<%#head.html%>
+
+<div class="redBox" style="background:url('<%=this.rootUrl+"red.png"%>') no-repeat;background-size:100%">
+	<div class="redShare" style=""></div>
+</div>
+
+<!-- <div class="redBox" style="width:100%;height:75px;padding-top:400px;background:url(http://i.meilishuo.net/css/images/wap/activity/may_sale/gRedpack.jpg) no-repeat;background-size:100% 100%">
+	<a href="#" style="width:100%;height:75px;display:block;"></a>
+</div> -->
+<script type="text/html" id="shareDialog">
+	<div class="shade"></div>
+	<div class="shareD">
+		<div class="toFriend"></div>
+		<div class="toGroup"></div>
+		<div class="close"></div>
+	</div>
+</script>
+
+
+<script>
+	fml.vars.isLogin = <%=(this.gameData.islogin == 1 ? true : false)%>;
+	fml.vars.shareInfo = <%=JSON.stringify(this.shareInfo)%>;
+	var imgUrl = fml.vars.shareInfo.pic;
+	var lineLink = fml.vars.shareInfo.shareLink;
+	var descContent = fml.vars.shareInfo.desc;
+	var shareTitle = fml.vars.shareInfo.title;
+	var shareTimelineText = fml.vars.shareInfo.desc;
+	var customAppId = 'wxd00a5f16e02bed58';
+</script>
+<script src="<%= this.JCSTATIC_BASE  %>/js/open/shareCollect.js?<%= this.SVERSION%>"></script>
+
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+
+	fml.use('wap/page/activity/promotion/redpacket');
+_use:", this._JSstack , this._JSmods); %>
+<%# foot_simple.html%>

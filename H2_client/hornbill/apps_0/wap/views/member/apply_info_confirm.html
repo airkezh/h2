@@ -1,0 +1,195 @@
+<%
+	/**
+ 	 * @fileoverview 首页－信息确认
+     * @requires zepto
+     * @author kehuang@meilishuo.com
+     * @date 2016-01-12
+     */
+%>
+
+<%#head.html%>
+<%
+	var curUserInfo = this.userInfo;
+	var curUserIsLogin = this.isLogin;
+	var curServerDate = this.serverDate;
+	var curGoodsData = this.goodsData;
+	var curContactData = this.contactData;
+	var curDeviceIsAndroid = this.isAndroid;
+	var curGoodsTwitterId = this.goodsTwitterId;
+	var curIsNormalGetData = this.isNormalGetData;
+	var curGoodsActivityDate = this.goodsActivityDate;
+	var curGoodsId = (curGoodsData && curGoodsData.goods_id) ? curGoodsData.goods_id : '';
+	var curGoodsShopId = (curGoodsData && curGoodsData.shop_id) ? curGoodsData.shop_id : '';
+	var curGoodsSkuData = (curGoodsData && curGoodsData.sku) ? curGoodsData.sku : {};
+	var curGoodsSizeData = (curGoodsData && curGoodsData.size) ? curGoodsData.size : {};
+	var curGoodsColorData = (curGoodsData && curGoodsData.color) ? curGoodsData.color : {};
+	var curUserContactData = (curContactData && curContactData.data && curContactData.data.addr_info) ? curContactData.data.addr_info : [];
+	var curAddressId = curUserContactData.id || '';
+	var curUserName = curUserContactData.name || '';
+	var curUserPhone = curUserContactData.phone || '';
+	var curUserAddress = curUserContactData.address || '';
+%>
+
+<div class="main">
+	<div class="user_info_wrap pick_user_address">
+		<%
+			if (curAddressId == '') {
+		%>
+		<div class="user_uninfo_box">
+			<div class="left_item">
+				<div class="icon_position"></div>
+				<div class="explain_text">请填写收货人信息</div>
+			</div>
+			<div class="right_item">
+				<div class="icon_arrow"></div>
+			</div>
+		</div>
+		<%
+			} else {
+		%>
+		<div class="user_info_box">
+			<div class="left_item">
+				<div class="icon_position"></div>
+				<div class="user_info">
+					<p class="title">
+						<span class="name">收件人:<i id="user_name"><%= curUserName %></i></span>
+						<span class="phone">电话:<i id="user_phone"><%= curUserPhone %></i></span>
+					</p>
+					<p class="address" id="user_address"><%= curUserAddress %></p>
+				</div>
+			</div>
+			<div class="right_item">
+				<div class="icon_arrow"></div>
+			</div>
+		</div>
+		<%
+			}
+		%>
+	</div>
+
+	<div class="goods_info_wrap">
+		<div class="title_wrap">
+			<div class="pro_title"><p>选择商品规格</p></div>
+		</div>
+
+		<div class="goods_info_box">
+			<p class="title">颜色</p>
+			<div class="color_area">
+				<%
+					var color_counter = 0;
+
+					for (var i in curGoodsColorData) {
+						var color_class = '',
+							color_data = curGoodsColorData[i],
+							color_meta_id = color_data.meta_id || '',
+							color_meta_name = color_data.meta_name || '';
+
+						if ((color_meta_id != '') && (color_meta_name != '')) {
+							color_class = (color_counter < 1) ? 'active' : '';
+				%>
+				<div class="item_btn <%= color_class %>" data-mid="<%= color_meta_id %>"><%= color_meta_name %></div>
+				<%
+							++color_counter;
+						}
+					}
+				%>
+			</div>
+			<p class="title">尺码</p>
+			<div class="size_area">
+				<%
+					var size_counter = 0;
+
+					for (var j in curGoodsSizeData) {
+						var size_class = '',
+							size_data = curGoodsSizeData[j],
+							size_meta_id = size_data.meta_id || '',
+							size_meta_name = size_data.meta_name || '';
+
+						if ((size_meta_id != '') && (size_meta_name != '')) {
+							size_class = (size_counter < 1) ? 'active' : '';
+				%>
+				<div class="item_btn <%= size_class %>" data-mid="<%= size_meta_id %>"><%= size_meta_name %></div>
+				<%
+							++size_counter;
+						}
+					}
+				%>
+			</div>
+		</div>
+	</div>
+
+	<div class="bottom_btn_wrap">
+		<div class="bottom_confirm_btn" data-tid="<%= curGoodsTwitterId %>" data-gid="<%= curGoodsId %>" data-sid="<%= curGoodsShopId %>" data-aid="<%= curAddressId %>" data-date="<%= curGoodsActivityDate %>">确定</div>
+	</div>
+
+    <!-- <div class="pullUp" status="loading"></div>
+
+	<div class="gotop_wrap">
+		<a class="gotop">
+			<img src="http://d03.res.meilishuo.net/pic/_o/d0/68/f89d059f09d440f4ee7a37669383_80_80.cg.png" alt="">
+		</a>
+	</div> -->
+</div>
+
+<script type="text/html" id="j_prompt_tpl">
+	<div id="j_prompt_layer" class="prompt_layer_main">
+		<div class="prompt_layer_text"><?= this.text ?></div>
+	</div>
+</script>
+
+<script type="text/html" id="j_fail_tpl">
+	<div class="layer_shade j_layer_shade"></div>
+	<div class="layer_main welfare_main j_layer_main">
+		<div class="layer_fail_bg">
+			<p class="fail_text">会员等级越高<br>抽礼卡越多！<br>别忘了<i>今晚22点</i>来查看<br>幸运会员是不是你哦~</p>
+			<%
+				if (curDeviceIsAndroid) {
+			%>
+			<div class="layer_fail_btn">好哒</div>
+			<%
+				} else {
+			%>
+			<?
+				var remind_is_on = this.remindIsOn,
+					remind_btn_class = remind_is_on ? 'active' : '',
+					remind_btn_text = remind_is_on ? '取消提醒' : '提醒我';
+			?>
+			<div class="layer_remind_btn <?= remind_btn_class ?>"><?= remind_btn_text ?></div>
+			<div class="layer_fail_btn layer_right_btn">好哒</div>
+			<%
+				}
+			%>
+		</div>
+	</div>
+</script>
+
+<script type="text/html" id="j_success_tpl">
+	<div class="layer_shade j_layer_shade"></div>
+	<div class="layer_main welfare_main j_layer_main">
+		<div class="layer_success_bg">
+			<?
+				var cards = this.cards || 0;
+			?>
+			<p class="success_title">还剩<i><?= cards ?></i>张</p>
+			<p class="success_text">今晚22点揭晓幸运会员名单~<br>别忘来看哦！</p>
+			<div class="layer_success_btn">好哒</div>
+		</div>
+	</div>
+</script>
+
+<script>
+	fml.vars.r = '<%= this.xr.r || '' %>';
+	fml.vars.isLogin = <%= curUserIsLogin %>;
+	fml.vars.isNewest = <%= this.isNewest %>;
+	fml.vars.isAndroid = <%= curDeviceIsAndroid %>;
+	fml.vars.isNormalGetData = <%= curIsNormalGetData %>;
+	fml.vars.goodsSkuData = <%= JSON.stringify(curGoodsSkuData) %>;
+</script>
+
+<!-- <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script> -->
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/member/apply_info_confirm');
+_use:", this._JSstack, this._JSmods); %>
+
+<%#foot_simple.html%>

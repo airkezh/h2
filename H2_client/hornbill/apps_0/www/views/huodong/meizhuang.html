@@ -1,0 +1,144 @@
+<%#head.html%>
+<% var EfnSubstr = _extFn.mSubstr; %>
+<%if(this.meizhuang_end){%>
+<div class="mz_body">
+	<div class="mz_title_end">
+		<h2>2012 美丽说爱美赏评选盛典 “经典甄选 口碑之荐”</h2>
+	</div>
+	<div class="mz_intro_end">
+		<div class="mz_filter">
+			<a target="_blank" href="http://www.meilishuo.com/person/u/88"></a>
+			<a target="_blank" href="http://www.meilishuo.com/person/u/25683772"></a>
+			<a target="_blank" href="http://www.meilishuo.com/person/u/25697431"></a>
+			<a target="_blank" href="http://www.meilishuo.com/person/u/32366563"></a>
+			<a target="_blank" href="http://www.meilishuo.com/person/u/25687118"></a>
+			<a target="_blank" href="http://www.meilishuo.com/person/u/25621854"></a>
+		</div>
+	</div>
+	<div class="mz_brand01"></div>
+	<div class="mz_brand02"></div>
+	<div class="mz_brand03"></div>
+	<div class="mz_brand04"></div>
+	<div class="mz_user_end">
+		<div class="mz_user">
+		<% this.getuser && this.getuser.map(function(v, i){ %>
+			<% if(i % 10 == 0){ %>
+			<p>
+			<%}%>
+			<a href="http://www.meilishuo.com/person/u/<%= v.user_id %>" target="_blank"><%= v.nickname %></a>
+			<% if(i % 10 == 9){ %>
+			</p>
+			<%}%>
+		<%});%>	
+		</div>
+	</div>
+</div>
+<%}else{%>
+<div class="mz_body">
+	<div class="mz_title">
+		<h2>2012 美丽说爱美赏评选盛典 “经典甄选 口碑之荐”</h2>
+	</div>
+	<div class="mz_intro">
+		<div class="intro">
+			<div class="intro_intro">
+				<h4>【活动说明】</h4>
+				<ul>
+					<li>STEP 1 根据美丽说权威数据选出的候选名单</li>
+					<li>STEP 2 爱美丽全民票选&品牌加油赛</li>
+					<li>STEP 3 权威专家推荐</li>
+				</ul>
+			</div>
+			<div class="intro_time">
+				<h4>【活动时间 & 参与方式】</h4>
+				<ul>
+					<li>票选环节：2012年12月26日——2013年1月21日</li>
+					<li>颁奖环节：2013年1月22日——1月26日</li>
+					<li>根据奖项设置，斟酌备选名单，投出您宝贵的一票，您的选择与最终结果吻合将有机会获得该品牌送出的奖品（奢品类奖项不参与）</li>
+				</ul>
+			</div>
+			<div class="intro_awar">
+				<h4>【奖项设置】</h4>
+				<ul>
+					<li>最终获奖品牌提供获奖礼包给支持她们的粉丝</br>（共50件）</li>
+					<li>投票即可能获得美丽说2013限量定制达人日历一件（共200件）</li>
+				</ul>
+			</div>
+		</div>
+		<div class="brand">
+			<div class="banner">
+				<ul class="_img">
+					<li class="banner1"></li>
+					<li class="banner2"></li>
+					<li class="banner3"></li>
+					<li class="banner4"></li>
+					<li class="banner5"></li>
+					<li class="banner6"></li>
+					<li class="banner7"></li>
+					<li class="banner8"></li>
+					<li class="banner9"></li>
+					<li class="banner10"></li>
+				</ul>
+			</div>
+			<span class="pre"></span>
+			<span class="next"></span>
+		</div>
+	</div>
+	<div class="mz_vote">
+		<div class="vote_con">
+			<%for(var b = 1; b <= 20; b++){ 
+				var l = Math.ceil(b / 4),
+					r = (b - 1) % 4 + 1;
+				var b2 = b < 10 ? '0' + b : b;
+			%>
+			<div class="vote_box row<%= l %><%= r %>">
+				<div class="curtab1">
+					<p class="title"></p>
+					<p class="tab">
+						<%for(var t = 1; t <= 3; t++){%>
+						<span tab="<%= t %>"></span>
+						<%}%>
+					</p>
+					<%for(var t = 1; t <= 3; t++){%>
+					<ul class="tab<%= t %>" tab="<%= t %>">
+						<%for(var i = 1; i <= 5; i++){
+							var vote = this.getvote[i + '' + t + b2];
+							if(vote){
+						%>
+						<li item="<%= i %>">
+							<label for="vote<%= i + '' + t + b2 %>"><span><%= vote %></span>票</label>
+							<input name="vote<%= l + '' + r + t %>" id="vote<%= i + '' + t + b2 %>" type="radio" value="<%= i + '' + t + b2 %>">
+						</li>
+						<% }}%>
+					</ul>
+					<%}%>
+					<div class="vote">
+					<%for(var t = 1; t <= 3; t++){
+						var voted = this.getvoted[t + '' + b2];
+						if(voted){
+					%>
+						<div class="votedBtn vote<%= t %>" tab="<%= t %>">已投票</div>
+						<%}else{%>
+						<div class="voteBtn vote<%= t %>" tab="<%= t %>">投票</div>
+						<%}%>
+					<%}%>
+					</div>
+				</div>
+			</div>
+			<%}%>
+			<div class="clear_f"></div>
+		</div>
+		<div class="mz_filter">
+			<a target="_blank" href="http://www.meilishuo.com/person/u/88"></a>
+			<a target="_blank" href="http://www.meilishuo.com/person/u/25683772"></a>
+			<a target="_blank" href="http://www.meilishuo.com/person/u/25697431"></a>
+			<a target="_blank" href="http://www.meilishuo.com/person/u/32366563"></a>
+			<a target="_blank" href="http://www.meilishuo.com/person/u/25687118"></a>
+			<a target="_blank" href="http://www.meilishuo.com/person/u/25621854"></a>
+		</div>
+	</div>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/huodong/meizhuang');
+_use:", this._JSstack , this._JSmods ); %>
+<%}%>
+<%#foot.html%>

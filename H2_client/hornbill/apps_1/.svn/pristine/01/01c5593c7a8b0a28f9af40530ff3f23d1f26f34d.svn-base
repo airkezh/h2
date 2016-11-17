@@ -1,0 +1,46 @@
+<%# head.html %>
+  <div class="topPic" style="background: url('<%= this.PICTURE_URL%>images/huodong/hotgoods/top.jpg') no-repeat top center"></div>
+  <div class="main">
+    <div class="wrapper">
+  	  <div class="desc">
+  	    <div class="desc-content">
+  	      <div class="header">热销单品宠坏你</div>
+  	      <p>要百搭、也要色彩？要超值、也要优质？要流行、也要独特？我要我要我都要！销量火爆的宝贝全在这里，满足你所有的需要。点我点我啊！</p>	
+  	    </div>
+  	  </div>
+  	  <div class="goods_wall"></div>
+      <div class="paging_panel c_f none_f">
+        <%# paging.html %>
+      </div>
+      <div class="spinner botSpinner none_f"></div>
+      <div class="clear_f"></div>   	
+    </div>
+  </div>
+  <script>
+    fml.vars.poster = {};
+  </script>
+  <script id="posterWall" type="text/html">
+  	<? $.each(tInfo, function (k, v){ ?>
+		<div class="goodsCon" style="height:<?= fml.vars.poster.posHeight+102 ?>px;">
+			<a href="<?= v.link_url ?>" target="_blank" title="<?= v.title ?>" style="display:block;min-height:<?= fml.vars.poster.posWidth*293/226 ?>px;">
+				<img src="<?= v.image_url?>">
+			</a>
+			<a href="<?= v.link_url ?>" target="_blank" class="goods_tit"><?= v.title?></a>
+			<div class="goods_price">
+				<span class="red_f">￥<?= v.price ?></span>
+				<? if(v.price != v.origin_price){ ?>
+					<del>￥<?= v.origin_price ?></del>
+				<?}?>
+			</div>
+			<div class="likebuy">
+				<p class="likenum left_f">
+					<span class="left_f"><?= v.sales?>人已购买</span>
+				</p>
+			</div>
+		</div>
+	<? }); ?>
+  </script>
+  <%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+  	fml.use('page/hotgoods');
+  _use:", this._JSstack , this._JSmods ); %>
+<%# foot.html %>

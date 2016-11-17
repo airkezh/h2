@@ -1,0 +1,182 @@
+/*common*/
+require('wap/zepto')
+require('wap/page/sq/search_md')
+
+var Waterfall = require( 'circle/component/waterfall' )
+var lazy      = require( 'm/component/lazyLoad' )
+var urlHandle = require('wap/component/urlHandle')
+
+var $wd             = $(window)
+var $search         = $('.search')
+var $tab            = $('.js-nav-item')
+var $loadingBar     = $('.pullUp')
+
+var lazyLoad        = lazy.init({ xpath : '.g-entrance' })
+var params          = urlHandle.getParams(location.href)
+var cashe           = {}
+var category        = 'hot'
+var justOne         = true
+var flag            = false
+var W               = null
+var windowScrollTop = 0
+var SELECTED        = 'selected'
+
+lazyLoad.scroll()
+switchWaterfall()
+
+// hack 解决唤起键盘时固定定位bug
+if($search[0]){
+	var flag1 = true
+	var fz = $('html').css('fontSize')
+	var nb = +fz.slice(0, -2)*.84
+
+	var $i = $search.find('#input')
+
+	if(Meilishuo.config.os.ios){
+		function imitateFixed($e){
+			$e.css({
+				position: 'absolute',
+				top: windowScrollTop + 'px'
+			})
+		}
+		$i.on('focus', function (){
+			imitateFixed($search)
+			$wd.scrollTop(windowScrollTop)
+			flag = true
+		}).on('blur', function (){
+			$search.css({
+				position: 'fixed',
+				top: 0
+			})
+
+			flag = false
+		})
+	}
+
+	$wd.on('scroll', function (e){
+		windowScrollTop = $wd.scrollTop()
+		if(flag){
+			imitateFixed($search)
+		}
+
+		if(windowScrollTop > nb && flag1){
+			flag1 = false
+			$search.css('boxShadow', '1px 0 7px #efefef')
+		}
+
+		if(windowScrollTop < nb){
+			flag1 = true
+			$search.css('boxShadow', 'none')
+		}
+	})
+}
+
+$tab.on('click', function (){
+	var $target = $(this)
+
+	if($target.hasClass(SELECTED)) return
+
+	$tab.removeClass(SELECTED)
+	$target.addClass(SELECTED)
+
+	category = $target.data('category')
+	params.section = category
+	history.replaceState(null,'I am a bad guy','/sq/search/?' + urlHandle.http_build_query(params))
+	switchWaterfall()
+})
+
+// 调用 QQ api，支持 refer 页位置记录
+$('body').on('click','.g-entrance',function (e){
+	e.preventDefault()
+
+	var $t = $('title')
+	var title = $t.html()
+	var refererInfo = {
+		protocol: location.protocol,
+		host: location.host,
+		pathname: location.pathname,
+		params: params
+	}
+	var link =  'http://' 
+		+ location.host 
+		+ $(this).attr('href') 
+		+ '&referer_info='
+		+ encodeURIComponent(JSON.stringify(refererInfo))
+		+ '&_wv=5123'
+		
+	$t.html('返回')
+	mqq.ui.refreshTitle()
+	mqq.ui.openUrl({
+		url: link,
+		target: 1,
+		style: 0
+	})
+
+	setTimeout(function (){
+		$t.html(title)
+		mqq.ui.refreshTitle()
+	},0)
+})
+
+function switchWaterfall(){
+	var GF = '#goods_shelf'
+
+	if(W){
+		W.destroy()
+		W = null
+	}
+
+	$loadingBar.attr('status', 'loading')
+	$(GF).empty().height(0)
+
+	W = Waterfall.init({
+		el: GF,
+		tmpl: 'goods_tpl',
+		url: '/aj/sq/search',
+		data: params,
+		colNum: 2,
+		colGap : "6 0",
+		dataFilter: filter,
+		onFetchSuccess: fetchSuccess,
+		onFetchFinished: fetchFinished,
+		onFetchError: fetchError
+	})
+
+	W.start(cashe[category])
+}
+
+function filter(data){
+	var c = this._config
+	var n = c.dataName
+	var s = c.data.section
+
+	if(data.frame == 0){
+		cashe[s] = data
+	}
+
+	return data[n]
+}
+
+function fetchSuccess(data){
+	if(data.length < 10){
+		$loadingBar.attr('status','stop')
+		this.lock()
+	}
+}
+
+function fetchFinished(data){
+	lazyLoad.load()
+}
+
+function fetchError(jqXHR, textStatus, errorThrown){
+	// @hack 超时请求模拟滚动一次
+	if(justOne){
+		this.triggerScroll()
+		justOne = false
+	}else{
+		if(textStatus === 'timeout'){
+			alert('请求超时了,接口待优化');
+		}
+	}
+}
+

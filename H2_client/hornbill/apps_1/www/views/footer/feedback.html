@@ -1,0 +1,68 @@
+<%#head.html%>
+<div class="aboutus clearfix_f">
+	<div class="content">
+		<h2>意见反馈</h2>
+		<div class="fb_con">
+			<p>您在美丽说网站中遇到的问题都请反馈给我们，非常感谢您愿意为我们的服务提出意见或建议。</p>
+			<div>
+				<%if (this.feedId) {%>
+					<h3 class="l30_f">我的反馈</h3>
+				<%}%>
+				<%this.feedbackList && this.feedbackList.map(function(data){ %>
+					<%if ( data.flag == 0 ) {%>
+						<div class="qa">
+							<a class="right_f ml14_f"><img width='50' height="50" src="<%=data.avatar%>" /></a>
+							<div class="right_f talk" style="background-color:#f9f9f9;">
+								<div class="corner_r"></div>
+								<p><%=data.feedback_detail%></p>
+								<p class="gray_f"><%=data.time%></p>
+							</div>
+						</div>
+					<%} else if ( data.flag == 1 ) { %>
+						<div class="qa">
+							<a class="left_f mr14_f"><img src="<%=this.PICTURE_URL%>images/window/jingling.jpg" /></a>
+							<div class="left_f talk">
+								<div class="corner_l"></div>
+								<p><span class="red_f">美丽说服务台：</span><%=data.feedback_detail%></p>
+								<p class="gray_f"><%=data.time%></p>
+							</div>
+						</div>
+					<%}%>
+				<%});%>
+			</div>
+			<div class="mt14_f">
+				<p>问题类型：
+					<select id="htype" name="htype" style="width:220px">
+					<% var feedName = {
+						'1' : '建议反馈',
+						'2' : '账号问题',
+						'3' : '网站bug',
+						'4' : '投诉举报',
+						'5' : '手机美丽说',
+						'6' : '我是商家'
+					};%>
+					<% for(var i in feedName){ %>
+						<option value="<%= i %>"<%if(this.feedTag == i){%> selected="true"<%}%>><%= feedName[i] %></option>
+					<%}%>
+					</select>
+				</p>
+			</div>
+			<textarea id="fb_content">在这里，尽情的吐槽吧...</textarea>
+			<div class="error_msg none_f"></div>
+			<%if ( !this.user_id ) {%>
+				<div>
+					<p>请留下您的邮箱，我们会第一时间给您答复。</p>
+					<p class="fb_mail"><input type="text" id="mymail" class="gray_f" value="美丽说绝对不会泄露您的隐私" /><span class="error_msg none_f">您的邮箱填写有误，请重新填写。</span></p>
+				</div>
+			<%}%>
+			<div class="fb_btn">
+				<span class="btn" id="fb_sub">提&nbsp;交</span>
+			</div>
+		</div>
+	</div>
+	<%#footer/sideBar_1.html%>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+    fml.use('page/feedback');
+ _use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

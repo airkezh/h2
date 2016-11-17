@@ -1,0 +1,77 @@
+function luhan(){
+	return this;
+}
+var controlFns = {
+	'index' : function(){
+		var php = {}, self = this;
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			data._CSSLinks = ['luhan'];
+			data.pageTitle = '美丽说全球代言人鹿晗加油专属通道';
+			return self.render('luhan/index.html',data);
+		});
+	},
+	'kiss' : function(p){
+		var php = {
+			'connect_weixin': '/connect/weixin?type=1'
+			,'luhan_status' : '/newcomer/get_activity_join_status?activity_id=12501'
+			,'wx_userInfo' : '/user/WeixinHeadInfo'
+		} 
+		var self = this;
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			// 微信互联
+			if(data.os.weixinBrowser) connectWX(this, data);
+			
+			data.XR = true;
+			data._CSSLinks = ['luhan_kiss'];
+			data.use_rem_screen = true;
+			data.pageTitle = '鹿晗';
+
+			if(data.luhan_status.data == 1){
+				return mSelf.redirectTo('http://m.meilishuo.com/luhan/redpacket/');
+			}
+			if(p == 'mua'){
+				data.pageTitle = '美丽说';
+				return self.render('luhan/kiss_mua.html',data);
+
+			}else if(p == 'gift'){
+				data.pageTitle = '美丽说';
+				return self.render('luhan/kiss_gift.html',data);
+
+			}else{
+				return self.render('luhan/kiss.html',data);
+			}
+
+		});
+	},
+	'redpacket' : function() {
+		var php = {
+			'luhan_status' : '/newcomer/get_activity_join_status?activity_id=12501'
+		}
+        this.setMDefault( php )
+        this.bridgeMuch( php )
+        this.listenOver( function( data ) {
+
+        	if( data.luhan_status && data.luhan_status.data.status ){
+        		data.luhan_status = data.luhan_status.data.status || 0
+        	}else {
+        		data.luhan_status = 0;
+        	}
+
+        	data.use_rem_screen = true
+            data.pageTitle     = '美丽说'
+            data._CSSLinks     = [ 'luhan_redpacket' ]
+            this.render( 'luhan/redpacket.html', data )
+        } )
+	}
+};
+
+var connectWX = function(mSelf, data){
+    if (data.connect_weixin && data.connect_weixin.redirect) {
+        return mSelf.redirectTo(data.connect_weixin.redirect, true);
+    }
+}
+exports.__create = controller.__create(luhan , controlFns);

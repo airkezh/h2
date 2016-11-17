@@ -1,0 +1,60 @@
+<%
+	var pageData=this.pageData || {};
+	var sale=pageData.sale || {};
+	var coupons=this.coupons || {};
+%>
+<div class="coupons_wrap">
+	<div class="cpn_banner">
+		<img src="<%=sale.big_img%>">
+	</div>
+	<ul class="coupons">
+		<li>
+			<img src="<%=sale.small_img%>">
+		</li>
+		<% coupons.data.length&&coupons.data.forEach(function(item,index){ %>
+			<li class="cpn_info <%=item.status==0?'':'cpn_get'%> <%=index==coupons.data.length-1?'li_last':''%>">
+				<dl>
+					<dt>
+						<div class="cpn_cnt">
+							<div class="money">￥<span><%= item.credit %></span></div>
+							<div class="cpn_intro">
+								<p class='cpn'>优惠券</p>
+								<% if(item.threshold==0){ %>
+									<p>无门槛使用</p>
+								<% }else{ %>
+									<p>满￥<%= item.threshold %>使用</p>
+								<% } %>
+							</div>
+						</div>
+						<p class="date"><%= item.expiration.start_time.substring(5,16).replace('-','/') %>--<%= item.expiration.expire_time.substring(5,16).replace('-','/') %></p>
+					</dt>
+					<% if(item.status==0){ %>
+						<dd class="btn-coupons" data-code="<%= item.coupon_apply_code %>" data-threshold="<%= item.threshold %>" data-credit="<%= item.credit %>">领</br>取</dd>
+					<% }else if(item.status==1){ %>
+						<dd>已</br>领</dd>
+					<% }else{ %>
+						<dd>已</br>领光</dd>
+					<% } %>
+				</dl>
+			</li>
+		<% }) %>
+	</ul>
+	<script type="text/html" id="couponsPopup" >
+		<div class="layer_box">
+			<span class="close_btn"></span>
+		    <p class="mua_icon">
+				<img src="http://i.meilishuo.net/css//images/mua/mua_icon.png"/>
+			</p>
+			<? if(code==0){ ?>
+				<p class="congrat">恭喜，领券成功！</p>
+				<p class="cpn_type">
+					在［MUA］购物<?= str ?>
+					<br/>本优惠不与其他优惠券或立减券共同享受</p>
+				<p class="cpn_date">使用时间：<?= date ?></p>
+			<? }else{ ?>
+				<p class="sorry">sorry，领券失败！请重试～</p>
+			<? } ?>
+			<input type="button" value="<?= code==0?'知道了':'好的' ?>" name="button" class="btn"/>
+		</div>
+	</script>
+</div>

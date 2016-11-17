@@ -1,0 +1,384 @@
+@import "base";
+@import "../wap/mainapp/icons.import.less";
+@import "../wap/mainapp/tag.import.less";
+@import "../wap/mainapp/voice-btn.import.less";
+@import "chat_comp/message.import.less";
+
+@circle_icon: 'http://d02.res.meilishuo.net/pic/_o/6b/5e/27e169995329b9f56b5fe45e068d_404_404.cg.png';
+
+body {
+  color      : #595056;
+  background : #ebebeb;
+}
+
+input,
+textarea,
+[contenteditable] {
+  -webkit-user-select : text;
+  user-select         : text;
+}
+
+a:active {
+  color : inherit;
+}
+
+@person-size: 88*@px;
+
+.icon-user {
+  position        : absolute;
+  top             : 0;
+  right           : 0;
+  width           : @person-size;
+  height          : @person-size;
+  background      : url("http://i.meilishuo.net/css/images/wap/web/userIcon.png") no-repeat center center;
+  background-size : cover;
+}
+
+.main {
+  position   : relative;
+  overflow-y : scroll;
+  overflow-x : hidden;
+}
+
+.circle {
+  padding-top      : 60*@px;
+  padding-bottom   : 50*@px;
+  background-color : #fff;
+  text-align       : center;
+}
+
+.circle-icon {
+  position        : relative;
+  width           : 160*@px;
+  height          : 160*@px;
+  margin          : auto;
+  background      : no-repeat center;
+  background-size : cover;
+}
+
+.circle-icon::after {
+  content         : '';
+  position        : absolute;
+  top             : 0;
+  left            : 0;
+  width           : 100.5%;
+  height          : 100.6%;
+  margin          : -.6% 0 0 -.5%;
+  z-index         : 100;
+  background      : url(@circle_icon) no-repeat center;
+  background-size : cover;
+}
+
+.circle-name {
+  margin      : 20*@px auto;
+  font-size   : 30*@px;
+  line-height : 1;
+  color       : #595056;
+}
+
+.circle-member {
+  font-size   : 28*@px;
+  line-height : 1;
+  color       : #80737b;
+}
+
+.infos {
+  position         : fixed;
+  top              : 0;
+  left             : 0;
+  right            : 0;
+  height           : 70*@px;
+  padding          : 0 44*@px;
+  line-height      : 70*@px;
+  font-size        : 28*@px;
+  color            : #FF7A9A;
+  border-top       : 1px solid #f5f3f1;
+  border-bottom    : 1px solid rgba(204, 194, 201, .61);
+  background-color : #fdfdfc;
+  text-align       : center;
+  z-index          : 10;
+
+  em {
+    font-weight : normal;
+    font-style  : normal;
+  }
+}
+
+.infos-content {
+  display   : inline-block;
+  max-width : 80%;
+  font-size : 26*@px;
+  .ellipsis;
+}
+
+.icon-trumpet {
+  margin-right   : 16*@px;
+  vertical-align : text-top;
+}
+
+.no-infos {
+  .infos {
+    display : none;
+  }
+
+  .area {
+    padding-top : 70*@px;
+  }
+
+  .loading-bar-wrap {
+    top : 0;
+  }
+}
+
+.area {
+  position      : relative;
+  padding-top   : 140*@px;
+  margin-bottom : 160*@px;
+}
+
+.icon-like {
+  width           : 26*@px;
+  height          : 24*@px;
+  background      : url("http://d05.res.meilishuo.net/pic/_o/30/e2/4eee9a50b7658380b1f6ef358110_26_25.cg.png") no-repeat;
+  background-size : contain;
+}
+
+.is-like .icon-like {
+  background-image : url("http://d02.res.meilishuo.net/pic/_o/bd/81/7bd39876214446046fd89222cabc_42_40.cf.png");
+  .animation(fill .3s cubic-bezier(0.42, 0, 0.47, 1.1));
+}
+
+.not-like .icon-like {
+  .animation(expand .3s)
+}
+
+.icon-buy {
+  position   : relative;
+  float      : right;
+  margin-top : 16*@px;
+}
+
+.has-new-goods::before {
+  content          : attr(data-num);
+  position         : absolute;
+  top              : -12*@px;
+  right            : -28*@px;
+  width            : 34*@px;
+  height           : 34*@px;
+  line-height      : 34*@px;
+  background-color : #f66;
+  color            : #fff;
+  border           : 1px solid #fff;
+  border-radius    : 50%;
+  font-style       : normal;
+  text-align       : center;
+}
+
+.font-level-1::before {
+  font-size: 24*@px;
+}
+
+.font-level-2::before {
+  font-size: 22*@px;
+}
+
+.font-level-3::before {
+  font-size: 18*@px;
+}
+
+.font-level-4::before {
+  font-size: 14*@px;
+}
+
+/* input */
+.input {
+  display             : -webkit-box;
+  display             : -webkit-flex;
+  display             : flex;
+  -webkit-align-items : center;
+  align-items         : center;
+  position            : fixed;
+  left                : 0;
+  bottom              : 0;
+  width               : 100%;
+  min-height          : 100*@px;
+  padding             : 12*@px 25*@px;
+  font-size           : 0;
+  overflow            : hidden;
+  background-color    : #fff;
+  z-index             : 20;
+  -webkit-box-sizing  : border-box;
+  box-sizing          : border-box;
+
+  .content {
+    width         : 75%;
+    line-height   : 30px;
+    margin        : 5px;
+    padding       : 4px;
+    font-size     : 30*@px;
+    border        : 2*@px solid #e5e5e5;
+    border-radius : 3px;
+  }
+}
+
+.not-login, .not-in {
+  padding : 0;
+
+  .content {
+    display : none;
+  }
+
+  .apply-btn {
+    display : block;
+  }
+}
+
+.fixfixed {
+  position : relative;
+
+  .input {
+    position : absolute;
+    left     : 0;
+    bottom   : 0;
+  }
+}
+
+.loading-bar-wrap {
+  position : absolute;
+  top      : 80*@px;
+  left     : 0;
+  width    : 100%;
+}
+
+.loading-bar {
+  margin          : 0 auto;
+  width           : 40px;
+  height          : 40px;
+  line-height     : 40px;
+  font-size       : 14px;
+  color           : #888;
+  background      : url("@{pic_url}/images/webwap/pull-icon@2x.png") 0 0 no-repeat;
+  background-size : 40px 80px;
+  text-align      : center;
+
+  &[status="loading"] {
+    background-position         : 0 100%;
+    .transform(rotate(0deg) translateZ(0));
+    -webkit-transition-duration : 0;
+    transition-duration         : 0;
+    .animation(loading 2s linear infinite);
+  }
+
+  &[status="stop"] {
+    background : 0 none;
+  }
+}
+
+.send-btn {
+  min-width        : 140*@px;
+  width            : 20%;
+  height           : 80*@px;
+  font-size        : 32*@px;
+  line-height      : 80*@px;
+  color            : #fff;
+  background-color : rgb(128, 222, 73);
+  border           : 0;
+  border-radius    : 3px;
+  outline          : 0;
+  text-align       : center;
+}
+
+@media only screen and (max-device-width : 480px) {
+  .send-btn {
+    font-size : 26*@px;
+  }
+}
+
+@media only screen and (max-device-width : 230px) {
+  .send-btn {
+    font-size : 24*@px;
+  }
+}
+
+.apply-btn {
+  display          : none;
+  position         : absolute;
+  left             : 0;
+  bottom           : 0;
+  width            : 100%;
+  height           : 100*@px;
+  line-height      : 100*@px;
+  font-size        : 32*@px;
+  color            : #fff;
+  background-color : #f66;
+  text-align       : center;
+
+  &:hover {
+    color : #fff;
+  }
+}
+
+@-webkit-keyframes loading {
+  from {
+    .transform(rotate(0deg) translateZ(0));
+  }
+  to {
+    .transform(rotate(360deg) translateZ(0));
+  }
+}
+
+@keyframes loading {
+  from {
+    .transform(rotate(0deg) translateZ(0));
+  }
+  to {
+    .transform(rotate(360deg) translateZ(0));
+  }
+}
+
+/* 标签 */
+.tag();
+
+/* 语音 */
+.voice-btn();
+
+.post-voice-length {
+  margin-top : 0;
+}
+
+.icon-rotate-circle {
+  visibility    : hidden;
+  width         : 30*@px;
+  height        : 30*@px;
+  margin-left   : -36*@px;
+  margin-right  : 6*@px;
+  color         : #fff;
+  border        : 3px solid;
+  border-color  : #fff transparent #fff transparent;
+  border-radius : 50%;
+  .animation(rotate .8s cubic-bezier(0, 0, 0.23, 0.89) infinite);
+}
+
+.is-busy .icon-rotate-circle {
+  visibility : visible;
+}
+
+@-webkit-keyframes rotate {
+  from {
+    -webkit-transform : rotate(0);
+    transform         : rotate(0);
+  }
+  to {
+    -webkit-transform : rotate(360deg);
+    transform         : rotate(360deg);
+  }
+}
+
+@keyframes rotate {
+  from {
+    transform : rotate(0);
+  }
+  to {
+    transform : rotate(360deg);
+  }
+}

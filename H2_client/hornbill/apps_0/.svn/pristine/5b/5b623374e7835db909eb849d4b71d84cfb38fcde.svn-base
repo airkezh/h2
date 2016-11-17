@@ -1,0 +1,38 @@
+<%#head_frame.html%>
+<% console.log('老页面已经被弃用位置：/wap/views/guang/goods7.html'); %>
+<%#head_guang.html%>
+<nav class="nav_top" id="nav-top" active="0">
+	<ul>
+		<li class="active"><span>流行</span></li>
+		<li><span>热门</span></li>
+		<li><span>最新</span></li>
+	</ul>
+</nav>
+<section id="wrapper_main" class="wrapper">
+	<div class="scroller">
+		<div class="pullDown" status="normal">
+			<span class="icon"></span>
+		</div>
+		<section class="wrapperInner">
+			<div class="goods_wall"></div>
+		</section>
+		<div class="pullUp" status="normal">
+			<span class="icon"></span>
+		</div>
+	</div>
+</section>
+<section id="wrapper_main" class="wrapper<%if(!isRoute && this.headTag != 'goods'){%> normal<%}%>" status="normal">
+<%# guang/poster.html%>
+</section>
+
+<script>
+<%= this.poster0? 'Meilishuo.config.poster0 = '+JSON.stringify(this.poster0)+';':'' ;%>
+fml.vars._guang_word_name = "<%== this.attrName%>";
+Meilishuo.config.curWord = "<%== this.currentWord%>";
+</script>
+<% $_ENGINE_SELF.callFn("useModule")("fml.use('wap/page/poster0');", this._JSstack , this._JSmodsFast ); %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/guang7');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot_frame.html%>

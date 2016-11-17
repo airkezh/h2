@@ -1,0 +1,28 @@
+<%# head_simple.html%>
+<style>
+h1{text-align: center; padding: 20px; height: 30px; line-height: 30px;}
+.sec{ padding: 15px;}	
+.but{ display: inline-block; height: 26px; padding: 0 8px; line-height: 26px; background-color: #24c7c7; border-radius:3px;color: #fff;}
+.img{
+	display: block; margin: 20px auto;width: 85%;border-radius: 5px;overflow: hidden;box-shadow: 0 1px 3px 0 rgba(0,0,0,0.33);
+}
+</style>
+</head>
+<body>
+
+<h1>uploadImg 使用演示</h1>
+
+<section class="sec">
+	<input id="inputFile" class="inputFile" type="file" />
+	<a id="fileA" class="but" style="display:none;" href="">app  uploadImg</a>
+
+	<img class="img" id="img1" src="" />
+
+	<img class="img" id="img2" src="" />
+</section>
+
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/lark/uploadImg-use');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html%>

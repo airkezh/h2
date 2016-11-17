@@ -1,0 +1,80 @@
+<%#head.html%>
+<%
+var query = this._Request_query;
+var getLink = _extFn.getLink;
+var mSubstr = _extFn.mSubstr;
+var html_encode = _extFn.html_encode;
+%>
+<div class="settings">
+	<div class="hp_tab">
+		<div class="use-info">
+			<img src="<%==this.avatar.avatar_e%>" alt="" class="use-pic">
+			<p href="" class="use-name"><a class="use" href="" title="<%==this.userInfo.nickname%>"><%==this.userInfo.nickname%></a></p>
+			<p class="use-id">用户ID：<%==this.userInfo.user_id%></p>
+		</div>
+
+	<div class="sub_tab">
+		<ul class="account-manage">
+				<strong>账号管理</strong>
+				<li><a href="/settings/setPersonal" <%if(this.headTag == 'setPersonal'){%>class="red_f"<%}%>>我的信息</a></li>
+				<li><a href="/settings/setAvatar" <%if(this.headTag == 'setAvatar'){%>class="red_f"<%}%>>设置头像</a></li>
+				<li><a href="/settings/setPassword" <%if(this.headTag == 'setPassword'){%>class="red_f"<%}%>>修改密码</a></li>
+				<li><a href="/settings/sync" <%if(this.headTag == 'sync'){%>class="red_f"<%}%>>同步绑定</a></li>
+				<li><a href="/settings/myReport" <%if(this.headTag == 'myReport'){%>class="red_f"<%}%>>我的举报</a></li>	
+		</ul>
+		<ul class="account-safe">
+				<strong>账号安全</strong>
+				<li>
+					<a href="/settings/safeCon" style="border:none;" <%if(this.headTag == 'safeCon'){%>class="red_f"<%}%>>安全中心</a>
+				</li>
+				<li>
+					<a href="/settings/bindMobile" style="border:none;" <%if(this.headTag == 'bindMobile'||this.headTag == 'biePhone'){%>class="red_f"<%}%>>手机绑定</a>
+				</li>
+				
+				<li>
+					<a href="/settings/loginEqm" style="border:none;" <%if(this.headTag == 'loginEqm'){%>class="red_f"<%}%>>登录设备</a>
+				</li>	
+				<li>
+					<a href="/settings/safeHelp" style="border:none;" <%if(this.headTag == 'safeHelp'||this.headTag == 'helpCon'){%>class="red_f"<%}%>>安全贴士</a>
+				</li>
+				
+		</ul>
+	</div>		
+</div>
+
+	<div class="settings_box">
+			
+	<% if(this.headTag == 'setPassword'){%>
+		<%# settings/setPassword.html%>
+	<%} else if(this.headTag == 'setPersonal'){%>
+		<%# settings/setPersonal.html%>
+	<%} else if(this.headTag == 'setAvatar'){%>
+		<%# settings/setAvatar.html%>
+	<%} else if(this.headTag == 'set_addr'){%>
+		<%# settings/set_addr.html%>
+	<%} else if(this.headTag == 'setEmail'){%>
+		<%# settings/modifyEmail.html%>
+	<%} else if(this.headTag == 'sync'){%>
+		<%# settings/sync.html%>
+	<%} else if(this.headTag == 'myReport'){%>
+		<%# settings/myReport.html%>
+	<%} else if(this.headTag == 'bindMobile'){%>
+		<%# settings/bindMobile.html%>
+	<%} else if(this.headTag == 'biePhone'){%>
+		<%# settings/biePhone.html%>
+	<%} else if(this.headTag == 'safeCon'){%>
+		<%# settings/safeCon.html%>
+	<%} else if(this.headTag == 'loginEqm'){%>
+		<%# settings/loginEqm.html%>
+	<%} else if(this.headTag == 'safeHelp'){%>
+		<%# settings/safeHelp.html%>
+	<%} else if(this.headTag == 'helpCon'){%>
+		<%# settings/helpCon.html%>
+	<%}%>
+
+</div>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/settings');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

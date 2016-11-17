@@ -1,0 +1,19 @@
+<%# sq/header.html %>
+
+<% 
+	var data = this.main.data;
+
+	if(data){
+		data.forEach(function (item){ 
+%>
+<section>
+	<h2><%= item.title %></h2>
+	<div class="special-wrapper">
+	<% item.list.forEach(function (item){ %>
+	<a href="<%= item.url %>"><img src="<%= item.image_url %>"></a>
+	<% }); %>
+	<div>
+</section>
+<% });} %>
+
+<%# sq/footer.html %>

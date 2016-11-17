@@ -1,0 +1,126 @@
+<%#head.html%>
+
+<%
+	var page_info = this.pageData.info;
+	var now = new Date;
+
+	var btn_txt = '活动未开始',
+		num_txt = '还差<b>' + page_info.remain_limit + '</b>人就能享受最低价',
+		time_txt = '距报名开始',
+		start_time = new Date(page_info.start_time),
+		end_time = new Date(page_info.end_time),
+		buy_end_time = new Date(page_info.buy_end_time),
+		time = start_time - now,
+		status_class = 'not_start'
+
+	if(now > start_time){
+		if(now < end_time){
+			time_txt = '距报名结束';
+			time = end_time - now;
+		} else {
+			time = buy_end_time - now;
+			time_txt = '距抢购结束';
+		}
+	}
+	if(page_info.remain_limit <= 0){
+		num_txt = '报名人数已达<b>' + page_info.enroll_limit + '</b>人，抢购即将开始'
+	}
+	switch(page_info.group_status){
+		case 1:
+			btn_txt = '我要报名';
+			status_class = 'goin_us';
+			break;
+		case 2:
+			btn_txt = '马上去购买';
+			num_txt = '已成团 折扣价购买';
+			status_class = 'buy_link';
+			break;
+		case 3:
+			btn_txt = '去看看其他优惠活动';
+			num_txt = '本次活动已结束';
+			status_class = 'other_link';
+			break;
+	}
+	if(page_info.is_enroll && page_info.group_status == 1){
+		btn_txt = '已报名，邀请好友';
+		status_class = 'not_start js_share';
+	}
+%>
+
+<div class="main">
+	<div class="goods">
+		<img src="<%= page_info.img %>">
+		<a href="<%= _extFn.getAppLink('twitter_single', {'twitter_info' : {'twitter_id' : page_info.twitter_id, 'is_doota' : 1}}, this.os, this.r, '/share/item/' + page_info.twitter_id); %>" class="title"><%= page_info.title %><span>商品详情&gt;</span></a>
+		<p class="price">拼购价<span>￥<%= page_info.discount_cost %></span><span class="original">￥<%= page_info.original_price %></span></p>
+	</div>
+
+	<div class="content <%= page_info.group_status == 3 ? 'act_end' : '' %>">
+		<div class="progress"><div class="in" style="width: <%= (page_info.limit - page_info.remain_limit)/page_info.limit * 100 %>%;"></div><span><%= num_txt %></span></div>
+		<p class="time"><%= time_txt %>：<span id="time" data-time="<%= time/1000 %>"><i id="day">00</i>天<i id="hour">00</i>小时<i id="min">00</i>分<i id="sec">00</i></span></p>
+		<div class="status <%= status_class %>"><%= btn_txt %></div>
+
+		<div class="rule">
+			<span class="a_title">活动规则</span>
+			<img style="margin-left: -3.125%;" src="http://d05.res.meilishuo.net/img/_o/31/80/164c220ba31d4c083c17d21a2426_580_82.ch.png">
+			<p>1、报名参团：填写手机号，即报名成功</p>
+			<p>2、邀请好友：分享本页面到朋友圈，邀请好友参团</p>
+			<p>3、成团通知：报名人数满足要求后，成团时会收到短信通知</p>
+			<p>4、享受优惠：本次活动报名限时3天，请在成团后48小时内完成购买，商品数量有限，先到先得</p>
+			<span class="a_title">查看进度</span>
+			<p>1、在微信里收藏本页面，随时打开查看进度</p>
+			<p>2、用微信账号登陆美丽说app，在美妆频道查看</p>
+		</div>
+		<div class="user_review">
+			<span class="a_title">用户评论</span>
+			<% this.pageData.comment.forEach(function(comment, index){ %>
+			<% if(index < 5){ %>
+				<p><span class="name"><%= comment.user_name %>：</span><%= comment.comment %></p>
+			<% } %>
+			<% }); %>
+		</div>
+	</div>
+
+	<% if(this.share){ %>
+		<%= requireFn('wapShare.html')({
+			'share' : this.share
+			, 'shareTitle' : '选择分享到'
+			, '_JSstack' : this._JSstack
+			, '_JSmods' : this._JSmods
+		}); %>
+	<% } %>
+
+	<div class="other_act">
+		<a href="<%= page_info.cross_url %>"><div class="cross_pic"><img src="<%= page_info.cross_picture %>"></div><span><%= page_info.cross_title %></span><img class="cross_go" src="http://d04.res.meilishuo.net/img/_o/d3/42/f287e84b0aa23ad607f54f7ad08e_14_80.cg.png"></a>
+	</div>
+	<div class="bounding"></div>
+</div>
+<div id="wx_tips"></div>
+<script type="text/html" id="join_alert">
+<div class="join_wrap">
+	<div class="mask"></div>
+	<div class="join">
+		<p>留下手机号，方便开团时通知您！</p>
+		<div class="user_phone"><div class="input_btn"><input id="phone_num" type="number"></div><span id="commit">提交</span></div>
+	</div>
+	<div class="clear_f"></div>
+</div>
+</script>
+
+<script>
+	fml.vars.user_id = <%= this.userInfo.user_id || 0 %>;
+	fml.vars.group_id = '<%= this.group_id %>';
+	fml.vars.is_enroll = <%= page_info.is_enroll ? true : false %>;
+	fml.vars.limit = <%= +page_info.limit || 0 %>;
+	fml.vars.enroll_limit = <%= +page_info.enroll_limit || 0 %>;
+	fml.vars.weixin_pagetitle = '<%= page_info.title %>';
+	fml.vars.weixin_title = '<%= page_info.weixin_title %>';
+	fml.vars.weixin_picture = '<%= page_info.weixin_picture %>';
+	fml.vars.weixin_sign = <%= JSON.stringify(this.weixin_sign.info) %>;
+</script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/biz/groupShopping');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot.html%>

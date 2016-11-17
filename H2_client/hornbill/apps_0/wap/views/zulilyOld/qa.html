@@ -1,0 +1,124 @@
+<%#head.html%>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script>
+
+    
+</script>
+<iframe class="page play" src="/zulilyOld/answer/<%= this.cid %>" frameborder="0" style="display:none;">
+</iframe>
+
+
+<div class="page begain">
+	<div class="content">
+		<img src="http://d02.res.meilishuo.net/pic/_o/3f/89/d84f7bf2de1f0d9555f1ffa84e4c_640_1080.cf.jpg" alt="开始答题">
+		<div class="start_btn">
+			<img src="http://d01.res.meilishuo.net/pic/_o/64/00/55d7563daaddf43aec9c7524e4f8_219_77.ch.png" alt="开始按钮">
+		</div>
+	</div>
+</div>
+
+
+<div class="page result" style="display:none">
+	<div class="content">
+		<img class="lev0" src="http://d05.res.meilishuo.net/pic/_o/d4/1c/f730bd0acfe3ede1981565d90e10_640_794.cg.jpg" alt="0分">
+		<img class="lev1" src="http://d02.res.meilishuo.net/pic/_o/5f/f0/b062f796d057e9dd28e3acf52d83_640_794.cg.jpg" alt="50分">
+		<img class="lev2" src="http://d02.res.meilishuo.net/pic/_o/21/af/9f46968dcf123535e83b843a2b83_640_794.cg.jpg" alt="100分">
+		<div class="operate">
+			<ul>
+				<li>
+					<img class="again_btn" src="http://d02.res.meilishuo.net/pic/_o/1f/2f/e51e286f847d091e927d21c20def_219_77.cg.jpg" alt="查看神功秘籍">
+				</li>
+				<li>
+					<img class="share_btn" src="http://d04.res.meilishuo.net/pic/_o/b2/fe/cb7276be0449dd1272a762b0c89b_219_77.cf.jpg" alt="叠罗汉练神功">
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="share" style="display:none">
+			<img src="<%=this.PICTURE_URL%>/images/wap/qa/share.png" alt="请点击右上角分享">
+	</div>
+</div>
+
+
+<!--div class="page recommand" style="display:none">
+	<div class="content">
+
+		 <div class="rec_btn">
+		 	<img src="<%=this.PICTURE_URL%>/images/wap/qa/rec_btn.png" alt="提交推荐">
+		</div>
+	</div>
+	<div class="mask correct_mask" style="display:none">
+		<div class="mask_content">
+			<img class="success_info" src="<%=this.PICTURE_URL%>/images/wap/qa/submit_info.png" alt="提交成功！">
+			<div class="know">
+				<img class="know_btn" src="<%=this.PICTURE_URL%>/images/wap/qa/know.png" alt="我知道了!">
+			</div>
+		</div>
+	</div>
+
+	<div class="mask wrong_mask" style="display:none">
+		<div class="mask_content">
+			<img class="success_info" src="<%=this.PICTURE_URL%>/images/wap/qa/wrong_submit.png" alt="提交出错！">
+			<div class="know">
+				<img class="back_btn" src="<%=this.PICTURE_URL%>/images/wap/qa/back.png" alt="返回上一步!">
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+<div class="page download" style="display:none">
+	<div class="content">
+		<img src="<%=this.PICTURE_URL%>/images/wap/qa/higo.jpg" alt="">
+		<ul>
+			<li>
+				<a href="http://m.higo.meilishuo.com">
+					<img class="higo_btn" src="<%=this.PICTURE_URL%>/images/wap/qa/higo_btn.png" alt="下载higo">
+				</a>
+			</li>
+			<li>
+				<img class="again_btn" src="<%=this.PICTURE_URL%>/images/wap/qa/again_btn.png" alt="再来一局">
+			</li>
+		</ul>
+	</div>
+</div -->
+
+<script>
+	fml.vars.common_r = '<%= this.common_r_XR %>';
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/zulilyOld/qa',function(){
+		if(Meilishuo.config.os.weixinBrowser){
+			$.ajax({
+				url: '/aj/wx/sign'
+				, data: {
+					url:window.location.href
+				}   
+				, dataType: 'json'
+				, type: 'post'
+				, success : function(data){
+					wx.config({
+						debug:false
+						//debug:false 
+						, appId: data.info.appId
+						, timestamp: data.info.timestamp
+						, nonceStr: data.info.nonceStr
+						, signature: data.info.signature
+						, jsApiList: [
+							'checkJsApi',
+							'onMenuShareTimeline',
+							'onMenuShareAppMessage',
+							'onMenuShareQQ',
+							'onMenuShareWeibo'
+						]   
+					}); 
+				},
+				error: function(err){
+				}
+			})
+		}
+	});
+_use:", this._JSstack, this._JSmods); %>
+
+<%#foot_frame.html%>

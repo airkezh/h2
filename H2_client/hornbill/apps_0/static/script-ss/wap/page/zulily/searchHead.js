@@ -1,0 +1,46 @@
+/*common*/
+require('wap/zepto/fastclick');
+var $html = $(document.querySelector('html')),
+	$body = $('body'),
+	searchBoxShow = $('#searchBoxShow'),
+	box = searchBoxShow.find('.box'),
+	searchBox = $('#searchBox'),
+	searchForm = $('#searchForm'),
+	input = searchBox.find('input');
+
+searchBoxShow.on('click', function() {
+	$html.addClass('win_lock');
+	$(this).hide();
+	searchBox.show();
+	input.focus();
+	input.val(input.attr('placeholder'));
+	$body[0].addEventListener('touchmove', function() {
+		input.blur();
+	}, false);
+	$body.append("<div class='search-cover'></div>");
+});
+input.on('blur', function() {
+	var self = $(this);
+	var val = self.val() || self.attr('placeholder');
+	if (val != '') {
+		box.html(val);
+		self.attr('placeholder', val);
+	} else {
+		box.html(fml.vars.defaultWord);
+		self.attr('placeholder', fml.vars.defaultWord);
+	}
+	$html.removeClass('win_lock');
+	searchBoxShow.show();
+	searchBox.hide();
+	input.val('');
+	$body.find('.search-cover').remove();
+})
+
+//submit
+searchForm.on('submit', function(event) {
+	event.preventDefault();
+	var self = $(this),
+		url = self.attr('action'),
+		searchWord = $.trim(input.val()) || fml.vars.searchWord;
+	window.location.href = window.__get_r(url + '?keyword=' + encodeURIComponent(searchWord), self.data('xr'));
+})

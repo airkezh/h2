@@ -1,0 +1,45 @@
+<%*
+ * @fileoverview 优惠券领取-单宝&店铺页
+ * @author qindai@meilishuo.com
+ * @date 2015-09-22
+%>
+
+
+<%* 店铺优惠券
+ * can_apply_status当前登录用户可否申领该店铺优惠券的状态
+ * 0立即领取，
+ * 1已抢光，
+ * 2已领取，
+ * 3未登录，
+ * 4申领码未激活，
+ * 5申领码已过期，
+ * 6系统异常 
+%>
+
+<%
+	var shopCouponD = this.coupons; 
+	var coupon_txt = ['领取','已抢光','已领取'];
+	if(shopCouponD && shopCouponD.length > 0){
+%>
+<section class="coupon-wrap">
+	<% 
+		shopCouponD.forEach(function (cp){
+	%>
+	<div class="coupon <%= cp.can_apply_status == 2 ? 'got' : 'get' %>" data-id="<%= cp.coupon_apply_code %>">
+			<p class="credit"><i class="price">¥</i><%= cp.credit %></p>
+			<p class="threshold">
+				<%=cp.threshold > 0 ? '消费满'+ cp.threshold+'使用' :  '无门槛使用' %>
+			</p>
+			<span class="status">
+				<%= coupon_txt[cp.can_apply_status] || '' %>
+			</span>
+	</div>
+	<% }); %> 
+</section>
+<% } %>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/wx_new/mdl_coupon');
+_use:", this._JSstack , this._JSmods ); %>
+
+

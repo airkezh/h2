@@ -1,0 +1,108 @@
+@import "../block.less";
+@import "../window.less";
+@import "../block/common_sale.less";
+body{
+	.bgc(white);
+}
+@media screen and (max-width:1200px){
+	body{.w(1240px);}
+}
+
+.slide{.h(340px);.hidden;.w(100%);
+	.slide_img{.h(340px);.w(100%);z-index:0;
+		li{.left;.w(100%);}
+		.pic{.block;.h(340px);background: repeat center top;}
+	}
+}
+
+/* top_wrap */
+.top_wrap{.auto;.w(1190px);.pr;.h(158px);}
+.rec_nav{
+	.pa;left:0;top: -340px;
+	.common_shadowBox;.h(478px);.w(203px);padding: 0 25px 17px;border-top: 0;.hidden;
+	h1{.none;}
+
+	/* nav_list */
+	.nav_list{.hidden;.pb(12px);}
+	li{.border-bc(dotted);.hidden;.pt(13px);.pb(13px);.w(100%);
+		span{.red;.f(16px);.l(32px);.w(35px);}
+		a{.left;.nowrap;.l(20px);.mt(2px);.mb(2px);.pr(10px);}
+	}
+
+	/* cate_ser */
+	.text{.left;
+		input{ .border-1;.left;.h(22px);.l(18px);.gray;.w(136px);}
+	}
+	.btn{.left;.ml(6px);.h(26px);.w(52px);
+		input{.bgnone;.border-n;.white;.cursor;.h(26px);.l(20px);}
+	}
+}
+.round{.pa;right: -18px;top: -35px;
+	a{.bgwhite;.border-r(10px);.cursor;.i_block;.mr(22px);.h(10px);.w(10px);}
+	.current{.bgnone;border: 3px solid #fff;.mb(-4px);.h(12px);.w(12px);}
+}
+.bnr_box{.h(144px);.pa;right:0;top: 12px;
+	li{.ml(10px);.w(175px);.border-1(#e6e6e6);.left;.hidden;.h(142px);}
+}
+
+/*
+** show_box, default color is pink
+**@fn_c1: title字体颜色
+**@fn_c2: 2px title下划线颜色，链接hover效果颜色
+**@fn_c3: 宝贝描述字体颜色
+**@fn_bg: 宝贝描述背景
+*/
+.show_box_fn(@fn_c1: #ff8bb2, @fn_c2: #ff669c, @fn_c3: #f46499, @fn_bg: "bs_main_a.png"){
+	.w(580px);.hidden;margin: 20px;.left;
+	.box_title{.fc(@fn_c1);border-bottom: 2px solid @fn_c2;.f(16px);.pb(4px);}
+	.box_bannar{.h(310px);.hidden;.block;}
+	.box_bannar:hover{border-bottom: 1px solid @fn_c2;.h(309px);}
+	.goods_wrap{.w(585px);.mt(5px);}
+	.goods_link{.h(300px);.block;.hidden;.left;.w(190px);.mr(5px);}
+	.goods_link:hover{border-bottom: 1px solid @fn_c2;.h(299px);}
+	.goods_link .img_box{.h(190px);.hidden;}
+	.goods_con{background: url("@{pic_url}/images/biz/beauty_sale/@{fn_bg}") repeat-x;padding: 6px 15px;.mt(-10px);.pr;}
+	.goods_title{.fc(@fn_c3);.c;.f(16px);.l(38px);.h(38px);.hidden;}
+	.goods_desc{.f(12px);.fc(#605d5d);.l(20px);.h(40px);.hidden;}
+	.original{.f(14px);.fc(@red);.mr(8px);.l(30px);}
+	del{.f(12px);.fc(#999);}
+	.goods_single{
+		.goods_link{.w(100%);.mr(0);}
+		.goods_link .img_box{.w(580px);.h(268px);}
+		.goods_con{.w(550px);.mr(0);.hidden;.tr;}
+		.goods_desc{.pr(25px);.inline;}
+		.goods_price{.inline;.pr(25px);}
+		.goods_title{.none;}
+	}
+}
+.show_box_wrap{
+	.w(1200px);margin: 20px auto;.hidden;
+	.show_box_inner{.w(1240px);.ml(-20px);}
+	.bs_pink{.show_box_fn();}
+	.bs_blue{.show_box_fn(#69cbe8, #44d6fb, #61afc3, 'bs_main_c.png');}
+	.bs_green{.show_box_fn(#79a246, #7aa148, #698b3f, 'bs_main_b.png');}
+}
+
+/* 海报流 */
+.cata_title { .cata_attr_title; }
+.common_title;
+.fluid;
+.content_fluid{.w(1200px);}
+
+.poster;
+.poster_icons;
+.face_pop{ .window > .head_float; }
+
+/* 保证信息 */
+.promise-foot{
+	.w(100%);
+	border-top: 1px solid #e6e6e6;
+}
+.promiseBox;
+
+/* 分页 */
+.page;
+.pageNav{.page > .pageRed;}
+
+.header_top { .w(1200px); }
+@import "../footer.less";

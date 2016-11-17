@@ -1,0 +1,38 @@
+function hiGoods(){
+	return this;
+}
+
+var controlFns = {
+	'index': function() {
+		// this.debugSnake({'target': 'maoanli.rdlab'});
+		var php = {
+			'classify' : '/street/shop_classes?offset=0&limit=5'
+			,'banner' : '/street/shop_new_banner?offset=0&limit=10'
+			,'hiGoods' : '/street/Shop_hi_goods'
+			,'spike' : '/street/Shop_hi_spike'
+		};
+		var ua = this.req.headers['user-agent']
+		var platform = false;
+		if (/(iPhone|iPod|iOS|iPad)/i.test(ua)){
+			platform = true;
+		}
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			// data.X R = true;
+			data.isIphone = platform;
+			data.pageTitle = 'HI范儿';
+			data._CSSLinks = ['hiGoods'];
+			this.render('hiGoods.html', data);
+		})
+	},
+	'aj': function(params){
+		// this.debugSnake({'target': 'maoanli.rdlab'});
+		var php = {
+			'classList' : '/street/Shop_class_list'
+		};
+		this.ajaxTo(php[params]);
+	}
+};
+
+exports.__create = controller.__create(hiGoods, controlFns);

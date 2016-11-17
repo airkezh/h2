@@ -1,0 +1,291 @@
+<%
+var shop_id = this.shop_id;
+var user_module = this.user_module;
+var shop_info = this.shop_info;
+var shop_trend = this.shop_rate.trends;
+var shop_intro = this.shop_intro;
+var categories = ( this.categories && this.categories[1] && this.categories[1].cats ) || [];
+var shop_name = shop_info.shop_nick;
+
+var shop1111 = this.shop1111_coupon;
+var shop1111_black_list = this.shop1111_black_list;
+
+var defaultShopHead = this.PIC_URL + 'images/shop/head-img.jpg';
+var shop_head_img = (shop_info.shop_level==1 && shop_info.shop_head_img) ? shop_info.shop_head_img : defaultShopHead;
+var display_head_img = this.is_show || shop_info.is_show;
+var query = this.query;
+var shop_banner = this.shop_banner;
+var category_id = this.category_id;
+var getLink = _extFn.getLink;
+%>
+
+<%= requireFn('doota/shop_in.html')({
+shop_in : this.shop_intro,
+_serviceIM : this._serviceIM,
+followerNum : shop_info.followerNum || 0,
+isFollowing : shop_info.isFollowing || 0
+});%>
+
+<div id="shop-hd" class="shop-hd">
+	<%if(display_head_img){%>
+	<a class="top-banner" href="/shop/<%==shop_id %>" style="background-image:url(<%=shop_head_img%>);"></a>
+	<%}%>
+    <%= requireFn('doota/nav.html')({
+            categoryId: category_id,
+            shopId: shop_id,
+            categories: categories
+    	});%>
+</div>
+<div class="clear_f"></div>
+<script type="text/html" id="tmpl_newgoods">
+    <? item && $.each(item, function(i, v) {
+        var showNum = i == 0,
+            shopId  = v.shop_id,
+            date    = v.goods_ctime,
+            href    = '/shop/' + shopId + '?current_date=' + date;
+    ?>
+        <li><a class="<?=showNum ? 'js-newest-goods' : ''?>" href="<?= href ?>" target="_blank"><?= date ?> 新品 <? if( showNum ) {?><i class="label-item-num"><?=v.goods_num?></i><?}?></a></li>
+    <?});?>
+</script>
+
+<!-- 好店双十一装修 -->
+<% if( !this.is_query && !category_id && shop1111_black_list && shop1111_black_list.show == 1 && shop1111){ %>
+<div class="shop1111_box">
+	<div class="shop_follow info_box">
+		<div class="inner">
+			<a class="att_btn <%if(shop_info.isFollowing){%>att<%}else{%>no_att<%}%>">
+				<%if(shop_info.isFollowing){%>已关注<%}else{%><span>+</span>关注本店<%}%>
+			</a>
+			<span class="shop_name"><%= shop1111.shop_info.shop_nick%></span>
+			<img class="shop_logo" src="<%= shop1111.shop_info.shop_face_img%>" />
+		</div>
+	</div>
+	<% if(shop1111.shopping_strategy && shop1111.shop_coupon_apply){ %>
+	<div class="shop_coupon_box">
+		<table class="compute">
+			<tbody>
+			<tr>
+				<td><span class="rmb">￥</span><span class="f30"><%= shop1111.shopping_strategy.recommend_price%></span></td>
+				<td width="30px">-</td>
+				<td><span class="rmb">￥</span><span class="f30"><%= shop1111.shopping_strategy.recommend_shop_coupon_credit%></span></td>
+				<td width="30px">-</td>
+				<td><span class="rmb">￥</span><span class="f30"><%= shop1111.shopping_strategy.recommend_platform_coupon_credit%></td>
+				<td width="30px">=</td>
+				<td><span class="rmb">￥</span><span class="f48"><%= shop1111.shopping_strategy.final_price%></span></td>
+			</tr>
+			<tr class="tip">
+				<td>12.12期间<br />商品折扣价</td>
+				<td></td>
+				<td>店铺优惠券<br /><%= shop1111.shopping_strategy.recommend_shop_coupon_wording%></td>
+				<td></td>
+				<td>美丽说全场券<br /><%= shop1111.shopping_strategy.recommend_platform_coupon_wording%></td>
+				<td></td>
+				<td class="spr"><%= shop1111.shopping_strategy.final_wording%></td>
+			</tr>
+			</tbody>
+		</table>
+		<ul class="mls_coupon coupon1111">
+			<li class="couponLi couponBox1">
+				<div class="bn"><span class="rmb">￥</span><span class="f40">30</span></div>
+				<div class="mj">
+					<p class="bg">满139使用</p>
+					<p>12.12期间<br />全场通用</p>
+				</div>
+				<div class="clear_f"></div>
+				<a class="get_btn pc_ing" href="/promotion/sale_1412/act12/" target="_blank">立即领取</a>
+			</li>
+			<li class="couponLi couponBox2">
+				<div class="bn"><span class="rmb">￥</span><span class="f40">60</span></div>
+				<div class="mj">
+					<p class="bg">满239使用</p>
+					<p>12.12期间<br />全场通用</p>
+				</div>
+				<div class="clear_f"></div>
+				<a class="get_btn pc_ing" href="/promotion/sale_1412/act12/" target="_blank">立即领取</a>
+			</li>
+			<li class="couponLi couponBox3" style="border-right:0;">
+				<div class="bn"><span class="rmb">￥</span><span class="f40">100</span></div>
+				<div class="mj">
+					<p class="bg">满399使用</p>
+					<p>12.12期间<br />全场通用</p>
+				</div>
+				<div class="clear_f"></div>
+				<a class="get_btn pc_ing" href="/promotion/sale_1412/act12/" target="_blank">立即领取</a>
+			</li>
+		</ul>
+		<ul class="shop1111_coupon coupon1111">
+			<% shop1111.shop_coupon_apply && shop1111.shop_coupon_apply.map(function(data , index){  %>
+			<li class="shop_li" <% if(index == shop1111.shop_coupon_apply.length - 1){ %>style="border-right:0;"<%}%> >
+			<div class="bn"><span class="rmb">￥</span><span class="f40"><%= data.credit%></span></div>
+			<div class="mj">
+				<p class="bg1">满<%= data.threshold%>使用</p>
+				<p>12.12期间<br />全店通用</p>
+			</div>
+			<div class="clear_f"></div>
+			<% if(data.can_apply_status == 1){ %>
+			<p class="get_btn shop_zero get_shop_coupon" id="shopcoupon_<%= data.coupon_apply_code%>">已抢光</p>
+			<%}else if(data.can_apply_status == 2){%>
+			<p class="get_btn shop_already get_shop_coupon" id="shopcoupon_<%= data.coupon_apply_code%>">已领取</p>
+			<%}else{%>
+			<p class="get_btn shop_ing get_shop_coupon" id="shopcoupon_<%= data.coupon_apply_code%>">立即领取</p>
+			<%}%>
+			</li>
+			<% }); %>
+		</ul>
+	</div><p></p>
+	<%}else{%>
+	<div class="mls_coupon_box">
+		<ul class="mls_coupon coupon1111">
+			<li class="couponLi couponBox1">
+				<div class="bn"><span class="rmb">￥</span><span class="f40">30</span></div>
+				<div class="mj">
+					<p class="bg">满139使用</p>
+					<p>12.12期间<br />全场通用</p>
+				</div>
+				<div class="clear_f"></div>
+				<a class="get_btn pc_ing" href="/promotion/sale_1412/act12/" target="_blank">立即领取</a>
+			</li>
+			<li class="couponLi couponBox2">
+				<div class="bn"><span class="rmb">￥</span><span class="f40">60</span></div>
+				<div class="mj">
+					<p class="bg">满239使用</p>
+					<p>12.12期间<br />全场通用</p>
+				</div>
+				<div class="clear_f"></div>
+				<a class="get_btn pc_ing" href="/promotion/sale_1412/act12/" target="_blank">立即领取</a>
+			</li>
+			<li class="couponLi couponBox3" style="border-right:0;">
+				<div class="bn"><span class="rmb">￥</span><span class="f40">100</span></div>
+				<div class="mj">
+					<p class="bg">满399使用</p>
+					<p>12.12期间<br />全场通用</p>
+				</div>
+				<div class="clear_f"></div>
+				<a class="get_btn pc_ing" href="/promotion/sale_1412/act12/" target="_blank">立即领取</a>
+			</li>
+		</ul>
+	</div>
+	<%}%>
+</div>
+<script type="text/html" id="code_pic_main">
+	<div class="code_main_top"><span class="code_main_close"></span></div>
+	<div class="code_main">
+		<div class="code_info">
+			<div class="code_input_Text">
+				<input type="text" class="input_box" value="输入验证码">
+			</div>
+			<img src="" alt="" class="img_code">
+			<span class="code_reload">换一张</span>
+		</div>
+		<div class="code_tips"></div>
+		<a href="javascript:;" class="code_reset">取消</a><a href="javascript:;" class="code_submit">确定</a>
+	</div>
+</script>
+<script type="text/html" id="code_mob_main">
+	<div class="code_main_top"><span class="code_main_close"></span></div>
+	<div class="code_mob">
+		<p class="code_mob_text">验证码将会发到你的默认手机上，如未设置默认手机请去我的设置里填写。</p>
+		<div class="code_mob_btn">发 送</div>
+		<input type="text" class="code_mob_input" value="输入手机验证码">
+		<a href="javascript:;" class="code_mob_submit">验证</a>
+		<div class="code_mob_tips"></div>
+	</div>
+</script>
+<script type="text/html" id="coupon_success">
+	<div class="c_success_top"><span class="coupon_close"></span></div>
+	<div class="c_suc_btn">确 定</div>
+</script>
+<%}%>
+
+
+<% if( !this.is_query && !category_id && shop_banner && shop_banner.info && shop_banner.info.length){ %>
+<div class="slider">
+	<div id="slider">
+		<% shop_banner.info.map(function(banner){ %>
+		<%if(banner.link_url){%>
+		<a href="<%=banner.link_url%>" style="background:url(<%=banner.pic_url%>) no-repeat center center;background-color:white;" target="_blank"></a>
+		<%}else{%>
+		<span style="background:url(<%=banner.pic_url%>) no-repeat center center;background-color:white;"></span>
+		<%}%>
+		<% }); %>
+	</div>
+</div>
+<%if(shop_banner.info.length  > 1){%>
+<div class="round">
+	<div class="adType">
+		<a href="javascript:;" data-style='-1'></a>
+		<a class="next" href="javascript:;" data-style='1'></a>
+	</div>
+</div>
+<%}%>
+<% } %>
+
+
+<% if( !this.is_query && !category_id && user_module && user_module.info && user_module.info.length){ %>
+<% user_module.info.map && user_module.info.map(function(m){%>
+<div class="user_module" <%if(!m.name){%>style="background:none;"<%}%>>
+<%if(m.name){%>
+<div class="name"><%==m.name%></div>
+<%}%>
+<%if(m.content && m.content.length){%>
+<%if(m.type == 'banner'){%>
+<div class="pics">
+	<%m.content.map && m.content.map(function(c){%>
+	<div class="pic">
+		<a target="_blank" href="<%=c.link_url%>"><img src="<%=c.pic_url%>"/></a>
+	</div>
+	<%});%>
+</div>
+<%}else{%>
+<div class="goods_list">
+	<ul class="all_goods">
+		<% var goods_count = 0; %>
+		<% m.content.map && m.content.map(function(data) { %>
+		<% var style = ++goods_count % 4 ? '' : 'style="margin-right:0"' ; %>
+		<li class="poster_grid retsop" <%= style %> twitter_id="<%=data.twitter_id%>" twitter_author_uid="<%=data.twitter_author_uid%>" twitter_source_tid="<%= data.twitter_source_tid%>" twitter_show_type="<%=data.twitter_show_type%>" like_twitter_id="<%=data.like_twitter_id%>">
+		<div class="hover_pic">
+			<a href="<%= data.url %>" target="_blank"><img class="goods_pic" src="<%= data.goods_img %>" /></a>
+			<span class="price"><%= data.goods_price %></span>
+			<div class="like_merge">
+				<% if (data.isShowLike!=0){ %>
+				<a  class="right_f poster_likes " href="javascript:void(0)">
+					<i class="like_status <%if(data.is_liked){%>lm_liked<%}else{%>lm_like<%}%>">&nbsp;</i>
+				</a>
+				<% } %>
+				<a class="right_f poster_forward" href="javascript:void(0)"><em class="lm_shouji">&nbsp;</em>收进杂志</a>
+			</div>
+		</div>
+		<p class="tle"><%= _extFn.mSubstr(data.goods_title , 32 , '...')%></p>
+		<p class="comm_num">
+			<a isShowLike="<%= data.isShowLike%>" s_uid="<%=data.like_author_uid%>" class="left_f poster_likes likes <%if(data.is_liked){%>liked<%}%>" href="javascript:void(0)">
+				<b class="likes_status">
+					<%if(data.is_liked){%>已喜欢<%}else{%><i class="lm_love2">&nbsp;</i>喜欢<%}%>
+				</b>
+				<span class="red_f f14_f poster_like_num"><%= data.count_like%></span>
+			</a>
+			<span class="gray_f right_f">销量（<%= data.sale_num %>）</span>
+		</p>
+		<%= requireFn('mark.html')({
+		'marks' : data.horizontal_mark
+		}); %>
+		</li>
+		<% }); %>
+		<div class="clear_f"></div>
+	</ul>
+</div>
+<%}%>
+<%}%>
+</div>
+<%});%>
+<% } %>
+
+
+<script>
+	fml.vars.shop_id = <%= this.shop_info.shop_id%>;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+		fml.use('app/shop_catalog');
+fml.use('app/attention');
+fml.use('page/doota/overShopHeader');
+fml.use('app/slider');
+_use:", this._JSstack , this._JSmods ); %>

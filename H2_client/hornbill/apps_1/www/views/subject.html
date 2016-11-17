@@ -1,0 +1,160 @@
+<%# head.html%>
+<%
+    var data = this.topic.data;
+    var rl   = /&lt;/g;
+    var rg   = /&gt;/g;
+%>
+<div class="main">
+    <div class="title">
+        <h2>
+            <%= data.title.replace(rl, '<').replace(rg, '>') %>
+        </h2>
+    </div>
+
+    <div class="tip">
+        <img src="http://img.meilishuo.net/css/images/topic/mltips.png" width="82" height="81">
+        <p class="desc"><%= data.description.replace(rl, '<').replace(rg, '>') %></p>
+    </div>
+
+    <div class="lists">
+        <%
+        var attrs = data.attrs;
+        for(var k in data.attrs) {
+            var attr = attrs[k];
+        %>
+        <div class="list">
+            <div class="hd">
+                <a href="/search?searchType=3&amp;searchKey=<%= attr.word_name %>&amp;filter=magazine" class="more" target="_blank">查看更多>></a><h3 class="sec-head"><%= attr.word_name %></h3>
+            </div>
+            <div class="bd">
+                <% attr.groupInfo.magazine.gInfo.forEach(function(info, i) { %>
+                <div class="item <% if(i % 4 == 0) { %>first<% } else if((i + 1) % 4 == 0) { %>last<% } %>">
+                    <div class="hd">
+                        <p class="num"><%= info.num %></p>
+                        <a href="/group/<%= info.group_id %>" target="_blank" ><h3><%= info.name %></h3></a>
+                    </div>
+                    <a href="/group/<%= info.group_id %>" target="_blank" class="pic-wrap">
+                        <img src="<%= info.mixpic %>" width="200" height="200">
+                    </a>
+                    <div class="ft">
+                        <% if (this.is_follower){ %>
+                        <span class="removeGroupFollow pink_follow" groupid="<%= info.group_id%>">已关注</span>
+                        <% } else {%>
+                        <span  class="addGroupFollow red_follow" groupid="<%= info.group_id%>" >+ 加关注</span>
+                        <% }%>
+                    </div>
+                </div>
+                <% }) %>
+            </div>
+        </div>
+        <% } %>
+    </div>
+    <div class="wall">
+        <% if(data.posters && data.posters.length) {%>
+        <h3 class="hd sec-head">你可能对以下宝贝感兴趣</h3>
+
+        <%
+            var posters = data.posters,
+                len  = posters.length,
+                count = 4,
+                nums = Math.ceil(len / 4),
+                poster, gInfo, uInfo, height;
+
+            while(count--) {
+        %>
+            <div class="column <% if(count == 3) {%>first<%}else if(count == 0){%>last<%}%>">
+                <%
+                    for(var i = 0; i < nums; i++) {
+                        poster = posters.shift();
+                        if(!poster) break;
+                        gInfo = poster.ginfo;
+                        uInfo = poster.uinfo;
+                        height = parseInt(200 * +poster.img_o_height / +poster.img_o_width);
+                %>
+                <div class="poster">
+                    <div class="bd">
+                        <a href="/share/<%= poster.twitter_id %>" target="_blank">
+                            <img src="<%= poster.show_pic %>" width="200" height="<%= height %>">
+                        </a>
+                        <div class="info">
+                            <b><%= poster.count_like %></b>喜欢
+                        </div>
+                    </div>
+                    <div class="ft">
+                        <a class="avatar userInfoTips" href="/person/u/<%= uInfo.user_id %>" target="_blank" user_id="<%= uInfo.user_id %>"><img class="avatar" src="<%= uInfo.avatar_c %>" title="<%= uInfo.nickname %>" width="32" height="32"></a>
+                        <p class="content"><a class="nickname" href="/person/u/<%= uInfo.user_id %>" target="_blank"><%= uInfo.nickname %></a><%= poster.repin %></p>
+                    </div>
+                </div>
+                <%}%>
+            </div>
+        <% }}%>
+    </div>
+    <a class="big-btn" href="/welcome?frm=subject_more" target="_blank"><em class="big-btn-r"></em>查看更多&gt;&gt;</a>
+</div>
+
+
+<script type="text/html" id="facePop">
+    <div class="face_pop">
+        <div class="corner_t none_f"></div>
+        <div class="pop_con">
+            <div class="fp_con">
+                <div class="fp_info">
+                    <a class="avatar64_f" href="/person/u/<?=user_id?>" target="_blank"><img src="<?= avatar_c?>" /></a>
+                    <p>
+                        <a class="<?if(online_status){?> online <?}else{?> notonline <?}?>" href="/person/u/<?=user_id?>" target="_blank"><?= nickname?>
+                        </a>
+					<span class="identity_small_style">
+						<?
+var identity;
+if (identity){
+	if(identity.pinkV){?>
+                        <span class="mls_special" title="<?= identity.pinkV?>">&nbsp;</span>
+                        <?}if(identity.editorV){?>
+                        <a class="mls_editor" title="<?= identity.editorV?>" href="http://www.meilishuo.com/super_editor" target="_blank">&nbsp;</a>
+                        <?}if(identity.blueV){?>
+                        <span class="mls_lv" title="<?= identity.blueV?>">&nbsp;</span>
+                        <?}if(identity.purpleV){?>
+                        <span class="mls_zv" title="<?= identity.purpleV?>">&nbsp;</span>
+                        <?}if(identity.heart_buyer){?>
+                        <span class="mls_buyer" title="<?= identity.heart_buyer?>">&nbsp;</span>
+                        <?}if(identity.diamond_buyer){?>
+                        <span class="mls_diamond" title="<?= identity.diamond_buyer?>">&nbsp;</span>
+                        <?}
+}?>
+
+					</span>
+                    </p>
+                    <?if(province || city){?>
+                    <p><?=province?> <?=city?></p>
+                    <?}?>
+                    <p class="nowrap_f">
+                        <span><a href="/ur/fans/<?=user_id?>" target="_blank">粉丝</a><a class="red_f" href="/ur/fans/<?=user_id?>" target="_blank"><?= follower_num?></a></span>
+                        <span><a href="/person/u/<?=user_id?>#personNavBar?type=book" target="_blank">分享</a><a class="red_f" href="/person/u/<?=user_id?>/all#personNavBar" target="_blank"><?= twitter_num?></a></span>
+                        <a class="red_f" href="/atme/recommend/<?= user_id?>" target="_blank"><em class="lm_love">&nbsp;</em><?= heart_num?></a>
+                    </p>
+                </div>
+                <div class="clear_f"></div>
+                <p class="fp_labels">标签：
+                    <?if(label == ''){?><span class="gray_f">这个爱美丽真懒，什么标签都没给自己贴</span><?}?>
+                    <? $.each(label , function(k , v){?>
+                    <a class="labels"><?= v.label_name?></a>
+                    <?});?>
+                </p>
+                <div class="isFollowedStatus">
+                    <? if(followed == 0){?>
+                    <p class="fp_follow"><span class="btn addFollow" fuid='<?=user_id?>' followed="<?= followed?>">+ 加关注</span></p>
+                    <?}else if(followed == 1){?>
+                    <p class="fp_follow"><span class="removeFollow followed" fuid='<?=user_id?>'>已关注</span></p>
+                    <?}else if(followed == 2){?>
+                    <p class="fp_follow"><span class="followed removeFollow" fuid='<?= user_id?>' followed="<?= followed?>">互相关注</span></p>
+                    <?}?>
+                </div>
+            </div>
+        </div>
+        <div class="corner_b none_f"></div>
+    </div>
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+        fml.use('page/subject');
+        _use:", this._JSstack , this._JSmods); %>
+<%# foot.html%>

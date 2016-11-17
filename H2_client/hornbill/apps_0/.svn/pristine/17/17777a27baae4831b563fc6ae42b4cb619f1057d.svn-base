@@ -1,0 +1,24 @@
+function single_aj() {
+	return this;
+}
+
+var controlFns = {
+	/*好友助力撕名牌*/
+	crackbrand: function(params) {
+		var php = {
+			'friend': '/crackbrand/crackBrand_doassist'
+		};
+
+		this.ajaxTo(php[params]);
+	},
+	olay_yuyue: function(params) {
+		var php = {
+			'olay_sms_op': '/huodong/Olay_sms_op',
+			'olay_yy':'/huodong/Olay_record_user'
+		};
+
+		this.ajaxTo(php[params]);
+	}
+}
+
+exports.__create = controller.__create(single_aj, controlFns);

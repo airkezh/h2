@@ -1,0 +1,105 @@
+<%#head.html%>
+<div class="main">
+	<div class="airAsia_1"></div>
+	<div class="airAsia_2"></div>
+	<div class="airAsia_3"></div>
+	<div class="airAsia_4"></div>
+	<div class="airAsia_5 airAsia_logo" style="background-image:url('<%= this.pageData.logo %>');"><a href="<%= this.pageData.link %>" target="_blank">亚洲航空</a></div>
+	<div class="airAsia_upload">
+		<div class="step_1 airAsia_6">
+			<div class="blocks">
+				<a href="javascript:;"><img src="<%= this.PICTURE_URL%>/images/biz/airAsia/block_1.png" alt=""></a>
+				<a href="javascript:;"><img src="<%= this.PICTURE_URL%>/images/biz/airAsia/block_2.png" alt=""></a>
+				<a href="javascript:;"><img src="<%= this.PICTURE_URL%>/images/biz/airAsia/block_3.png" alt=""></a>
+			</div>
+			<div class="new_btn">
+				<a href="javascript:;">立即制作</a>
+				<a href="javascript:;">立即制作</a>
+				<a href="javascript:;">立即制作</a>
+			</div>
+		</div>
+		<div class="step_2 none_f">
+			<%= requireFn('biz/huodong/upload_photo.html')({
+				'upload_style' : 'airAsia_UpWapper',
+				'reload_style' : 'airAsia_reup'
+			}); %>
+			<p class="pre_btn pre">上一步</p>
+			<p class="next none_f">提交</p>
+		</div>
+		<div class="step_3 none_f">
+			<img src="" alt="">
+			<div class="step_3_con">
+				<p>恭喜宠爱之旅心愿卡已完成！快转发给好友为自己拉票吧！票数越高，越有机会赢宠爱大奖哦！</p>
+				<a href="javascript:;" class="get_vote" id="get_vote">拉投票</a>
+			</div>
+			
+		</div>
+	</div>
+	<div class="airAsia_7"></div>
+	<div class="airAsia_8"><a class="magazine" href="http://www.meilishuo.com/u/ETz9kJ?frm=yahang104" target="_blank">宠爱胃口</a></div>
+	<div class="airAsia_9"></div>
+	<div class="airAsia_10">
+		<a class="magazine" href="http://www.meilishuo.com/u/ETz90J?frm=yahang105" target="_blank">宠爱心情</a>
+	</div>
+	<div class="airAsia_11">
+		<a class="magazine" href="http://www.meilishuo.com/u/ETz927?frm=yahang106" target="_blank">宠爱灵魂</a>
+	</div>
+	<div class="airAsia_poster">
+		<div class="content_fluid">
+			<div class="goods_wall auto_f" style="width:960px;">
+			<% if(this.isLogin && this.my_poster && this.my_poster.data){ %>
+				<div class="corner_notic">
+					<div class="vote_box">
+						<a href="/share/<%= this.my_poster.data.twitter_id%>" target="_blank" class="pic_load">
+							<img class="goods_pic" src="<%= this.my_poster.data.show_pic%>" pid="<%= this.my_poster.data.pid%>" width="228" height="<%= this.my_poster.data.pic_height%>" />
+						</a>
+						<div class="info">
+							<div class="userInfo" uid="<%= this.my_poster.data.uinfo.user_id%>">
+								<div class="person">
+									<a href="/person/u/<%= this.my_poster.data.uinfo.user_id%>" target="_blank" class="face"><img src="<%= this.my_poster.data.uinfo.avatar_c%>" width="48" height="48" /></a>
+						            <span class="name"><%= this.my_poster.data.uinfo.nickname%></span>
+							    </div>
+								<ul class="txt_info">
+									<li>票数：<span class="red_f"><%= this.my_poster.data.score%></span></li>
+						            <li>排名：<span class="red_f"><%= this.my_poster.data.rank%></span></li>
+							    </ul>
+							</div>
+							<p class="btnBox auto_f" id="vote_share">拉投票</p>
+						</div>
+		            </div>
+			    </div>
+			<%}%>
+			</div>
+			<%#biz/huodong/vote/vote_poster.html%>
+			<div class="spinner botSpinner none_f"></div>
+			<div class="clear_f"></div>
+			<div class="paging_panel c_f none_f"><%#paging.html%></div>
+		</div>
+	</div>
+</div>
+<script type="text/html" id="share">
+	<div class="share_pop">
+		<span href="" class="close_btn" id="close"></span>
+		<img src="<?= data.show_pic?>" width="244" height="344" />
+		<p><?= data.uinfo.nickname?>参加了#亚航女生月特辑－宠爱自己我买单#活动</br>
+		目前票数：<span class="red_f"><?= data.score?></span></br>
+		还差<span class="red_f"><?= data.nextScore?></span>票，排名就能上升一位了。</p>
+		<h3>选择分享到：</h3>
+		<ul>
+			<li class="sina_s"></li>
+			<li class="qzone"></li>
+			<li class="tx"></li>
+		</ul>
+		<span class="share_btn"></span>
+	</div>
+</script>
+<script>
+fml.vars.notFluid = true;
+<%= this.poster0 ? 'Meilishuo.config.poster0 = '+JSON.stringify(this.poster0)+';':'' ;%>
+<%= this.my_poster? 'Meilishuo.config.my_poster = '+JSON.stringify(this.my_poster)+';':'' ;%>
+</script>
+<% $_ENGINE_SELF.callFn("useModule")("fml.use('page/poster0');", this._JSstack , this._JSmodsFast ); %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/huodong/airAsia');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

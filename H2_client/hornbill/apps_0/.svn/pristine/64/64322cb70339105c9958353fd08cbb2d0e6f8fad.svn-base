@@ -1,0 +1,80 @@
+/*common*/
+require('wap/zepto/fastclick');
+
+var poster = require('wap/app/posterPa3'),
+	lazyLoad = require('m/component/lazyLoad'),
+	onscroll = require('wap/component/windowScroll'),
+	// tracking = require('wap/app/tracking'),
+	openAppLink = require('wap/app/openAppLink'),
+	posterWall = require('wap/app/posterWalls9');
+
+var wrap = $('#wrap'),
+	gotopObj = $('.top-box').find('a'),
+	limit = 3;
+
+/* lazyLoad load setting, 采用全屏扫点方式加载 */
+var lazy_pic = lazyLoad.init({
+	'xpath': '.lazy_pic_big,.lazy_pic',
+	'parentName':'.most_wrap'
+});
+lazy_pic.scroll();
+lazy_pic.load();
+
+
+//加载数据潮流热销的数据
+getWall(1, '/aj/prev/oldTimey?limit=' + limit, 'posterWall', false);
+
+//拉取瀑布流
+function getWall(colNum, url, tmp, showBtn) {
+	poster.set({
+		colNum: colNum
+	});
+	var date = {
+		url: url,
+		poster: poster,
+		tmp: tmp,
+		showBtn: showBtn,
+		filterFun: function(res) {
+			return res.data.main_figure
+		},
+		posterMargin: $('#content').offset().top,
+		marginOffset: 0,
+		lazyLoad: lazyLoad.init({
+			xpath: '.lazy_pic_big,.lazy_pic',
+			'parentName':'.most_wrap'
+		})
+	}
+	posterWall.scroll(date);
+};
+
+/*gotop*/
+gotopObj.on("click", function(e) {
+	document.body.scrollTop = 0
+});
+onscroll.bind(gotop, 'gotop');
+
+function gotop(pos, isDown) {
+	if (pos < 30) {
+		gotopObj.hide()
+	} else {
+		gotopObj.show()
+	}
+};
+
+/*获取链接*/
+function getDoneUrl(ele) {
+	var url = ele.data('url');
+	if (!url.match(/meilishuo:\/\//g)) {
+		url = openAppLink.getAppLink({
+			'protocol': 'openURL',
+			'param': {
+				'url': url,
+				'inApp': '1'
+			}
+		})
+	}
+	window.location.href = window.__get_r(url, ele.parents('.frame').data('xr'));
+}
+wrap.on('click', '.img-link', function() {
+	getDoneUrl($(this));
+})

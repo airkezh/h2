@@ -1,0 +1,99 @@
+<%
+	var userInfo = this.userInfo
+		, orderList = this.order_list
+		, orderInfo = orderList.info
+		, all_num = this.order_list.total_num
+		, payment_num = this.payment_num
+		, send_num = this.send_num
+		, get_num = this.get_num;
+%>
+
+<%# head.html %>
+
+<header class="page_head">
+	<div class="back_icon" id="back_btn"></div>
+	<a href="/welcome" xr="<%= this.xr.r%>" class="home_btn">首页</a>
+	<div class="title">个人中心</div>
+</header>
+
+<div class="wrap">
+	<div class="userInfo">
+		<div class="img_wrap">
+			<div class="img_innner">
+				<img src="<%= userInfo.avatar_e || 'http://d04.res.meilishuo.net/pic/_o/52/fb/ad3d1ba23b0c5d21dcdf40f3f9de_69_79.cf.png' %>" />
+			</div>
+		</div>
+		<p><%= userInfo.nickname %></p>
+		<div class="list">
+			<a href="/coupon/list/" xr="<%= this.xr.r%>"><span class="couponIcon"></span>优惠券</a>
+			<a href="/address/" xr="<%= this.xr.r%>"><span class="addressIcon"></span>收货地址</a>
+		</div>
+	</div>
+
+	<div class="orderTab">
+		<div class="order_status all current" data-status="0" data-type="all" data-num="<%= all_num %>"><span></span>全部订单</div>
+		<div class="order_status payment" data-status="1" data-type="payment" data-num="<%= payment_num %>"><span></span><% if(payment_num){ %><div class="num"><%= payment_num %></div><% } %>待付款</div>
+		<div class="order_status send" data-status="5" data-type="send" data-num="<%= send_num %>"><span></span><% if(send_num){ %><div class="num"><%= send_num %></div><% } %>待发货</div>
+		<div class="order_status get" data-status="2" data-type="get" data-num="<%= get_num %>"><span></span><% if(get_num){ %><div class="num"><%= get_num %></div><% } %>待收货</div>
+	</div>
+
+	<div class="list_wrap">
+		<div class="tab_content"></div>
+		<div class="pullUp" status="loading"></div>
+	</div>
+</div>
+
+<script type="text/html" id="poster">
+	<? this.order_list.info.forEach(function(order_item, index){ ?>
+		<?
+			var order = order_item.order;
+			var sku_list = order_item.goods;
+		?>
+		<div class="orderList">
+			<ul class="orderInfo">
+				<li>
+					<div class="shop">
+						<a href="/shop/<?= order.shop_id ?>" xr="<%= this.xr.r %>">商家：<?= order.shop_name ?></a>
+						<span><?= order.status_text ?></span>
+					</div>
+					<ul class="goodsList">
+						<? sku_list.forEach(function(sku, index){ ?>
+							<li class="goodsInfo">
+								<a href="/order/detail/?order_id=<?= order.order_id ?>" xr="<%= this.xr.r %>">
+									<div class="img_wrap" style="background-image:url(<?= sku.goods_img ?>);"></div>
+									<div class="content">
+										<p class="title"><?= sku.goods_title ?></p>
+										<p class="desc">
+											<span class="num">数量：<?= sku.amount ?></span>
+											<span class="price">￥<?= sku.price ?></span>
+										</p>
+									</div>
+								</a>
+							</li>
+						<? }); ?>
+						<div class="pay">
+							<p class="total">合计：<span>￥<?= order.total_price ?></span></p>
+							<? if(order.status == 0){ ?>
+								<div class="order_btn">
+									<div class="btn logistics cancel_order" order_id="<?= order.order_id?>">取消订单</div>
+									<a class="pay_btn" target="_blank" href="/order/pay/?source=5-0.0.1&order_id=<?= order.order_id ?>&total_price=<?= order.total_price ?>" xr="<%= this.xr.r %>">付款</a>
+								</div>
+							<? } ?>
+						</div>
+					</ul>
+				</li>
+			</ul>
+		</div>
+	<? }); ?>
+</script>
+
+<script>
+	fml.vars.poster0 = <%= JSON.stringify(this.order_list) || false %>;
+	fml.vars.nums = [<%= all_num + ',' + payment_num + ',' + send_num + ',' + get_num%>];
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/myCenter');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot.html %>

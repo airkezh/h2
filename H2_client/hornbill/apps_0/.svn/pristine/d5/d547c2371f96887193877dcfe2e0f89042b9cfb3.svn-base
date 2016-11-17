@@ -1,0 +1,67 @@
+<%
+	/**
+ 	 * @fileoverview 会员信息补全－会员中心
+     * @requires zepto
+     * @author kehuang@meilishuo.com
+     * @date 2015-09-07
+     */
+%>
+
+<%#head.html%>
+<%
+	var curUserContactData = null;
+	var curUserContactMobile = '';
+	var curUserIsLogin = this.isLogin;
+	var curUserInfo = this.getUserInfo;
+	var curUserInfoData = (curUserInfo.error_code == 0) ? curUserInfo.data : null;
+
+	if (curUserInfoData) {
+		curUserContactData = curUserInfoData.contact;
+	}
+
+	if (curUserContactData) {
+		curUserContactMobile = curUserContactData.mobile || '';
+	}
+%>
+
+<div class="main">
+	<p class="description">更换后，下次登录可使用新手机号登录<br>当前绑定手机号：<%= curUserContactMobile %></p>
+
+	<ul class="mobile_wrap">
+		<li>
+			<label class="mobile_icon"></label>
+			<input id="mobile_input" class="mobile_input" name="checkmobile" type="text" value="" placeholder="输入需要更换的手机号">
+			<div class="blank_area"></div>
+		</li>
+		<li>
+			<label class="captcha_icon"></label>
+			<input id="captcha_input" class="captcha_input" name="checkcaptcha" type="text" value="" placeholder="输入验证码">
+			<div id="send_captcha" class="send_captcha" data-flag="new">发送验证码</div>
+		</li>
+	</ul>
+
+	<div id="confirm_btn" class="confirm_btn" data-flag="new">确认</div>
+
+	<div class="caption_wrap">
+		<p>说明：</p>
+		<p>1、修改绑定手机后，原手机号将不能用于登录。你可以使用更换后的手机号进行登录。</p>
+		<p>2、若因手机号丢失无法进行验证，请联系美丽说客服。</p>
+		<p>美丽说客服电话：<a href="tel:400800577">400-800-577</a></p>
+	</div>
+</div>
+
+<script type="text/html" id="j_error_prompt_tpl">
+	<div id="j_error_prompt_layer" class="prompt_main j_layer_main">
+		<div class="prompt_text"><?= this.text ?></div>
+	</div>
+</script>
+
+<script>
+	fml.vars.isLogin = <%= curUserIsLogin %>;
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/member/bind_mobile');
+_use:", this._JSstack, this._JSmods); %>
+
+<%#foot_simple.html%>

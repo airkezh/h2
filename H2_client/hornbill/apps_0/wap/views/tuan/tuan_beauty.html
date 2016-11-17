@@ -1,0 +1,172 @@
+<%#head.html%>
+<%
+	var pop_recommend = this.pop_recommend && this.pop_recommend.data;
+	var every_recommend = this.every_recommend && this.every_recommend.data;
+	var nav_info = this.nav_info && this.nav_info.data
+		, tab_all = nav_info && nav_info.tab_all
+		, tab_list = nav_info && nav_info.tab_list;
+%>
+<div class="main">
+	<section id="bannerBox">
+		<%if(this.b_banner && this.b_banner.data.mob_tuan_big_banner && this.b_banner.data.mob_tuan_big_banner.length){
+	    	var t_banner = this.b_banner.data.mob_tuan_big_banner;%>
+			<!--轮播-->
+			<div class="slide_banner">
+				<div class="imageSlide" id="imageSlide">
+					<ul>
+						<% t_banner.forEach(function(banner){ %>
+							<li>
+								<a class="top_banner swipe js_track" <%if(banner.link != ''){%>href="<%= banner.link %>"<%}%>><img src="<%= banner.show_pic %>"></a>
+							</li>
+						<% }); %>
+					</ul>
+				</div>
+			</div>
+		<%}%>
+		<%if(this.activity_recommend && this.activity_recommend.data.mob_tuan_newbanners && this.activity_recommend.data.mob_tuan_newbanners.length){%>
+		<div class="act_area pin_banner">
+			<div class="act_area_tit">
+				<span class="act_area_txt">活动专区</span>
+				<span class="act_area_desc">精挑细选/超值推荐</span>
+			</div>
+			<div class="pin_banner_cont">
+				<%this.activity_recommend.data.mob_tuan_newbanners.forEach(function(item){%>
+				<a class="img_list" href="<%= item.link %>"><img src="<%= item.show_pic%>"></a>
+				<%});%>
+			</div>
+		</div>
+		<%}%>
+		<%if(every_recommend && every_recommend.goods_list && every_recommend.goods_list.length > 0){
+			var everydayGood = every_recommend.goods_list[0]
+				, time_info = every_recommend.time_info;
+		%>
+		<div class="act_area today_buy">
+
+			<div class="act_area_tit">
+				<span class="act_area_txt">今日必败</span>
+				<span class="act_area_desc"><i class="clock"></i><%= time_info.start_hour%>－<%= time_info.end_hour %> 抢购</span>
+			</div>
+			<a class="pin_banner_cont" href="<%= everydayGood.url_mob %>">
+				<div class="today_buy_item"><img src="<%= everydayGood.goods_image_mob %>"></div>
+				<div class="today_buy_item">
+					<div class="item_info">
+						<span class="feature_img"><img src="http://d03.res.meilishuo.net/pic/_o/72/be/a99656d8a219f7a9825522229139_224_72.ch.png"></span>
+						<p class="feature_txt">[ <%= everydayGood.goods_name %> ]</p>
+						<p class="reason"><span>必败理由:</span><%= everydayGood.sale_point%></p>
+						<p class="price_box">
+							<span class="o_price">￥<%= everydayGood.off_price %></span>
+							<span class="n_price">/ <%= everydayGood.discount%></span>
+						</p>
+						<span class="<%if(everydayGood.soldout == 0){%>buy_btn<%}else{%>soldout_btn<%}%>"><%= everydayGood.soldout == 0 ? '立即购买' : '已售罄'%></span>
+					</div>
+				</div>
+			</a>
+		</div>
+		<%}%>
+		<%if(pop_recommend && pop_recommend.goods_list && pop_recommend.goods_list.length > 0){%>
+		<div class="act_area pop_recommend">
+			<div class="act_area_tit">
+				<span class="act_area_txt"><%= pop_recommend.normal_config && pop_recommend.normal_config.title%></span>
+				<%*
+				<span class="act_area_desc">最新 / 最热 / 最流行</span>
+				*%>
+				<span class="act_area_desc"><%= pop_recommend.normal_config && pop_recommend.normal_config.event_name %></span>
+			</div>
+			<div class="goods_wrap" id="goods_wrap">
+				<div class="goods_iscroll" id="goods_iscroll">
+					<% 
+						pop_recommend.goods_list.forEach(function(item,indx){
+					%>
+					<a class="pop_item" href="<%= item.url_mob%>">
+						<span><img src="<%= item.goods_image_mob%>"></span>
+						<p class="border_type"></p>
+						<div class="goods_desc" style="background-color:<%= item.goods_color%>">
+							<p class="goods_tit">[<%= item.goods_name%>]</p>
+							<p class="goods_price">￥<%= item.off_price %></p>	
+						</div>
+					</a>
+					<%});%>
+				</div>
+			</div>		
+		</div>
+		<%}%>
+	</section>
+	<section id="nav_wrap" class="nav_wrap">
+		<div class="nav_title">
+			<span class="nav_txt">团购商品</span>
+			<span class="nav_desc">每日上新 / 全场包邮 / 支持退换</span>
+		</div>	
+		<div class="nav">
+			<%if(nav_info){%>
+			<div class="tab_head">
+				<%if(tab_all){%>
+				<div class="tab tab_all active" data-r="<%= tab_all.r%>" data-cata="<%= tab_all.cata%>"><a><%= tab_all.name%></a></div>
+				<%}%>
+				<%if(tab_list && tab_list.length > 0){%>
+				<div class="tab_scroll">
+					<ul class="tab_cont">
+						<%tab_list.forEach(function(item){%>
+						<li class="tab tab_item" data-r="<%= item.r%>" data-cata="<%= item.cata%>">
+							<a><%= item.name %></a>
+						</li>
+						<%});%>
+					</ul>
+				</div>
+				<%}%>
+				<div class="tab_more">
+					<span class="tab_arrow"></span>
+				</div>
+			</div>
+			<%}%>
+			<div class="range">
+				<ul>
+					<li sbase="0" sort="0" class="active"><a>默认</a></li>
+					<li sbase="1" sort="0"><a>人气</a></li>
+					<li sbase="4" sort="0"><a>销量</a></li>
+					<li sbase="2" sort="1"><a>折扣<i class="arrow_down"></i></a></li>
+					<li sbase="3" sort="1"><a>价格<i class="arrow_down"></i></a></li>
+				</ul>
+			</div>
+			<%if(tab_list && tab_list.length > 0){%>
+			<div class="tab_body">
+				<ul>
+					<%tab_list.forEach(function(item){%>
+					<li><%= item.name%></li>
+					<%});%>
+				</ul>
+			</div>
+			<%}%>
+		</div>	
+	</section>
+	<section id="container" class="container" style="min-height:2000px;">
+		<div class="content">
+			<div class="goods_wall">
+			</div>
+			<div class="pullUp" status="loading"></div>
+		</div>
+    </section>
+</div> 
+<a class="gotop" style="bottom:<%if(this.isIphone){%>60<%}else{%>20<%}%>px">
+	<img src="<%= this.PICTURE_URL%>/images/wap/tuan/gotop.png" />
+</a>
+
+<script>
+	fml.vars.poster = {};
+	<%= this.list? 'Meilishuo.config.poster0 = '+JSON.stringify(this.list)+';':'' ;%>
+	fml.vars.geturl='<%=this.geturl%>';
+	fml.vars.hostname='<%=this.hostnm%>';
+	fml.vars.appShare = <%= this.appShare%>;
+	fml.vars.params = <%= JSON.stringify(this.params) %>;
+	fml.vars.popRecommdlen = <%= this.pop_recommend && this.pop_recommend.data && this.pop_recommend.data.goods_list && this.pop_recommend.data.goods_list.length %>;
+</script>
+<%= requireFn('tuan/tuan_list_beauty.html')({
+	'os' : this.os
+	, 'apk' : ''
+	,'_JSstack' : this._JSstack
+	,'_JSmods' : this._JSmods
+});%>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/tuan/tuan_beauty');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html%>

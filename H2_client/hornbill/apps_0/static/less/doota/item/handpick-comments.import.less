@@ -1,0 +1,247 @@
+/*------------------------------------*\
+
+    精选好评
+
+\*------------------------------------*/
+.handpick-comments {
+  display  : none;
+  position : relative;
+}
+
+/* 满意度 */
+.item-satisfy-rate {
+  position   : relative;
+  top        : 40px;
+  margin     : 10px 30px;
+  border-top : 1px solid #f2f2f2;
+  z-index    : 20;
+
+  .content-wrap {
+    position         : relative;
+    top              : -35px;
+    width            : 246px;
+    height           : 50px;
+    margin           : auto;
+    padding          : 10px;
+    background-color : #fff;
+    text-align       : center;
+  }
+
+  .dashed-border {
+    position        : absolute;
+    top             : -14px;
+    left            : -14px;
+    width           : 274px;
+    height          : 78px;
+    background      : url("http://d05.res.meilishuo.net/pic/_o/7c/96/5ba95a8e30c037c652c29f86cfa0_20_71.cg.png") 50% 50%;
+    background-size : contain;
+    border          : 10px solid #fff;
+    z-index         : -1;
+  }
+
+  i {
+    color : #f69;
+  }
+
+  .rate-num {
+    font-size : 30px;
+  }
+}
+
+.label-percent {
+  margin-right : 5px;
+  font-size    : 20px;
+}
+
+/* 好评列表 */
+.handpick-comments-list {
+  position : relative;
+  height   : 200px;
+  overflow : hidden;
+
+  li {
+    width            : 100%;
+    height           : 200px;
+    background-color : #fff;
+  }
+
+  .comment-wrap {
+    width      : 430px;
+    margin     : 0 auto;
+    text-align : center;
+  }
+}
+
+/* 用户信息 */
+.comment-user-info {
+  display  : block;
+  width    : 160px;
+  margin   : auto;
+  overflow : hidden;
+
+  img {
+    width         : 70px;
+    height        : 70px;
+    border-radius : 50%;
+  }
+
+  p {
+    width      : 160px;
+    margin-top : 8px;
+    font-size  : 14px;
+    color      : #f69;
+    .ellipsis;
+  }
+}
+
+.comment-content {
+  position    : relative;
+  margin-top  : 10px;
+  line-height : 2.1;
+  font-family : "Microsoft Yahei", Arial, sans-serif;
+}
+
+.icon-quote-before, .icon-quote-after {
+  display          : inline-block;
+  position         : relative;
+  width            : 13px;
+  height           : 13px;
+  background-image : @handpickCommentsImage;
+}
+
+.icon-quote-before {
+  left                : -6px;
+  top                 : -9px;
+  background-position : -22px -59px;
+}
+
+.icon-quote-after {
+  right               : -6px;
+  bottom              : -9px;
+  background-position : -40px -59px
+}
+
+.comment-date {
+  margin-top : 9px;
+  color      : #999;
+}
+
+.item-features {
+  margin   : 0 30px;
+  padding  : 30px 0;
+  overflow : hidden;
+}
+
+.icon-good {
+  display       : inline-block;
+  width         : 15px;
+  height        : 15px;
+  *margin-right : 10px;
+  background    : @handpickCommentsImage 0 -59px;
+}
+
+.item-features-list {
+  width       : 70%;
+  margin-left : 160px;
+  overflow    : hidden;
+
+  .item-tag-progressbar {
+    width          : auto;
+    vertical-align : baseline;
+  }
+
+  li {
+    float         : left;
+    width         : 50%;
+    margin-bottom : 18px;
+    font-size     : 14px;
+
+    &:nth-child( even ) {
+      width : 45%;
+      float : right;
+    }
+
+    &:nth-child( odd ) {
+      width : 45%;
+    }
+  }
+
+  label {
+    font-size : 14px;
+  }
+}
+
+/*
+  晒单
+*/
+.item-shoppingshow {
+  display : none;
+}
+
+.item-shoppingshow-title {
+  position      : relative;
+  top           : -6px;
+  margin        : 0 30px 35px;
+  border-bottom : 1px solid #f2f2f2;
+
+  h3 {
+    position         : relative;
+    top              : 4px;
+    width            : 92px;
+    height           : 7px;
+    margin           : auto;
+    border-left      : 2px solid #ddd;
+    border-right     : 2px solid #ddd;
+    color            : #666;
+    text-align       : center;
+    background-color : #fff;
+
+    span {
+      position  : relative;
+      top       : -6px;
+      font-size : 16px;
+    }
+  }
+}
+
+.item-shoppingshow-list {
+  font-size    : 0;
+  word-spacing : 25px;
+  text-align   : center;
+  cursor       : pointer;
+
+  li {
+    display        : inline-block;
+    vertical-align : middle;
+  }
+}
+
+.item-shoppingshow-avatar {
+  position : relative;
+
+  .avatar-wrap {
+    position      : relative;
+    left          : 8px;
+    top           : -20px;
+    width         : 48px;
+    height        : 48px;
+    border        : 2px solid #fff;
+    border-radius : 50%;
+  }
+
+  img {
+    display       : block;
+    margin        : auto;
+    border-radius : 50%;
+  }
+}
+
+.item-shoppingshow-nickname {
+  position   : absolute;
+  left       : 62px;
+  top        : 10px;
+  width      : 100px;
+  font-size  : 12px;
+  text-align : left;
+  .ellipsis;
+}

@@ -1,0 +1,261 @@
+/*common*/
+var setDefault = require('m/app/setDefault')
+var connectWX = require('wx/connect')
+
+var coupon = require('h5/app/coupon')
+var shareWX = require('wx/share')
+
+setDefault()
+connectWX()
+
+fml.on('h5_load', function(showMask, hideMask){
+	var $helpWin = $('.helpWin')
+		, $outWin = $('.outWin')
+		, $closeBtn = $('.closeBtn')
+		, $helpBtn = $('.helpBtn')
+		, $outBtn = $('.outBtn')
+		, $nextQ = $('.nextQ')
+		, $result = $('.result')
+		, $again = $('.again')
+
+	var $showHelpWin = $('.showHelpWin')
+		, $hideHelpWin = $('.hideHelpWin')
+		, $showOutWin = $('.showOutWin')
+		, $hideOutWin = $('.hideOutWin')
+
+	var $rules = $('.rules')
+		, $rulesBack = $('.rulesBack')
+		, pageNum = 0 
+
+	var point = {}
+		, score = 0
+
+	var ans = ['A', 'B', 'A', 'B', 'A', 'B', 'A', 'B']
+	var qa = [['A','B','C'],['A','B','C'],['A','B','C'],['A','B','C'],['A','B','C'],['A','B','C'],['A','B','C'],['A','B','C']]
+
+	var qNo = 0
+		, qCurr = getQ(0)
+
+
+    var helped = 0
+	var shareText = [
+		'作为时尚圈高手级，我的时尚江湖地位已被美丽说【时尚挑战赛】承认，够胆，你也来试试。'
+		,'作为时尚圈达人级，我的江湖地位已被美丽说【时尚挑战赛】承认，够胆，你也来试试。'
+		,'作为时尚圈专家级，我的江湖地位已被美丽说【时尚挑战赛】承认，够胆，你也来试试。'
+		,'作为时尚圈骨灰级大侠，我的江湖地位已被美丽说【时尚挑战赛】承认，够胆，你也来试试。'
+	]
+    fml.vars.shareData.success = function(){
+        helped && helpTrue()
+		closeWin()
+    }
+
+    shareWX.change(fml.vars.shareData)
+
+
+	slipPage.setMove(0)
+
+	$.each(qa, function(q, a){
+		var obj = getQ(q)
+		$.each(obj.a, function(k,v){
+			$(v).on('tap', function(){
+				$(obj.s).hide()
+				$(v + 'selected').show()
+
+				if(point['' + qNo] == undefined){
+					if(qNo == '7')
+						$result.show()
+					else
+						$nextQ.show()
+				}
+
+				var reg = new RegExp(ans[obj.no])
+				
+				if(reg.test(v))
+					right(obj.no)
+				else
+					error(obj.no)
+
+			})
+		})
+	})
+
+	$rules.on('tap', function(){
+		pageNum = slipPage.getPageNum()
+		slipPage.goPage(15);	
+	})
+
+	$rulesBack.on('tap', function(){
+		slipPage.goPage(pageNum);	
+	})
+
+	$showHelpWin.on('tap', function(){
+		$helpWin.show()
+		$helpBtn.show()
+		$closeBtn.show()
+	})
+
+	$showOutWin.on('tap', function(){
+		$outWin.show()
+		$outBtn.show()
+		$closeBtn.show()
+	})
+
+	$helpBtn.on('tap', function(){
+        showMask()
+        helped = 1
+	})
+
+
+	function helpTrue(){
+		right(qNo)
+
+		$showHelpWin.hide()
+		$hideHelpWin.show()
+
+		$(qCurr.s).hide()
+		$(qCurr.q + ans[qNo] + 'selected').show()
+
+		var t = setTimeout(function(){
+			nextQ()
+		}, 300)
+
+	}
+
+	$outBtn.on('tap', function(){
+		closeWin()
+
+		$showOutWin.hide()
+		$hideOutWin.show()
+		
+		$(qCurr.d).eq(0).show()
+	})
+
+	$closeBtn.on('tap', closeWin)
+
+	$nextQ.on('tap', nextQ)
+
+	$result.on('tap', function(){
+		var iscoupon = Math.floor(Math.random()*2)
+			, no = 6
+
+		if(score <= 2) no = 6 
+		else if(score <= 4) no = 8 
+		else if(score <= 6) no = 10
+		else if(score <= 8) no = 12
+
+
+		fml.vars.shareData.desc = shareText[(no-6)/2]
+
+		shareWX.change(fml.vars.CONFIG_SHARE)
+
+		if(iscoupon){
+			coupon.get({
+				code:'20150209151643862801eea6',
+				success: function(data) {
+                    if(data.code == 0)
+                        slipPage.goPage(no+1)
+                    else
+                        slipPage.goPage(no)
+				},
+				error: function() {
+					slipPage.goPage(no)
+				}
+			})
+
+		}else{
+			slipPage.goPage(no)
+		}
+	})
+
+	$again.on('tap', function(){
+		window.location.reload()	
+	})
+
+
+	function nextQ(){
+		score += point['' + qNo]
+		console.log(point, score)
+
+		qNo++;
+
+		$nextQ.hide()
+
+		$.each(qCurr.a, function(k,v){
+			$(v).off('tap')
+		})
+
+		if(qNo == '3'){
+			slipPage.goNext()
+			qCurr = getQ(qNo)
+
+		} else if(qNo == '6'){
+			slipPage.goNext()
+			qCurr = getQ(qNo)
+
+		} else if(qNo == '8'){
+			slipPage.goNext()
+
+		}else{
+
+			$.each(qCurr.a, function(k,v){
+				$(v).hide()
+			})
+			$(qCurr.q).hide()
+			$(qCurr.o).hide()
+			$(qCurr.s).hide()
+			$(qCurr.d).hide()
+
+	//showNext
+
+			qCurr = getQ(qNo)
+
+			$.each(qCurr.a, function(k,v){
+				$(v).show()
+			})
+			$(qCurr.q).show()
+			$(qCurr.o).show()
+		}
+	}
+
+	function right(qNo){
+		point['' + qNo] = 1
+		console.log(point, score)
+	}
+
+	function error(qNo){
+		point['' + qNo] = 0
+		console.log(point, score)
+	}
+
+	function closeWin(){
+		$helpWin.hide()
+		$helpBtn.hide()
+		$outWin.hide()
+		$outBtn.hide()
+		$closeBtn.hide()
+        helped = 0
+	}
+
+	function getQ(qNo){
+		var qid = '.q' + (qNo+1)
+		var a = [], s = [], d = [], o = []
+
+		$.each(qa[qNo], function(k,v){
+			var id = qid + v
+			a.push(id)
+			o.push(id + 'o')
+			s.push(id + 'selected')
+			d.push(id + 'delete')
+		})
+		
+		return {
+			'no':qNo
+			, 'q': qid
+			, 'a':a
+			, 'o':o.join(',')
+			, 's':s.join(',')
+			, 'd':d.join(',')
+		}
+	}
+
+})

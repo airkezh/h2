@@ -1,0 +1,32 @@
+<% if(this.sale_tophead){ %>
+	<%
+		var getTimeRemain = function(time){
+			if(time && time > this.cur_time){
+				return time - this.cur_time;
+			}else{
+				return '';
+			}
+		}
+	%>
+	<div class="top" style="background:url('<%= this.sale_tophead.bg_img%>') no-repeat center top;">
+		<div class="inner" style="height:<%= this.sale_tophead.bg_height%>">
+			<div class="down">
+				<% if(this.status == 'nostart'){ %>
+					<%= this.sale_tophead.before_txt%><span class="time" remain="<%= getTimeRemain(this.start_time)%>">-天--时--分</span>
+				<%}else if(this.status == 'saling'){%>
+					<%= this.sale_tophead.ing_txt%><span class="time" remain="<%= getTimeRemain(this.end_time)%>">-天--时--分</span>
+				<%}else{%>
+					活动已结束
+				<%}%>
+			</div>
+			<% if(this.sale_sidebar.nav_sub){ %>
+				<% var nav_num = this.sale_sidebar.nav_sub.length - 1; %>
+				<p class="find" id="a<%= nav_num%>"></p>
+			<%}%>
+		</div>
+	</div>
+<%}%>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+    fml.use('page/huodong/sale_timedown');
+_use:", this._JSstack , this._JSmods); %>
+

@@ -1,0 +1,206 @@
+<%
+	/**
+ 	 * @fileoverview 首页－会员俱乐部
+     * @requires zepto
+     * @author kehuang@meilishuo.com
+     * @date 2015-10-20
+     */
+%>
+
+<%#head.html%>
+<%
+	var curUserIsLogin = this.isLogin;
+	var curServerDate = this.serverDate;
+	var curUserInfo = this.userInfo;
+	var curPageData = this.pageData;
+	var curCardsData = this.cardsData;
+	var curIsNormalGetData = this.isNormalGetData;
+	var curUserCardsData = (curCardsData && curCardsData.data) ? curCardsData.data : {};
+	var curUserUsedCards = curUserCardsData.used || 0;
+	var curUserTotalCards = curUserCardsData.ticket || 0;
+	var curUserAvailableCards = curUserCardsData.left || 0;
+	var curUserLevel = (curUserInfo && curUserInfo.user_grade) ? curUserInfo.user_grade : 0;
+%>
+
+<div class="main">
+	<%
+		var top_bg_img = (curPageData && curPageData.top_pic) ? curPageData.top_pic : '',
+			top_bg_style = (top_bg_img == '') ? '' : 'background:url(' + top_bg_img + ') no-repeat;background-size:100%;';
+	%>
+	<div class="banner_wrap" style="<%= top_bg_style %>">
+		<p class="top_activity_rule">查看活动规则</p>
+		<%
+			if (curUserIsLogin) {
+		%>
+		<p class="top_user_info">我的会员等级:<i>V<%= curUserLevel %></i>&nbsp;&nbsp;我的抽礼卡:<i id="user_available_cards"><%= curUserAvailableCards %></i></p>
+		<p class="top_btn top_cards_btn">查看抽礼卡记录</p>
+		<%
+			} else {
+		%>
+		<p class="top_user_info">我的会员等级:<i>－</i>&nbsp;&nbsp;我的抽礼卡:<i id="user_available_cards">－</i></p>
+		<p class="top_btn top_login_btn">登录后查看我的抽礼卡</p>
+		<%
+			}
+		%>
+	</div>
+
+	<div class="title_wrap">
+		<div class="pro_title"><p>免费商品</p></div>
+	</div>
+
+	<section id="container" class="container">
+		<ul class="even goods_wall"></ul>
+
+		<p class="look_forward_text">更多美物，下期敬请期待…</p>
+
+		<div class="pullUp" status="loading"></div>
+    </section>
+
+	<div class="gotop_wrap">
+		<a class="gotop">
+			<img src="http://d03.res.meilishuo.net/pic/_o/d0/68/f89d059f09d440f4ee7a37669383_80_80.cg.png" alt="">
+		</a>
+	</div>
+</div>
+
+<%
+	if (!this.appShare) {
+%>
+	<%= requireFn('wapShare.html')({
+		'share': this.share,
+	    'shareTitle': '选择分享到',
+	    '_JSstack': this._JSstack,
+		'_JSmods': this._JSmods
+	}); %>
+<%
+	}
+%>
+
+<script type="text/html" id="j_prompt_tpl">
+	<div id="j_prompt_layer" class="prompt_layer_main">
+		<div class="prompt_layer_text"><?= this.text ?></div>
+	</div>
+</script>
+
+<script type="text/html" id="j_layer_tpl">
+	<div class="layer_shade j_layer_shade"></div>
+	<div class="layer_main j_layer_main">
+		<div class="m">
+			<div class="layer_content">
+				<%
+					var rule_title = (curPageData && curPageData.rule_title) ? curPageData.rule_title : '“会员日拿福利”活动规则';
+				%>
+				<div class="title"><%= rule_title %></div>
+				<%
+					var rule_text_arr = (curPageData && curPageData.rule_text) ? curPageData.rule_text : [],
+						rule_arr_len = rule_text_arr.length || 0;
+
+					if (rule_arr_len > 0) {
+						for (var i = 0; i < rule_arr_len; i++) {
+							var data = rule_text_arr[i],
+								p_class = (i == 0) ? 'first' : '',
+								text = (data && data.text) ? data.text : '';
+
+							if (text != '') {
+				%>
+				<p class="<%= p_class %>"><%= text %></p>
+				<%
+							}
+						}
+					}
+				%>
+			</div>
+			<div class="layer_bottom_btn layer_close_btn">知道了</div>
+		</div>
+	</div>
+</script>
+
+<script type="text/html" id="posterWall">
+	<?
+		var is_login = this.isLogin,
+			goods_list = (this.data && this.data.data && this.data.data.list) ? this.data.data.list : [];
+
+		$.each(goods_list, function(index, data){
+	    	var pos = data.pos || 0,
+	    		stock = data.stock || 0,
+	    		status = data.status || 0,
+	    		shop_id = data.shop_id || '',
+	    		goods_url = data.goods_url || '',
+	    		goods_img = data.goods_img || '',
+	    		goods_title = data.goods_title || '',
+	    		twitter_id = data.twitter_id || '',
+	    		exchange_num = data.exchange_num || 0,
+	    		activity_date = data.activity_date || '';
+
+	    	if (goods_img != '') {
+	?>
+	<li>
+		<figure data-tid="<?= twitter_id ?>" data-pos="<?= pos ?>" data-href="<?= goods_url ?>">
+			<?
+		    	if (fml.vars.is_lazyload_poster) {
+		    		if (index < 2) {
+		    ?>
+		    <span class="df_show_img" style="opacity: 1;background-image: url(<?= goods_img ?>);"></span>
+		    <?
+		    		} else {
+		    ?>
+		    <span class="bs_load_img" asrc="<?= goods_img ?>"></span>
+		    <?
+		    		}
+				} else {
+			?>
+		    <img src="<?= goods_img ?>" alt="">
+		    <?
+				}
+
+				if ((stock < 1) || (status == 0)) {
+			?>
+			<div class="soldout"></div>
+			<?
+				}
+			?>
+		</figure>
+
+		<figcaption>
+			<div class="goods_title"><?= goods_title ?></div>
+			<div class="goods_desc">
+				<p class="left_text">限量<?= stock ?>件</p>
+				<p class="right_text"><?= exchange_num ?>人已参与</p>
+			</div>
+		</figcaption>
+
+		<?
+			var btn_text = '活动已结束',
+				btn_class = '';
+
+			if (status == 1) {
+				btn_text = '使用抽礼卡',
+				btn_class = 'use_cards_btn';
+			}
+		?>
+		<div class="goods_bottom_btn <?= btn_class ?>" data-tid="<?= twitter_id ?>" data-date="<?= activity_date ?>"><?= btn_text ?></div>
+	</li>
+	<?
+			}
+		});
+	?>
+</script>
+
+<script>
+	fml.vars.r = '<%= this.xr.r || '' %>';
+	fml.vars.isLogin = <%= curUserIsLogin %>;
+	fml.vars.userLevel = <%= curUserLevel %>;
+	fml.vars.appShare = <%= this.appShare %>;
+	fml.vars.params = <%= JSON.stringify(this.params) %>;
+	fml.vars.isNormalGetData = <%= curIsNormalGetData %>;
+	fml.vars.shareData = <%= JSON.stringify(this.shareData) %>;
+	fml.vars.is_lazyload_poster = true;
+</script>
+
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/member/welfare_day');
+_use:", this._JSstack, this._JSmods); %>
+
+<%#foot_simple.html%>

@@ -1,0 +1,76 @@
+<%# header.html%>
+
+<%
+	var detailInfo = this.bg_detail.data;
+	var commentsInfo = this.bg_comments.data;
+	var userInfo = this.bg_user.data 
+%>
+<div class="wrapper">
+	<div class="goods_info_wrap">
+		<img src="<%= detailInfo.bigger_image.image_middle%>"  class="goods_img">
+		<img src="<%= detailInfo.bigger_image.image_middle%>" class="show" style="display:none;">
+		<div  class="goods_info">
+			<%if(detailInfo.bigger_count != '0'){%>
+				<p class="score_red"><%= detailInfo.bigger_score%>分</p>
+				<p>共<span class="red"><%= detailInfo.bigger_count%></span>位小伙伴参与打分</p>
+				<p>逼格已击败全球<span class="red"><%= detailInfo.bigger_defeat_percent%>%</span>的人！</p>
+			<%}else{%>
+				<p style="padding-top:10%;">还没人鸟他</p>
+			<%}%>
+		</div>
+	</div>
+	<div class="remark_wrap">
+		<h6>小伙伴来点评(<%= detailInfo.bigger_count%>)</h6>
+		<%if(commentsInfo.list.length == 0){%>
+				<div class="img_cla">
+					<img src="<%=this.PICTURE_URL%>/images/md/no_text1.png">
+				</div>
+			<%}else{%>
+				<%for(var i = 0 ; i < commentsInfo.list.length; i++){%>
+					<dl>
+						<dt><img src="<%= commentsInfo.list[i].comment_avatar%>">
+						</dt>               
+						<dd>
+							<p><span><%= commentsInfo.list[i].comment_nickname%></span><i><%= commentsInfo.list[i].comment_score%>分</i></p>
+							<p><%= commentsInfo.list[i].comment_content%></p>
+						</dd>
+					</dl>
+				<%}%>
+		<%}%>
+	</div>
+</div>
+<%if(userInfo.user_id == detailInfo.bigger_uid){%>
+	<div class="test_btn_wrapper">
+		<a href="/md/md_chan/">我要提升逼格</a>
+		<a href="/bigger/activity/test/">我不服，重测</a>
+	</div>
+<%}else{%>
+	<div class="test_btn_wrapper">
+		<% if (commentsInfo.published == '1') { %>
+			<a href="/bigger/activity/rank_tab/">逼格榜</a>
+		<% } else { %>
+			<a href="/bigger/activity/mark/?bigger_id=<%= detailInfo.bigger_id%>">我要打分</a>
+		<% } %>
+
+		<a href="/bigger/activity/test/">我要测试</a>
+	</div>
+<%}%>
+<script type="text/html" id="share_md">
+</script>
+<script>
+	var imgUrl = '<%= detailInfo.bigger_image.image_middle%>';
+	var lineLink = location.href;
+	var descContent = '逼格侬有伐？有胆来测测';
+	var shareTitle = '晒搭配，测逼格！';
+	var shareTimelineText = '逼格侬有伐？有胆来测测';
+</script>
+<script src="<%= this.JCSTATIC_BASE  %>/js/open/shareCollect.js?<%= this.SVERSION%>"></script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('meidian/page/picAlert');
+_use:", this._JSstack , this._JSmods ); %>
+<%# footer.html%>
+
+
+
+
+

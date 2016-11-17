@@ -1,0 +1,158 @@
+/*common*/
+
+/**
+ * @fileoverview 会员特权－会员中心
+ * @requires zepto
+ * @author kehuang@meilishuo.com
+ * @date 2015-10-26
+ */
+
+require('wap/iscroll');
+require('wap/zepto/touch');
+require('wap/zepto/scroll');
+require('wap/zepto/fastclick');
+
+var $ = require('wap/zepto');
+var confirm = require('wap/ui/confirm');
+var openApp = require('wap/app/openApp');
+var Swipe = require('wap/component/swipe');
+var shareTmp = require('wap/component/shareTmp');
+var scroll = require('wap/component/windowScroll');
+var checkLogin = require('circle/app/checkLogin');
+
+var userMaxLevel = 4;
+var memberInterestsIscroll;
+var oGoTopWrap = $('.gotop_wrap');
+var windowWidth = $(window).width();
+
+// 登陆成功后的回调函数
+window.MLS = {
+    didLogin : function() {
+        // 成功登录，跳转到下一步
+        window.location.reload();
+    }
+};
+
+var interests = {
+    oInterestsSwipe: null,
+
+    // 初始化页面
+    init: function(){
+        if (navigator.userAgent.indexOf('MicroMessenger') != -1) {
+            openApp(window.location.href, '', '', true, 'member');
+        }
+
+        // 判断是否登陆
+        /*if (!fml.vars.isLogin) {
+            window.location.href = 'meilishuo://login.meilishuo/';
+            return;
+        }*/
+
+        if (!fml.vars.isLogin) {
+            setTimeout(function(){
+                // 判断登录，包含app和wx
+                checkLogin();
+            }, 500);
+        }
+
+        //this.initIscroll();
+        this.initEvent();
+        this.initProgressBar();
+    },
+
+    // 初始化事件
+    initEvent: function(){
+        var self = this;
+
+        window.onload = function(){
+            // 初始化滑动
+            self.initIscroll();
+            self.interestsSwipe('j_interests_swipe');
+        };
+
+        scroll.yIn(60, function(){
+            oGoTopWrap.show();
+        },
+        function(){
+            oGoTopWrap.hide();
+        });
+
+        $('.gotop').on('click', function(){
+            $('html,body').scrollTo({
+                endY: 0,
+                updateRate: 5
+            });
+        });
+
+        $('body').on('click', '.blank', function(){
+            var index = $(this).data('index') || 0;
+
+            self.oInterestsSwipe.slide(index);
+        });
+    },
+
+    initProgressBar: function(){
+        $('.inner_progress_bar').css({'width': fml.vars.userPercent});
+    },
+
+    initIscroll: function(){
+        if ($('#level_wrap').length) {
+            var paddingLeft = (windowWidth / 2) - (20 + 4),
+                iscrollWidth = 640 + ((20 + paddingLeft) * 2),
+                iscrollXStart = -(630 / userMaxLevel) * fml.vars.userLevel;
+
+            $('#level_wrap').css({
+                'padding-left': paddingLeft + 'px'
+            });
+
+            $('#level_iscroll').css({
+                'width': iscrollWidth + 'px'
+            });
+
+            memberInterestsIscroll = new iScroll('level_wrap', {
+                x: iscrollXStart,
+                vScroll: false,
+                bounce: false,
+                hScrollbar: false,
+                vScrollbar: false,
+                onBeforeScrollStart: function(e){
+                    if (this.absDistX > this.absDistY) {
+                        e.preventDefault();
+                    }
+                },
+                // 解决第一次无法滑动的问题
+                onTouchEnd: function(){
+                    var self = this;
+
+                    if (self.touchEndTimeId) {
+                       clearTimeout(self.touchEndTimeId);
+                    }
+
+                    self.touchEndTimeId = setTimeout(function(){
+                        self.absDistX = 0;
+                        self.absDistY = 0;
+                    }, 600);
+                }
+            });
+
+            memberInterestsIscroll.refresh();
+        }
+    },
+
+    interestsSwipe: function(id){
+        var self = this,
+            oPoints = $('.blank');
+
+        self.oInterestsSwipe = new Swipe(document.getElementById(id), {
+            startSlide: fml.vars.userLevel,
+            speed: 300,
+            //stopPropagation: true,
+            callback: function(index, element){
+                //oPoints.removeClass('active').eq(index).addClass('active'); // 焦点图当前状态
+            }
+        });
+    }
+};
+
+// 初始化页面
+interests.init();

@@ -1,0 +1,601 @@
+/**
+ * @fileoverview 首页 － 每日签到
+ * @requires
+ * @author kehuang@meilishuo.com
+ * @date 2015-01-09
+ */
+
+@import "../../block.less";
+
+html{
+	.f(10*@f);
+}
+
+body{
+	.bgc(#745c66);
+}
+
+img{
+	.block;
+	.w(100%);
+}
+
+a{
+	.block;
+	outline:none;
+}
+
+.top_box{
+	.pr;
+	.w(100%);
+	.pt(200*@w);
+	background:url("@{pic_url}/images/wap/activity/may_sale/leak_top.jpg") no-repeat;
+	background-size:100%;
+
+	.money{
+		.pa;
+		top:0;
+		left:0;
+		.w(100%);
+		.pt(200*@w);
+		background:url("@{pic_url}/images/wap/activity/may_sale/sign_money1.png") no-repeat;
+		background-size:100%;
+
+		.total{
+			.pa;
+			.c;
+			.fb;
+			left:25%;
+			top:60%;
+			.h(20%);
+			.w(50%);
+			.f(1.8rem);
+			.fc(#ff2c2c);
+		}
+	}
+
+	.signout{
+		background:url("@{pic_url}/images/wap/activity/may_sale/signoutbg.png") no-repeat;
+		background-size:100%;
+	}
+}
+
+.pig_text{
+	.pr;
+	.auto;
+	.w(84%);
+	.pt(40%);
+	background:url("@{pic_url}/images/wap/activity/may_sale/cloud.png") no-repeat;
+	background-size:100%;
+
+	.txt{
+		.pa;
+		left:10%;
+		top:32%;
+		.w(82%);
+		.h(50%);
+		.f(1.4rem);
+		.l(1.6rem);
+		.fc(#7c4848);
+	}
+}
+
+.pig_signout{
+	.pr;
+	.auto;
+	.w(80%);
+	.pt(48%);
+	background:url("@{pic_url}/images/wap/activity/may_sale/signout_pig.jpg") no-repeat;
+	background-size:100%;
+}
+
+.btn_box{
+	.pr;
+	.w(100%);
+	.pt(19%);
+
+	.patch_btn{
+		.pa;
+		left:0;
+		top:0;
+		.w(50%);
+		.pt(110*@w);
+		background:url("@{pic_url}/images/wap/activity/may_sale/l_ret_btn.jpg") no-repeat;
+		background-size:100%;
+	}
+
+	.start_btn{
+		.pa;
+		left:50%;
+		top:0;
+		.w(50%);
+		.pt(110*@w);
+		background:url("@{pic_url}/images/wap/activity/may_sale/l_qd_btn.jpg") no-repeat;
+		background-size:100%;
+	}
+}
+
+.rule_box{
+	.pr;
+	.c;
+	.pt(3%);
+	.w(100%);
+	.h(40*@px);
+
+	.rule_btn{
+		.auto;
+		.block;
+		.w(180*@px);
+		.h(40*@px);
+		background:url("@{pic_url}/images/wap/activity/may_sale/l_gz_btn.jpg") no-repeat;
+		background-size:100%;
+	}
+}
+
+.date_top{
+	.pr;
+	.w(100%);
+	left:0;
+	top:0;
+	.pt(8%);
+	background:url("@{pic_url}/images/wap/activity/may_sale/l_date_bg.jpg") no-repeat;
+	background-size:100%;
+}
+
+.date_box{
+	.pr;
+	left:0;
+	top:0;
+	.pt(8%);
+	.w(100%);
+	.fc(#fff);
+	.f(1.4rem);
+	.l(1.6rem);
+	.bgc(#5b494e);
+
+	.prev_btn{
+		.pa;
+		top:2%;
+		left:6%;
+		.w(46*@w);
+		.pt(46*@w);
+		background:url("@{pic_url}/images/wap/activity/may_sale/prev_btn.png") no-repeat;
+		background-size:100%;
+	}
+
+	.next_btn{
+		.pa;
+		top:2%;
+		right:6%;
+		.w(46*@w);
+		.pt(46*@w);
+		background:url("@{pic_url}/images/wap/activity/may_sale/next_btn.png") no-repeat;
+		background-size:100%;
+	}
+
+	.icon_cal{
+		.pa;
+		top:12%;
+		left:16%;
+		.mt(1%);
+		.w(5%);
+		.pt(6%);
+		background:url("@{pic_url}/images/wap/activity/may_sale/cal_icon2.png") no-repeat;
+		background-size:100%;
+	}
+
+	.month{
+		.pa;
+		.w(30%);
+		top:12%;
+		left:22%;
+	}
+
+	.totals{
+		.pa;
+		.none;
+		top:12%;
+		right:16%;
+
+		.num{
+			.fc(#fff000);
+		}
+	}
+}
+
+.remind_box{
+	.pr;
+	left:0;
+	top:0;
+	.w(100%);
+	.pt(20%);
+	.bgc(#5b494e);
+
+	.remind{
+		.pa;
+		.auto;
+		left:0;
+		top:30%;
+		.w(100%);
+		.pt(62/640*100%);
+		background:url("@{pic_url}/images/wap/activity/may_sale/remind_bg.jpg") no-repeat;
+		background-size:100%;
+
+		.remind_switch{
+			.pa;
+			.block;
+			top:0;
+			left:74%;
+			.w(138/640*100%);
+			.pt(62/640*100%);
+		}
+
+		.open{
+			background:url("@{pic_url}/images/wap/activity/may_sale/open_btn.jpg") no-repeat;
+			background-size:100%;
+		}
+	}
+}
+
+/* calander */
+.calanderWrap{
+	.pr;
+	.clearfix;
+	.pt(1.5%);
+	background:#5b494e;
+	padding:0 3% 0 6.5%;
+
+	.cTop{
+		.pa;
+		top:4%;
+		left:2%;
+		right:2%;
+		.pt(2.5%);
+		background:url("@{pic_url}/images/wap/activity/may_sale/ct.png") no-repeat;
+		background-size:100%;
+	}
+
+	.cBottom{
+		.pt(2.5%);
+		.w(94.5%);
+		.pl(5px);
+		background:url("@{pic_url}/images/wap/activity/may_sale/calander_bottom.png") no-repeat; background-size:100%;
+	}
+
+	.calander{
+		.pr;
+		.clearfix;
+		.w(100%);
+		.pl(0);
+		.pt(2.5%);
+
+		.h{
+			.c;
+			.l(200%);
+			.fc(#ff938b);
+			background:#f4e6ea;
+			border-right:1px solid #f4e6ea;
+		}
+
+		.h2{
+			.pt(11%);
+			.fc(#a38e8e);
+			background:#fff;
+			border-right:1px solid #e5e5e5;
+			border-bottom:1px solid #e5e5e5;
+		}
+
+		.h2 > .day{
+			.pa;
+			top:0;
+			left:0;
+		}
+
+		/*.icon318,.iconSign318{
+			border:1px solid #fd4c79;
+		}*/
+
+		.icon318{
+			background:url("http://d02.res.meilishuo.net/pic/_o/08/76/6308fb7b2bfb192fa2da6fc5a1f3_84_71.cg.png") no-repeat;
+			background-size:100%;
+		}
+
+		.iconSign318{
+			background:url("http://d02.res.meilishuo.net/pic/_o/e4/a7/bad92399d81f2a8084982b187871_84_71.cg.png") no-repeat;
+			background-size:100%;
+		}
+
+		.qdStatus{
+			.pa;
+			.w(70%);
+			.pt(60%);
+			top:15%;
+			left:20%;
+			right:10%;
+		}
+
+		.qdStatus_yq{
+			background:url("@{pic_url}/images/wap/activity/may_sale/qd.png") no-repeat;
+			background-size:100%;
+		}
+
+		.qdStatus_lq{
+			background:url("@{pic_url}/images/wap/activity/may_sale/wqd.png") no-repeat;
+			background-size:100%;
+		}
+
+		.qdStatus_wq{
+			.w(60%);
+			left:23%;
+			.pt(67%);
+			background:url("@{pic_url}/images/wap/activity/may_sale/qd1.png") no-repeat; background-size:100%;
+		}
+
+		.dhStatus{
+			.pa;
+			.w(60%);
+			.pt(29%);
+			top:4%;
+			right:4%;
+		}
+
+		.dhStatus_dhr{
+			background:url("@{pic_url}/images/wap/activity/may_sale/dh.png") no-repeat;
+			background-size:100%;
+		}
+
+		.dhStatus_ydh{
+			background:url("@{pic_url}/images/wap/activity/may_sale/ydh.png") no-repeat; background-size:100%;
+		}
+	}
+
+	.calander > div{
+		.pr;
+		.left;
+		.w(13.5%);
+	}
+}
+
+/* 弹窗 */
+.shade{
+	.pf;
+	top:0;
+	left:0;
+	.w(100%);
+	.h(100%);
+	z-index:10;
+	background:rgba(0,0,0,.5);
+}
+
+.win_btn{
+	.pa;
+	.auto;
+	.block;
+	left:21%;
+	.h(80*@px);
+	.w(360/640*100%);
+}
+
+.win_box{
+	.pf;
+	top:10%;
+	left:7%;
+	.w(86%);
+	.pt(115%);
+	z-index:99;
+	background:url("@{pic_url}/images/wap/activity/may_sale/dailog_bg.png") no-repeat;
+	background-size:100%;
+
+	.title{
+		.pa;
+		.c;
+		top:0;
+		left:10%;
+		.w(80%);
+		.pt(10%);
+		.l(1.2);
+		.f(1.8rem);
+		.fc(#7c4848);
+	}
+
+	.desc{
+		.pa;
+		.c;
+		top:0;
+		left:10%;
+		.w(80%);
+		.pt(32%);
+		.l(1.2);
+		.f(1.4rem);
+		.fc(#7c4848);
+
+		a{
+			.i_block;
+			.fc(#ff1200);
+			font-style:normal;
+		}
+	}
+}
+
+.win_patch{
+	.title{
+		.pt(18%);
+	}
+
+	.desc{
+		.pt(28%);
+		.l(1.4);
+		.f(1.2rem);
+
+		em{
+			.fc(#f00);
+			font-style:normal;
+		}
+	}
+
+	.bg{
+		.pa;
+		.h(45%);
+		.w(60%);
+		left:20%;
+		top:32%;
+
+		span{
+			.pa;
+			left:84%;
+			bottom:18%;
+			.f(2.4rem);
+			.fc(#7c4848);
+			z-index:99;
+
+			b{
+				.mr(2px);
+				.f(1.5rem);
+				font-weight:100;
+				font-style:normal;
+			}
+		}
+	}
+
+	.know{
+		.win_btn;
+		bottom:10%;
+		background:url("@{pic_url}/images/wap/activity/may_sale/know_btn4.jpg") no-repeat;
+		background-size:100%;
+	}
+}
+
+.win_card{
+	.title{
+		em{
+			.f(2.4rem);
+			.fc(#ff4436);
+			font-style:normal;
+		}
+	}
+
+	.tip{
+		.pa;
+		.c;
+		top:0;
+		left:10%;
+		.w(80%);
+		.pt(94%);
+		.l(1.2);
+		.f(1.2rem);
+		.fc(#f00);
+	}
+
+	.close{
+		.pa;
+		.c;
+		.w(80%);
+		.l(1.2);
+		.f(1.2rem);
+		.fc(#7c4848);
+		left:10%;
+		bottom:7%;
+		text-decoration:underline;
+	}
+
+	.desc{
+		.pt(28%);
+		.l(1.4);
+		.f(1.2rem);
+
+		em{
+			.fc(#f00);
+			font-style:normal;
+		}
+	}
+
+	.bg{
+		.pa;
+		.w(80%);
+		left:10%;
+		top:30%;
+	}
+
+	.patch{
+		.win_btn;
+		bottom:16%;
+		background:url("@{pic_url}/images/wap/activity/may_sale/patch_btn.jpg") no-repeat;
+		background-size:100%;
+	}
+}
+
+
+/* css animation */
+.in_down{
+	-webkit-animation:bounceInDown .7s 0s ease both;
+	-moz-animation:bounceInDown .7s 0s ease both;
+}
+@-webkit-keyframes bounceInDown{
+	0%{
+		opacity:0;
+		-webkit-transform:translateY(-2000px);
+	}
+	60%{
+		opacity:1;
+		-webkit-transform:translateY(30px);
+	}
+	80%{
+		-webkit-transform:translateY(-10px);
+	}
+	100%{
+		-webkit-transform:translateY(0);
+	}
+}
+@-moz-keyframes bounceInDown{
+	0%{
+		opacity:0;
+		-moz-transform:translateY(-2000px);
+	}
+	60%{
+		opacity:1;
+		-moz-transform:translateY(30px);
+	}
+	80%{
+		-moz-transform:translateY(-10px);
+	}
+	100%{
+		-moz-transform:translateY(0);
+	}
+}
+
+.up_down{
+	-webkit-animation:bounceInUp .7s .2s ease both;
+	-moz-animation:bounceInUp .7s .2s ease both;
+}
+@-webkit-keyframes bounceInUp{
+	0%{
+		opacity:0;
+		-webkit-transform:translateY(1000px);
+	}
+	60%{
+		opacity:1;
+		-webkit-transform:translateY(-30px);
+	}
+	80%{
+		-webkit-transform:translateY(10px);
+	}
+	100%{
+		-webkit-transform:translateY(0);
+	}
+}
+@-moz-keyframes bounceInUp{
+	0%{
+		opacity:0;
+		-moz-transform:translateY(2000px);
+	}
+	60%{
+		opacity:1;
+		-moz-transform:translateY(-30px);
+	}
+	80%{
+		-moz-transform:translateY(10px);
+	}
+	100%{
+		-moz-transform:translateY(0);
+	}
+}

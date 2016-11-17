@@ -1,0 +1,40 @@
+<%# head_simple.html%>
+</head>
+<body>
+	<%
+	var dlink =    ({
+		'qz' : 'wap_qz'
+		,'tq' : 'wap_tq'
+		,'wb' : 'wap_wb'
+		,'wx' : 'wap_wx'
+		})[this.refer] || 'wap'
+
+	if (this.apk){
+		dlink = 'http://www.meilishuo.com/' + this.apk 
+	}else{
+		dlink = 'http://m.meilishuo.com/download/latest/' + encodeURIComponent(dlink)
+	}
+	if (this.frm)
+		dlink += ( dlink.indexOf('?') > 0  ? '&' : '?') + 'frm=' + this.frm
+
+
+	var dparam = {"url":dlink, "inApp":0, "title":"美丽说下载"}
+	var dlink2= 'meilishuo://openURL.meilishuo?json_params='+ encodeURIComponent(JSON.stringify(dparam))
+	//var dlink2 = _extFn.getAppLink('openURL' , dparam , this.os, this.r) 
+	%>
+	<div class="main">
+		<div class="top_bnr">
+			<img src="<%= this.topBnr.top_bnr %>"/>
+		</div>
+		<div class="download">
+			<a href="<%=dlink2%>" red_url="<%=dlink%>" id="openBtn" class="btn">
+				<% var btn = this.topBnr.top_btn_small || (this.PICTURE_URL + "/images/wap/web/clock_btn.png") %>
+				<img src="<%= btn%>" class="android_img"/>
+			</a>
+		</div>
+	</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/openClient');
+_use:", this._JSstack , this._JSmods);%>
+<%# foot_simple.html%>
+

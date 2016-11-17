@@ -1,0 +1,13 @@
+/*--/Users/MLS/Documents/H2/H2_client/hornbill/apps_0/www/views/wins/loginSmile.html--*/ 
+     var est = require(config.path.lib + 'est/est.js'); 
+     var _extFn = require('/Users/MLS/Documents/H2/H2_client/hornbill/nestnew/server/lib/est/extFn.js'); 
+     function requireFn(tpl) { return est.renderFile('/Users/MLS/Documents/H2/H2_client/hornbill/apps_0/www/views/' ,tpl , null , null ,'www' ,true); } ; 
+     function __getHtml (_data) { 
+       function jsRender(tpl , id) { return est.jsRender(requireFn(tpl)(_data), id  ); } ; 
+       var __htm ='';
+__htm += '<script type="text/html" id="loginSmile" >\n';
+__htm += '\n<div class="smileysbox clearfix_f">\n	<div class="line"></div>\n    <ul>\n        <? $.each(smileys , function(k , v){ ?>\n            <li class="smiley" id="<?= v?>" title="<?= k ?>">\n                <img emotion="[<?= k ?>]" title="<?= k ?>" src="';
+__htm += _data.PICTURE_URL;
+__htm += 'images/face/<?= v ?>.gif" />\n            </li>\n        <? });?>\n    </ul>\n</div>\n</script>\n';
+return __htm;} 
+ exports.html = __getHtml; 

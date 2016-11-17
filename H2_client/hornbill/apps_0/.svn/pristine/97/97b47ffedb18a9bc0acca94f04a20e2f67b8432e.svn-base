@@ -1,0 +1,235 @@
+<%
+var detail = this.detail;
+var uInfo  = detail.uinfo;
+var rInfo = detail.root_uinfo;
+var uCircleInfo = detail.circle_info;
+var rootCircleInfo = detail.root_circle_info;
+var transNum = detail.count_repin;
+var trans = detail.show_type;
+var picInfo = detail.multimedia_miscpic;
+var audio = detail.audio;
+var hasPic = !!(picInfo && picInfo.length);
+var goodList = hasPic ? picInfo[0].tags : [];
+var getAppLink = this.getAppLink;
+var banners = this.banners;
+var convertLink = this.convertLink;
+var parseAudioDuration = this.parseAudioDuration;
+var oldImg = (picInfo[0].picurl).split( '/' );
+var checkImg = oldImg[oldImg.length-1];
+var mainClass;
+var minPrice = 10000000;
+var shareImage = "//d02.res.meilishuo.net/pic/_o/66/cc/8677209a088f37af5b79c3e64d7b_200_200.cf.jpg"
+
+if(hasPic)shareImage = picInfo[0].cover
+
+if ( audio ) {
+    mainClass = "main has-audio";
+}else {
+    mainClass = "main";
+}
+
+if (trans == 0){
+    rInfo = uInfo;
+    rootCircleInfo = uCircleInfo;
+}
+%>
+
+<div class="<%= mainClass %>">
+    <div class="picture">
+        <div class="imageSlide" id="imageSlide">
+            <ul>
+                <li data-index="1" style="background-image:url('<%= hasPic ? picInfo[0].picurl : 'about:blank' %>')">
+                    <% if (goodList && goodList.length) {%>
+                        <div class="price-tags">
+                        <% goodList.forEach( function( tag ) {
+                            var type = tag.type,
+                            goods = tag.goods,
+                            top   = 100 * tag.y + '%',
+                            style, left, text;
+
+                            if ( type == 'tlabel' ) {
+                                text = tag.tlabel.tlabel_name;
+                            } else {
+                                var price = +goods.goods_price;
+                                text = '￥' + price + ' ' + goods.goods_title;
+                                minPrice = minPrice ? (minPrice > price ? price : minPrice) : 0;
+                            }
+
+                            if ( tag.d == 0 ) {
+                                left = 100 * tag.x + '%';
+                                style = 'left:' + left + ';top:' + top + ';';
+                            %>
+                            <div class="price-tag dir-left" style="<%= style %>">
+                                <i class="icon-tag"></i>
+                                <p class="tag-text"><%= text %></p>
+                            </div>
+                            <%} else {
+                                left = 100 * ( 1 - tag.x ) + '%';
+                                style = 'right:' + left + ';top:' + top + ';';
+                            %>
+                            <div class="price-tag dir-right" style="<%= style %>">
+                                <p class="tag-text"><%= text %></p>
+                                <i class="icon-tag"></i>
+                            </div>
+                        <% } }); %>
+                        </div>
+                    <%}%>
+                </li>
+                    <% goodList.forEach(function(good, index){
+                        var type = good.type;
+                        if(type =="goods") {%>
+                        <% var imgList = good.goods.goods_multi_imgs %>
+                        <% imgList.forEach(function(item, index){
+                                if (item.goods_img.indexOf( checkImg ) == -1) {%>
+                <li data-index="<%= index + 2 %>" style="background-image:url('<%= item.goods_img %>')"></li>
+                        <% } });%>
+                    <% }
+                }); %>
+            </ul>
+            <span class="bookmark"></span>
+        </div>
+
+        <% if( audio && audio.url ) {%>
+        <a class="post-voice js-audio" data-audioid="<%= audio.audio_id %>" data-duration="<%= audio.duration %>">
+            <i class="voice-bg"></i>
+            <div class="post-voice-wrap">
+                <i class="icon-play"></i>
+                <i class="icon-loading"></i>
+                <p class="voice-icons">
+                    <i class="icon-voice-1"></i>
+                    <i class="icon-voice-2"></i>
+                    <i class="icon-voice-3"></i>
+                </p>
+                <p class="post-voice-length"><%= parseAudioDuration(audio.duration) %></p>
+            </div>
+            <audio class="audio" <%= !this.os.ios ? ('src="' + audio.url +'"') : '' %>></audio>
+        </a>
+        <% } %>
+
+        <% if ( this.os.mlsApp ) { %>
+        <a class="code" href="<%= getAppLink( 'post_share',{ title: '分享给朋友', post_data: detail }) %>">
+            <img src="http://d02.res.meilishuo.net/pic/_o/23/0b/a6e526a122e8acc5bec9e97dad92_40_41.cf.png" alt=""/>
+        </a>
+        <% } %>
+    </div>
+
+    <div class="notice"><%= detail.msg_text %></div>
+    <div class="publish-info">
+        <div class="time">
+            <span class="time-ico"></span>
+            <span class="date"><%=detail.publish_time%></span>
+        </div>
+        <% if(detail.address){%>
+        <div class="address">
+            <span class="icon-location-g"></span>
+            <span class="address-name"><%= detail.address %></span>
+
+        </div>
+        <%}%>
+    </div>
+
+    <div class="seller-info">
+        <%
+            var userLink;
+
+            if ( this.os.mlsApp ) {
+                userLink = getAppLink( 'person', { 'user_id':rInfo.user_id } );
+            } else {
+                userLink = '/wx/user_c/' + rInfo.user_id
+            }
+        %>
+        <a class="head" href="<%= userLink %>">
+        <img class="seller-head" src="<%= rInfo.avatar_a %>" alt="用户头像"/>
+        <% if(uInfo.is_daren == 1) {%>
+        <span class="icon-vip-small" style="background-image: url(<%= uInfo.identity_img %>);"></span>
+        <%}%>
+        </a>
+        <p class="seller-desc">
+            <a href="<%= userLink %>"><span class="pink seller-name"><%= rInfo.nickname %></span></a>
+            发现到
+            <a href="<%= convertLink( 'circle', { 'circle_id':rootCircleInfo.id } )%>"><span class="pink seller-circle-name"><%= rootCircleInfo.name %></span></a>
+            群
+        </p>
+    </div>
+
+    <div class="sku-list">
+        <ul>
+            <% goodList.forEach(function(good, index){
+            var type = good.type;
+            if(type =="goods"){
+                var goods = good.goods,
+                    stock = goods.stock || [ { stock: [[{}]] } ],
+                    param = {
+                        'tid': goods.twitter_id,
+                        'goods_id': goods.goods_id,
+                        'shop_id': goods.shop_id,
+                        'sku_id': stock[ 0 ].stock[ 0 ][ 0 ].sku_id,
+                        'price': goods.goods_price,
+                        'amount': 1,
+                        'source_c': 'circle_detail',
+                        'source': 'mob',
+                        'type': 2,
+                        toid: rInfo.user_id
+                    },
+                    goodsStatus = goods.goods_status;
+                stock.forEach( function( sku ) {
+                    if( sku.is_show ) {
+                        var val = sku.name + '__' + sku.value[ 0 ];
+                        if ( sku.name == '尺码' ) {
+                            param.size = val;
+                        } else {
+                            param.color = val;
+                        }
+                    }
+                });
+            %>
+            <li class="goods-info">
+                <div class="info-wrap">
+                    <img src="<%= good.goods.goods_img %>" alt="商品图片"/>
+                    <div class="item-info">
+                        <p class="title"><%= goods.goods_title %></p>
+                        <p class="price">￥<%= goods.goods_price %></p>
+                    </div>
+                </div>
+                <div class="buy-wrap">
+                    <% if( goodsStatus == 1 ){ %>
+                        <a class="buy-btn" href="<%= convertLink( 'buy', param ) %>">我想买</a>
+                    <% } else { %>
+                        <span class="buy-btn non-buy">已下架</span>
+                    <% } %>
+                </div>
+            </li>
+            <% } %>
+            <% }); %>
+        </ul>
+    </div>
+
+    <!--banner位-->
+    <div class="banner">
+    <% if( banners && banners.length ) {
+        banners.forEach ( function ( banner ){ %>
+            <a href="<%= banner.url %>">
+                <img src="<%= banner.pic_url %>" alt="">
+            </a>
+       <% }) %>
+    <% } %>
+    </div>
+
+    <% if (transNum != 0){ %>
+    <div class="trans" href="<%= convertLink( 'repin_circle_list',{ msg_id : detail.msg_id }) %>">
+        <p><span>转到</span><span class="num"><%= transNum %></span>个群</p>
+    </div>
+    <% } %>
+
+    <%# mainapp/repin_list.html%>
+
+<script>
+fml.vars.circleId = <%= uCircleInfo.id %>;
+fml.vars.uInfo = <%= JSON.stringify(uInfo)%>;
+fml.vars.msg_id = '<%= detail.msg_id %>';
+fml.vars.shareInfo = {
+    "title" : "<%= detail.msg_text %>",
+    "image" : "<%= shareImage %>",
+    "price" : <%= minPrice %>
+};
+</script>

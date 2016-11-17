@@ -1,0 +1,67 @@
+@import "../atom.less";
+body{.bgwhite;}
+.container{.w(982px);.auto;.pt(60px);}
+.tab_wrapper{border-bottom: 1px solid #f69;.hidden;
+	.tab_item{.w(140px);.h(40px);.l(40px);.f(16px);.mr(2px);.bgc(#f3f3f3);.fc(#333333);.c;.left;
+		&.act{.bgred;.white;}
+	}
+}
+.combo_desc{.l(55px);.f(14px);}
+.combo_list{.hidden;}
+.combo_item{border:1px solid #e5e5e5;.bgc(#f8f8f8);.pr;.mb(30px);.w(458px);.mr(30px);.left;.hidden;padding: 20px 0;
+	.selected_icon{.w(30px);.h(30px);background: url("http://d04.res.meilishuo.net/pic/_o/f6/66/751487c83c298a973ea3568e3969_60_30.cf.png") no-repeat;.right;.mr(10px);.mt(-10px);
+		&.noact{.bp(-30px,0);}
+		.selected_cbx{.opacity(0);}
+	}
+	&.warning{border-color: #f69;}
+	.thumbnail_img{.w(100px);.h(100px);.ml(20px);.left;}
+	.combo_item_info{.ml(20px);.left;.w(275px);
+		.goods_name{.f(14px);white-space: nowrap;.hidden;text-overflow:ellipsis}
+		.price_wrapper{.mt(12px);
+			.s_price_wrap{.f(16px);.red;}
+			.o_price_wrap{.f(14px);.fc(#999999);}
+			.repertory_wrap,.o_price_wrap{.ml(2px);}
+		}
+		.num_wrapper{.mt(8px);}
+		.num_wrapper,.selected_sku_wrapper{.l(24px);}
+	}
+	.sku_wrapper{.ml(20px);.hidden;.l(28px);
+		.sku_tle{white-space: nowrap;vertical-align: top;.pr(5px);}
+		.sku_item_wrapper{
+			table{border-collapse: collapse;}
+		}
+		.sku_item{border:1px solid #e5e5e5;.bgwhite;.mr(10px);.left;.cursor;.mb(10px);
+			&.act{border:2px solid #f69;}
+			&.out_stock{cursor: not-allowed;border:1px dashed #e6e6e6;.opacity(50);
+				&:hover{.fc(#666);}
+			}
+			&:hover{.fc(#f69);}
+			img{.w(44px);.h(44px);vertical-align: middle;}
+		}
+		a.sku_item{
+			&.act{
+				img{.w(40px);.h(40px);}
+			}
+			
+		}
+		span.sku_item{
+			padding: 0 10px;
+			&.act{.l(26px);padding: 0 9px;}
+		}
+	}
+}
+.mt20{.mt(20px);}
+.mb10{.mb(10px);}
+.mr20{.mr(20px);}
+.create_order_info{border:1px solid #ccc;.w(980px);.h(52px);text-align: right;.bgwhite;
+	.lightgray_f{.fc(#999999);}
+	.total_price_wrapper,.save_price_wrapper,.combo_price_wrapper{vertical-align: middle;}
+	.combo_price_wrapper{.red;.f(20px);}
+	&.at_bottom{position: fixed;bottom: 0;z-index: 100;}
+	// .total_price_wrapper,.save_price_wrapper{visibility: hidden;}
+	&.canbuy{border-color: #f69;
+		// .total_price_wrapper,.save_price_wrapper{visibility: visible;}
+		#create_order_btn{.bgc(#f69);.cursor;}
+	}
+}
+#create_order_btn{.white;.bgc(#cccccc);.w(148px);.c;.f(20px);.h(52px);.l(52px);.i_block;vertical-align:middle;}

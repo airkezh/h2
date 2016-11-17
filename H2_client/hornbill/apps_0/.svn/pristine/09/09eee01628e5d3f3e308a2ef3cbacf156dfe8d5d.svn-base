@@ -1,0 +1,132 @@
+<%#head.html%>
+<%
+	var userInfo = this.userInfo || {};
+	var newHot = this.newHot || {};
+	var newHotData = newHot.data || {};
+	var desireList = this.desireList.data || [];
+	var coupon = this.coupon || {};
+	var couponData = coupon.data || {};
+	var celebrity = this.celebrity || {};
+	var celebrityData = celebrity.data || [];
+	var hot = this.hot || {};
+	var hotData = hot.data || [];
+%>
+<div class="wrap">
+	<%= requireFn('zulily/searchHead.html')({
+		'search' : this.search,
+		'keyword': this.keyword,
+		'common_r' : this.common_r_XR,
+		'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+	});%>
+	<%= requireFn('zulily/header2.html')({
+		'status' : 1,
+		'common_r' : this.common_r_XR,
+		'appShare' : this.appShare,
+		'params' : this.params,
+		'userInfo' : this.userInfo,
+		'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+	});%>
+	<%= requireFn('block/banner.html')({
+		'banner' : this.banner,
+		'banner_r':this.banner_XR,
+		'hide_btn':false,
+		'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+	});%>
+	<% if(couponData.image_url){ %>
+		<a href="javascript:;" data-url="<%= couponData.url %>" data-xr="<%= this.coupon_XR %>" class="btn-coupon" id="btnCoupon">
+			<img src="<%= couponData.image_url %>" alt="">
+		</a>
+	<% } %>
+	<% if(celebrityData.length){ %>
+		<div class="celebrity-list" id="celebrityList" data-xr="<%= this.celebrity_XR %>">
+			<h3 class="title">
+				<b></b>
+				热门明星同款
+			</h3>
+			<ul>
+				<% celebrityData.forEach(function(item, index){ %>
+					<li>
+						<a href="javascript:;" data-url="<%= item.url %>">
+							<img src="<%= item.image_url %>" alt="">
+						</a>
+					</li>
+				<% }); %>
+			</ul>
+		</div>
+	<% } %>
+	<% if(hotData.length){ %>
+		<div class="hot-list" id="hotList" data-xr="<%= this.hot_XR %>">
+			<h3 class="title">
+				<b></b>
+				最新热点
+			</h3>
+			<ul>
+				<% hotData.forEach(function(item, index){ %>
+					<li>
+						<a href="javascript:;" data-url="<%= item.url %>">
+							<img src="<%= item.image_url %>" alt="">
+						</a>
+					</li>
+				<% }); %>
+			</ul>
+		</div>
+	<% } %>
+	<% if(desireList.length){ %>
+		<div class="kinds-box">
+			<ul class="kinds" id="kinds" data-xr="<%= this.desireList_XR %>">
+				<% desireList.slice(4).forEach(function(item,index){ %>
+					<li>
+						<a href="javascript:;" data-url="<%= item.url %>"><img src="<%= item.pic %>" alt=""></a>
+					</li>
+				<% }) %>
+			</ul>
+		</div>
+	<% } %>
+	<div class="new-box" id="newBox">
+		<p class="tips">每周二/四/六 11:00上新</p>
+		<p class="time"><%= newHotData.title %></p>
+	</div>
+	<div class="posterWall wall" id="content">
+		<ul class="goods_wall goods"></ul>
+		<div class="pullUp" status="loading"></div>
+	</div>
+	<div class="top-box" style="bottom:<%if(this.isIphone){%>60<%}else{%>20<%}%>px">
+		<a class="gotop" href="javascript:;">
+			<img src="http://d02.res.meilishuo.net/img/_o/41/62/c1d9e0f159bfb506b27dea648ccb_80_80.cg.png" />
+		</a>
+	</div>
+</div>
+<% if(!this.appShare){ %>
+	<%= requireFn('wapShare.html')({
+		'share' : this.share 
+	    , 'shareTitle' : '选择分享到'
+	    , '_JSstack' : this._JSstack
+		, '_JSmods' : this._JSmods
+	}); %>
+<% } %>
+<script type="text/html" id="posterWall">
+	<li styleId="<?= this.v.id ?>" twitter_id="<?= this.v.twitter_id ?>" class="detailUrl">
+		<? var imgBoxHeight=(parseInt($(window).width()/2)-15)* this.v.buy_img_height / this.v.buy_img_width +'px'; ?>
+		<div class="goods_info">
+			<div class="lazy_pic img-box" asrc="<?= this.v.buy_img?>" style="height:<?= imgBoxHeight ?>;padding-top:0">
+				<span class="shadow"></span>
+			</div>
+			<div class="progress_wrap">
+				<dl class="progress">
+					<dt class="pic"><img src="<?= this.v.photo ?>" alt="" class="maishou_pic"></dt>
+					<dd class="name"><span class="maishou_name"><?= this.v.nick_name ?></span>&nbsp;求款</dd>
+					<dd><p class="most_intro"><?= this.v.desire_title ?></p></dd>
+				</dl>
+			</div>
+		</div>
+	</li>
+</script>
+
+<script>
+	fml.vars.isLogin = <%= this.userInfo.user_id%>;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/zulily/ing2');
+_use:", this._JSstack, this._JSmods); %>
+
+<%# foot.html%>

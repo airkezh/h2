@@ -1,0 +1,102 @@
+<% var _rushlist=this.rush_list,
+   _zhengdian=_rushlist.zhengdian_info,
+   _reclist=_rushlist.rec_info,
+   _daytype=this.daytype,
+   _islazyload=this.is_lazyload,
+   isexit=function(arr,val){
+       for(var i=0; i<arr.length; i++){
+			if(arr[i] == val)
+				return true;
+		}
+		return false;
+   };
+   _zhengdian&&_zhengdian.forEach(function(prolist){ 
+   	     	  if(prolist.status==1){
+   	     	  	var rushtip="距结束 <i class='etime' etime='"+ prolist.time_unix + "'></i>" ;
+   	     	  }
+   	     	  else if(prolist.status==2)
+   	     	  {
+   	     	  		var rushtip= "活动已结束";
+   	     	  }
+   	     	  else{
+                var rushtip= (_daytype=="today" ? "": "明日")+ prolist.tip+"开抢";
+   	     	  }
+   	   %>
+<div class="rushitem">
+<hgroup>		
+	<i class="line"></i>
+	<h1>
+		<i class="round l_dot"></i><i class="rushtip<%=_daytype=='today'? ' pinkfc' : '';%>"><%=rushtip%></i><i class="round r_dot"></i>
+	</h1>		
+</hgroup>
+<div class="rushpros">
+	<%prolist.goods_list.forEach(function(data){
+		var tids=this.remind_info.tids,
+		_url="javascript:void(0);",
+		detail_url=_extFn.getAppLink('twitter_single', {'twitter_info' : {'twitter_id' : data.twitter_id , 'is_doota' : 1}}, this.os, this.r, '/share/item/'+data.twitter_id);
+		if(tids&&tids.length&&isexit(tids,data.twitter_id)){
+        var btn_content="<i class='clock'></i>已设提醒";
+        btn_class="reminded_btn";
+		}else{
+			if(data.unix_time<=600){
+				var btn_content="<i class='clock'></i>即将开抢",
+		        btn_class="reminded_btn";
+			}else{
+				var btn_content="<i class='clock'></i>开抢提醒",
+				btn_class="remind_btn";
+	        }
+	    }
+		var progress=data.status==0 ? 0:178/320*(data.sales/data.total_limit*100),
+		tipbg=_daytype=="today" ? "orangetip1": "graytip",
+		count=data.status==0 ? "限量"+data.total_limit+"件" :"剩余"+(data.total_limit-data.sales)+"件",
+		tipcontent=data.status==0 ? "距开始：<i class='time' time='"+data.unix_time+"'></i>" : 
+		"<i class=\"blackf\">已下单"+data.sales+"件</i>";
+		switch(data.status){
+			case 1:				
+				btn_content="<a href='"+detail_url+"'>￥立即购买</a>";
+				btn_class="buy_btn";
+				tipbg="silvertip";
+				_url=detail_url;
+				break;
+			case 2:
+				btn_content="已结束";
+				detail_url=_url;
+				tipbg="silvertip";
+				btn_class="empty_btn";
+				break;
+			case 3:
+				btn_content="已抢光";
+				detail_url=_url;
+				tipbg="silvertip";
+				btn_class="over_btn";
+				break;
+		}%>
+	<div class="probox" twid="<%=data.twitter_id%>" shopid="<%=data.shop_id%>" stime="<%=data.start_time%>">
+		<figure>
+			<img src="<%=this.img_root%>images/wap/activity/tuan/<%=tipbg%>.png" class="tipbg" />
+			<!--进度条-->
+			<span class="progress" style="width:<%=progress%>%;"></span>
+    		<span class="tipcontent"><%=tipcontent%></span>
+    		<a class="<%= btn_class=='remind_btn' ? '': btn_class%>" href="<%=detail_url%>">   			
+    		<%if(_islazyload){%>
+			<span class="bs_load_img preload" asrc="<%= data.image_url%>"></span>
+			<%}else{%>
+			<img src="<%= data.image_url%>" alt=""><%}%>
+    		</a>
+        </figure>
+        <figcaption>
+        	<p class="proTitle"><a class="<%= btn_class=='remind_btn' ? '': btn_class%>" href="<%=detail_url%>"><%=data.goods_name%></a><span class="remain"><%=count%></span></p>
+			<div class="proPrice">
+				<span class="price"><i>￥</i><%= data.off_price%></span>
+				<del class="orig_price">¥<%= data.origin_price%></del>
+				<span class="<%= btn_class%> status_btn"><%= btn_content%></span>
+			</div>
+        </figcaption>
+    </div>
+    <%})%>
+</div>
+</div>
+<%})%>
+<%if(this.rushed_url){%>
+<a href="<%=this.rushed_url%>" class="moreBtn">往期抢购晒单</a> 
+<%}%>

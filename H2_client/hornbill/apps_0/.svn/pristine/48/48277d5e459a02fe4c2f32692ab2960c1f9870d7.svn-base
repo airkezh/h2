@@ -1,0 +1,53 @@
+<% 
+var EfnSubstr = _extFn.mSubstr;
+var showimg = arguments[1];%>
+<div class="groupBox">
+	<div class="groupCon">
+		<div class="gc_title">
+			<h4><a target="_blank" href="/group/<%= this.group_id%><%= this.frm || ''%>"><%= this.name%></a></h4>
+			<p><%= this.num%></p>
+		</div>
+		<a target="_blank" href="/group/<%= this.group_id%><%= this.frm || ''%>" class="imgBox">
+			<% 
+			var pics = this.picture_url;
+			var mixpic = this.mixpic;
+			var pic_count = 0;
+			if (mixpic) {
+				if (showimg < 8) {
+			%>
+				<img src="<%= mixpic%>" class="maxpic" />
+			  <%}else{%>
+				<span asrc="<%= mixpic%>" class="maxpic" ></span>
+			<%
+				}
+			}else{
+				pics && pics.map(function(pic){
+					var style = ++pic_count % 3 ? '' : 'style="margin-right:0"' ;
+					if (showimg < 8) {
+						%>
+					<img class="minpic"  src="<%= pic%>" <%= style%>  />
+						<%
+					} else {
+					%>	
+					<span class="minpic"   asrc="<%= pic%>" <%= style%> ></span>
+					<%
+						};
+					});
+			};
+			%>
+			<div class="clear_f"></div>
+		</a>
+		<div class="infoBox c_f">
+			<% if (this.isMagFavor) { %>
+			<a class="red_follow" target="_blank" href="/group/<%= this.group_id%><%= this.frm || ''%>">去看看>></a>
+			<% } else {%>
+			<% if (this.is_follower){ %>
+			<span class="removeGroupFollow pink_follow" groupid="<%= this.group_id%>">已关注</span>
+			<% } else {%>
+			<span  class="addGroupFollow red_follow" groupid="<%= this.group_id%>" >+ 加关注</span>
+			<% }%>
+			<% } %>
+			<div class="clear_f"></div>
+		</div>
+	</div>
+</div>

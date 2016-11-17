@@ -1,0 +1,35 @@
+<%# head_simple.html%>
+   <%
+      var result
+         ,answer = {
+            '1A5A':'style1-bg1',
+            '1A5B':'style2-bg2',
+            '1A5C':'style3-bg3',
+            '1A5D':'style4-bg4',
+            '1B5A':'style5-bg5',
+            '1B5B':'style6-bg6',
+            '1B5C':'style7-bg7',
+            '1B5D':'style8-bg8',
+            '1C5A':'style9-bg9',
+            '1C5B':'style110-bg',
+            '1C5C':'style111-bg',
+            '1C5D':'style112-bg',
+            '1D5A':'style113-bg',
+            '1D5B':'style114-bg',
+            '1D5C':'style115-bg',
+            '1D5D':'style116-bg'
+         };
+   %>
+<div class="wrap-end">
+		<img src="<%=this.PICTURE_URL%>/images/wap/web/wx/survey/<%=answer[ this.arr1 +  this.arr5]%>.jpg" >
+		<span class="pro"></span>
+      <a href="http://m.meilishuo.com/wx/surveyStart">我也要测试 >></a>
+</div>
+<script>
+	fml.vars.arr1 = '<%= this.arr1%>';
+	fml.vars.arr5 = '<%= this.arr5%>';
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/wx/survey');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

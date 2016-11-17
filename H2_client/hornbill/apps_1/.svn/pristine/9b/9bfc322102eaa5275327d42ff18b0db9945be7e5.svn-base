@@ -1,0 +1,254 @@
+<%# head.html%>
+<%
+var query = this._Request_query;
+var mSubstr = _extFn.mSubstr;
+
+var goodsInfo = this.goods_info_cosmetic || {};
+var cur_time  = Math.ceil((new Date).getTime() / 1000)
+function justifyTxt(str , endTag){
+	endTag = endTag || 'span'
+	return str.split('').join(' ') + '<'+endTag+'></'+endTag+'>'
+	}
+function getTimeRemain(end_time){
+	if (end_time && end_time > cur_time) return end_time - cur_time
+	else return 0 
+	}
+
+var timeStartRemain = getTimeRemain(goodsInfo.start_time)
+	,timeEndRemain = getTimeRemain(goodsInfo.end_time)
+var disableCart = false ,
+	disableBuy = true 
+if (!timeEndRemain || goodsInfo.repertory <= 0 || !goodsInfo.shelf) disableCart = true
+if (!timeStartRemain && timeEndRemain && goodsInfo.shelf) disableBuy = false
+
+%>
+
+<div class="detail">
+	<%if(goodsInfo.ac_goods_banner.banner){%>
+		<a class="top_bnr" style="background:url(<%=goodsInfo.ac_goods_banner.banner%>) no-repeat center;" href="<%= goodsInfo.ac_goods_banner.link%>" target="_blank"></a>
+	<%}%>
+	<div class="sale">
+		<h3 class="s_tle"><%= goodsInfo.goods_title%></h3>
+		<%if(goodsInfo.buyer_desc){%>
+		<p class="text_info"><span class="quot_l">&nbsp;</span><%= goodsInfo.buyer_desc%> <span class="quot_r">&nbsp;</span></p>
+		<%}%>
+		<%if(goodsInfo.activity_desc){%>
+			<p class="activity_desc"><em></em>公告：<a class="red_f" <%if(goodsInfo.activity_desc.link != ''){%>href="<%= goodsInfo.activity_desc.link%>" target="_blank"<%}%>><%= goodsInfo.activity_desc.words%></a></p>
+		<%}%>
+		<div class="buy_info">
+			<span class="arrow"></span>
+			<dl class="price">
+				<dt>¥<%= goodsInfo.price%></dt>
+				<dd>节省：¥<%= goodsInfo.saving_price%><span>原价：¥<%= goodsInfo.original_price%></span></dd>
+			</dl>
+			<p class="discount"><span class="block_f"><samp><%= goodsInfo.discount%></samp>折</span></p>
+			<div class="clear_f"></div>
+		</div>
+		<div class="info_box">
+			<div class="promptBox">
+				<p class="text"><span class="close_z"></span>请选择您要的商品信息</p>
+				<div class="sel_box ">
+					<p class="msg_limit">对不起！每人最多限购100件！</p>
+					<p class="msg_over">您所填写的宝贝数量超过库存！</p>
+					<% if (timeStartRemain) {%>
+						<p class="msg_price">活动还未开始，现在结算将会以原价¥<%= goodsInfo.original_price%>购买</p>
+					<%}%>
+					<% if (goodsInfo.prop && goodsInfo.prop.color && goodsInfo.prop.color.is_show) { %>
+					<dl class="prop">
+						<dt><%= justifyTxt(goodsInfo.prop.color.name)%>：</dt>
+						<dd>
+							<ul id="colorList">
+								<% goodsInfo.prop.color.value && goodsInfo.prop.color.value.forEach(function(item , key){%>
+									<li><a href="#"><%= goodsInfo.prop.color.value[key] %></a></li>
+								<%});%>
+							</ul>
+						</dd>
+					</dl>
+					<%}%>
+					<dl class="amount">
+						<dt>数 量：</dt>
+						<dd>
+							<div class="numBox">
+								<span class="minus"></span>
+								<input class="nums" title="请输入购买数量" type="text" value="1">
+								<span class="plus"></span>
+							</div>
+							<span class="stock">(库存<span>-</span>件)</span>
+						</dd>
+					</dl>
+					<a class="buy_btn">确定</a>
+				</div>
+			</div>
+			<div class="btn_box">
+				<a class="buy_btn right_f <%if (disableBuy){ %> non_buy disabled<%}%>" title="立即抢购"><em class="rmbico">&nbsp;</em>立即抢购</a>
+				<a class="add_cart <%if (disableCart){ %> non_buy disabled<%}%>" title="加入购物车"><em class="cartico">&nbsp;</em>加入购物车</a>
+			</div>
+			<div class="status">
+				<% 
+				function preZero(i){
+					if (i < 10) i = '0' + i
+					return ''+ i
+					}
+				
+				var timeIsCutting = timeStartRemain || timeEndRemain
+				if (goodsInfo.shelf && timeIsCutting && goodsInfo.repertory>0 ){ %>
+				<p class="countdown" remain="<%= timeStartRemain? timeStartRemain : timeEndRemain%>" >
+					<em class="mid_clock">&nbsp;</em>
+					<% if (timeStartRemain) {
+						var startTime = new Date(goodsInfo.start_time *1000) ;
+						%>
+					<em >即将于</em>
+					<samp><%= startTime.getMonth()+1 %></samp>月 <samp><%= startTime.getDate()%></samp> 日
+					<samp><%= startTime.getHours()%></samp>:<samp><%= preZero(startTime.getMinutes()) %></samp>
+					<em >开始</em>
+					<% } else { %>
+					<em >剩余</em>
+					<span>---</span>
+					<em>结束</em>
+					<% }  %>
+				</p>
+				<% } else if (goodsInfo.repertory <= 0 ){ %>
+				<p class="f24_f ">商品已抢光</p>
+				<% } else if (!goodsInfo.shelf){ %>
+				<p class="f24_f">商品已下架</p>
+				<% } else if (!timeIsCutting){ %>
+				<p class="f24_f">活动已结束</p>
+				<% } else { %>
+				<p class="f24_f ">活动已结束</p>
+				<% }  %>
+			</div>
+			<div class="userBox">
+				<p class="user_buy">
+					<span class="f24_f red_f"><%= goodsInfo.virtual_sales %></span>人<br/>
+					<% if (goodsInfo.repertory<=0  ||  !goodsInfo.shelf ||  !timeIsCutting) { %>
+					参与了抢购
+					<% } else if (timeStartRemain) {%>
+					关注本商品
+					<% } else if (timeEndRemain)  {%>
+					已购买	
+					<% } else {%>
+					参与了抢购
+					<% } %>
+				</p>
+				<ul class="user_from">
+					<% this.brower && this.brower.data.length && this.brower.data.forEach(function(data) { %>
+					<li>
+						<a class="face"><img src="<%=data.avatar%>" /></a>
+						<p class="text">来自<%=data.from%><span class="red_f ml6_f"><%=data.nickname%></span></p>
+						<p class="mt5_f"><%=data.behavior%></p>
+					</li>
+					<%});%>
+				</ul>
+			</div>
+			<div class="bot_box">
+				<div class="share">
+					分享到 <a class="i_sina cursor_f">&nbsp;</a><a class="i_qzone cursor_f">&nbsp;</a><a class="i_tx cursor_f">&nbsp;</a>
+				</div>
+				<p class="loveBox">
+					<% if (2 == goodsInfo.beauty_me){ %>
+					<a class="love_msg">这是你自己分享的哦!</a>
+					 <% }%>
+					<a id="twitter_like" class="love">
+						<span class="like_btn" liked="<%= 1 ==goodsInfo.beauty_me?1:0%>"  isshowlike="<%= 2 == goodsInfo.beauty_me ?0: 1%>" like_twitter_id="<%=goodsInfo.twitter_id%>">
+						<%if (1 == goodsInfo.beauty_me) {%>
+						已喜欢
+						<%}else{%>
+						<em class="love_ico">&nbsp;</em>喜欢
+						<%}%>
+					</span>
+					<% var count_like = goodsInfo.twitter_stat && goodsInfo.twitter_stat.count_like ;%>
+					<span class="red_f"><%= count_like?'('+count_like+')' :'' %></span>
+					</a>
+				</p>
+			</div>
+			<div class="clear_f"></div>
+		</div>
+	</div>
+	<div class="picture">
+		<a class="big_pic">
+			<%= requireFn('mark.html')({
+				'marks' : goodsInfo.marks
+			}); %>
+			<img class="big_img" src="<%= goodsInfo.image.image%>"/>
+		</a>
+	</div>
+	<div class="clear_f"></div>
+</div>
+
+<% if(this.goods_info.shop_promote && this.goods_info.shop_promote.length) {%>
+<%# doota/marketing-tool.html  %>
+<%}%>
+<div class="may_like">
+	<div class="cmn_title">
+		<h3 class="f16_f ml10_f"><%if(this.cartIsRecommend){%>你可能对以下商品感兴趣<%}else{%>人气单品<%}%></h3>
+		<%if(this.cartAttrwords){%>
+			<p>
+				<% this.attr_words && this.attr_words.map(function(data) { %>
+				<a class="words" href="<%= data.url%>" target="_blank"><%= data.name%></a>
+				<% }); %>
+			</p>
+		<%}%>
+	</div>
+	<%# doota/recommend.html%>
+</div>
+
+<div class="main">
+	<% var goods_info_main = this.goods_info || {}; %>
+	<div class="wrap">
+		<div class="tab_tle">
+			<h2 class="tab_top">
+				<%if (1 == goodsInfo.shelf){%><span class="buy_btn right_f <%if (disableBuy){ %> non_buy disabled<%}%>"><em class="rmbico">&nbsp;</em>立即抢购</span><%}%>
+				<a href="javascript:void(0)" class="tabArea cur">商品详情</a>
+			<% if (this.shop_dis_all) {
+				var shop_comments_count =  this.shop_dis_all.levelsNum && this.shop_dis_all.levelsNum[0] || 0 
+				 %>
+				<a href="javascript:void(0)" class="tabArea eva">购买评价（<span class="twitter_comment_num"><%= shop_comments_count  %></span>）</a>
+			<% } %>
+			<% if(goods_info_main.can_shoppingShow || this.shopping_show.pages.totalNum != 0){ %>
+				<a href="javascript:void(0)" class="tabArea shopping">购物晒单（<span class="twitter_comment_num"><%=goods_info_main.count_shoppingShow || 0%></span>）</a>
+			<% } %>
+			</h2>
+			<%# doota/detail_items.html%>
+		</div>
+		<%# doota/beauty_main.html%>
+	</div>
+</div>
+
+<div class="pro_line"></div>
+<%# doota/promise.html%>
+
+<script>
+	fml.vars.goods = {"id" : "<%=goodsInfo.goods_id %>" , "twitter_id": "<%= goodsInfo.twitter_id%>" ,"pid" :"<%= goodsInfo.pid || 0%>", "shop_id" : "<%= goodsInfo.shop_id %>"};
+	fml.vars.goods_stock = <%= JSON.stringify(goodsInfo.stock)%>;
+	fml.vars.goods_prop = <%= JSON.stringify(goodsInfo.prop)%>;
+	fml.vars.count_fame = <%= this.fame_count.avgUsers %>;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/doota/beauty');
+	fml.use(['jquery' , 'app/shareTo'] , function(){
+		var $ = this.jquery;
+		var goods_info = %j;
+		var share_info = %j;
+		var name = goods_info.goods_title;
+		var pic_src = goods_info.image.image[0];
+		var goods_id = goods_info.twitter_id;
+		var replyQQ = share_info.descQQ;
+		var reply = share_info.text;
+		var title = share_info.promo;
+		var description = share_info.comment;
+		var url_s = 'http://www.meilishuo.com/prom/item/' + goods_id;
+		$('.i_qzone').bind('click' , $.proxy(function(){
+			this.shareTo.shareGoodsToQzone(name , pic_src , goods_id , replyQQ , description , title, 'prom/item/');
+		} , this));
+		$('.i_sina').bind('click' , $.proxy(function(){
+			this.shareTo.shareToWeibo(url_s + '?frm=huiliu_weibo', reply, pic_src);
+		} , this));
+		$('.i_tx').bind('click' , $.proxy(function(){
+			this.shareTo.shareGoodsToQQWeiBo(name , pic_src , goods_id , reply, 'prom/item/');
+		} , this));
+	});
+
+_use:", this._JSstack , this._JSmods
+	 ,this.goods_info, this.share_info ); %>
+
+<%# foot.html%>

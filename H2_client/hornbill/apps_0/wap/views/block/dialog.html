@@ -1,0 +1,12 @@
+<script type="text/html" id="dialog">
+<div class="windowDrive">
+	<div class="dialog" <?if(dialogType == 'alert'){?>id="alert"<?}else if(dialogType == 'confirm'){?>id="confirm"<?}?>>
+		<div class="dialog-con"><?= content ?></div>
+		<div class="dialog-btn">
+			<?if(dialogType == 'confirm'){?><span class="cancelBtn"><?= cancelTxt?></span><?}?>
+			<?if(dialogType == 'alert' || dialogType == 'confirm'){?><span class="sureBtn"><?= confirmTxt ?></span><?}?>
+		</div>
+	</div>
+	<div class="overlay<?if(transparent){?> transparent<?}?>"></div>
+</div>
+</script>

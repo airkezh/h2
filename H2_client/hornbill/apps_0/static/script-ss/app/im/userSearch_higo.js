@@ -1,0 +1,70 @@
+/*common*/
+var userList = require('app/im/userList')
+    , userObj = require('app/im/userObj')
+    , shareTmp = require('component/shareTmp')
+    , $userSearchResult
+    , searchUserTimmer
+
+var init = function($userSearch){
+    $userSearch
+        .on('submit', 'form', search)
+
+    $userSearchResult = $userSearch.children('.search_result')
+}
+var search = function(){
+    var $input = $(this).find('.search_input')
+        , userName = $.trim($input.val())
+
+    $input.val('')
+
+    if(userName){
+        $.ajax({
+            //url: 'http://service.higo.meilishuo.com/account/Get_user_info',
+            url: 'http://v.higo.meilishuo.com/account/Get_user_byname',
+            dataType: 'jsonp',
+            data: {
+                nick_name : userName
+            },
+            jsonp:'callback',
+            success: function(resp){
+                console.log('search success', userName, resp);
+                if(resp.code == 0 && resp.data.length){
+                    var $item = $(shareTmp('im_search_list', resp));
+
+                    $userSearchResult.find('.ser_rlt').empty().append($item);
+                    $userSearchResult.fadeIn(100);
+
+                    $("body").bind('click', function(e){
+                        console.log(e.target, e);
+                        if(e.target.closest(".search_item")){
+                            for(var i = 0; i < resp.data.length; i++){
+                                if(resp.data[i].account_id == $(e.target.closest(".search_item")).attr("uid")){
+                                    userObj.changeSearchUser(resp.data[i]);
+                                    break;
+                                }
+                            }
+                        }
+                        $userSearchResult.fadeOut(10);
+                        $(this).unbind();
+                        return;
+                    })
+                } else {
+                    fail();
+                }
+            },
+            error: function(resp){console.log('search error', resp);}
+        });
+    }
+}
+var fail = function(){
+    $userSearchResult.find('.ser_rlt').html('无搜索结果...')
+    $userSearchResult.fadeIn(100)
+
+    clearTimeout(searchUserTimmer)
+    searchUserTimmer = setTimeout(function(){
+        $userSearchResult
+            .fadeOut(10)
+    }, 3000)
+}
+
+exports.init = init

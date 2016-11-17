@@ -1,0 +1,20 @@
+<div class="groupBox">
+	<div class="groupCon">
+		<div class="gc_title">
+			<h4><a href="<%= this.link%>" target="_blank"><%= this.name%></a></h4>
+		</div>
+		<a href="<%= this.link%>" target="_blank" class="imgBox">
+		<%if(this.mix_pic){%>
+			<img class="maxpic" src="<%= this.mix_pic%>">
+		<%}else{%>
+			<% this.pics && this.pics.map(function(pic , index){%>
+				<img class="minpic" src="<%= pic%>" style="<%if((index + 1) % 3 == 0){%>margin-right:0px;<%}%>">
+			<%});%>
+		<%};%>
+		</a>
+		<div class="lookBox">
+			<a class="btn" href="<%= this.link%>" target="_blank">去看看</a>
+			<span class="tex"><%= this.number%>个分享</span>
+		</div>
+	</div>
+</div>

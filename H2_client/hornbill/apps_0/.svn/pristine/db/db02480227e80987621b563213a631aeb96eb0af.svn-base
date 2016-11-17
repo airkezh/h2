@@ -1,0 +1,684 @@
+<%
+	/**
+ 	 * @fileoverview 首页－美美豆乐园
+     * @requires zepto
+     * @author kehuang@meilishuo.com
+     * @date 2015-10-20
+     */
+%>
+
+<%#head.html%>
+<%
+	var con_sign_days = 5;
+	var curUserIsLogin = this.isLogin;
+	var curUserInfo = this.userInfo;
+	var curPageData = this.pageData;
+	var curSignData = this.signData;
+	var curBeansData = this.beansData;
+	var curBeautyData = this.percentData;
+	var curGiftPageData = this.giftPageData;
+	var curIsNormalGetData = this.isNormalGetData;
+	var curUserSignData = (curSignData && curSignData.data) ? curSignData.data : {};
+	var curUserBeansData = (curBeansData && curBeansData.data) ? curBeansData.data : {};
+	var curUserBeautyData = (curBeautyData && curBeautyData.data) ? curBeautyData.data : {};
+	var curRunningmanData = (curUserSignData && curUserSignData.runningman) ? curUserSignData.runningman : {};
+	var curCateData = (curPageData && curPageData.cate_list) ? curPageData.cate_list : [];
+	var curCateId = (curCateData[0] && curCateData[0].cate_id) ? curCateData[0].cate_id : '';
+	var curServerDay = this.serverDay;
+	var curServerDate = this.serverDate;
+	var curServerTime = curServerDate.getTime();
+	var curRunningManStartTime = this.runningManStartTime;
+	var curRunningManEndTime = this.runningManEndTime;
+	var beans_tips_is_show = curUserBeansData.is_show || 0;
+	var user_beauty = curUserBeautyData.score || '- -';
+	var user_remain_beauty = curUserBeautyData.remaind_score || 0;
+	var user_percent = curUserBeautyData.percent ? (curUserBeautyData.percent + '%') : '- -%';
+	var user_name = (curUserInfo && curUserInfo.nickname) ? curUserInfo.nickname : '- -';
+	var user_level = curUserSignData.level || 0;
+	var user_temp_beans = curUserSignData.beans_available || 0;
+	var user_available_beans = curUserSignData.beans_available || '- -';
+    var user_expire_beans = curUserSignData.beans_to_expire || 0;
+    var user_sign_days = curUserSignData.continues || 0;
+    var user_need_days = curUserSignData.needs || 0;
+    var user_gain_beans = curUserSignData.bonus || 0;
+    var user_sign_status = curUserSignData.status || 0;
+    var user_remind_settings = curUserSignData.remind || 0;
+    var is_show_award_layer = curRunningmanData.status || 0;
+    var runningman_award_beans = curRunningmanData.bonus || 0;
+	var user_big_head = (curUserInfo && curUserInfo.avatar_c) ? curUserInfo.avatar_c.replace('/c/', '/a/') : 'http://d06.res.meilishuo.net/ap/a/78/32/59c5fb29fb8ea04deddb2ad0ff42_256_256.cf.png';
+	var user_small_head = (curUserInfo && curUserInfo.avatar_c) ? curUserInfo.avatar_c.replace('/c/', '/b/') : 'http://d06.res.meilishuo.net/ap/a/78/32/59c5fb29fb8ea04deddb2ad0ff42_256_256.cf.png';
+	var head_bg_img = (curPageData && curPageData.head_bg) ? curPageData.head_bg : '';
+
+	var str_sign_days = '';
+	var prefix_sign_days = '';
+	var sign_days_len = (user_sign_days + '').length;
+
+	for (var i = 0; i < (3 - sign_days_len); i++) {
+		prefix_sign_days += '0';
+	}
+
+	str_sign_days = prefix_sign_days + user_sign_days;
+
+	var update_user_level = (user_level < 4) ? (user_level + 1) : 4;
+%>
+
+<div class="main">
+	<%
+		if (beans_tips_is_show) {
+			var beans_to_expire = curUserBeansData.beans_to_expire || 0,
+				expire_time = curUserBeansData.expire_time || '';
+
+			if (beans_to_expire != 0) {
+	%>
+	<div id="beans_tips_wrap" class="beans_tips_wrap">您有<%= beans_to_expire %>美美豆 将在<%= expire_time %>过期</div>
+	<%
+			}
+		}
+
+		if ((curServerTime > curRunningManStartTime) && (curServerTime < curRunningManEndTime) && (curServerDay == 5)) {
+			if (curUserIsLogin) {
+				if (curIsNormalGetData == 0) {
+	%>
+	<div class="banner_man_wrap">
+		<div class="user_box">
+			<div class="user_beans">我的美美豆: <i id="user_available_beans"><%= user_available_beans %></i><span class="dot"></span></div>
+
+			<ul class="sign_days_box">
+				<%
+					var li_class = '',
+						user_signed_days = con_sign_days - user_need_days;
+
+					for (var i = 0; i < con_sign_days; i++) {
+						if (i < user_signed_days) {
+							li_class = 'active';
+						} else {
+							li_class = '';
+						}
+				%>
+				<li class="<%= li_class %>">
+					<div class="icon_<%= i %>">
+						<%
+							if (i == 4) {
+						%>
+						<div class="extra_add">+<%= user_gain_beans %></div>
+						<%
+							}
+						%>
+					</div>
+				</li>
+				<%
+					}
+				%>
+			</ul>
+
+			<%
+				var con_sign_text = (user_signed_days == 5) ? ('连续签到' + user_sign_days + '天，恭喜获得额外' + user_gain_beans + '豆的连续签到奖励') : ('连续签到' + user_sign_days + '天，再签' + user_need_days + '天获得额外' + user_gain_beans + '美美豆奖励');
+			%>
+			<div class="sign_desc_text"><%= con_sign_text %></div>
+
+			<%
+				var remind_class = (user_remind_settings == 1) ? ' active' : '';
+			%>
+			<div id="j_sign_remind" class="sign_remind <%= remind_class %>"></div>
+		</div>
+
+		<div id="j_sign_box" class="sign_box<%= (user_sign_status == 0) ? '' : ' signed' %>"></div>
+	</div>
+	<%
+				} else {
+	%>
+	<div class="banner_login_wrap">
+		<div class="login_box">
+			<div class="error_text">加载失败，请刷新重试</div>
+			<div class="login_text j_reload_box">点击刷新</div>
+		</div>
+	</div>
+	<%
+				}
+			} else {
+	%>
+	<div class="banner_login_wrap">
+		<div class="login_box">
+			<div class="error_text">咦？您还未登录哦！登录后查看美美豆信息</div>
+			<div class="login_text j_login_box">点击登录</div>
+		</div>
+	</div>
+	<%	
+			}
+		} else {
+			var top_head_style = (head_bg_img == '') ? '' : 'background: url(' + head_bg_img + ') no-repeat; background-size:100%;';
+	%>
+	<div class="banner_wrap" style="<%= top_head_style %>">
+		<%
+			if (curUserIsLogin) {
+				if (curIsNormalGetData == 0) {
+		%>
+		<div class="user_box">
+			<div class="user_beans">我的美美豆: <i id="user_available_beans"><%= user_available_beans %></i><span class="dot"></span></div>
+
+			<ul class="sign_days_box">
+				<%
+					var li_class = '',
+						sign_text = '',
+						user_signed_days = con_sign_days - user_need_days;
+
+					for (var i = 0; i < con_sign_days; i++) {
+						if (i < user_signed_days) {
+							li_class = 'active';
+							sign_text = '已签到';
+						} else {
+							li_class = '';
+							sign_text = '第' + (i + 1) + '天';
+						}
+				%>
+				<li class="<%= li_class %>">
+					<div class="icon_<%= i %>">
+						<%
+							if (i == 4) {
+						%>
+						<div class="extra_add">+<%= user_gain_beans %></div>
+						<%
+							}
+						%>
+					</div>
+					<p class="text"><%= sign_text %></p>
+				</li>
+				<%
+					}
+				%>
+			</ul>
+
+			<%
+				var con_sign_text = (user_signed_days == 5) ? ('连续签到' + user_sign_days + '天，恭喜获得额外' + user_gain_beans + '豆的连续签到奖励') : ('连续签到' + user_sign_days + '天，再签' + user_need_days + '天获得额外' + user_gain_beans + '美美豆奖励');
+			%>
+			<div class="sign_desc_text"><%= con_sign_text %></div>
+
+			<%
+				var remind_class = (user_remind_settings == 1) ? ' active' : '';
+			%>
+			<div id="j_sign_remind" class="sign_remind <%= remind_class %>"></div>
+		</div>
+
+		<div id="j_sign_box" class="sign_box<%= (user_sign_status == 0) ? '' : ' signed' %>"></div>
+		<%
+				} else {
+		%>
+		<div class="user_box login_box">
+			<div class="error_text">加载失败，请刷新重试</div>
+			<div class="login_text j_reload_box">点击刷新</div>
+		</div>
+		<%
+				}
+			} else {
+		%>
+		<div class="user_box login_box">
+			<div class="error_text">咦？您还未登录哦！登录后查看美美豆信息</div>
+			<div class="login_text j_login_box">点击登录</div>
+		</div>
+		<%
+			}
+		%>
+	</div>
+	<%
+		}
+	%>
+
+	<div class="mall_wrap"></div>
+
+	<section id="container" class="container">
+		<ul class="even goods_wall"></ul>
+		<div class="pullUp" status="loading"></div>
+    </section>
+
+	<div class="gotop_wrap">
+		<a class="gotop">
+			<img src="http://d03.res.meilishuo.net/pic/_o/d0/68/f89d059f09d440f4ee7a37669383_80_80.cg.png" alt="">
+		</a>
+	</div>
+</div>
+
+<script type="text/html" id="j_recommend_tpl">
+	<?
+		var jsonData = this.data,
+			gallery_pic_data = jsonData.gallery_pic || [],
+			swipe_banner_data = jsonData.swipe_banner || [],
+			swipe_banner_len = swipe_banner_data.length,
+			gallery_pic_len = gallery_pic_data.length;
+
+		if (gallery_pic_len > 0) {
+	?>
+	<ul class="gallery_box gallery_<?= gallery_pic_len ?>_row" style="<?= (swipe_banner_len < 1) ? 'margin-bottom: 0;' : ''?>">
+		<?
+			for (var k = 0; k < gallery_pic_len; k++) {
+				var data = gallery_pic_data[k],
+					img_name = '',
+					img_src = data.img_src || '',
+					img_title = data.img_title || '',
+					img_link = data.img_link || '';
+
+				switch (k) {
+					case 0:
+						img_name = 'BeanExgCoupon';
+
+						break;
+					case 1:
+						img_name = 'ExchangeGift';
+
+						break;
+					case 2:
+						img_name = 'LargeDraw';
+
+						break;
+					case 3:
+						img_name = 'ExchangeCoupon';
+
+						break;
+				}
+		?>
+    	<li data-href="<?= img_link ?>" data-pos="<?= k + 1 ?>" data-name="<?= img_name ?>" data-title="<?= img_title ?>">
+    		<a href="javascript:void(0);">
+    			<img src="<?= img_src ?>" alt="<?= img_title ?>">
+    		</a>
+    	</li>
+    	<?
+    		}
+    	?>
+	</ul>
+	<?
+		}
+
+		if (swipe_banner_len > 0) {
+	?>
+	<div id="j_imgSwipe" class="swipe">
+		<div class="swipe_wrap" style="width: 32000px;">
+			<?
+				for (var i = 0; i < swipe_banner_len; i++) {
+					var data = swipe_banner_data[i],
+						img_src = data.img_src || '',
+						img_title = data.img_title || '',
+						img_link = data.img_link || '';
+			?>
+			<div class="swipe_pic tracking" data-href="<?= img_link ?>" data-name="<?= img_title ?>" data-pos="<?= i + 1 ?>">
+				<img src="<?= img_src ?>" alt="<?= img_title ?>">
+			</div>
+			<?
+				}
+			?>
+		</div>
+		<?
+			if (swipe_banner_len > 1) {
+		?>
+		<ul class="swipe_num">
+			<?
+				for (var j = 0; j < swipe_banner_len; j++) {
+					var className = (j == 0) ? 'active' : '';
+			?>
+			<li class="<?= className ?>"></li>
+			<?
+				}
+			?>
+		</ul>
+		<?
+			}
+		?>
+	</div>
+	<?
+		}
+
+		var cate_list_data = jsonData.cate_list || [],
+			cate_list_len = cate_list_data.length;
+
+		if (cate_list_len > 0) {
+	?>
+
+	<div id="tip_box"></div>
+
+	<div class="nav_wrap" id="nav_wrap">
+		<div class="nav_iscroll" id="nav_iscroll">
+			<ul>
+				<?
+					for (var l = 0; l < cate_list_len; l++) {
+						var data = cate_list_data[l],
+							cid = data.cate_id || '',
+							name = data.name || '',
+							className = (l == 0) ? 'curr' : '';
+				?>
+				<li class="<?= className ?>" data-cid="<?= cid ?>"><?= name ?></li>
+				<?
+					}
+				?>
+			</ul>
+		</div>
+	</div>
+	<?
+		}
+	?>
+</script>
+
+<script type="text/html" id="posterWall">
+	<?
+		$.each(this.data.list, function(index, data){
+	    	var img = data.img || '',
+	    		pos = data.pos || 0,
+	    		offset = data.offset || 0,
+	    		price = data.price || 0,
+	    		stock = data.stock || 0,
+	    		title = data.title || '',
+	    		twitter_id = data.twitter_id || 0,
+	    		origin_price = data.origin_price || 0,
+	    		href = data.url || 'javascript:void(0);';
+	?>
+	<li data-tid="<?= twitter_id ?>" data-pos="<?= pos ?>" data-href="<?= href ?>">	
+		<a class="link_box" href="javascript:void(0);">
+			<figure>
+				<?
+					if (stock < 1) {
+				?>
+				<div class="soldout"></div>
+				<?
+					}
+
+			    	if (fml.vars.is_lazyload_poster) {
+			    		if (index < 2) {
+			    ?>
+			    <span class="df_show_img" style="opacity: 1;background-image: url(<?= img ?>);"></span>
+			    <?
+			    		} else {
+			    ?>
+			    <span class="bs_load_img" asrc="<?= img ?>"></span>
+			    <?
+			    		}
+					} else {
+				?>
+			    <img src="<?= img ?>" alt="">
+			    <?
+					}
+
+			    	if ((stock > 0) && (stock < 10)) {
+			    ?>
+			    <p class="lave">仅剩<?= stock ?>件</p>
+				<span class="progress rpbgc"></span>
+				<?
+					}
+				?>
+			</figure>
+			<figcaption>
+				<div class="proTitle"><?= title ?></div>
+				<div class="proPrice">
+					<span class="word">抵扣价 </span><i>￥</i><?= price ?>
+				</div>
+				<div class="proDiscount"><span class="bean">美美豆抵<?= offset ?>元</span></div>
+			</figcaption>
+		</a>
+	</li>
+	<?
+		});
+	?>
+</script>
+
+<script type="text/html" id="j_sign_tpl">
+	<div id="j_sign_layer" class="sign_layer">
+		<?
+			var win_height = this.win_height || 0,
+				layer_height = this.layer_height || 0;
+		?>
+		<div class="layer_shade blurry_shade j_layer_shade" style="top:-<?= win_height ?>px;">
+		</div>
+		<%
+			var sign_layer_class = '',
+				running_man_bg_html = '';
+
+			if ((curServerTime > curRunningManStartTime) && (curServerTime < curRunningManEndTime) && (curServerDay == 5)) {
+				sign_layer_class = 'sign_running_man';
+				running_man_bg_html = '<div class="running_man_bg"></div>';
+			}
+		%>
+		<div class="layer_shade sign_shade j_layer_shade" style="top:-<?= layer_height ?>px;height:80%;">
+			<%= running_man_bg_html %>
+			<div class="close_layer_btn active"></div>
+		</div>
+		<div class="layer_main j_layer_main" style="top:-<?= layer_height ?>px;">
+			<div class="m <%= sign_layer_class %>">
+				<div class="sign_head">
+					<img src="<%= user_big_head %>" alt="<%= user_name %>">
+					<div class="sign_level level<%= user_level %>"></div>
+				</div>
+				<div class="sign_bean">美美豆&nbsp;<span id="j_available_beans"><%= user_temp_beans %></span>&nbsp;<i id="j_add_beans">+0</i></div>
+				<div class="sign_day">连续签到&nbsp;<span id="j_sign_days"><%= str_sign_days %></span>&nbsp;天</div>
+				<div class="sign_desc_box">
+					<%
+						var user_sign_desc = (user_need_days == 0) ? ('恭喜获得额外' + user_gain_beans + '豆的连续签到奖励') : ('再签<i class="days">' + user_need_days + '</i>天就能额外获得<i>' + user_gain_beans + '</i>美美豆');
+					%>
+					<div id="j_sign_desc" class="sign_desc"><%= user_sign_desc %></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</script>
+
+<script type="text/html" id="j_receive_beans_tpl">
+	<div class="layer_shade receive_shade j_layer_shade"></div>
+	<div class="layer_main receive_beans_main j_layer_main">
+		<div class="layer_bg">
+			<div class="receive_beans_btn"></div>
+		</div>
+	</div>
+</script>
+
+<script type="text/html" id="j_receive_success_tpl">
+	<div class="layer_shade receive_shade j_layer_shade"></div>
+	<div class="layer_main receive_success_main j_layer_main">
+		<div class="layer_bg"></div>
+	</div>
+</script>
+
+<script type="text/html" id="j_upgrade_tpl">
+	<div id="j_upgrade_layer" class="upgrade_layer">
+		<div class="layer_shade j_layer_shade"></div>
+		<div class="layer_main upgrade_main j_layer_main">
+			<div class="layer_bg">
+				<p class="title">恭喜，你已升级为<i>V<%= user_level %></i>等级!</p>
+				<p class="sub_title">成功打败美丽说<%= user_percent %>的用户</p>
+				<%
+					if (user_level < 4) {
+				%>
+				<p class="text_desc">还差<%= user_remain_beauty %>美丽值，即可升级为V<%= user_level + 1 %>等级</p>
+				<%
+					}
+				%>
+				<p class="layer_receive_btn">领取晋级礼包</p>
+			</div>
+		</div>
+	</div>
+</script>
+
+<script type="text/html" id="j_gift_tpl">
+	<div id="j_gift_layer" class="gift_layer">
+		<div class="layer_shade j_layer_shade"></div>
+		<div class="layer_main gift_main j_layer_main">
+			<div class="layer_bg">
+				<p class="title"><i>V<%= user_level %></i>会员晋级礼包</p>
+				<%
+					var giftObj = (curGiftPageData && curGiftPageData['gift_level_' + user_level]) ? curGiftPageData['gift_level_' + user_level] : {},
+						giftImg = giftObj.pic || '',
+						giftName = giftObj.title || '';
+
+					if ((giftImg != '') && (giftName != '')) {
+				%>
+				<p class="gift_title">恭喜！获得优惠券</p>
+				<p class="gift_img">
+					<img src="<%= giftImg %>" alt="">
+				</p>
+				<p class="gift_name"><i><%= giftName %></i>元</p>
+				<%
+					}
+
+					var interestsArr = (curGiftPageData && curGiftPageData['interests_level_' + user_level]) ? curGiftPageData['interests_level_' + user_level] : [],
+						interestsArrLen = interestsArr.length || 0;
+
+					if (interestsArrLen > 0) {
+				%>
+				<p class="interests_title">晋级后将享受以下会员特权</p>
+				<div class="interests_wrap" id="interests_wrap">
+					<ul class="interests_iscroll" id="interests_iscroll" style="width:990px;">
+						<%
+							var counter = 0;
+
+							for (var i = 0; i < interestsArrLen; i++) {
+								var obj = interestsArr[i],
+									pic = (obj && obj.pic) ? obj.pic : '',
+									title = (obj && obj.title) ? obj.title : '';
+
+								if (pic != '') {
+									var interestsStyle = 'background:url(' + pic + ') no-repeat;background-size:50px auto;background-position:center;';
+
+									++counter;
+						%>
+						<li data-pos="<%= counter %>" data-name="<%= title %>">
+							<div class="member_interests" style="<%= interestsStyle %>"></div>
+							<div class="text_title"><%= title %></div>
+						</li>
+						<%
+								}
+							}
+						%>
+					</ul>
+				</div>
+				<%
+					}
+				%>
+				<p class="receive_gift_btn" data-level="<%= user_level %>">立即领取</p>
+			</div>
+		</div>
+	</div>
+</script>
+
+<script type="text/html" id="j_prompt_tpl">
+	<div id="j_prompt_layer" class="prompt_layer_main">
+		<div class="prompt_layer_text"><?= this.text ?></div>
+	</div>
+</script>
+
+<script type="text/html" id="j_remind_tpl">
+	<div class="tpl_shade j_layer_shade"></div>
+	<div class="tpl_main remind_main j_layer_main">
+		<div class="m">
+			<img src="http://d01.res.meilishuo.net/pic/_o/30/87/25186c04b09bbc2719d620064fcb_570_440.cg.png" alt="">
+			<div class="know_btn"></div>
+		</div>
+	</div>
+</script>
+
+<script type="text/html" id="j_setting_tpl">
+	<div class="tpl_shade j_layer_shade"></div>
+	<div class="tpl_main setting_main j_layer_main">
+		<div class="m">
+			<img src="http://d01.res.meilishuo.net/pic/_o/06/41/b1abcd42e35264c75cc93cbd2e77_570_440.cf.png" alt="">
+			<div class="buttons">
+				<div class="knows_btn"></div>
+				<div class="settings_btn"></div>
+			</div>
+		</div>
+	</div>
+</script>
+
+<script type="text/html" id="j_stroke_tpl">
+	<div class="layer_shade j_layer_shade"></div>
+	<div class="layer_main stroke_main j_layer_main">
+		<div class="m">
+			<img src="http://d05.res.meilishuo.net/pic/_o/f0/96/63a48f5abab475a92095f0eb429c_640_580.cf.png" alt="">
+			<div class="know_btn"></div>
+		</div>
+	</div>
+</script>
+
+<script type="text/html" id="img_captcha_tpl">
+	<div class="checkBox">
+		<div class="shade j_layer_shade"></div>
+		<div class="captchaImgBox j_layer_main">
+			<div class="imgTop">
+				<input class="captchaInput" name="checkcode" type="text" value="" maxlength="10" placeholder="请输入验证码">
+				<img class="captchaImg" src="<?= this.picUrl ?>" width="40%" alt="">
+				<div class="newImg"></div>
+			</div>
+			<div class="imgCenter"></div>
+			<div class="imgBottom">
+				<div class="imgCaptchaClose"></div>
+				<div class="imgCaptchaCheck"></div>
+			</div>
+		</div>
+	</div>
+</script>
+
+<script type="text/html" id="sms_captcha_tpl">
+	<div class="checkBox">
+		<div class="shade j_layer_shade"></div>
+		<div class="captchaSmsBox j_layer_main">
+			<div class="smsTop">
+				<div class="getSmsCaptcha">点击发送</div>
+			</div>
+			<div class="smsCenter"></div>
+			<div class="smsBottom">
+				<input class="captchaInput" name="checkcode" type="text" value="" maxlength="10" placeholder="请输入验证码">
+				<div class="captchaCheck">验证</div>
+			</div>
+			<div class="smsClose"></div>
+		</div>
+	</div>
+</script>
+
+<script>
+	var curServerTime = <%= curServerTime %>;
+	var curPageData = <%= JSON.stringify(curPageData) %>;
+
+	var tempSwipeBannerArr = [];
+	var cur_server_time = parseInt(curServerTime / 1000);
+    var curSwipeBannerArr = curPageData.swipe_banner || [];
+	var curSwipeBannerLen = curSwipeBannerArr.length;
+
+	for (var i = 0; i < curSwipeBannerLen; i++) {
+		var banner_status = true,
+			curSwipeBannerData = curSwipeBannerArr[i],
+			banner_begin_time = Date.parse(curSwipeBannerData.begin_time || '') / 1000,
+			banner_end_time = Date.parse(curSwipeBannerData.end_time || '') / 1000;
+
+		if (banner_begin_time) {
+			if (!banner_end_time || (banner_end_time && (cur_server_time >= banner_begin_time) && (cur_server_time <= banner_end_time))) {
+				banner_status = true;
+			} else {
+				banner_status = false;
+			}
+		} else {
+			if (!banner_end_time || (banner_end_time && (cur_server_time <= banner_end_time))) {
+				banner_status = true;
+			} else {
+				banner_status = false;
+			}
+		}
+
+		banner_status && tempSwipeBannerArr.push(curSwipeBannerData);
+	}
+
+	curPageData.swipe_banner = tempSwipeBannerArr;
+
+	fml.vars.r = '<%= this.xr.r || '' %>';
+	fml.vars.cateId = '<%= curCateId %>';
+	fml.vars.isIos = <%= this.isIos %>;
+	fml.vars.isLogin = <%= curUserIsLogin %>;
+	fml.vars.isNewest = <%= this.isNewest %>;
+	fml.vars.isUpgrade = <%= this.isUpgrade %>;
+	fml.vars.isNormalGetData = <%= curIsNormalGetData %>;
+	fml.vars.isShowAwardLayer = <%= is_show_award_layer %>;
+	fml.vars.runningmanAwardBeans = <%= runningman_award_beans %>;
+	fml.vars.userSignStatus = <%= user_sign_status %>;
+	fml.vars.userExpireBeans = <%= user_expire_beans %>;
+	fml.vars.is_lazyload_poster = true;
+</script>
+
+<!-- <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script> -->
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/member/beans_paradise');
+_use:", this._JSstack, this._JSmods); %>
+
+<%#foot_simple.html%>

@@ -1,0 +1,197 @@
+<%
+	var goodsInfo = this.goods_info || {};
+	var shop_comments_count =  this.shop_dis_all.levelsNum && this.shop_dis_all.levelsNum[0] || 0 ;
+%>
+<div class="contentArea">
+	<%# doota/sale_detail.html%>
+	<div id="short_show">
+	<% if (shop_comments_count) { %>
+		<h4 class="detail_tle">购买评价（<span class="twitter_comment_num"><%= shop_comments_count %></span>）</h4>
+		<div class="pro_line"></div>
+		<%# doota/goods_rate.html  %>
+		<div class="comments twitter" twitter_author_uid="<%= this.userInfo.user_id%>"  twitter_id="<%= goodsInfo.twitter_id%>">
+			<ul class="list eva_comments">
+			</ul>
+		</div>
+		<p class="evaLink">查看更多评价 &gt;</p>
+	<% } %>
+	<% if( goodsInfo.can_shoppingShow || this.shopping_show.pages.totalNum != 0){ %>
+		<h4 class="detail_tle">购物晒单</h4>
+		<div class="shoppingshow_comments"></div>
+		<p class="shoppingLink">查看更多晒单 &gt;</p>
+	<% } %>
+	</div>
+</div>
+<% if (this.shop_dis_all) { %>
+	<div class="contentArea shpcmt none_f">
+		<% if (shop_comments_count) { %>
+			<%# doota/goods_rate.html  %>
+		<% } %>
+		<div class="comments twitter" twitter_author_uid="<%= this.userInfo.user_id%>"  twitter_id="<%= goodsInfo.twitter_id%>">
+			<div class="clear_f"></div>
+            <ul class="eva_comments_filter_tab">
+            </ul>
+            <div class="clear_f"></div>
+            <div id="shop_comments_null">暂无购物评价。</div>
+			<ul class="list eva_comments" id="eva_comments">
+			</ul>
+			<div class="clear_f"></div>
+			<div id="shopPagingNav">
+			</div>
+			<div class="clear_f"></div>
+		</div>
+        <script type="text/html" id="twitter_comment_count">
+            <? item && $.each(item , function(key , data){?>
+                <li class="item <? if(key == 0) { ?>cur<? } ?>"><?= data.name ?> (<?= data.total ?>)</li>
+            <?});?>
+            <li class="last_item"><label><input class="all_rate_btn" checked="checked" type="checkbox"/> 只看有内容的评价</label></li>
+        </script>
+		<script type="text/html" id="twitter_comment_shop">
+				<? item && $.each(item , function(key , data){?>
+				<li class="show">
+					<? if ('1' == data.anonymous) { ?>
+					<a class="avatar48_f " >
+						<img src="<?= data.uInfo.avatar_a?>">
+					</a>
+					<? } else { ?>
+					<a class="avatar48_f userInfoTips" user_id="<?= data.uInfo.user_id ?>" href="/person/u/<?= data.uInfo.user_id ?>" target="_blank">
+						<img src="<?= data.uInfo.avatar_a?>">
+					</a>
+					<? } ?>
+
+                    <ul class="twitter_comment_hd">
+                        <li class="l_name">
+                            <? if ('1' == data.anonymous) { ?>
+                            <a class="twitter_comment_name" ><?= data.uInfo.nickname ?></a>
+                            <? } else { ?>
+                            <a class="twitter_comment_name" target="_blank" href="/person/u/<?= data.uInfo.user_id ?>"><?= data.uInfo.nickname ?></a>
+                            <? } ?>
+                        </li>
+                        <li class="l_level">
+                            <a class="left_f star" style="width:65px">
+                                <b style="width:<?= data.level * 13?>px;"></b>
+                            </a>
+                            <span class="left_f"><?= data.level ?>分</span>
+                            <p class="clear_f"></p>
+                        </li>
+                        <li class="r_info">
+                        	<? if(1 == data.top){ ?>
+                        	<span class="jing">精华</span>
+                        	<?}?>
+                            <span><?= data.style ?></span>
+                            <span class="date-dis"><?= data.time?></span>
+                        </li>
+                    </ul>
+                    <p class="l_con bgray_f"><?= data.content?></p>
+
+                    <?
+                        var _pr  = data.partner_reply;
+                        var _prt = data.partner_reply_time;
+                        var _ac  = data.append_content;
+                        var _ad  = data.append_day;
+                        _ad = _ad != '0' ? (' ' + _ad) : '当';
+
+                        if(_pr && _ac) {
+                            var _r = /年|月|日/g,
+                                _d1 = new Date(_prt.replace(_r, '-')),
+                                _d2 = new Date(data.append_time.replace(_r, '-'));
+                            if(+_d1 > +_d2) {
+                        ?>
+                            <div class="append_comment">
+                                <p class="append_comment_content">[追加评论] <?= _ac ?></p>
+                                <p class="date-dis">确认收货后<?= _ad ?>天追加评价</p>
+                            </div>
+                            <div class="partner_reply">
+                                <p class="partner_reply_content">[商家回复] <?= _pr ?></p>
+                                <p class="date-dis"><?= _prt ?></p>
+                            </div>
+                        <? } else { ?>
+                            <div class="partner_reply">
+                                <p class="partner_reply_content">[商家回复] <?= _pr ?></p>
+                                <p class="date-dis"><?= _prt ?></p>
+                            </div>
+                            <div class="append_comment">
+                                <p class="append_comment_content">[追加评论] <?= _ac ?></p>
+                                <p class="date-dis">确认收货后<?= _ad ?>天追加评价</p>
+                            </div>
+                    <? } } else if(_pr) { ?>
+                    <div class="partner_reply">
+                        <p class="partner_reply_content">[商家回复] <?= _pr ?></p>
+                        <p class="date-dis"><?= _prt ?></p>
+                    </div>
+                    <? } else if(_ac) { ?>
+                    <div class="append_comment">
+                        <p class="append_comment_content">[追加评论] <?= _ac ?></p>
+                        <p class="date-dis">确认收货后<?= _ad ?>天追加评价</p>
+                    </div>
+                    <? } ?>
+				</li>
+				<?});?>
+		</script>
+	</div>
+<% } %>
+<!-- 购物晒单 start -->
+<% if(goodsInfo.can_shoppingShow || this.shopping_show.pages.totalNum != 0){ %>
+<div class="contentArea none_f">
+	<% if(this.shopping_show){ %>
+		<% var shopping_auth = this.shopping_show.auth; %>
+		<% if(shopping_auth.article_id){ %>
+			<div class="new_shoppingshow_wrap">
+				<a href="/club/single/<%= shopping_auth.article_id %>" class="new_shoppingshow" target="_blank"><span></span>查看晒单</a>
+			</div>
+		<% } else if(shopping_auth.can_shoppingshow){ %>
+			<div class="new_shoppingshow_wrap">
+				<a href="/club/newShoppingTopic?tid=<%= goodsInfo.twitter_id %>" class="new_shoppingshow" target="_blank"><span></span>发布晒单</a>
+			</div>
+		<% } %>
+	<% } %>
+	<div class="shoppingshow_null">暂无购物晒单</div>
+	<div class="shoppingshow_comments" id="shoppingshow_comments"></div>
+	<div class="clear_f"></div>
+	<div id="shsPagingNav"></div>
+	<div class="clear_f"></div>
+	<%# doota/shoppingshow.html%>
+</div>
+<%}%>
+<!-- 购物晒单 end -->
+
+
+<script type="text/html" id="pagingNav">
+<div class="pageNav1">
+	<? if(page > 0){?>
+		<a index="-1" class="pagePrev" href="javascript:void(0)">&lt;上一页</a>
+	<?};?>
+	<?
+		var left_num = page >5 ? page - 5: 0 , right_num = left_num + 10;
+		if ( right_num > pageLen) right_num = pageLen;
+	?>
+	<?if (left_num >= 1){?>
+		<a index="1" href="javascript:void(0)" class="pageitem <?if(page == 1){?>currentpage<?}?>"><?= 1?></a>
+		<span>...</span>
+	<?}?>
+	<?for (var i = left_num ;i < right_num;i++ ){?>
+		<a index="<?= i?>" href="javascript:void(0)" class="pageitem <?if(page == i){?>currentpage<?}?>"><?= i+1?></a>
+	<?}?>
+	<?if (right_num < pageLen) {?>
+		<span>...</span>
+		<a index="<?= pageLen-1?>" href="javascript:void(0)" class="pageitem <?if(page == pageLen-1){?>currentpage<?}?>"><?= pageLen?></a>
+	<?}?>
+	<? if(page != pageLen - 1){?>
+		<a class="pageNext" href="javascript:void(0)" index="1">下一页&gt;</a>
+	<?}?>
+</div>
+</script>
+
+<script>
+fml.vars.count_discuss = "<%= goodsInfo.twitter_stat.discuss_num%>";
+fml.vars.count_dis = {'meaning':"<%= this.shop_dis &&  this.shop_dis.pages.totalNum%>",'all':"<%= this.shop_dis_all &&  this.shop_dis_all.pages.totalNum%>"};
+fml.vars.count_deal = "<%= this.shop_deal &&  this.shop_deal.pages.totalNum%>";
+fml.vars.count_shs = "<%= this.shopping_show &&  this.shopping_show.pages.totalNum%>";
+
+fml.vars.user_id = "<%= this.userInfo.user_id %>";
+fml.vars.koubei = <%= JSON.stringify(this.koubei_list.infos)%>;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/doota/beauty_main');
+_use:", this._JSstack , this._JSmods); %>
+

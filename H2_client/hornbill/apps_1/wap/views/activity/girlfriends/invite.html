@@ -1,0 +1,42 @@
+<%# head_simple.html%>
+<%
+var mSubstr = _extFn.mSubstr;
+%>
+</head>
+<body>
+<%if(this.uinfo && this.uinfo.data){%>
+<div class="suc_bg">
+	<div class="con_box">
+		<div class="pic">
+			<div class="pic_con"><img src="<%=this.uinfo.data.pic_url%>" /></div>
+		</div>
+		<article>
+			<h1 class="tle"><%= mSubstr(this.uinfo.data.nickname , 4 , '...')%>与她的闺蜜</h1>
+			<p>目前票数：<span class="red_f"><%=this.uinfo.data.score%></span></p>
+			<p>还差<span class="red_f"><%=this.uinfo.data.nextScore%></span>票</p>
+			<p>排名就能上升一位啦！</p>
+		</article>
+		<div class="clear_f"></div>
+	</div>
+</div>
+<%}%>
+<% var versions = ['3.0.4', '3.0.5', '3.0.6', '3.7.3.5', '3.7.5']; %>
+<%if(versions.indexOf(this.app_version)>-1){%>
+<div class="starBox">
+	<h2>选择分享到：</h2>
+	<div class="share_ico" id="share_ico">
+		<% this.share && this.share.map(function(data) { %> 
+			<a class="<%= data.type%><%if(data.type=='weixin'){%> active<%}%>" uid="<%=this.uinfo.data.user_id%>" 
+			share_url="/goto/count/?p=<%= encodeURIComponent(data.share_url)%>&frm=share"><span class="sure"></span></a>
+		<% }); %>
+		<div class="clear_f"></div>
+		<span class="btn" id="shareBtn">邀请好友来投票</span>
+		<div class="clear_f"></div>
+	</div>
+</div>
+<%}%>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/shareTo2');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot_simple.html%>

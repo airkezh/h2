@@ -1,0 +1,197 @@
+<%#head.html%>
+<div class="t_main">
+	<div class="mp_top" style="height:<%=this.bg_img.head_bg.h%>px;background:url('<%=this.bg_img.head_bg.img_src%>') no-repeat top center;">
+
+		<div class="clock"><%=this.bg_img.banner.text%><span class="time" time="<%= new Date(this.bg_img.banner.date).getTime()/1000 - new Date().getTime() / 1000%>">-天-时-分-秒</span></div>
+		<a class="hl_1" href="/biz/huodong/act618/40319#mp_firlook">衣服</a>
+		<a class="hl_2" href="/biz/huodong/act618/40321#mp_firlook">鞋子</a>
+		<a class="hl_3" href="/biz/huodong/act618/40325#mp_firlook">包包</a>
+		<a class="hl_4" href="/biz/huodong/act618/40323#mp_firlook">配饰</a>
+		<a class="hl_5" href="/activity/tuan/tg512/?event_id=1027" target="_blank">团购</a>
+		<% if(this.is_start){%>
+			<a class="hl_6" href="/biz/shareact/list/?frm=daeh&hdtrc=tmlb_618mainnav" target="_blank">美妆</a>
+			<a class="hl_7" href="/biz/huodong/pay618/" target="_blank">微信支付</a>
+		<%}%>
+	</div>
+	<div class="mp_time" id="coupon_rg" style="height:<%=this.bg_img.bg_exp1.h%>px;background:url('<%=this.bg_img.bg_exp1.img_src%>') no-repeat top center;">
+		<div class="t_mid"><a class="act_" href="/biz/huodong/meili99sed/?banner_id=8809dedc9a2358ff9fa95438dfe60945&view=1" target="_blank">活动说明</a></div>
+	</div>
+	
+	<div class="bgred">
+		<%# biz/huodong/618coupon.html %>
+	</div>
+
+	<a href="/biz/huodong/priv618/" target="_blank" class="act_info" style="height:<%=this.bg_img.bg_exp2.h%>px;background:url('<%=this.bg_img.bg_exp2.img_src%>') no-repeat top center;">
+	</a>
+
+	<div class="mp_firlook" id="mp_firlook" style="height:<%=this.bg_img.bg_exp3.h%>px;background:url('<%=this.bg_img.bg_exp3.img_src%>') no-repeat top center;%>) top center no-repeat"></div>
+	<div class="links bgred" id="goods_rg">
+		<div class="content">
+			<% this.cate_list && this.cate_list.length && this.cate_list.map(function(data,i){%>
+			<a class="a_li <% if(data.c_id == this.attr_title_keywords.word_id) {%> current <% } %>" href="/biz/huodong/act618/<%=data.c_id%>#mp_firlook"><%=data.name%></a><% });%>
+			<% if(this.is_start){%>
+				<a href="/biz/shareact/list/?frm=daeh&hdtrc=tmlb_618mainnav" target="_blank" style="right:150px;" class="btn_tuan">美妆场</a>
+			<%}%>
+			<a href="/activity/tuan/tg512/?event_id=1027" target="_blank" class="btn_tuan">团购馆</a>
+		</div>
+	</div>
+	
+	<%
+	var query = this._Request_query;
+	var getLink = _extFn.getLink;
+	%>
+	<div class="spinner midSpinner pa_f" style="top:250px;"></div>
+	<div style="width:1200px;margin:auto;" class="content_fluid v_hidden">
+		
+		<% if (this.attr_description && false){ %>
+			<div class="dcb">
+				<h1 class="dcb_title redline3"><%= this.attr_description.title %></h1>
+				<p class="dcb_prefix"><%= this.attr_description.prefix %></p>
+				<p class="dcb_content"><%= this.attr_description.content %></p>
+				<div class="clear_f"></div>
+			</div>
+		<% } %>
+		
+		<div class="cata_title">
+			<% if (this.attr_title_keywords){ %>
+			<h1><%= this.attr_title_keywords.word_name%></h1>
+			<% } %>
+			<%# block/price.html%>
+		</div>
+		<div class="goods_wall">
+			<div class="corner_notic">
+				<div class="attr_box">
+					<h2 class="f14_f">人气单品排行</h2>
+					<ul class="items_pop">
+						<%if(this.attr_top.length > 0){%>
+							<% this.attr_top.map(function(data , index){%>
+								<li class="<%if(index % 2 == 0){%>odd_num<%}%>">
+									<a href="<%= data.url%>" target="_self">
+									<span class="right_f gray_f"><%= data.total%>件</span>
+									<span class="<%if(index >= 3){%>num2<%}else{%>num1<%}%>"><%= index+1%></span>
+										<%= data.word_name%>
+									</a>
+								</li>
+							<%});%>
+						<%}%>
+					</ul>
+				</div>
+				<%# block/goods_sidebar.html%>
+			</div>
+		</div>
+		<div class="spinner botSpinner none_f"></div>
+		<div class="clear_f"></div>
+		<div class="paging_panel c_f none_f">
+		<%# paging.html%>
+		</div>
+		<%if(this.adm3 && this.adm3.ad){%>
+			<%
+			this.adm3.admId = 'adm_bot';
+			this.adm3._JSstack = this._JSstack;
+			this.adm3._JSmods = this._JSmods;
+			%>
+			<%= requireFn('commerce/adm_banner.html')(this.adm3);%>
+		<%}%>
+
+	</div>
+	<%# block/attr_word.html%>
+	<%# poster.html%>
+	<% if(this.is_start){%>
+		<div class="rignav" style="height:340px;background:url('http://d05.res.meilishuo.net/img/_o/8b/3c/0a931c73ae5069b867dd2ab9c547_127_340.c8.png') no-repeat top center;">
+			<a href="#coupon_rg" class="rlink">抢卷专区</a>
+			<a href="#goods_rg" class="rlink sec">6.8折专场</a>
+			<a href="/activity/tuan/tg512/?event_id=1027" target="_blank" class="rlink">团购专区</a>
+			<a href="/biz/shareact/list/?frm=daeh&hdtrc=tmlb_618mainright" target="_blank" class="rlink">美妆场</a>
+		</div>
+	<%}else{%>
+		<div class="rignav">
+			<a href="#coupon_rg" class="rlink">抢卷专区</a>
+			<a href="#goods_rg" class="rlink sec">6.8折专场</a>
+			<a href="/activity/tuan/tg512/?event_id=1027" target="_blank" class="rlink">团购专区</a>
+		</div>
+	<%}%>
+</div>
+<script type="text/html" id="poster_price">
+	<ul class="poster_price add_menu_leo hw76">
+		<li><a href="<%=getLink({'price' : 'all'} , query)%>">全部</a></li>
+		<li><a href="<%=getLink({'price' : '0~50'} , query)%>">0~50</a></li>
+		<li><a href="<%=getLink({'price' : '51~100'} , query)%>">51~100</a></li>
+		<li><a href="<%=getLink({'price' : '101~200'} , query)%>">101~200</a></li>
+		<li><a href="<%=getLink({'price' : '201~500'} , query)%>">201~500</a></li>
+		<li><a href="<%=getLink({'price' : '501~10000'} , query)%>">500以上</a></li>
+	</ul>
+</script>
+	<!--春节活动-START-->
+<%if(this.isShowSpring && this.is_join && (this.is_join.join == 0 || this.is_join.join == -1)){%>
+<script type="text/html" id="luckBagPop">
+	<div class="luckBagPop" style="padding: 16px 0;height:200px;">
+		<p class="luckgirl red_f left_f f16_f" style="margin-left:160px;display:inline;">恭喜！捡到今天的幸运福袋！</p>
+		<p class="luckgirl2 red_f left_f f16_f none_f" style="margin-left:160px;">分享成功！恭喜你获得新福袋！</p>
+		<div class="close_z" style="margin:0 8px;"></div>
+		<div class="clear_f"></div>
+		<p class="c_f mt14_f f16_f fb_f new_num" style="color:#C03;">幸运号码：<?=luck_num?></p>
+		<div class="fillInfo mt14_f c_f f16_f <?if(status==2){?>none_f<?}?>">
+			<p class="f12_f"><span class="red_f">提示：</span>请完善您的中奖信息，以便中奖后及时联系您！</p>
+			<p style="margin-top:12px;">
+				<span>姓名：</span><input type="text" name="name" style="width:135px;">
+				<span style="margin-left:24px;">电子邮箱：</span><input type="text" name="email" style="width:135px;">
+			</p>
+			<p style="margin-top:6px;">
+				<span>电话：</span><input type="text" name="phone" style="width:135px;">
+				<span style="margin-left:24px;">收件地址：</span><input type="text" name="address" style="width:135px;">
+			</p>
+			<p class="sure btn left_f sureBgBtn" style="margin-left:200px;margin-top:18px;display:inline;">确认拿福袋</p>
+			<div class="none_f red_f f12_f left_f bagHint" style="margin:20px 0 0 5px;">请完善个人信息</div>
+			<div class="clear_f"></div>
+		</div>
+		<div class="shareLuck <?if(status==1){?>none_f<?}?>">
+			<p class="c_f mt14_f">分享到微博/Qzone就可以再获得一个福袋哦!</p>
+			<div class="mt8_f" style="border:1px solid #CCC; width:392px; height:42px; padding:8px; margin-left:60px;">
+				新年福利~来美丽说逛街，就能免费领福袋啦！200份好礼等你来拿，先到先得哦~【活动地址：http://www.meilishuo.com/huodong/chunjie/】
+			</div>
+			<p class="sure btn shareBgBtn left_f" style="margin-left:200px;margin-top:18px;display:inline;">分享拿福袋</p>
+		</div>
+		<div class="luckInfo none_f c_f">
+			<p class="f16_f" style="margin-top:26px;">开奖时间为2月18日！记得明天来领福袋哦！</p>
+			<a class="mt10_f block_f" href="/huodong/chunjie/" target="_blank">查看活动详情</a>
+			<div class="c_f mt14_f">
+			<span class="sure btn goonBtn">继续逛<%=this.attr_title_keywords.word_name%></span>
+			</div>
+		</div>
+	</div>
+	<div class="shareLuckPop none_f" style="padding:16px 0; height:200px;">
+		<div class="close_z" style="margin:0 8px;"></div>
+		<p class="c_f f16_f" style="margin-top:28px;">请选择一个你要分享到的地方：</p>
+		<p style="margin-top:32px;" class="c_f">
+			<a class="fd_ico3" href="/settings/bind/weibo" target="_blank">&nbsp;</a>
+			<a class="fd_ico4" style="margin-left:24px;" href="/settings/bind/qzone" target="_blank">&nbsp;</a>
+		</p>
+	</div>
+</script>
+<script>
+	Meilishuo.config.attrWord = '<%=this.attr_title_keywords.word_name%>';
+</script>
+<%}%>
+<!--春节活动-END-->
+<script>
+	<%= this.p4p? 'Meilishuo.config.p4p = { tInfo : '+JSON.stringify(this.p4p)+'};':'' ;%>
+	<%= this.poster0? 'Meilishuo.config.poster0 = '+JSON.stringify(this.poster0)+';':'' ;%>
+	fml.vars.word_id = <%= this.attr_title_keywords.word_id%>;
+	fml.vars.notFluid =true;
+</script>
+
+
+
+<% this.hideGoTop = true; %>
+<% $_ENGINE_SELF.callFn("useModule")("fml.use('page/poster0');", this._JSstack , this._JSmodsFast ); %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/attr');
+	fml.use('page/huodong/act618');
+	fml.use('page/poster_guang');
+_use:", this._JSstack , this._JSmods); %>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+     fml.use('page/huodong/tshirt');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot.html%>

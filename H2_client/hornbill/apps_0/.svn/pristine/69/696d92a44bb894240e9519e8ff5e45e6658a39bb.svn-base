@@ -1,0 +1,58 @@
+function desire() {
+	return this;
+}
+
+var controlFns = {
+	index: function(args) {
+		args = (args in controlFns) ? args : 'main'
+		this[args]()
+	},
+	main: function() {
+		// this.debugSnake({'target':'maoanli.rdlab'});
+		var page = this.readData('page', this.req.__get, 0) | 0;
+		var php = {
+			'poster0': '/style/Style_list_pc',
+			'banner': '/style/Style_list_pc_banner?cid=13035'
+		};
+		this.setDefaultData(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data) {
+			//获取分页总数
+			data.groupPg = {};
+			data.groupPg.page_size = data.poster0.page_size;
+			data.groupPg.total_num = data.poster0.totalNum;
+			data.groupPg.current_page = page;
+			data.cata = this.req.__get.cata || 0;
+			data.sort = this.req.__get.sort || 0;
+			data.sortKind = this.req.__get.sortKind || 0;
+			data.pageTitle = 'Desire 明星同款';
+			data._CSSLinks = ['desire/index'];
+			this.render('desire/index.html', data);
+		});
+	},
+	newPush: function(cid) {
+		// this.debugSnake({'target':'maoanli.rdlab'});
+		var cid = cid || parseInt(this.req.__get.cid);
+		var page = this.readData('page', this.req.__get, 0) | 0;
+		var php = {
+			'head': '/style/Style_push_page_pc?cid=' + cid,
+			'poster0': '/style/Style_push_page_pc?cid=' + cid+'&frame=1&page=1&page_type=list'
+		};
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data) {
+			//获取分页总数
+			data.groupPg = {};
+			data.groupPg.page_size = data.poster0.page_size;
+			data.groupPg.total_num = data.poster0.totalNum;
+			data.groupPg.current_page = page;
+			data.cid = cid;
+			data.tab = this.req.__get.tab || 0;
+			data.pageTitle = "Desire 明星同款";
+			data._CSSLinks = ['desire/newPush'];
+			this.render('desire/newPush.html', data);
+		})
+	}
+}
+
+exports.__create = controller.__create(desire, controlFns);

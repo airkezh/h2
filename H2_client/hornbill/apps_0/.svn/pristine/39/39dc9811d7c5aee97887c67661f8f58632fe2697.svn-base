@@ -1,0 +1,127 @@
+<%
+	var mSubstr = _extFn.mSubstr;
+
+	var domain = this.MAIN_SITE_DOMAIN;
+	var userInfo = this.userInfo;
+	var msg = this.msg || {};
+%>
+<div id="com-topbar">
+	<div class="inner">
+		<ul>
+			<% if(userInfo && userInfo.user_id){ %>
+				<li class="drop">
+					<a class="nick" href="http://order.meilishuo.com/pcenter">
+						<img class="face" src="<%= userInfo.avatar_d %>" />
+						<%= mSubstr(userInfo.nickname, 7, '...') %>
+					</a>
+					<a class="member" href="<%=domain%>/member/main/">
+						<span class="level level-<%=userInfo.user_grade%>"></span><em class="arrow"></em>
+					</a>
+					<ul class="down account">
+						<% if (userInfo.is_mall != 1) {%>
+						<li><a href="<%=domain%>/person/u/<%= userInfo.user_id%>?type=editor" target="_blank">我的杂志</a></li>
+						<li><a href="<%=domain%>/person/u/<%= userInfo.user_id%>?type=share" target="_blank">我的分享</a></li>
+						<%}%>
+						<li><a href="<%=domain%>/settings/setPersonal" target="_blank">账号与安全</a></li>
+						<li><a href="<%=domain%>/user/logout">退出</a></li>
+					</ul>
+				</li>
+				<li class="drop">
+					<a>
+						消息
+						<%if(msg.total_num != 0){%>
+							<span class="msg-num"><%=msg.total_num%></span>
+						<%}%>
+						<em class="arrow"></em>
+					</a>
+					<ul class="down msg">
+						<%
+							var msgTitle = {
+								"customer_num" : ["有%d个客服消息", domain + "/im/"],
+								"fans_num" : ["有%d个新关注", domain + "/ur/fans/" + userInfo.user_id],
+								"atme_num" : ["有%d个新@我的", domain + "/atme/"],
+								"pmsg_num" : ["有%d条新私信", domain + "/msg/main/user"],
+								"sysmesg" : ["有%d条新系统消息", domain + "/msg/main/syser"],
+								"recommend_num" : ["有%d个喜欢我的", domain + "/ur/like/" + userInfo.user_id],
+								"a_reply_num" : ["有%d条新的回复", domain + "/club/recommend/" + userInfo.user_id]
+							}
+
+							var outMsg = '';
+
+							Object.keys(msgTitle).forEach(function(key){
+								if(key in msg && msg[key] != 0){
+									outMsg += '<li class="notice"><a target="_blank" href="' + msgTitle[key][1] + '">' +
+											   msgTitle[key][0].replace('%d','<i>'+msg[key]+'</i>') + '</a></li>';
+								}
+							});
+
+							if(outMsg){
+								outMsg += '<li class="know">知道了</li>';
+							}
+						%>
+						<%=outMsg%>
+						<li><a href="<%=domain%>/ur/fans/<%= userInfo.user_id%>" target="_msg"> 查看关注</a></li>
+						<li><a href="<%=domain%>/atme/" target="_msg"> 查看@我的</a></li>
+						<li><a href="<%=domain%>/msg/main/user" target="_msg"> 查看私信</a></li>
+						<li><a href="<%=domain%>/msg/main/syser" target="_msg"> 查看系统消息</a></li>
+						<li><a href="<%=domain%>/ur/like/<%= userInfo.user_id%>" target="_msg"> 查看喜欢我的</a></li>
+						<li><a href="<%=domain%>/club/recommend/<%= userInfo.user_id%>" target="_msg"> 查看回复我的</a></li>
+					</ul>
+				</li>
+				<li>
+					<a href="<%=domain%>/person/u/<%= userInfo.user_id%>?type=like" target="_blank">
+						<em class="like"></em>我的喜欢
+					</a>
+				</li>
+			<% } else { %>
+				<li> 
+					<a href="<%=domain%>/connect/auth/weixin"><em class="weixin"></em>微信登录</a>
+				</li>
+				<li>
+					<a href="<%=domain%>/connect/auth/qzone"><em class="qq"></em>QQ登录</a>
+				</li>
+				<li>
+					<a href="<%=domain%>/user/login">登录</a>
+				</li>
+				<li>
+					<a href="<%=domain%>/user/register">注册</a>
+				</li>
+			<% } %>
+			<li>
+				<a href="<%=domain%>/cart" target="_blank"><em class="cart"></em>我的购物车 <span class="cart-num">0</span></a>
+			</li>
+			<li>
+				<a href="<%=domain%>/order" target="_blank"><em class="order"></em>我的订单</a>
+			</li>
+			<% if(!(userInfo && userInfo.user_id)){ %>
+			<li>
+				<a href="<%=domain%>/member/main/" target="_blank"><em class="imember"></em>美丽说会员</a>
+			</li>
+			<% } %>
+			<li class="drop">
+				<a href="<%=domain%>/client/?frm=daeh" target="_blank">
+					<em class="mob"></em>下载App<em class="arrow"></em>
+				</a>
+				<ul class="down app">
+					<li>
+						<img src="http://d01.res.meilishuo.net/pic/_o/80/81/44b8493edbbf431a52895c99376f_120_120.cg.jpg">
+						<div class="client">美丽说客户端</div>
+						<div>发现流行，只做正确流行款</div>
+					</li>
+					<li>
+						<img src="http://d04.res.meilishuo.net/pic/_o/46/01/1112dfa5a6d33ee590c81181a7db_167_165.ch.png">
+						<div class="client">美丽说HIGO客户端</div>
+						<div>扫码下载，新手红包免费拿</div>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<a class="last" href="<%=domain%>/helpcenter/?frm=top_to_help" target="_blank">帮助中心</a>
+			</li>
+		</ul>
+	</div>
+</div>
+
+
+
+

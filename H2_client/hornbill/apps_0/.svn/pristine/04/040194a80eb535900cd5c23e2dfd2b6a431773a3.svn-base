@@ -1,0 +1,199 @@
+@import "../common/block.less";
+@import "../common/window.less";
+@import "../common/dootablock";
+
+.page;
+.pageNav{.page > .pageRed; }
+.doota;
+.bg_coupon {background:url("@{pic_url}/images/doota/bg8_coupon.png?asdf") no-repeat;}
+.icon_coupon {background:url("@{pic_url}/images/doota/s_icon6_coupon.png?asdf") no-repeat;}
+.coupon {
+	.doota > .frame;
+	&_content {.ml(150px);}
+	&_list {.bgwhite;padding:20px 12px;
+		h3 {.f(13px);.fn;.pl(8px);}
+	}
+	&_box {.left;.w(222px);.h(130px);.pr;padding:0 10px;.bg_coupon;margin:20px 8px 0;
+		.title {.h(30px);.l(30px);
+			span {.right;}
+		}
+		.coupon_value {.h(48px);.white;
+			.rmb {.left;.f(24px);.mr(10px);
+				span {.f(38px);}
+			}
+			.name {.h(14px);.hidden;.pt(28px);}
+		}
+		.condition,.valid {.gray;.mt(6px);
+			i {.w(12px);.h(12px);.left;.mr(10px);.icon_coupon;}
+		}
+	}
+	&_pink {.bp(0,0);
+		.title {.red;}
+		.condition i {.bp(0,0);}
+		.valid i {.bp(0px,-19px);}
+		}
+	&_orange {.bp(0,-140px);
+		.title {color:#ffbf80;}
+		.condition i {.bp (-30px,0)}
+		.valid i {.bp(-30px,-19px);}
+	}
+	&_blue {.bp(0,-280px);
+		.title {color:#8cb2ff;}
+		.condition i {.bp(-58px,0);}
+		.valid i {.bp (-58px,-19px);}
+	}
+	&_gray {.bp(0,-420px);
+		.title {color:#CCC;}
+		.condition i {.bp(-86px,0);}
+		.valid i {.bp(-86px,-19px);}
+	}
+	&_plt_red {.bp(0,-884px);
+		.title {display: none;}
+		.coupon_value{
+			.name{color: #fcbd86;position: relative;top: 6px;}
+			position: relative;top: 30px;
+			.rmb{position: relative;top: 21px;font-size: 20px;span{font-size: 30px;}}
+		} 
+		.condition {
+			position: relative;top: 30px;
+			color: #f2c1c1;
+			i {.bp(-139px,0);}
+		}
+		.valid{
+            position: relative;top: 30px;
+            color: #f2c1c1;
+            i {.bp(-139px,-19px);}
+		} 
+	}
+	&_pltpro_red{.bp(0,-560px);
+		.title {display: none;}
+		.coupon_value{
+			.name{color: #fcbd86;position: relative;top: 6px;}
+			position: relative;top: 30px;
+			.rmb{position: relative;top: 21px;font-size: 20px;span{font-size: 30px;}}
+		} 
+		.condition {
+			position: relative;top: 30px;
+			color: #f2c1c1;
+			i {.bp(-139px,0);}
+		}
+		.valid{
+            position: relative;top: 30px;
+            color: #f2c1c1;
+            i {.bp(-139px,-19px);}
+		}
+	}
+	&_plt_gray {.bp(0,-1046px);
+		.title {display: none;}
+		.coupon_value{
+			.name{position: relative;top: 6px;}
+			position: relative;top: 30px;
+			.rmb{position: relative;top: 21px;font-size: 20px;span{font-size: 30px;}}
+		}
+		.condition {
+			position: relative;top: 30px;
+			color: #ebebeb;
+			i {.bp(-111px,0);}
+		}
+		.valid{
+            position: relative;top: 30px;
+			color: #ebebeb;
+            i {.bp(-111px,-19px);}
+		} 
+	}
+	&_pltpro_gray{.bp(0,-719px);
+		.title {display: none;}
+		.coupon_value{
+			.name{position: relative;top: 6px;}
+			position: relative;top: 30px;
+			.rmb{position: relative;top: 21px;font-size: 20px;span{font-size: 30px;}}
+		}
+		.condition {
+			position: relative;top: 30px;
+			color: #ebebeb;
+			i {.bp(-111px,0);}
+		}
+		.valid{
+            position: relative;top: 30px;
+			color: #ebebeb;
+            i {.bp(-111px,-19px);}
+		} 
+	}
+	&_used {
+		.w(100px);.h(94px);
+	    background:url("@{pic_url}/images/doota/bg_used.png") no-repeat;
+        _filter:~"progid:DXImageTransform.Microsoft.AlphaImageLoader(src='@{pic_url}/images/doota/bg_used.png',sizingMethod='scale')";
+		.pa;top:2px;right:5px;
+	}
+	&_plt_used{
+		.w(100px);.h(94px);
+	    background:url("@{pic_url}/images/doota/bg_plt_used.png") no-repeat;
+        _filter:~"progid:DXImageTransform.Microsoft.AlphaImageLoader(src='@{pic_url}/images/doota/bg_used.png?asdf',sizingMethod='scale')";
+		.pa;top:2px;right:5px;
+	}
+}
+.coupon_list .top{
+	h3{padding: 0;}
+	.h(36px);
+	margin: -10px 10px 0px 10px;
+	.tab-wrap{
+		.h(36px);
+		border-bottom: 1px solid #e6e6e6;
+		.clearfix();
+		.tab-nav{
+			.left();
+			.h(20px);
+			list-style: none;
+			.clearfix();
+			.tab-item{
+				.left();
+	            margin: 0;
+	            position: relative;
+	            top: 10px;
+				a{
+					.h(20px);
+					.w(40px);
+			        .l(20px);
+					padding: 3px 10px;
+					display: inline-block;
+					text-decoration: none;
+					&:hover{
+						color: #f69;
+					}
+				}
+				&.selected{
+					a{
+						.l(20px);
+						color: #fff;
+						border-bottom: 1px solid #e6e6e6;
+						background-color: #ff6699;
+				    }
+				}
+			}
+
+		}
+		select{.right();position: relative;top:10px;}
+	}
+	
+}
+.empty{
+	padding:130px 0px 430px 250px;
+	div{
+		.left;
+	}
+	.icon{
+		width:57px;
+		height:38px;
+		background:url("@{pic_url}/images/doota/coupon_empty.png");
+		.mr(20px);
+		
+	}
+	.con{
+		.f(18px);
+		.pt(15px);
+		.gray;
+		font-family:微软雅黑;
+	}
+}
+
+.footer();

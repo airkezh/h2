@@ -1,0 +1,161 @@
+<%# head_simple.html%>
+<%if(this.isLogin){%>
+<div class="userinfo">
+	<div class="portrait">
+		<img src="<%= this.userInfo.avatar_e%>" />
+	</div>
+	<div class="intro">
+		<% var markup_url = _extFn.getAppLink("openURL", {"url": 'http://mapp.meilishuo.com/member/complement_info/', "inApp" : "1"}, this.os, this.xr.r, 'http://m.meilishuo.com/member/complement_info/');%>
+		<p class="nickname"><%= this.userInfo.nickname.length > 6 ? this.userInfo.nickname.substring(0,6) + '...' : this.userInfo.nickname%>
+			<%if(!this.isWx){%>
+				<a class="mark_up" xr="<%= this.xr.r%>" href="<%= markup_url%>">完善时尚基因</a>
+			<%}%>
+
+		</p>
+		<div class="genes">
+			<%if(this.usertag && this.usertag.tag && this.usertag.tag.length){%>
+			<div class="elements">
+				<%this.usertag.tag.forEach(function(v,k){%>
+					<a href="javascript:void(0);"><%= v%></a>
+				<%})%>
+			</div>
+			<%}else{%>
+				<span class="fashion">时尚基因</span>
+			<%}%>
+		</div>
+	</div>
+</div>
+<%}else{%>
+<div class="loginbox">
+	<p>登录/注册后</p>
+	<p>你的时尚基因数据会被保留，为你更精准的推荐</p>
+	<div class="btns"><span class="registe">注册</span><span class="login">登录</span></div>
+</div>
+<%}%>
+<div class="recommend">
+	<div class="wraper">
+		
+	</div>
+	<div class="pullUp" status="loading"></div>
+</div>
+<div class="bottom_box">
+	<p>没有更多推荐了，请先去逛逛后在来看看</p>
+	<% var gourl = this.os.mlsApp ? ('meilishuo://changetab.meilishuo?json_params=' + encodeURIComponent(JSON.stringify({"r":"","tab":"首页"}))) : '/welcome'%>
+	<%
+		if(this.isWx){
+			gourl = '/wx/daily/';
+		}
+	%>
+	<a xr="<%= this.xr.r%>" href="<%= gourl%>">去逛逛</a>
+</div>
+<a class="gotop">
+	<img src="http://i.meilishuo.net/css//images/wap/tuan/gotop.png" />
+</a>
+<script>
+	fml.vars.isapp = <%= this.os.mlsApp%>;
+    fml.vars.isWx = <%= this.isWx %>;
+	fml.vars.common_r = "<%= this.xr.r%>";
+	fml.vars.typeindex = -1;
+</script>
+<script type="text/html" id="posterWall">
+<?
+var timetype = [{'name':'today', 'desc':'今日'}
+,{'name':'yestoday','desc':'昨日'},{'name':'earlier','desc': '更早'}];
+var that = this;
+$.each(this.rInfo, function(k, v){?>
+	<?if(v.day != fml.vars.typeindex){?>
+	<h1 class="<?= timetype[v.day].name?>"><?= timetype[v.day].desc?>推荐<i><?= timetype[v.day].name.toUpperCase()?></i></h1>
+	<?fml.vars.typeindex = v.day;}?>
+	<div class="extrabox">
+		<div class="contentBox">
+			<?if(v.source_tid.length){?>
+			<div class="browered">
+				<div class="tip"><span class="<?= v.rec_sign?>"></span><?= v.source_text?></div>
+				<div class="b-list">
+				<?$.each(v.source_tid, function(k1, v1){
+					if(fml.vars.isWx){
+						var url = '/wx/detail?tid='+ v1.twitter_id+'&d_r=1-1-1-1-weixin_interest'
+					}else{
+						var url = fml.vars.isapp ? v1.mob_url : v1.wap_url
+					}
+					?>
+				<a xr="<?= v1.r?>" href="<?= url?>"><img src="<?= v1.small_pic?>" /></a>
+				<?});?>
+				</div>
+			</div>
+			<?}?>
+			<?if(v.rec_tid.length){?>
+			<div class="liked">
+				<div class="tip liketype">
+					<div class="guessLike"><?= v.reason?></div>
+					<? v.tag = v.tag || [];?>
+					<?if(v.tag.length!=0){?>
+					<div class="values guess">
+					<? $.each(v.tag, function(k1, v1){
+						if(fml.vars.isWx){
+							var searchurl = '/wx/search?key='+ v1.link_value
+						}else{
+							var searchurl = fml.vars.isapp ? "meilishuo://search_goods_result.meilishuo?json_params=" + encodeURIComponent( JSON.stringify( { 'tag_word': v1.link_value})) : "/search?keyword=" + v1.link_value
+						}
+						?>
+						<a<?= k1 == 0 ? ' class=\'arrow-down\'' : '' ?> xr=<?= that.r?> href="<?= searchurl?>"><?= v1.value?>
+							<s><i style="top:<%= this.os.iphone ? -0.11 : -0.1%>rem"></i></s>
+						</a>
+					<?})?>
+					</div>
+					<?}?>
+				</div>
+				
+					<div class="imageSlide js-mark">
+						<ul class="goods-list">
+						<?$.each(v.rec_tid,function(k1, v1){
+							var left = v1.shift();
+							var right = v1;
+							if(fml.vars.isWx){
+								var url = '/wx/detail?tid='+ left.twitter_id+'&d_r=1-1-1-1-weixin_interest'
+							}else{
+								var url = fml.vars.isapp ? left.mob_url : left.wap_url
+							}
+							?>
+							<li>
+								<div class="left-b">
+								<a xr="<?= left.r?>" href="<?= url ?>">
+									<span class="bs_load_img" style="background-repeat: no-repeat; background-size: 100% 100%;" asrc="<?= left.big_pic?>"></span>
+									<span class="price"><small>￥</small><?= left.price?></span>
+								</a>
+								</div>
+								<div class="right-b">
+								<?$.each(right, function(k2, v2){
+									if(fml.vars.isWx){
+										var url = '/wx/detail?tid='+ v2.twitter_id+'&d_r=1-1-1-1-weixin_interest'
+									}else{
+										var url = fml.vars.isapp ? v2.mob_url : v2.wap_url
+									}
+									?>
+									<a xr="<?= v2.r?>" href="<?= url ?>">
+										<span class="bs_load_img" style="background-repeat: no-repeat; background-size: 100% 100%;" asrc="<?= v2.small_pic?>"></span>
+										<span class="price"><small>￥</small><?= v2.price?></span>
+									</a>
+								<?});?>
+								</div>
+							</li>
+						<?})?>
+						</ul>
+						<?if(v.rec_tid.length > 1){?>
+					<div class="num"></div>
+					<?}else{?>
+					<div class="place"></div>
+					<?}?>
+					</div>
+				
+				
+			</div>
+			<?}?>
+		</div>
+	</div>
+<?})?>
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/guessulike');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

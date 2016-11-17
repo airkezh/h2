@@ -1,0 +1,32 @@
+<%# sq/header.html %>
+
+<section class="case1">
+	<div id="goods_shelf"></div>
+	<div class="pullUp" status="loading"></div>
+</section>
+
+<section class="case2">
+	<h1 class="prompt">您还没有收藏商品</h1>
+	<a class="liuda_liuda" href="/sq">立即逛逛</a>
+</section>
+
+<!-- 挂件 -->
+<ul class="pendant">
+	<li id="go_top" class="pendant-b"></li>
+</ul>
+
+<script>
+	fml.vars.dataOfFirstFrame = <%= JSON.stringify(this.waterfall) %>;
+</script>
+
+<%# sq/goods_tpl.html %>
+
+<%! 
+	$_ENGINE_SELF.callFn("useModule")(
+		"<<<_use:fml.use('wap/page/sq/goods_collect');_use:", 
+		this._JSstack, 
+		this._JSmods 
+	); 
+%>
+
+<%# sq/footer.html %>

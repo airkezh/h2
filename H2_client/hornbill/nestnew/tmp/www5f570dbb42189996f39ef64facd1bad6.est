@@ -1,0 +1,27 @@
+/*--/Users/MLS/Documents/H2/H2_client/hornbill/apps_0/www/views/common/index.css--*/ 
+     var est = require(config.path.lib + 'est/est.js'); 
+     var _extFn = require('/Users/MLS/Documents/H2/H2_client/hornbill/nestnew/server/lib/est/extFn.js'); 
+     function requireFn(tpl) { return est.renderFile('/Users/MLS/Documents/H2/H2_client/hornbill/apps_0/www/views/' ,tpl , null , null ,'www' ,true); } ; 
+     function __getHtml (_data) { 
+       function jsRender(tpl , id) { return est.jsRender(requireFn(tpl)(_data), id  ); } ; 
+       var __htm ='';
+__htm += '';
+ var conf = _data.front_conf;;__htm += '\n';
+if(conf.topbar){;__htm += '\n';
+__htm += est.renderFile("/Users/MLS/Documents/H2/H2_client/hornbill/apps_0/www/views/" ,"common/topbar.css",_data,null,"www" )||"";
+__htm += '\n';
+};__htm += '\n';
+if(conf.search){;__htm += '\n';
+__htm += est.renderFile("/Users/MLS/Documents/H2/H2_client/hornbill/apps_0/www/views/" ,"common/search.css",_data,null,"www" )||"";
+__htm += '\n';
+};__htm += '\n';
+if(conf.nav){;__htm += '\n';
+__htm += est.renderFile("/Users/MLS/Documents/H2/H2_client/hornbill/apps_0/www/views/" ,"common/nav.css",_data,null,"www" )||"";
+__htm += '\n';
+};__htm += '\n';
+if(conf.foot){;__htm += '\n';
+__htm += est.renderFile("/Users/MLS/Documents/H2/H2_client/hornbill/apps_0/www/views/" ,"common/foot.css",_data,null,"www" )||"";
+__htm += '\n';
+};__htm += '';
+return __htm;} 
+ exports.html = __getHtml; 

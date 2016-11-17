@@ -1,0 +1,140 @@
+<%#head.html%>
+<%
+	var wlListRenderFn = requireFn('wins/reply_box.html');
+%>
+<div class="head_top"></div>
+<div class="main">
+	<div class="box1">
+		<a href="http://www.meilishuo.com/u/EUwlf7?frm=oupolai110" target="_blank"></a>
+	</div>
+	<div class="box2">
+		<a href="/huodong/aupres/" ></a>
+		<a href="/huodong/aupres2/" ></a>
+		<a href="/huodong/aupres3/" ></a>
+	</div>
+	<div class="box3">
+		<%
+			if(this.is_sign && this.is_sign.data.item3 == 1){
+				var sign_st = 'signed';
+			} else {
+				var sign_st = 'sign';
+			}
+		%>
+		<div class="<%= sign_st %>"></div>
+		<a href="http://www.meilishuo.com/u/EVExFF?frm=oupolai111" class="home_link" target="_blank">官网</a>
+	</div>
+	<%
+		if(this.is_draw && this.is_draw.data == 1){
+			var lucky_draw = 'candraw';
+		} else {
+			var lucky_draw = 'nodraw';
+		}
+	%>
+
+	<div class="box4"><div class="<%= lucky_draw %>"></div></div>
+	<div class="box5">
+		<div class="video-tab">
+			<span class="tab1 on"></span>
+			<span class="tab2"></span>
+		</div>
+		<ul class="tab-cont">
+			<li style="display:block">
+				<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" id="storage" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,19,0" width="400" height="300">
+					<param name="movie" value="http://player.youku.com/player.php/sid/XNzAyMTY4Nzcy/v.swfVideoIDS=XNzAyMTY4Nzcy&isAutoPlay=false" />
+					<param name="quality" value="high" />
+					<param name="wmode" value="transparent" />
+					<embed src="http://player.youku.com/player.php/sid/XNzAyMTY4Nzcy/v.swf?VideoIDS=XNzAyMTY4Nzcy&isAutoPlay=false" id="cache2" quality="high" wmode="transparent" pluginspage="http://www.macromedia.com/go/getflashplayer" allowScriptAccess="always" allowFullScreen="false" type="application/x-shockwave-flash" width="400" height="300"></embed>
+				</object>
+
+			</li>
+			<li>
+				<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" id="storage" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,19,0" width="400" height="300">
+					<param name="movie" value="http://player.youku.com/player.php/sid/XNzAyNTg2MzY0/v.swf?VideoIDS=XNzAyNTg2MzY0&isAutoPlay=false" />
+					<param name="quality" value="high" />
+					<param name="wmode" value="transparent" />
+					<embed src="http://player.youku.com/player.php/sid/XNzAyNTg2MzY0/v.swf?VideoIDS=XNzAyNTg2MzY0&isAutoPlay=false" id="cache2" quality="high" wmode="transparent" pluginspage="http://www.macromedia.com/go/getflashplayer" allowScriptAccess="always" allowFullScreen="false" type="application/x-shockwave-flash" width="400" height="300"></embed>
+				</object>
+			</li>
+		</ul>
+		<a class="more-link" target="_blank" href="http://www.meilishuo.com/u/EVExFF"></a>
+	</div>
+	<div class="box6">
+		<a href="http://www.meilishuo.com/u/EVQ3bv " target="_blank" class="more-link"></a>
+		<div class="video-happy">
+				<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" id="storage" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,19,0" width="476" height="360">
+					<param name="movie" value="http://player.ku6.com/refer/jtWbofv5EmZWLjNS5GQaDg../v.swf&auto=0" />
+					<param name="quality" value="high" />
+					<param name="wmode" value="transparent" />
+					<embed src="http://player.ku6.com/refer/jtWbofv5EmZWLjNS5GQaDg../v.swf&auto=0" id="cache2" quality="high" wmode="transparent" pluginspage="http://www.macromedia.com/go/getflashplayer" allowScriptAccess="always" allowFullScreen="false" type="application/x-shockwave-flash" width="476" height="360"></embed>
+				</object>
+		</div>
+	</div>
+	<div class="box7">
+		<a target="_blank" class="home_link" href="http://www.meilishuo.com/u/EVExFF?frm=oupolai111">官网</a>
+		<a target="_blank" class="ttr" href="http://www.meilishuo.com/u/EVO011"></a>
+		<a target="_blank" class="dymr" href="http://www.meilishuo.com/u/EVO045"></a>
+	</div>
+	<div class="box11">
+		<div class="lun" id="photoPlay">
+			<ul>
+				<% this.lunbo && this.lunbo.map(function(data){  %>
+					<li><a href="<%= data.link%>" target="_blank"><img src="<%= data.src%>" /></a></li>
+				<%});%>
+			</ul>
+		</div>
+	</div>
+	<div class="box13" id="mao"></div>
+	<div class="box12">
+		<div class="prize-list">
+			<div class="winner-name">
+
+				<% this.winner_list && this.winner_list.map(function(data){  %>
+					<span><%= data.winner_name%></span>
+					
+				<%});%>
+
+			</div>
+		</div>
+		<div class="discus_box">
+			<%#wins/publishor.html%>
+			<div class="reply_list comments">
+				<%this.topic_list && this.topic_list.list.map(function(data){%>
+					<%=wlListRenderFn(data)%>
+				<%});%>
+			</div>
+			<div class="paging_panel c_f">
+				<%#paging.html%>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="pf">
+	<a href="http://www.meilishuo.com/u/EVEwHh?frm=oupolai121" target="_blank"></a>
+	<span></span>
+</div>
+
+
+<script type="text/html" id="aupres3" >
+<%*欧泊来弹层%>
+<div class="dialog_member can_not">
+	<p class="meb_content">
+		<b class="member_icon fail"></b>
+		<?= data?>！
+	</p>
+	<p class="tab_sure">
+		<a class="btn sure mem_btn close_dailog" href="javascript:;">确定</a>
+	</p>
+</div>
+</script>
+
+
+
+
+<script>
+	Meilishuo.config.tag_id = '<%=this.beauty_id%>';
+	Meilishuo.config.tag = '<%=this.beautyTag%>';
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use: 
+	fml.use('page/huodong/aupres_51');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

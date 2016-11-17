@@ -1,0 +1,306 @@
+/*common*/
+require('wap/zepto/fastclick');
+var Swipe = require( 'wap/component/swipe' )
+	,timedown = require( 'wap/app/doota/timedown' )
+	,lazy = require( 'm/component/lazyLoad' )
+	,scroll = require('wap/component/windowScroll')
+	,WaterFall = require( 'circle/component/waterfall' )
+	,optimiseFn = require('circle/component/waterfallOptimise')
+	,openAppLink = require('wap/app/openAppLink')
+	,tracking = require('wap/app/tracking')
+var  $spotWrapUl = $('.spotWrap ul')
+	,$spotWrap = $('.spotWrap')
+	,$goodsWrapLi = $('.goodsWrap').find('li')
+	,$goodsWrap = $('.goodsWrap')
+	,$gotop = $('.gotop')
+	,$classification = $('.classification')
+	,$classficationInfo = $('.classficationInfo')
+	,$waterFall = $('.waterFall')
+	,$goShop = $('.goShop')
+	,$loading = $('.loading')
+	,$more = $('.more')
+	,$newGoods = $('.newGoods')
+	,$buyGoods = $('.buyGoods')
+	,$bannerSliderA = $('.banner-slider').find('a')
+var lazyLoad = lazy.init({xpath:'.shop img , .goodsInfo img'});
+/*-------------banner-----------*/
+$bannerSliderA.on('click',function(e){
+	e.preventDefault();
+	e.cancelable = false;
+	e.returnValue = false;
+	var href = $(this).attr('href')
+		,xr = $(this).data('xr')
+		,index = xr.charAt(xr.length-1)
+	tracking.cr( 'page_element', {
+		'_action' : 'click'
+		,'r' : '_page_code=hiGoods_index:_page_area=banner:_pos_id='+ index
+	})
+	// return
+	if(href !='javascript:;'){
+		window.location.href = window.__get_r(href,xr);
+	}
+})
+/*-------------Hi抢鲜-------------*/
+//倒计时
+function calcuteCountDown(t_container, stamp){
+	var $hour = $('.hour', t_container)
+		,$minu = $('.mimute', t_container)
+		,$sec = $('.second', t_container)
+	timedown.down(t_container, stamp, '0h-0i-0s', ['<b>%v:</b>', '<b>%v:</b>', '<b>%v</b>'])
+	.onAction(function() {
+		var t = arguments[2];
+		hour = t.h ? (t.h < 10 ? "0" + t.h : t.h) : "00";
+		minu = t.i ? (t.i < 10 ? "0" + t.i : t.i) : "00";
+		sec = t.s ? (t.s < 10 ? "0" + t.s : t.s) : "00";
+		if ($hour.html() != hour) {
+			$hour.html(hour);
+		}
+		if ($minu.html() != minu) {
+			$minu.html(minu);
+		}
+		if ($sec.html() != sec) {
+			$sec.html(sec);
+		}
+	})
+	.onTimeOver(function(){
+		// window.location.reload();
+	});
+}
+$('.time').each(function( i, v ){
+	calcuteCountDown( v, $( v ).data('stime'));
+})
+//ppt轮播
+window.mySwipe = Swipe(document.getElementById('slider'), {
+	startSlide : 0,
+	speed : 400,
+	auto : 0,
+	continuous : true,
+	disableTouch : false,
+	disableScroll : false,
+	stopPropagation : false,
+	callback : function(index, elem){
+		changeSpot(index,elem);
+	},
+	transitionEnd: function(index, elem) {
+	}
+});
+//改变圆点的样式
+function changeSpot(index,elem){
+	var str = '.'+'spot'+index
+	var ind  = $(str);
+	ind.addClass('on').parent('li').siblings().children().removeClass('on');
+}
+
+// 轮播显示的圆点点
+var scrollLen = mySwipe.getNumSlides();
+var	spotWrapLen = 30*scrollLen;
+if(scrollLen>1){
+	for(var i = 0 ; i<scrollLen ;i++ ){
+		$spotWrapUl.append('<li><span class="spot'+' '+'spot'+i+'" data-id="'+i+'"></span></li>');
+	}
+}
+$('.spot0').addClass('on').siblings().removeClass('on'); //页面加载进来，第一个加类on
+$spotWrap.css( 'width' , spotWrapLen+'px');
+$spotWrap.css( 'margin' , '0 auto');
+//点击圆点跳转到相应的幻灯片
+$( '.spotWrap' ).on( 'click' , '.spot' , function(){
+	var index = $(this).data('id');
+	mySwipe.slide( index , 400 );
+	isManualSlide = true
+} )
+$('.preferablyInfoWrap').on( 'touchmove' , function(){
+	touchiSlide = true;
+} )
+//-------------Hi 货-------------
+// 判断是否支持overflow-scrolling:touch
+function hasScrolling() {
+	// CSS.supports('(-webkit-overflow-scrolling:touch) or (-moz-overflow-scrolling:touch) or (-o-overflow-scrolling:touch) or (-ms-overflow-scrolling:touch) or (overflow-scrolling:touch)')
+	var element = document.createElement('div');
+	element.style['webkitOverflowScrolling'] = 'touch';
+	element.style['mozOverflowScrolling'] = 'touch';
+	element.style['oOverflowScrolling'] = 'touch';
+	element.style['msOverflowScrolling'] = 'touch';
+	element.style['overflowScrolling'] = 'touch';
+	return element.style['webkitOverflowScrolling'] === 'touch' || element.style['mozOverflowScrolling'] === 'touch' || element.style['oOverflowScrolling'] === 'touch' || element.style['msOverflowScrolling'] === 'touch' || element.style['overflowScrolling'] === 'touch'
+}
+if(fml.vars.hiGoods != 0){
+	if (hasScrolling()) {
+		// 采用use_rem_screen时有小数情况
+		var setWidth = window.getComputedStyle($goodsWrapLi[0], null).width;
+		var newLiWidth = parseInt(setWidth);
+		if (parseInt(setWidth) != parseFloat(setWidth)) {
+			newLiWidth = Math.ceil(parseFloat(setWidth));
+			$goodsWrapLi.width(newLiWidth);
+		}
+		$goodsWrap.find('ul').width(newLiWidth * $goodsWrapLi.length);
+	} else {
+		$goodsWrap.touchSlide({
+			isAuto: false,
+			isSlideLi: true
+		});
+	}
+}
+$goodsWrap.find('a').on('click',function(e){
+	e.preventDefault();
+	e.cancelable = false;
+	e.returnValue = false;
+	var ahref =  $(this).attr('href');
+	var xr = $(this).data('xr')
+		,index = parseInt($(this).data('index'))
+	tracking.cr( 'page_element', {
+		'_action' : 'click'
+		,'r' : '_page_code=hiGoods_index:_page_area=haohuo:_pos_id='+(index+1)
+	})
+	if(ahref != 'javascript:void(0)'){
+		window.location.href =window.__get_r(ahref, xr);
+	}
+})
+//-------------hi店--------------
+//分类瀑布流
+function initWaterFall(key){
+	var waterFallInstance = WaterFall.init({
+		el: '.goods_wall',
+		url: '/hiGoods/aj/classList',
+		colNum: 1,
+		colGap : '0 0',
+		hasSideGap : true,
+		data : {
+			'key' : key
+			,'limit' : 10
+			,'__get_r' :1
+		},
+		dataFilter:function( data ) {
+			return data.data
+		},
+		onFetchSuccess: function(data,index){
+			$more.hide();
+			lazyLoad.scroll();
+			lazyLoad.load();
+			waterFallInstance._config.data.offset += 10
+		},
+		onFetchFinished: function(data){
+			lazyLoad.load();
+			$more.show();
+			$loading.attr('status','stop');
+			$loading.hide();
+			if(JSON.parse(data.response).data.length==0){
+				$more.attr('status','stop')
+			}
+		},
+		optimiseFn: optimiseFn
+	});
+	return waterFallInstance;
+}
+/*获取单品页链接*/
+function getDoneUrl(ele,param) {
+	var twitter_id = parseInt(ele.data('tid')),
+		Url = Meilishuo.config.os.mlsApp ? openAppLink.getAppLink({
+			'protocol': 'twitter_single',
+			'param': {
+				"twitter_info": {
+					"twitter_id": twitter_id,
+					"is_doota": 1
+				}
+			}
+		}) : '/share/item/' + twitter_id;
+	window.location.href = window.__get_r(Url, param);
+}
+/*获取店铺链接*/
+function getShopUrl(ele,param) {
+	var shop_id = parseInt(ele.data('shop')),
+		Url = Meilishuo.config.os.mlsApp ? openAppLink.getAppLink({
+			'protocol': 'shop',
+			'param': {
+				'shop_id': shop_id
+			}
+		}) : '/shop/shop/' + shop_id;
+	window.location.href = window.__get_r(Url , param) ;
+}
+var water = initWaterFall($('.select0').data('key'));
+water.start();
+// water.start();//默认精选的数据
+var classOffset = $classification.offset().top;
+// 判断时候支持position：sticky
+function hasSticky() {
+	var element = document.createElement('div');
+	if ('position' in element.style) {
+		element.style['position'] = '-webkit-sticky';
+		element.style['position'] = '-moz-sticky';
+		element.style['position'] = '-o-sticky';
+		element.style['position'] = '-ms-sticky';
+		element.style['position'] = 'sticky';
+		return element.style['position'] === '-webkit-sticky' || element.style['position'] === '-moz-sticky' || element.style['position'] === '-o-sticky' || element.style['position'] === '-ms-sticky' || element.style['position'] === 'sticky'
+	} else {
+		return false;
+	}
+}
+
+// tab吸顶
+if (!hasSticky()) {
+	$(window).scroll(function() {
+		var t = $(window).scrollTop();
+		if (t > classOffset) {
+			$classification.css({
+				'position': 'fixed',
+				'left': 0,
+				"top": 0
+			});
+		} else {
+			$classification.css({
+				'position': 'static'
+			});
+		}
+	});
+}
+$('.classficationInfo').on( 'click' , function(){
+	var thisS = $(this);
+	var isActive = $(this).hasClass('active1');
+	$('body')[0].scrollTop = classOffset;
+	if(!isActive){
+		$waterFall.empty();
+		$loading.show();
+		$loading.attr('status','loading');
+		$more.attr('status','tap');
+		water.destroy() //销毁瀑布流
+		$classficationInfo.removeClass('active1');
+		thisS.addClass('active1');
+		var classify = $(this).data('key');
+		// type = classify;
+		tracking.cr( 'page_element', {
+			'_action' : 'click'
+			,'r' : '_page_code=hiGoods_index:_page_area=haodian:_tabname='+classify
+		} )
+		water = initWaterFall(classify);//再次复制给water是为了每次点击分类之后能够将瀑布流销毁
+		water.start();
+	}
+})
+$waterFall.on('click','.goodsInfo',function(){
+	var tid = $(this).data('tid');
+	var param = $(this).data('xr')+':_ext_twitter_id='+tid;
+	getDoneUrl($(this),param)
+})
+$waterFall.on('click','.goShop',function(){
+	getShopUrl($(this))
+})
+$waterFall.on('click','.shop img',function(){
+	var shop_id = $(this).data('shop')
+	var param = $(this).data('xr')+':_ext_shop_id='+shop_id;
+	getShopUrl($(this),param);
+})
+$newGoods.on('click',function(){
+	var param = $(this).data('xr')
+	getDoneUrl($(this),param)
+})
+$buyGoods.on('click',function(){
+	var param = $(this).data('xr')
+	getDoneUrl($(this),param)
+})
+/*回顶部*/
+$gotop.on("click", function(e) {
+    document.body.scrollTop = 0;
+});
+scroll.yIn(30,function(){
+    $gotop.show();
+},function(){
+    $gotop.hide();
+});

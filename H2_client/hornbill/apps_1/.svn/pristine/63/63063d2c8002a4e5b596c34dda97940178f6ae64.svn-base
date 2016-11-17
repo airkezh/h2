@@ -1,0 +1,24 @@
+<%if(this.dis){%>
+<div class="list <%if(this.list1){%>list-1<%}else{%>list-2<%}%>">
+	<div class="list-inner">
+		<h2 class="title">无忧购活动讨论区</h2>
+		<ul>
+			<% this.dis.forEach(function(v,k){%>
+				<li>
+					<img src="<%= this.PICTURE_URL%>/images/activity/fouryears/hot.png" />
+					<p>
+						<a href="/club/single/<%= v.article_id%>?fromBiz=4" target="_blank" style="color:#666;text-decoration:none;">
+							<%= v.article_title%>
+						</a>
+					</p>
+					<a class="li-go" href="/club/single/<%= v.article_id%>?fromBiz=4" target="_blank">火热讨论中</a>
+					<span class="li-num"><%= v.total%></span>
+					<span class="li-can">参与人数：</span>
+					<div class="clear"></div>
+				</li>
+			<%});%>
+			<div class="clear"></div>
+		</ul>
+	</div>
+</div>
+<%}%>

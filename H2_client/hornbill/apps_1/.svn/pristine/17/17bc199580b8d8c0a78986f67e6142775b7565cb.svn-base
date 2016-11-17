@@ -1,0 +1,56 @@
+<%# sq/header.html%>
+<div class="wrap">
+	<div class="account_wrap">
+		<section class="bund">
+		<form>
+			<fieldset class="login">
+				<div class="username havebt">
+					<div class="input_c">
+						<input type="text" placeholder="用户名/邮箱/手机号" class="login_box" name="username" id="username" />
+						<a type="button" class="clear"><img src="<%=this.PICTURE_URL%>/images/wap/web/wx/bund_del.png"></a>
+					</div>
+				</div>
+				<div class="pwd">
+					<div class="input_c">
+						<input type="password" placeholder="密码" class="login_box" name="pwd" id="pwd" /><a type="button" class="clear"><img src="<%=this.PICTURE_URL%>/images/wap/web/wx/bund_del.png"></a>
+					</div>
+				</div>
+			</fieldset>
+			<!-- <div class="check_wrap">
+				<fieldset class="check_box login">
+					<div class="check_code">
+						<div class="input_c">
+							<input type="text" placeholder="验证码" class="login_box check_txt" name="checkcode" id = "checkcode" maxLength="4" />
+							<a type="button" class="clear"><img src="<%=this.PICTURE_URL%>/images/wap/web/wx/bund_del.png"></a>
+						</div>
+					</div>
+				</fieldset>
+				<div class="checkImage">
+					<img src="<%= this.PICTURE_URL %>images/register/blank.jpg">
+				</div>
+			</div> -->
+			<div class="check_wrap_bottom">
+				<p class="err_msg"></p>
+				<!-- <p class="change_img">看不清，换一张</p> -->
+			</div>
+			<div class="actbtn_wrap">
+				<div class="act_btn bind_btn">登录</div>
+				<p class="forget_pwd"><a href="/sq/findPwd/">忘记密码?</a></p>
+
+				<!-- <div class="con_login">
+					<span>用以下方式互联登录</span>
+					<a class="fir" href="/sq/auth/txweibo?position=qqmall"><img src="<%=this.PICTURE_URL%>/images/wap/web/sq/icon-weibo.png" alt=""></a> 
+					<a class="fir" href="/sq/auth/weibo?position=qqmall"><img src="<%=this.PICTURE_URL%>/images/wap/web/sq/icon-sina.png" alt=""></a>
+				</div>-->
+			</div>
+		</form>
+		</section>
+	</div>
+</div>
+<script>
+	fml.vars.e_msg = '<%= this.e_msg%>';
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/sq/bind');
+_use:", this._JSstack , this._JSmods ); %>
+<%# sq/footer.html%>

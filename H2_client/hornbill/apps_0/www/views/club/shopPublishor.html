@@ -1,0 +1,113 @@
+<%# head.html%>
+<div class="main">
+	<div class="wrap">
+		<div class="goods">
+			<%
+				var shopping_data = this.shopping;
+				if(!shopping_data){
+			%>
+				<div class="no_goods">
+					<img class="j_choose_goods" src="<%= this.PICTURE_URL%>images/club/sp_no_goods.jpg">
+					<p>点击添加要晒单的商品</p>
+				</div>
+			<% } else { %>
+				<div class="shopping_wrap" tid_data="<%= shopping_data.twitter_id %>" gid_data="<%= shopping_data.goods_id %>">
+					<img src="<%= shopping_data.goods_img %>" width="50" height="50">
+					<p class="goods_title"><%= shopping_data.goods_title %></p>
+					<p class="goods_price red_f">价格：<%= shopping_data.goods_price || 0 %></p>
+				</div>
+			<% } %>
+			<div class="clear_f"></div>
+		</div>
+		<div class="goods_comment">
+			<p class="u_fit">是否合身：<span data="1">偏小</span><span data="2">刚好</span><span data="3">偏大</span></p>
+			<p class="u_color">色差：<span data="1">无色差</span><span data="2">有色差</span></p>
+			<p>身高：<input class="u_height" type="text">CM</p>
+			<p>体重：<input class="u_weight" type="text">KG</p>
+			<div class="clear_f"></div>
+		</div>
+		<div class="article_subject">
+			<input type="text" class="title cata_title_text none_f" maxlength="40" value="<%= this.userInfo.nickname %>来晒货啦！" hidden>
+			<div class="article_con">
+				<div class="article_context">
+					<textarea class="content editor" placeholder="收到的宝贝喜欢吗？马上拍下美照秀一下！"></textarea>
+				</div>
+				<div class="article_post"></div>
+				<div class="article_post_error"></div>
+			</div>
+			<div class="article_toolbar">
+				<div class="addPic_con" id="addPic_con"><a href="javascript:;" id="add_pic" class="add_pic ntBdaolpu" style="display:block"><span>添加图片<em class="cl_i_img">&nbsp;</em></span><span class="cl_i_hover"></span></a><span class="addPic_tips">支持jpg、png和静态gif格式，大小不超过2M。</span></div>
+				<div class="clear_f"></div>
+				<div class="submit_con">
+					<div class="checkBox none_f" id="checkBox">
+						<label for="checkcode_club">验证码：<input class="l_ipt noCheck" id="checkcode_club" name="checkcode_club" type="text" value="" placeholder="验证码" maxlength="4" /></label>
+						<div class="checkImage" title="点击换一张">
+							<span id="checkcodeImage">
+								<img width="78" height="26" isblank="true" src="<%= this.PICTURE_URL %>images/register/blank.jpg">
+							</span>
+						</div>
+					</div>
+					<span class="submit">发布</span>
+				</div>
+			</div>
+		</div>
+		<div class="clear_f"></div>
+	</div>
+	<div class="example">
+		<p>晒单示例</p>
+		<img src="http://d02.res.meilishuo.net/img/_o/f1/54/cbaea297a3b3508ab20b5f42bf3a_900_387.c8.jpg">
+		<img src="http://d02.res.meilishuo.net/img/_o/f3/56/c77a76f48528be62dcda33afe541_900_388.c8.jpg">
+		<img src="http://d02.res.meilishuo.net/img/_o/b2/7f/a2109c07afa047c637c79e3a23d4_900_388.c8.jpg">
+		<img src="http://d06.res.meilishuo.net/img/_o/1a/d0/7822fc17c03f097713168789846d_900_388.c8.jpg">
+	</div>
+</div>
+
+<script type="text/html" id="chooseGoods">
+<div class="goods_alert">
+	<div class="goods_wrap">
+		<? $.each(goods, function(index, data){ ?>
+		<div class="shopping_wrap" tid_data="<?= data.twitter_id ?>" gid_data="<?= data.goods_id ?>">
+			<input type="radio" name="goods_r" id="goods_r_<?= data.goods_id ?>" data_img="<?= data.goods_img ?>" data_title="<?= data.goods_title ?>" data_price="<?= data.goods_price ?>" <?= index == 0 ? 'checked' : '' ?>>
+			<label for="goods_r_<?= data.goods_id ?>">
+			<img src="<?= data.goods_img ?>" width="50" height="50">
+			<p class="goods_title"><?= data.goods_title ?></p>
+			<p class="goods_price red_f">价格：<?= data.goods_price || 0 ?></p>
+			</label>
+		</div>
+		<? }); ?>
+	</div>
+	<div class="getGoods"><span class="j_get_goods">晒单分享></span></div>
+</div>
+</script>
+<script type="text/html" id="addCon">
+	<div class="item pr_f">
+		<div class="separation"></div>
+		<div class="item_con">
+			<div class="item_arrow">
+				<p class="arrow_up <?=hide_up?>"></p>
+				<p class="arrow_down none_f"></p>
+			</div>
+			<div>
+				<div class="addPic">
+					<div class="uploading">
+						<span class="pic_title"><?= data.pic_title ?></span>
+						<div class="progress_bar"><div class="upload_percentage" id="<?= data.uppic_id ?>"></div></div>
+						<div class="upload_errormsg"></div>
+					</div>
+				</div>
+				<div class="cl_i_close"></div>
+			</div>
+			<div class="clear_f"></div>
+		</div>
+	</div>
+</script>
+<script type="text/html" id="addPicCon">
+	<div class="upload">
+		<img src="<?= pic_url ?>" pid="<?= pic_id ?>">
+		<textarea class="desp" placeholder="请添加图片描述..."></textarea>
+	</div>
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/club/shopPublishor');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

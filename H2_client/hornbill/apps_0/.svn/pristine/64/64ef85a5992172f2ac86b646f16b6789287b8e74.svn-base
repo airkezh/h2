@@ -1,0 +1,189 @@
+<%
+var details     = this.details,
+    item_detail = details.detail,
+    speciSize   = details.specifications_size,
+    anchors_map = this.anchors_map,
+    goodsInfo   = this.goods_info || {};
+%>
+
+<%this.shop_in && this.shop_in.shop_banner && this.shop_in.shop_banner.map(function(data){%>
+<div class="recom-banner">
+    <a href="<%= data.link_url%>" target="_blank"><img src="<%=data.pic_url%>"/>
+    </a>
+</div>
+<%});%>
+
+<%
+var dianping = goodsInfo.goods_comment
+if ( dianping ) {
+%>
+<div class="daren">
+    <% if(dianping.avatar){ %>
+    <a class="avatar">
+        <img src="<%= dianping.avatar%>">
+    </a>
+    <% } %>
+    <div class="text">
+        <p class="intro">
+            <span class="extra-desc"><% if(dianping.is_daren) {%>美丽说时尚买手<% } else {%>店主推荐<%}%></span>
+        </p>
+        <p class="desc">
+            <%= dianping.description%>
+        </p>
+    </div>
+</div>
+<%}%>
+<% if(goodsInfo.comment && goodsInfo.satisfy_rate != '--' ){ %>
+<div id="handpick-comments" class="handpick-comments">
+    <a id="anchor-handpick-comments"></a>
+    <h2 class="comm_tle"><span>精选好评</span></h2>
+    <ul class="handpic-comments-handle"><li></li><li></li><li></li></ul>
+    <ul class="handpick-comments-list js-comments-list"></ul>
+    <div class="item-satisfy-rate">
+        <div class="content-wrap">
+            <i class="dashed-border"></i>
+            <i class="rate-num"><%= parseFloat(goodsInfo.satisfy_rate) %></i> <i class="label-percent">%</i>满意度
+            <p>- 来自 <i class="num"><%= goodsInfo.comment.totalUser || 0 %></i> 个用户的评价 -</p>
+        </div>
+    </div>
+    <div class="item-features js-feature-list"></div>
+    <div class="item-shoppingshow js-item-shoppingshow">
+        <div class="item-shoppingshow-title">
+            <h3><span>买家晒单</span></h3>
+        </div>
+        <ul class="item-shoppingshow-list"></ul>
+    </div>
+</div>
+<%}%>
+
+<% if ( speciSize ) { %>
+<a name="<%= anchors_map[this.formatName] %>" id="<%= anchors_map[this.formatName] %>"></a>
+<h2 class="comm_tle"><span>规格尺码</span></h2>
+
+<% if ( speciSize.specifications ) {%>
+<ul class="format">
+    <% speciSize.specifications.map(function(data) { %>
+    <li title="<%= data[1]||'' %>"><%=data[0]||''%>：<%= data[1]||''%></li>
+    <%});%>
+</ul>
+<% }
+    if ( speciSize.size ) {
+    speciSize.size.forEach(function( data ) {
+        if( data.type == 'img' ) {
+%>
+    <div class="more_pic">
+        <span class="load_img" alt="<%= this.winTitle %>" style="height:<%= data.height %>px; width:<%= data.width %>px;" asrc="<%= data.value %>"></span>
+    </div>
+    <%} else if( data.type == 'txt' ) {%>
+    <p class="pro_txt"><%=data.value%></p>
+    <%} else if ( data.type == 'gap' ) {%>
+    <p class="pro_txt"></p>
+    <% } else if ( data.type == 'table' && data.value ) {
+    /*
+        设计要求首尾单元格距离两边的距离为 100px
+        表格总宽度 948px
+        thead 中字体大小为 14px
+        共有单元格 n 个，每个单元格宽度为 d，首尾单元格距离两侧的距离为 p，首尾单元格中字数为 c，则
+        2 * p + n * d = 948
+        p + (d - 14 * c) / 2 = 100
+
+        得出
+        p = (948 - 14 * n * c - 200 * n) / (2 - 2 * n)
+        d = 200 - 2 * p + 14 * c
+    */
+        var head = data.value.head,
+            body = data.value.body,
+            n = head.length,
+            c = head[0] ? head[0].length : 0,
+            p = (948 - 14 * n * c - 200 * n) / (2 - 2 * n),
+            d = 200 - 2 * p + 14 * c;
+
+        p <= 0 && (p = 0);
+    %>
+    <style>
+        .pro_table td {
+            width: <%= d %>px;
+        }
+
+        .pro_table td:first-child {
+            padding-left: <%= p %>px;
+        }
+
+        .pro_table td:last-child {
+            padding-right: <%= p %>px;
+        }
+    </style>
+    <table class="pro_table">
+        <thead>
+        <tr>
+            <% head.forEach(function( v, i ) {%>
+            <td><%= v %></td>
+            <%})%>
+        </tr>
+        </thead>
+        <tbody>
+        <% body.forEach(function( ov, i ) {%>
+        <tr <% if(i % 2) {%>class="odd"<%}%>>
+        <% ov.forEach(function( iv, ii ) {%>
+        <td><%= iv %></td>
+        <%})%>
+        </tr>
+        <%})%>
+        </tbody>
+    </table>
+<%      }
+    }) /* speciSize.size.forEach */
+} /* speciSize.size */
+
+} /* if ( speciSize.specifications ) */
+
+if( details.is_taobao != 1) {
+    if(item_detail && item_detail.length) {
+        item_detail.forEach(function( data ) {
+            var title = data.title
+    %>
+
+<a name="<%= anchors_map[data.title] %>" id="<%= anchors_map[data.title] %>"></a>
+<h2 class="comm_tle"><span><%=title%></span></h2>
+
+<%
+//新版店铺介绍
+if ( title == '店铺介绍' && data.template_id ) {
+    var shopIntro = data.content
+%>
+    <div class="shop-detail">
+        <div class="bd">
+            <img src="<%= shopIntro.shop_pics %>" class="head-pic">
+            <div class="shop-detail-info">
+                <img class="avatar" src="<%= shopIntro.shop_head %>" width="100">
+                <p class="name"><%= shopIntro.sellername %></p>
+                <p class="label">店掌柜</p>
+                <p class="shop-slogan">
+                    <%= shopIntro.shop_slogan %>
+                </p>
+            </div>
+        </div>
+        <p class="ft">
+            <%= shopIntro.shop_desc %>
+        </p>
+    </div>
+<%
+    return;
+}
+
+data.content && data.content.map(function(cons){
+    if(cons.type == 'img') {
+%>
+    <div class="more_pic">
+        <span class="load_img" alt="<%= this.winTitle %>" style="height:<%= cons.height%>px; width:<%=cons.width%>px;" asrc="<%=cons.value%>"></span>
+    </div>
+    <%}else if(cons.type == 'txt'){%>
+    <p class="pro_txt"><%=cons.value%></p>
+    <%}else if ('gap' == cons.type){%>
+    <p class="pro_txt"></p>
+    <% } /* cons.value */%>
+    <%}); /* data.content */%>
+    <% }); /* item_detail.forEach */
+    }
+    %>
+<%} /* item_detail.length */%>

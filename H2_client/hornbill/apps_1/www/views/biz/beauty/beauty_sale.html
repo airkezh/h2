@@ -1,0 +1,84 @@
+<%#head.html%>
+
+<%
+	var getLink = _extFn.getLink;
+	var pageData = this.pageData,
+		BeginDate = 16,
+		now_date = new Date(),
+		date_dis = now_date.getDate() - BeginDate,
+		seckill_goods_l = pageData.seckill.length+1,
+		poster_tab = [
+			{'title' : '焕彩面膜', 'url' : '/biz/beauty/sale/' + getLink({'tab' : 'mask', 'hdtrc' : this.hdtrc}), 'id' : 'mask'},
+			{'title' : '无暇裸妆', 'url' : '/biz/beauty/sale/' + getLink({'tab' : 'nude', 'hdtrc' : this.hdtrc + '_type_nude'}), 'id' : 'nude'},
+			{'title' : '水润保湿', 'url' : '/biz/beauty/sale/' + getLink({'tab' : 'moisturize', 'hdtrc' : this.hdtrc + '_type_moisturize'}), 'id' : 'moisturize'}
+		];
+		date_dis = date_dis < 0 ? 0 : date_dis;
+%>
+<div class="main">
+	<% pageData.head.length > 0 && pageData.head.map(function(data, index){ %>
+		<div class="head_bg" style="background-image:url('<%= data.img_src %>');height:<%= data.h %>px;"></div>
+	<% }); %>
+	<div class="top_bannar">
+		<% pageData.bannar && pageData.bannar.length > 0 && pageData.bannar.map(function(data, index){ %>
+			<a href="<%= data.url %>" target="_blank"><img src="<%= data.img_src %>"></a>
+		<% }); %>
+	</div>
+	<% if(date_dis < 2){ %>
+	<div class="seckill">
+		<div class="tab_prev <%= date_dis == 0 ? 'none_f' : '' %>" data="<%= 3 - date_dis %>"></div>
+		<div class="tab_next <%= date_dis == 2 ? 'none_f' : '' %>" data="<%= date_dis + 1 %>"></div>
+		<div class="seckill_inner" style="margin-left:<%= -date_dis*926 %>px;">
+			<%
+				pageData.seckill.forEach(function(seckill_goods, index){
+					var now_date = new Date();
+					var seckill_index = -(16-now_date.getDate());
+					var goods_index = seckill_index < 0 ? 0 : seckill_index;
+					var lastDate = (new Date(''+seckill_goods.goods_time) - now_date)/1000;
+			%>
+				<div class="seckill_goods">
+					<a href="/prom/item/<%= seckill_goods.goods_id %>" target="_blank"><img src="<%= seckill_goods.goods_img %>">
+						<% if(this.seckill_num[seckill_goods.goods_id] === 0){ %>
+							<span class="soldout"></span>
+						<% } else { %>
+							<% if(lastDate > 0 && !isNaN(lastDate)){ %>
+							<p class="timeStamp_wrap red_f" time="<%= lastDate %>">距开抢仅剩: <span class="day">00</span>天<span class="hour">00</span>时<span class="sec">00</span>分<span class="min">00</span>秒</p>
+							<% } else { %>
+								<p class="timeStamp_wrap red_f">正在抢购中</p>
+							<% } %>
+						<% } %>
+					</a>
+				</div>
+			<% }); %>
+		</div>
+		<div class="clear_f"></div>
+	</div>
+	<% } %>
+	<div class="poster" id="poster">
+		<div class="fx_hidden"></div>
+		<div class="bs_tab_wrap">
+			<div class="bs_tab">
+				<% poster_tab.forEach(function(data, index){ %>
+					<a <%= this.name == data.id ? 'class="tab_active"' : '' %> dataNum="<%= index %>" href="<%== data.url +'#poster' %>"><%= data.title %></a>
+				<% }); %>
+			</div>
+		</div>
+		<div class="goods_units">
+			<% if(this.list){ %>
+				<%= requireFn("huodong/block/beautySale_twitter.html")({
+					'goods': this.list.data,
+					'is_start': now_date.getDate() - BeginDate < 0
+				});%>
+			<% } %>
+		</div>
+	</div>
+</div>
+
+<script>
+	fml.vars.banner_index = '<%= date_dis %>';
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/huodong/beauty_sale');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot.html%>

@@ -1,0 +1,143 @@
+<%#head.html%>
+<%
+var wlInfoRenderFn = requireFn('welfare/welfare_info.html');
+%>
+<div class="wx_2code">
+	<span></span>
+</div>
+<div class="welfare">
+	<div class="wf_l">
+		<%this.welfare_top && this.welfare_top.list && this.welfare_top.list.map(function(data){%>
+		<div class="free_box">
+			<div class="begin_bg">今日推荐</div>
+			<a class="block_f" href="/welfare/activity/<%=data.activity_id%>" target="_blank"><img width="680" height="346" src="<%=data.top_img%>"></a>
+			<div class="top_mask"></div><!--for ie6&7 子元素半透明bug-->
+			<div class="top_mask_f clearfix_f">
+				<div class="left_f mask_l">
+					<p class="time clearfix_f">
+						<span>共</span><strong class="red_f f20_f"><%= data.trynumber%></strong><span>份</span>
+						<%if(data.products_price){%>
+						<span class="ml10_f">价值：</span><strong class="red_f f20_f">￥<del><%= data.products_price%></del></strong>
+						<%}%>
+						<span class="time timeStamp ml10_f" end-date="<%=data.end_time%>"><span>剩余时间：</span><strong class="f20_f" id="day">0</strong><span>天</span><strong class="f20_f" id="hour">0</strong><span>时</span><strong class="f20_f" id="minute">0</strong><span>分</span><strong class="f20_f" id="seconds">0</strong><span>秒</span></span>
+					</p>
+					<p>
+						<span class="left_f m_apply"><b class="f14_f red_f"><%=data.num%></b>人申请</span>
+						<%data.user && data.user.map(function(dt){%>
+						<a href="/person/u/<%=dt.user_id%>" target="_blank"><img height=32 width=32 src="<%=dt.avatar_c%>" /></a>
+						<%});%>
+					</p>
+				</div>
+				<div class="right_f">
+					<a target="_blank" href="/welfare/activity/<%=data.activity_id%>" class="wf_apply"></a>
+				</div>
+			</div>
+		</div>
+		<%});%>
+		
+		<%this.welfare_list && this.welfare_list.list.map(function(data){%>
+			<%=wlInfoRenderFn(data)%>
+		<%});%>
+		<div class="clear_f"></div>
+		<div class="paging_panel c_f">
+			<%#paging.html%>
+		</div>
+	</div>
+	<div class="wf_r">
+	<% if (this.welfare_tailer.length > 0) {%>
+		<div class="welfare_adPoster">
+			<div class="ico"></div>
+			<div class="welfare_pre">
+			<div class="wlf_list _img" style="position:absolute;width:<%= 226*(this.welfare_tailer.length+1) %>px;">
+				<% this.welfare_tailer.forEach(function(data){%>
+					<div class="notice">
+						<div class="ad_pic"><img src="<%= data.products_preview_img%>" /></div>
+						<h3><%= data.title%></h3>
+						<p>共<strong><%= data.trynumber%></strong>份 <%if(data.products_price){%> 价值：<strong>￥<%= data.products_price%></strong><%}%></p>
+						<%if(data.begin_time && data.begin_time > 0){%>
+						<p>上线时间：<strong><%= base.date('m月d日',data.begin_time) %></strong></p>
+						<%}%>
+					</div>
+				<%});%>
+			</div>
+			<% var seclen = this.welfare_tailer ? this.welfare_tailer.length : 0; %>
+			<div style="top:190px;" class="_num adType1 <% if(seclen == 1) { %>none_f<% } %>">
+			<% for (var i=1; i<=seclen; i++) { %>
+				<% var current = i==1 ? 'current' : ''; %>
+					<a class="<%= current %>"><span class="none_f"><%= i %></span></a>
+				<% } %>
+			</div>
+			</div>
+		</div>
+	<%}%>
+		<div class="pending">
+			<h3 class="f14_f">正在申请试用的MM</h3>
+			<ul class="tryon">
+				<% this.welfare_sidebar && this.welfare_sidebar.apply.map(function(data , index){%>
+				<li class="<%if(++index == this.welfare_sidebar.apply.length){%> last<%}%>">
+					<a class="avatar32_f" href="/person/u/<%= data.user_id%>" target="_blank"><img src="<%= data.avatar%>"></a>
+					<p><span><%= data.ctime%></span><a class="red_f try_name" target="_blank" href="/person/u/<%= data.user_id%>"><%= data.nickname%></a></p>
+					<p class="try_tle"><a target="_blank" href="/welfare/activity/<%=data.activity_id%>"><%= data.activityName%></a></p>
+				</li>
+				<%});%>
+			</ul>
+		</div>
+		<%if(this.wf_girl){%>
+		<div class="pending">
+		    <h3 class="f16_f">福利情报</h3>
+			<p class="mt14_f">关注福利花小美，第一时间获得最新的福利情报！</p>
+			<div class="mt8_f clearfix_f">
+				<a class="left_f" target="_blank" href="/person/u/<%=this.wf_girl.user_id%>">
+					<img width="86" height="86" src="<%=this.wf_girl.avatar_a%>">
+				</a>
+				<div class="wf_girl_r">
+					<a class="f14_f fb_f block_f" target="_blank" href="/person/u/<%=this.wf_girl.user_id%>"><%=this.wf_girl.nickname%>
+						<span class="identity_big_style">
+						<%= jsRender('identity.html')(this.wf_girl) ;%>
+						</span>
+					</a>
+					<% if(this.wf_girl.followed == 0){%>
+					<span class="red_follow addUserFollow" fuid="<%= this.wf_girl.user_id%>" following=<%= this.wf_girl.following%> followed="<%= this.wf_girl.followed%>">+ 加关注</span>
+					<%} else if(this.wf_girl.followed == 1){%>
+					<span class="pink_follow removeUserFollow" fuid="<%= this.wf_girl.user_id%>"  >已关注</span>
+					<%} else if(this.wf_girl.followed == 2){%>
+					<span class="pink_follow removeUserFollow" fuid="<%= this.wf_girl.user_id%>" following=<%= this.wf_girl.following%> followed="<%= this.wf_girl.followed%>">互相关注</span>
+					<%}%>
+				</div>
+			</div>
+		</div>
+		<%}%>
+<!-- 		<div class="pending">
+		    <h3 class="f16_f">试穿试用合作</h3>
+			<ul class="teamwork clearfix_f">
+				<li>想为爱美丽们提供优质试用试穿？</li>
+				<li>赶快联系我们吧！</li>
+				<li><span>电话：</span>010-57432352</li>
+				<li><span>工作时间：</span>周一至周五10:30-19:30</li>
+			</ul>
+		</div> -->
+		<div class="pending">
+             <h3 class="f16_f">免责声明</h3>
+		     <ul class="relief clearfix_f">		
+				 <li>1.福利社仅是为爱美丽提供试用的渠道，不对试用产品效果及质量提供保障。若试用过程中有任何不适，请即时停用并联系@<a id="relief_mail" name="福利花小美"  class="relief_mail">福利花小美</a> 。</li>
+                 <li>2.申请时请填写真实有效的收件信息，如信息错误快递无法送达，会被视为放弃该福利哦。</li>
+             </ul>
+         </div>
+         <%if(this.adm && this.adm.ad.length){%>
+         	<%if(this.adm.ad[0].ad_type == 3){%>
+         		<%= this.adm.ad[0].ad_filedata%>
+         	<%}else{%>
+         		<%= requireFn('commerce/adm_sider.html')(this.adm);%>
+         	<%}%>
+         <%}%>
+	</div>
+</div>
+<div class="clear_f"></div>
+<div style="margin:auto;width:960px;">
+	<div class="ads_banner ads_bottom none_f"></div>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/welfare');
+_use:", this._JSstack , this._JSmods); %>
+<%#foot.html%>
+

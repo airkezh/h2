@@ -1,0 +1,278 @@
+@import "../block.less";
+@import "item_foot.less";
+@icon: 'http://d01.res.meilishuo.net/pic/_o/6d/48/d0a0d4e028029a04523518214972_526_690.cf.png';
+
+.icon(@x:0, @y:0){
+	background: url(@icon) no-repeat;background-size: 2.63rem;background-position: @x @y;
+}
+
+body{ .w(6.4rem);.f(.24rem);.fc(#999);.bgc(#f4f4f4); }
+
+.header {
+	.icon-back{
+		.block;.w(.6rem);.h(.6rem);.pr(0);.ml(.2rem);.mt(.2rem); z-index: 10;.none;
+		background: url("http://d02.res.meilishuo.net/pic/_o/88/3e/40742d2789e79305063a93ed6e66_120_120.ch.png") no-repeat;background-size: .6rem;
+	} 
+	.icon-home{
+		.w(.6rem);.h(.6rem);.mt(.2rem);.mr(.2rem);
+		background: url("http://d06.res.meilishuo.net/img/_o/93/de/27a546507f859a5a9b5d2ddaf72b_120_120.cf.png") no-repeat;background-size: .6rem;
+	}
+}
+
+.picture_wrap{
+	.hidden;.pr;.bgc(#F4F4F4);
+
+	.slider_wrap{ .h(8rem); }
+	.image_item{ .left;.pr;.w(6.4rem);.h(8rem);background: no-repeat center;background-size: cover;opacity: 0; }
+	.slide_num,
+	.time_box{ .pa;left: .3rem;bottom: .2rem;.i_block;.h(.4rem);padding: 0 .2rem;.border-r(.4rem);.f(.22rem);.fc(#fff);.l(.4rem);.bgc(rgba(0,0,0,.36)); }
+	.swipe{ .pr;.hidden; }
+	.swipe_wrap{ .pr;.hidden;-webkit-backface-visibility:hidden;backface-visibility:hidden;z-index:1; }
+	.slide_num{ left: auto;right: .3rem; }
+}
+
+.sku_meta{
+	.c;.bgc(#fff);padding: .12rem .3rem .2rem;.pr;
+
+	.price{ .f(.34rem);.fc(#FF7A9A);.l(.4rem); }
+	.label{ .pa;top: .25rem;right: .3rem;.f(.22rem);.fc(#999); }
+	.title{ .mt(.13rem);.f(.28rem);.fc(#666);font-weight: normal; }
+	.desc{ .mt(.2rem);.l(.28rem);text-align: justify;font-weight: normal; }
+	.goods_cmt{
+		.fc(#666);.mt(.2rem);
+
+		span{ .fc(#FF7A9A); }
+		.space{ .pr(.5rem); }
+	}
+}
+
+.service{
+	.block;.h(.22rem);padding: .3rem 0;.bgc(#fafafa);.c;
+
+	.promise{
+		.hidden;.f(.22rem);.fc(#999);.i_block;
+
+		img{ .w(.22rem);.h(.22rem);.left; }
+		li{ .left;.nowrap;.l(.22rem);.c;.mr(.8rem); }
+		li:last-child{ .mr(0); }
+		.words{ .pl(.05rem); }
+	}
+}
+
+.welfare{
+	.hidden;.bgc(#fff);
+
+	.item{ padding: .2rem 0;.w(5.8rem);.auto;.f(.26rem);.fc(#666);.l(.34rem);.h(.34rem);.hidden; }
+	.activity{
+		.block;border-bottom: 1px solid #F5F5F5;.pr;
+
+		span{ .ellipsis;.w(5.5rem);.left; }
+	}
+	.activity:after{ content: '';.pa;top: 0;right: 0;.h(100%);.w(.16rem);.icon(95%, 24.5%); }
+	.coupon_bannar{
+		.hidden;
+
+		p{ .left; }
+		span{ .left;.pr;padding: 0 .06rem;.ml(.25rem);.f(.2rem);.fc(#fff);.l(.34rem); }
+		span:nth-child(2){ .bgc(#FF7A9A); }
+		span:nth-child(3){ .bgc(#FFB259); }
+		span:nth-child(4){ .bgc(#67CDFF); }
+		span:before{ content: '';.pa;top: 0;left: -1px;.w(.1rem);.h(100%);.icon(9.5%, 77.2%); }
+		span:after{ content: '';.pa;top: 0;right: -1px;.w(.1rem);.h(100%);.icon(90.3%, 77.2%); }
+	}
+}
+
+.sku_main{
+	.mt(.2rem);.bgc(#fff);
+
+	.title,
+	.no_title{
+		.pr;padding: .2rem .3rem;.f(.26rem);.fc(#666);.l(.7rem);
+
+		span{ .right;.mr(.3rem);.f(.22rem);.fc(#999); }
+	}
+	.title:after{ content: '';.pa;top: 0;right: .3rem;.h(100%);.w(.16rem);.icon(95%, 19%); }
+	.small_img_wrap{ .right;.mr(.3rem); }
+	.small_img{ .w(.7rem);.h(.7rem);background: no-repeat center;background-size: cover;.left;.ml(.1rem); }
+
+	.sku_detail,
+	.sku_size{
+		border-bottom: 1px solid #E5E5E5;
+	}
+
+	.sku_comment .title{ .pb(0);.mb(-.22rem); }
+	.item{ padding: .3rem;.pl(0);.ml(.3rem);.w(5.8rem); }
+	.item:first-child{ border-bottom: 1px solid #E5E5E5; }
+	.img_wrap{
+		.left;.w(.6rem);.h(.6rem);.border-r(50%);.hidden;
+
+		img{ .w(100%); }
+	}
+	.info,
+	.content,
+	.sku{
+		.ml(.8rem);.f(.22rem);
+	}
+	.info{
+		.fc(#666);
+
+		.words{ .fc(#999);.pl(.1rem); }
+		.time{ .right;.f(.2rem);.fc(#ccc);.l(.22rem); }
+	}
+	.content{ .mt(.17rem);.w(5rem);.fc(#666);text-align: justify; }
+	.sku{ .fc(#999);.mt(.1rem); }
+}
+
+.sku_shop{
+	.block;.mt(.2rem);.bgc(#fff);padding: .3rem;
+
+	.shop_info{ .hidden; }
+	.guang{
+		.right;.h(.52rem);padding: 0 .16rem;.border-r(.04rem);.bgc(#FBA947);.white;.c;.l(.52rem);
+	}
+	dt{
+		.left;.mr(.18rem);
+
+		img{ .w(.6rem);.h(.6rem);.border-r(50%); }
+	}
+	dd{
+		.left;
+
+		.title { .fc(#666);.pb(.07rem); }
+		.info { .f(.22rem);.fc(#999); }
+	}
+
+	.shop_eva {
+		.f(.2rem);.fc(#666);.pt(.2rem);.hidden;.c;
+
+		li{
+			.i_block;.mr(.2rem);.l(.24rem);
+
+			&:last-child{ .mr(0); }
+			span { .i_block;.pl(2px);.pr(.3rem); }
+			.up{ .icon(-12%, 52%);.fc(#FB3F3F); }
+			.down{ .icon(95%, 52%);.fc(#ADBD31); }
+			.equal{ .icon(41%, 52%);.fc(#ED7D2B); }
+		}
+	}
+}
+
+.shop_wrap{ 
+	padding: 0;.bgc(#fff);.c;border-top: 1px solid #E5E5E5;
+
+	h3 { .f(.28rem);.fc(#666);padding: .3rem;font-weight: normal; }
+}
+#goods_wall { .pr; }
+.poster-link {
+	.pr;
+	.block;
+	background: #fff url("@{pic_url}/images/huodong/tuan/prebg.png") center center no-repeat;
+	background-size: 100% auto;
+	img { .w(100%);.h(100%);.pa; top: 0;left: 0;}
+	.none { .none; }
+}
+.poster {
+	.pa;.pb(.25rem);
+
+	figure{
+		margin-left: .25/100*1rem;
+		margin-right: .25/100*1rem;
+		height: 100%;
+		-webkit-border-radius: 7px;
+		border-radius: 7px;
+		box-sizing: border-box;
+	}
+	figcaption { 
+		padding: .4/100*1rem;.bgwhite; 
+		div { margin: .4/100*1rem 0;.f(1.3/100*1rem); }
+	}
+	.bs_load_img{ .block;.w(100%);.h(3.95rem);background: no-repeat center;background-size: cover;opacity: 0; }
+	.poster-info-title{ .mt(.1rem);.mb(.14rem);.f(.22rem);.l(.24rem);.fc(#666);.ellipsis; }
+	.poster-info-price { .f(.26rem);.fc(#FF7A9A); }
+	.poster-info-like{ .f(.26rem);.fc(#999);.ml(.18rem);.pl(.26rem);.icon(5%, 101.5%); }
+}
+[data-col="0"] { figure { .pl(.6/100*1rem);.pr(.3/100*1rem); } }
+[data-col="1"] { figure { .pl(.3/100*1rem);.pr(.6/100*1rem); } }
+
+/*加载提示*/
+.status_tips {
+	.c;.l(4/100*1rem);.f(1.4/100*1rem); color:#888;
+	&[data-status="loading"] {
+		&:before {
+			content: '加载中 ...'
+		}
+	}
+	&[data-status="stop"] {
+		&:before {
+			content: '木有了'
+		}
+	}
+}
+
+
+/*
+	模拟客户端单品页优惠券弹窗
+*/
+.wap_fix_coupon(){
+	.fix_coupon{ .w(100%);.h(100%);.pf;top: 0;left: 0;z-index: 500;visibility: hidden; }
+	.black_mask{ .bgc(rgba(0,0,0,.58));.w(100%);.h(100%);transition: opacity .3s ease; }
+	.fix_coupon_wrap{
+		.pa;bottom: 0;left: 0;transition: -webkit-transform .5s ease;-webkit-transform:translateY(100%);transform:translateY(100%);.w(100%);
+
+		.title{ .bgc(#fff);.pr;.f(.28rem);.c;.l(.8rem);.fc(#666);border-bottom: 1px solid #E5E5E5; }
+		.close{ .pa;right: 0;.w(72*@w);.h(100%);background: url('http://d04.res.meilishuo.net/img/_o/14/82/4104a16dfd61fd48bbfec8d3bb37_64_64.cg.png') no-repeat center;background-size: .32rem; }
+		.coupons{ .pl(20*@w);.bgc(rgba(255,255,255,.95));.fc(#80737b);max-height: 3.63rem;overflow: auto; }
+		.coupon{
+			.hidden;border-bottom: 1px solid #E5E5E5;padding: .2rem 0;
+
+			.desc{ .i_block;.w(480/620*100%);.ellipsis;.l(.46rem); }
+			.get_btn{ .w(.84rem);.c;.fc(@red);.right;.mr(.2rem);.border-1(#fd92b6);padding: .1rem 0;.border-r(.04rem); }
+			.has_get,
+			.has_over{ .fc(#ccc2c9);border: none; }
+		}
+		.ps{
+			padding: .24rem 0 .22rem;
+
+			span{ .bgc(#f0edef);.i_block;padding: .1rem;.border-r(.04rem); }
+		}
+		.get_all{
+			padding: .2rem 0;.bgc(#fff);border-top: 1px solid #E5E5E5;
+
+			.get_all_btn{ .w(2.1rem);.h(.6rem);.auto;.border-r(.06rem);.bgc(#FF7B9A);.fc(#fff);.c;.l(.6rem); }
+		}
+	}
+	//进场和退出动画
+	.slide_bottom_in{
+		.black_mask{opacity: 1;}
+		.fix_coupon_wrap{
+			-webkit-transform: translateY(0);
+			transform: translateY(0);
+		}
+	}
+	.slide_bottom_out{
+		.black_mask{opacity: 0;}
+		.fix_coupon_wrap{
+			-webkit-transform: translateY(100%);
+			transform: translateY(100%);
+		}
+	}
+}
+.wap_fix_coupon;
+.ui_notice_rem;
+.windowDrive;
+.windowDrive .dialog{ .w(4rem); }
+.windowDrive .dialog-con{
+	.fc(#666);padding: .2rem;
+
+	.title{ .pb(.15rem); }
+}
+.windowDrive #alert .dialog-btn span{ .l(.6rem);.f(.26rem); }
+
+
+/* buy_wrap style */
+.item_foot;
+
+.goTopRem;
+.goTop, #goTop{
+	bottom: 1.2rem;
+}

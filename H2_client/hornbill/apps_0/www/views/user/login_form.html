@@ -1,0 +1,49 @@
+<%#head_simple.html%>
+<div class="login_normal">
+	<h3>
+		<a href="/user/register?frm=tk_reg" target="_BLANK">注册</a>
+		登录美丽说
+	</h3>
+	<fieldset>
+		<form method="post" onsubmit="return false" action="" id="loginForm">
+			<div class="l_list">
+				<p class="l_box">
+					<input type="text" class="l_txt" id="mlsUser" name="mlsUser" placeholder="手机号/邮箱/用户名" />
+					<span></span>
+					<span class="user_icon"></span>
+				</p>
+			</div>
+			<div class="l_list">
+				<p class="l_box">
+					<input type="password" class="l_txt" id="password" name="password" placeholder="密码" />
+					<span></span>
+					<span class="pwd_icon"></span>
+				</p>
+			</div>
+			<div class="l_list authcode none_f">
+				<div class="l_box">
+					<input class="l_txt" id="checkcode" name="checkcode" type="text" placeholder="请输入验证码" maxlength="4" />
+					<span></span>
+					<span class="code_icon"></span>
+					<div class="checkImage" onselectstart="return false;">
+						<img width="90" height="36" src="<%= this.PICTURE_URL %>images/register/blank.jpg"><span class="refresh"></span>
+					</div>
+				</div>
+			</div>
+			<div class="loginErrorMessage none_f"></div>
+			<div class="login_btn_wrap">
+				<input type="submit" class="login_btn" value="立即登录"/>
+			</div>
+			<div class="remember">
+				<input type="checkbox" name="savestate" id="savestate" checked="checked" />
+				<label for="savestate">记住我</label>
+			</div>
+			<a href="/user/findPwd?frm=pop_fpwd" target="_blank" class="forget_pwd">忘记密码？</a>
+		</form>
+	</fieldset>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use('page/login_form');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html%>
+

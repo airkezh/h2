@@ -1,0 +1,25 @@
+<% var right_type = this.right_type; %>
+
+<header class="page_head">
+	<div class="back_icon" id="back_btn"></div>
+
+	<% if('logout' == right_type){ %>
+		<a class="right_btn" href="/user/logout" xr="<%= this.xr.r %>">退出</a>
+	<% } else if('cart' == right_type) { %>
+		<div class="right_btn" id="removeSelected">删除</div>
+	<% } else if('item_new' == right_type) { %>
+		<a class="right_btn" href="/cart" xr="<%= this.xr.r %>">购物车<span class="cart_nums"></span></a>
+	<% } else if('add_address' == right_type ) { %> 
+		<a class="right_btn" href="/address/edit/new" xr="<%= this.xr.r %>">新增</a>
+	<% } else if('save_address' == right_type ) { %> 
+		<div class="right_btn addressBtn" id="save_address">保存</div>
+	<% } else { %>
+		<a class="right_btn" href="/welcome" xr="<%= this.xr.r %>">首页</a>
+	<% } %>
+
+	<a class="title" xr="<%= this.xr.r %>" href="<%= this.title_url ? this.title_url : 'javascript:;' %>"><%= this.pageTitle %></a>
+</header>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/app/historyBack');
+_use:", this._JSstack , this._JSmods ); %>

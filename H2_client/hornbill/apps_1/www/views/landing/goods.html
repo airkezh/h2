@@ -1,0 +1,82 @@
+<%# head.html%>
+<%
+var query = this._Request_query;
+var getLink = _extFn.getLink;
+%>
+<div class="spinner topSpinner"></div>
+<div class="content_fluid v_hidden">
+	<div class="cata_title">
+		<h2>社区热荐</h2>
+		<%if(this.isShow){%>
+		<div class="hotnew">
+			<a <%if(query.section == 'hot' || !query.section){%> class="red_f" <%}%> href="<%=getLink({'section' : 'hot' , 'page' : '0'} , query)%>">最热</a>
+			<span>|</span>
+			<a <%if(query.section == 'new'){%> class="red_f" <%}%> href="<%=getLink({'section' : 'new' , 'page' : '0'} , query)%>">最新</a>
+		</div>
+		<%}%>
+	</div>
+	<div class="clear_f"></div>
+	<div class="goods_wall">
+		<div class="corner_notic">
+			<div class="rec_nav red_tb">
+				<div class="catacon">
+					<h2 class="mt10_f">热门搜索</h2>
+					<div class="category" style="border: none;">
+						<a class="<%if(this.currentWord == '24小时最热'){%> active <%}%>" href="/landing/goods/hot">全部</a>
+						<a class="<%if(this.currentWord == '衣服'){%> active <%}%>" href="/landing/goods/<%= encodeURIComponent('衣服')%>">衣服</a>
+						<% this.attr_hot_keywords && this.attr_hot_keywords.map(function(data){%>
+							<a class="<%if(this.currentWord == data){%> active <%}%>" href="/landing/goods/<%= encodeURIComponent(data)%>" ><%= data%></a>
+						<%});%>
+						<div class="clear_f"></div>
+					</div>
+				</div>
+			</div>
+			<h2 class="mt14_f f14_f">热门单品</h2>
+			<%this.attrs && this.attrs.map(function(attrs){
+				attrs.link = '/attr/show/'+attrs.word_id;
+			%>
+			<div class="groupBox">
+				<div class="groupCon">
+					<div class="gc_title">
+						<h4><a href="<%= attrs.link%>" target="_blank"><%= attrs.name%></a></h4>
+					</div>
+					<a href="<%= attrs.link%>" target="_blank" class="imgBox">
+						<% attrs.pics && attrs.pics.map(function(pic , index){%>
+							<img class="minpic" src="<%= pic%>" style="<%if((index + 1) % 3 == 0){%>margin-right:0px;<%}%>">
+						<%});%>
+					</a>
+					<div class="lookBox">
+						<a class="btn" href="<%= attrs.link%>" target="_blank">去看看</a>
+						<span class="tex"><%= attrs.number%>个分享</span>
+					</div>
+				</div>
+			</div>
+			<%});%>
+		<% if(this.attr_baike && this.attr_baike.msg){%>
+			<div class="attr_box">
+				<h2 class="f14_f"><span class="red_f"><%= this.attr_title_keywords.word_name%></span>的小百科</h2>
+				<p class="baike">
+					<%= this.attr_baike.msg%>
+				</p>
+			</div>
+		<%};%>
+	</div>
+	</div>
+	<div class="goods_banner"><a href="/welcome" target="_blank"></a>
+	</div>
+	<div class="spinner botSpinner none_f"></div>
+	<div class="clear_f"></div>
+	<div class="paging_panel c_f none_f">
+	<%#paging.html%>
+	</div>
+</div>
+<%# poster.html%>
+<script>
+fml.vars._guang_word_name = "<%= this.attrName%>";
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+		fml.use('page/landing');
+		fml.use('page/poster');
+_use:", this._JSstack , this._JSmods ); %>
+<%if(this.attrName == 'new'){%><div class="h_update none_f"><a><span id="msgSize">0</span>个新分享</a></div><%}%>
+<%# foot.html%>

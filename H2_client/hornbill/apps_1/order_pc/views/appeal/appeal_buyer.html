@@ -1,0 +1,86 @@
+<%# head.html%>
+<%# appeal/appeal_head_icon.html%>
+
+<div class="order_area">
+	<div class="container">
+		<div class="prove_info">
+			<div class="prove_item">
+				<div class="labels"><span>*</span>申诉说明：</div>
+				<div class="item_content">
+					<textarea name="description" class="desc_area" ></textarea>
+				</div>
+				<div class="error" id="description"></div>
+			</div>
+			<div class="prove_item">
+				<div class="labels"><span>*</span>上传凭证：</div>
+				<div class="item_content">
+					<div class="prove_list">
+						<div class="uploadBtn">
+							<div class="img_wrapper upload1"></div>
+							<span class="upload_btn" data-btn = "upload1"></span>
+						</div>
+						<div class="uploadBtn">
+							<div class="img_wrapper upload2"></div>
+							<span class="upload_btn"  data-btn = "upload2"></span>
+						</div>
+						<div class="uploadBtn">
+							<div class="img_wrapper upload3"></div>
+							<span class="upload_btn" data-btn = "upload3"></span>
+						</div>
+						<div class="uploadBtn">
+							<div class="img_wrapper upload4"></div>
+							<span class="upload_btn" data-btn = "upload4"></span>
+						</div>
+						<div class="uploadBtn">
+							<div class="img_wrapper upload5"></div>
+							<span class="upload_btn" data-btn = "upload5"></span>
+						</div>
+					</div>
+					<ul class="tipsul">
+						<li>如：商品破损图，客服聊天记录截屏，快递单照片等</li>
+						<li>最多5张，每张不超过5M，支持GIF,JPEG,JPG,PNG,BMP格式</li>
+					</ul>
+				</div>
+				<div class="error" id="proveError"></div>
+			</div>
+			<div class="prove_item">
+				<div class="labels"><span>*</span>联系人：</div>
+				<div class="item_content">
+					<input type="text" class="info_input" name="concact">
+					<span class="error no-margin"></span>
+				</div>
+			</div>
+			<div class="prove_item">
+				<div class="labels"><span>*</span>手机号：</div>
+				<div class="item_content">
+					<input type="text" class="info_input" name="phone">
+					<span class="error no-margin"></span>
+				</div>
+			</div>
+			<div class="buttons_wrap ml75">
+				<a href="javascript:;" class="button button_red" id="submit_btn">提交举证</a>
+			</div>
+		</div>
+
+		<%# refund/order_detail.html%>
+		<input type="hidden" id="refund_id" value="<%=this.refund_id%>"/>
+	</div>
+</div>
+
+<script id="imgTmp" type="text/html">
+	<div class="imgUpload">
+		<span class="close"></span>
+		<a href="<?=o_pic_url ?>" target="_blank">
+			<img src="<?=H_pic_url ?>" alt="" />
+		</a>
+	</div>
+</script>
+
+<script>
+	Meilishuo.config.refundId = <%=this.refundId || 0 %>;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+		fml.use('order_pc/appeal/appeal_buyer');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot.html%>

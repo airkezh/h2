@@ -1,0 +1,42 @@
+<header class="header" id="header" status="normal">
+
+	<nav class="nav_ban" id="navBan">
+		<span class="icon-search fleft" id="searchBtn"></span>
+		<h1><a class="logo" href="/welcome"></a></h1>
+		<span class="icon-person" id="personBtn"></span>
+	</nav>
+	<div class="search" id="search">
+		<form action="/search" method="get" >
+			<p class="input">
+				<span class="icon-search-input"></span>
+				<input name="keyword" type="search" autocomplete="off" placeholder="搜索宝贝" />
+			</p>
+			<!-- <span class="btn_cancel" id="cancelBtn">取消</span> -->
+			<input type="submit" class="btn_submit" value="搜索" />
+		</form>
+	</div>
+	<%if(this.userInfo.user_id){%>
+	<div class="personArea" id="personArea" isShow="0">
+		<div class="userInfo">
+			<img src="<%= this.userInfo.avatar_c %>"/><span><%= this.userInfo.nickname%></span>
+		</div>
+		<ul>
+			<li><a href="/order/">我的订单</a></li>
+			<li><a href="/address/">我的地址</a></li>
+			<li><a id="headLogoutBtn" href="/user/logout">退出登录</a></li>
+		</ul>
+	</div>
+	<%}%>
+
+	<div class="nav_top" id="navTop">
+		<nav class="nav_box">
+		<ul class="goods">
+			<li class="active"><a href="/welcome">首页</a></li>
+			<li><a href="/guang/selected">流行</a></li>
+			<li><a href="/guang/hot">热销</a></li>
+			<li><a href="/guang/new">新款</a></li>
+		</ul>
+		</nav>
+	</div>
+
+</header>

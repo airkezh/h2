@@ -1,0 +1,34 @@
+
+<strong class="title">修改密码</strong>
+<fieldset class="setPassword">
+	<form id="setPasswordForm" method="post" onsubmit="return false" action="">
+		<legend>美丽说设置密码表单</legend>
+		<%if (this.isShowTip){%>
+		<div class="safe_tips">您的账号存在安全风险，为了防止您的账号被他人利用，请立即修改密码！</div>
+		<%}%>
+		<%if(this.checkemail && this.checkemail.isConnectAccount && !this.checkemail.is163){%>
+		<!-- <div>为方便以后找回密码，请设置你在美丽说的邮箱与密码</div> -->
+			<p class="form-list"><label for="email">邮箱地址</label><input autocomplete="off"  class="l_ipt" id="email" name="email" type="text" value="" /><strong></strong></p>
+		<%}else{%>
+
+		<p class="form-list"><label for="old_password">当前密码</label><input autocomplete="off"  class="l_ipt" id="old_password" name="old_password" type="password" value="" /><a href=" https://account.meilishuo.com/user/findPwd" tabindex="6"><strong>忘记密码？</strong></a></p>
+		<%}%>
+		<p class="form-list"><label for="new_password">新密码</label><input autocomplete="off"  class="l_ipt" id="new_password" name="new_password" type="password" value="" /><strong></strong></p>
+		<div class="pw_safe none_f">
+				<span class="txt">安全程度</span>
+						<div class="pw_strength pw_weak pw_medium pw_strong">
+							<div class="pw_bar"></div>
+								<div class="pw_letter">
+									<span class="strength_l">弱</span>
+									<span class="strength_m">中</span>
+									<span class="strength_h">强</span>
+								</div>
+						</div>
+		</div>
+
+		<p class="form-list"><label for="confirm_password">确认密码</label><input autocomplete="off"  class="l_ipt" id="confirm_password" name="confirm_password" type="password" value="" /><strong class="setPasswordErrorMessageLine"></strong>
+		</p>
+		
+		<input type="submit" value="确 认" class="ext_submit" />
+	</form>
+</fieldset>

@@ -1,0 +1,60 @@
+<%# sq/header.html%>
+
+<div class="wrap">
+	<div class="head_img">
+		<img src="<%=this.PICTURE_URL%>/images/wap/web/sq/egg_top3.png" alt="">
+		<!-- <div class="share_hint">
+			<span class="left">已到您的账户</span>
+			<span class="right">分享给4位好友，积攒好人缘</span>
+		</div> -->
+	</div>
+	<span class="red_btn">
+		<!-- 剩余的分享数 -->
+		<% if(this.no_persons){%> 
+			<img class="share_btn" src="<%=this.PICTURE_URL%>/images/wap/web/sq/egg_share.png" alt=""></span>
+		<%}else{%>
+			<img src="<%=this.PICTURE_URL%>/images/wap/web/sq/egg_share3.png" alt="">
+		<%}%>
+	</span>
+	<div class="send">
+		<span class="f26">提示语: 成功送出<%=this.persons%>张券</span>
+		<% this.persons && this.share.coupons.forEach(function(data) { %>
+		<div class="send_user">
+			<div class="user_img">
+				<img src="<%=data.user.figureurl_qq_2%>" alt="">
+			</div>
+			<span class="f26"><%=data.user.nickname%></span>
+		</div>
+		<%});%>
+		<% for(var i = 0; i < this.no_persons; i+=1){%>
+		<div class="send_user">
+			<div class="no_person">
+				<img src="<%=this.PICTURE_URL%>/images/wap/web/sq/egg_no_person.png" alt="">
+			</div>
+		</div>
+		<%}%>
+
+		<div class="act_intro">
+			<span>活动说明:</span>
+			<span>每个用户只能领取一次大礼包；</span>
+			<span>每个订单只能使用一张优惠劵；</span>
+			<span>有效期：12月11日20:00 - 12月14日24:00</span>
+		</div>
+	</div>
+	
+	<div id="mask">
+		<img src="<%=this.PICTURE_URL%>/images/wap/web/sq/egg_share_mask.png" alt="">
+	</div>
+</div>
+<!-- 是否登录 -1：未登录 -->
+<script>
+	fml.vars.ret = "<%=this.ret %>";
+	fml.vars.shareInfo = {};
+	fml.vars.shareInfo.price = "一起领双十二好友券！";
+	fml.vars.shareInfo.url = window.location.href;
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/sq/egg_act');
+_use:", this._JSstack , this._JSmods ); %>
+<%# sq/footer.html%>

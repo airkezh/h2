@@ -1,0 +1,44 @@
+<%# sq/header.html%>
+<%
+	var address_list = this.addr_list.addrInfo || []
+	var addr_id = this.parms.addr_id || 0
+%>
+<div class="warp">
+	<div class="textarea" id="textAreaList">
+		
+	</div>
+	<div class="add">
+		<div class="save_button"><p class="save_text">新增收货地址</p></div>
+	</div>
+</div>
+<script>
+	<%= 'fml.vars.parms =' + JSON.stringify(this.parms) + ';' %>
+</script>
+<script type="text/html" id="addrInfoTmp">
+<?var addr_id = fml.vars.parms.addr_id || 0;?>
+<?
+addrInfo && addrInfo.map(function(list){
+?>
+	<div class="address_list">
+		<span class="normal_text <?= list.is_default != 1 ? 'normal_now' : 'normal_add'?>" id="<?= list.addr_id?>"><?= list.is_default == 1 ? '默认地址' : '设为默认'?>
+		</span>
+		<div class="user_info <?= ((addr_id != 0 && addr_id == list.addr_id) || (addr_id == 0 && list.is_default == 1)) ? 'address_list_normal' : ''?>">
+			<p class="info_1">
+				<span class="user_name"><?= list.nickname?></span>
+				<span class="user_tel"><?= list.phone?></span>
+			</p>
+			<p class="street">
+				<span class="user_add"><?= list.address?></span>
+			</p>
+		</div>
+		<img class="edit" da="<?= list.addr_id?>" str="<?= list.street?>" pid="<?= list.pid?>" cid="<?= list.cid?>" did="<?= list.did?>" src="http://i.meilishuo.net/css//images/wap/web/sq/icon-edit.png">
+		<img class="del" da="<?= list.addr_id?>" src="http://i.meilishuo.net/css//images/wap/web/sq/icon-del.png">
+	</div>
+<?
+});
+?>
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/sq/address_normal');
+_use:", this._JSstack , this._JSmods ); %>
+<%# sq/footer.html%>

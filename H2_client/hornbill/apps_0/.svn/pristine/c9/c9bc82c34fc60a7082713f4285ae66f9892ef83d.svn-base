@@ -1,0 +1,78 @@
+/*common*/
+require('m/zepto/fx');
+require('m/component/scrollStop')
+
+var win_width
+	, win_height
+
+var set = function(){
+	var $win = $(window)
+	win_width = $win.width()
+	win_height = $win.height()
+}
+
+var add = function(xpath, x, step_y, fn){
+	for(var y = step_y; y<= win_height; y+= step_y ){
+		var $item = $(document.elementFromPoint(x, y))
+		if($item.is(xpath) && !$item.data('shown'))
+			fn($item)
+	}
+}
+var load = function(opts){
+	var attrName = opts.attrName || 'asrc'
+		, step_x = opts.step_x || 60
+		, step_y = opts.step_y || 60
+		, loadStyle = opts.loadStyle || 'bg'
+		, fn = (loadStyle == 'img')
+			? function($item){
+				var $img = $('<img />', {
+						'src' : $item.attr(attrName)
+						, 'title' : $item.attr('title')
+						, 'alt' : $item.attr('alt')
+					})
+
+				$item
+					.data('shown', 1)
+					.replaceWith($img)
+			}
+			: function($item){
+				$item
+					.data('shown', 1)
+					.css({
+						'background-image' : 'url(' + $item.attr(attrName) +')'
+					}) 
+					.removeAttr(attrName)
+					.animate({
+						opacity : 1	
+					})
+			}
+
+	if(step_x == 'auto'){
+		add(opts.xpath, (win_height/2), step_y, fn)
+	}else{
+		for(var x = 0; x<= win_width; x+= step_x ){
+			add(opts.xpath, x, step_y, fn)
+		}
+	}
+}
+
+var scroll = function(opts){
+	$(window).on('scrollStop', function () {
+		load(opts)
+	})
+}
+
+exports.set = set
+exports.init = function(opts){
+	set()
+	return {
+		load : function(){
+			load(opts)
+			return this;
+		}
+		, scroll : function(){
+			scroll(opts)
+			return this;
+		}
+	}
+}

@@ -1,0 +1,130 @@
+<%#head.html%>
+<%
+	var newList = this.newList || {};
+	var newListData = newList.data || {};
+	var newListDataArr = newListData.small || [];
+	var entrance = this.entrance || {};
+	var entranceData = entrance.data || {};
+	var catalog = this.catalog || {};
+	var catalogData = catalog.data || [];
+	var express = this.express || {};
+	var expressData = express.data || [];
+%>
+<div class="wrap" id="wrap">
+	<%= requireFn('zulily/header.html')({
+		'status' : 1,
+		'common_r' : this.common_r_XR,
+		'appShare' : this.appShare,
+		'params' : this.params,
+		'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+	});%>
+	<%= requireFn('block/banner.html')({
+		'banner' : this.banner,
+		'banner_r':this.banner_XR,
+		'hide_btn':false,
+		'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+	});%>
+	<section class="link-box" id="linkBox">
+		<a href="javascript:;" data-url="/zulily/miaosha/" data-xr="<%= this.entrance_XR %>" class="btn-miaosha">
+			<div class="q8_enter">
+            	<div class="ctl">
+	            	<p class="q8_tit">距离本场结束还有</p>
+		            <dl class="q8_ltime" id="timeBox" stime="<%= entranceData.endtime %>">
+		            	<dd id="hour"></dd>
+		            	<strong>:</strong>
+		            	<dd id="minu"></dd>
+		            	<strong>:</strong>
+		            	<dd id="sec" class="last"></dd>
+		            </dl> 
+	            </div>
+            </div>
+		</a>
+		<a href="javascript:;" data-url="/zulily/ing/" data-xr="<%= this.entrance_XR %>" class="btn-ing">
+		</a>
+		<a href="javascript:;" data-url="/zulily/newList/" data-xr="<%= this.entrance_XR %>" class="btn-new">
+		</a>
+		<a href="javascript:;" data-url="/zulily/specialList/" data-xr="<%= this.entrance_XR %>" class="btn-special">
+		</a>
+		<img class="bg" src="<%= entranceData.img %>" alt="">
+	</section>
+	<section class="new-list" id="newList">
+		<h3 class="new-data">
+			<b></b>
+			最新上架<%= newListData.date %>
+			<i>new arrival</i>
+		</h3>
+		<% if(newListDataArr.length){ %>
+			<ul data-xr="<%= this.newList_XR %>">
+				<% newListDataArr.forEach(function(v, index){ %>
+					<li data-styleId="<%= v.id %>" data-twitter_id="<%= v.twitter_id %>" class="salelUrl">
+						<div class="new-inner">
+							<div class="lazy_pic_big" asrc="<%= v.big_img %>"></div>
+							<p class="tag"><%= v.brand_category %></p>
+							<p class="title"><%= v.desire_title %></p>
+							<p class="des"><%= v.desire_desc %></p>
+							<p class="new-price">
+								<span>Desire价: <b><%= v.sale_price %></b></span>
+								<del>原款价: <%= v.original_price %> </del>
+							</p>
+						</div>
+					</li>
+				<% }); %>
+			</ul>
+			<a class="btn-newList" href="javascript:;" data-url="/zulily/newList/" data-xr="<%= this.newList_XR %>">查看全部新品&gt;&gt;</a>
+		<% } %>
+	</section>
+	<section class="hot-sale" id="hotSale">
+		<h3 class="new-data">
+			<b></b>
+			潮流热销
+			<i>hot sale</i>
+		</h3>
+		<% if(expressData.length){ %>
+			<div class="posterWall wall" id="content">
+				<ul class="goods_wall goods" data-xr="<%= this.express_XR %>">
+					<% expressData.forEach(function(v, index){ %>
+						<li class="most_wrap salelUrl" data-styleId="<%= v.id %>" data-twitter_id="<%= v.twitter_id %>" data-status="<%= v.status %>">
+						<div class="goods_info">
+							<div class="most">
+								<div class="lazy_pic img-box" asrc="<%= v.poster_small_img %>">
+								</div>
+							</div>
+							<p class="most_intro sale-title"><%= v.title %></p>
+							<p class="price">
+								<span><%= v.sale_price %></span>
+								<del><%= v.price %></del>
+							</p>
+						</div>
+					</li>
+					<% }); %>
+				</ul>
+				<a class="btn-all" href="javascript:;" data-url="/zulily/allList/" data-xr="<%= this.express_XR %>">查看全部商品&gt;&gt;</a>
+			</div>
+		<% } %>
+	</section>
+	<% if(catalogData.length){ %>
+		<section class="catalog-box" id="catalogBox">
+			<ul>
+				<% catalogData.forEach(function(v, index){ %>
+					<li>
+						<a href="javascript:;" data-url="<%= v.url %>" data-xr="<%= this.catalog_XR %>">
+							<img src="<%= v.img %>" alt="">
+						</a>
+					</li>
+				<% }); %>
+			</ul>
+		</section>
+	<% } %>
+</div>
+<% if(!this.appShare){ %>
+	<%= requireFn('wapShare.html')({
+		'share' : this.share 
+	    , 'shareTitle' : '选择分享到'
+	    , '_JSstack' : this._JSstack
+		, '_JSmods' : this._JSmods
+	}); %>
+<% } %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/zulily/main');
+_use:", this._JSstack, this._JSmods); %>
+<%# foot.html%>

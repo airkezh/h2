@@ -1,0 +1,169 @@
+function user(){
+	return this;	
+}
+var controlFns = {
+	'index' : function(args){
+		if(args == 'register') this.register();
+		else if(args == 'logout') this.logout();
+		else if(args == 'findPwd') this.findPwd();
+		else if(args == 'active' || args == 'active_sms') this.active(args);
+		else if(args == 'bindMobile') this.bindMobile();
+		else this.login();
+	},
+	'login' : function(){
+		var wapMod = base.loadModel('wap/tools.js');
+		var php = {
+			'channel_info' : '/customactivity/CustomActivity_common_tool_single?id=wap_channel'
+			, 'leadApp' : '/customactivity/CustomActivity_common_tool_singleNew?id=wap_daoliu'
+			, 'apks' : '/url/Package_get'
+		};
+		var mSelf = this;
+		var channel = this.readData('channel',this.req.__get, ''); 
+		var param = channel || param 
+		this.req.__get.channel = param
+
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			data.XR = true;
+			if (data.os.iphone || data.os.ipad){
+				data.appUrl =  'http://itunes.apple.com/cn/app/meilishuo/id431023686'
+			} else {
+				if (!param || (data.apks && !data.apks[param]) ) param = 'web'
+				if (data.apks && data.apks[param] && data.apks[param].src) data.appUrl = data.apks[param].src
+				
+				else 
+					data.appUrl = 'http://img.meilishuo.net/css/images/AndroidShare/Android6.2.1/Meilishuo_10008.apk?frm=wap_link_download'
+			}
+
+			if(data.userInfo.user_id == 0){
+				data._CSSLinks = ['login'];
+				data.pageTitle = '登录 － 美丽说';
+				data.headTag = 'login';
+				mSelf.render('user/login.html' , data);
+			}else{
+				delete mSelf.req.__get.r;
+				delete mSelf.req.__get.frm;
+				return mSelf.redirectTo('/guang/hot' ,true);	
+			}
+		});
+	},
+	'active' : function(args){
+		var	php = { };
+		var	mSelf = this;
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			if(args == 'active'){
+				data.active = 1;
+			}
+			data._CSSLinks = ['active'];
+			mSelf.render('user/active.html' , data);
+		});
+	},
+	'logon' : function(){
+		this.ajaxTo('/user/log_on');	
+	},
+	'logout' : function(){
+		var	php = {'logout' : '/user/log_out'},
+			mSelf = this;
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			return mSelf.redirectTo('/' + data.logout.redirect ,true);	
+		});
+	},
+	'register' : function(args){
+		var args = args || 'form'
+			, php = {}
+			, mSelf = this;
+
+		if(args == 'form')
+			php = {
+				'registerInit' : '/register/init_register'
+				, 'global_r' : '/statistics/referer?__get_r=1'
+			};
+
+		this.setDefaultData(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			data.XR = true;
+			if (args == 'success'){
+		//		if(data.userInfo.user_id === 0)
+					return mSelf.redirectTo('/welcome' ,true);	
+		//		}
+			}
+
+			data.headTag = 'register_' + args;
+			
+			data._CSSLinks = ['register'];
+			mSelf.render('user/register.html' , data);
+				
+		});
+	},
+	'reg' : function(args){
+		var mSelf = this;
+		if ('action' == args && !this.isTokenLive( 10 )){
+			// console.log('reg token fail')
+			return this.res.end('{"status":-21}')
+			}
+		this.debugSnake({target : 'devlab1'});
+		this.ajaxTo('/register/register_' + args);	
+	},
+
+	'findPwd' : function(args){
+		var php = {}
+		var mSelf = this;
+		var args = args || 'form'; //args:form|send|reset|finish
+		//#9510
+		var wapMod = base.loadModel('wap/tools.js');
+		var os = wapMod.uaos(this.req, wapMod.getMobToken(this.req,this.res));
+		var mlsApp = os.mlsApp;
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		var mobile = this.readData('mobile',this.req.__get, ''); 
+		this.listenOver(function(data){
+			data.mobile = mobile;
+			if(args == 'send_sms'){
+				data.mobile = this.readData('mobile',this.req.__get, '');
+			}
+			else if(args == 'reset'){
+				data.validate_code = this.readData('vc',this.req.__get, '');
+			}
+			data.isNewest = wapMod.isNewest(mSelf.req , data.os.android ? '3.7.5' : '4.1.0');
+			data.mlsApp = mlsApp;
+			//console.log(data.isNewest)
+			data.runInApp = data.appVersion && data.accessToken 
+			data.headTag = 'find_pwd_' + args;
+			data._CSSLinks = ['findPwd'];
+			data.pageTitle = '找回密码';
+			mSelf.render('user/find_password.html' , data);
+		});
+	},
+	'find_pass' : function (args){
+		this.ajaxTo('/user/find_pass_' + args);
+	},
+	'bindMobile' : function(args){
+		var	php = { };
+		var	mSelf = this;
+		var wapMod = base.loadModel('wap/tools.js');
+		var os = wapMod.uaos(this.req, wapMod.getMobToken(this.req,this.res));
+		var mlsApp = os.mlsApp;
+		var args = args || 'bind';
+		this.setMDefault(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+			data.mlsApp = mlsApp;
+			if(args == 'change') {
+				data.pageTitle = '验证原手机号';
+			} else  {
+				data.pageTitle = '绑定手机号';
+			}
+		
+			data.headTag = 'bind_mobile_' + args;
+			data._CSSLinks = ['bindMobile'];
+			mSelf.render('user/bindMobile.html' , data);
+		});
+	}
+}
+exports.__create = controller.__create(user , controlFns);

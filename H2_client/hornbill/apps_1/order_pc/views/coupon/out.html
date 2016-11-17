@@ -1,0 +1,37 @@
+<%
+var coupon_data = this.coupon_get.data || {};
+var coupon_get_code = 0;
+%>
+<%# head.html%>
+<div class="container">
+	<% if(this.userInfo && this.userInfo.user_id){ %>
+		<% if(this.coupon_get.code == 0){ 
+			coupon_get_code = 0;
+		%>
+		<p>
+			<span class="success_tle">您领取了”<%=coupon_data.remark %>“面值为<span class="red_f"><%=coupon_data.credit %></span>元的优惠券</span>
+			<br>使用条件：<%=coupon_data.condition %>
+			<br>有效期：<%=coupon_data.start_time %>至<%=coupon_data.expire_time %>
+			<br>5秒后自动跳转至<a href="<%= this.DOMAIN.order%>/coupon/" class="red_f">我的优惠券</a>，或者去<a href="<%=coupon_data.url %>" class="red_f">店铺</a>逛逛~
+		</p>
+		<% } else { 
+			coupon_get_code = 1;
+		%>
+		<p><%=this.coupon_get.message || '领取失败' %></p>
+		<% } %>
+	<% } else { 
+		coupon_get_code = 2;
+	%>
+	<p>
+		<span class="success_tle">您尚未登录，请先登录~</span>
+		<br>2秒后自动跳转至登陆页
+	</p>
+	<% } %>
+	<input type="hidden" id="success" data-url="<%=coupon_data.url %>" value="<%=coupon_get_code %>">
+	
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('order_pc/coupon/coupon_get');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot.html%>

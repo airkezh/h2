@@ -1,0 +1,209 @@
+fml.define('wap/app/slideOpen' , ['wap/app/tracking', 'wap/zepto/fastclick', 'wap/app/openClient2'] , function(require , exports){
+	var openClient = require('wap/app/openClient2');
+	var tracking = require('wap/app/tracking')
+	// var slide = $('#slideOpen').length ? $('#slideOpen') : $('.footBanner')
+	var slide = $('.daoliuBanner')
+		, storage = require('component/iStorage')
+		, closeBtn = slide.find('.close')
+		, slider = slide.find('.slider')
+		, track = slide.find('.track')
+		, x = 0
+		, startX = 0
+		, xx
+		, track_width
+		, leadApp = $('.leadApp')
+ 		, closeApp = leadApp.find('.closeApp')
+ 		, downloadApp = leadApp.find('.downloadApp')
+ 		, downloadBtn = leadApp.find('.downloadBtn')
+ 		, headApp = $('.headApp')
+ 		, openApp = $('#openApp')
+ 		, slideClose = slide.find('.closeIcon')
+ 		, itemDownBtn = $('#downBtn')
+ 		, welcomeDownload = $('.welcome_downLoad')
+
+
+ 	//单宝页下载
+ 	itemDownBtn.on('click', function(){
+ 		openClient.open(headApp);
+		tracking.cr('wap_share_item');
+		//axis统计
+		_fxcmd.push(['trackEvent','event','download','label','0']);
+ 	})
+
+ 	//下载app
+	welcomeDownload.on('click', function(){
+	    openClient.open(headApp);
+	    tracking.cr('wap_welcome_download');
+	    //axis统计
+	    _fxcmd.push(['trackEvent','event','download','label','0']);
+	})
+
+ 	//头部导流
+ 	tracking.cr('wap_zhiding_show');
+ 	headApp.on('click',function(){
+		openClient.open(headApp);
+		tracking.cr('wap_zhiding_download');
+		//axis统计
+		_fxcmd.push(['trackEvent','event','download','label','0']);
+	})
+
+	//导流浮层
+	if($(leadApp).length){
+		setTimeout(function(){
+			$('.wrapper').hide();
+		},200)
+		tracking.cr('wap_daoliu_show');
+	}
+
+	//底部导流关闭按钮
+	slideClose.on('click', function(e){
+		e.preventDefault()
+		e.stopPropagation()
+
+		slide.hide()
+	})
+	
+	closeApp.on('touchstart touchend', function(event){
+		event.preventDefault();
+	}).on('click',function(){
+		$('.wrapper').show();
+		$(this).parent('.leadApp').hide();
+		storage.setCookie('wap_daoliu_hidden' , new Date().getTime() ,{'duration' : 7200});
+		tracking.cr('wap_daoliu_skip');
+	});
+
+	timer = setInterval(function(){
+		downloadBtn.toggleClass('downloadBtnH');
+	},500);
+
+	downloadApp.on('click',function(){
+		$(this).find('.default_btn').hide();
+		$(this).find('.click_btn').show();
+		setTimeout(function(){
+			downloadApp.find('.default_btn').show();
+			downloadApp.find('.click_btn').hide();
+
+		},1500)
+
+		openClient.open(downloadApp);
+		tracking.cr('wap_daoliu_download');
+	});
+
+	var touchStart = function(event){
+		event.preventDefault();
+	//	window.scrollTo(0, ($(window).scrollTop() - 1))
+
+		if (!event.touches.length)
+			return;
+		var touch = event.touches[0];
+		startX = touch.pageX - x;
+		slider.attr('status', 'move')
+	};
+
+	var touchMove = function(event){
+		event.preventDefault();
+		if (!event.touches.length)
+			return;
+		var touch = event.touches[0];
+		x = touch.pageX - startX
+		xx = x / track_width * 100;
+		
+		xx <= 0 ? xx = 0 : (xx >= 100 ? xx = 100 : '')
+
+		slider.css({'margin-left' : xx + '%'})
+	}
+
+	var touchEnd = function(event){
+		if(xx >= 90){
+			tracking.cr('m/slideOpen')
+			openClient.open(slider)	
+			var t = setTimeout(back,600)
+		}else{
+			back()
+		}
+	}
+	var back = function(){
+		slider.attr('status', 'drop')
+		x = 0
+		startX = 0
+		xx = 0
+		slider.css({'margin-left' : xx + '%'})
+	}
+
+	var initSlider = function() {
+		//临时清空
+		if(localStorage.getItem('slideStatus') == 1){
+			localStorage.removeItem('slideStatus');
+		}
+		if(sessionStorage.getItem('slideStatus') == 1){
+			slide.remove()
+			return;
+		}
+
+		if(!storage.getCookie('banner_hidden')) slide.css('display','block');
+		if(fml.vars.twitter_id) {
+			tracking.cr('wap_share_show')
+		}else {
+			tracking.cr('wap_tongyong_show');
+		}
+	}
+	var hideSlide = function(){
+		closeBtn
+			.on('touchstart touchend', function(event){
+				event.preventDefault();
+			})
+			.on('click', function(event){
+				event.preventDefault();
+				slide.remove()
+				sessionStorage.setItem('slideStatus',1);
+
+			})	
+	}
+
+	exports.tapSlider = function(){
+	
+		initSlider()
+
+		if(localStorage.getItem('slideStatus') == 1){
+			localStorage.removeItem('slideStatus');
+		}
+		if(sessionStorage.getItem('slideStatus') == 1){
+			slide.remove()
+			return;
+		}
+		slider.on('click', function(){
+			openClient.open(slider);
+			if(fml.vars.twitter_id) {
+				tracking.cr('wap_share_download')
+			} else {
+				tracking.cr('wap_tongyong_download')
+			}
+			//axis统计代码
+			_fxcmd.push(['trackEvent','event','download','label','0']);
+		})	
+		//hideSlide()
+	}
+
+	exports.tapDefault = function(){
+		// initSlider()
+		// slider.on('click', function(){
+		// 	openClient.opencd(slider)	
+		// })	
+		
+		//只唤起客户端
+		openApp.on('click', function(){
+			openClient.opencd(openApp)
+		})
+
+		hideSlide()
+	}
+	exports.moveSlider = function() {
+		initSlider()
+
+		track_width = track.width()
+		slider.on("touchstart", touchStart);
+		slider.on("touchmove", touchMove);
+		slider.on("touchend", touchEnd);
+		hideSlide()
+	}
+});

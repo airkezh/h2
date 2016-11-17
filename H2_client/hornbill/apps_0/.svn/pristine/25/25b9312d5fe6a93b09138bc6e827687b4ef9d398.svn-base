@@ -1,0 +1,50 @@
+/*common*/
+
+/**
+ * @fileoverview 美丽值收支明细 － 会员中心
+ * @requires zepto
+ * @author kehuang@meilishuo.com
+ * @date 2015-06-25
+ */
+
+var $ = require('wap/zepto');
+var shareTmp = require('wap/component/shareTmp');
+
+// 登陆成功后的回调函数
+window.MLS = {
+    didLogin: function() {
+        // 成功登录，跳转到下一步
+        window.location.reload();
+    }
+};
+
+var beautyDetail = {
+    oParentNode: $('#j_pay_list'),
+
+    init: function() {
+        // 判断是否登陆
+        if (!fml.vars.isLogin) {
+            window.location.href = 'meilishuo://login.meilishuo/';
+            return;
+        }
+
+        this.initPage();                                                                    // 初始化页面
+        //this.bindEvent();                                                                   // 初始化事件绑定
+    },
+
+    initPage: function() {
+        var self = this,
+            tpl = shareTmp('j_detail_tpl', {'data': curUserBeautyList});
+
+        self.oParentNode.append(tpl);
+        $('#j_page_wrap').find('.pullUp').hide();
+    },
+
+    // 初始化事件绑定
+    bindEvent: function() {
+
+    }
+};
+
+// 初始化页面
+beautyDetail.init();

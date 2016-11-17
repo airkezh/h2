@@ -1,0 +1,194 @@
+<%# head_simple.html%>
+<% 
+var keywords = ["不离不弃","爱如初见","一见钟情","男先追女","女先追男","同桌的你","千世夫妻","欢喜冤家","美女野兽","金屋藏娇","女王男仆","金童玉女","浪漫满屋","型男靓女","情投意合","最炫情侣","男从女得","克拉恋人","小打小闹","王纸公举","两只吃货","两小无猜","青梅竹马","默契夫妇"];
+
+if(this.love_infos.data.login == 1 && this.love_infos.data.flag == 1){
+  var love_info = this.love_infos.data.data;
+}else{
+  var love_info = {};
+}
+if(this.result_data.data.login == 1 && this.result_data.data.flag == 1){
+  var result_data = this.result_data.data.data;
+  var result = this.result_data.data ;
+}else{
+  var result_data = {};
+  var result = {}
+}
+%>
+<script> 
+        (function(win,doc){
+            var docel = doc.documentElement;
+            var meta = doc.querySelectorAll('meta[name=viewport]');
+            meta[0].setAttribute('content','width=device-width,user-scalable=no,initial-scale=1');
+            function recalc(){
+                var width = docel.clientWidth;
+                docel.style.fontSize = 100 * width/640+'px';
+            }
+            if(doc){
+                recalc();
+                win.addEventListener('orientationchange',recalc,false);
+            }else if (doc.addEventListener){
+                doc.addEventListener('DOMContentLoaded', recalc, false);
+            }
+        })(window,document)
+</script>
+</head>
+<body>
+<div id="warp" class="warp">
+<div class="step3">
+    <div class="love_txt">
+         <span class="spot"></span>
+         <span class="txt">我们的爱情关键词</span>
+         <span class="spot"></span>
+     </div>
+     <%var a = love_info.act_user != "C" && result.flag == 1%>
+    <div class="love_keyword">     
+        <!-- C看到结果 -->
+        <%if(love_info.act_user&&love_info.act_user == "C"){%>
+            <%for(var j = 0 ; j < 4; j++){%>
+                <div class="wait<%= j%> keyword1"><%= keywords[parseInt(love_info.srand)][j]%></div>
+            <%}%>
+        <%}%>
+        <!-- AB再次打开 看到结果 -->
+        <%if(love_info.act_user != "C"  && result.flag == 1){%>
+            <%for(var j = 0 ; j < 4; j++){%>
+                <div class="wait<%= j%> keyword1"><%= keywords[parseInt(love_info.srand)][j]%></div>
+            <%}%>
+        <%}%>
+        <!-- AB第一次看到结果 -->
+        <%if(love_info.act_user != "C"  && result.flag != 1){%>
+            <%for(var j = 0 ; j < 4; j++){%>
+                <div id="text_box<%= j%>">
+                    <%for(var i = 0 ; i  < keywords.length; i++){%>
+                        <div class="love<%= i%> keyword" style="display:none;"><%= keywords[i][j]%>
+                        </div>
+                    <%}%>
+                </div>
+                <div class="wait<%= j%> keyword1" style="display:block">?</div>
+            <%}%>
+        <%}%>
+    </div> 
+    <% var C_user = love_info.act_user=='C' ? 'none' : 'block' %>
+    <!-- AB第一次看到结果 -->
+    <%if(love_info.act_user != "C"  && result.flag != 1){%> 
+        <div class="ready_shake" style="display:block">
+            <div class="love_info">
+                <div class="male_box">
+                  <img class="male" src="<%= love_info.pic_A %>">
+                 </div>
+                  <span class="love_line"></span>
+                  <div class="female_box">
+                    <img class="female" src="<%= love_info.pic_B %>">
+                  </div>
+             </div>
+             <div class="love_info_txt">
+             <% if ( love_info.nameA && love_info.nameB ) { %>
+              <% name_A = love_info.nameA.length < 5 ? love_info.nameA : love_info.nameA.slice(0,5)+"..."; 
+                      name_B = love_info.nameB.length < 5 ? love_info.nameB : love_info.nameB.slice(0,5)+"...";
+                  %>
+                <span class = "name_A"><%= name_A %></span>
+                <span><%= name_B%></span>
+            </div>
+            <% } %>
+            <div class="shake">
+                 <img class = "shake_img" src="http://d03.res.meilishuo.net/pic/_o/e0/1a/13ebacf20588d23de4eca262724c_398_83.cg.png" alt="">
+                 <img class = "shake_hand" src="http://d04.res.meilishuo.net/pic/_o/51/32/71493f47f92c9052c7d11da05fc8_89_114.ch.png">
+            </div>
+        </div>
+    <%}%>
+    <!-- C用户再次打开 -->
+    <% if(love_info.act_user=='C'){%>
+    <div class="result">
+        <div class="love_info1" >
+            <div class="con_box">
+                <div class="male_min" >
+                     <img src="<%= love_info.pic_B %>"><span><%= result_data.words[parseInt(love_info.srand)].userA%></span>
+                 </div>
+                 <br>
+                <div class="female_min" >
+                     <img src="<%= love_info.pic_A %>"><span><%= result_data.words[parseInt(love_info.srand)].userB%></span>
+                </div>
+            </div>
+        </div>   
+         <div class="next" style="display:block">
+             <a href="/activity/twoScreen/index/"><button class = "play">我也要玩</button></a>
+             <p><a class="C_go_to" href = "http://m-promotion.meilishuo.com/promotion/sale_1508/mv/?isFromShare=true&frm=shuangping">美丽说818大促，8亿优惠快来抢！>></a></p>
+        </div>  
+     </div>
+     <%}%>
+    <!-- Ab用户再次打开 -->
+    <% if(love_info.act_user!='C' && result.flag == 1){%>
+        <div class="result" style="display: block">
+            <div class="love_info1" >
+                <div class="con_box">
+                    <div class="male_min" >
+                         <img src="<%= love_info.pic_B %>"><span><%= result_data.words[parseInt(love_info.srand)].userA%></span>
+                     </div>
+                     <br>
+                    <div class="female_min" >
+                         <img src="<%= love_info.pic_A %>"><span><%= result_data.words[parseInt(love_info.srand)].userB%></span>
+                    </div>
+                </div>
+            </div>
+            <div class="next" style="display:block">
+            <a href="/activity/twoScreen/index/"><button class = "play_again">我还要玩</button></a>
+                <button class = "show_love">晒晒更恩爱</button>
+                <p><a class="go-to" href="http://m-promotion.meilishuo.com/promotion/sale_1508/mv/?isFromShare=true&frm=shuangping">美丽说818大促，8亿优惠快来抢！>></a></p>
+            </div>
+         </div>
+     <%}%>
+    <div class="result result_loading" style="display: none">    
+       <div class="love_info1" >
+            <div class="con_box">
+                    <div class="male_min" >
+                         <img src="<%= love_info.pic_B %>"><span>等待关键词ING....</span>
+                    </div> <br>           
+                    <div class="female_min" >
+                         <img src="<%= love_info.pic_A %>"><span>等待关键词ING....</span>
+                    </div>
+            </div>  
+         </div>
+         
+        <img class = "wait" src="http://d05.res.meilishuo.net/pic/_o/0a/76/a9825fb51879f68b924eedbdf9d7_281_70.cf.png"></img>
+        <div class="next">
+          <a href="/activity/twoScreen/index/"><button class = "play_again">我还要玩</button></a>
+             <button class = "show_love">晒晒更恩爱</button>
+             <p><a class="go-to" href="http://m-promotion.meilishuo.com/promotion/sale_1508/mv/?isFromShare=true&frm=shuangping">美丽说818大促，8亿优惠快来抢！>></a></p>
+        </div>  
+    </div> 
+
+</div>
+<div class="mypopbox" id="mypopbox">
+    <div class="dialog dialog_wxshareguide" id="dialog_wxshareguide" >
+    <img src="http://d01.res.meilishuo.net/pic/_o/8b/b1/e668a9f4677d0cc7d29bcd4e6627_477_510.cg.png">
+    </div>
+    <div class="dialog dialog_appshare" id="dialog_appshare">
+        <span class="shareBut_close"></span>
+        <h2 class="dialog_appshare_tit">分享至</h2>
+        <div class="dialog_appshare_box">
+            <a class="shareBut shareBut_wx" id="shareBut_wx" href=""><!-- weixin --></a>
+            <p>微信好友</p>
+        </div>
+        <div class="dialog_appshare_box">
+            <a class="shareBut shareBut_pyq" id="shareBut_pyq" href=""><!-- pyq --></a>
+            <p>朋友圈</p>
+        </div>
+    </div>
+    <div class="overlay">
+    </div>
+</div>
+<script>
+    fml.vars.isWxLogin= <%= this.isWxLogin || false %>;
+    fml.vars.isWx = <%= this.isWx %>;
+    fml.vars.gid = <%== this.gid %>;
+    fml.vars.random_srand = <%= parseInt(love_info.srand)%>;
+    fml.vars.user_C = '<%= love_info.act_user%>';
+    fml.vars.flag1 = <%= this.love_infos.data.flag%>;
+    fml.vars.flag2 = <%= this.result_data.data.flag%>;
+</script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use('wap/page/activity/twoScreen-guest');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>
+

@@ -1,0 +1,313 @@
+<%#head.html%>
+
+<%= requireFn('slider.html')({
+'os' : this.os
+, 'footBanner' : true
+, 'isIqiyiApp' : this.isIqiyiApp
+,'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+, 'showDaoLiu' : this.showDaoLiu
+, 'showZhiDing' : this.showZhiDing
+, 'leadApp' : this.leadApp
+, 'appUrl' : this.appUrl
+, 'frm' : this.frm
+});%>
+
+<%
+    var default_navigate = this.default_navigate,
+        pro_spec_banner = this.pro_spec_banner || {}
+        root_category = {},
+        search_url = '',
+        search_keyword = '';
+
+    if(default_navigate){
+        var search_promote = default_navigate.search_promote;
+        root_category = default_navigate.root_category;
+        search_url = search_promote.search_jump_url;
+        search_keyword = search_promote.search_keyword;
+    }
+%>
+<%= requireFn('block/wap_head.html')({
+    'xr' : this.xr,
+    'search_words' : search_keyword,
+    'default_navigate' : root_category,
+    'search_url' : search_url,
+    'cat_banner' : pro_spec_banner.cat_bar,
+    'first' : {
+        'tag': 'a',
+        'text': '我',
+        'href': '/myCenter'
+    },
+    '_JSstack' : this._JSstack,
+    '_JSmods' :  this._JSmods
+});%>
+
+<section id="wrapper_main" class="wrapper">
+    <% if(this.run_man && this.run_man.data && this.run_man.data.wap_banner && this.run_man.data.wap_banner.length){ %>
+        <div id='slider' class="swipe">
+            <div class='swipe-wrap'>
+                <% var run_man_r = this.run_man.r; %>
+                <% this.run_man.data.wap_banner.forEach(function(banner, index){ %>
+                    <a href="<%= banner.url %>" xr="<%= run_man_r %>" style="background-image: url(<%= banner.image_url %>);"></a>
+                <% }); %>
+            </div>
+        </div>
+    <% } %>
+
+    <!-- 跑男专题入口 -->
+    <%if(this.run_man && this.run_man.data.run_man_list){%>
+    <div class="run_man">
+        <%
+            var run_man = this.run_man.data.run_man_list;
+            run_man && run_man.forEach(function( item ) {
+        %>
+        <a href="<%= item.url %>" class="lazy_pic_bnr" xr="<%= this.run_man.r %>" asrc="<%= item.image_src %>">
+        </a>
+        <%}); %>
+    </div>
+    <%}%>
+
+    <%if(this.run_man_dis && this.run_man_dis.length){%>
+    <div class="run_man_dis">
+        <ul>
+        <%
+            var run_man_dis = this.run_man_dis.data
+            run_man_dis && run_man_dis.forEach(function( item ) {
+        %>
+            <%if(item.length == 1){%>
+
+                <% item && item.forEach && item.forEach(function(data){%>
+                    <li>
+                        <a href="<%= data.url%>" xr="<%= this.run_man_dis.r %>" asrc="<%= data.image%>" class="lazy_pic lazy_pic_runMan">
+                        </a>
+                    </li>
+                <%});%>
+
+            <%} else {%>
+                <% item && item.forEach && item.forEach(function(data){%>
+                    <li class="type_two">
+                        <a href="<%= data.url%>" xr="<%= this.run_man_dis.r %>" asrc="<%= data.image%>" class="lazy_pic lazy_pic_runMan">
+                        </a>
+                    </li>
+                <%});%>
+            <%}%>
+        <%}); %>
+        </ul>
+    </div>
+    <%}%>
+
+    <!-- 业务模块 -->
+    <%if(this.business.data && this.business.data.length){%>
+    <div class="business">
+        <ul>
+            <%
+                var business = this.business.data;
+
+                business && business.forEach && business.forEach(function( item ) {
+            %>
+                <li>
+                    <a href="<%= item.url %>" xr="<%= this.business.r %>" asrc="<%= item.image.pic_url %>" class="lazy_pic lazy_pic_business">
+                    </a>
+                </li>
+            <%}); %>
+        </ul>
+    </div>
+    <%}%>
+
+    <!-- 热讯 -->
+    <% if(this.run_man.data && this.run_man.data.run_man_hot && this.run_man.data.run_man_hot.text){%>
+        <%
+            var run_man_hot = this.run_man.data.run_man_hot
+                , mSubstr = _extFn.mSubstr;
+        %>
+        <div class="hot_news">
+            <a href="<%= run_man_hot.url%>" xr="<%= this.run_man.r%>">
+                <span>热讯</span>
+                <b></b>
+                <%= mSubstr(run_man_hot.text, 20, '...')%>
+            </a>
+        </div>
+    <%}%>
+
+    <!-- 今日新款发布 -->
+    <%if(this.debut.data){%>
+    <div class="new_goods">
+        <div class="head">
+            <img src="<%= this.debut.data.head.head_image %>" />
+        </div>
+        <%
+            var debut = this.debut.data
+                , main_figure = debut.main_figure
+
+                main_figure && main_figure.forEach && main_figure.forEach(function( item ) {
+        %>
+        <div class="goods_list">
+            <ul class="main">
+                <li>
+                    <a href="<%= item.url %>" asrc="<%= item.image.pic_url %>" class="lazy_pic_big" xr="<%= this.debut.r %>">
+                    </a>
+                </li>
+            </ul>
+            <ul class="minor">
+                <% item && item.sub_figure && item.sub_figure.forEach(function(data){%>
+                    <li>
+                        <a href="<%= data.url %>" asrc="<%= data.image.pic_url %>" class="lazy_pic" xr="<%= this.debut.r %>">
+                        </a>
+                    </li>
+                <%}); %>
+            </ul>
+        </div>
+        <%}); %>
+        <div class="welcome_downLoad downloadBtn">
+            <b></b>
+            下载美丽说，查看更多新款
+        </div>
+    </div>
+    <%}%>
+
+    <!-- 正在流行 -->
+    <%if(this.fashion_focus.data){%>
+    <div class="fashion">
+        <%
+            var fashion_focus = this.fashion_focus.data || ''
+                , fashion = fashion_focus.fashion || ''
+                , fashionItems = fashion.items || []
+        %>
+        <%if(fashion.subtitle){%>
+            <h2 class="title">
+                <span><%= fashion.subtitle %></span>
+                <%= fashion.title %>
+            </h2>
+        <%}%>
+        <%if(fashionItems && fashionItems.length){%>
+        <div class="bnr">
+            <a href="<%= fashionItems[0].url%>" xr="<%=this.fashion_focus.r%>">
+                <img src="<%= fashionItems[0].image.pic_url %>" />
+            </a>
+        </div>
+        <ul class="nine_box">
+            <% fashionItems &&  fashionItems.forEach && fashionItems.forEach(function(item, index){%>
+                <% if(index > 0 && index < 9){%>
+                <li>
+                    <a href="<%= item.url %>" asrc="<%= item.image.pic_url %>" class="lazy_pic" xr="<%=this.fashion_focus.r%>">
+                    </a>
+                </li>
+            <%}}); %>
+            <li class="welcome_downLoad">
+                <img src="http://d05.res.meilishuo.net/pic/_o/8c/b8/dca7e88e6b01d88c0396bb593af7_202_202.cf.png" />
+            </li>
+        </ul>
+        <%}%>
+    </div>
+    <%}%>
+
+    <!-- 分类 -->
+    <div class="category section">
+        <ul class="bd cate-list">
+            <%
+            var cate = this.default_navigate.root_category,
+            max = 7;
+            cate && cate.forEach(function( item, i ) {
+            if ( i > max ) return;
+            var url = '/guang/catalog_new/?nid=' + item.nid + '&tag_word=' + encodeURIComponent( item.tag_word );
+            %>
+            <li class="cate">
+                <a href="<%= url %>" xr="<%= item.r %>" style="background-image: url(<%= item.pic %>)"></a>
+            </li>
+            <% } ) %>
+        </ul>
+    </div>
+
+    <div class="poster-wall section">
+        <div class="hd js-fixed-tab">
+            <span class="tab" data-type="new">新款</span>
+            <span class="tab" data-type="hot">热销</span>
+            <span class="tab" data-type="feature">精选</span>
+        </div>
+        <div class="bd">
+            <div class="tab-content tab-new" data-type="new"></div>
+            <div class="tab-content tab-hot" data-type="hot"></div>
+            <div class="tab-content tab-feature" data-type="feature"></div>
+            <div class="pullUp" status="loading"></div>
+        </div>
+    </div>
+</section>
+
+<%# block/wap_foot.html %>
+
+<script type="text/html" id="normalPosterWall">
+    <?
+    var v = this.v,
+        pt = 130;
+    ?>
+    <div class="poster_grid poster_wall" twitter_id="<?=v.twitter_id?>">
+        <figure>
+            <a xr="<?= fml.vars.poster_r?>" class="pic_load" style="padding-top:<?= pt ?>%;background-image:url(<?= v.pic_url ?>)" href="/share/<?if(v.is_doota == '1'){?>item/<?}?><?= v.twitter_id?><?if(v.url_query){?>?<?= v.url_query?><?}?>">
+            </a>
+
+            <p class="clothesTitle"><?= v.title?></p>
+            <figcaption>
+                <? if(v.price){?>
+                <span class="price"><?= v.price?></span>
+                <? }?>
+                <span class="like icon-heart"><?= v.count_like?></span>
+            </figcaption>
+        </figure>
+    </div>
+</script>
+
+<script type="text/html" id="newPosterWall">
+    <?
+    var v = this.v,
+        pt = 130;
+    ?>
+    <div class="poster_grid poster_wall" twitter_id="<?=v.twitter_id?>">
+        <figure>
+            <a xr="<?= fml.vars.poster_r?>" class="pic_load" style="padding-top:<?= pt ?>%;background-image:url(<?= v.show_fix_pic ?>)" href="/share/<?if(v.is_doota == '1'){?>item/<?}?><?= v.twitter_id?><?if(v.url_query){?>?<?= v.url_query?><?}?>">
+            </a>
+            <?if(v.horizontal_mark && v.horizontal_mark.length ){?>
+                <div class="mark" mark_id="<?= v.horizontal_mark[0].mark_id ?>">
+                    <img src="<?= v.horizontal_mark[0].img_url ?>" />
+                </div>
+            <?}?>
+            <p class="clothesTitle"><?= v.ginfo.goods_title?></p>
+            <figcaption>
+                <? if(v.ginfo.goods_price){?>
+                <span class="price"><?= v.ginfo.goods_price?></span>
+                <? }?>
+                <span class="like icon-heart"><?= v.count_like?></span>
+            </figcaption>
+        </figure>
+    </div>
+</script>
+
+<script type="text/html" id="featurePosterWall">
+    <?
+    var v = this.v,
+        pt = 130;
+    ?>
+    <div class="poster_grid poster_wall" twitter_id="<?=v.twitter_id?>">
+        <figure>
+            <a xr="<?= fml.vars.poster_r?>" class="pic_load" style="padding-top:<?= pt ?>%;background-image:url(<?= v.pic_url ?>)" href="/share/<?if(v.is_doota == '1'){?>item/<?}?><?= v.twitter_id?><?if(v.url_query){?>?<?= v.url_query?><?}?>">
+            </a>
+
+            <p class="clothesTitle"><?= v.remark?></p>
+            <figcaption>
+                <? if(v.title){?>
+                <span class="price"><?= v.title?></span>
+                <? }?>
+                <span class="like icon-heart"><?= v.count_like?></span>
+            </figcaption>
+        </figure>
+    </div>
+</script>
+
+<script>
+    fml.vars.event_id = 1065;
+    fml.vars.frm = '<%== this.frm %>';
+    fml.vars.common_r = '<%== this.xr.r%>';
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+        fml.use('wap/page/welcome_tmp');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

@@ -1,0 +1,161 @@
+@import "base.less";
+
+@circle_icon : 'http://d02.res.meilishuo.net/pic/_o/6b/5e/27e169995329b9f56b5fe45e068d_404_404.cg.png';
+
+.icon-like.is-liked {
+  background-image : url("http://d02.res.meilishuo.net/pic/_o/bd/81/7bd39876214446046fd89222cabc_42_40.cf.png");
+}
+
+.icon-like {
+  position        : absolute;
+  right           : 20*@px;
+  top             : 20*@px;
+  width           : 67*@px;
+  height          : 59*@px;
+  background      : url("http://d03.res.meilishuo.net/pic/_o/9b/5a/01fb45e3af63591b71f840a25a62_42_40.cf.png") no-repeat 0;
+  background-size : cover;
+}
+
+body {
+  background-color : #f0eeee;
+}
+
+/* 商品信息 */
+.product-info {
+  border-bottom : 1px solid #d9d6d8;
+  background    : #fff;
+  padding       : 32*@px 35*@px;
+  text-align    : center;
+
+  .title {
+    font-size   : 30*@px;
+    font-weight : normal;
+    line-height : 48*@px;
+    color       : #595056;
+  }
+
+}
+
+.picture {
+  position : relative;
+  img {
+    width : 100%;
+  }
+  .pt(520*@w);
+  .hidden;
+  span { opacity : 1; }
+  /*
+  */
+}
+
+.circle {
+  position         : relative;
+  width            : 100%;
+  margin           : 20*@px auto;
+  background-color : #fff;
+  border           : 1px solid #dbd7d8;
+  text-align       : center;
+  overflow         : hidden;
+}
+
+.circle {
+  .label {
+    position  : absolute;
+    top       : 18*@px;
+    left      : 20*@px;
+    font-size : 22*@px;
+    color     : #ccc2c9;
+  }
+
+  .avatar {
+    position        : relative;
+    margin          : 60*@px auto 18*@px;
+    width           : 160*@px;
+    height          : 160*@px;
+    background      : no-repeat center;
+    background-size : cover;
+
+    &::after {
+      content         : "";
+      position        : absolute;
+      left            : 0;
+      top             : 0;
+      margin-top      : -.6%;
+      margin-left     : -.5%;
+      width           : 100.5%;
+      height          : 100.6%;
+      background      : url(@circle_icon) no-repeat center;
+      background-size : cover;
+    }
+  }
+
+  .title {
+    font-size : 30*@px;
+    color     : #595056;
+  }
+
+  .info {
+    margin-top : 20*@px;
+    font-size  : 28*@px;
+    color      : #80737b;
+  }
+
+  .split {
+    display          : inline-block;
+    width            : 1px;
+    height           : 20*@px;
+    margin           : 0 6*@px;
+    background-color : #80737b;
+    vertical-align   : bottom;
+  }
+
+  .btn {
+    display       : block;
+    width         : 41.66%; // 250 / 600
+    box-sizing    : border-box;
+    margin        : 30*@px auto 60*@px;
+    padding       : 15*@px 35*@px;
+    font-size     : 30*@px;
+    border        : 2*@px solid;
+    border-radius : 3px;
+    color         : #ff6666;
+
+  }
+}
+
+@media (max-width : 305px) {
+  .circle .btn {
+      font-size : 24*@px;
+  }
+}
+
+.imageSlide {
+  position  : absolute;
+  top       : 0%;
+  left      : 0;
+  width     : 100%;
+  height    : 100%;
+  overflow  : hidden;
+  font-size : (26*@px);
+  ul {
+    position : absolute;
+    li {
+      position : relative;
+      float    : left;
+      display  : inline;
+    }
+  }
+  .num {
+    .w(100%); .c;
+    .pa; left : 0; bottom : 10px;
+    z-index   : 10;
+    b {
+      display        : none;
+      color          : #fff;
+      letter-spacing : 4*@px;
+    }
+    .cur {
+      display : inline-block;
+    }
+  }
+}

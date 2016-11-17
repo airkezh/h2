@@ -1,0 +1,33 @@
+/*common*/
+require('wap/zepto/touch')
+
+var urlHandle = require('wap/component/urlHandle')
+var params = urlHandle.getParams(location.href)
+
+var $col = $('.selectBox .col')
+var selectSize = $col.size()
+
+$col.on('tap', 'div', function(){
+	$(this)
+		.addClass('cur')
+		.siblings().removeClass('cur')
+
+})
+
+$('.resultBtn').on('tap', function(){
+	var $curs = $col.find('.cur')
+
+	if($curs.size() != selectSize){
+		console.log('size error')
+		return;
+	}
+
+	var url = '/shake/'+fml.vars.shake.name+'/result?'	
+	var answer = []
+	$.each($curs, function(k,v){
+		answer.push($(v).attr('itemid'))
+	})
+
+	location.href = url + 'name=' + params.name + '&answer='+answer.join(',')
+})
+

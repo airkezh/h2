@@ -1,0 +1,206 @@
+fml.define('wap/page/sq/orderDetail' , ['wap/zepto/fastclick','wap/ui/confirm','wap/ui/alert', 'wap/app/tracking', 'wap/component/shareTmp', 'component/callApi'] , function(require){
+	var Confirm = require('wap/ui/confirm')
+		,Alert = require('wap/ui/alert')
+		,tracking = require('wap/app/tracking')
+		,shareTmp = require('component/shareTmp')
+		,api = require('component/callApi')
+
+	//msg and reload
+	var alert_msg = function(msg,is_reload){
+		var a = new Alert({
+			content : msg
+			,onSure : function(){
+				if (is_reload) {
+					window.location.reload();
+				}else{
+					return;
+				}
+			}
+		});
+	}
+
+	var readyDo = function(){
+		//退款退货
+		$('.re_btn').on('click',function(event){
+			event.preventDefault();
+			var _this = $(this),
+			_a =  "http://" + window.location.host + _this.attr('href') + '&_wv=5123';
+			$('title').html('返回');
+			mqq.ui.refreshTitle();
+			mqq.ui.openUrl({
+				url:_a,
+				target:1,
+				style:1
+			});
+			setTimeout(function(){
+				$('title').html('订单详情');
+			},0);
+			if(e && e.preventDefault) {
+	        　　//阻止默认浏览器动作(W3C)
+	        　　e.preventDefault();
+	        } else {
+	        　　//IE中阻止函数器默认动作的方式
+	        　　window.event.returnValue = false;
+	        }
+
+
+	        return false;
+		})
+	}
+	//关闭webview 刷新页面
+	var refresh = function(){window.location = window.location.href; }
+	mqq.addEventListener('qbrowserVisibilityChange',refresh)
+
+	api.read({'url' : '/order/detail_weixin'}, {'order_id' : fml.vars.order_id}, function(data){
+		var order = data.info.order
+		, order_info = data.info
+		, address = data.info.address
+		, goods = data.info.goods
+		, step = order.step
+		, msgObj = order.words
+		, status = order.status
+		, express = order.express_new
+		, express_company = order.express_company
+		, express_id = order.express_id
+		var tmp = shareTmp('tmpAll', {'order_info' : order_info, 'order' : order,'address' : address,'goods' : goods,'step' : step,'msgObj' : msgObj,'status' : status,'express' : express,'express_company' : express_company,'express_id' :express_id})
+		$('.wrap').append(tmp)
+		readyDo();
+	})
+
+	// var first_bind = '0'
+
+	// $.getJSON('http://open.show.qq.com/cgi-bin/sq_act_qualification_query?cmd=0&act_id=meilishuo&callback=?', function(data){
+	// 	// 首次绑卡
+	// 	if(data.code == 0 && data.data.act_flag == 0 && data.data.bind_flag == 0){
+	// 		first_bind = '1';
+	// 	}
+	// })
+
+	//确认收货
+	$('.wrap').on('click', '.recvOrder', function(){
+		var btn = $(this)
+			,mids = [];
+		$('.goods_wrap').each(function(i,goods){
+			mids.push($(goods).attr('mid'));
+		})
+
+		var data = {
+			order_id : btn.attr('order_id')
+			, mid : mids.join(',')
+		}
+
+		var confirm_recv = function(){
+			api.write({'url' : '/order/recv_confirm'}, data, function(res){
+				if(res.code == '0'){
+					alert_msg("确认收货成功！",true);
+				}else{
+					alert_msg(res.info.msg,true);
+				}
+			}, 'json')
+		}
+
+		var conf = new Confirm({
+			content : '为了保证您的消费体验，请在收到商品后再确认收货。'
+			,onSure : function(){
+				 confirm_recv();
+			}
+			,onCancel : function(){
+				return;
+			}
+		})
+
+	})
+
+	//取消订单
+	$('.wrap').on('click', '#cancel_order', function(){
+		var btn = $(this)
+			,t = null;
+		var data = {
+			order_id : btn.attr('order_id')
+		}
+
+		var cancel_ord = function(){
+			api.write({'url' : '/order/close'}, data, function(res){
+			// $.post('/aj/doota/order_close', data, function(res){
+				if(res.code == 0){
+					alert_msg("订单取消成功！",true);
+				}else{
+					alert_msg(res.message);
+				}
+			}, 'json')
+		}
+
+		var conf = new Confirm({
+			content : '您确定要取消本订单吗？'
+			,onCancel : function(){
+				return;
+			}
+		})
+		/*$('#confirm .sureBtn').on('touchstart touchend', function(event){
+			event.preventDefault();
+		}).on('tap', function(){
+			clearTimeout(t);
+			t = setTimeout(function(){
+				cancel_ord();
+				conf.drive.destroyModel();
+			},500);
+			return false;
+		})*/
+
+		$('#confirm .sureBtn').on('click', function(){
+			clearTimeout(t);
+			t = setTimeout(function(){
+				cancel_ord();
+				conf.drive.destroyModel();
+			},500);
+			return false;
+		})
+	});
+
+	var pay_button_times = false
+	$('.wrap').on('click', '#pay_now', function(){
+		if(pay_button_times){
+			return
+		}
+		// tracking.cr('sq/click_pay_button', {'status': '1'+first_bind})
+		pay_button_times = true
+		var data = {
+			order_id : $(this).attr('order_id')
+			, total_price : $(this).attr('total_price')
+		}
+		api.write({'url' : '/order/mob_qq_fetch'}, data, function(res){
+		// $.post('/aj/sq/qq_fetch', data, function(res){
+			if(res.code == '0'){
+				var appInfoSplit = res.info.appInfo
+				var itemsOne = appInfoSplit.split('|')
+				var itemTwo = itemsOne[0].split('#')
+				itemTwo[1] = '2745697727'
+				itemsOne[0] = itemTwo.join('#')
+				appInfoSplit = itemsOne.join('|')
+				qw.pay.tenpay({
+					tokenId: res.info.tokenId
+					, appInfo: appInfoSplit
+					, pubAcc: 3046055438
+					, pubAccHint: '您已关注QQ购物服务号，查订单、查优惠尽在QQ购物服务号。'
+				}, function (data) {
+					var urlPlus = ''
+					if(data.data.bank_type != null && data.data.bank_type != undefined && data.data.bank_type != ''){
+						urlPlus = '&bank_type=' + data.data.bank_type;
+					}
+					if(data.resultCode == 0){
+						window.location.href = '/sq/success/?order_id=' + res.info.order_id + '&transaction_id=r' + data.data.transaction_id + urlPlus
+					}else{
+						tracking.cr('sq/statistics_action', {'action': 'pop', 'value': 'payFailed'})
+						tracking.cr('sq/pay_result', {'status': '3'})
+						window.location.href = '/sq/fail/?order_id=' + res.info.order_id
+					}
+				})
+			}
+			else{
+				tracking.cr('sq/pay_result', {'status': '4'})
+				window.location.href = '/sq/fail/?msg=' + (res.msg || '下单失败')
+			}
+
+		}, 'json');
+	})
+});

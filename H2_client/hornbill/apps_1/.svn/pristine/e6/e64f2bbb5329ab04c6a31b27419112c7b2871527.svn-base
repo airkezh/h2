@@ -1,0 +1,13 @@
+<script type="text/html" id="apparel_alert">
+	<?
+		var apparel_data = apparel_alert.data;
+		var bg_style = 'background:url('+apparel_data.image+') no-repeat;_filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='+apparel_data.image+', sizingMethod="scale");_background-image: none;';
+	?>
+	<div class="fs_alert_320" style="<?= bg_style ?>">
+		<a class="check_act" target="_blank" href="<?= apparel_data.url ?>">查看</a>
+		<a class="closeButton" href="javascript:;">关闭</a>
+	</div>
+</script>
+<script>
+	fml.vars.apparel_alert = <%= this.apparel_alert === false ? false : true %>;
+</script>

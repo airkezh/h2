@@ -1,0 +1,32 @@
+Bridge.prototype.addIframe = function(action,src,opts){
+	var ifr = this._iframes[action]
+	var opts = opts||{}
+
+	var data = opts.data || {}
+	data.timestamp = (new Date()).valueOf()
+
+	src+=(/\?/.test(src)?'&':'?')+this.http_build_query(data)
+
+	if(ifr){
+		ifr.src = src
+
+	}else{
+		ifr = document.createElement('iframe');
+		ifr.style.display = 'none';
+		ifr.src = src
+		document.body.appendChild(ifr);
+
+	}
+	this._iframes[action] = ifr
+
+	opts.cbk && (this._callbacks[action] = opts.cbk)
+
+}
+
+Bridge.prototype.removeIframe = function(action){
+	var ifr = this._iframes[action]
+	if(ifr){
+		document.body.removeChild(this._iframes[action])
+		delete this._iframes[action]
+	}
+}

@@ -1,0 +1,263 @@
+@import "../tuan/tuanbase.less";
+@import "../tuan/imgSlide.import.less";
+
+.nav_wap {
+  min-height : .34rem;
+}
+
+.navbox {
+  .w(100%);
+  .f(.14rem);
+  .fc(#999);
+  .bgwhite;
+}
+
+.points {
+  position : relative;
+  overflow : hidden;
+  .w(100%);
+  margin   : 0 auto;
+  height   : .58rem;
+}
+
+.points s {
+  width         : .52rem;
+  height        : .4rem;
+  border-bottom : 3px solid #f66;
+  position      : absolute;
+  left          : 50%;
+  bottom        : -1px;
+  margin-left   : -0.26rem;
+  //background: url('http://d01.res.meilishuo.net/pic/_o/9e/07/e796f0e2feed9aca188e16f3ffad_104_91.cf.png') top center no-repeat;
+  //background-size: 125%;
+  z-index       : 10;
+}
+
+.points ul {
+  list-style         : none;
+  -webkit-transform  : translate3d(0, 0, 0);
+  -webkit-transition : all .3s ease-in-out;
+  width              : 1000px;
+  overflow           : hidden;
+  position           : relative;
+  z-index            : 10;
+  height             : .54rem;
+}
+
+.points ul li {
+  float       : left;
+  line-height : .2rem;
+}
+
+.points ul li a {
+  .fc(#999);
+  .f(.16rem);
+  display         : block;
+  margin-top      : 5px;
+  text-align      : center;
+  text-decoration : none;
+  outline         : 0;
+  font-weight     : 400;
+  font-family     : "Helvetica Neue";
+  label {
+    .transform(scale(0.875));
+    .block;
+    .f(.18rem);
+  }
+}
+
+.points ul .darkgray a {
+  .fc(#666);
+  label { .fc(#999); }
+}
+
+.points ul .tomorrow a {
+  .f(.13rem);
+  label {
+    .fc(#666);
+    .transform(scale(1));
+    .f(.13rem);
+  }
+}
+
+.points ul .curr a {
+  .fc(#f66);
+  label {
+    .fc(#f66);
+  }
+}
+
+.points span {
+  font-size : .3rem;
+}
+
+/* new list*/
+.zhengdian-new.fir { border-top : none; }
+
+.zhengdian-new { .pt(.14rem); .mb(.14rem); .pr; .bgc(#fff); min-height : 110px; border-top : 1px solid #eee;
+  > figure {
+    .w(34%); .i_block; .pr; .mt(2px);
+    img {
+      width : 100%;
+    }
+  }
+  .desc {
+    .w(66%); .right;
+    font-size   : .22rem;
+    line-height : .22rem;
+    li { .ml(2%); .pa; .w(64%); .bgray; }
+    li.li-a { top : 1%; overflow : hidden; white-space : nowrap; .pt(.14rem); }
+    li.li-b { top : 34%; }
+    li.li-c { top : 55%; }
+    li.li-d {
+      bottom : .14rem;
+    }
+  }
+
+  .discout {
+    .bgc(#f66); .i_block; padding : .03rem 4px; .white; .ml(2.1%);
+  }
+  span.status_sum_empty, span.status_sum_over {
+    .bgc(#ccc);
+    .fc(#fff);
+  }
+  .now_price {
+    .bgray;
+    .ml(-2px);
+    font-size      : .36rem;
+    vertical-align : bottom;
+
+    i {
+      font-style : normal;
+    }
+  }
+  .old_price { .f(.2rem); .gray; }
+  .saleinfo {
+    p {
+      .gray;
+      font-size   : .18rem;
+      line-height : .18rem;
+    }
+  }
+  .statusinfo {
+    border : 1px solid #f66;
+    .border-r(3px);
+    .h(.5rem);
+    .l(.5rem);
+    .flexbox;
+
+    .staus-bar, .status-btn { .flex(1); .c; min-width : 50%; max-width : 50%; }
+    .staus-bar { .pr; }
+    .status-btn { .bgc(#f66); .white;
+      a { .block; .white; }
+    }
+    .progress { .pa; .h(.5rem); opacity : .1; .bgc(#f66); left : 0; top : 0; }
+  }
+  .statusinfo.status_sum_empty, .statusinfo.status_sum_over {
+    border : 1px solid #ccc;
+    .scale { .pr; .fc(#fff); z-index : 10; }
+    .status-btn { .bgc(#fff); .fc(#f77); }
+    .progress { opacity : 1; .bgc(#ccc); }
+  }
+  .statusinfo.status_sum_remind {
+    border : 1px solid #fdac29;
+    .status-btn { .bgc(#fdac29); }
+  }
+  .mark {
+    position : absolute;
+    top      : .16rem;
+    left     : 0;
+    .w(.45rem);
+    .h(.45rem);
+  }
+  .qiang {
+    background      : url('http://d02.res.meilishuo.net/pic/_o/5d/ac/984022f732bb56bad475132745a5_114_107.ch.png') center center no-repeat;
+    background-size : 100% 100%;
+  }
+  .pin {
+    background      : url('http://d01.res.meilishuo.net/pic/_o/11/f3/19f45df3dd53ae9ecaa050a4a83a_114_107.cg.png') center center no-repeat;
+    background-size : 100% 100%;
+  }
+}
+
+.forshow-box {
+  .clearfix;
+  .mb(.2rem);
+  .goodinfo {
+    .w(48%);
+    .left;
+    padding : 1%;
+  }
+  figcaption { padding : .1rem 0 .1rem; .c;
+    .status-btn { .mt(.1rem); .pt(6px); .pb(6px); .f(.14rem); .fc(#fff); .block; .w(80%); .auto; .c; .bgc(#f66); .border-r(3px); }
+    .status-btn.reminded_btn { .bgc(#ddd); }
+    .foretit { .f(.13rem); .nowrap; .hidden;
+      a { .dgray; }
+    }
+    .foreprice { .mt(.01rem);
+      .now_price { .f(.15rem); .dgray; }
+      .old_price { .gray; }
+      .discout { .bgc(#f66); .i_block; vertical-align : bottom; padding : .03rem 4px; .white; }
+    }
+  }
+}
+
+/* 明日预告滚动 */
+.foreshow { .mb(.15rem);
+  .colorbar { .h(.08rem); .bgc(#f8f8f8); }
+  .fore-tit { padding : .1rem 0; .pl(3.1%);
+    .activity-rule { .right; .w(.5rem); .mt(-5px); }
+  }
+  .fore-list { .nowrap; .hidden; .pr;
+    .fore-list-wrap { .flexbox; }
+    .goodsInfo { .block; .w(25%); .ml(3.1%);
+      .desc { .c; .pt(.1rem);
+        .flexbox;
+        .justify-content(center);
+        span, del {
+          .block;
+          .transform(scale(0.875));
+        }
+        span { .fc(#333); .f(.13rem); }
+        del { .fc(#999); .l(.18rem); }
+      }
+    }
+    .goodsInfo.seemore { .bgc(#eee);
+      p { .pt(38%); .c; }
+    }
+  }
+}
+
+@-webkit-keyframes movelr {
+  0% { -webkit-transform : translate(5px, 0); }
+  50% { -webkit-transform : translate(0px, 0); }
+  100% { -webkit-transform : translate(5px, 0); }
+}
+
+@media screen and (min-width : 360px) {
+  html, body {
+    .f(12px);
+  }
+}
+
+.btn-load, .btn-next, .btn-all, .empty {
+  display     : block;
+  font-size   : .22rem;
+  line-height : .4rem;
+  color       : #999;
+  text-align  : center;
+}
+
+.btn-next {
+  display : none;
+}
+
+.btn-all, .empty {
+  display : none;
+  margin  : .3rem 0 .2rem;
+}
+
+.icon-load {
+  display    : inline-block;
+  background : url("http://d05.res.meilishuo.net/pic/_o/f1/c0/b92611a9efcea7a565af81397553_44_44.cg.png") no-repeat;
+}

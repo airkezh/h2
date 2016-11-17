@@ -1,0 +1,125 @@
+<%
+var query = this._Request_query;
+var twitter_id = query.twitter_id;
+var collocation_id = query.collocation_id;
+var collocationInfo = this.collocation[collocation_id] || {};
+var collocationList = collocationInfo.tInfo || [];
+var chineseNum = ['一','二','三','四','五','六','七','八','九','十'];
+%>
+<%# head.html %>
+<input type="hidden" name="collocation_id" value="<%==collocation_id %>"> 
+<div class="container">
+	<div class="tab_wrapper">
+	<% if(this.collocation){ %>
+		<% Object.keys(this.collocation).forEach(function(tabId, tIndex){ %>
+		<a class="tab_item<%if(tabId==collocation_id){%> act<%}%>" data-collocation_id="<%=tabId %>" <%if(tabId!=collocation_id){%>href="?twitter_id=<%==twitter_id %>&collocation_id=<%=tabId %>"<%}%>>优惠套餐<%=chineseNum[tIndex] %></a>
+		<% }); %>
+	<% } %>
+	</div>
+	<p class="combo_desc">此套餐包含以下<span class="red_f"><%=collocationList.length %></span>件商品，<span class="red_f">请选择您要的商品信息</span></p>
+	<input type="hidden" value="<%=collocationInfo.collocation_type %>" name="type">
+	<div id="combo_list" class="combo_list" data-origin_price="<%=collocationInfo.origin_price %>" data-discount_price="<%=collocationInfo.discount_price %>" data-collocation_price="<%=collocationInfo.collocation_price %>">
+		<% collocationList.forEach(function(goods, gIndex){ %>
+		<%
+		var skuRepArr = [], skuOPriceArr = [], skuSPriceArr = [], skuIdArr = [];
+		if(goods.sku){
+			Object.keys(goods.sku).forEach(function(skuKey){
+				skuRepArr.push('data-sku_repertory_'+skuKey+'='+goods.sku[skuKey].repertory);
+				if(goods.sku[skuKey].price){
+					skuOPriceArr.push('data-sku_oprice_'+skuKey+'='+goods.sku[skuKey].price);
+					skuSPriceArr.push('data-sku_sprice_'+skuKey+'='+(goods.sku[skuKey].campaign_price||goods.sku[skuKey].price));
+					skuIdArr.push('data-sku_id_'+skuKey+'='+goods.sku[skuKey].sku_id);
+				}
+			});
+		}
+		%>
+		<% if(gIndex===0){ %>
+		<input type="hidden" name="shop_id" value="<%=goods.shop_id %>" />
+		<% } %>
+		<div class="combo_item" data-pid="<%=goods.goods_pid %>" data-goods_id="<%=goods.goods_id %>" data-repertory="<%=goods.repertory %>" data-oprice="<%=goods.original_price %>" data-sprice="<%=goods.price %>" data-twitter_id="<%=goods.twitter_id %>" <%=skuRepArr.join(' ') %> <%=skuOPriceArr.join(' ') %> <%=skuIdArr.join(' ') %> <%=skuSPriceArr.join(' ') %>>
+			<label class="selected_icon">
+				<input type="checkbox" class="selected_cbx" name="goods_act" checked="checked">
+			</label>
+			<a class="thumbnail_a" href="/share/item/<%=goods.twitter_id %>" target="_blank">
+				<img class="thumbnail_img" src="<%=goods.goods_image %>">
+			</a>
+			<div class="combo_item_info">
+				<h4 class="goods_name"><a href="/share/item/<%=goods.twitter_id %>" target="_blank"><%=goods.goods_title %></a></h4>
+				<p class="price_wrapper">
+					<b class="s_price_wrap">￥<span class="s_price"><%=goods.price %></span></b>
+					<del class="o_price_wrap">￥<span class="o_price"><%=goods.original_price %></span></del>
+					<span class="repertory_wrap">（库存<span class="repertory"><%=goods.repertory %></span>件）</span>
+				</p>
+				<p class="num_wrapper">数量：<span class="red_f">×1</span></p>
+				<p class="selected_sku_wrapper">
+					已选择
+					<span class="selected_sku_info">
+					</span>
+				</p>
+			</div>
+			<div class="clear_f"></div>
+			<div class="sku_wrapper mt20">
+				<table>
+					<% 
+					var colorObj = goods.color;
+					var stock = goods.stock;
+					%>
+					<% goods.prop && goods.prop.forEach(function(prop, pIndex, arr){%>
+					<% 
+					if(!prop.is_show){return;}
+					var stockColors = pIndex===0?stock[0].color.slice(1):[];
+					%>
+					<tr>
+						<td class="sku_tle" data-sku_tle="<%=prop.name %>"><%=prop.name %>：</td>
+						<td class="sku_item_wrapper">
+							<% prop.meta_id.forEach(function(meta_id, mIndex, mArr){ %>
+							<%
+							var isOutStock = !goods.sku[meta_id] || goods.sku[meta_id].repertory==0;
+							var stockNum = 0
+								,colorsNum = 0;
+							if(pIndex>0){
+								stockNum = stock[mIndex+1].sum || 0;
+								colorsNum = stock[mIndex+1].color.slice(1).join(',');
+							} else {
+								stockNum = stockColors[mIndex];
+							}
+							%>
+							<% if(prop.color_image && prop.color_image.length){ %>
+							<a class="color_image sku_item<%=(mArr.length===1&&!isOutStock) ? ' act':'' %> <%if(isOutStock){%>out_stock<%}%>" title="<%=colorObj[meta_id].meta_name %>" data-imgsrc="<%=colorObj[meta_id].image || '' %>" data-meta_id="<%=meta_id %>"><img src="<%=colorObj[meta_id].color_image %>" alt="<%=colorObj[meta_id].meta_name %>" data-stock="<%=stockNum %>" data-color_stock="<%=colorsNum || '' %>"></a>
+							<% } else { %>
+							<span class="sku_item<%=(mArr.length===1&&!isOutStock) ? ' act':'' %> <%if(isOutStock){%>out_stock<%}%>" data-meta_id="<%=meta_id %>" title="<%=prop.value[mIndex] %>" data-stock="<%=stockNum %>" data-color_stock="<%=colorsNum || '' %>"><%=prop.value[mIndex] %></span>
+							<% } %>
+							<% }); %>
+						</td>
+					</tr>
+					<%}); %>
+				</table>
+			</div>
+		</div>
+		<% if(gIndex%2===1){ %>
+		<div class="clear_f"></div>
+		<% } %>
+		<% }); %>
+		<div class="clear_f"></div>
+	</div>
+	<div class="create_order_info">
+		<span class="save_price_wrapper mr20 lightgray_f">
+			节省：￥<span class="save_price"><%=collocationInfo.discount_price %></span>
+		</span>	
+		<span class="total_price_wrapper">
+			套餐总价<span class="lightgray_f">（不含运费和优惠扣减）</span>：
+		</span>	
+		<span class="combo_price_wrapper mr20">
+				￥<span class="combo_price"><%=collocationInfo.collocation_price %></span>
+		</span>
+		<a id="create_order_btn">立即购买</a>
+	</div>
+</div>
+<script type="text/html" id="selected_sku_info_item_tmp">
+	<span class="red_f">“<?=txt ?>”</span>
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+    fml.use('page/doota/combo');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html %>

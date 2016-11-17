@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+<head>
+	<title><%== this.pageTitle%></title>
+    <meta name="description" content="<%= this.meta_description%>" />
+    <meta name="keywords" content="<%= this.keywords%>" />
+    <meta property="qc:admins" content="173137167465514130576375" />
+	<% if (this._canonical) { %>
+		<link rel="canonical" href="http://www.meilishuo.com<%=this._canonical%>"/>
+	<% } %>
+	<% if(!this.noBasecss){ %>
+    <link rel="stylesheet" type="text/css" href="<%= this.JCSTATIC_BASE %>css/base.css?<%= this.SVERSION%>" />
+	<%  } %>
+    <link rel="apple-touch-icon-precomposed" href="<%= this.CSS_JS_BASE_URL%>css/images/custom_icon_precomposed.png"/>
+	<%= (function(link){
+		var str = '';
+		var base = this.JCSTATIC_BASE;
+		var sversion = this.SVERSION;
+		link && link.map(function(src){
+			str += '<link rel="stylesheet" type="text/css" href="'+base+'css/'+src+'.css?'+ sversion +'"/>';
+			});
+		return str;
+		})(this._CSSLinks)%>
+	<% if (this._CSSstack && this._CSSstack.length) { %>
+		<style>
+		<%= this._CSSstack.join("\n");%>
+		</style>
+	<% }
+	%>
+	<script type="text/javascript" src="<%= this.JCSTATIC_BASE  %>~fml?<%= this.SVERSION%>" ></script>
+	<script>
+	fml.setOptions({'sversion' : '<%= this.SVERSION %>','defer' : <%= this.JS_Defer %> ,'modulebase' : '<%= this.JCSTATIC_BASE + this.SCRIPT_BASE %>'});
+    var Meilishuo = {
+        'config' : {
+			nt : '<%= this.nToken%>',
+			server_url : '<%= this.SERVER_BASE %>',
+			picture_url : '<%= this.PICTURE_URL %>',
+			captcha_url : '<%= this.CAPTCHA_ULR %>',
+			im_url : '<%= this.IM_ULR %>',
+			fairy_id : 219
+		}
+    };
+	</script>
+	<script type="text/javascript" name="baidu-tc-cerfication" src="http://apps.bdimg.com/cloudaapi/lightapp.js#b9f5e498889cf25a702988eebd2a53a9"></script><script type="text/javascript">window.bd && bd._qdc && bd._qdc.init({app_id: '18a49f24d007a1e8a816bd2c'});</script>
+</head>
+
+<%
+var query = this._Request_query;
+var getLink = _extFn.getLink;
+var navFrm = 'frm=daeh';
+var mSubstr = _extFn.mSubstr;
+%>
+</head>
+<body>
+
+<section id="wrapper_main" class="wrapper">
+
+	
+</section>
+<div class="getJson" style="height: 100px; widht: 100%; background: #ff6699;" down_url="<%= this.appUrl%>"></div>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/welcome1');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

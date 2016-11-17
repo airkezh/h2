@@ -1,0 +1,24 @@
+<%
+var hasMobile = this.mobile_info && this.mobile_info.data;
+var mobileInfo = this.mobile_info.data;
+%>
+<%#head.html%>
+<div class="container">
+	<% if(hasMobile){ %>
+	<p class="current_phone">当前手机号：<%=mobileInfo.mobile %></p>
+	<% } else { %>
+	<p class="current_phone">您还没有绑定手机号</p>
+	<% } %>
+	<div class="mobile_input_wrapper">
+		<form id="sub_mobile_form" onsubmit="return false">
+			<input type="tel" class="mobile_input" placeholder="输入手机号，领取礼包" maxlength="11">
+			<button type="submit" id="sub_mobile_btn">请输入手机号</button>
+			<p class="error_tip"></p>
+		</form>
+	</div>
+	<p class="modify_desc">说明：修改手机号后，下次领取优惠券礼包时将会自动放入新账户</p>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/order_share');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

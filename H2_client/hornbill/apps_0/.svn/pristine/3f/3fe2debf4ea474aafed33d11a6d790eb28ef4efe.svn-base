@@ -1,0 +1,103 @@
+/*common*/
+var $ = require('jquery');
+var shareTmp = require('component/shareTmp');
+var $year = $('.year')
+	,$month = $('.month')
+	,$yearUl = $('.yearWrap ul li')
+	,$monthUl = $('.monthWrap ul li')
+	,$next = $('.next')
+	,$realName = $('.realName')
+	,$idCard = $('.id_card')
+	,$telphone = $('.telphone')
+	,$loginAddress = $('.loginAddress')
+	,$receiptInfo = $('.receiptInfo')
+	,$helpInfo = $('.helpInfo')
+	,$chooseYear = $('.chooseYear')
+	,$chooseMonth = $('.chooseMonth')
+	,$waitingCheck = $('.waitingCheck')
+	,$userInfo = $('.userInfo')
+	,$third = $('.third')
+	,$validateFalse = $('.validateFalse')
+	,$warn = $('.warn')
+var date = new Date();
+var nowYear = date.getFullYear()
+	,nowMonth = date.getMonth()
+var chooseYear = nowYear
+	chooseMonth = nowMonth;
+//注册时间菜单
+fml.use('app/eventHover' , function(){
+	this.hoverShow('.yearWrap' , '.add_menu_leo');
+	this.hoverShow('.monthWrap' , '.add_menu_leo');
+})
+$yearUl.mouseover(function(){
+	$(this).css('background-color','#DDDDDD');
+})
+$yearUl.mouseout(function(){
+	$(this).css('background-color','#FFFFFF');
+})
+$monthUl.mouseover(function(){
+	$(this).css('background-color','#DDDDDD');
+})
+$monthUl.mouseout(function(){
+	$(this).css('background-color','#FFFFFF');
+})
+//获取注册时间
+$chooseYear.on( 'click' , function(){
+	chooseYear = $(this).html().trim();
+	var $yearWrap = $(this).parents('.yearWrap')
+		,$ul = $yearWrap.children('ul')
+		,$timeYear = $('.timeYear')
+	$timeYear.html(chooseYear);
+	$ul.hide();
+})
+$chooseMonth.on( 'click' , function(){
+	chooseMonth = $(this).html().trim();
+	var $monthWrap = $(this).parents('.monthWrap')
+		,$ul = $monthWrap.children('ul')
+		,$timeMonth = $('.timeMonth');
+	$timeMonth.html(chooseMonth);
+	$ul.hide();
+})
+//提交资料
+
+$next.on( 'click' , function(){
+	var data={
+	    'nickname' : fml.vars.nickname
+	    ,'realname' : $realName.val().trim()
+	    ,'id_card' : $idCard.val().trim()
+	    ,'mobile' : $telphone.val().trim()
+	    ,'reg_time' : chooseYear+'-'+chooseMonth
+	    ,'often_login_place' : $loginAddress.val().trim()
+	    ,'often_take_goods_info' : $receiptInfo.val().trim()
+	    ,'orther_desc' : $helpInfo.val().trim()
+	    ,'validate_code' : fml.vars.validate_code
+	}
+	,url="/aj/freeze_aj/index/apply_unfreeze";
+	$warn.hide();
+	if($realName.val().trim().length == 0){
+		$realName.parents('.info').children('.warn').show();
+	}else if($idCard.val().trim().length != 18){
+		$idCard.parents('.info').children('.warn').show();
+	}else if($telphone.val().trim().length != 11 ){
+		$telphone.parents('.info').children('.warn').show();
+	}else if($loginAddress.val().trim().length == 0){
+		$loginAddress.parents('.info').children('.warn').show();
+	}else if($receiptInfo.val().trim().length == 0){
+		$receiptInfo.parents('.info').children('.warn').show();
+	}else{
+		$.post( url , data , function(res){
+			if(res.code==1001){
+				$validateFalse.html(res.message);
+			}else if(res.code==0){
+				$waitingCheck.append(shareTmp('sucessFreeze',{}));
+				$userInfo.hide();
+				$third.addClass('current');
+			}
+		},'json');
+	}
+})
+if(fml.vars.statusCode == 2001){
+	$third.addClass('current');
+	$userInfo.hide();
+	$waitingCheck.append(shareTmp('sucessFreeze',{}));
+}

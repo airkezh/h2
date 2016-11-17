@@ -1,0 +1,554 @@
+/**
+ * @fileoverview 美美豆每日抢券－大促
+ * @requires
+ * @author kehuang@meilishuo.com
+ * @date 2015-10-28
+ */
+
+@import "../block.less";
+
+html{
+	.f(10*@f);
+}
+
+body{
+  .bgc(#ff5668);
+}
+
+img{
+	.block;
+	.w(100%);
+}
+
+a{
+	.block;
+	outline:none;
+}
+
+ul{
+	list-style:none;
+}
+
+i{
+	font-style:normal;
+}
+
+.body_wrap{
+  /*min-height:760px;*/
+  background:#fff; /* 一些不支持背景渐变的浏览器 */
+  background:-moz-linear-gradient(top, #f13d2c, #ff5668);
+  background:-webkit-gradient(linear, 0 0, 0 bottom, from(#f13d2c), to(#ff5668));
+}
+
+.user_wrap{
+  .bgc(#fff);
+  padding:10px 14px;
+  margin:0 20*@w;
+
+	.user_box{
+		.hidden;
+		.l(2);
+		.f(1.3rem);
+		.fc(#353535);
+
+		.info_box{
+			.left;
+			.w(74%);
+
+      .level,.beans{
+        .pl(24px);
+      }
+
+      .level{
+        background:url("http://d01.res.meilishuo.net/pic/_o/2e/9c/99c434b10d153ebb816d9693518e_32_32.cg.png") no-repeat;
+        background-size:15px auto;
+      }
+
+      .beans{
+        background:url("http://d02.res.meilishuo.net/pic/_o/a8/24/9ea63d82b06f7feacb21e0bea1b9_32_32.cf.png") no-repeat;
+        background-size:15px auto;
+      }
+
+			i{
+				.fc(#ff204f);
+			}
+
+      .login_text{
+        .c;
+        .block;
+        .l(1.6);
+        .f(1.3rem);
+      }
+
+      .login_btn{
+        .c;
+        .auto;
+        .block;
+        .w(50%);
+        .f(1.4rem);
+        .fc(#ff204f);
+        .border-r(1px);
+        border:1px solid #ff204f;
+      }
+		}
+
+		.more_box{
+			.c;
+			.right;
+      .w(26%);
+			.l(1.2);
+      .f(1.5rem);
+			margin:8px auto;
+      background:url("http://d04.res.meilishuo.net/pic/_o/8c/67/04749d074b799ebd4330026b36c5_22_40.ch.png") no-repeat;
+      background-size:11px auto;
+      background-position:right center;
+
+      .more{
+        border-left:1px solid #e6e6e6;
+      }
+		}
+	}
+
+  .go_other_btn{
+    .c;
+    .l(1.8);
+    .f(1.4rem);
+    .fc(#fff);
+    .mt(10px);
+    .bgc(#ff204f);
+  }
+}
+
+.user_wrap_shadow{
+  .auto;
+  .w(600*@w);
+  .pt(20/600*100%);
+  background:url("http://d05.res.meilishuo.net/pic/_o/9a/1c/ff9c968f269f9d8412b6c360b711_600_20.cg.png") no-repeat;
+  background-size:100%;
+}
+
+.rule_title,.plat_coupon_title,.shop_coupon_title{
+  margin:30*@w 0;
+}
+
+/*.rule_title{
+  .pt(52*@w);
+  background:url("http://d02.res.meilishuo.net/pic/_o/bc/2a/56bba1b7e9d10534ca3c04ee5d97_640_52.cf.png") no-repeat;
+  background-size:100%;
+}
+
+.plat_coupon_title{
+  .pt(81*@w);
+  background:url("http://d03.res.meilishuo.net/pic/_o/b1/a9/cd50a7a9eb3859666f8ea5489364_640_81.cg.png") no-repeat;
+  background-size:100%;
+}
+
+.shop_coupon_title{
+  .pt(111*@w);
+  background:url("http://d02.res.meilishuo.net/pic/_o/a9/96/5e026ea3ad034fe6bbb7bc362891_640_111.cg.png") no-repeat;
+  background-size:100%;
+}*/
+
+.coupon_wrap{
+  margin:0 30*@w;
+}
+
+.plat_coupon_wrap{
+  .hidden;
+  clear:both;
+
+  li{
+    .mb(30*@w);
+  }
+
+  /*li:last-child{
+    .mb(0);
+  }*/
+
+  .coupon{
+    .pr;
+    .pt(178/661*100%);
+  }
+
+  .lave_text{
+    .pa;
+    left:13%;
+    bottom:15%;
+    .f(1.2rem);
+    .fc(#fff);
+  }
+
+  .beans_text{
+    .c;
+    .pa;
+    .w(40%);
+    right:0;
+    top:30%;
+    .f(1.2rem);
+    .fc(#fff);
+  }
+
+  .convert_text{
+    .c;
+    .pa;
+    .w(40%);
+    right:0;
+    top:52%;
+    .f(1.4rem);
+    .fc(#fff);
+  }
+}
+
+.shop_coupon_wrap{
+  .hidden;
+  clear:both;
+
+  li{
+    .mb(20*@w);
+    .bgc(#fff);
+    padding:20*@w;
+    /*border:1px solid rgba(3,0,0,.1);*/
+  }
+
+  /*li:last-child{
+    .mb(0);
+  }*/
+
+  .coupon{
+    .pr;
+    .pt(140/600*100%);
+  }
+
+  .shop_wrap{
+    .hidden;
+    .mb(20*@w);
+
+    .img_box,.shop_box{
+      .left;
+    }
+
+    .img_box{
+      .w(23%);
+
+      img{
+        .w(59px);
+        .h(59px);
+      }
+    }
+
+    .shop_box{
+      .w(77%);
+      margin:12px 0 13px;
+      background:url("http://d04.res.meilishuo.net/pic/_o/03/dc/0555cd3f35af8a8e211a36cc52cd_22_68.cg.png") no-repeat;
+      background-size:11px auto;
+      background-position:right center;
+
+      p{
+        .hidden;
+        .w(88%);
+        .ml(20*@w);
+        white-space:nowrap;
+        text-overflow:ellipsis;
+      }
+
+      .title{
+        .l(1.5);
+        .f(1.3rem);
+        .fc(#333);
+      }
+
+      .desc{
+        .l(1.3);
+        .f(1rem);
+        .fc(#999);
+      }
+    }
+  }
+
+  .beans_text{
+    .c;
+    .pa;
+    .w(40%);
+    right:0;
+    top:30%;
+    .f(1.2rem);
+    .fc(#fff);
+  }
+
+  .convert_text{
+    .c;
+    .pa;
+    .w(40%);
+    right:0;
+    top:52%;
+    .f(1.4rem);
+    .fc(#fff);
+  }
+}
+
+.rule_wrap{
+  margin:0 30*@w 30*@w;
+
+  p{
+    .l(2);
+    .f(1.2rem);
+    .fc(#fff);
+  }
+}
+
+.prompt_main{
+	.pf;
+	top:40%;
+	left:0;
+	.w(100%);
+	.h(auto);
+	.opacity(0);
+	z-index:99;
+
+	.prompt_text{
+		.c;
+		.auto;
+		.l(1.8);
+		.f(1.1rem);
+		.fc(#fff);
+		.w(320*@w);
+		.border-r(4px);
+		padding:8px 12px;
+		background:rgba(0,0,0,.7);
+	}
+}
+
+.pullUp{
+  margin:40px 0 80px;
+
+	.pullUpDown > .common;.pullUpDown > .loading;
+	&:before{
+		.nowrap;
+		.ml(-10px);
+	}
+	&[status="tap"]{
+		background:0 none;	
+	}
+	&[status="stop"]{
+		background:0 none;	
+	}
+}
+
+.gotop_wrap{
+	.pf;
+	.none;
+	.w(82*@w);
+	.pt(82*@w);
+	z-index:10;
+	right:10px;
+	bottom:40px;
+
+	.gotop{
+		.block;
+		.w(100%);
+	}
+
+	img{
+		.w(100%);
+	}
+}
+
+.checkBox{
+  	.shade{
+  		.pf;
+  		top:0;
+  		left:0;
+  		.w(100%);
+  		.h(100%);
+  		z-index:10;
+  		background:rgba(0,0,0,.5);
+  	}
+
+  	.captchaImgBox{
+  		.pf;
+  		.w(76%);
+  		top:25%;
+  		left:12%;
+  		z-index:1000;
+  		background:#fff;
+
+    	.imgTop{
+    		.pr;
+      		.w(100%);
+      		.pt(35%);
+      		background:url("http://d02.res.meilishuo.net/pic/_o/fe/78/c27c59b7f65b4eb9db2576621f2f_570_180.cf.png") no-repeat top center;
+      		background-size:100%;
+
+      		input{
+      			.pa;
+      			.w(30%);
+      			.h(30%);
+      			top:50%;
+      			left:14%;
+      			.f(10px);
+      			border:1px solid #d9d9d9;
+      		}
+
+      		.captchaImg{
+      			.pa;
+      			.w(26%);
+      			top:50%;
+      			right:25%;
+      		}
+
+      		.newImg{
+      			.pa;
+      			.w(15%);
+      			.pt(10%);
+      			top:58%;
+      			right:9%;
+      			border:0px solid red;
+      		}
+    	}
+
+    	.imgCenter{
+      		.none;
+      		.w(100%);
+      		.pt(10%);
+      		background:url("http://d02.res.meilishuo.net/pic/_o/09/d2/235259ee81d3976a359b425ed66b_570_48.cg.png") no-repeat top center;
+      		background-size:100%;
+    	}
+
+    	.imgBottom{
+    		.pr;
+      		.w(100%);
+      		.pt(18%);
+      		background:url("http://d05.res.meilishuo.net/pic/_o/0b/ae/e13932dbfc6864970bc8bcf8c599_570_101.cg.png") no-repeat top center;
+      		background-size:100%;
+
+      		.imgCaptchaCheck{
+      			.pa;
+      			.w(50%);
+      			top:0;
+      			right:0;
+      			.pt(18%);
+      			border:0px solid red;
+      		}
+
+      		.imgCaptchaClose{
+      			.pa;
+      			.w(50%);
+      			top:0;
+      			left:0;
+      			.pt(18%);
+      			border:0px solid red;
+      		}
+    	}
+ 	  }
+
+  	.captchaSmsBox{
+    	.pf;
+    	.w(76%);
+    	left:12%;
+    	top:25%;
+    	z-index:1000;
+    	background:#fff;
+
+    	.smsTop{
+    		.mb(2%);
+      		.w(100%);
+      		.pt(35%);
+      		background:url("http://d01.res.meilishuo.net/pic/_o/05/03/7673f42c9fc2c289a7776ee47686_570_199.cf.png") no-repeat top center;
+      		background-size:100%;
+
+      		.getSmsCaptcha{
+      			.c;
+      			.w(86%);
+      			.ml(7%);
+      			.pt(5%);
+      			.pb(5%);
+      			.fc(#ff95b6);
+      			.border-r(4%);
+      			border:1px solid #ff94b7;
+      		}
+    	}
+
+    	.smsCenter{
+      		.none;
+      		.w(100%);
+      		.pt(10%);
+      		background:url("http://d02.res.meilishuo.net/pic/_o/7a/2b/f2385920609e67d33d292cb4fabf_570_59.cf.png") no-repeat top center;
+      		background-size:100%;
+    	}
+
+    	.smsBottom{
+    		.pr;
+      		.mt(2%);
+      		.w(100%);
+      		.pt(30%);
+
+      		.captchaInput{
+      			.pa;
+      			.block;
+      			top:0;
+      			left:7%;
+      			.w(50%);
+      			.h(30%);
+      			.border-r(4%);
+      			border:1px solid #e6e5e6;
+      		}
+
+      		.captchaCheck{
+      			.c;
+      			.pa;
+      			.w(32%);
+      			top:0;
+      			right:7%;
+      			.fc(#fff);
+      			padding:3% 0;
+      			.bgc(#e6e5e6);
+      			.border-r(4%);
+      		}
+    	}
+
+    	.smsClose{
+	      	.pa;
+	      	.w(20%);
+	      	.pt(20%);
+	      	top:-13%;
+	      	right:-14%;
+	      	background:url("http://d02.res.meilishuo.net/pic/_o/fe/d4/041dd4cdce2245eecb4f7dbf46de_45_45.ch.png") no-repeat top center;
+	      	background-size:50%;
+	    }
+  	}
+}
+
+.windowDrive{
+	.dialog{
+		.border-r(6px);
+	}
+
+	.dialog-con{
+		.l(1.8);
+		.f(1.4rem);
+		.fc(#666);
+	}
+
+	.dialog-btn{
+    border-top:1px solid #e5e5e5;
+
+    span{
+      .f(1.5rem);
+      .fc(#f66);
+    }
+  }
+}
+
+@media screen and (min-width:360px){
+	.plat_coupon_wrap .lave_text{
+    left:16%;
+  }
+
+  .shop_coupon_wrap .shop_wrap .shop_box p{
+    .ml(0);
+  }
+}
+
+@media screen and (min-width:400px){
+	
+}

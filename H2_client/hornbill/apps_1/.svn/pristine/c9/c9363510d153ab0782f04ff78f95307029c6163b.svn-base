@@ -1,0 +1,54 @@
+<%#shop/settled/settle_head.html%>
+<%
+	var query = this._Request_query;
+	var isDetail = query.qid | 0;
+	var breadCrumb = '',helpDefault = '<a href="?">帮助中心</a>&nbsp;>&nbsp;';
+	if(isDetail){
+		breadCrumb = helpDefault;
+		var breadObj = this.help_detail.breadcrumb;
+		if(breadObj.second){
+			breadCrumb += '<a href="?cid='+breadObj.second.cid+'">' + breadObj.second.title + '</a>' + '&nbsp;>&nbsp;';
+		}
+		if(breadObj.third){
+			breadCrumb += breadObj.third.title;
+		}
+	} else {
+		if(this.help_list.breadcrumb){
+			var breadObj = this.help_list.breadcrumb;
+			if(breadObj.second){
+				breadCrumb = helpDefault + breadObj.second.title;
+			} else if(breadObj.search){
+				breadCrumb = '全部搜索结果&nbsp;>&nbsp;“<span class="red_f">' + breadObj.search.title + '</span>”';
+			}
+		} else {
+			breadCrumb = helpDefault + '全部内容';
+		}
+	}
+%>
+<div class="container">
+	<%#shop/settled/help_nav.html%>
+	<div class="help_content">
+		<div class="h_c_tle">
+			<%=breadCrumb %>
+			<div class="search_wrapper">
+				<form action="">
+					<span class="form_wrapper">
+						<em class="magnifier">&nbsp;</em>
+						<input type="text" class="title_input" name="title" placeholder="有问题？请找我">
+					</span>
+					<input type="submit" class="sub_btn" value="搜 索">
+				</form>
+			</div>
+		</div>
+		<% if(isDetail){ %>
+		<%#shop/settled/help_detail.html%>
+		<% } else { %>
+		<%#shop/settled/help_list.html%>
+		<% } %>
+	</div>
+	<div class="clear_f"></div>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/doota/settled_help');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

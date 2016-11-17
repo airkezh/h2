@@ -1,0 +1,36 @@
+<%#head.html%>
+<%
+	var activity_info = this.activity_feed && this.activity_feed.activity_info
+%>
+<div class="main">
+	<div class="title">往期回顾</div>
+	<div class="container">
+		<%if(activity_info && activity_info.length > 0){
+			activity_info.forEach(function(item, i){
+		%>
+		<div class="act-box <%= i%2==0 ? '' : 'even' %>">
+			<dl>
+				<dt><%= item.title%>  <span><%= item.ctime%></span></dt>
+				<dd>
+					<a href="<%= item.url%>">
+						<img src="<%= item.image_url%>">
+					</a>
+				</dd>
+			</dl>
+			<%if(i%2 == 0){%>
+				<div class="act-line-box">
+					<div class="act_line">
+						<img src="http://d05.res.meilishuo.net/pic/_o/ea/39/ffecc7c264ee72d217ffa052ea18_14_420.ch.png">
+					</div>
+				</div>
+			<%}%>	
+		</div>
+		<%	});
+			}
+		%>
+	</div>
+	<div class="paging_panel c_f">
+		<%#paging.html%>
+	</div>
+</div>
+<%#foot.html%>

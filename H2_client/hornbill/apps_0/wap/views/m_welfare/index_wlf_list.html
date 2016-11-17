@@ -1,0 +1,59 @@
+<script type="text/html" id="posterWall">
+	<? var nowTime=Date.parse(new Date)/1000; var status=0,sTime=0,desc="" ; $.each(this.data.list,function(i,item){ ?>
+		<div class="new_wlf_box poster_wall">
+			<div class="mini_warp">
+				<a class="link_box" href="javascript:;" data_id='<?=item.activity_id?>'>
+					<figure>
+						<?if(fml.vars.is_lazyload_poster){?>
+							<span class="bs_load_img" asrc='<?=item.index_banner?>'></span>
+							<?}?>
+					</figure>
+				</a>
+				<div class="wlf_applyNo">
+					<figure>
+						<h3 class="wlf_title"><?=item.title?></h3>
+						<p class="wlf_info"><span>免费<b class="trynumber"><?=item.trynumber?></b>份</span>&nbsp;&nbsp;<span>已有<b class="apply_no"><?=item.apply_num?></b>人申请</span></p>
+						<?var style="";var desc="";var urlStr="http://mapp.meilishuo.com/m_welfare/item/"+item.activity_id;
+			var pcUrl="/m_welfare/item/"+item.activity_id;
+			var hasReport=item.hasReport;
+			status=item.status;
+			 		switch (status) {
+						case 0:
+							style="gray";
+							desc="即将开始";
+							break;
+						case 1:
+							style="yellow";
+							desc="立即申请";
+							if(item.final_status&&item.final_status==1){
+								style="gray";
+								desc="已申请";
+							}
+							break;
+						case 2:
+							style="gray";
+							desc="即将公布";
+							break;
+						case 3:
+						default:
+							if (hasReport == 0) {
+								style="gray";
+								desc="名单已公布";
+							} else {
+								style="yellow";
+								desc="试用报告";
+								urlStr="http://mapp.meilishuo.com/m_welfare/reprotList/"+item.activity_id;
+								pcUrl="/m_welfare/reprotList/"+item.activity_id;
+							}
+							break;
+						}
+			?>
+							<a class="<?=style?> nowApply " href="javascript:void(0)" data_url="<?=urlStr?>" data_pc_url="<?=pcUrl?>">
+								<?=desc?>
+							</a>
+					</figure>
+				</div>
+			</div>
+		</div>
+		<?});?>
+</script>

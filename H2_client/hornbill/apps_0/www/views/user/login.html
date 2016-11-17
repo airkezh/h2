@@ -1,0 +1,62 @@
+<%# head.html%>
+<%
+var query = this._Request_query;
+var getLink = _extFn.getLink;
+%>
+<div class="login">
+	<div class="login_mls">
+		<h2>登录美丽说</h2>
+		<fieldset>
+			<form id="loginForm" method="post" onsubmit="return false" action="">
+				<legend>美丽说登录表单</legend>
+				<p><label for="mlsUser">账&nbsp;&nbsp;&nbsp;&nbsp;号：</label><input class="l_ipt" id="mlsUser" type="text" name="mlsUser" value="" placeholder="邮箱/手机号/昵称"/></p>
+				<p><label for="mlsPass">密&nbsp;&nbsp;&nbsp;&nbsp;码：</label><input class="l_ipt" id="mlsPass" name="password" type="password" value="" /></p>
+				<div class="checkBox" id="checkBox">
+					<label for="checkcode">验证码：</label><input class="l_ipt" id="checkcode" name="checkcode" type="text" value="" maxlength="4" />
+					<div class="checkImage">
+						<span id="checkcodeImage">
+							<img width="90" height="36" isblank="true" src="<%= this.PICTURE_URL %>images/register/blank.jpg">
+						</span>
+						<span class="red_f">换一张</span>
+					</div>
+				</div>
+				<div class="ml40_f">
+					<input type="checkbox" name="savestate" id="savestate" value="savestate" checked="checked" />
+					<label for="savestate">记住我（下次自动登录）</label>
+				</div>
+				<div class="loginErrorMessage red_f"></div>
+				<div class="submitBox"><input class="loginBtn button left_f" type="submit" value="登&nbsp;&nbsp;&nbsp;录"/><a class="left_f red_f" href="/user/findPwd" target="_BLANK" >忘记密码了？</a></div>
+			</form>
+		</fieldset>
+	</div>
+	<div class="login_other">
+		<p class="f14_f">还没有美丽说账号？&nbsp;<a class="red_f" href="/user/register?frm=_wzzhuce" target="_BLANK">立即注册</a></p>
+		<p class="f16_f">你还可以用以下方式直接登录：</p>
+		<div class="icos_wrap">
+			<a class="l_weixin" href="/connect/auth/weixin<%if(query.r){%>?r=<%== query.r %><%}%>"></a>
+			<a class="l_sinaweibo" href="/connect/auth/weibo<%if(query.r){%>?r=<%== query.r %><%}%>"></a>
+			<a class="l_qq" href="/connect/auth/qzone<%if(query.r){%>?r=<%== query.r %><%}%>"></a>
+			<a class="l_taobao" href="/user/trlogin/"></a>
+			<a class="l_txweibo" href="/connect/auth/txweibo<%if(query.r){%>?r=<%== query.r %><%}%>"></a>
+			<a class="l_renren" href="/connect/auth/renren<%if(query.r){%>?r=<%== query.r %><%}%>">
+				<span class="msg"><em class="arrow1">◆</em><em class="arrow2">◆</em>系统维护中，暂不支持新用户互联登录<br/>老用户互联登录不受影响，可继续使用</span>
+			</a>
+			<a class="l_wangyi" href="/connect/auth/wangyi<%if(query.r){%>?r=<%== query.r %><%}%>">
+				<span class="msg"><em class="arrow1">◆</em><em class="arrow2">◆</em>系统维护中，暂不支持新用户互联登录<br/>老用户互联登录不受影响，可继续使用</span>
+			</a>
+			<a class="l_douban" href="/connect/auth/douban<%if(query.r){%>?r=<%== query.r %><%}%>">
+				<span class="msg"><em class="arrow1">◆</em><em class="arrow2">◆</em>系统维护中，暂不支持新用户互联登录<br/>老用户互联登录不受影响，可继续使用</span>
+			</a>
+			<a class="l_baidu" href="/connect/auth/baidu<%if(query.r){%>?r=<%== query.r %><%}%>">
+				<span class="msg"><em class="arrow1">◆</em><em class="arrow2">◆</em>系统维护中，暂不支持新用户互联登录<br/>老用户互联登录不受影响，可继续使用</span>
+			</a>
+		</div>
+	</div>
+	<div class="clear_f"></div>
+</div>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	Meilishuo.config._or = "%s";
+	fml.use('page/login');
+_use:", this._JSstack , this._JSmods ,this._OrginRequest||''); %>
+<%# foot.html%>

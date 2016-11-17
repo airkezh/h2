@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+</head>
+<body>
+<input id="button2" type="button" value="点击调用客户端的CppCall函数" onclick="return window.external.CppCall()" />
+<div style="border-radius: 20px;width:40px;height:40px;background:#ff0000;">123</div>
+
+<input type="button" value="执行msgbox" onclick="alert('excute msgBox');msgBox(1,2);">
+
+<svg id="svg" width="200" height="100"><desc>Created with Snap</desc><defs><marker viewBox="0 0 8 8" markerWidth="8" markerHeight="8" orient="auto" refX="5" refY="5" id="Shyuzadfl4"><circle cx="5" cy="5" r="3"></circle></marker><marker viewBox="0 0 13 13" markerWidth="13" markerHeight="13" orient="auto" refX="2" refY="6" id="Shyuzadfl5"><path d="M2,2 L2,11 L10,6 L2,2" fill="#000000"></path></marker></defs><path d="M10,10 L150,10 L150,90" stroke="#0000ff" fill="none" style="stroke-width: 1px; marker-start: url(#Shyuzadfl4); marker-end: url(#Shyuzadfl5);"></path></svg>
+</body>
+<script>
+	window.test = function(){
+		document.getElementById('button2').value = 'test'
+		return 'haha'
+	}
+	window.MLS = {}
+	window.MLS.onStart = function(){
+		alert('onStart!!')	
+		return 'start'
+	}
+	function onTest(){
+		alert('onTest!!')
+		return true	
+	}
+</script>
+</html>

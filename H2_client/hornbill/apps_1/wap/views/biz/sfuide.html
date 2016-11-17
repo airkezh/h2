@@ -1,0 +1,26 @@
+<%#head.html%>
+
+<div class="main">
+	<%= this.pageData.content || '' %>
+</div>
+
+<% if(this.newPage && (this.os.phone || this.os.tablet)){ %>
+	<div id="main_bottom"></div>
+	<script>
+		window.page_width = window.page_width || 320;
+		var a = document.body.offsetWidth;
+		var scale_size = a / page_width;
+		var main = document.querySelector('.main_page');
+		fml.vars.cha_h = Math.floor(main.offsetHeight * (scale_size - 1)) ;
+		main.setAttribute('style', "-webkit-transform: scale("+ scale_size +");transform:scale("+ scale_size +");-webkit-transform-origin: center top;transform-origin: center top;");
+		document.getElementById('main_bottom').style.height = fml.vars.cha_h + 'px';
+	</script>
+<% } %>
+
+<%= requireFn('wapShare.html')({
+	'share' : this.share 
+    , 'shareTitle' : '选择分享到'
+    , '_JSstack' : this._JSstack
+	, '_JSmods' : this._JSmods
+}); %>
+<%#foot_simple.html%>

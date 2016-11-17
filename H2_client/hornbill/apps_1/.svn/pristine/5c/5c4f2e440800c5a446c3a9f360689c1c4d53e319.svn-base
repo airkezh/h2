@@ -1,0 +1,229 @@
+@import "sq.less";
+
+/** my set */
+@bgc: #f6f6f6;
+.bg_common (@bg_size: contain) {
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: @bg_size;
+}
+
+
+/** common set */
+html, body { .bgc(@bgc); }
+
+h2 { 
+	.pl(.1rem);
+	.pr(.1rem);
+	.f(.28rem); 
+	.fn;
+	.black;
+	.clearfix;
+	i {
+		.right;
+		.mt(.08rem);
+		font-size: .20rem;
+		color: #999;
+		font-style: normal;
+	}
+}
+
+section { .bgwhite; }
+
+.pop,
+.hot,
+.handpick {
+	.mt(.2rem); 
+	.pt(.2rem);
+}
+
+/** page style */
+
+/* 轮播banner */
+.banner-slider{
+	.pr;.hidden;.auto;.c;
+	&-wrap{
+		.box;
+		li{
+			.pr;
+			img{.w(100%);}	
+			
+			&[status="drop"]{
+				-webkit-transition:all 0.2s ease-out 0s;
+			}
+		}
+	}
+	&-point{ 
+		.pa; bottom: 0; left: 50%; .i_block; .clearfix; .mb(.2rem);
+		li{ 
+			.left; .pr; left: -50%; .w(.1rem); .h(.1rem); .bgwhite; .mr(.12rem); .border-r(50%);
+		}
+		li:last-child{ .mr(0); }
+		.curr{ .bgred; }	
+	}
+}
+
+.handpick {
+	.pl(.1rem);
+	.pr(.1rem);
+	h2 { .pl(0); }
+}
+
+.handpick-content {
+	.pt(.1rem);
+	.pb(.2rem);
+	.clearfix;
+	.left {
+		.left;
+		.w(3.1rem);
+		.h(3.4rem);
+		.bg_common(cover);
+	}
+	.right {
+		.right;
+		.ml(.1rem);
+		.right-top,
+		.right-bot {
+			.block;
+			.w(3rem);
+			.h(1.65rem);
+			.bg_common(cover);
+		}
+		.right-bot {
+			.mt(.1rem);
+		}
+	}
+}
+
+.category-pop-content {
+	padding: .1rem .0725rem .2rem;
+	.f(0);
+	.clearfix;
+	a {
+		.left;
+		margin: .025rem;
+		.w(1.5125rem);
+		.pt(1.6278rem);
+		.bgwhite;
+		.bg_common;
+	}
+}
+
+.category-hot-content {
+	padding: .2rem .1rem 0;
+	.clearfix;
+	figure {
+		.left;
+		.w(1.55rem);
+
+		a {
+			.block;
+			.h(1.22rem);
+			margin: .1rem .15rem;
+			.bg_common;
+		}
+		figcaption { 
+			.mb(.3rem);
+			.f(.24rem);
+			.black;
+			.c; 
+		}
+	}
+}
+
+/** 单品 */
+.goods {
+	.mt(.2rem);
+	.goods-content{
+		.pr; 
+		.pt(.2rem); 
+	}
+}
+
+/* 时间小方块 */
+.goods-content-time{ 
+	.pa; 
+	left: 0; 
+	top: .54rem; 
+	.w(3.2rem); 
+	.c; 
+	.hour{ 
+		.i_block;
+		.pl(.3rem); 
+		.f(.3rem); 
+		.fc(#ff8cb3);
+		vertical-align: middle;
+		background: url("http://d04.res.meilishuo.net/pic/_o/67/ad/30a96955fcc5deffc8ac9ef44a3c_27_27.cf.png") no-repeat left center; 
+		background-size: auto 83%; 
+	}
+	.date{ 
+		.i_block;
+		.h(.4rem);
+		.ml(.1rem);
+		.pl(.1rem);
+		.f(.2rem);
+		vertical-align: middle;
+		border-left: 1px solid #ccc;  
+	}
+	.date-m,
+	.date-d {
+		.f(.2rem); 
+		.c; 
+		.fc(#bebebe);
+	}
+}
+
+/* 瀑布流样式 */
+.goods-content-g_wall{
+	.pr;
+	.clearfix; 
+	.goods_li{
+		.pa;
+		.w(50%);
+		.hidden;
+		.li_border{
+			.ml(.1rem);
+			.mr(.1rem);
+		}
+	}
+	.li_border {
+		.pr;
+		.mb(.2rem); 
+		.list_img {
+			.block;
+			.bg_common(cover);
+			.hidden;
+			.gpu;
+		}
+		.list_title {
+			.f(.24rem);
+			.fc(#000); 
+			.l(.32rem);
+			.hidden;
+		}
+	}
+	.list_info { .pt(.2rem); .pl(.2rem); .pb(.2rem); .pr(.2rem);}
+	.list_cost {.pt(.2rem); .pb(.1rem);}
+	.money_now {.f(.3rem); .pr(.1rem);}
+	.money_normal {.f(.22rem); .t-through;}
+	.goods_type{
+		.pa; 
+		top: -.04rem; 
+		left: .1rem;
+		.l(.34rem); 
+		.c; 
+		.white; 
+		.border-r(0 0 .06rem .06rem);
+		img{ .i_block; }
+	}
+	.two_type { left: .9rem; }
+	.new { .bgc(#ff96b9); }
+	.hot { .bgc(#ff6f80); }
+}
+
+/* loading */
+.pullUp;
+
+/* goTop btn */
+.goTop();
+#goTop{ bottom: 1rem; }

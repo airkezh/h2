@@ -1,0 +1,105 @@
+@import "../block.less";
+/*html,body{height:100%;overflow:hidden}*/
+html,body{.h(100%)}
+img {
+	.w(100%);
+	.block;
+}
+i,em,p,ul,li{font-style: normal;}
+.mask_box{.pa; .w(100%); .h(100%); z-index: 1002; background:rgba(0,0,0,0); top: 0; left: 0;}
+.game_box,.game_main{.w(100%); .h(100%); .hidden; .pa; top:0;}
+.game_main{
+	background: url(http://d04.res.meilishuo.net/pic/_o/d8/76/fcfb8071aae04df788258121132d_640_1010.ch.jpg) no-repeat;
+	background-size: 100% 100%;
+	.play{.w(30%); .pa; left:35%; top: 43%;}
+	.btnbar{.pa; left: 0; top: 63%; .w(100%);
+		.btn_list{.w(18%); .left; .ml(12%);}
+	}
+	.logo{.pf; bottom: 0; left: 0;}
+}
+/*自制弹层*/
+.shade{.pf;top:0;left:0;z-index:999;.w(100%);.h(100%);background:rgba(0,0,0,.7); _position: absolute;}
+.shade2{.pf;top:0;left:0;z-index:900;.w(100%);.h(100%);background:rgba(0,0,0,.7); _position: absolute;}
+.guang{.pf; z-index: 998; background: url(http://d02.res.meilishuo.net/pic/_o/b8/64/6920abcbdd54bcb63d16a4b6495a_640_504.cf.png) no-repeat; background-size: 100%; .w(100%); .h(100%); top:0; _position: absolute;}
+.dialog_box{
+	.pf; z-index: 1000; top:12%; .w(70%); left:14%; _position: absolute;
+	.share_box{.clearfix; .w(70%); .auto; .pt(10%)}
+	.shareBar{
+		.w(25%); .left;
+		p{.fc(#000); .pt(15px); .f(12px); .c;}
+	}
+	.shareBar:last-child{.right;}
+	.conlso{
+		border-top: solid 1px #dbdbdb; .pt(10px); .c; .mt(20px); .pb(10px);
+		.close_dialog{.fc(#000); .f(36*@px); .block;}
+	}
+	.down_btn{.w(64%); .auto; .pt(20%);}
+	.dialog_body{ 
+		background: url(http://d02.res.meilishuo.net/pic/_o/21/bd/f73402d5308cbaf29e456d50fdec_454_600.cg.png) no-repeat top; background-size: 100%; overflow-y: auto; max-height: 250px;
+		.dialog_content{
+			.w(87%); .auto;
+			.tc_list{
+				.bgc(#fff9f0); .border-r(10px); min-height: 35px; .mb(5px); box-shadow: 0px 3px 4px #c49471;
+				.highest_box{ text-align: center; height: 35px; line-height: 35px; font-size: 0.8rem; color:#e06152;}
+				.defen{
+					.c; .pt(5px);
+					.t1{.w(35%); display: inline; .vm}
+					.t2{.fc(#ff9982); .f(2.2rem); .l(2.4rem); font-weight: bold; text-shadow: #d86237 0 2px 0; display: inline-block; .vm;}
+					.t3{.w(15%);display: inline; .vm}
+				}
+				.dabai{.c; .f(0.8rem); .fc(#c49471); .pt(5px); .pb(5px)}
+				.dej{.w(72%); .auto; background: url(http://d02.res.meilishuo.net/pic/_o/97/da/76cc9786e47af3c7bcbc622ba4ca_284_75.cf.png) no-repeat; background-size: 100%; .pt(25%); .mb(5px); .pr;
+					.jjj{.pa; .fc(#fff); .f(0.8rem); left:0; top: 10%; .c; .w(100%);
+						.j_num{.fc(#fef500); .f(1.5rem);}
+					}
+				}
+
+			}
+			.ph_tip{.fc(#a97e54); .f(0.8rem); .c; .pt(5px);}
+			.tc_list.end{.mb(3px);}
+			.guize{
+				.w(95%); .auto;
+				dl{.clearfix; .mb(5px);}
+				dt{.left; .w(25px); .fc(#dc3728); .f(1rem);}
+				dd{.ml(25px); .fc(#77320c); .f(0.8rem); .l(1rem);}
+			}
+		}
+	}
+	.dialog_foot{}
+	
+}
+.btn_list{
+	.w(95%); .auto; .pt(5%); .clearfix;
+	.btn_box{.w(24%); .block; .left; .mr(14%);}
+	.btn_box.end{.right; .mr(0);}
+}
+.text_link{
+	.pt(10%); .c;
+	a{.fc(#fff); .f(0.8rem); text-decoration: underline;}
+}
+.que_btn{.w(51%); .auto; .pt(10%);}
+.ph_list{
+	.w(93%); .auto; .pt(5px); .pb(5px); .clearfix;
+	.user_head{.w(11%); .mr(2%); .hidden; .border-r(3px); .left; .border-1(#c49471);}
+	.user_name{.w(37%); .left; .mr(2%); .hidden; .fc(#a97e54); .f(0.8rem); .l(1rem); .pt(3%);  white-space:nowrap; text-overflow:ellipsis;}
+	.mingci{.w(16%); .left; .fb; .pt(3%); .f(0.8rem); .mr(2%);}
+	.mingci.d1{.fc(#f16645)}
+	.mingci.d2{.fc(#8c8dad)}
+	.mingci.d3{.fc(#b9868d)}
+	.qian3{.w(8%); .left;}
+	.ceng_num{.w(17%); .right; .f(0.8rem); .fc(#fa7951); .tr; .pt(3%)}
+	.mingci_num{.w(28%); .left; .fc(#a4a4a4); .pt(3%); .f(0.8rem);}
+}
+.wx_tip{.pf; z-index: 1000; top:0; .w(100%); _position: absolute;}
+.fist_tip{.pf; z-index: 1000; top:30%; .w(100%); _position: absolute;}
+.ddl_box{
+		.w(100%);
+		background:#FFD9DA url('http://d01.res.meilishuo.net/pic/_o/99/b9/ac16934afb79b7fcfbe18cbc34d0_640_217.ch.jpg') repeat-y;
+		background-size: 100% auto;
+	}
+.game_top{.pa; top: 0; .w(100%); z-index: 100; display: none;
+	#count{.w(40%); .pa; top:17%; left:3%;
+		p{.w(100%); .h(100%); .l(2rem); .fc(#fff); .f(1.2rem); .c; .pa; top:0;}
+	}
+}
+

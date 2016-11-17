@@ -1,0 +1,31 @@
+<% function palItem(){ %>
+<li rid="<?= v.reply_id ?>">
+	<p><span class="reply_num"><?=v.index ?>.</span><span class="reply_content"><?= v.content?></span></p>
+	<div>
+		<span class="editBtn"></span>
+		<span class="editSureBtn"></span>
+		<span class="deleteBtn"></span>
+	</div>
+</li>
+<% } %>
+<script type="text/html" id="fastReplyPalItem">
+<% palItem();%>
+</script>
+
+<script type="text/html" id="fastReplyPal">
+<div class="fastReplyPal">
+	<ul class="replyList">
+		<? $.each(list, function(k, v){ ?>
+			<? v.index=k+1;?>
+			<% palItem(); %>
+		<? }); ?>
+	</ul>
+	<div class="addReplyBox">
+		<input value=""/>
+		<div>
+			<p class="addBtn">添加快捷回复语</p>
+			<span class="addSureBtn"></span>
+		</div>
+	</div>
+</div>
+</script>

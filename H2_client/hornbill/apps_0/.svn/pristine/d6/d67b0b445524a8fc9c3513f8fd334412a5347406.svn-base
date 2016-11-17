@@ -1,0 +1,19 @@
+<% 	
+	if(!this.reg_feedback || this.reg_feedback.can_show == 0){
+		return ;
+	}
+%>
+<div id="fixWidget" class="reg_feedback_fw jfw_wrap" style="background-image:url(<%= this.reg_feedback.pic_url %>);_filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='<%= this.reg_feedback.pic_url %>', sizingMethod='scale');
+_background-image: none;">
+	<a class="link_reg" target="_blank" href="<%= this.reg_feedback.url %>">查看</a>
+	<a class="link_close jfw_close" href="javascript:;">关闭</a>
+</div>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use(['jquery'], function(){
+		$('.jfw_close').click(function(){
+			$('.jfw_wrap').hide();
+			$.get('/aj/coupon/close_coupon_float_tips');
+		});
+	});
+_use:",  this._JSstack , this._JSmods ); %>

@@ -1,0 +1,149 @@
+<%#head.html%>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script>
+
+    
+</script>
+<iframe class="page play" src="/qa/answer/" frameborder="0" style="display:none;">
+</iframe>
+
+
+<div class="page begain">
+	<div class="content">
+		<img src="<%=this.PICTURE_URL%>/images/wap/qa/start.jpg" alt="开始答题">
+		<div class="start_btn">
+			<img src="<%=this.PICTURE_URL%>/images/wap/qa/start_btn.png" alt="开始按钮">
+		</div>
+	</div>
+</div>
+
+
+<div class="page result" style="display:none">
+	<div class="content">
+		<img src="<%=this.PICTURE_URL%>/images/wap/qa/result.jpg" alt="结果页背景">
+		<div class="banner">
+			<img class="level0" src="<%=this.PICTURE_URL%>/images/wap/qa/low.png" alt="别低调，再来一局">
+			<img class="level1" src="<%=this.PICTURE_URL%>/images/wap/qa/fourth.png" alt="还差几题，再来一局">
+			<img class="level2" src="<%=this.PICTURE_URL%>/images/wap/qa/third.png" alt="铜牌买手">
+			<img class="level3" src="<%=this.PICTURE_URL%>/images/wap/qa/second.png" alt="银牌买手">
+			<img class="level4" src="<%=this.PICTURE_URL%>/images/wap/qa/first.png" alt="金牌买手">
+			<div class="surpass"></div>
+		</div>	
+		<div class="msg cur_msg">
+			<span class="score">0</span>
+			<span class="time">00:00</span>
+		</div>
+		<div class="msg his_msg">
+			<span class="score">0</span>
+			<span class="time">00:00</span>
+		</div>
+		<div class="operate">
+			<img class="buyer_btn" src="<%=this.PICTURE_URL%>/images/wap/qa/buyer_btn.png" alt="我要当买手">
+			<ul>
+				<li>
+					<img class="again_btn" src="<%=this.PICTURE_URL%>/images/wap/qa/again_btn.png" alt="再来一局">
+				</li>
+				<li>
+					<img class="share_btn" src="<%=this.PICTURE_URL%>/images/wap/qa/share_btn.png" alt="分享">
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="share" style="display:none">
+			<img src="<%=this.PICTURE_URL%>/images/wap/qa/share.png" alt="请点击右上角分享">
+	</div>
+</div>
+
+
+<div class="page recommand" style="display:none">
+	<div class="content">
+		<img src="<%=this.PICTURE_URL%>/images/wap/qa/rec.jpg" alt="推荐买手">
+		<div class="rec_msg">
+			<div class="referral">
+				<img src="<%=this.PICTURE_URL%>/images/wap/qa/referral.png" alt="被推荐人">
+				<img class="wrong" src="<%=this.PICTURE_URL%>/images/wap/qa/referral_wrong.png" alt="请填写被推荐人">
+			 	<input type="text" placeholder="请填写被推荐人微信号">
+		 	</div>
+		 	<div class="referee">
+				<img src="<%=this.PICTURE_URL%>/images/wap/qa/referee.png" alt="推荐人">
+				<img class="wrong" src="<%=this.PICTURE_URL%>/images/wap/qa/referee_wrong.png" alt="请填写推荐人">
+				<input type="text" placeholder="请填写推荐人微信号">
+			</div>
+		</div>
+
+		 <div class="rec_btn">
+		 	<img src="<%=this.PICTURE_URL%>/images/wap/qa/rec_btn.png" alt="提交推荐">
+		</div>
+	</div>
+	<div class="mask correct_mask" style="display:none">
+		<div class="mask_content">
+			<img class="success_info" src="<%=this.PICTURE_URL%>/images/wap/qa/submit_info.png" alt="提交成功！">
+			<div class="know">
+				<img class="know_btn" src="<%=this.PICTURE_URL%>/images/wap/qa/know.png" alt="我知道了!">
+			</div>
+		</div>
+	</div>
+
+	<div class="mask wrong_mask" style="display:none">
+		<div class="mask_content">
+			<img class="success_info" src="<%=this.PICTURE_URL%>/images/wap/qa/wrong_submit.png" alt="提交出错！">
+			<div class="know">
+				<img class="back_btn" src="<%=this.PICTURE_URL%>/images/wap/qa/back.png" alt="返回上一步!">
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+<div class="page download" style="display:none">
+	<div class="content">
+		<img src="<%=this.PICTURE_URL%>/images/wap/qa/higo.jpg" alt="">
+		<ul>
+			<li>
+				<a href="http://m.higo.meilishuo.com">
+					<img class="higo_btn" src="<%=this.PICTURE_URL%>/images/wap/qa/higo_btn.png" alt="下载higo">
+				</a>
+			</li>
+			<li>
+				<img class="again_btn" src="<%=this.PICTURE_URL%>/images/wap/qa/again_btn.png" alt="再来一局">
+			</li>
+		</ul>
+	</div>
+</div>
+
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/qa',function(){
+		if(Meilishuo.config.os.weixinBrowser){
+			$.ajax({
+				url: '/aj/wx/sign'
+				, data: {
+					url:window.location.href
+				}   
+				, dataType: 'json'
+				, type: 'post'
+				, success : function(data){
+					wx.config({
+						debug:false
+						//debug:false 
+						, appId: data.info.appId
+						, timestamp: data.info.timestamp
+						, nonceStr: data.info.nonceStr
+						, signature: data.info.signature
+						, jsApiList: [
+							'checkJsApi',
+							'onMenuShareTimeline',
+							'onMenuShareAppMessage',
+							'onMenuShareQQ',
+							'onMenuShareWeibo'
+						]   
+					}); 
+				},
+				error: function(err){
+				}
+			})
+		}
+	});
+_use:", this._JSstack, this._JSmods); %>
+<%#foot_frame.html%>

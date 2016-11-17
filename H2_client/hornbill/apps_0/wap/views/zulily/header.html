@@ -1,0 +1,23 @@
+<%
+	var status = this.status || 1;
+	var common_r = this.common_r;
+	var appShare = this.appShare;
+	var params = this.params;
+%>
+<nav class="tab" id="tab">
+	<a href="javascript:;" data-url="/zulily" data-xr="<%= common_r %>" class="<%= status==1 ? 'cur' : '' %>"><b>HOME</b></a>
+	<a href="javascript:;" data-url="/zulily/allList/" data-xr="<%= common_r %>" class="<%= status==3 ? 'cur' : '' %>"><b>全部商品</b></a>
+	<a href="javascript:;" data-url="/zulily/newList/" data-xr="<%= common_r %>" class="<%= status==2 ? 'cur' : '' %>"><b>最新上架</b></a>
+</nav>
+<div class="top-box" style="bottom:<%if(this.isIphone){%>60<%}else{%>20<%}%>px">
+	<a class="gotop" href="javascript:;">
+		<img src="http://d02.res.meilishuo.net/img/_o/41/62/c1d9e0f159bfb506b27dea648ccb_80_80.cg.png" />
+	</a>
+</div>
+<script>
+	fml.vars.appShare = <%= appShare %>;
+	fml.vars.params = <%= JSON.stringify(params) %>;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/zulily/header');
+_use:", this._JSstack, this._JSmods); %>

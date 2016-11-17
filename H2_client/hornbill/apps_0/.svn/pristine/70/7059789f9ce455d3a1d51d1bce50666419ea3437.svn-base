@@ -1,0 +1,72 @@
+<%#head.html%>
+	<%var item=this.report.info;%>
+		<section id="wrapper_main" class="wrapper">
+			<div class="reprot_detail">
+				<div class="evaluate">使用者评分：<span>外观<b>(&nbsp;<%=item.appearance%>&nbsp;)</b></span><span>功效<b>(&nbsp;<%=item.effect%>&nbsp;)</b></span><span>推荐<b>(&nbsp;<%=item.recommend%>&nbsp;)</b></span>
+				</div>
+				<div class="reportItem">
+					<div id="bigImg">
+						<div class="picture">
+							<div class="imgSlide" id="imgSlide_1">
+								<ul>
+									<%for(var i=0;i<item.trial_pics.length;i++){%>
+										<li data-index="<%=(i+1)%>" style="background-image: url(<%=item.trial_pics[i]%>);">
+										</li>
+										<%}%>
+								</ul>
+								<span class="bookmark" style="display: block;">1/<%=item.trial_pics.length%></span>
+							</div>
+						</div>
+					</div>
+					<div class="repContent">
+						<div class="userInfo">
+							<img src="<%=item.user.avatar_c%>" class="userImg" /><span class="userName"><%=item.user.nickname%><br></span><span class="pulishTime">发表于：<%=item.ctime%></span><span class="readNo"></span>
+						</div>
+						<h3 class="report_title"><%=item.trial_title%></h3>
+						<p class="report_con">
+							<%=item.trial_content%>
+						</p>
+						<%if(this.userInfo.user_id==item.user_id){%>
+							<a href="/m_welfare/updateReport/<%=item.id%>" id="updateRep"><img src="<%=this.PICTURE_URL%>images/m_welfare/wlf_icon_update.png" alt="修改报告" title="修改报告" />修改报告</a>
+							<%}%>
+								<div style="margin-top: 50px;">
+									<% if(this.share){ %>
+										<%=requireFn( 'wapShare.html')({ 'share' : this.share , 'shareTitle' : '选择分享到' , '_JSstack' : this._JSstack , '_JSmods' : this._JSmods }); %>
+											<%}%>
+								</div>
+					</div>
+
+				</div>
+
+			</div>
+
+			<%if(item.products_id!=0){%>
+				<div class="wlf_apply">
+					<a class="apply_btn pink" id="btnWantBuy" href="javascript:void(0)" data_id="<%=item.products_id%>">想要购买</a>
+				</div>
+				<%}%>
+		</section>
+
+		<!--<script type="text/html" id="bigPics">
+			<div class="dialog_box" style="z-index: 11;">
+				<div class="picture" style="margin: 0 a.uto;position: absolute;top:100px;left:0;right:0;">
+					<div class="imgSlide" id="imgSlide_1">
+						<ul>
+							<?
+							var pics=this.pics.split(',');
+							for(var i=0;i<pics.length;i++){?>
+								<li style="background-image:url(<?=pics[i]?>) ;"></li>
+								<?}?>
+						</ul>
+						<span class="bookmark" style="display: block;">1/<?=pics.length?></span>
+					</div>
+				</div>
+			</div>
+		</script>-->
+		<script>
+			fml.vars.pics = "<%=this.report.info.trial_pics%>";
+		</script>
+		<%! $_ENGINE_SELF.callFn( "useModule")( "<<<_use:
+	fml.use('wap/page/welfare_new/wlf_reportDetails');
+	_use:", this._JSstack , this._JSmods ); %>
+			<%#foot.html%>

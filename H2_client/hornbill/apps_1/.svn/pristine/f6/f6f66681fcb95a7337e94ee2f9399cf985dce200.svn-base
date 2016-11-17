@@ -1,0 +1,452 @@
+<%# head_simple.html%>
+
+<%
+    var query = this._Request_query;
+    var getLink = _extFn.getLink;
+    var navFrm = 'frm=daeh';
+    var mSubstr = _extFn.mSubstr;
+    var cur_time  = this.curTime / 1000;
+    var statistic = this.statistic || {};
+    var statisticInfo = statistic.info || {};
+    var proStart = this.proStart / 1000;
+    var proEnd = this.proEnd / 1000;
+
+    function getTimeRemain(end_time){
+        if (end_time && end_time > cur_time) return end_time - cur_time
+        else return ''
+    }
+
+    function needShowTime(end_time){
+    	if((end_time - cur_time)<=3600*24*3){
+    		return true;
+    	}
+    	return false;
+    }
+%>
+
+<%* for ipad %>
+    <%if(this.is_iPad){%>
+        <%# head_ipad.html %>
+    <% } else { %>
+<%* for not ipad %>
+
+<body>
+<div class="uinfo_bar">
+    <div class="header_top">
+        <ul class="menu_leo">
+	    <% if (this.user_id) { %>
+			<li id="setting">
+				<a href="<%=this.DOMAIN.www%>/person/u/<%= this.user_id%>?frm=headerprofile" title="<%= this.userInfo.nickname%>">
+					<%
+					var avatar = this.userInfo.avatar_d
+					if (avatar && avatar.indexOf('http://') == -1 ){
+						avatar = this.avator_pic + avatar
+						}
+					%>
+					<span class="s_face"><img src="<%= avatar%>" /></span>
+					<%= mSubstr(this.userInfo.nickname,7,'...') %><em class="redarrow"></em>
+				</a>
+				<ul class="add_menu_leo hw76 none_f">
+					<% if (1 != this.userInfo.is_mall) {%>
+					<li><a href="<%=this.DOMAIN.www%>/person/u/<%= this.user_id%>?type=editor" target="_blank">我的杂志</a></li>
+					<li><a href="<%=this.DOMAIN.www%>/person/u/<%= this.user_id%>?type=share" target="_blank">我的分享</a></li>
+					<!--<li><a href="<%=this.DOMAIN.www%>/person/u/<%= this.user_id%>?type=like" target="_blank">我喜欢的</a></li>-->
+					<%}%>
+					<li class="b_line"><a href="<%=this.DOMAIN.www%>/settings/setPersonal" target="_blank">设置账号</a></li>
+					<li><a id="headLogoutBtn" href="<%=this.DOMAIN.www%>/user/logout">退出</a></li>
+				</ul>
+			</li>
+			<li id="message">
+				<a class="msg">
+					消息
+					<b class="mgsTotalNum"></b>
+					<em class="redarrow"></em>
+				</a>
+				<ul class="add_menu_leo hw120 none_f" id="moreMessageBox">
+				</ul>
+			</li>
+			<li>
+				<a class="i_like" href="<%=this.DOMAIN.www%>/person/u/<%= this.user_id%>?type=like" target="_blank">
+					<i></i>我的喜欢
+				</a>
+			</li>
+           <% } else { %>
+			<li><a class="first" href="<%=this.DOMAIN.www%>/connect/auth/weixin"><em style='background:url("http://i.meilishuo.net/css/images/header/i_wx_single.png") no-repeat; padding:1px 8px;'>&nbsp;</em>微信登录</a></li>
+			<li><a href="<%=this.DOMAIN.www%>/connect/auth/qzone"><em class="i_QQ">&nbsp;</em> QQ登录</a></li>
+			<li><a href="<%=this.DOMAIN.www%>/user/login">登录</a></li>
+			<li><a href="<%=this.DOMAIN.www%>/user/register">注册</a></li>
+			<% } %>
+           	<li id="myShoppingCartEl">
+				<a href="<%=this.DOMAIN.www%>/cart" target="_blank">
+					<em class="i_cart">&nbsp;</em>
+					我的购物车
+					<span class="num_bgc num_bgc_none">
+						0
+					</span>
+				</a>
+			</li>
+			<li>
+				<a href="<%=this.DOMAIN.www%>/order" target="_blank"><em class="i_order">&nbsp;</em>	我的订单
+				</a>
+			</li>
+			<li><a href="<%=this.DOMAIN.www%>/client/?<%= navFrm%>" target="_blank"><em class="i_mob">&nbsp;</em>下载App</a></li>
+			<li><a class="last" href="<%=this.DOMAIN.www%>/helpcenter/?frm=top_to_help" target="_blank">帮助中心</a></li>
+		</ul>
+    </div>
+    <div class="clear_f"></div>
+</div>
+<%}%>
+<div class="cart_header">
+	<div class="logo_wrap">
+        <% if (this.user_id){%>
+            <a class="logo_new" href="<%=this.DOMAIN.www%>/?frm=logoa"></a>
+            <% }else{%>
+            <a class="logo_new" href="<%=this.DOMAIN.www%>/welcome"></a>
+            <%}
+            this.cart_num = 0
+            var cart_num = this.cart_number && this.cart_number.info && this.cart_number.info.count
+            this.cart_num = cart_num
+        %>
+        <% if(this.logo_act && this.logo_act.logo_src){ %>
+            <a class="logo_act_entrance left_f" href="<%= this.logo_act.logo_link %>" target="_blank"><img src="<%= this.logo_act.logo_src %>"></a>
+        <% } %>
+    </div>
+	<div class="status">
+        <div class="chart"></div>
+        <div class="text">
+            <span class="first current">我的购物车</span>
+            <span class="middle">填写核对订单信息</span>
+            <span>付款，完成购买</span>
+        </div>
+    </div>
+</div>
+<%if(this.bannerList.num > 0){%>
+<div class="banner">
+	<%if(this.bannerList && this.bannerList.banner && this.bannerList.banner[0].img ){%>
+	<div class="banner1">
+		<a target="_blank" href="<%=this.bannerList.banner[0].url || ''%>">
+			<img src="<%=this.bannerList.banner[0].img || ''%>"/>
+		</a>
+	</div>
+	<%}%>
+	<%if(this.bannerList && this.bannerList.banner && this.bannerList.banner[1].img ){%>
+	<div class="banner2">
+		<a target="_blank" href="<%=this.bannerList.banner[1].url || ''%>">
+			<img src="<%=this.bannerList.banner[1].img || ''%>"/>
+		</a>
+	</div>
+	<%}%>
+</div>
+<%}%>
+<div class="status-top">
+	<span class="tag-item tag-show">
+		<a>
+			全部商品<span id="China_count">(<%= statisticInfo.China_count||'0' %>)</span>
+		</a>
+	</span>
+
+	<%if(this.userInfo && this.userInfo.user_id && this.userInfo.user_id == 0 && this.cartList && this.cartList.info && this.cartList.info.length !== 0){%>
+	<span class="ml24_f user_goods_num">现在<a href="javascript:void(0)" class="login_in">[登录]</a>，查看之前存入的商品</span>
+	<%}%>
+	<span class="right">商品总价：（不含运费和优惠扣减）：<span class="total_price">0</span>元<a href="javascript:;" class="go_charge">去结算&gt;&gt;</a></span>
+</div>
+<% if(this.cartList && this.cartList.info && this.cartList.code == 0 && this.cartList.info.length !== 0){ %>
+<div class="container">
+	<div class="cart">
+		<table cellspacing="0" cellpadding="0">
+			<thead>
+				<tr>
+					<th width="55px" class="tl first">
+						<input id="select_all1" type="checkbox" name="" value="" class="select_all mls-input-checkbox" checked>
+						<label for="select_all1" class="mls-input-label mls-input-checkbox-label red-check">全选</label>
+					</th>
+					<th width="254px" style="text-align:center">商品信息</th>
+					<th width="100px">&nbsp;&nbsp;&nbsp;</th>
+					<th width="150px">单价（元）</th>
+					<th width="130px">数量</th>
+					<th width="135px">小计（元）</th>
+					<th class="last">操作</th>
+				</tr>
+			</thead>
+			<% this.cartList.info.forEach(function(shop,i){ %>
+				<tbody class="shop">
+
+					<tr class="blank_tr">
+						<td colspan="7">
+							<!-- 指定商品满额打折露出 -->
+							<!--<%if(shop.discount_count!=0){%>
+							<div class="discount_outer">满3件打8.5折区</div>
+							<%}%>-->
+						</td>
+					</tr>
+					<tr class="shop_title" id="shop_<%= shop.shop_id %>">
+						<td class="first">
+							<input class="select_shop mls-input-checkbox" type="checkbox" <%= shop.valid ? "checked" : "disabled" %> name="shop[<%= i %>]" value="<%= shop.shop_id %>" id="select_<%= shop.shop_id %>"/>
+							<label for="select_<%= shop.shop_id %>" class="mls-input-label mls-input-checkbox-label red-check"></label>
+							<input type="hidden" value="<%= shop.total_price %>" id="shop_total_<%= shop.shop_id %>"/>
+						</td>
+						<td class="tl last" colspan="6">
+							<div class="clearfix left_f" style="height:22px;line-height:22px;">
+							<span class="shop_info">商家：
+								<a class="red_f" href="<%=this.DOMAIN.www%>/shop/<%= shop.shop_id %>"  target="_blank" title="<%=(shop.shop_name.length>14) ? shop.shop_name : ""%>"><%= mSubstr(shop.shop_name , 14 , '...')%>
+								</a>
+							</span>
+							<% if(shop.im || shop.qq){ %>
+								<a class="getserviceqq knilmi shop_im" href="<%= this.ViewTools.callIM(shop.im , shop.qq) %>" target="_blank">&nbsp;</a>
+							<% } %>
+							</div>
+							<div class="shop_discount clearfix">
+							<%if(shop.shop_promote && shop.shop_promote.length>0){%>
+							    <%for(var i=0;i<shop.shop_promote.length;i++){%>
+								<img src="<%=shop.shop_promote[i].src%>?asdf"/>
+								<!-- 只有超出长度时有title值 -->
+								<span title="<%=(i!=shop.shop_promote.length-1) ? (shop.shop_promote[i].title.length>12) ? shop.shop_promote[i].title : "" : (shop.shop_promote[i].title.length>19) ? shop.shop_promote[i].title : "" %>"><%= (i!=shop.shop_promote.length-1) ? mSubstr(shop.shop_promote[i].title , 12 , '...') : mSubstr(shop.shop_promote[i].title , 18 , '...')%>
+								</span>
+								<%}%>
+							<%}%>
+
+
+							</div>
+							<% if(shop.has_shop_coupon){%>
+
+							<span class="right_f red_f coupon mr6_f" id="coupon_<%= shop.shop_id%>" data-shopid="<%= shop.shop_id%>"><span><%=shop.coupon_fit%></span>
+								<em class="coupon_arrow">√</em>
+							</span>
+
+                            <!--此处凑单信息暂时不要了：开始-->
+							<span style="display:none;" class="coupon_words right_f"><a href="<%= (shop.link?(shop.link+(shop.link.indexOf('?')>0?'&frm=cart':'?frm=cart')):'') %>" target="_blank"><%= shop.words || ''%></a></span>
+							<!--此处凑单信息暂时不要了：结束-->
+
+							<!-- 领取优惠券浮窗：开始-->
+							<div style="display:none;" class="coupon_info" id="coupon_info_<%= shop.shop_id%>" data-shopid="<%= shop.shop_id%>">
+								<div>
+									<p class="f14_f left_f">店铺优惠券可与直减优惠同时享受</p>
+									<span class="right_f mr14_f coupon_close" data-shopid="<%= shop.shop_id%>">X</span>
+									<div class="clear_f"></div>
+								</div>
+								<div class="x-coupon-list" data-hasdata ="">
+								</div>
+							</div>
+							<!-- 领取优惠券浮窗：结束-->
+
+
+
+							<%}%>
+						</td>
+					</tr>
+				</tbody>
+				<tbody>
+					<% shop.goods.forEach(function(goods,j){ %>
+					<tr id="goods_<%= goods.sid %>"
+						class="goods <%= j === shop.goods.length-1 ? "last" : "" %> <%= j===0 ? "first" : "" %> <% if(goods.stock === "0" || goods.shelf === "0"){ %>goods_useless<%}%>">
+						<% if(goods.stock === "0" || goods.shelf === "0"){ %>
+						<td class="tl first">
+							<span class="invalid">失效</span>
+						</td>
+						<% }else{ %>
+						<td class="tl first">
+							<input type="checkbox" <%= (goods.shelf === "0" || goods.stock === "0") ? "disabled" : "checked" %>
+								class="select_goods mls-input-checkbox" name="shop[<%= i %>]goods[<%= j %>]" value="<%= goods.sid %>"
+								id="select_<%= goods.sid %>"/>
+							<label for="select_<%= goods.sid %>" class="mls-input-label mls-input-checkbox-label red-check"></label>
+						</td>
+						<% } %>
+						<td class="g-content" id="g_content_<%= goods.sid%>">
+							<a href="<%=this.DOMAIN.www%>/share/item/<%= goods.twitter_id %>" target="_blank"><img asrc="<%= goods.x_pic_url%>" src="<%= goods.b_pic_url %>"/></a>
+							<% if(goods.pre_sale && goods.pre_sale.type==2){%><span class="presale presale-btn"><%= goods.pre_sale.label_text%></span><%}%>
+							<div class="name">
+								<div>
+									<a href="<%=this.DOMAIN.www%>/share/item/<%= goods.twitter_id %>" target="_blank"><%= goods.goods_title %></a>
+								</div>
+
+								<%var preheat = goods.promotion_show_info;%>
+								<% if(preheat){%>
+									<div class="activity" style="background-color:<%=preheat.bg_color%>;">
+										<strong href="<%=preheat.url||'javascript:void(0)'%>" style="color:<%=preheat.text_color%>"><%=preheat.text%></strong>
+									</div>
+								<%}%>
+							</div>
+						</td>
+						<td class="order_detail">
+							<div class="order_detail_wrapper">
+								<span class="order_info <% if(goods.stock === "0" || goods.shelf === "0"){ %>order_info_useless<%}%>" id="order_info_<%= goods.sid%>" data-sid="<%= goods.sid%>" data-shopid="<%= shop.shop_id%>" data-twitterid="<%= goods.twitter_id%>">
+									<% goods.prop.forEach(function(p,i){ %>
+										<% if(p&&p.is_show === '1'){ %>
+										<span class="order_info_item order_info_item_<%= i%> <%= i===0?'first':'' %>"><%= p.name %>：<%= p.value %></span>
+										<% } %>
+									<% }); %>
+									<span class="order_info_text">编辑</span>
+								</span>
+								<div class="order_edit" id="order_edit_<%= goods.sid%>">
+									<span class="arrow_left"></span>
+								</div>
+							</div>
+						</td>
+						<td class="price_discount">
+							<% if(goods && goods.promote){%>
+							<!-- 如果有打折则也显示原价 -->
+							<span class="price_origial"><s><%= Number(goods.goods_price_origial).toFixed(2) %></s></span>
+							<%}%>
+							<!-- 显示实际价格 -->
+							<span class="price"><%= Number(goods.goods_activity_price).toFixed(2) %></span>
+							<% if(goods && goods.promote && needShowTime(goods.promote.end_time)){%>
+							<!-- 如果有促销则显示促销相关信息 -->
+							<span class="promote_wrapper">
+								<%var promptRemain = getTimeRemain(goods.promote.end_time)%>
+								 <div class="promo_num"><em class="discount-txt"><%= goods.promote.text %></em><%if(goods.shelf != 0 && promptRemain){%><br/><em class="time" time="<%=promptRemain %>">-天-小时-分-秒</em><%}%>
+								</div>
+							</span>
+							<%}%>
+							<% if(goods.price_history_info){%>
+							<span class="promote_wrapper">
+								<div class="promo_sale">卖家降价<em class="promo_arrow"></em><input type="text" class="none_f" value="<%= goods.price_history_info.spread %>" />
+								</div>
+							</span>
+							<%}%>
+						</td>
+						<td>
+							<% if(goods.stock === "0"){ %>
+								已售完
+							<% }else if(goods.shelf === "0"){ %>
+								已下架
+							<% }else{ %>
+								<span class="minus" data-sid="<%= goods.sid%>"></span>
+								<input type="text" class="amount" data-ori="<%= goods.amount %>" data-max="<%=goods.limit ? goods.limit_num : goods.stock %>" <%if(goods.limit){%>data-limit="<%=goods.	limit_num %>"<%}%> value="<%= goods.amount %>"/>
+								<span class="add" data-sid="<%= goods.sid%>"></span>
+								<% if(goods.stock < 4 && goods.stock > 0){ %>
+								<div class="stock_remain">
+									<p>仅剩<%= goods.stock %>件</p>
+								</div>
+								<%}%>
+							<% } %>
+						</td>
+						<td>
+							<span class="goods_total"><%= (Number(goods.amount)*Number(goods.goods_activity_price)).toFixed(2) %></span>
+						</td>
+						<td class="last">
+							<a href="javascript:;" class="del">删除</a>
+						</td>
+					</tr>
+					<% }); %>
+				</tbody>
+
+			<% }); %>
+			<tbody class="empty">
+				<tr><td colspan="7"></td></tr>
+			</tbody>
+			<tfoot id="float_ctrl">
+				<tr>
+					<td width="65px" class="tl first">
+						<input id="select_all1" type="checkbox" name="" value="" class="select_all mls-input-checkbox" checked>
+						<label for="select_all1" class="mls-input-label mls-input-checkbox-label red-check">全选</label>
+					</td>
+					<!-- 大促期间这个显示 -->
+					<%if(cur_time > proStart && cur_time < proEnd){%>
+					<td colspan="6" id="hasTips" class="last tl clearfix_f">
+						<a href="javascript:;" id="removeSelected" class="linkPro red_f">删除选中的商品</a>
+						<%if(this.cartList.has_disable){%>
+						<a href="javascript:;" id="removeInvalid"  class="linkPro red_f">删除失效的商品</a>
+
+						    <%if(cur_time > proStart && cur_time < proEnd){%>
+	                        <span class="tips-has-disable">距Final Sale终极大促结束<br>仅剩<em class="time" time="<%=getTimeRemain(proEnd) %>">-天-小时-分-秒</em></span>
+	                        <%}%>
+
+						<%}else{%>
+
+						    <%if(cur_time > proStart && cur_time < proEnd){%>
+	                        <span class="tips">距Final Sale终极大促结束<br>仅剩<em class="time" time="<%=getTimeRemain(proEnd) %>">-天-小时-分-秒</em></span>
+	                        <%}%>
+						<%}%>
+						<span class="txtPro">商品总价（不含运费和优惠扣减）：</span>
+						<span class="red">￥<span class="total_price">0</span></span>
+						<a href="javascript:;" class="go_charge charge-btn"></a>
+					</td>
+					<%}else{%>
+					<!-- 大促期间这个不显示 -->
+					<td colspan="6" id="noTips" class="last tl clearfix_f">
+						<a href="javascript:;" id="removeSelected" class="link red_f">删除选中的商品</a>
+						<%if(this.cartList.has_disable){%>
+						<a href="javascript:;" id="removeInvalid"  class="link red_f">删除失效的商品</a>
+						<%}else{%>
+							<span class="link red_f remove_blank"></span>
+						<%}%>
+						<span class="txt">商品总价（不含运费和优惠扣减）：</span>
+						<span class="red">￥<span class="total_price">0</span></span>
+						<a href="javascript:;" class="go_charge charge-btn"></a>
+					</td>
+					<%}%>
+				</tr>
+			</tfoot>
+		</table>
+		<div>
+		</div>
+	</div>
+</div>
+<% }else if(this.cartList && this.cartList.info && this.cartList.code != 0){ %>
+<div class="cart">
+	<div class="error">
+		<div class="clear">
+			<div class="icon"></div>
+			<div class="description">
+				<%=this.cartList.info.msg || '载入购物车列表出错，请稍后再试哦！'%>
+			</div>
+		</div>
+		<a href="<%= this.is_iPad ? 'meilishuohd://jump.meilishuo/?json_params=%7B%22page%22%3A%20%22home%22%7D' : (this.DOMAIN.www+'/guang/hot?frm=trac') %>" class="btn size96x30 go-tour">去逛逛</a>
+	</div>
+</div>
+<% } %>
+<div class="cart" <%= (this.cartList && this.cartList.info && this.cartList.info.length !== 0) ? 'style="display:none"':'' %>>
+	<%if(this.userInfo.user_id && this.userInfo.user_id != 0){%>
+	<div class="empty">
+		<div class="clear">
+			<div class="icon"></div>
+			<div class="description">
+				您的购物车还空着呢，<br/>美物这么多，快去看看吧~
+			</div>
+		</div>
+
+		<a href="<%= this.is_iPad ? 'meilishuohd://jump.meilishuo/?json_params=%7B%22page%22%3A%20%22home%22%7D' : (this.DOMAIN.www+'/guang/hot?frm=trac') %>" class="btn size96x30 go-tour">去逛逛</a>
+	</div>
+	<%}else{%>
+	<div class="no_logged">
+		<div class="clear">
+			<div class="icon"></div>
+			<div class="description">
+				您的购物车还空着呢，<br/><a class="login_in" href="javascript:void(0)"><span>[</span>登录<span>]</span></a>查看以前放入的商品，或者<a href="<%= this.is_iPad ? 'meilishuohd://jump.meilishuo/?json_params=%7B%22page%22%3A%20%22home%22%7D' : (this.DOMAIN.www+'/guang/hot?frm=trac') %>">去逛逛</a>吧！
+			</div>
+		</div>
+	</div>
+	<%}%>
+</div>
+<div class="float_pannel" id="float_pannel">
+	<table cellpadding="0" cellspacing="0"></table>
+</div>
+
+<form class="cartForm" action="/order/init/" method="get" accept-charset="utf-8" id="form"/>
+	<input type="hidden" name="sid" id="sid"/>
+	<input type="hidden" name="shop_id" id="shop_id"
+	value="<%=(this.cartList && this.cartList.info[0]) ? this.cartList.info[0].shop_id : '' %>">
+</form>
+<span id="userInfo-user-id" style="display:none"><%= this.userInfo.user_id%></span>
+<input type="hidden" id="goods_select_list" value="<%if(this._Request_query.select_sid){%> <%= this._Request_query.select_sid %> <%};%>" />
+
+<script>
+var CONSTANT = CONSTANT || {};
+CONSTANT.invalidGoods = '<%= this.invalidGoods.join(',') %>';
+</script>
+
+<% if (!this.user_id) { %>
+	<%# wins/login.html %>
+<% } %>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('order_pc/cart/index');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%* for ipad %>
+    <%if(this.is_iPad){%>
+        <%# foot_ipad.html %>
+    <% } else { %>
+<%* for ipad %>
+<%# foot.html%>
+<%}%>

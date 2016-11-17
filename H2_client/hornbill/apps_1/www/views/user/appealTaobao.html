@@ -1,0 +1,64 @@
+<%# head.html %>
+<div class="appeal_wrap">
+	<div class="ap_header">
+		<h3>账号申诉：</h3>
+		<p><span class="r_dot"></span>申诉可以帮你找回账号，解决无法正常登录和无法修改密码等问题</p>
+		<p><span class="r_dot"></span>填写尽可能多的资料，有助于提高你的账号申诉成功率</p>
+	</div>
+	<div class="ap_content">
+		<p class="con_title">请认真填写以下问题，以便能够快速找回账号(<span class="fM">“*”</span>号为必填选项)：</p>
+		<div>
+			<p class="qus_title"><span class="r_start">*</span>你的美丽说用户名：</p>
+			<input type="text" id="nickname">
+			<p class="qus_notes">注：忘记你的用户名，可以尝试在搜索栏搜索你淘宝用户名找找看，<a href="javascript:void(0)" class="find_user">立即搜索</a></p>
+		</div>
+		<div>
+			<p class="qus_title"><span class="r_start">*</span>你的淘宝用户名：</p>
+			<input type="text" id="tb_user_name">
+		</div>
+		<div class="upload_ie">
+			<p class="qus_title"><span class="r_start">*</span>淘宝个人中心登录状态下截图，截图需包含你的用户名<span class="red_f example">（举例）</span>：</p>
+			<div class="upload_block">
+				<div class="upload_btn"><i></i>上传截图</div>
+				<div class="upload_wraper">
+					<div class="upload_area">
+						<form action="/imageupload/pic_upload_no_login" class="upload_pho" method="POST" enctype="multipart/form-data" target="upload_iframe" >
+							<input type="file" name="attach" size="1" class="attach_photo" style="opacity:0; filter: alpha(opacity:0);"/>
+						</form>
+						<iframe class="upload_iframe none_f" name="upload_iframe" frameborder="0"></iframe>
+					</div>
+				</div>
+			</div>
+			<img src="" alt="" class="none_f preview">
+			<div class="clear_f"></div>
+			<div class="ap_tb_ex"></div>
+		</div>
+		<div>
+			<p class="qus_title"> 其他可以证明你真实身份的信息(选填)：</p>
+			<textarea name="" id="more_info" cols="30" rows="10"></textarea>
+			<p class="qus_notes">注：填写更多可以证明你身份的信息，如最近一次私信的对象，最近一次登录的地区等。</p>
+		</div>
+		<div>
+			<p class="qus_title"><span class="r_start">*</span>你的常用邮箱</p>
+			<input type="email" id="email">
+			<p class="qus_notes">注：申诉结果我们将会以邮件的形式发送至你所填写的邮箱,请务必正确填写邮箱。</p>
+		</div>
+	</div>
+	<a href="javascript:void(0)" class="ap_submit">提交申请</a>
+</div>
+<%# user/windows.html %>
+<script type="text/html" id="validateError">
+	<div class="errorMsg" id="<?= id ?>_error"><i></i><span><?= errorMsg ?></span></div>
+</script>
+<script type="text/html" id="ap_submit_dialog">
+	<div class="dialog_wrap">
+		<p class="dialog_title">亲爱的，花小美已经收到你的申诉了哦，请耐心等待一下吧</p>
+		<p>账号审核结果会以邮件形式发送至你的邮箱，请注意查收!</p>
+		<a href="/welcome">确定</a>
+	</div>
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use('page/appealTaobao');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html %>

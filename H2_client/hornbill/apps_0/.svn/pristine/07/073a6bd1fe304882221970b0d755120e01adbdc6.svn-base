@@ -1,0 +1,151 @@
+<%#head.html%>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+     fml.use('page/doota/shareact');
+_use:", this._JSstack , this._JSmods ); %>
+<div class="act_box">
+	<%if(this.list){%>
+	<div class="act_title">
+		<%if(this.time > 0){%>
+		<div class="countdown"><span></span>剩余<div id="alt" alt="<%= this.time%>">-天-小时-分-秒</div></div>
+		<%}%>
+		<div class="title"><span class="redborder"></span><%=this.list.show_name%></div>
+	</div>
+	<div class="content">
+		<div class="act_banner">
+			<img src="<%= this.list.big_pic%>" />
+		</div>
+		<div class="des">
+			<h3><%=this.list.brand_name%><br /><span><%=this.list.discount_desc%></span></h3>
+			<p>
+				<%if(this.time > 0){%>
+				<%=this.list.pc_desc%>
+				<%}else{%>
+				活动已结束
+				<%}%>
+			</p>
+		</div>
+		<%}%>
+		<div class="clear_f"></div>
+	</div>
+</div>
+<div class="act_box">
+	<%if(this.ele){%>
+	<div class="content">
+		<span class="all">共有<%=this.ele.count%>件商品</span>
+		<div class="range">
+			<span class="txt">排序：</span>
+			<ul>
+				<li<%if(this.od === 'po'){%> class="active"<%}%>>
+					<a href="/biz/shareact/activity/?ac_id=<%=this.ac_id%>&page=0&od=po">人气<i class="arrow_d">&nbsp;</i></a><span>|</span>
+				</li>
+				<li<%if(this.od === 'dsc'){%> class="active"<%}%>>
+					<a href="/biz/shareact/activity/?ac_id=<%=this.ac_id%>&page=0&od=dsc">折扣<i class="arrow_d">&nbsp;</i></a><span>|</span>
+				</li>
+				<li<%if(this.od === 'pca' || this.od === 'pcd'){%> class="active"<%}%>>
+					<a href="/biz/shareact/activity/?ac_id=<%=this.ac_id%>&page=0&od=<%= (this.od === 'pcd')? 'pca' : 'pcd'%>">价格<i class="<%= (this.od === 'pcd')? 'arrow_t' : 'arrow_d';%>">&nbsp;</i></a><span>|</span>
+				</li>
+				<li<%if(this.od === 'sc'){%> class="active"<%}%>>
+					<a href="/biz/shareact/activity/?ac_id=<%=this.ac_id%>&page=0&od=sc">销量<i class="arrow_d">&nbsp;</i></a>
+				</li>
+			</ul>
+		</div>
+		<div class="clear_f"></div>
+		<div class="grayline"></div>
+		<div class="productBox">
+			<% for(var i = 0; i < this.ele.data.length; i++){ %>
+				<a href="/<%= 1 == this.ele.data[i].is_cosmetic? 'prom': 'share' %>/item/<%=this.ele.data[i].twitter_id%>?d_r=7__0-1-1-1" target="_blank" class="productCon">
+				<%var _l = 0;%>
+				<% if(this.list && this.list.not_start == 1){ %>
+					<div class="notstart"></div>
+				<%} else if(this.ele.data[i].repertory == 0 || this.ele.data[i].is_end == 1){%>
+					<div class="soldout"></div>
+				<% } else { %>
+					<% this.ele.data[i].marks.forEach(function(v1 , k1){ %>
+						<div class="new-png"  style="left:<%=6 + _l%>px"><img src="<%= v1.img_url%>" /></div>
+						<%_l += (+v1.img_width + 2);%>
+					<% });%>
+				<% } %>
+				<%if(this.time > 0 && this.ele.data[i].repertory != 0 && this.ele.data[i].is_end != 1){%>
+					<div class="proImg">
+						<img width="208" src="<%=this.ele.data[i].image%>" />
+					</div>
+					<div class="proTitle">
+						<%=this.ele.data[i].goods_title%>
+					</div>
+					<div class="proPrice">
+						<b><em>￥</em><%=this.ele.data[i].price%></b>
+						<span>￥<%=this.ele.data[i].original_price%></span>
+					</div>
+					<div class="proStatus">
+						已售出<%=this.ele.data[i].sell_num%>件
+					</div>
+				<%}else{%>
+					<div class="proImg">
+						<img width="208" src="<%=this.ele.data[i].image%>" />
+					</div>
+					<div class="proTitle">
+						<%=this.ele.data[i].goods_title%>
+					</div>
+					<div class="proPrice">
+						<b><em>￥</em><%=this.ele.data[i].price%></b>
+						<span>￥<%=this.ele.data[i].original_price%></span>
+					</div>
+					<div class="proStatus">
+						已售出<%=this.ele.data[i].sell_num%>件
+					</div>
+				<%}%>
+				</a>
+			<%}%>
+			<div class="clear_f"></div>
+		</div>
+		<div class="">
+			<%#paging.html%>
+		</div>
+	</div>
+	<%}%>
+</div>
+<%if(this.sales && this.sales.length){%>
+<div class="act_box">
+	<div class="act_title">
+		<div class="title"><span class="redborder"></span>热门特卖</div>
+	</div>
+	<div class="content">
+		<div class="hotDeals">
+			<%for(var i = 0; i < this.sales.length; i++){%>
+			<a target="_blank" href="/biz/shareact/activity/?ac_id=<%=this.sales[i].ac_id%>&page=<%=this.groupPg.current_page%>&od=po" class="hotCon">
+				<div class="hotImg">
+					<img src="<%=this.sales[i].vertical_pic%>" />
+				</div>
+				<div class="hotTitle">
+					<%=this.sales[i].brand_name%><span>|</span><%=this.sales[i].show_name%><br />
+					<div><%=this.sales[i].discount_desc%></div>
+				</div>
+			</a>
+			<%}%>
+			<div class="clear_f"></div>
+		</div>
+	</div>
+</div>
+<%}%>
+<div class="act_box">
+	<div class="services">
+		<div class="act_title">
+			<div class="title"><span class="redborder"></span>优质服务保障</div>
+		</div>
+		<div class="content">
+			<ul class="serIcons">
+			<% this.service && this.service.forEach(function(data,k){ %>
+				<li <%if(k == this.service.length - 1){%>class="noborder"<%}%>>
+					<a href="/help/return/" target="_blank" class="iconService">
+						<img src="<%=data.icon_pc_60 %>" /></a> 
+						<%=data.text%>
+				</li>
+			<% }) %>
+			</ul>
+			<div class="clear_f"></div>
+		</div>
+	</div>
+	<%# doota/list_contact.html%>
+	<div class="clear_f"></div>
+</div>
+<%#foot.html%>

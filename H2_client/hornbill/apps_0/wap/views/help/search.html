@@ -1,0 +1,18 @@
+<%#head.html%>
+<%
+var mSubstr =  _extFn.mSubstr;
+%>
+	<div class="content border-Top">
+		<%# help/search-title.html%>
+		<ul class="common-list">
+			<%if(this.know_serach.data && this.know_serach.data.length > 0){%>
+				<% this.know_serach && this.know_serach.data.forEach(function(item){%>
+					<li><em></em><a href="/help/contact/?know_id=<%=item.know_id%>&channel=1"><%= mSubstr(item.title, 13, '...') || '' %></a></li>
+				<%});%>
+			<%}else{%>
+				<li>很抱歉我们暂时无“<%=decodeURIComponent(this.title)%>”相关的搜索结果</li>
+			<%}%>
+		</ul>
+	</div>
+<%#foot.html%>
+				

@@ -1,0 +1,83 @@
+<%# head.html%>
+
+<%= requireFn('block/page_head.html')({
+	'pageTitle' : '收银台'
+	, 'xr' : this.xr
+	, '_JSstack' : this._JSstack
+	, '_JSmods' :  this._JSmods
+}); %>
+
+<%
+	var global_r     = this.xr.r || '',
+		channels     = this.channels,
+		gatewayList  = channels && channels.info && channels.info.gatewaylist,
+		isHideWeixin = this.os.weixinBrowser;
+%>
+<div class="wrap">
+	<ul class="item-list">
+		<%
+		gatewayList && gatewayList.forEach(function( bank ){
+			var className = 'item js-bank';
+			if ( bank.checked == 1 ) {
+				className += ' state-check'
+			}
+
+			var pmcode = bank.pmcode;
+			if ( pmcode == 'WECHATMOB' ) {
+				pmcode = 'WAPGWCARD'
+			}
+
+			/* 在微信环境里隐藏微信支付，因为接口返回的微信跳转链接无法打开。 */
+			if ( bank.bankcode == 'WECHAT' && isHideWeixin ) {
+				return
+			}
+		%>
+		<li class="<%= className %>" data-pmcode="<%= pmcode %>" data-bankcode="<%= bank.bankcode %>" data-paytype="2">
+			<i class="icon-bank" style="background-image:url(<%= bank.bankimg %>)"></i>
+			<p class="item-desc">
+				<span class="item-name"><%= bank.bankname %><% if ( bank.isshowicon == 1 ) { %><i class="label-hot">HOT</i><% } %></span>
+				<% if ( bank.remark ) {
+					var textClassName = bank.isshowcolor == 1 ? 'item-highlight' : 'item-normal';
+				%>
+				<span class="<%= textClassName %>"><%= bank.remark %></span>
+				<% } %>
+			</p>
+		</li>
+		<% }); %>
+	</ul>
+
+	<ul class="item-list">
+		<li class="item js-bank js-not-impl">
+            <i class="icon-unionpay" style=""></i>
+            <p class="item-desc">
+                <span class="item-name">银行卡快捷支付</span>
+            </p>
+        </li>
+        <li class="item js-bank js-not-impl">
+            <i class="icon-blank"></i>
+            <p class="item-desc">
+                <span class="item-name">请选择银行卡</span>
+            </p>
+        </li>
+	</ul>
+</div>
+<div class="fixed_download none js-download-app">
+	<div class="black_mask"></div>
+	<div class="dialog_box">
+		<p class="intro">您尚未安装美丽说APP</br>下载后可使用此功能</p>
+		<p class="downloadBtn btn js-download-btn">立即下载</p>
+		<p class="noDownload btn js-cancel-btn">忽略</p>
+	</div>
+</div>
+<footer class="cashier-ft">
+	<span class="price">应支付金额:<i class="price-num js-pay-price">￥<%= channels.payamount %></i></span>
+	<button class="btn-pay" id="pay">去支付</button>
+</footer>
+<a id="deepLink" href="javascript:void(0);" xr="<%= this.xr.r %>"></a>
+<script>
+	fml.vars.order = <%= JSON.stringify(this.order) %>;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/doota/cashier');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

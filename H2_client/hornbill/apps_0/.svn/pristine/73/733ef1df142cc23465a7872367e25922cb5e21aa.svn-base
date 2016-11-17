@@ -1,0 +1,45 @@
+/*common*/
+require('m/zepto')
+
+function sign(){
+    var weixin = navigator.userAgent.indexOf('MicroMessenger') > 0
+	if(!weixin) return;
+
+	$.ajax({
+		url: '/aj/wx/sign'
+		, data: {
+			url:window.location.href
+			//url:encodeURIComponent(window.location.href)
+		}
+		, dataType: 'json'
+		, type: 'get'
+	//	, type: 'post'
+		, success : function(data){
+
+			//alert(JSON.stringify(data))
+
+			wx.config({
+				// debug:true
+				debug:false 
+				, appId: data.info.appId
+				, timestamp: data.info.timestamp
+				, nonceStr: data.info.nonceStr
+				, signature: data.info.signature
+				, jsApiList: [
+					'checkJsApi',
+					'onMenuShareTimeline',
+					'onMenuShareAppMessage',
+					'onMenuShareQQ',
+					'onMenuShareWeibo',
+					'scanQRCode',
+					'addCard',
+					'chooseCard',
+					'openCard'
+				] 
+			});
+
+		}
+	})
+}
+
+return sign;

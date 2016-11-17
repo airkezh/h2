@@ -1,0 +1,217 @@
+@import "../block.less";
+
+body{.bgc(#f0edee); }
+.border-bc(@style:solid){border-bottom: 1px @style #e6e5e6; }
+.border-d9 (@color:#e6e5e6) {border: 1px solid @color;}
+.border-td9 (@color:#e6e5e6) {border-top: 1px solid @color;}
+.border-bd9 (@color:#e6e5e6) {border-bottom: 1px solid @color;}
+.border-rd9 (@color:#e6e5e6) {border-right: 1px solid @color;}
+.border-ld9 (@color:#e6e5e6) {border-left: 1px solid @color;}
+.border_tb{.border-td9(#d9d9d9);.border-bd9(#d9d9d9);}
+// .border-d9 { .border-1(#d9d9d9);}
+.right{.right;}
+.wrap{ .f(12*@f);}
+img{ .block; .w(100%); }
+.ml_color { .red;}
+.gray_color{.fc(#888);}
+.green_color{.fc(#0eba00);}
+.colorgrey{ .fc(#b6b6b6);}
+.wx_grey { .gray;}
+.wx_right { .right;}
+.fontsize { .f(20*@px);}
+.wx_title { .f(36*@px); .white; .c; .bgc(#fd70a3); .l(90*@px); font-weight: normal;}
+.m50{.h(100*@px);}
+.border_btm { border-bottom: 1px solid #cbc5c4;}
+.padding (){ .pt(40*@px); .pb(40*@px); .pr(40*@px); .pl(40*@px);}
+.padding_b_20{.pb(20*@px);}
+.padding-20 () { .pt(20*@px); .pb(20*@px); .pr(30*@px); .pl(30*@px);}
+.padding-30 () { .pt(30*@px); .pb(30*@px); .pr(30*@px); .pl(30*@px);}
+.wx_icon () { .left; .mr(16*@px); .vm;}
+.module_info () { .mt(40*@px); .bgc(#fff); .border-td9; .border-bd9;}
+.wx_btn () { .bgred; .f(32*@px); .c; .i_block; .vm; .border-n; .border-r(6*@px); .white;}
+.word_border {.border-1(#666); .border-r(6*@px);.l(50*@px); .c;}
+.status_line {.left; .w(130*@w); .border-td9;.i_block; .vm; .mt(14*@px); .mr(8*@px);}
+.line_right {.right;}
+.mb10 { .mb(20*@px);}
+
+/* === layerBox start === */
+.layer_wrap {
+	.none;.c;/* .mr(40*@px); .ml(40*@px);*/ .pf; top: 300*@w; .w(480*@w); .bgc(#666); opacity:0.85; .f(28*@px); .padding;.white;z-index: 99;left: 40*@w;
+}
+
+/* === order_empty === */
+.order_empty {
+	.c; .pt(50*@px); .bgc(#fff); .mt(20*@px);
+	.empty_icon {.wx_icon; .w(154*@px); .h(156*@px); .i_block; float: none;}
+	h3 { .f(32*@px); .pt(30*@px); .l(18px); .fn;} 
+	p{ .f(26*@px); .pt(8*@px); .fc(#999);}
+	.btn { border: 1px solid #999; .f(26*@px); .fc(#666); .border-r; .w(206*@w); .h(56*@px); .l(60*@px); .i_block; .mt(32*@px); .mb(30*@px);}
+}
+
+/* === more === */
+.more { .f(28*@px);  .block; .c; .l(55px);  .h(45px);}
+.xiala_icon { .w(28*@px); .h(16*@px); .i_block;}
+
+/* === share === */
+.none{
+	.none();
+}
+.share_box{
+	.pa();
+	top: 0px;
+	right: 0px;
+	.w(280*@px);
+	.bgc(#FFFFFF);
+	.share_type{
+		li{
+			.black();
+			.f(30*@px);
+			.l(88*@px);
+			.h(88*@px);
+			border-bottom: 1px solid #dedfe0;
+			img{
+				.vm();
+				.i_block();
+				.w(46*@px);
+				.ml(30*@px);
+				.mr(30*@px);
+			}
+			span{
+				.vm();
+			}
+		}
+		.type_last{
+			border: none;
+		}
+	}
+}
+.page_zoom{
+	z-index : 10;
+	width: 100%;
+	height: 100%;
+	.pf();
+	top: 0px;
+	background: rgba(0,0,0,0.4);
+}
+
+/* for群圈 改版底部banner */
+.nav-c{ .h(100*@px);.bgc(#fff);.f(0);.pf; bottom: 0; left: 0; z-index: 10;.w(100%); .border-td9(#eee); .pl(50/640*100%); .pr(50/640*100%);
+	.option{.i_block; .h(100%); .w(28.1%); .f(22*@px);.c; 
+		&:visited{ .fc(#666);}
+		.bg{.i_block; background: url(http://d05.res.meilishuo.net/pic/_o/62/d1/000b28d661184449b0f509959335_220_95.cf.png) no-repeat; .w(40*@px); .h(40*@px); .mt(16*@px); .mb(6*@px); background-size: 220*@px 100*@px;}
+	}
+	
+	.option:nth-of-type(1){ 
+		.bg{ background-position: 2*@px 0;}
+		span.active{ background-position: 2*@px -58*@px;
+			&+p{.fc(#f69);}
+		} 
+	}
+	.option:nth-of-type(2){ 
+		.bg{ background-position: -112*@px 0;}
+		span.active{ background-position: -114*@px -56*@px;
+			&+p{.fc(#f69);}
+		} 
+	}
+
+	.option:nth-of-type(3){ 
+		.bg{ .w(42*@px); background-position: -176*@px 0;}
+		span.active{ background-position: -174*@px -58*@px;
+			&+p{.fc(#f69);}
+		} 
+	}
+}
+
+/* for群圈 改版底部banner rem单位版本 */
+.nav-c-new(){ 
+	.h(1rem);.bgc(#fff);.f(0);.pf; bottom: 0; left: 0; z-index: 10;.w(100%); .border-td9(#eee); .pl(.5rem); .pr(.5rem);
+	.option{.i_block; .h(100%); .w(28.1%); .f(.22rem);.c; 
+		&:visited{ .fc(#666);}
+		.bg{.i_block; background: url(http://d05.res.meilishuo.net/pic/_o/62/d1/000b28d661184449b0f509959335_220_95.cf.png) no-repeat; .w(.4rem); .h(.4rem); .mt(.16rem); background-size: 2.2rem 1rem;}
+		p{.f(.24rem);}
+	}
+	
+	.option:nth-of-type(1){ 
+		.bg{ background-position: .02rem 0;}
+		span.active{ background-position: .02rem -0.58rem;
+			&+p{.fc(#f69);}
+		} 
+	}
+
+	// .option:nth-of-type(2){ 
+	// 	.bg{ background-position: -52*@px 0;}
+	// 	span.active{ background-position: -52*@px -56*@px;
+	// 		&+p{.fc(#f69);}
+	// 	} 
+	// }
+
+	.option:nth-of-type(2){ 
+		.bg{ background-position: -1.12rem 0;}
+		span.active{ background-position: -1.14rem -0.56rem;
+			&+p{.fc(#f69);}
+		} 
+	}
+
+	.option:nth-of-type(3){ 
+		.bg{ .w(.42rem); background-position: -1.76rem 0;}
+		span.active{ background-position: -1.74rem -0.58rem;
+			&+p{.fc(#f69);}
+		} 
+	}
+}
+
+
+
+/* B店 顶部banner nav_top */
+.top_nav{.pf;.h(88*@px);.bgc(#fff);.fc(#000);.border-bd9;.f(28*@px);.w(100%); z-index: 10; left: 0; top: 0;
+	.top_nav_box{.w(550/640*100%);
+		li{.w(33.3%);.c;.left;.l(84*@px);.h(68*@px);}
+		li.active{ 
+			a{.fc(#ff6699);border-bottom: 2px solid #ff6699;.i_block;.l(52*@px); .w(66%);}
+		}
+		a{ .i_block;.w(100%);.fc(#000);
+			&:visited{
+				.fc(#000);
+			}
+		}
+		
+	}	
+	.top_nav_img{.i_block; .w(86*@px);.h(100%);.border-ld9; .pa; top: 0;right: 0px; background: url("@{pic_url}/images/wap/web/wx_new/head.png") center center no-repeat; background-size: 19px 16px;
+	}
+	.user_box{.pa; right: 10*@px; top:104*@px; background: rgba(0, 0, 0, 0.6); .pl(15px);.pr(15px);.none;z-index: 3;.border-r(8*@px);
+		.bg_triangle{.i_block;.w(11px);.h(7px);.pa; top:-12*@px;right: 13px;}
+		.i_img{.i_block;.w(40*@px);.h(19px);.left; .mr(10px);}
+		.a_line{.block;.w(190*@px);padding: 10px 0;.f(28*@px);.fc(#eee);
+			&:first-of-type{
+				.border-bd9(#989494);.pt(12px);
+			}
+			&:hover{.fc(#eee);}
+			p{.l(20px);}
+		}
+	}
+}
+
+/* loading */
+.load_box{.pf; top:300*@px;.w(100%); .none;
+	.load_panel{
+		.w(150*@w); background: rgba(0, 0, 0, 0.6); .pt(30*@px); .pb(30*@px); .auto; .border-r(8*@px);
+	}
+}
+.pullUp{
+	.pullUpDown > .common;.pullUpDown > .loading;
+}
+
+/* 二级菜单 */
+.typeTop{
+	p{
+		.bgc(#fff);border-bottom: 1px #d6d6d6 solid;.c; /* .pl(2%);*/
+		a{
+			.w(17%);.c;.l(70*@px);.i_block;/*.ml(3%);.mr(3%);*/
+			&:active,&:visited{.fc(#666);}
+		}
+		a.type_select{
+			border-bottom: 2px #f69 solid;.mb(-1px);.fc(#f69);
+			&:visited{.fc(#f69);} /*兼容酷派*/
+		}
+	}
+}

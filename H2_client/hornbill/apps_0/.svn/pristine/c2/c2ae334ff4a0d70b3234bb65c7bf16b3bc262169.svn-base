@@ -1,0 +1,414 @@
+/*common*/
+var shareTmp = require('component/shareTmp')
+	, emo2img = require('app/emoji').emo2img
+	, userStatus = require('app/im/userStatus')
+	, sendObj = {}
+	, htmlFilter = require('component/filterhtml')
+	, intoView = require('app/im/intoView')
+
+Date.prototype.getT = function(){
+	var h = this.getHours()+''
+		,m = this.getMinutes() + ''
+	if(h.length<2) h ='0'+h
+	if(m.length<2) m ='0'+m
+	return h+':'+m
+}
+
+var sendStatus = function(data){
+
+	console.log('sendStatus', data)
+
+	if(!sendObj[data.messageId]) return;
+
+	sendObj[data.messageId].conp.removeClass('wait')
+
+	userStatus.change(userListObj[data.to].mainBox.children('.im_top'), data.status|0, 'sl', true)
+
+	if(data.sendStatus == 0){
+		if(data.data[0].type =='text')
+			sendObj[data.messageId].conp.find('p').html(data.data[0].msg)
+		delete sendObj[data.messageId]
+
+		if(!userListObj[data.to].history){
+			userListObj[data.to].history = data.msg_id
+		}
+
+	}else{
+		sendFail(data.messageId)
+	}
+
+	var ctime = (new Date(data.data[0].timestamp*1000)).getT();
+	$("#mid_"+data.messageId).closest(".con").siblings(".ctime").html(ctime);
+
+	if(data.autoreply != ''){
+		add({
+			uid : data.to
+			, data : [
+				{
+					msg : data.autoreply
+					, chatfrom : data.to
+				}
+			]
+			, msgStyle : 'sys'
+		})
+	}
+}
+
+function sendFail(messageId){
+	var bubbleObj = sendObj[messageId].conp
+	bubbleObj.addClass('fail')
+	if(!bubbleObj.find('.fail_tip').length)
+		bubbleObj.append('<span class="fail_tip">发送失败</span>')
+}
+
+function changeUserPush(data, sound, fn){
+	var toid = data.toid
+
+	if(data.history){
+		history(data.history, toid)
+	}
+
+	if(data.isShowInfo){	//显示诈骗信息
+		if(userListObj[toid].welcome){
+			add({
+				uid : toid
+				, data : [
+					{
+						msg : data.welcome.data
+						, chatfrom : toid
+					}
+				]
+			}, {type : 'welcome'})
+		}
+	}
+
+	if(data.welcome){
+		if(data.simple_info){	//显示诈骗信息
+			add({
+				uid : toid
+				, data : [
+					{
+						msg : "近期有不法分子发送钓鱼网站或致电美丽说用户以商家或美丽说客服身份要求您登陆钓鱼网站进行退货退款操作等形式骗取您的银行卡号码、身份证号码、手机号码、银行卡密码等个人信息，为了保障您的资金安全，请不要随意点击不明网站连接，如接到类似短信或电话请及时拨打美丽说客服电话4000800577咨询/举报，不要轻易点击或相信，谨防诈骗。"
+						, chatfrom : toid
+					}
+				]
+				,msgStyle : 'sys'
+			})
+		}
+		if(data.www_info){	//显示诈骗信息
+			add({
+				uid : toid
+				, data : [
+					{
+						msg : "近日我们接到个别用户反馈，目前存在极少数不良账号通过花花以下单或退货用户亲友身份向商家及客服人员骗取“订单电话、地址、收货人姓名”等信息，以“发送钓鱼网址或致电用户”的形式骗取用户进入钓鱼网站支付页面导致用户资金损失。对此，我们提醒广大商家及客服人员务必提高警惕。严禁向任何人提供用户订单信息，同时注意不要访问任何陌生网址，以免账号被盗。如发现任何异常行为可举报至reports@meilishuo.com"
+						, chatfrom : toid
+					}
+				]
+				,msgStyle : 'sys'
+			})
+		}
+		if(!data.welcome.data){
+			userListObj[toid].welcome = 2	
+
+		}else{
+			userListObj[toid].welcome = 1
+
+			add({
+				uid : toid
+				, data : [
+					{
+						msg : data.welcome.data
+						, chatfrom : toid
+					}
+				]
+			}, {type : 'welcome'})
+		}
+	}
+
+	if(data.messageList){
+		/*hack sb*/
+		var sb = {
+			status : data.messageList.status
+			,is_mobile : data.messageList.is_mobile
+			,status_des : data.messageList.status_des
+		}
+		data.messageList.status = sb
+		/*---*/
+		messageList(data.messageList, toid, sound, fn)
+	}
+
+}
+
+var init = function(socket, sound, fn){
+	socket.on('receiveMsgPush',function(data){
+		console.log('receiveMsgPush', data)
+		var s = fml.vars.im.toid==data.uid ? sound : null
+		messageList(data, data.uid, s, fn)
+	})
+	socket.on('messageListPush', function (data) {
+		console.log('messageListPush', data.req)
+
+		// messageList(data.req, data.toid, sound, fn)
+	});
+
+/*	socket.on('changeUserPush', function (data) {
+		console.log('changeUserPush', data)
+
+		
+	});*/
+}
+
+var messageList = function(data, toid, sound, fn){
+	var haveMsg = 0
+		, msg
+
+	if(!userListObj[toid]) return
+
+	if(fml.vars.im.source == 'web' && data.status){
+		var statusData = data.status
+		userStatus.update({status:statusData.status|0,is_mobile:statusData.is_mobile|0}, toid)
+	}
+
+	if(data.transdata && data.transdata.length){
+		haveMsg = 1
+		msg = data.transdata[0].msg
+		// console.log(JSON.stringify(data.transdata))
+		if(data.transdata[0].type === 'user'){
+			data.transdata[0].mtype = data.transdata[0].type //add()中type字段有用 hack
+			data.transdata[0].type = 'text' //add()中type字段有用 hack
+			add({
+				uid : toid
+				, data : data.transdata
+				, msgStyle : 'sys'
+			})
+		} else {
+			trans_history({
+				uid : toid
+				, data : data.transdata
+			})
+		}
+		
+		
+	}
+
+	if(data.data && data.data.length){
+		haveMsg = 1
+		msg = (data.data[0].type == 'img' ? '[图片]':data.data[0].msg)
+
+		add({
+			uid : toid
+			, data : data.data
+		})
+	}
+
+	if(haveMsg){
+		if(fml.vars.im.nosound){
+			fml.vars.im.nosound = 0
+			return;
+		}
+
+		if(sound){
+			if(userListObj[toid].utype == 'public')
+				sound.newOrder && sound.newOrder.play()
+			else
+				sound.newMsg && sound.newMsg.play()
+		}
+
+		fn && fn({
+			uid :toid
+			,msg : msg 
+		})
+	}
+}
+
+var trans_history = function(obj){
+	var history = obj.data[0].history
+	var uid = obj.uid;
+	if(history && history.length){
+		// history.reverse();
+		add_transdata(obj.data[0],uid)
+	}
+}
+
+var history = function(data, toid){
+	var data = data.data
+		, $this = userListObj[toid].mainBox.find('.historyBtn')
+
+	if(!data || !data.length){
+		$this.hide()
+
+		if(!userListObj[toid].history)
+			$this.parent().hide()
+		return;
+	}
+	if(data.length < 5)
+		$this.hide()
+
+	userListObj[toid].history = data[0].msg_id
+
+	$this.parent().removeClass('hide')
+
+	add({
+		uid : toid
+		, data : data
+	}, {type : 'history', btn: $this, bthHeight:$this.height() + 24})
+}
+
+var send = function(options){
+//		console.log('send', options)
+// options.noSend:是否发送消息到服务端，或是只展示
+	var defaults = {
+		send : 1
+		, name : Meilishuo.config.nickname
+		, avatar : fml.vars.im.head
+		, who : 'd_m'
+		, messageId : (new Date()).valueOf()
+		, ctime : (new Date()).getT()
+		, msgStyle : ''
+	}
+	var opts = $.extend({}, defaults, options);
+//	console.log(opts)
+	var data = {
+		messageId : opts.messageId
+		, to : fml.vars.im.toid
+		, source : fml.vars.im.source
+	}
+	if(opts.type == 'text' && !opts.notHtmlToText) data.text = htmlFilter.filterHtmlToText(opts.content) || ''
+	else data.picids = opts.content.pic_id
+
+    if (opts.main) {
+        data.main = opts.main;
+    }
+	if(!opts.black){
+		sendMsg(data, sendStatus)
+	}
+
+	if(!opts.notHtmlToText && opts.type == 'text' && (fml.vars.im.source == 'web' || fml.vars.im.source == 'win')){
+		opts.content = htmlFilter.filterSendHtml(opts.content) || ''
+		opts.content = emo2img(opts.content) || ''
+	}
+
+	var $box = $(shareTmp('im_dialog_item', opts))
+
+	sendObj[opts.messageId] = {
+		'conp' : $box.find('.con .bubble')
+		, 'data' : data
+	}
+	$box.appendTo(options.dialogBox)
+
+	intoView($box, options.dialogBox)
+
+	return $box
+}
+
+var sendMsg = function(data, callback){
+	$.post('/www/aj/publish', data, function(res){
+		if(callback) callback(res)
+		
+	}, 'json')
+}
+
+var resend = function(){
+	console.log('resend')
+	var msg_id = ($(this).attr('id').split('_'))[1]
+	sendObj[msg_id].conp.removeClass('fail').addClass('wait')
+	sendMsg(sendObj[msg_id].data,sendStatus)
+}
+
+var add = function(data, ext){
+//	console.log(userListObj[data.uid])
+//	console.log('add', data)
+
+	var addCF = document.createDocumentFragment()
+		, exts = ext || {}
+		, defaults = {
+			send : 0
+			, name : Meilishuo.config.nickname
+			, avatar : fml.vars.im.head
+			, who : 'd_m'
+			, type : 'text'
+			, msgStyle : data.msgStyle || ''
+			, content : ''
+		}
+		, uid = data.uid
+		, $tmp
+
+
+//	console.log(data.data)
+	$.each(data.data, function(k,v){
+		var options = {
+			messageId : v.msg_id || ''
+			, ctime : v.ctime || ''
+		}
+		//filter
+		if(options.messageId && $('#mid_'+options.messageId).length ) return
+
+		options.type = v.type || 'text' 
+		options.content = options.type == 'img' ?  v.picInfo[0] : v.msg
+		//if(options.type == 'text'){
+		//	options.content = v.msg;
+		//} else if(options.type == 'img'){
+		//	options.content = v.picInfo[0];
+		//} else if(options.type == 'higo_img'){
+		//
+		//}
+
+		if(v.chatfrom != fml.vars.im.fromid){
+			options.who = 'd_u'
+			options.name = userListObj[uid].name
+			options.avatar = userListObj[uid].avatar
+		}
+
+		$tmp = $(shareTmp('im_dialog_item', $.extend({}, defaults, options)))
+
+		addCF.appendChild($tmp[0])
+
+		intoView($tmp, $(".im_dialog"));
+	})
+
+	var $dialog = userListObj[uid].mainBox.find('.im_dialog') 
+
+	if(!$tmp) return
+	if(exts.type == 'history'){
+		exts.btn.after(addCF)
+		$dialog.parent().scrollTop($tmp.offset().top - exts.bthHeight)
+
+	}else if(exts.type == 'welcome'){
+		$dialog.append(addCF)
+		// userListObj[uid].mainBox.find('.history').after(addCF)
+		intoView($tmp, $dialog)
+
+	}else{
+		$dialog.append(addCF)
+		if(!$dialog[0].hidden)
+			intoView($tmp, $dialog)
+
+		if(!userListObj[uid].history){
+			userListObj[uid].history = data.data[0].msg_id
+		}
+
+	}
+}
+
+var add_transdata = function (transdata,uid){
+	var opts = {
+		u_id : uid
+	}
+	var $tmp = $(shareTmp('im_transHistory_item',$.extend({},transdata,opts)))
+	//console.log($tmp)
+	var $dialog = userListObj[uid].mainBox.find('.im_dialog')
+	$dialog.append($tmp)
+	intoView($tmp, $dialog)
+}
+
+var syncSend = function(data){
+	add(data)
+}
+
+exports.changeUserPush = changeUserPush
+exports.messageList = messageList
+exports.init = init
+exports.send = send
+exports.resend = resend
+exports.history = history
+exports.syncSend = syncSend

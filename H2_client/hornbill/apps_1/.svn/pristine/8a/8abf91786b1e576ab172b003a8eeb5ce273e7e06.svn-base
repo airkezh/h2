@@ -1,0 +1,179 @@
+<%#head.html%>
+<div class="main">
+	<div class="lev-bg1">
+		<div class="b1"></div>
+		<div class="b2">
+			<div class="oootip" id="b3"></div>
+		</div>
+		<div class="b3" id="b3">
+			<div class="main-cont">
+				<div class="upload-box">
+					<%= requireFn('biz/huodong/upload_photo.html')({
+						'upload_style' : 'obolaiUpWapper',
+						'reload_style' : 'obolai_reup'
+					}); %>
+					<button class="next none_f"></button>
+				</div>
+				<div class="cloud-bg"></div>
+				<label class="q1-1"><input type="radio" name="q1" class="" value="1" checked="checked"/></label>
+				<label class="q1-2"><input type="radio" name="q1" class="" value="2" /></label>
+				<label class="q1-3"><input type="radio" name="q1" class="" value="3" /></label>
+				<a id="share_sina" href="javascript:;"></a>
+				<a id="share_qzone" href="javascript:;"></a>
+				<a id="share_qqwb" href="javascript:;"></a>
+			</div>
+		</div>
+	</div>
+
+	<div class="lev-bg2">
+		<div class="b4" id="b4">
+			<a href="javascript:;" class="btn-left" id="btn-left"></a>
+			<div class="daren-table">
+				<div class="photos-table" id="photos-table">
+					<%this.photos && this.photos.map(function(data){%>
+						<a href="<%= data.url ? data.url : 'http://www.meilishuo.com/group/117183313' %>" target="_blank"><img src="<%= data.src %>" width="205" height="290" /></a>
+					<%});%>
+				</div>
+			</div>
+			<a href="javascript:;" class="btn-right" id="btn-right"></a>
+			<div class="otip" id="poster-top"></div>
+		</div>
+	</div>
+
+
+
+	<div class="flayer">
+		<a href="#b3"></a>
+		<a href="#b4"></a>
+		<a href="#poster-top"></a>
+		<a href="#pro-dis"></a>
+		<a href="#fans"></a>
+		<a href="#"></a>
+	</div>
+
+	<div class="lev-bg3">
+		<!--海报部分-->
+		<div class="poster-top">
+			<img src="http://i.meilishuo.net/css/images/activity/lenovo/scrolltop2.png"/>
+			<div class="shu1"></div>
+			<div class="shu2"></div>
+		</div>
+
+
+		<div class="hb_box">
+			<div class="content_fluid">
+				<div class="goods_wall auto_f" style="width:987px;">
+				<% if(this.isLogin == 1 && this.my_poster && this.my_poster.data){ %>
+					<div class="corner_notic">
+						<div class="vote_box">
+							<a href="/share/<%= this.my_poster.data.twitter_id%>" target="_blank" class="pic_load">
+								<img class="goods_pic" src="<%= this.my_poster.data.show_pic%>" pid="<%= this.my_poster.data.pid%>" width="228" height="<%= this.my_poster.data.pic_height%>" />
+							</a>
+							<div class="info">
+								<div class="userInfo" uid="<%= this.my_poster.data.uinfo.user_id%>">
+									<div class="person">
+										<a href="/person/u/<%= this.my_poster.data.uinfo.user_id%>" target="_blank" class="face"><img src="<%= this.my_poster.data.uinfo.avatar_c%>" width="34" height="34" /></a>
+							            <span class="name"><%= this.my_poster.data.uinfo.nickname%></span>
+								    </div>
+									<ul class="txt_info">
+										<li>票数：<span class="red_f"><%= this.my_poster.data.score%></span></li>
+							            <li>排名：<span class="red_f"><%= this.my_poster.data.rank%></span></li>
+								    </ul>
+								</div>
+								<p class="btnBox auto_f" id="vote_share">拉投票</p>
+							</div>
+			            </div>
+				    </div>
+				<%}%>
+				</div>
+				<%#biz/huodong/vote/vote_poster.html%>
+				<div class="spinner botSpinner none_f"></div>
+				<div class="clear_f"></div>
+				<div class="paging_panel c_f"><%#paging.html%></div>
+			</div>
+		</div>
+<div class="heng1"></div>
+	</div>
+
+
+
+	<div class="lev-bg4">
+		<div class="main-cont">
+			<div class="mg-table">
+				<% 
+					var showimg = 0;
+					var magItemRenderFn = requireFn('group/magitem.html');
+					this.len_group && this.len_group.map(function(magazine){ %>
+				<%= magItemRenderFn(magazine , showimg++)%>	
+				<% });%>
+			</div>
+
+			<div class="darenshow_wrap">
+				<div class="boxImg" style="width:360px;height:290px;">
+					<ul class="_img" style="position:absolute;left:0;display:inline-block;width:320px;height:250px">
+
+					<%this.photo && this.photo.map(function(data){%>
+					<li class="left_f"><a><img width="320px" height="250px" src="<%= data.src %>"></a></li>
+					<%});%>
+					</ul>
+				</div>
+			</div>	
+
+			<div class="ootip" id="pro-dis"></div>
+		</div>
+	</div>
+
+	<div class="lev-bg5">
+	</div>
+	<div class="lev-bg6">
+		<a href="http://www.meilishuo.com/u/EWoZXl?frm=lenovo110" target="_blank"></a>
+	</div>
+	<div class="lev-bg7" id="fans">
+		<a href="http://lefen.lenovo.com/index.php/aml" target="_blank"></a>
+
+	</div>
+	<div class="lev-bg8">
+		<a target="_blank" href="http://lefen.lenovo.com/index.php/aml"></a>
+	</div>
+
+	<script type="text/html" id="succeed">
+		<div class="succeed">
+			<a href="" class="close_btn"></a>
+			<img src="<?= spic?>" width="181" height="257" />
+			<a href="" class="ltp">
+			</a>
+		</div>
+	</script>
+
+	<!-- 拉投票弹窗-->
+	<script type="text/html" id="share">
+		<div class="share_pop">
+			<span href="" class="close_btn" id="close"></span>
+			<img src="<?= data.show_pic?>" width="228" height="450" />
+			<p><?= data.uinfo.nickname?>参加了＃寻找联想S850天使爱美丽＃活动</br>
+			目前票数：<span class="yellow_f"><?= data.score?></span></br>
+			还差<span class="yellow_f"><?= data.nextScore?></span>票，排名就能上升一位了。</p>
+			<h3>选择分享到：</h3>
+			<ul>
+				<li class="sina_s"></li>
+				<li class="qzone"></li>
+				<li class="tx"></li>
+			</ul>
+			<span class="share_btn"></span>
+		</div>
+	</script>
+
+
+<script>
+fml.vars.notFluid = true;
+<%= this.poster0? 'Meilishuo.config.poster0 = '+JSON.stringify(this.poster0)+';':'' ;%>
+<%= this.my_poster? 'Meilishuo.config.my_poster = '+JSON.stringify(this.my_poster)+';':'' ;%>
+</script>
+
+</div>
+
+<% $_ENGINE_SELF.callFn("useModule")("fml.use('page/poster0');", this._JSstack , this._JSmodsFast ); %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/huodong/lenovo3');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

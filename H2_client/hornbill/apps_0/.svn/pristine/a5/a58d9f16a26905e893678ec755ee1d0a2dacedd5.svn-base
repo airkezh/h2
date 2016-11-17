@@ -1,0 +1,117 @@
+<%#head.html%>
+<%
+	var getHeaderData = this.getHeaderData || {};
+	var data=getHeaderData.data||{};
+	var profile=data.profile||{};
+	var stats=data.stats||{};
+	var params=this.params||{};
+%>
+<div class="wrap">
+	<header class="header">
+		<img src="<%= profile.avatar_a %>" alt="" class="pic">
+		<p class="title"><%= profile.nickname %></p>
+		<a href="javascript:;" id="publish" class="publish" data-xr="<%= this.getHeaderData_XR %>">
+			<img src="http://d03.res.meilishuo.net/img/_o/7a/72/7276da55b998d402c0a663f47dc5_187_62.ch.png" alt="">
+		</a>
+	</header>
+	<nav class="tab2" id="tab2">
+		<a href="javascript:;" data-xr="<%= this.getHeaderData_XR %>" class="prev cur prev2">我上传的
+			<%if(parseInt(stats.want_style_new_done_num)){%>
+				<span><%= parseInt(stats.want_style_new_done_num)%>
+				</span>
+			<%}%>
+			<div class="hr"></div>
+		</a>
+	</nav>
+	<div class="posterWall wall" id="content">
+		<ul class="goods_wall goods"></ul>
+		<div class="pullUp" status="loading"></div>
+	</div>
+	<div class="top-box" style="bottom:<%if(this.isIphone){%>60<%}else{%>20<%}%>px">
+		<a class="gotop" href="javascript:;">
+			<img src="http://d02.res.meilishuo.net/img/_o/41/62/c1d9e0f159bfb506b27dea648ccb_80_80.cg.png" />
+		</a>
+	</div>
+</div>
+<% if(!this.appShare){ %>
+	<%= requireFn('wapShare.html')({
+		'share' : this.share 
+	    , 'shareTitle' : '选择分享到'
+	    , '_JSstack' : this._JSstack
+		, '_JSmods' : this._JSmods
+	}); %>
+<% } %>
+<script type="text/html" id="posterWall">
+	<? var proStatus=parseInt(this.v.status),
+			gray=(proStatus==-11||proStatus==-4||proStatus==2||proStatus==9||proStatus==5),
+			orange=(proStatus==3||proStatus==7||proStatus==8),
+			red=(proStatus==6||proStatus==4),
+			yellow=(proStatus==1),
+			lightYellow=(proStatus==-8);
+		var imgBoxHeight=parseInt($(window).width()/2)* 400 / 320 +'px';
+	?>
+	<li data-id="<?= this.v.id ?>" data-title="<?= this.v.title ?>" data-tid="<?= this.v.twitter_id ?>" data-img="<?= this.v.share_img ?>">
+		<div class="wrap">
+		<a href="javascript:;" class="<?= red ? 'done-link' : 'ing-link' ?>">
+			<div class="lazy_pic img-box" asrc="<?= this.v.main_img ?>" style="height:<?= imgBoxHeight ?>;padding-top:0">
+				<? if(parseInt(this.v.status)==5){ ?>
+					<span class="sold"></span>
+				<? } ?>
+			</div>
+		</a>
+		<div class="info">
+			<div class="user-pic">
+				<img src="<?= this.v.founder&&this.v.founder.avatar_a ?>" alt="">
+				<p><?= this.v.founder&&this.v.founder.nickname ?></p>
+			</div>
+			<h3><a href="javascript:;" class="<?= red ? 'done-link' : 'ing-link' ?>"><?= this.v.title ?></a></h3>
+			<p class="new-info"><?= this.v.status_detail ?></p>
+			<? if(gray){ ?>
+				<p class="status gray">
+					<a href="javascript:;" class="ing-link">
+						<?= this.v.status_name ?>
+					</a>
+				</p>
+			<? }else if(orange){ ?>
+				<p class="status orange">
+					<a href="javascript:;" class="ing-link">
+						<?= this.v.status_name ?>
+					</a>
+				</p>
+			<? }else if(red){ ?>
+				<p class="status red">
+					<a href="javascript:;" class="done-link">
+						<?= this.v.status_name ?>
+					</a>
+				</p>
+			<? }else if(yellow){ ?>
+				<p class="status yellow">
+					<a href="javascript:;" class="ing-link">
+						<?= this.v.status_name ?>
+					</a>
+				</p>
+			<? }else if(lightYellow){ ?>
+				<p class="status lightYellow">
+					<a href="javascript:;" class="ing-link">
+						<?= this.v.status_name ?>
+					</a>
+				</p>
+			<? } ?>
+		</div>
+		</div>
+	</li>
+</script>
+<script>
+	fml.vars.mlsHost = '<%= this.mlsHost%>';
+	fml.vars.inAppTabbar = <%= this.inAppTabbar %>;
+	fml.vars.showTab = <%= this.showTab %>;
+	fml.vars.trace_id = '<%= this.desireTraceId%>';
+	fml.vars.common_r = '<%= this.common_r_XR %>';
+	fml.vars.appShare = <%= this.appShare %>; 
+	fml.vars.params = <%= JSON.stringify(this.params) %>; 
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/zulily/personal2');
+_use:", this._JSstack, this._JSmods); %>
+
+<%# foot.html%>

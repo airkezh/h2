@@ -1,0 +1,32 @@
+<%
+var mSubstr = _extFn.mSubstr;
+%>
+<% this.registerRecommend.gInfo && this.registerRecommend.gInfo.map(function(v){ %>
+<div class="groupBox">
+	<div class="groupCon">
+		<div class="gc_title">
+			<h4><a target="_blank" href="/group/<%= v.group_id%>"><%= v.name%></a></h4>
+		</div>
+		<div class="imgBox">
+			<%if(v.mixpic){%>
+				<img src="<%= v.mixpic%>" class="maxpic" />
+			<%}else{%>
+				<% v.picture_url && v.picture_url.map(function(value , i){%>
+					<img style="<%if(++i % 3 == 0){%> margin-right:0px;<%}%>" src="<%= value%>" class="minpic" />
+				<%});%>	
+			<%};%>
+			<div class="clear_f"></div>
+		</div>
+		<div class="oldBox">
+			<img class="avatar24_f" width="24px" height="24px" src="<%= v.admin_avatar %>" alt="">
+			<span class="tex">主编：<%= mSubstr(v.admin_name , 4 , '...') %></span>
+			<div class="clear_f"></div>
+		</div>
+	</div>
+	<%*if(v.is_follower){%>
+		<span class="removeGroupFollow followed" groupid="<%= v.group_id%>">已关注</span>
+	<%*}else{%>
+		<!--span  class="addGroupFollow btn" groupid="<%= v.group_id%>" >+ 加关注</span-->
+	<%*}%>
+</div>
+<%});%>

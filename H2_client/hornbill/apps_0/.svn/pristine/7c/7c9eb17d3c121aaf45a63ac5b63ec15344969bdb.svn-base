@@ -1,0 +1,30 @@
+<%# head.html%>
+<%
+var os = this.os,
+    r = this.r,
+    oldGetAppLink = _extFn.getAppLink,
+    getAppLink = function( protocol, params ) {
+        return oldGetAppLink( protocol, params, os, r );
+    }
+%>
+
+<%= requireFn( 'mainapp/index.node.html' )({
+    circles: this.circles,
+    getAppLink: getAppLink
+})%>
+<div id="loading-bar" class="loading-bar" status="loading"></div>
+<div class="gotop-wrap">
+    <a class="gotop">
+        <img src="http://i.meilishuo.net/css/images/wap/tuan/gotop.png"/>
+    </a>
+</div>
+<%# mainapp/index.zepto.html %>
+<script>
+    fml.vars.trace  = "<%= this.circles.trace %>";
+    fml.vars.offset = <%= this.circles.list ? this.circles.list.length : 0 %>;
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+    fml.use('wap/page/mainapp/index');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html%>

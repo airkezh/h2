@@ -1,0 +1,19 @@
+function redpacket(){
+	return this;
+}
+var controlFns = {
+	'main' : function(){
+        var cid = this.req.__get.cid || '';
+		var php = {}
+        this.setMDefault( php )
+        this.bridgeMuch( php )
+        this.listenOver( function( data ) {
+            data.cid = cid 
+            data.pageTitle     = '美丽说-千元红包领取页'
+            data._CSSLinks     = [ 'redpacket' ]
+            this.render( 'redpacket.html', data )
+        } )
+    }
+}
+
+exports.__create = controller.__create(redpacket , controlFns);

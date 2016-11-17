@@ -1,0 +1,47 @@
+<%# wx_new/header.html%>
+<%
+	var scratch = this.scratch
+%>
+<div class="wrap">
+	<img src="<%=this.PICTURE_URL%>/images/wap/web/wx/scratch_top1.jpg" class="scratch_bg"/>
+	<div class="try_area">
+		<div class="try_cnt try_type2">
+			<span class="try_luck"></span>
+			<div class="try_info">
+				<h3>恭喜活动：30积分</h3>
+				<!-- <h2>机会用完了</h2> -->
+				<% if(1){%>
+					<p class="handle">
+						<a href="###">点击查看</a>
+						<span class="rescratch">继续刮奖</span>
+					</p>
+				<%}%>
+			</div>
+		</div>
+	</div>
+	<div class="clickOn"></div>	
+	<div class="btm_cnt">
+		<div class="info">
+			<marquee  direction="left" hspace="20" align="middle" scrolldelay="10" scrollamount="2" behavior="scroll" onMouseOut="this.start()" onMouseOver="this.stop()">
+				<%= scratch.list%>
+			</marquee>
+		</div>
+		<div class="share">
+			<span class="share_btn">分享</span>
+		</div>
+	</div>
+</div>
+<script type="text/html" id="clickOn">
+<div class="dialog_box">
+	<span class="atn_btn"></span>
+</div>
+</script>
+<script type="text/html" id="share_lead">
+<div class="dialog_box">
+	<span class="share_pic"></span>
+</div>
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/wx_new/scratch');
+_use:", this._JSstack , this._JSmods ); %>
+<%# wx/footer.html%>

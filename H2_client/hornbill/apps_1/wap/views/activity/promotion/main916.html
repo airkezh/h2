@@ -1,0 +1,89 @@
+<%# head_simple.html%>
+<%
+var coupons = this.couponInfo.coupon;
+var coupon100 = coupons[1];
+var coupon40 = coupons[2];
+var coupon80 = coupons[3];
+var coupon120 = coupons[4];
+%>
+</head>
+<body>
+<div class="banner">
+
+	<%if (this.endTime) {%>
+	<div class="countdown" >
+		<div class="bannerText"><%=this.bannerText%></div>
+		<dl class="timeStamp" end-date="<%=this.endTime%>" now="<%=this.startTime%>">
+			<dd id="day0"><span >-</span></dd>
+			<dd id="day1"><span>-</span></dd>
+			<dd id="hour0"><span >-</span></dd>
+			<dd id="hour1"><span >-</span></dd>
+			<!--<dt class="bigmao">：</dt>-->
+			<dd id="minute0"><span >-</span></dd>
+			<dd id="minute1"><span >-</span></dd>
+			<!--<dt class="bigmao">：</dt>-->
+			<dd id="seconds0"><span >-</span></dd>
+			<dd id="seconds1"><span >-</span></dd>
+		</dl>
+	</div>
+	<%} else if(this.bannerText) {%>
+	<div class="bannerText" style="width: 100%; text-align: center; top:58%"><%=this.bannerText%></div>
+	<%}%>
+
+</div>
+
+
+<div class="middle">
+	<div class="coupon100">
+
+		<div class="couponText"><%if(+coupon100.left_amount){%>本时段还剩<span class="leftAmount"><%=coupon100.left_amount%></span>/<%=coupon100.total_amount%>张<%}%></div>
+		<img type="<%=coupon100.coupon_type%>" code="<%=coupon100.coupon_code%>" src="<%=coupon100.btnPic%>" alt="" class="couponBtn"/>
+	</div>
+</div>
+
+<div class="bottom">
+	<div class="coupon80">
+		<div class="couponText"><%if(+coupon80.left_amount){%>本时段还剩<br/><span class="leftAmount"><%=coupon80.left_amount%></span>/<%=coupon80.total_amount%>张<%}%></div>
+		<img type="<%=coupon80.coupon_type%>" code="<%=coupon80.coupon_code%>" src="<%=coupon80.btnPic%>" alt="" class="couponBtn"/>
+	</div>
+	<div class="coupon120">
+		<div class="couponText"><%if(+coupon120.left_amount){%>本时段还剩<span class="leftAmount"><%=coupon120.left_amount%></span>/<%=coupon120.total_amount%>张<%}%></div>
+		<img type="<%=coupon120.coupon_type%>" code="<%=coupon120.coupon_code%>" src="<%=coupon120.btnPic%>" alt="" class="couponBtn"/>
+	</div>
+	<div class="coupon40">
+		<div class="couponText"><%if(+coupon40.left_amount){%>本时段还剩<br/><span class="leftAmount"><%=coupon40.left_amount%></span>/<%=coupon40.total_amount%>张<%}%></div>
+		<img type="<%=coupon40.coupon_type%>" code="<%=coupon40.coupon_code%>" src="<%=coupon40.btnPic%>" alt="" class="couponBtn"/>
+	</div>
+	<div class="sign">
+		<a href="http://mapp.meilishuo.com/activity/sign/sign_in/?frm=916dacu"><img src="http://i.meilishuo.net/css/images/wap/activity/promotion/916/sign_btn.jpg" alt="" class="couponBtn"/></a>
+	</div>
+</div>
+
+<script type="text/html" id="cb">
+	<div class="checkBox" id="checkBox">
+		<input id="checkcode" name="checkcode" type="text" value="" maxlength="4" placeholder="请输入验证码"/>
+		<div class="checkImage">
+			<span id="checkcodeImage">
+				<img width="90" height="36" isblank="true" src="<%= this.PICTURE_URL %>images/register/blank.jpg">
+			</span>
+		</div>
+	</div>
+</script>
+
+<script>
+	fml.vars.isLogin = <%=this.isLogin%>;
+	fml.vars.sTime = <%=this.sTime%>;
+	fml.vars.signKey = '<%=this.key%>';
+	//alert(JSON.stringify(<%=JSON.stringify(coupons)%>));
+
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+
+fml.use('wap/page/activity/promotion/main916');
+fml.use('wap/app/countdown2', function() {
+	this();
+});
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot_simple.html%>

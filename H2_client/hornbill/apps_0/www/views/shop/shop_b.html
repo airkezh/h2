@@ -1,0 +1,63 @@
+<%
+	var query = this._Request_query;
+	
+%>
+<%# head.html%>
+<div class="shop_bnr">
+	<div class="boxImg">
+		<div class="promise_masker"></div>
+		<%#doota/promise.html %>
+	</div>
+	<div class="white_masker"></div>
+</div>
+<% if(this.shop_catalog.catalog && this.shop_catalog.style){ %>
+<%
+	var catalogList = this.shop_catalog.catalog;
+	var styleList = this.shop_catalog.style;
+	var thisCatalog = query.catalog ? query.catalog : 0,
+		thisStyle = query.style ? query.style : 0;
+	thisCatalog = thisCatalog | 0 
+	thisStyle = thisStyle | 0 
+	
+%>
+<div class="shop_catalog">
+	<div class="s_catalog">
+		<p class="tle">分类</p>
+		<ul>
+			<% catalogList.forEach(function(item){ %>
+			<li><a <%if(thisCatalog==item.value){%>class="red_f"<%}%> href="?catalog=<%=item.value %><%=thisStyle ? '&style='+thisStyle : '' %>"><%=item.name %></a></li>
+			<% }); %>
+		</ul>
+		<div class="clear_f"></div>
+	</div>
+	<div class="s_style">
+		<p class="tle">风格</p>
+		<ul>
+			<% styleList.forEach(function(item){ %>
+			<li><a <%if(thisStyle==item.value){%>class="red_f"<%}%> href="?style=<%=item.value %><%=thisCatalog ? '&catalog='+thisCatalog : '' %>"><%=item.name %></a></li>
+			<% }); %>
+		</ul>
+		<div class="clear_f"></div>
+	</div>
+	<div class="clear_f"></div>
+</div>
+<% } %>
+<div class="shop_auto">
+	<div class="goods_wall" style="height:1000px;">
+	</div>
+	<div class="paging_panel c_f">
+		<%#paging.html%>
+	</div>
+</div>
+<%# shop/shopitem_b.html%>
+<script>
+<%= this.poster0? 'Meilishuo.config.poster0 = '+JSON.stringify(this.poster0)+';':'' ;%>
+fml.vars.notFluid = true;
+</script>
+<% $_ENGINE_SELF.callFn("useModule")("fml.use('page/poster0');", this._JSstack , this._JSmodsFast ); %>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/doota/shop_b');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot.html%>

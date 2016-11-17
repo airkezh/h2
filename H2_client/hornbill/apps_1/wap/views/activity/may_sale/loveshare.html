@@ -1,0 +1,19 @@
+<%#head.html%>
+<div class="main">
+	<img class="user_pic" src="<%= this._shareData.pic_url_max %>">
+	<div class="love_eclaration">
+		<!-- <p>我的告白：</p> -->
+		<p><%=this._shareData.user_desc %></p>
+	</div>
+</div>
+<div class="share_con">
+	<% if(this.share){ %>
+		<%= requireFn('wapShare.html')({
+			'share' : this.share 
+			, 'shareTitle' : '选择分享到'
+			, '_JSstack' : this._JSstack
+			, '_JSmods' : this._JSmods
+		}); %>
+	<%}%>
+</div>
+<%# foot_simple.html%>

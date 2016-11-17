@@ -1,0 +1,115 @@
+
+
+var sys = require('sys')
+	,fs = require('fs')
+	,path = require('path')
+	,exec = require('child_process').exec
+	,prom = require('./prompt.js')
+
+var print = prom.print 
+print('输入导出路径')
+
+
+
+var svn ={}
+var action = {
+		'checkOut' : checkOut 
+		,'svnUser' : svnUser
+		,'svnPass' : svnPass
+		,'svnPath' : svnPath
+		}
+
+prom.init(action)
+
+function init(){
+	//print ('检出....')	
+	process.stdout.write('检出....')
+	var t  = setInterval(function(){
+			process.stdout.write('.')
+			} ,1000) 
+	var todo = ['cd '+svn.checkTo   , ' svn checkout '+ svn.path + ' ./apps --username '+svn.user + ' --password ' + svn.pass ].join('&&')
+	exec(todo , function (error, stdout, stderr) {
+			t && clearInterval(t)
+			if (error ) return print(error)
+			initConfig()
+			})
+	function  initConfig(){
+		print ('\n初始化config')
+		fs.mkdirSync(svn.checkTo +'/nest/tmp')
+		var node_modules_path = svn.checkTo + '/nest/node_modules/'
+		mkdirp(node_modules_path)
+		todo = ['cp ./_lib/* '+node_modules_path
+				,'cd '+node_modules_path 
+				,'tar zxvf less.tar.gz'
+				,'tar zxvf uglify.tar.gz'
+				].join('&&')
+		exec(todo  , function (error){
+			print ( error || '完成 \n cd '+svn.checkTo+'/nest/cmd && ./service2.sh restart')
+			print ('open http://127.0.0.1:6001/')
+			print ('多环境自行修改端口,或使用apply.js 设置')
+			process.exit()
+			
+			})
+
+			}
+	}
+function exportNest(){
+	print ('初始化 NEST ')
+	var todo = ['cd '+svn.checkTo   , ' svn export http://svn.meilishuo.com/repos/meilishuo/fex/hornbill_nest/trunk/ ./nest --username '+svn.user + ' --password ' + svn.pass ].join('&&')
+	exec(todo , function (error, stdout, stderr) {
+		if (error ) return print(error)
+		else init()
+		})
+	
+	}
+function svnPath(path){
+	if (!path) return print('请输入 svn  路径 ')
+	svn.path = path
+	exportNest()
+	//init()
+
+	}
+function svnPass(pass){
+	if (!pass) return print('请输入 svn 密码 ')
+	svn.pass = pass
+	prom.next()
+	}
+function svnUser(user){
+	if (!user) return print('请输入 svn 帐号')
+	svn.user = user
+	prom.next(true)
+	}
+function  checkOut(to){
+	to =  path.resolve(to)
+	if (fs.existsSync(to) ){
+		return prom.toConfirm(to + ' 已存在，是否 重置' , function(){
+				//fs.rmdir(to)
+				exec('rm -rf '+ to ,function(){
+					inputSvn()
+					})
+				} )
+	} else {
+		inputSvn()
+		}
+
+	function inputSvn(){
+		mkdirp(to)
+		svn.checkTo = to
+		prom.next()
+		} 	
+
+	}
+
+function mkdirp(p){
+    p = p.split('/');
+    var pathnow = '';
+    p.forEach(function(pi){
+        pathnow += pi + '/';
+        if (!fs.existsSync(pathnow) ) {
+            fs.mkdirSync(pathnow);
+            }
+        });
+
+    }
+
+

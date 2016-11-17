@@ -1,0 +1,216 @@
+/*common*/
+
+require('wap/zepto')
+
+var UrlProcessor = require('wap/component/urlHandle')
+var Waterfall    = require('circle/component/waterfall')
+var RenderTpl    = require('wap/component/shareTmp')
+var Lazy         = require('m/component/lazyLoad')
+var Alert        = require('wap/ui/alert')
+
+var pageUrl      = location.href
+var urlParams    = UrlProcessor.getParams(pageUrl)
+var tabIndex     = Number(urlParams.tab_index) 
+var url          = '/aj/sq/interfaces/collect'
+var $wd          = $(window)
+var $tabItem     = $('.js-tab-item')
+var $tabContent  = $('.js-content').children()
+var $goodShelf   = $tabContent.find('#js-goods-shelf')
+var wdHeight     = $wd.height()
+var wdWidth      = 0
+var canRequest   = true
+var dataCashe    = [{},{},{}]
+var LazyLoad     = null
+
+var EventHandler = {
+	shopFollow : function (){
+		var $target = this
+
+		canRequest = false
+		getData('/aj/sq/interfaces/shop_follow', {shop_id: $target.data('id')}, function (res){
+			if(res.code === 0){
+				myAlert('关注成功，可在个人中心查看')
+				$target.removeClass('shop-follow-no').addClass('shop-follow-yes')
+
+				// 第一帧数据有变，这里需要置空缓存数据
+				dataCashe[0] = {}
+				dataCashe[2] = {}
+			}else{
+				myAlert(res.msg)
+			}
+			canRequest = true
+		})
+	}
+}
+
+setTimeout(function (){
+	wdWidth = $wd.width()
+	LazyLoad = Lazy.init({ 
+		xpath: '.g-entrance', 
+		step_x: (wdWidth - 8) / 4,
+		step_y: (wdHeight) / 20
+	})
+	EventHandler.loadImage = function (){
+		LazyLoad.load()
+	}
+	LazyLoad.scroll()
+	main()
+}, 0)
+
+$('body').on('click', function (e){
+	var $t = $(e.target)
+	var fn = $t.data('action')
+	var _e = EventHandler[fn]
+
+	_e && _e.call($t)
+})
+
+function main(){
+	switchTabConent(tabIndex)
+	$tabItem.eq(tabIndex).addClass('checked')
+	$tabItem.on('click', function (){
+		var $target = $(this)
+		var currentIndex = $target.index()
+
+		if(currentIndex === tabIndex) return
+
+		$tabItem.eq(tabIndex).removeClass('checked')
+		$tabContent.eq(tabIndex).hide()
+		$tabItem.eq(currentIndex).addClass('checked')
+		switchTabConent(currentIndex)
+
+		tabIndex = currentIndex
+
+		// 修改当前页链接
+		history.replaceState(null, 'hey yo, sa wa di ka', '/sq/collect/?tab_index=' + tabIndex)
+	})
+}
+
+function switchTabConent(index){
+	index = index || 0
+
+	switch (index){
+		case 1:
+			var $currentContent = $tabContent.eq(index)
+
+			$goodShelf.empty()
+			$currentContent.show()
+			dataCashe[index].waterfallInstance = Waterfall.init({
+				el: $goodShelf,
+				tmpl: 'goods_tpl',
+				url: url,
+				data: { limit: 15, type: index },
+				dataName: 'goodsInfo',
+				colNum: 2,
+				colGap : '10 0',
+				dataFilter: function (data){
+					var config      = this._config
+					var params      = config.data
+					var gData       = data[config.dataName]
+					var gDatalength = gData.length
+					
+					this.totalNum = data.totalNum
+					// 缓存第一帧数据
+					if(params.frame === 0){ 
+						dataCashe[index].dataOfFirstFrame = data
+
+						if(gDatalength == 0){
+							$currentContent.empty().append(RenderTpl('js-empty-page-tpl', {prompt: '您还没有收藏的商品哦'}))
+							return false
+						}
+					}
+
+					if(gDatalength < params.limit){
+						$('.js-pull-up').data('status','stop')
+						this.destroy()
+					}
+					
+					// 过滤掉goods_status != 1 的单品
+					gData = gData.filter(function (item){
+						return item.goods_status == '1'
+					})
+
+					return gData
+				},
+				onFetchSuccess: function (data){
+					var f = this._config.data.frame
+					var l = data.length
+
+					if(l === 0 || (f === 0 && l == this.totalNum)){
+						$('.js-pull-up').data('status','stop')
+						this.destroy()
+					}
+				},
+				onLayoutFinished: function (data, textStatus){
+					LazyLoad.load()
+				}
+			}).start(dataCashe[index].dataOfFirstFrame)
+			break
+
+		case 0:
+		case 2:
+			var $currentContent = $tabContent.eq(index)
+
+			bindOneTime = true
+			$currentContent.empty().show()
+			dataCashe[index].waterfallInstance = Waterfall.init({
+				el: $currentContent,
+				tmpl: 'js-shop-tpl',
+				url: url,
+				data: { limit: 10, type: index },
+				dataName: 'data',
+				colNum: 1,
+				dataFilter: function (data){
+					var config    = this._config
+					var frame = config.data.frame
+					var gd        = config.dataName
+					
+					this.totalNum = data.totalNum
+					// 缓存第一帧数据
+					if(frame === 0){
+						dataCashe[index].dataOfFirstFrame = data
+
+						if(data[gd].length == 0 && index == 0){
+							$currentContent.append(RenderTpl('js-empty-page-tpl', {prompt: '您还没有收藏的店铺哦'}))
+							return false
+						}
+					}
+					
+					if(data.lastframe){
+						this.destroy()
+					}
+
+
+					return data[gd]
+				},
+				onLayoutFinished: function (obj, textStatus){
+					LazyLoad.load()
+					console.log('onLayoutFinished')
+					console.dir($('.js-sliders'))
+					$('.js-sliders').off('touchmove').on('touchmove', function (){
+						LazyLoad.load()
+						console.log('touchmove')
+					})
+				}
+			}).start(dataCashe[index].dataOfFirstFrame)
+			break
+	}
+
+	if(dataCashe[tabIndex].waterfallInstance && tabIndex != index){
+		dataCashe[tabIndex].waterfallInstance.destroy()
+		dataCashe[tabIndex].waterfallInstance = null
+
+	}
+}
+
+function getData(url, data, cbk){
+	canRequest = false
+	$.get(url, data, cbk, 'json')	
+}
+
+function myAlert(ct, cbk){
+	return new Alert({ 
+		content: ct,
+		onSure : cbk
+	})
+}

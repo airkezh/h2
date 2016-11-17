@@ -1,0 +1,22 @@
+<%# wx_new/header.html%>
+
+<%if(0){%>
+<div class="m-list">
+		<a class="module <%if(this.type === 1){%> active <%}%>" href="/wx/user_c/<%=this.userInfo.user_id || 0 %>">群</a>
+		<a class="module <%if(this.type === 0){%> active <%}%>" href="/wx/user_c/<%=this.userInfo.user_id || 0 %>?type=1">我的关注</a>
+		<!-- <span class="module">喜欢</span> -->
+</div>
+<% } %>
+
+<!-- 群0，关注1 -->
+<%if(this.type === 0){%>
+	<div class="main goods-wall"></div>
+	<%# wx_new/user_waterfall.html%>
+<% }else if(this.type === 1){ %>
+	<div class="main goods-wall"></div>
+	<%# wx_new/attention.html%>
+<% } %>
+<script>
+fml.vars._type = <%= this.type%>;
+</script>
+<%# wx_new/footer.html%>

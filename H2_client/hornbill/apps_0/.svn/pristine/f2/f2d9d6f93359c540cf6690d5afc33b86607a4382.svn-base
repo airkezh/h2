@@ -1,0 +1,91 @@
+/*common*/
+
+require('wap/zepto')
+
+return function(){
+	var slider_item = $('.image_item')
+		, slider_l = slider_item.length
+		, slider_w = slider_item.eq(0).width()
+		, slider_btn_timer = ''
+		, activi_num = 0
+
+	$('.swipe-wrap').width(slider_l * (4.9 + .3) + 'rem')
+	slider_item.eq(0).css('opacity', '1')
+
+	$('.right_btn_wrap').on('click', function(){
+		move(1)
+	})
+	$('.left_btn_wrap').on('click', function(){
+		move(-1)
+	})
+
+	var startX = 0
+		, startY  = 0
+		, moveX = 0
+		, moveY = 0
+		, disableSlider = false
+
+	$('.slider_wrap').on('touchstart', function(event){
+		var touch = event.touches[0]
+		startX = touch.pageX
+		startY = touch.pageY
+	}).on('touchmove', function(event){
+		moveX = event.touches[0].pageX - startX
+		moveY = event.touches[0].pageY - startY
+
+		if(Math.abs(moveY) > Math.abs(moveX)){
+			disableSlider = true
+		} else {
+			return false
+		}
+	}).on('touchend touchcancel', function(event){
+		if(!disableSlider){
+			if(moveX > 0){
+				move(-1)
+			} else {
+				move(1)
+			}
+			startX = 0
+		}
+		disableSlider = false
+	})
+
+	function start_timer(){
+		clearTimeout(slider_btn_timer)
+
+		$('.slider_btn').css('opacity', 1)
+		slider_btn_timer = setTimeout(function(){
+			$('.slider_btn').css('opacity', .3)
+		}, 3000)
+	}
+
+	function check_num(num){
+		if(activi_num < 0 || activi_num > slider_l-1) return false
+		if(activi_num > slider_l-2){
+			$('.right_btn_wrap').hide()
+		} else {
+			$('.right_btn_wrap').show()
+		}
+		if(activi_num < 1){
+			$('.left_btn_wrap').hide()
+		} else {
+			$('.left_btn_wrap').show()
+		}
+
+		return true
+	}
+
+	function move(num){
+		activi_num += num
+
+		if(!check_num(num)) return
+
+		start_timer()
+
+		$('.swipe-wrap').animate({
+			translateX: '-' + (5.2 * activi_num) + 'rem'
+		}, 'ease-out')
+		slider_item.eq(activi_num).animate({opacity: 1}, 'ease-out')
+		slider_item.eq(activi_num - num).animate({opacity: .5}, 'ease-in')
+	}
+}

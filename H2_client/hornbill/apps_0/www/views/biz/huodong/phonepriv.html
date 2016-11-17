@@ -1,0 +1,38 @@
+<%#head.html%>
+<div class="p_main">
+	<div class="p_center">
+		<div class="top">
+			<div class="top_bnr">
+			    <ul class="banner">
+			        <% this.pr_banner && this.pr_banner.banner && this.pr_banner.banner.map(function(data){ %>
+			            <li><a href="<%= data.link || 'javascript:;'%>" class="pic" style="background:url(<%= data.img_src%>) no-repeat center top;" target="_blank"></a></li>
+			        <%});%>
+			    </ul>
+			    <div class="round">
+			        <div class="adType">
+			            <% this.pr_banner && this.pr_banner.banner && this.pr_banner.banner.length>1  && this.pr_banner.banner.map(function(data){ %>
+			                <a></a>
+			            <% }); %>
+			        </div>
+			    </div>
+			</div>
+			<div class="t_right"><a href="javascript:;">立即下载</a></div>
+		</div>
+		<div class="act1"></div>
+		<!-- <div class="act2"></div> -->
+		<div class="act3"></div>
+		<div class="act4"></div>
+		<div class="act5"><a href="javascript:;">立即下载享特权</a></div>
+		<div class="erwei"></div>
+	</div>
+</div>
+<div id="popup">
+	<a href="http://www.meilishuo.com/u/DhoJy9" target="_blank"></a>
+	<a href="http://m.meilishuo.com/download/latest/web" target="_blank" class="android"></a>
+	<a href="javascript:;" class="close"></a>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+     fml.use('page/huodong/phonepriv');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot.html%>

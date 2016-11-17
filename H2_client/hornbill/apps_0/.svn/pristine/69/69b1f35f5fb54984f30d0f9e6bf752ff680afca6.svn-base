@@ -1,0 +1,56 @@
+/*common*/
+var $ = require('wap/zepto')
+	,lazy = require('wap/component/lazzyLoad')
+	,scroll = require('wap/component/windowScroll')
+	,timedown = require('wap/app/doota/timedown')
+	,$hour = $('#hour')
+	,$minu = $('#minu')
+	,$sec = $('#sec')
+	,$gotop = $('.gotop');
+
+function bindEvent(){
+	topBtnHandle(30);
+}
+//去顶部
+function topBtnHandle(y){  //页面下拉到一定位置，回顶部按钮显示
+	scroll.yIn(y,function(){
+		$gotop.show();
+	},
+	function(){
+		$gotop.hide();
+	})
+	$gotop.on("click", function(e) {
+		document.body.scrollTop == 0 ? document.documentElement.scrollTop = 0 :
+		document.body.scrollTop = 0;
+	});
+}
+
+function calcuteCountDown(t_container, stamp){
+	timedown.down(t_container, stamp, '0h-0i-0s', ['<b>%v:</b>', '<b>%v:</b>', '<b>%v</b>'])
+	.onAction(function() {
+		var t = arguments[2];
+		hour = t.h ? (t.h < 10 ? "0" + t.h : t.h) : "00";
+		minu = t.i ? (t.i < 10 ? "0" + t.i : t.i) : "00";
+		sec = t.s ? (t.s < 10 ? "0" + t.s : t.s) : "00";
+		if ($hour.html() != hour) {
+			$hour.html(hour);
+		}
+		if ($minu.html() != minu) {
+			$minu.html(minu);
+		}
+		if ($sec.html() != sec) {
+			$sec.html(sec);
+		}
+	})
+	.onTimeOver(function(){
+		window.location.reload();
+	});
+}
+function init(){
+	var lazyer = lazy.init({'xpath' : '.bs_load_img'});
+	lazyer.scroll();
+	lazyer.load();
+	bindEvent();
+	calcuteCountDown($('.secregion').find('.time'),$('.secregion').find('.time').data('time'));
+}
+init();

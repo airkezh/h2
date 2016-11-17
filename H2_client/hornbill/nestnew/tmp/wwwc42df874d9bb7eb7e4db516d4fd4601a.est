@@ -1,0 +1,79 @@
+/*--/Users/MLS/Documents/H2/H2_client/hornbill/apps_0/www/views/lang.conf--*/ 
+     var est = require(config.path.lib + 'est/est.js'); 
+     var _extFn = require('/Users/MLS/Documents/H2/H2_client/hornbill/nestnew/server/lib/est/extFn.js'); 
+     function requireFn(tpl) { return est.renderFile('/Users/MLS/Documents/H2/H2_client/hornbill/apps_0/www/views/' ,tpl , null , null ,'www' ,true); } ; 
+     function __getHtml (_data) { 
+       function jsRender(tpl , id) { return est.jsRender(requireFn(tpl)(_data), id  ); } ; 
+       var __htm ='';
+__htm += '';
+
+lang = {
+	'window': {
+		//'login' :'登录后，关注杂志，每天看到最新分享！',
+		'login' : '把所有你喜欢的东西收藏起来吧',
+		'login_sina' : '登录后，继续逛！',
+		'login_qq' : '登录后，继续逛！',
+		'login_renren' : '登录后，继续逛！'
+		}
+	,'callQQ': function(qq){
+		return 'http://wpa.qq.com/msgrd?v=3&uin='+qq+'&site=qq&menu=yes'
+		}
+	
+	}
+
+if (_data.lang){
+	Object.keys(_data.lang).map(function(langk){
+		for (var k in _data.lang[langk]){
+			lang[langk][k] = _data.lang[langk][k];
+			}
+			
+		});
+}
+_data.lang = lang;
+_data.ViewTools = {
+	'callIM' : function(im ,qq){
+		//qq = qq || im.qq
+		//im = null
+		if (!im) return 'http://wpa.qq.com/msgrd?v=3&uin='+qq+'&site=qq&menu=yes'
+		im = im || {}
+		var imid = im.id ||''
+			,qq = im.qq || qq || ''
+			,shop_id = im.shop_id || ''
+			,type = im.type 
+			,tid = im.tid || ''
+		return '###' + [imid , qq, shop_id ,type , tid].join('-') 
+		},
+	'addTrace' : function(link , code){
+		if (!code ) return link
+		if (!link) return ''
+		if (link.indexOf('pstrc=') > 0 ) return link
+		link = link.toString().split('#')
+		return link[0] + (link[0].indexOf('?') >= 0 ? '&' : '?' ) + 'pstrc=' +
+		encodeURIComponent('fe_pos:' + code) + (link[1] ? '#'+link[1] : '')
+		},
+	'timeStuff' : function(stuff , defaultV){
+		if (!stuff) return
+			
+		var keyHash = {}
+			,keyList = []
+			,timeNow = + new Date
+		Object.keys(stuff).forEach(function(tk){
+			var intTk = +new Date(tk)
+			keyHash[intTk] = tk	
+			keyList.push(intTk)
+		})
+		keyList.sort().reverse()
+		var ret = defaultV 
+		keyList.every(function(intTk){
+			if (intTk > timeNow) return true
+			ret = stuff[keyHash[intTk]]
+			return false
+		})
+
+		return ret
+		}
+	}
+
+;__htm += '\n';
+return __htm;} 
+ exports.html = __getHtml; 

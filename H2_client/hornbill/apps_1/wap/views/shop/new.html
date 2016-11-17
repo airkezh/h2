@@ -1,0 +1,202 @@
+<%# head.html%>
+<% 
+	var data = this.new_info,
+		body = data.body,
+		ago_info = data.head[0],
+		new_info = data.head[1],
+		herald_info = data.head[2],
+		c_data = this.coupon; 
+%>
+<nav>
+	<ul>
+		<% if(ago_info){ %>
+			<li class="nav ago<% if(this.topic_id == ago_info.id){ %> current<% } %>" id="<%= ago_info.id %>">
+				<div>
+					<p class="part1"><%= ago_info.title %></p>
+					<p class="part2">上期回顾</p>
+					<p class="part3"><span>Ago</span></p>					
+				</div>
+			</li>
+		<% } %>
+		<% if(new_info){ %>
+			<li><div class="separate_line"></div></li>
+			<li class="nav new<% if(this.topic_id == new_info.id){ %> current<% } %>" id="<%= new_info.id %>">
+				<div>
+					<p class="part1"><%= new_info.title %></p>
+					<p class="part2">新品到货</p>
+					<p class="part3"><span>New Arrival</span></p>
+				</div>
+			</li>
+		<% } %>
+		<% if(herald_info){ %>
+			<li><div class="separate_line"></div></li>
+			<li class="nav herald<% if(this.topic_id == herald_info.id){ %> current<% } %>" id="<%= herald_info.id %>">
+				<div>
+					<p class="part1"><%= herald_info.title %></p>
+					<p class="part2">下期预告</p>
+					<p class="part3"><span>Herald</span></p>
+				</div>
+			</li>
+		<% } %>
+	</ul>
+</nav>
+<div class="coupons">
+	<% c_data && c_data.forEach(function(v, k){ %>
+		<% if(v.can_apply_status==0 || v.can_apply_status==3){ %>
+			<div class="get coupon<%= k %>" id="<%= v.coupon_apply_code %>">
+				<img src="<%= this.PICTURE_URL %>images/shop/new/c_get.png" />
+				<p class="credit">￥<span><%= v.credit %></span></p>
+				<span class="threshold"><% if(v.threshold){ %>消费<%= v.threshold %>满使用<% }else{ %>无门槛使用<% } %></span>
+			</div>
+		<% }else if(v.can_apply_status==1){ %>
+			<div class="out coupon<%= k %>" id="<%= v.coupon_apply_code %>">
+				<img src="<%= this.PICTURE_URL %>images/shop/new/c_out.png" />
+				<p class="credit">￥<span><%= v.credit %></span></p>
+				<span class="threshold"><% if(v.threshold){ %>消费<%= v.threshold %>满使用<% }else{ %>无门槛使用<% } %></span>
+			</div>
+		<% }else if(v.can_apply_status==2){ %>
+			<div class="got coupon<%= k %>" id="<%= v.coupon_apply_code %>">
+				<img src="<%= this.PICTURE_URL %>images/shop/new/c_got.png" />
+				<p class="credit">￥<span><%= v.credit %></span></p>
+				<span class="threshold"><% if(v.threshold){ %>消费<%= v.threshold %>满使用<% }else{ %>无门槛使用<% } %></span>
+			</div>
+		<% } %>
+	<% }); %>
+</div>
+<div class="wrapper">
+	<div class="theme">
+	<% var shop_url = _extFn.getAppLink('shop', {'shop_id' : data.shop_id}, this.os, this.r);%>
+		<a href="<%= shop_url %>"><img src="<%= data.logo %>"/></a>
+		<div class="theme_wrapper">
+			<div>
+				<p class="left"><%= body.desc %></p>
+				<p class="right">上新</br><span><%= body.count %></span></p>
+			</div>
+		</div>
+	</div>
+	<div class="main">
+		<div class="goods_wall">
+		<%body.goods && body.goods.forEach(function (v,k){ %>
+		<% 
+			var total = v.sale_num + v.repertory;
+		%>
+			<figure>
+				<% if(v.link){%>
+					<a href="<%= v.link %>"><img class="twitter_img" src="<%= v.img %>"/></a>
+				<% }else{ %>
+					<img class="twitter_img" src="<%= v.img %>"/>
+				<% } %>
+				<% if(v.sign){ %>
+					<span class="new_logo"><img src="<%= this.PICTURE_URL %>images/shop/new/new_logo.png?preview=1" /></span>
+				<% } %>
+				<% if(v.repertory == 0 && !!v.twitter_id){ %>
+					<span class="sold_out_logo"><img src="<%= this.PICTURE_URL %>images/shop/new/sold_out.png?preview=1" /></span>
+				<% } %>
+				<figcaption>
+					<% if(v.repertory<20 && v.repertory>0 && !!v.twitter_id){ %>
+						<p class="remainder">库存紧张&nbsp;&nbsp;最后<%= v.repertory %>件</p>
+					<% }else if(v.repertory<0.3*total && v.repertory>0 && !!v.twitter_id){ %>
+						<p class="remainder">库存紧张</p>
+					<% } %>
+					<div class="base_info">
+						<p class="left"><%= v.title %>&nbsp;<span class="price_red">￥<%= v.price %></span>
+						<% if(!!v.ore_price){ %>
+							&nbsp;<span class="price">￥<%= v.ore_price %></span>
+						<% } %>
+						</p>
+						<% if(!!v.twitter_id || v.repertory != 0){ %>
+							<p class="right">已售<span><%= v.sale_num %></span>/<%= total %>件</p>
+						<% } %>
+					</div>
+				</figcaption>
+			</figure>	
+		<% }) %>
+		</div>
+	</div>
+	<div class="tips">
+		<p>本期新品没有更多了~</p>
+	</div>
+</div>
+<div class="separate_tape"></div>
+<div>
+	<div class="txt">
+		<p>及时接收店铺上新和优惠信息，马上关注店铺吧</p>
+	</div>
+	<div class="attention <%if(data.is_following==1){%>att<%}%>">
+		<div>
+			<a href="<%= shop_url %>" ><img src="<%= data.logo %>" /><span><%= _extFn.mSubstr(data.shop_nick,8) %></span></a>
+			<p class="att_btn">
+				<% if(data.is_following==1){ %>
+					取消关注			
+				<% }else{ %>
+					<span class="icon_plus"><img src="<%= this.PICTURE_URL %>images/shop/new/icon_plus.png" /></span>关注
+				<% } %>
+			</p>
+
+		</div>
+	</div>
+</div>
+<script>
+		fml.vars.shop_id = "<%= data.shop_id %>";
+</script>
+<script type="text/html" id="wrapperTmp">
+	<? 
+		var data = this,
+			body = data.body; 
+	?>
+	<div class="theme">
+		<img src="<?= data.logo ?>"/>
+		<div class="theme_wrapper">
+			<div>
+				<p class="left"><?= body.desc ?></p>
+				<p class="right">上新</br><span><?= body.count ?></span></p>
+			</div>
+		</div>
+	</div>
+	<div class="main">
+		<div class="goods_wall">
+		<?body.goods && body.goods.forEach(function (v,k){ ?>
+		<?
+			var total = v.sale_num + v.repertory;
+		?>
+			<figure>
+				<? if(v.link){?>
+					<a href="<?= v.link ?>"><img class="twitter_img" src="<?= v.img ?>"/></a>
+				<? }else{ ?>
+					<img class="twitter_img" src="<?= v.img ?>"/>
+				<? } ?>
+				<? if(v.sign){ ?>
+					<span class="new_logo"><img src="http://i.meilishuo.net/css/images/shop/new/new_logo.png?preview=1" /></span>
+				<? } ?>
+				<? if(v.repertory == 0 && !!v.twitter_id){ ?>
+					<span class="sold_out_logo"><img src="http://i.meilishuo.net/css/images/shop/new/sold_out.png?preview=1" /></span>
+				<? } ?>
+				<figcaption>
+					<? if(v.repertory<20 && v.repertory>0 && !!v.twitter_id){ ?>
+						<p class="remainder">库存紧张&nbsp;&nbsp;最后<?= v.repertory ?>件</p>
+					<? }else if(v.repertory<0.3*total && v.repertory>0 && !!v.twitter_id){ ?>
+						<p class="remainder">库存紧张</p>
+					<? } ?>
+					<div class="base_info">
+						<p class="left"><?= v.title ?>&nbsp;<span class="price_red">￥<?= v.price ?></span>
+						<? if(!!v.ore_price){ ?>
+							&nbsp;<span class="price">￥<?= v.ore_price ?></span>
+						<? } ?>
+						</p>
+						<? if(!!v.twitter_id || v.repertory != 0){ ?>
+							<p class="right">已售<span><?= v.sale_num ?></span>/<?= total ?>件</p>
+						<? } ?>
+					</div>
+				</figcaption>
+			</figure>	
+		<? }); ?>
+		</div>
+	</div>
+	<div class="tips">
+		<p>本期新品没有更多了~</p>
+	</div>
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use('wap/page/shop/new');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

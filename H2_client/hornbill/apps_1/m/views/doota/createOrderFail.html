@@ -1,0 +1,16 @@
+<%#head.html%>
+<%# head_share.html%>
+<div class="container">
+	<div class="msg">
+		<div class="order_c">
+			<span class="txt"><%= this.order.msg %></span>
+		</div>
+		<a class="button b" id="closeBtn" href="javascript:window.close();">知道了</a>
+	</div>
+</div>
+<script>
+if (window.opener && window.opener.__callOnFail) {
+	window.opener.__callOnFail(<%= this.order && this.order.code%>)
+	}
+</script>
+<%#foot.html%>

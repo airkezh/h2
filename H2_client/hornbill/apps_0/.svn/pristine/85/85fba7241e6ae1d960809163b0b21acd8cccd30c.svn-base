@@ -1,0 +1,178 @@
+<%#head.html%>
+<% var mSubstr = _extFn.mSubstr; %>
+
+<% if(!this.mlsApp){ %>
+	<%= requireFn('slider.html')({
+		'os' : this.os
+		, 'footBanner' : true
+		, '_JSstack' : this._JSstack
+		, '_JSmods' : this._JSmods
+		, 'showZhiDing' : this.showZhiDing
+		, 'leadApp' : this.leadApp
+		, 'mlsApp' : this.mlsApp
+		, 'appUrl' : this.appUrl
+		, 'locationUrl' : this.locationUrl
+		, 'template' : 'template'
+	});%>
+<% } %>
+<% if(this.top_banner){ %>
+	<div class="top_img"><img src="<%=this.top_banner.ac_banner%>" /></div>
+	<p class="banner_words"><%=this.top_banner.brand_desc%></p>
+<%}%>
+
+<% if(this.mlsApp && this.top_banner.coupon && this.top_banner.coupon.length){ %>
+	<%= requireFn("biz/beauty_sale/coupon.html")({
+		'coupon': this.top_banner.coupon,
+		'bannar': 'http://imgtest.meiliworks.com/img/_o/4f/39/fbf4386f77cebe53bc8d1731dd58_640_122.cf.png',
+		'isLogin' : this.isLogin,
+		'_JSstack': this._JSstack,
+		'_JSmods': this._JSmods
+	});%>
+<% } %>
+
+
+<%
+	var endTime = this.top_banner.time,
+		now = parseInt(Date.parse(new Date())/1000),
+		is_start = this.top_banner.word == '仅剩' ? true : false;
+%>
+<% if(endTime) { %>
+	<div class="countTime">
+		<%= requireFn("biz/beauty_sale/countdown.html")({
+			'lastDate': endTime - now,
+			'join_num': this.top_banner.ac_uv,
+			'is_start': is_start,
+			'timewords': this.top_banner.word,
+			'_JSstack': this._JSstack,
+			'_JSmods': this._JSmods
+		});%>
+	</div>
+<%}%>
+
+<% this.top_banner.top_push && this.top_banner.top_push.map(function(data){ %>
+	<div class="rec_goods">
+		<div class="push_goods">
+			<% if(data.twitter_id){ %>
+				<a href="<%= _extFn.getAppLink('twitter_single', {'twitter_info' : {'twitter_id' : data.twitter_id, 'is_doota' : 1}}, this.os, this.r); %>">
+					<img src="<%= data.pic %>" />
+				</a>
+			<% } else { %>
+				<img src="<%= data.pic %>" />
+			<% } %>
+		</div>
+	</div>
+<% }); %>
+
+<div class="posterWall">
+	<div class="goods_wall"></div>
+</div>
+
+<% if(this.top_banner.guide_words && this.top_banner.guide_words.length){ %>
+	<div class="guide_words load_all_show">
+		<p>你可能喜欢的商品</p>
+		<% this.top_banner.guide_words.forEach(function(data, index){ %>
+			<a href="<%= _extFn.getAppLink('twitter_list', {'method' : 'twitter\/attr','params':{'attr_id' : ''+data.id }, 'title' : data.word}, this.os, this.r) %>" class="words<%= index %>"><%= data.word %></a>
+		<% }); %>
+	</div>
+<% } %>
+
+<% if(this.act_ads){ %>
+	<p class="rec_bottom_goods_title load_all_show">你可能喜欢的特卖</p>
+	<% this.act_ads.map(function(data){ %>
+		<div class="rec_bottom_goods load_all_show">
+			<a href="<%= _extFn.getAppLink('openURL', {"url": data.ad_link,"inApp":1, "require_app_info":1, "title": data.ad_words || "美妆"}, this.os, this.r, data.ad_link) %>">
+				<img class="radiusTop" alt="<%= data.ad_words %>" src="<%= data.ad_banner %>" />
+			</a>
+		</div>
+	<% }); %>
+<% } %>
+
+<% if(this.check_history != false){ %>
+	<div class="check_history load_all_show">
+		<a href="<%= _extFn.getAppLink('openURL', {"url": "http://mapp.meilishuo.com/biz/shareact/main/","inApp":1, "require_app_info":1, "title": "美妆"}, this.os, this.r) %>"><span>更多潮流美妆></span></a>
+	</div>
+<% } %>
+
+<%= requireFn("biz/beauty_sale/gotop.html")({
+	'isIphone': this.os.ios,
+	'_JSstack': this._JSstack,
+	'_JSmods': this._JSmods
+});%>
+
+<% if(this.share){ %>
+	<%= requireFn('wapShare.html')({
+		'share' : this.share,
+		'shareTitle' : '选择分享到：',
+		'_JSstack' : this._JSstack,
+		'_JSmods' : this._JSmods
+	}); %>
+<% } %>
+
+<script>
+	<%= this.summer_goods ? 'fml.vars.goods_data = ' + JSON.stringify(this.summer_goods) + ';': ';' %>
+</script>
+
+<script id="goods_units" type="text/html">
+	<?
+		var getAppLink = function(tid){
+			if(!<%= this.os.mlsApp ? true : false %>){
+				return '/share/item/'+tid;
+			} else {
+				return 'meilishuo://twitter_single.meilishuo?json_params='+encodeURIComponent(JSON.stringify({"twitter_info" : {"twitter_id":tid, "is_doota":1}, "r":'<%= this.r + ":ac_id=" + this.ac_id %>'}));
+				}
+			};
+	?>
+		<?
+			var data = this.v;
+				var salenum_text = '人在抢购';
+				if(data.not_start == 1){
+					var stutas_class = 'act_prev';
+					salenum_text = '人已喜欢'
+				} else if(data.is_end == 1){
+					var stutas_class = 'act_over';
+				} else if(data.sell_status == 1 || data.sell_status == 2){
+					var stutas_class = 'goods_end';
+				} else {
+					var stutas_class = '';
+				}
+		?>
+			<div class="goods_box">
+				<a class="goods_img" href="<?= getAppLink(data.twitter_id) ?>">
+					<? if(!stutas_class && data.marks && data.marks[0]){
+						var _l = 0; var style = '';
+						data.marks.forEach(function(marks_data, index){
+							if(index > 1) return;
+					?>
+							<div class="Farm" style="<?= style ?>">
+								<img class="Standard" src="<?= marks_data.img_url?>" style="width:<?= marks_data.img_width/1.3 ?>px;"/>
+							</div>
+					<?		style = 'left: ' + (parseInt(marks_data.img_width/1.3) + 6) + 'px;';
+						});
+					} ?>
+					<span class="bs_load_img" asrc="<?= data.pic_pathe ?>"></span>
+					<? if(stutas_class){ ?><span class="goods_status <?= stutas_class ?>"></span><? } ?>
+				</a>
+				<div class="desc_box">
+					<p class="desc"><a href="<?= getAppLink(data.twitter_id) ?>"><?= data.pc_title ?></a></p>
+					<?
+						var discount_num = Math.round(data.goods_price/data.cost*100)/10;
+						if(discount_num > 10 || data.cost > 1000){
+							discount_num = '';
+						} else {
+							if(discount_num.toString().indexOf('.')<0){
+								discount_num += '.0';
+							}
+							discount_num += '折';
+						}
+					?>
+					<p class="price"><span class="red_f now_price">¥<?= data.goods_price ?></span><? if(data.cost){ ?><span class="sequence">￥<del><?= data.cost ?></del></span><span><?= discount_num ?></span><? } ?></p>
+					<div class="like_buy"><p class="buy_num"><span class="red_f"><?= data.sell_num || 0 ?></span><?= salenum_text ?></p></div>
+				</div>
+			</div>
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/biz/act_basic');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot_simple.html%>

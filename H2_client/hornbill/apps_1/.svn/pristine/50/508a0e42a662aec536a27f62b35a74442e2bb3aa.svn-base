@@ -1,0 +1,84 @@
+<%#head.html%>
+<% var pageData = this.pageData; %>
+<% 	var pageData = this.pageData;
+	var apparelData = [];
+	['coat', 'skirt', 'trousers'].forEach(function(cat, index){
+		if(pageData[cat]){
+			var apparelTmpe = {
+				type : cat,
+				content : pageData[cat],
+				morelink : pageData.goods_title[index]
+			}
+			apparelData.push(apparelTmpe)
+		}
+	});
+	var startTime = '2014/03/13 00:00:00'
+		,endTime = '2014/03/27 00:00:00'
+		,today = new Date();
+	startTime = new Date(Date.parse(startTime));
+	endTime = new Date(Date.parse(endTime));
+	var isActStart = false;
+	if(startTime < today){
+		isActStart = true;
+	}
+%>
+<div class="top">
+	<% pageData.head.forEach(function(data){ %>
+		<img src="<%= data.img_src %>" />
+	<% }); %>
+</div>
+<div class="countdown">
+	<img src="<%= pageData.countdown_bg. img_src %>" />
+</div>
+<div class="coupon_link">
+	<a href="<%= pageData.top_link.link %>"><img src="<%= pageData.top_link.img_src %>" alt=""></a>
+</div>
+
+<div class="apparel_wrap">
+	<div class="title"><img src="<%= pageData.type_title.img_src %>" alt=""><a href="<%= pageData.type_title.link %>"></a></div>
+	<div class="content">
+		<% apparelData.forEach(function(data){ %>
+			<div class="apparel_title <%= data.type %>"><img src="<%= data.morelink.img_src %>" alt=""><a href="<%= data.morelink.link %>" target="_blank" class="apparel_title_more">更多</a></div>
+			<div class="apparel_con">
+				<% data.content.forEach(function(sec_data, index){ %>
+					<div class="apparel_box <%= index%2 ? 'odd' : ''%>">
+						<a href="<%= sec_data.link %>" class="goods_img" target="_blank">
+							<img src="<%= sec_data.img_src %>" alt="">
+							<%= isActStart ? '' : '<span class="mask"></span>' %>
+						</a>
+						<div class="box_con">
+							<p><em></em><a href="<%= sec_data.link %>" class="goods_title" target="_blank"><%= sec_data.title %></a><em></em></p>
+							<p class="goods_num">精选<span class="red_f"><%= sec_data.num %></span>款&nbsp;&nbsp;&nbsp;&nbsp;全场<span class="red_f"><%= sec_data.sale_num %></span>折起</p>
+							<a class="go_shop<%= isActStart ? '' : ' pre_go_shop' %>" href="<%= sec_data.link %>" target="_blank">去抢购</a>
+						</div>
+					</div>
+				<% });%>
+			</div>
+		<% });%>
+	</div>
+</div>
+<div class="spring_clothing">
+	<% pageData.bottom_links.forEach(function(data){ %>
+		<a href="<%= data.link %>"><img src="<%= data.img_src %>" alt=""></a>
+	<% }); %>
+</div>
+
+<% if(this.share){ %>
+	<%= requireFn('wapShare.html')({
+		'share' : this.share 
+	    , 'shareTitle' : '选择分享到'
+	    , '_JSstack' : this._JSstack
+		, '_JSmods' : this._JSmods
+	}); %>
+<%}%>
+
+<script type="text/html" id="toupdate">
+<div class="toupdate">
+	<p>只有最新版本才可以享受优惠喔，亲快去升级吧。</p>
+	<a class="btn3zi delayclose" href="/goto/download/">去更新</a>
+</div>
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/March_sale');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

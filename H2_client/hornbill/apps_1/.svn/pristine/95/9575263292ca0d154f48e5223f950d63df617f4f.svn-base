@@ -1,0 +1,314 @@
+@input_block_width: 320;
+@qr_width: 118;
+
+.pc_to_mob {
+  position   : fixed;
+  width      : 100%;
+  bottom     : 0;
+  z-index    : 805;
+  max-height : 162px;
+  .min_logo {
+    width      : 120px;
+    height     : 152px;
+    background : url("http://d05.res.meilishuo.net/pic/_o/01/54/d6863fd5d169ea5162b4cc4b758a_120_152.ch.png") no-repeat center;
+    position   : fixed;
+    bottom     : 0;
+    z-index    : 806;
+  }
+  .extend_bg {
+    background-color : rgba(0, 0, 0, .75);
+    filter           : alpha(opacity=75); /* IE */
+    -moz-opacity     : 0.75; /* 老版Mozilla */
+    -khtml-opacity   : 0.75; /* 老版Safari */
+    padding-bottom   : 162/1260*100%;
+    min-height       : 114px;
+    box-sizing       : border-box;
+  }
+  .wrapper {
+    width             : 100%;
+    height            : 100%;
+    max-width         : 1260px;
+    max-height        : 162px;
+    min-width         : 900px;
+    position          : absolute;
+    top               : 0;
+    margin-left       : 50%;
+    transform         : translate3d(-50%, 0, 0);
+    -o-transform      : translate3d(-50%, 0, 0); /* Opera浏览器 */
+    -webkit-transform : translate3d(-50%, 0, 0); /* Webkit内核浏览器 */
+    -moz-transform    : translate3d(-50%, 0, 0); /* Firefox浏览器 */
+    -ms-transform     : translate3d(-50%, 0, 0); /* IE浏览器 */
+    .common_imgs {
+      position  : absolute;
+      top       : 0;
+      left      : 0;
+      font-size : 0;
+      width     : (676/1260)*100%;
+      height    : 100%;
+    }
+    .input_msg {
+      position       : absolute;
+      top            : 0;
+      left           : (708/1260)*100%;
+      vertical-align : middle;
+      width          : (@input_block_width/1260)*100%;;
+      height         : 100%;
+    }
+    .qr_content {
+      position   : absolute;
+      top        : 0;
+      left       : (1048/1260)*100%;
+      width      : (118/1260)*100%;
+      height     : 100%;
+      text-align : center;
+    }
+    .close {
+      position   : absolute;
+      top        : 0;
+      right      : (8/1260)*100%;
+      width      : (80/1260)*100%;
+      height     : 100%;
+      text-align : center;
+    }
+  }
+}
+
+.common_imgs {
+  .red_bag {
+    position       : relative;
+    top            : (-38/162)*100%;
+    width          : ( 336/676 )*100%;
+    vertical-align : top;
+  }
+
+  .desc80 {
+    position    : relative;
+    top         : (20/162)*100%;
+    margin-left : (26/676)*100%;
+    width       : ( 310/676 )*100%;
+  }
+
+  .yue_notice {
+    position : absolute;
+    top      : (-38/162)*100%;
+    right    : (-20/676)*100%;
+    width    : ( 84/676 )*100%;
+  }
+}
+
+.input_msg {
+  .notice {
+    color      : #fff;
+    font-size  : 14px;
+    margin-top : (16/@input_block_width)*100%;
+  }
+  input {
+    color       : #000;
+    font-size   : 14px;
+    padding     : 12px 0;
+    height      : 38px;
+    border      : 0;
+    box-sizing  : border-box;
+    text-indent : 10px;
+  }
+
+  .mobile {
+    width      : 100%;
+    margin-top : (10/@input_block_width)*100%;
+  }
+
+  .code_line {
+    margin-top : (10/@input_block_width)*100%;
+    font-size  : 0;
+  }
+
+  .verity_code {
+    width          : (100/@input_block_width)*100%;
+    vertical-align : middle;
+  }
+
+  .checkImage img {
+    vertical-align : middle;
+    width          : (80/@input_block_width)*100%;
+    height         : 38px;
+    display        : inline-block;
+    margin         : 0 (10/@input_block_width)*100%;
+  }
+
+  .get_btn {
+    display        : inline-block;
+    vertical-align : middle;
+    text-align     : center;
+    width          : (120/@input_block_width)*100%;
+    font-size      : 14px;
+    line-height    : 1;
+    font-weight    : bold;
+    padding        : 12px 0;
+    background     : #fc0;
+    color          : #000;
+  }
+
+  .warning {
+    font-size  : 12px;
+    color      : #f33;
+    margin-top : (8/@input_block_width)*100%;
+  }
+}
+
+/* 二维码 */
+.qr_content {
+  .scan_notice {
+    margin-top : (16/@qr_width)*100%;
+    font-size  : 14px;
+    color      : #fff;
+  }
+  .qr_img {
+    width      : (90/@qr_width)*100%;
+    margin-top : (12/@qr_width)*100%;
+  }
+}
+
+.close {
+  a:hover {
+    background : #000;
+  }
+  .close_btn {
+    display    : inline-block;
+    width      : 32/80*100%;
+    margin-top : 10/80*100%;
+    padding    : 6px;
+    img {
+      width : 100%;
+    }
+  }
+  .close_long_btn {
+    display    : inline-block;
+    margin-top : 60/80*100%;
+    color      : #fff;
+    font-size  : 14px;
+    text-align : center;
+    padding    : 8px;
+  }
+}
+
+.after {
+  position : absolute;
+  top      : 0;
+  left     : 0;
+  width    : 100%;
+  height   : 100%;
+  .success {
+    position : absolute;
+    top      : (26/162)*100%;
+    left     : (704/1260)*100%;
+    color    : #fff;
+    width    : (330/1260)*100%;
+    .suc_note {
+      color         : #fff;
+      font-size     : 18px;
+      line-height   : 26px;
+      margin-bottom : 10/330*100%;
+    }
+    .no_recive {
+      display         : inline-block;
+      color           : #fc0;
+      font-size       : 14px;
+      margin-top      : 40/330*100%;
+      text-decoration : underline;
+    }
+    .re_send {
+      font-size : 0;
+    }
+    .re_mobile {
+      color       : #999;
+      font-size   : 14px;
+      width       : 190/330*100%;
+      padding     : 12px 0;
+      text-indent : 4px;
+      box-sizing  : border-box;
+      border      : none;
+    }
+    .resend_btn {
+      display     : inline-block;
+      text-align  : center;
+      font-size   : 18px;
+      width       : 120/330*100%;
+      padding     : 10px 0;
+      background  : #fc0;
+      color       : #000;
+      margin-left : 10/330*100%;
+    }
+  }
+
+  .after_desc80 {
+    position : absolute;
+    top      : (20/162)*100%;
+    left     : (120/1260)*100%;
+    width    : (310/1260)*100%;
+  }
+  .yuelao {
+    position : absolute;
+    bottom   : 0;
+    left     : 434/1260*100%;
+    width    : 194/1260*100%;
+  }
+  .fail_reason {
+    width       : 390/1260*100%;
+    color       : #fff;
+    font-size   : 18px;
+    line-height : 26px;
+    position    : absolute;
+    top         : 60/160*100%;
+    left        : 600/1260*100%;
+  }
+}
+
+@media (max-width : 1120px) {
+  .input_msg {
+    .notice {
+      font-size : 10px;
+    }
+    input, .get_btn {
+      font-size : 12px;
+      padding   : 6px 0;
+    }
+    input {
+      height : 24px;
+    }
+    .checkImage img {
+      height : 24px;
+    }
+    .warning {
+      font-size  : 10px;
+      margin-top : 6px;
+    }
+  }
+
+  .after .success {
+    .suc_note {
+      font-size   : 12px;
+      line-height : 14px;
+    }
+    .re_mobile, .resend_btn {
+      font-size : 8px;
+      padding   : 8px 0;
+    }
+    .no_recive {
+      font-size  : 12px;
+      margin-top : 10%;
+    }
+  }
+
+  .after .fail_reason {
+    font-size   : 12px;
+    line-height : 16px;
+  }
+
+  .qr_content .scan_notice {
+    font-size : 10px;
+  }
+
+  .close .close_long_btn {
+    font-size : 10px;
+  }
+}

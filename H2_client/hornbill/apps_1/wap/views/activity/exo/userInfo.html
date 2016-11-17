@@ -1,0 +1,50 @@
+<%# head.html%>
+<%
+	var pageData = this.pageData || {}
+%>
+<div class="wrap">
+	<div class="bnr">
+		<img src="<%= pageData.banner %>" />
+	</div>
+	<div class="info">
+		<img src="<%= pageData.sendType %>"/>
+		<form action="" method="get" id="user_form" class="info_form">
+			<p>姓名（必填）：</p>
+			<input class="ipt" type="text" id="name" name="name" maxlength="10"/>
+			<p>地址（必填）：</p>
+			<input class="ipt" type="text" id="address" name="address" maxlength="50"/>
+			<p>电话（必填）：</p>
+			<input class="ipt" type="tel" id="tel" name="tel" pattern="[0-9]{11}" maxlength="11"/>
+			<p>邮编（必填）：</p>
+			<input class="ipt" type="tel" id="email" name="email" maxlength="6"/>
+		</form>
+		<p class="sure">
+			<span class="submit sureBtn"></span>
+		</p>
+	</div>
+</div>
+<script>
+	fml.vars.isLogin = '<%= this.userInfo.user_id%>';
+</script>
+<script type="text/html" id="haveGet">
+	<div class="dialog_box">
+		<span class="tips have"></span>
+		<span class="closeBtn"></span>
+	</div>
+</script>
+<script type="text/html" id="noBuy">
+	<div class="dialog_box">
+		<span class="tips no"></span>
+		<span class="closeBtn"></span>
+	</div>
+</script>
+<script type="text/html" id="noRemain">
+	<div class="dialog_box">
+		<span class="tips nothing"></span>
+		<span class="closeBtn"></span>
+	</div>
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use('wap/page/activity/exo_userInfo');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

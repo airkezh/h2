@@ -1,0 +1,118 @@
+function cart(){
+	return this;
+}
+
+var controlFns = {
+	index: function(params){
+		var self = this;
+		var php = {
+			'cartList':'doota::/cart/list_info'
+		};
+
+		this.setDefaultData(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+
+			data.XR = true;
+			data.use_rem_screen = '640_mate';
+
+			data.invalidGoods = [];
+			var list = data.cartList.info;
+			if(list.length !== 0){
+				list.forEach(function(shop){
+					var valid = false;
+					for(var i=0; i < shop.goods.length; i++){
+						var goods = shop.goods[i];
+						if(goods.stock !== '0' && goods.shelf !== '0'){
+							valid = true;
+						} else {
+							data.invalidGoods.push(goods.sid);
+						}
+					};
+					shop.valid = valid;
+				});
+			}
+
+			data.pageTitle = '我的购物车 - 美丽说';
+			data._CSSLinks = ['doota/cart_new'];
+			self.render('doota/cart_new.html', data);
+		});
+	},
+	old: function(params){
+		// console.log(require('querystring').parse.toString());
+		var wapMod = base.loadModel('wap/tools.js');
+		var php = {
+				'cartList':'doota::/cart/list_info'
+				, 'channel_info' : '/customactivity/CustomActivity_common_tool_single?id=wap_channel'
+				, 'leadApp' : '/customactivity/CustomActivity_common_tool_singleNew?id=wap_daoliu'
+				, 'apks' : '/url/Package_get'
+		};
+		this.setDefaultData(php);
+		this.bridgeMuch(php);
+
+		var self = this;
+		var channel = this.readData('channel',this.req.__get, '');
+		var param = channel || param
+		this.req.__get.channel = param
+
+		this.listenOver(function(data){
+			if (data.os.iphone || data.os.ipad){
+				data.appUrl =  'http://itunes.apple.com/cn/app/meilishuo/id431023686'
+			} else {
+				if (!param || (data.apks && !data.apks[param]) ) param = 'web'
+				if (data.apks && data.apks[param] && data.apks[param].src) data.appUrl = data.apks[param].src
+
+				else
+					data.appUrl = 'http://img.meilishuo.net/css/images/AndroidShare/Android6.2.1/Meilishuo_10008.apk?frm=wap_link_download'
+			}
+			data.XR = true;
+			data.showSaleSideBar = true;
+			data.topbanner = false;
+			data.hide_carticon = true;
+			data._CSSLinks = ['doota/cart'];
+			data.pageTitle = '我的购物车 - 美丽说';
+			data.invalidGoods = [];
+			data.SaleChannel = true;
+			var list = data.cartList.info;
+			if (list.length === 0) {
+				self.render('doota/cart.html' , data);
+				return;
+			}else{
+				list.forEach(function(shop){
+					var valid = false;
+					for (var i=0; i < shop.goods.length; i++) {
+						var goods = shop.goods[i];
+						if (goods.stock !== '0' && goods.shelf !== '0') {
+							valid = true;
+						}else{
+							data.invalidGoods.push(goods.sid);
+						}
+					};
+					shop.valid = valid;
+				});
+				self.render('doota/cart.html' , data);
+			}
+		});
+	},
+	check: function(params){
+		var cartInfo = mokeData.cartInfo;
+		var php = {};
+		this.setDefaultData(php);
+		this.bridgeMuch(php);
+		var self = this;
+		this.listenOver(function(data){
+			data.cartInfo = mokeData.cartInfo;
+			data.showSaleSideBar = true;
+			data.topbanner = false
+			self.render('cart/aaa.html' , data);
+		});
+	},
+	del: function(){
+		this.ajaxTo('doota::/cart/remove');
+	},
+	update: function(){
+		this.ajaxTo('doota::/cart/update');
+	}
+};
+
+exports.__create = controller.__create(cart , controlFns);

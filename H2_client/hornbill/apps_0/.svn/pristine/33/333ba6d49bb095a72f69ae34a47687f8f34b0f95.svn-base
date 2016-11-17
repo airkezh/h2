@@ -1,0 +1,70 @@
+@import "../block.less";
+@import "../app/addToCart.less";
+.bg_ie(@url){
+	background:url(@url) no-repeat center;
+	_background:none;
+	_filter:~"progid:DXImageTransform.Microsoft.AlphaImageLoader(src='@{url}',sizingMethod='scale')";
+	.pa;top: 0;left: 0;
+}
+
+.goods_unit(){
+	.productCon{.left;.w(220px);.border-1(@white);margin:20px 10px 0;.pr;
+		.soldout{.w(100%);.h(220px);.bg_ie("@{pic_url}/images/huodong/all/bs_over.png");}
+		.notstart{.w(100%);.h(220px);.bg_ie("@{pic_url}/images/huodong/all/bs_prev.png");}
+		.soldend{.w(100%);.h(220px);.bg_ie("@{pic_url}/images/huodong/all/bs_end.png");}
+		.proImg{.hidden;.h(220px);}
+		.proTitle{.h(32px);.hidden;.l(16px);padding:18px 10px 0;}
+		.proPrice{.h(16px);padding:12px 10px 14px;
+			b {.f(16px);.red;}
+			span{.gray;}
+			.sale_price{.f(14px);}
+			.original_price {.gray;.t-through;.pl(5px);.pr(15px);}
+			}
+	    .proBtnWrap {
+		  padding-bottom: 10px;
+		  border-bottom: 1px dotted #e6e6e6;
+		}
+		.proStatus{.fc(#666);.h(27px);.l(27px);.pl(10px);}
+	}
+	div.productCon:hover{border-color:#e6e6e6;
+		a {.red;}
+	}
+	a.productCon:hover {border-color:#e6e6e6;.cursor;
+		a {.red;}
+	}
+	.new-png{
+		.pa;
+		top: -1px;
+	}
+}
+
+.goods_unit_fuzhuang(){
+	.productCon{.left;.w(220px);.border-1(@white);margin:20px 10px 0;.pr;
+		.proImg{.hidden;.h(220px);}
+		.proTitle{.h(32px);.hidden;.l(16px);padding:18px 10px 0;}
+		.proPrice{
+			.h(16px);padding:12px 10px 14px;
+
+			b {.f(16px);.fc(#fa669b);}
+			span{.gray;}
+			.sale_price{.f(14px);.right;padding: 0 5px;.bgc(#fa669b);border-radius: 3px;.cursor;.c;.fc(#fff);}
+			.original_price {.gray;.t-through;.pl(5px);.pr(15px);.f(12px);}
+		}
+		.proBtnWrap {
+			padding-bottom: 10px;
+		}
+		.proStatus{.fc(#666);.h(27px);.l(27px);.pl(10px);}
+	}
+	div.productCon:hover{border-color:#e6e6e6;
+		a {.red;}
+	}
+	a.productCon:hover {border-color:#e6e6e6;.cursor;
+		a {.red;}
+	}
+	.new-png{
+		.pa;
+		top: -1px;
+	}
+	.buy_btn{background:none;color:#fb679c;border-radius:2px;border:1px solid #fb679c;font-size:16px;height: 30px;line-height: 30px;}
+	.buy_btn:hover{background:#fb679c;color:#fff;}
+}

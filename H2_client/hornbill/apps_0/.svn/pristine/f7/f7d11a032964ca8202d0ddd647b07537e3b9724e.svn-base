@@ -1,0 +1,72 @@
+<%# head.html%>
+<% this.headName = '登录美丽说'; %>
+<%# head_share.html%>
+<% var global_r = this.xr.r || '';%>
+<%= requireFn('slider.html')({
+	'os' : this.os
+	, 'footBanner' : true
+	, 'isIqiyiApp' : this.isIqiyiApp
+	,'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+	, 'showDaoLiu' : this.showDaoLiu
+	, 'showZhiDing' : this.showZhiDing
+	, 'leadApp' : this.leadApp
+	, 'appUrl' : this.appUrl
+	, 'frm' : this.frm
+});%>
+<div class="login">
+	<fieldset>
+		<form id="loginForm" method="post" onsubmit="return false" action="">
+			<div class="formInfo">
+				<legend>美丽说登录表单</legend>
+				<p>
+					<label for="mlsUser" class="icon userIcon"></label>
+					<input id="mlsUser" type="text" name="mlsUser" value="" placeholder="用户名/邮箱/手机号"/>
+				</p>
+				<p>
+					<label for="password" class="icon psdIcon"></label>
+					<input id="mlsPass" name="password" type="password" value="" placeholder="请输入密码"/>
+				</p>
+				<div class="checkBox" id="checkBox">
+					<input id="checkcode" name="checkcode" type="text" value="" maxlength="4" placeholder="验证码"/>
+					<div class="checkImage">
+						<span id="checkcodeImage">
+							<img width="90" height="36" isblank="true" src="<%= this.PICTURE_URL %>images/register/blank.jpg">
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="loginErrorMessage"></div>
+			<div class="submitBox">
+				<input class="loginBtn button" type="submit" value="登录"/>
+				<a class="button exBtn" xr="<%= global_r%>" href="/user/register">注册</a>
+			</div>
+		</form>
+	</fieldset>
+	<div class="loginInfo">
+		<div class="findWord"><a xr="<%= global_r%>" href="/user/findPwd">忘记密码</a></div>
+		<div class="fastLogin">
+			<h2>
+				<span class="line_l"></span>
+				一键登录
+				<span class="line_r"></span>
+			</h2>
+			<div class="fastInfo">
+				<a xr="<%= global_r%>" href="/connect/auth/qzone">
+					<img src="http://d01.res.meilishuo.net/pic/_o/af/03/516ffa7dc6bdaa39aa1aed0b7976_110_153.ch.png" />
+				</a>
+				<a xr="<%= global_r%>" href="/connect/auth/weibo">
+					<img src="http://d04.res.meilishuo.net/pic/_o/17/fd/31d119474da9cdcf92bf2c389557_110_157.ch.png" />
+				</a>
+			</div>
+		</div>
+	</div>
+	<div style="text-align: center;position: absolute;bottom: 30px;width: 100%;">美丽说（北京）网络科技有限公司</div>
+</div>
+<script>
+	fml.vars.global_r = "<%= global_r%>";
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/login');
+	fml.use('wap/page/global');
+_use:", this._JSstack , this._JSmods); %>
+<%# foot_simple.html%>

@@ -1,0 +1,453 @@
+<!--
+/**
+ * @fileoverview 首页 － 签到商城
+ * @requires zepto
+ * @author kehuang@meilishuo.com
+ * @date 2015-03-27
+ */
+-->
+
+<%#head.html%>
+<%
+	var isNewest = this.isNewest;
+	var curPageData = this.pageData || {};
+	var curLayerData = this.layerData || {};
+	var curSignDateInfo = this.signDateInfo.data;
+	var curSignUserInfo = this.signUserInfo.data;
+	var curUserConDays = curSignUserInfo.temp || 0;
+	var curUserTotalCoin = curSignUserInfo.coin || 0;
+	var curServerDate = this.serverDate;
+	var curServerTime = curServerDate.getTime();
+	var curServerYear = curServerDate.getFullYear();
+	var curServerMonth = curServerDate.getMonth() + 1;
+	var curServerDay = curServerDate.getDate();
+	var strServerMonth = (curServerMonth < 10) ? '0' + curServerMonth : curServerMonth;
+	var strServerDay = (curServerDay < 10) ? '0' + curServerDay : curServerDay;
+	var curServerDateStr = curServerYear + '-' + strServerMonth + '-' + strServerDay;
+	var promotionStartTime = new Date(2015,4,8,23,59,59).getTime();
+	var promotionEndTime = new Date(2015,4,18,00,00,00).getTime();
+%>
+
+<div class="main">
+	<div class="banner_wrap">
+		<div class="sign_bonus"><%= curUserTotalCoin %></div>
+		<div class="sign_txt">
+			<p class="tit">我的金币：<em><%= curUserTotalCoin %></em>枚</p>
+			<p>连签<%= curUserConDays %>天，再签<%= 5 - curUserConDays %>天可得5金币</p>
+			<p><a href="/activity/sign/sign_rule/">活动规则 ></a></p>
+		</div>
+		<div class="icon_date"></div>
+	</div>
+
+	<!-- <div class="coupon_wrap">
+		<a href="/activity/sign/sign_coupon/">
+			<div class="title">优惠券秒杀</div>
+			<div class="text_box">每天中午12点<span>领&nbsp;&nbsp;取</span></div>
+		</a>
+		<div class="title">优惠券秒杀</div>
+		<div class="text_box">正在装修中</div>
+	</div> -->
+
+	<%
+		if (!isNewest) {
+	%>
+	<div class="update_tips">升级到美丽说5.5.0版本，可用金币直接抵扣现金 <span>立即升级></span></div>
+	<%
+		}
+	%>
+
+	<div class="desc_wrap">
+	<%
+		if ((curServerTime > promotionStartTime) && (curServerTime <= promotionEndTime)) {
+	%>
+		<p class="title">5·15-5·17 玩转金币商城！</p>
+		<p>①金币可兑换平台优惠券啦！更低门槛更大折扣！</p>
+		<p>②金币可全额兑换商品啦！一分钱不花，宝贝带回家！</p>
+	<%
+		} else {
+	%>
+		<p class="title">这样花金币</p>
+		<p>金币可用于购买金币商品时抵钱，超值直减哦！</p>
+		<p>金币商城精选最优单品，超值抵扣、最低单价，手慢无哦</p>
+	<%
+		}
+	%>
+	</div>
+
+	<div class="mall_wrap"></div>
+
+	<div id="tip_box"></div>
+
+	<section id="container" class="container">
+		<ul class="even goods_wall"></ul>
+		<div class="pullUp" status="loading"></div>
+		<div class="more_bar" data-href="">查看全部金币抵扣商品 ></div>
+    </section>
+
+	<div class="gotop_wrap">
+		<a class="gotop">
+			<img src="http://d03.res.meilishuo.net/pic/_o/d0/68/f89d059f09d440f4ee7a37669383_80_80.cg.png" alt="">
+		</a>
+	</div>
+</div>
+
+<script type="text/html" id="j_recommend_html">
+	<?
+		var jsonData = this.data,
+			rec_banner_data = jsonData.sign_mall_banner || [],
+			rec_banner_len = rec_banner_data.length;
+
+		if (rec_banner_len > 0) {
+	?>
+	<div id="j_imgSwipe" class="swipe">
+		<div class="swipe_wrap">
+			<?
+				var k = 0;
+
+				for (var i = 0; i < rec_banner_len; i++) {
+					var data = rec_banner_data[i],
+						img_src = data.img_src || '',
+						img_title = data.img_title || '',
+						img_link = data.img_link || 'javascript:void(0);';
+
+					++k;
+			?>
+			<div class="swipe_pic tracking" data-href="<?= img_link ?>" data-name="activity_list" data-pos="<?= k ?>">
+				<img src="<?= img_src ?>" alt="<?= img_title ?>">
+			</div>
+			<?
+				}
+			?>
+		</div>
+		<?
+			if (rec_banner_len > 1) {
+		?>
+		<ul class="swipe_num">
+			<?
+				for (var j = 0; j < rec_banner_len; j++) {
+					var className = (j == 0) ? 'active' : '';
+			?>
+			<li class="<?= className ?>"></li>
+			<?
+				}
+			?>
+		</ul>
+		<?
+			}
+		?>
+	</div>
+	<?
+		}
+
+		var rec_one_data = jsonData.recommend_one || [],
+			rec_one_len = rec_one_data.length;
+
+		if (rec_one_len > 0) {
+			if (rec_one_len == 1) {
+				var data = rec_one_data[0],
+					img_src = data.img_src || '',
+					img_title = data.img_title || '',
+					img_link = data.img_link || 'javascript:void(0);';
+	?>
+	<a href="javascript:void(0);" class="tracking" data-href="<?= img_link ?>" data-name="clearance_list" data-pos="1">
+		<img src="<?= img_src ?>" alt="<?= img_title ?>">
+	</a>
+	<?
+			} else if (rec_one_len == 2) {
+	?>
+	<div class="recommend_box">
+		<ul class="odd">
+			<?
+				var j = 0;
+
+				for (var i = rec_one_len - 1; i >= 0; i--) {
+					var data = rec_one_data[i],
+						img_src = data.img_src || '',
+						img_title = data.img_title || '',
+						img_link = data.img_link || 'javascript:void(0);';
+
+					++j;
+			?>
+			<li class="tracking" data-href="<?= img_link ?>" data-name="clearance_list" data-pos="<?= j ?>">
+				<img src="<?= img_src ?>" alt="<?= img_title ?>">
+			</li>
+			<?
+				};
+			?>
+		</ul>
+	</div>
+	<?
+			} else if (rec_one_len == 3) {
+	?>
+	<div class="slide">
+		<div class="slide_wrap">
+			<div class="slide_pic">
+				<ul class="list_pics">
+					<?
+						var j = 0;
+
+						for (var i = rec_one_len - 1; i >= 0; i--) {
+							var data = rec_one_data[i],
+								img_src = data.img_src || '',
+								img_title = data.img_title || '',
+								img_link = data.img_link || 'javascript:void(0);';
+
+							++j;
+					?>
+					<li class="tracking" data-href="<?= img_link ?>" data-name="clearance_list" data-pos="<?= j ?>">
+						<img src="<?= img_src ?>" alt="<?= img_title ?>">
+					</li>
+					<?
+						}
+					?>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<?
+			} else {
+	?>
+	<div class="wrapperIndexActivity" id="wrapperIndexActivity">
+		<div class="scrollerActivity" id="scrollerActivity">
+			<ul>
+				<?
+					var j = 0;
+
+					for (var i = rec_one_len - 1; i >= 0; i--) {
+						var data = rec_one_data[i],
+							img_src = data.img_src || '',
+							img_title = data.img_title || '',
+							img_link = data.img_link || 'javascript:void(0);';
+
+						++j;
+				?>
+				<li class="tracking" data-href="<?= img_link ?>" data-name="clearance_list" data-pos="<?= j ?>">
+					<img src="<?= img_src ?>" alt="<?= img_title ?>">
+				</li>
+				<?
+					}
+				?>
+			</ul>
+		</div>
+	</div>
+	<?
+			}
+		}
+	?>
+	<section class="nav_box" id="nav_box">
+		<div class="lhp100"></div>
+		<ul class="nav">
+			<li class="curr" data-category="all"><a href="javascript:void(0);">全部</a></li>
+			<li data-category="dress"><a href="javascript:void(0);">衣服</a></li>
+			<li data-category="shoes"><a href="javascript:void(0);">鞋子</a></li>
+			<li data-category="bag"><a href="javascript:void(0);">包包</a></li>
+			<li data-category="accessory"><a href="javascript:void(0);">配饰</a></li>
+			<li data-category="home"><a href="javascript:void(0);">家居</a></li>
+			<li data-category="cosmetic"><a href="javascript:void(0);">美妆</a></li>
+			<li data-category="foods"><a href="javascript:void(0);">食品</a></li>
+		</ul>
+		<div class="lhp100"></div>
+	</section>
+</script>
+
+<script type="text/html" id="signin_calendar_layer">
+	<div class="layer_shade j_layer_shade"></div>
+	<div class="calendar_box j_layer_main">
+		<a href="javascript:;" class="calendar_close"></a>
+	  	<div class="calanderWrap">
+	  		<?
+	  			var recData = this.data,
+	  				banner_src = recData.src || '',
+	  				banner_link = recData.link || 'javascript:void(0);',
+	  				banner_title = recData.title || '';
+
+	  			if (banner_src != '') {
+	  		?>
+	  		<a href="<?= banner_link ?>" class="layer_banner">
+	  			<img src="<?= banner_src ?>" alt="<?= banner_title ?>">
+	  		</a>
+	  		<?
+	  			}
+	  		?>
+	  		<%
+				var calPrevYear = 2015,
+					calNextYear = 2015,
+					calPrevMonth = 1,
+					calNextMonth = 1,
+					calCurYear = curServerYear,
+					calCurMonth = curServerMonth;
+
+				if (calCurMonth == 1) {
+					calPrevYear = calCurYear - 1;
+					calNextYear = calCurYear;
+					calPrevMonth = 12;
+					calNextMonth = calCurMonth + 1;
+				} else if (calCurMonth == 12) {
+					calPrevYear = calCurYear;
+					calNextYear = calCurYear + 1;
+					calPrevMonth = calCurMonth - 1;
+					calNextMonth = 1;
+				} else {
+					calPrevYear = calCurYear;
+					calNextYear = calCurYear;
+					calPrevMonth = calCurMonth - 1;
+					calNextMonth = calCurMonth + 1;
+				}
+
+				calPrevMonth = (calPrevMonth < 10) ? '0' + calPrevMonth : calPrevMonth;
+				calNextMonth = (calNextMonth < 10) ? '0' + calNextMonth : calNextMonth;
+			%>
+			<div class="date_box" <? if (banner_src == '') { ?>style="margin-top:8%;"<? } ?>>
+				<div class="prev_btn j_calander_btn" data-flag="prev" data-year="<%= calPrevYear %>" data-month="<%= calPrevMonth %>"></div>
+				<div class="icon_cal"></div>
+				<div class="month"><%= curServerDateStr %></div>
+				<div class="next_btn j_calander_btn" data-flag="next" data-year="<%= calNextYear %>" data-month="<%= calNextMonth %>"></div>
+			</div>
+			<div class="calander"></div>
+			<div class="cal_bottom"></div>
+			<p class="patch_tip">
+				<span class="txt">你已经补完了所有的漏签记录！</span>
+				<img src="<%= this.PICTURE_URL %>images/wap/activity/may_sale/ret_btn.png" alt="tip" class="patch_btn">
+			</p>
+	  	</div>
+	</div>
+</script>
+
+<script type="text/html" id="posterWall">
+	<?
+		$.each(this.data.list, function(index, data){
+	    	var img = data.img || '',
+	    		coin = data.coin || 0,
+	    		price = data.price || 0,
+	    		stock = data.stock || 0,
+	    		title = data.title || '',
+	    		href = data.url || 'javascript:void(0);';
+	?>
+	<li>	
+		<a class="link_box" href="<?= href ?>">
+			<figure>
+				<?
+					if (stock < 1) {
+				?>
+				<div class="soldout"></div>
+				<?
+					}
+
+			    	if (fml.vars.is_lazyload_poster) {
+			    		if (index < 2) {
+			    ?>
+			    <span class="df_show_img" style="opacity: 1;background-image: url(<?= img ?>);"></span>
+			    <?
+			    		} else {
+			    ?>
+			    <span class="bs_load_img" asrc="<?= img ?>"></span>
+			    <?
+			    		}
+					} else {
+				?>
+			    <img src="<?= img ?>" alt="">
+			    <?
+					}
+
+			    	if ((stock > 0) && (stock < 10)) {
+			    ?>
+			    <p class="lave">仅剩<?= stock ?>件</p>
+				<span class="progress rpbgc"></span>
+				<?
+					}
+				?>
+			</figure>
+			<figcaption>
+				<div class="proTitle"><?= title ?></div>
+				<div class="proPrice">
+					<span class="word">抵扣价</span><i>￥</i><?= price ?>  <span class="discount"><?= coin ?>金币</span>
+				</div>
+			</figcaption>
+		</a>
+	</li>
+	<?
+		});
+	?>
+</script>
+
+<script>
+	var curServerTime = <%=curServerTime%>;
+	var curServerYear = <%=curServerYear%>;
+	var curServerMonth = <%=curServerMonth%>;
+	var curServerDateStr = '<%=curServerDateStr%>';
+	var curPageData = <%=JSON.stringify(curPageData)%>;
+	var curLayerData = <%=JSON.stringify(curLayerData)%>;
+	var curSignedArr = <%=JSON.stringify(curSignDateInfo.signed)%>;
+	var curFutureArr = <%=JSON.stringify(curSignDateInfo.future)%>;
+	var curUserPatchData = <%=JSON.stringify(curSignUserInfo.patch)%>;
+	var curUserInitDate = '<%=curSignUserInfo.initDate%>';
+	var curFirstSignDate = '<%=curSignUserInfo.firstSignDate%>';
+	var curLastSignDate = '<%=curSignUserInfo.lastSignDate%>';
+
+	var tempRecommendOneArr = [];
+	var tempRecommendBannerArr = [];
+	var cur_server_time = parseInt(curServerTime / 1000);
+    var curRecommendOneArr = curPageData.recommend_one || [];
+    var curRecommendBannerArr = curPageData.sign_mall_banner || [];
+	var curRecommendOneLen = curRecommendOneArr.length;
+	var curRecommendBannerLen = curRecommendBannerArr.length;
+
+	for (var i = 0; i < curRecommendOneLen; i++) {
+		var chunks_status = true,
+			curRecOneData = curRecommendOneArr[i],
+			chunks_begin_time = Date.parse(curRecOneData.begin_time || '') / 1000,
+			chunks_end_time = Date.parse(curRecOneData.end_time || '') / 1000;
+
+		if (chunks_begin_time) {
+			if (!chunks_end_time || (chunks_end_time && (cur_server_time >= chunks_begin_time) && (cur_server_time <= chunks_end_time))) {
+				chunks_status = true;
+			} else {
+				chunks_status = false;
+			}
+		} else {
+			if (!chunks_end_time || (chunks_end_time && (cur_server_time <= chunks_end_time))) {
+				chunks_status = true;
+			} else {
+				chunks_status = false;
+			}
+		}
+
+		chunks_status && tempRecommendOneArr.push(curRecOneData);
+	}
+
+	for (var j = 0; j < curRecommendBannerLen; j++) {
+		var banner_status = true,
+			curRecBannerData = curRecommendBannerArr[j],
+			banner_begin_time = Date.parse(curRecBannerData.begin_time || '') / 1000,
+			banner_end_time = Date.parse(curRecBannerData.end_time || '') / 1000;
+
+		if (banner_begin_time) {
+			if (!banner_end_time || (banner_end_time && (cur_server_time >= banner_begin_time) && (cur_server_time <= banner_end_time))) {
+				banner_status = true;
+			} else {
+				banner_status = false;
+			}
+		} else {
+			if (!banner_end_time || (banner_end_time && (cur_server_time <= banner_end_time))) {
+				banner_status = true;
+			} else {
+				banner_status = false;
+			}
+		}
+
+		banner_status && tempRecommendBannerArr.push(curRecBannerData);
+	}
+
+	curPageData.recommend_one = tempRecommendOneArr;
+	curPageData.sign_mall_banner = tempRecommendBannerArr;
+
+	fml.vars.isLogin = <%=this.isLogin%>;
+	fml.vars.is_lazyload_poster = true;
+	<%= this.list ? 'Meilishuo.config.poster0 = ' + JSON.stringify(this.list) + ';' : ''; %>
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/sign_mall3');
+_use:", this._JSstack, this._JSmods); %>
+
+<%#foot_simple.html%>

@@ -1,0 +1,208 @@
+<%# wx_new/header.html%>
+<%* 搜索模块 %>
+<%= requireFn('wx_new/mdl_search.html')({
+	"message" : this.message || {}
+	,'user_id' : this.user_id
+	,'data' : this.default_key.word || '立即搜索你想要的商品'
+	,'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+});%>
+
+<%* 跑男活动 微信钱包指示信息层 %>
+<%if(this.wxGuide == 1){%>
+<div class="runlayer"></div>
+<%}%>
+
+<%* 微信商城穿衣测试 %>
+<%if(this.firstGoIn!="1"){%>
+<div class="clothes_report">
+	<span class="test_close"></span>
+	<a href="/wx/clothes_test/index/">
+		<img src="http://i.meilishuo.net/css/images/staticbed/rukou.png">
+	</a>	
+</div>
+<%}%>
+
+<div class="posterWall wrap">
+	<!-- 分享隐藏图 -->
+	<figure class="wxShareImg none_f">
+		<img src="<%=this.PICTURE_URL%>/images/wap/web/wx/shareWXB.jpg"/>
+	</figure>
+	<!-- 砸彩蛋 -->
+	<% if(0 && this.can_hit && this.can_hit.ret == 0){%>
+	<section id="egg">
+		 <img src="<%=this.PICTURE_URL%>/images/wap/sq/box-1.png" class="egg"/>
+		<img src="<%=this.PICTURE_URL%>/images/wap/sq/box-2.png" class="egg-open"/>
+	</section>
+	<%}%>
+
+	<% if( this.banner.head ){%>
+	<section style="-webkit-transform: translateZ(0);">
+		<%= requireFn('block/banner.html')({
+			'banner' :this.banner.head
+			,'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+		});%>
+	</section> 
+	<% } %>
+	
+	<%* 其他类目入口 %>
+	<% if( this.top_entry && this.top_entry.length ){ %>
+	<section class="entry-box">
+		<% this.top_entry.forEach(function(item){ %>
+			<a href="<%=item.url %>" style="background-image:url(<%=item.img %>);" class="entry"></a>
+		<% }); %>
+	</section>
+	<% }; %>
+	
+
+	<%* 新款发布 %>
+	<% if( this.new_release ) {%>
+		<% var hasNew =  Object.keys( this.new_release ).length; %>
+		<% if( hasNew ){
+			var head = this.new_release.head;
+			var tail = this.new_release.tail;
+			var figureFirst = this.new_release.main_figure && this.new_release.main_figure[0];
+			var review = this.new_release.review;
+			%>
+		<figure class="new-release">
+			<% if( head && head.image ){%>
+			<figcaption>
+				<img src="<%=head.image %>" alt="">
+			</figcaption>
+			<%}%>
+			<ul class="new-item">
+				<%* 主图 *%>
+				<% if( figureFirst && figureFirst.image && figureFirst.url ){  %>
+				<li>
+					<a href="<%= figureFirst.url %>" class="item first">
+						<img src="<%= figureFirst.image.pic_url %>">
+					</a>
+				</li>
+				<%} %>
+				<%* 右侧3个小图 *%>
+				<% figureFirst && figureFirst.sub_figure && figureFirst.sub_figure.map(function(data){%>
+				<li>
+					<a href="<%= data.url %>" class="item">
+						<img src="<%= data.image.pic_url %>">
+					</a>
+				</li>
+				<% }); %>
+			</ul>
+		</figure>
+
+		<%* 往期回顾 %>
+		<figure class="new-release old-release">
+			<a href="<%= tail.review %>" class="old-a">
+				<span class="title">往期回顾</span>
+			</a>
+			<!-- <ul class="old-item">
+				<% review && review.map(function(data){%>
+				<li>
+					<a href="<%= data.url %>" class="item">
+						<img src="<%= data.image.pic_url %>">
+					</a>
+				</li>
+				<%});%>
+				<% if(tail && tail.image)%>
+				<li>
+					<a href="<%= tail.review %>" class="item">
+						<img src="<%= tail.image %>">
+					</a>
+				</li>
+			</ul> -->
+		</figure>
+		<%};%>
+	<%};%>
+
+	<%if( this.popular.item && this.popular.item.length ){
+		var item = this.popular.item;
+		%>
+	<div class="ad-box pl-10 popular">
+		<div class="ad-title"><%=this.popular.title || '' %>
+			<span class="sec-title"><%=this.popular.desc || ''%></span>
+		</div>
+		<div class="popular-box">
+			<% item.map(function(data,idx){%>
+				<a href="<%=data.url %>" style="background-image: url(<%=data.img%>);"  class="w-normal"></a>
+			<%});%>
+		</div>
+	</div>
+	<%};%>
+
+
+	<% if(this.discount_99.hook_list && Object.keys(this.discount_99.hook_list).length ){
+		var _title = this.discount_99.title || {};
+		%>
+	<div class="ad-box">
+		<div class="ad-title"><%= _title.title %>
+			<span class="sec-title"><%= _title.desc || '' %></span></div>
+		<%
+			var hook = this.discount_99.hook_list;
+			var banner = hook.banner;
+			var items = hook.item;
+		%>
+		<ul class="ul-box">
+			<% if( banner && banner.image && banner.image.pic_url ){%>
+			<li class="li-box">
+				<a href="<%=banner.url %>" class="w-normal"><img src="<%=banner.image.pic_url %>" alt=""></a>
+			</li>
+			<%};%>
+			<% items && items.map(function(data,idx){ %>
+				<li class="li-box">
+					<a href="<%=data.url %>"  class="w-normal"> <img src="<%=data.image.pic_url %>" alt="">
+					</a>
+				</li>
+			<% });%>
+		</ul>
+	</div>
+	<%};%>
+	<!-- 首页跑男改版 2015-10-20 -->
+	<%if( this.running_man.banner){
+		var ban = this.running_man.banner;
+		var topInfo = this.running_man.title;
+		var bottom = this.running_man.bottom;
+		%>
+	<div class="run-box">
+		<div class="run-title"><%= topInfo.title  %><span><%= topInfo.desc%></span></div>
+		<%if( ban.img ){%>
+		<div class="run-pic">
+			<a href="<%= ban.url %>"><img src="<%=ban.img %>"></a>
+		</div>
+		<%}%>
+		<% if(0){ %>
+		<div class="run-info-pic">
+			<% bottom && bottom.map(function(data){%>
+				<a href="<%= data.url %>"><img src="<%=data.img %>"></a>
+			<%});%>
+		</div>
+		<% } %>
+	</div>
+	<%}%>
+	<!-- 结束 -->
+
+	<div class="ad-box g-wall">
+		<div class="ad-title">流行新品</div>
+	</div>
+
+	<ul class="goods_wall new_goods">
+
+
+	</ul>
+	
+	<div class="pullUp" status="loading"></div>
+</div>
+
+<%# wx_new/waterfall.html %>
+
+
+<!--  fml.vars.isShare = true; 微信分享 -->
+<script>
+fml.vars.isShare = true;
+fml.vars.wxGuide = <%=this.wxGuide %>;
+fml.vars.firstGoIn = <%= this.firstGoIn %>;
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/wx_new/daily');
+_use:", this._JSstack , this._JSmods ); %>
+<%# wx_new/side.html%>
+<%# wx_new/footer.html%>

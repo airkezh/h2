@@ -1,0 +1,34 @@
+<% this.act_poster && this.act_poster.map(function(data){ %>
+	<div class="goodsCon">
+		<% if(data.link){ %>
+			<a href="<%=data.link%>" target="_blank" class="pic">
+				<%= requireFn('mark.html')({
+					'marks' : data.horizontal_mark
+				}); %>
+				<img src="<%= data.image%>" />
+			</a>
+			<a href="<%=data.link%>" target="_blank" class="goods_tit"><%= data.goods_title%></a>
+		<%}else{%>
+			<a href="/share/item/<%=data.twitter_id%>?d_r=<%=data.d_r%>" target="_blank" class="pic">
+				<%= requireFn('mark.html')({
+					'marks' : data.horizontal_mark
+				}); %>
+				<img src="<%= data.image%>" />
+			</a>
+			<a href="/share/item/<%=data.twitter_id%>?d_r=<%=data.d_r%>" target="_blank" class="goods_tit"><%= data.goods_title%></a>
+		<%}%>
+		<div class="goods_price">
+			<span class="red_f">￥<%= data.price%></span>
+			<% if(data.price != data.original_price){ %>
+				<del>￥<%= data.original_price%></del>
+			<%}%>
+		</div>
+		<div class="likebuy">
+			<p class="likenum left_f">
+				<img class="left_f" src="http://i.meilishuo.net/css/images/twitter/ILikeit.gif" />
+				<span class="left_f"><%= data.count_like%>人已喜欢</span>
+			</p>
+			<%if(data.sell_num){%><p class="right_f"><span class="red_f"><%= data.sell_num%></span>人已购买</p><%}%>
+		</div>
+	</div>
+<% }); %>

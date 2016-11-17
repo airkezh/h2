@@ -1,0 +1,85 @@
+<!--
+/**
+ * @fileoverview 首页 － 签到商城
+ * @requires zepto
+ * @author kehuang@meilishuo.com
+ * @date 2014-12-04
+ */
+-->
+
+<%#head_simple.html%>
+<%
+	
+%>
+</head>
+<body <% if (this.os.ios) { %>class="ios"<% } %>>
+
+<section id="wrapper_main" class="wrapper">
+	<div class="scroller">
+		<span class="colFlag"></span>
+		<div class="goods_wall"></div>
+		<div class="pullUp" status="loading"></div>
+	</div>
+</section>
+</div>
+
+<script type="text/html" id="posterWall">
+<?
+	$.each(this.tInfo, function(k, v){ 
+		var posHeight = 0,
+			goods_reason = v.reason || '',
+			strLen = getStrLength(goods_reason),
+			pic_height = v.pic_height * fml.vars.poster.scale;
+
+		if (strLen > 20) {
+			posHeight = pic_height + 80;
+		} else {
+			posHeight = pic_height + 58;
+		}
+?>
+	<div class="poster_grid poster_wall" twitter_id="<?= v.twitter_id ?>" style="width:<?= fml.vars.poster.colWidth ?>px;" poster_height="<?= posHeight ?>">
+		<figure>
+			<a class="pic_load" href="/share/<?if(v.is_doota == '1'){?>item/<?}?><?= v.twitter_id?><?if(v.url_query){?>?<?= v.url_query?><?}?>" style="height:<?= pic_height ?>px;">
+				<img src="<?= v.pic_url ?>" alt="<?= v.title ?>" title="<?= v.title ?>"/>
+			</a>
+			<figcaption>
+				<?
+					if (v.price) {
+				?>
+				<span class="price"><?= v.price ?></span>
+				<?
+					}
+				?>
+				<span class="like icon-heart"><?= v.count_like ?></span>
+			</figcaption>
+			<?
+				if (goods_reason != '') {
+			?>
+			<p class="goods_title"><?= goods_reason ?></p>
+			<?
+				}
+			?>
+		</figure>
+	</div>
+<?
+	});
+?>
+</script>
+
+<script>
+	fml.vars.poster = {};
+	fml.vars.isLogin = <%= this.isLogin %>;
+	<%= this.poster0? 'Meilishuo.config.poster0 = ' + JSON.stringify(this.poster0) + ';' : ''; %>
+
+	function getStrLength(str) {
+		var cArr = str.match(/[^\x00-\xff]/ig);
+
+		return str.length + (cArr == null ? 0 : cArr.length);
+	}
+</script>
+
+<% $_ENGINE_SELF.callFn("useModule")("fml.use('wap/page/poster0');", this._JSstack, this._JSmodsFast); %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/recommend');
+_use:", this._JSstack, this._JSmods); %>
+<%# foot.html%>

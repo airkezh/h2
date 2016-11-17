@@ -1,0 +1,101 @@
+@import "cssreset.less";
+@import "block.less";
+
+body {
+  .bgc(@wap_bgpink);
+  .fc(#666);
+  /*
+  http://stackoverflow.com/questions/2808267/uiwebview-how-to-disable-action-sheets-uiactionsheet
+  */
+  -webkit-touch-callout: none;
+}
+
+html, body, div, p, span, a, img, ul, li, header, section, footer, nav, canvas, figure, figcaption { -webkit-user-select : none; }
+
+html, body, form, fieldset, p, div, h1, h2, h3, h4, h5, h6 { -webkit-text-size-adjust : none; }
+
+*, ::after, ::before {
+  -webkit-tap-highlight-color : rgba(255, 255, 255, 0);
+  //	-webkit-user-select: none;
+  //	-webkit-touch-callout: none;
+  -webkit-user-drag           : none;
+}
+
+a { color : #666; .tnone;
+  &:hover { .red; }
+}
+
+.red_f { .red;
+  a { .red; .tnone;
+    &:hover { .red; text-decoration : underline; }
+  }
+}
+
+.left_f { .left; }
+
+.right_f { .right; }
+
+.clearfix_f { .clearfix; }
+
+.clear_f { .clear; }
+
+.pr_f { .pr; }
+
+.pa_f { .pa; }
+
+.tc_f { .c; }
+
+.none_f { .none; }
+
+.eventnone { .eventNone; }
+
+.ellipsis_f { .ellipsis; }
+
+.frame;
+.navBan;
+.header;
+.header > .a;
+
+.wrapper{/*.mt(@header_top);*/}
+
+
+input {
+  &[type="password"], &[type="text"], &[type="submit"] {
+    .appearance-n;
+  }
+}
+
+textarea {
+  .appearance-n;
+}
+
+.windowDrive;
+
+
+html {
+  font-size : 62.5%; /* 10/16 = 62.5% */
+}
+
+@media (-webkit-min-device-pixel-ratio : 1.5), (min-resolution : 1.5dppx) {
+  html {
+    font-size : 33.33333333%;
+  }
+
+  @media (max-width : 500px) {
+    html {
+      font-size : 31.25%;
+    }
+  }
+}
+
+@media (-webkit-min-device-pixel-ratio : 2), (min-resolution : 2dppx) {
+  html {
+    font-size : 31.25%; /* 5/16 = 31.25% */
+  }
+}
+
+@media (-webkit-min-device-pixel-ratio : 3), (min-resolution : 3dppx) {
+  html {
+    font-size : 20.8333333333%; /* 10/48 = 20.8333333% */
+  }
+}

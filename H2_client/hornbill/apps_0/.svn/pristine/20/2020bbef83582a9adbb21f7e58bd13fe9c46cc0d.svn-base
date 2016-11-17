@@ -1,0 +1,128 @@
+/*common*/
+
+var $ = require('wap/zepto')
+	, sticky = require('wap/component/sticky')
+
+/**
+ * 搜索提交
+ */
+var $input = $('.js_input')
+	, input_decorate_span = $('.js_input_decorate span')
+	, search_url = input_decorate_span.data('url')
+	, search_placeholder = input_decorate_span.data('placeholder')
+
+$('.js_search_form').on('submit', function(e){
+	event.preventDefault();
+
+	var keyword = $.trim($input.val())
+	if(!keyword){
+		if(search_url){
+			return window.location.href = search_url
+		}
+		if(search_placeholder != '搜索宝贝'){
+			return window.location.href = '/search/?keyword=' + encodeURIComponent(search_placeholder);
+		}
+		return false;
+	} else {
+		return window.location.href = '/search/?keyword=' + encodeURIComponent(keyword);
+	}
+})
+
+$('.wap_nav').on('click', '.search_btn', function(){
+	var keyword = $.trim(input_decorate_span.html())
+
+	if(keyword == search_placeholder){
+		if(search_url){
+			return window.location.href = search_url
+		}
+		if(search_placeholder != '搜索宝贝'){
+			return window.location.href = '/search/?keyword=' + encodeURIComponent(search_placeholder);
+		}
+		return false;
+	} else {
+		return window.location.href = '/search/?keyword=' + encodeURIComponent(keyword);
+	}
+})
+
+/**
+ * 搜索点击切换
+ */
+var search_scroll_to = $('.wap_head').offset().top
+$input.on('focus', function(e){
+	$('body').scrollTop(search_scroll_to)
+	e.stopPropagation()
+
+	maskTab(true)
+
+	var search_t = input_decorate_span.html()
+	input_decorate_span.css('text-indent', '-9999em')
+	if(search_t == search_placeholder){
+		$(this).attr('placeholder', search_placeholder)
+	} else {
+		$(this).val(search_t)
+	}
+	$('.js_cate_btn').html('取消').removeClass('search_btn')
+}).on('blur', function(e){
+	e.stopPropagation()
+
+	maskTab(false)
+
+	var search_t = $(this).val()
+	if(search_t == ''){
+		search_t = search_placeholder
+	}
+	$(this).attr('placeholder', '').val('')
+	input_decorate_span.html(search_t).css('text-indent', '0')
+
+	setTimeout(function(){
+		$('.js_cate_btn').html('搜索').addClass('search_btn')
+	}, 500)
+}).on('click', function(e){
+	e.stopPropagation()
+})
+
+/**
+ * 搜索Android兼容
+ */
+var ua = navigator.userAgent
+	, os = ua.match(/(Android)\s+([\d.]+)/)
+	, os_vision = os && os[2]
+	, $input_decorate = $('.js_input_decorate')
+
+if(os_vision && os_vision <= '4.1.1'){
+	$input.on('focus', function(){
+		$input_decorate.addClass('input_focus')
+	}).on('input', function(){
+		if($input.val()){
+			$input_decorate.addClass('input_valid')
+		} else {
+			$input_decorate.removeClass('input_valid')
+		}
+	}).on('focusout', function(){
+		$input_decorate.removeClass('input_focus')
+	})
+}
+
+/**
+ * 隐藏遮罩层
+ */
+$('.wap_head_mask, .wap_nav').on('click', function(){
+	maskTab(false)
+})
+
+var hideMaskT = ''
+function maskTab(action){
+	var $mask = $('.wap_head_mask')
+	if(action){
+		clearTimeout(hideMaskT)
+		$mask.show().attr('status', 'show')
+	} else {
+		$mask.attr('status', 'hide')
+		hideMaskT = setTimeout(function(){
+			$mask.hide()
+		}, 300)
+	}
+}
+if(!fml.vars.hide_sticky){
+	sticky.init('.wap_head', {'infinity': true})
+}

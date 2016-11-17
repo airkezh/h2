@@ -1,0 +1,208 @@
+<%#head.html%>
+<%
+var wlInfoRenderFn = requireFn('welfare/welfare_info.html');
+var wlListRenderFn = requireFn('wins/reply_box.html');
+%>
+<div class="wx_2code">
+	<span></span>
+</div>
+<div class="welfare_con clearfix_f">
+	<%if(this.wl_header.top_banner){%>
+	<%if(this.wl_header.top_banner_link){%>
+	<a href="<%=this.wl_header.top_banner_link%>" target="_blank" class="mt14_f"><img width="950" height="200" src="<%=this.wl_header.top_banner%>"></a>
+	<%} else {%>
+	<img width="950" height="200" src="<%=this.wl_header.top_banner%>">
+	<%}%>
+	<%}%>
+	<div class="wl_main">
+		<%=wlInfoRenderFn(this.wl_header);%>
+		<div class="wl_intro">
+			<h3>活动简介</h3>
+			<div class="intro_con">
+				<%=this.wl_header.summary%>
+			</div>
+		</div>
+		<div class="wl_users">
+			<h3>她们刚刚申请了福利</h3>
+			<div class="applyed" id="subWindow">
+			<%this.users_apply && this.users_apply.map(function(data){%>
+				<div class="wl_she">
+					<a class="wl_sheimg" target="_blank" href="/person/u/<%=data.user_id%>"><span asrc="<%=data.avatar_c%>"></span></a>
+					<a class="wl_shename" target="_blank" href="/person/u/<%=data.user_id%>"><%=data.nickname%></a>
+				</div>
+			<%});%>
+			</div>
+		</div>
+		<%#wins/publishor.html%>
+		<div class="reply_list comments">
+			<%this.wl_main && this.wl_main.list.map(function(data){%>
+				<%=wlListRenderFn(data)%>
+			<%});%>
+		</div>
+		<div class="paging_panel c_f">
+			<%#paging.html%>
+		</div>
+	</div>
+	<div class="wl_sider">
+		<%if(this.user_list && this.user_list.identity){%>
+		<div class="sider_bg">
+			<%#userinfo.html%>
+		</div>
+		<%}%>
+		<%if(this.wl_header.brand_story){%>
+		<div class="sider_bg">
+			<h3>品牌故事</h3>
+			<p class="mt8_f"><%=this.wl_header.brand_story%></p>
+		</div>
+		<%}%>
+		<%if(this.wl_header.coupon){%>
+		<div class="sider_bg">
+			<h3>专享优惠券</h3>
+			<div class="mt14_f">
+				<%if(this.wl_header.coupon_link){%>
+				<a href="<%=this.wl_header.coupon_link%>" target="_blank"><img width="200" src="<%=this.wl_header.coupon%>"></a>
+				<%} else {%>
+				<img width="200" src="<%=this.wl_header.coupon%>">
+				<%}%>
+			</div>
+		</div>
+		<%}%>
+		<%if(this.wl_sider && this.wl_sider.list){%>
+		<div class="sider_bg">
+			<a class="sider_all" href="/welfare" target="_blank">查看全部</a>
+			<h3>进行中的福利</h3>
+			<%this.wl_sider && this.wl_sider.list && this.wl_sider.list.map(function(data){%>
+			<div class="sider_wf">
+				<a class="f14_f sider_ttl" href="/welfare/activity/<%=data.activity_id%>" target="_blank"><%=data.title%></a>
+				<a class="sider_img" href="/welfare/activity/<%=data.activity_id%>" target="_blank"><img width="200" src="<%=data.index_banner%>"></a>
+			</div>
+			<%});%>
+		</div>
+		<%}%>
+	</div>
+</div>
+<%*弹窗部分--转发到微博@好友--通过绑定%>
+<script type="text/html" id="welfare_apply">
+<div class="welfare_apply" id="welfare_apply_after">
+	<p class="wf_explain">我们会优先选择有真人头像的姑娘获奖~</p>
+	<form class="wf_form" onsubmit="return false;" action="">
+		<input type="hidden" name="activity_id" value="<%=this.wl_header.activity_id%>">
+		<% this.wf_form && this.wf_form.data && this.wf_form.data.map(function(data, idx){%>
+		<p>
+			<span class="wa_info" wf_label="<%= data.label%>"><%= data.label%>：</span>
+			<%if(data.type == 'text'){%>
+				<input id="<%= data.id%>" class="wfipt1 wf_tips" type="<%= data.type%>" name="<%= data.name%>" is_necessary="<%= data.is_necessary%>" placeholder="<%= data.placeholder%>" style="width:<%= data.width%>" 
+				<%if(data.id== "real_name"){%>
+					value = "<?= info.realname?>"
+				<%} else if (data.id == 'telephone'){%>
+					value = "<?= info.mobile?>"
+				<%} else if (data.id == 'address'){%>
+					value = "<?= info.shipping_address?>"
+				<%} %> />
+			<%} else {%>
+				<textarea id="<%= data.id%>" class="wfipt3 wf_tips" name="<%= data.name%>" placeholder="<%= data.placeholder%>" is_necessary="<%= data.is_necessary%>" style="width:<%= data.width%>"></textarea>
+			<%}%>
+		</p>
+		<%});%>
+		<p class="l22_f">
+			<span class="wa_info">同步：</span>
+			<div id="weibo_area">
+				<p>
+					<?if(fans && fans.length>0) {?><span id="weibo_area_change">换一组</span>同步到我的微博，并@美丽说和我的好友
+					<?} else {?>
+					同步到我的微博，并@美丽说。
+					<?}?>
+				</p>
+				<div class="mt5_f">
+					<?fans && $.each(fans, function(k, v){?>
+					<img class="avatar48_f" alt="<?=v.screen_name?>" src="<?=v.image_url?>">
+					<?});?>
+					<div class="clear_f"></div>
+				</div>
+				<?if(fans && fans.length>0) {?>
+				<p class="mt5_f">你@了<span id="weibo_area_info">0</span>位微博好友</p>
+				<?}?>
+			</div>
+		</p>
+		<p>
+			<label class="cursor_f"><input fuid="<%=this.wl_info.userInfo.user_id%>" id="fol_actor" type="checkbox" checked>关注<%=this.user_list.nickname%></label>
+			<br/>
+			<label class="cursor_f"><input id="share_home" type="checkbox" checked>分享到我的首页</label>
+		</p>
+		<p>
+			<input id="applying_submit" type="submit" value="提交申请">
+			<a class="wf_cancel" href="javascript:void(0)">取消</a>
+		</p>
+	</form>
+</div>
+</script>
+<%*弹窗部分--转发到微博@好友--未绑定%>
+<script type="text/html" id="welfare_apply_before">
+<div class="welfare_apply_before">
+	<p class="c_f">亲，绑定以下任意微博就能参加活动啦！</p>
+	<div class="mt14_f wf_bind">
+		<a class="wfr_ico1" href="/connect/auth/weibo?position=newbind"></a>
+		<a class="wfr_ico2" href="/connect/auth/txweibo?position=newbind"></a>
+		<div class="clear_f"></div>
+	</div>
+</div>
+</script>
+<%*弹窗部分--转发到微博@好友--绑定失败%>
+<script type="text/html" id="welfare_apply_error">
+<div class="c_f">
+	<p class="erro_info">授权失败，请再试一次吧！</p>
+	<p>
+		<span class="btn sure" id="welfare_sure">确定</span>
+		<span class="" id="welfare_return">返回</span>
+	</p>
+</div>
+</script>
+<%*申请成功提示%>
+<script type="text/html" id="welfare_apply_success">
+<div class="apply_success">
+	<p>你已经成功提交申请了，我们会尽快处理，</p>
+	<%* 4122  217号福利社定制功能 5.1下线%>
+	<%if(this.wl_header.activity_id == 217){%>
+	<p>来<a class="red_f fb_f" href="http://c.admaster.com.cn/c/a13079,b200160760,c1981,i0,m101,h" target="_blank">ORBIS官网</a>浏览，寻找更多惊喜。</p>
+	<%}else{%>
+	<p>获得试用资格的MM将收到系统消息通知，</p>
+	<p>请注意查收哦～</p>
+	<%}%>
+	<%if(this.wf_girl.followed == 0){%>
+	<p>想获得更多福利情报，请关注福利花小美^_^</p>
+	<div class="mt8_f clearfix_f" style="margin-left:20px;">
+		<a class="left_f" target="_blank" href="/person/u/<%=this.wf_girl.user_id%>">
+			<img width="86" height="86" src="<%=this.wf_girl.avatar_a%>">
+		</a>
+		<div class="wf_girl_r">
+			<a class="f14_f fb_f block_f" target="_blank" href="/person/u/<%=this.wf_girl.user_id%>"><%=this.wf_girl.nickname%>
+				<span class="identity_big_style">
+				<%= jsRender('identity.html')(this.wf_girl) ;%>
+				</span>
+			</a>
+			<span class="red_follow add_follow_ok" fuid="<%= this.wf_girl.user_id%>" following=<%= this.wf_girl.following%> followed="<%= this.wf_girl.followed%>">+ 加关注</span>
+		</div>
+	</div>
+	<%}else{%>
+	<p class="mt14_f" style="margin-left:100px;"><input class="apply_success_ok cursor_f btn sure" type="button" value="确定"/></p>
+	<%}%>
+</div>
+</script>
+<%
+function deQuote(str){
+	return str.replace(/\'/g , '&#39;')
+	}
+%>
+<script>
+	Meilishuo.config.begin = <%=this.wl_header.begin%>;
+	Meilishuo.config.activity_id = <%=this.wl_header.activity_id%>;
+	Meilishuo.config.editor = <%=this.wl_header.editor%>;
+	Meilishuo.config.pid = <%=this.wl_header.twitter_images_id%>;
+	Meilishuo.config.wl_title = '<%= deQuote(this.wl_header.title)%>';
+	Meilishuo.config.topic_title = '<%= deQuote(this.wl_header.topic_title)%>';
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/welfare_con');
+_use:", this._JSstack , this._JSmods); %>
+<%#foot.html%>

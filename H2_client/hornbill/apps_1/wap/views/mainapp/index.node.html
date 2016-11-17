@@ -1,0 +1,142 @@
+<%
+/*
+    这个页面目前没有被用到，暂不更新
+    最新首页参见 index.zepto.html
+*/
+var circles    = this.circles.list || [],
+
+    getAppLink = this.getAppLink;
+
+/* 目前后端传的时间都以秒做单位 */
+function parseTime( time ) {
+    var date = new Date( 1000 * time ),
+        text = (date.getMonth() + 1) + '月' + date.getDate() + '日';
+
+    if ( date.getFullYear() === (new Date).getFullYear() ) {
+        return text;
+    } else {
+        return date.getFullYear() + '年' + text;
+    }
+}
+
+/* 单位也是秒*/
+function parseAudioDuration( duration ) {
+    var MINUTE = 60,
+        mins, remain
+
+    if ( duration < MINUTE ) {
+        return duration + '\'\''
+    } else {
+        mins = parseInt( duration / MINUTE, 10 )
+        remain = duration - mins * MINUTE
+        return mins + '\'' + ( remain ? remain + '"' : '' )
+    }
+}
+%>
+<div class="main js-main">
+    <%
+    circles.forEach( function( circle ) {
+    var type = circle.msg_type;
+
+    if ( type == 'banner' ) {
+        var ratio = circle.pic_height / circle.pic_width * 100;
+    %>
+    <a class="banner item" href="<%= circle.link %>"
+       style="background-image:url(<%= circle.pic_url %>);padding-top: <%= ratio %>%;"></a>
+    <%
+    } else if ( type == 'miscpic' ) {
+        var uinfo = circle.uinfo,
+            audio = circle.audio,
+            goods = circle.multimedia_miscpic[0],
+            gRatio = goods.height / goods.width * 100,
+            tags = goods.tags,
+            hasAudio = audio && audio.url,
+            isDaren = uinfo.is_daren == 1 ? 'is-daren' : '';
+    %>
+    <div class="post item <%= hasAudio ? 'has-audio' : '' %>">
+        <div class="hd">
+            <a class="user" href="<%= getAppLink( 'person', { user_id: uinfo.user_id} ) %>">
+                <div class="avatar <%= isDaren %>" style="background-image: url(<%= uinfo.avatar_c %>)"><i class="icon-vip-large" style="background-image:url(<%= uinfo.identity_img %>)"></i></div>
+                <div class="user-info">
+                    <p class="user-nickname"><%= uinfo.nickname %></p>
+                    <p class="user-label"><%= uinfo.label %></p>
+                </div>
+            </a>
+
+            <% if (circle.root_uinfo) {%>
+            <p class="repost-info">
+                转自<a class="repost-user keyword" href="<%= getAppLink( 'person', { user_id:circle.root_uinfo.user_id }) %>"><%= circle.root_uinfo.nickname %></a>的<a class="repost-circle keyword" href="<%= getAppLink( 'circle', {circle_id:circle.root_circle_info.id}) %>"><%= circle.root_circle_info.name %></a>群
+            </p>
+            <%}%>
+        </div>
+        <div class="bd">
+            <a class="post-img" style="background-image: url(<%= goods.picurl %> ); padding-top: <%= gRatio %>%;" href="<%= getAppLink( 'rich_message', {type:'miscpic', msg_id: circle.msg_id}) %>"></a>
+            <% if (tags && tags.length) {%>
+            <ul class="price-tags">
+                <% tags.forEach( function( tag ) {
+                var type  = tag.type,
+                    goods = tag.goods,
+                    top   = 100 * tag.y + '%',
+                    left, style, text;
+
+                if ( type == 'tlabel' ) {
+                    text = tag.tlabel.tlabel_name;
+                } else {
+                    text = '￥' + goods.goods_price + ' ' + goods.goods_title;
+                }
+
+                if ( tag.d == 0 ) {
+                    left = 100 * tag.x + '%';
+                    style = 'left:' + left + ';top:' + top + ';';
+                %>
+                <li class="price-tag dir-left" style="<%= style %>">
+                    <i class="icon-tag"></i>
+                    <p class="tag-text"><%= text %></p>
+                </li>
+                <%} else {
+                    left = 100 * ( 1 - tag.x ) + '%';
+                    style = 'right:' + left + ';top:' + top + ';';
+                %>
+                <li class="price-tag dir-right" style="<%= style %>">
+                    <p class="tag-text"><%= text %></p>
+                    <i class="icon-tag"></i>
+                </li>
+                <% } });%>
+            </ul>
+            <%}%>
+            <% if( hasAudio ) {%>
+            <a class="post-voice js-audio" data-audioid="<%= audio.audio_id %>" data-duration="<%= audio.duration %>">
+                <i class="voice-bg"></i>
+                <div class="post-voice-wrap">
+                    <i class="icon-play"></i>
+                    <i class="icon-loading"></i>
+                    <p class="voice-icons">
+                        <i class="icon-voice-1"></i>
+                        <i class="icon-voice-2"></i>
+                        <i class="icon-voice-3"></i>
+                    </p>
+                    <p class="post-voice-length"><%= parseAudioDuration(audio.duration) %></p>
+                </div>
+                <audio src="<%= audio.url %>" volume="0.5"></audio>
+            </a>
+            <% } %>
+            <a href="<%= getAppLink( 'post_share',{ title: '分享给朋友', post_data: circle }) %>"><i class="icon-qr post-qrcode"></i></a>
+        </div>
+        <div class="ft">
+            <p class="post-desc"><%= circle.msg_text %></p>
+            <div class="post-info">
+                <i class="icon-time"></i><span class="label"><%= parseTime(circle.publish_time) %></span>
+                <% if(circle.address) {%>
+                <i class="icon-location-g"></i><span class="label"><%= circle.address %></span>
+                <%}%>
+            </div>
+            <div class="post-social">
+                <a class="btn-chat btn" href="<%= getAppLink( 'circle', {circle_id:circle.circle_info.id }) %>"><i class="icon-chat"></i>群聊 <%= circle.circle_info.member_num %></a>
+                <a class="btn-recircle btn" href="<%= getAppLink( 'into_circle', { msg_id: circle.msg_id, title: circle.msg_text, goods_img: goods.picurl } ) %>"><i class="icon-recircle"></i>转圈 <%= circle.count_repin %></a>
+                <a class="btn-like btn"><i class="icon-like"></i>喜欢 <%= circle.count_like %></a>
+            </div>
+        </div>
+    </div>
+    <% } %>
+    <% }); %>
+</div>

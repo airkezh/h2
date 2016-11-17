@@ -1,0 +1,92 @@
+/*common*/
+
+require('wap/zepto')
+
+var Alert    = require('wap/ui/alert')
+var Dialog   = require('wap/ui/dialog')
+var ShareTmp = require('component/shareTmp')
+
+var $sign     = $('#sign')
+var $currCoupon = null
+var cAlert   = null
+var flag      = false
+var couponUrl = '/aj/sq/interfaces/sign_coupon'
+var signUrl   = '/aw/sq/sign'
+
+var EventHandler = {
+	getCoupon : function (){
+		var data = {
+			rule_id: this.data('code') 
+		}
+
+		flag = true
+		$currCoupon = this
+		$.post(couponUrl, data, applyCouponSuccess, 'json')
+	},
+
+	jump : function (){
+		location.href = "/sq/user/coupon"
+	},
+
+	sign : function (){
+		flag = true
+		$.get(signUrl, signSuccess, 'json')
+	}
+}
+
+/** main logic */
+$(function (){
+	document.body.addEventListener('click', function (e){
+		if(flag) return
+
+		var $t        = $(e.target)
+		var eventName = $t.data('action')
+		var fn        = EventHandler[ eventName ]
+
+		fn && fn.apply($t)
+	}, true)
+})
+
+function alert(msg, cbk){
+	return new Alert({ 
+		content: msg,
+		onSure : cbk
+	})
+}
+
+function couponAlert(html){
+	return new Dialog({ 
+		content: ShareTmp('coupon_alert_tpl', { tpl : html })
+	})
+}
+
+function reload(){
+	window.location.reload()
+}
+
+function applyCouponSuccess(res){
+	if(res.ret == 0){
+		var htmlContent = '<h2 style="margin-bottom:.2rem;">抢到啦！</h2><p style="line-height: .4rem;">' + res.msg + '</p>'
+
+		var cAlert = couponAlert(htmlContent)
+		$('.closeBtn').on('click', function(){
+			$(this).off('click')
+			cAlert.destory()
+		})
+		$currCoupon.data('action','jump').parent().removeClass('get').addClass('got')
+	}else{
+		alert(res.msg)
+	}
+
+	flag = false
+}
+
+function signSuccess(res){
+	if(res.ret == 0){
+		alert('签到成功！', reload)
+	}else{
+		alert(res.msg)
+	}
+
+	flag = false
+}

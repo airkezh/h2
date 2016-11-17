@@ -1,0 +1,55 @@
+<%# head.html%>
+<% var info = this.daren_info;%>
+<div class="content">
+	<div class="condition">
+		<h3>如果是：</h3>
+		<p>
+			1.热爱潮流、穿搭时尚，拥有自己的服装店铺，从事过模特、时尚编辑或者网络搭配师的工作。<br/>
+			2.如果你渴望扎堆潮人社区，成为美丽说搭配达人，获得百万粉丝关注，赢取丰厚搭配基金，从此穿衣不愁。<br/>
+		</p><br/>
+		<h3>肿么办？</h3>
+		<p>
+			1.填写申请信息后，上传至少一张真人全身露脸穿搭，拍摄自然、搭配时尚；每身搭配不少于两件单品。<br/>
+			2.尤其欢迎时尚店主倾情加盟。<br/>
+		</p><br/>
+		<h3>填写申请信息：</h3>
+	</div>
+	<form id="daren_apply_form" onsubmit="return false">
+		<% if(info){ %>
+			<div class="user_info">
+				<input type="text" id="user_name" name="name" placeholder="姓名" required="required" value="<%= info.name %>"/>
+				<div class="line"></div>
+				<input type="text" id="user_qq" name="qq_num" placeholder="QQ" required="required" value="<%= info.qq_num %>"/>
+				<div class="line"></div>
+				<input type="text" id="user_phone" name="cell_phone" placeholder="手机" required="required" value="<%= info.cell_phone %>"/>
+				<input type="hidden" id="upload_img" name="dress_pic" value="" />
+			</div>
+			<p class="error_txt"></p>
+			<div class="photo">
+			<% if(info.dress_pic){ %>
+				<img src="<%= info.dress_pic %>" alt="photo of applyer"/>
+			<% } %>
+			</div>
+		<% } else { %>
+			<div class="user_info">
+				<input type="text" id="user_name" name="name" placeholder="姓名" required="required"/>
+				<div class="line"></div>
+				<input type="text" id="user_qq" name="qq_num" placeholder="QQ" required="required" />
+				<div class="line"></div>
+				<input type="text" id="user_phone" name="cell_phone" placeholder="手机" required="required"/>
+				<input type="hidden" id="upload_img" name="dress_pic" value="" />
+			</div>
+			<p class="error_txt"></p>
+			<div class="photo"></div>
+		<% } %>
+		<div class="btn">
+			<button id="upload_btn"><span>上传真人搭配照</span></button>
+			<input type="submit" id="submit_btn" value="完成申请"/>		
+		</div>
+
+	</form>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/daren_apply');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

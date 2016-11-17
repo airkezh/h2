@@ -1,0 +1,91 @@
+<%# wx_new/header.html%>
+<%
+   var s_list=this.special_list.qiang8_info;
+   var getLink = _extFn.getLink;
+%>
+<div class="main">
+	<div class="imageSlide" id="imageSlide" style="width: 375px; height: 140px;">
+		<img src="http://d01.res.meilishuo.net/pic/_o/b7/dd/f55ba428007877fb4b02fbbfe89c_640_241.ch.png" alt="" id="ttt">
+	</div>
+	<%if(s_list.qiang_info && s_list.qiang_info.tab && s_list.qiang_info.tab.length){
+		var tablen = s_list.qiang_info.tab.length,
+		tabobjs = s_list.qiang_info.tab;
+	%>
+	<!-- 分享 -->
+	<figure class="wxShareImg none_f">
+		<img src="<%=this.PICTURE_URL%>/images/wap/web/wx/shareWXB.jpg"/>
+	</figure>
+	<section class="nav_wap" id="nav_wap">
+<!-- 		<div class="lhp100"></div>
+ -->		<section class="navbox">
+			<div class="points">
+				<s></s>
+				<ul>
+					<%tabobjs.forEach(function(data,k){
+						var s_content = '已结束';
+						switch(data.status){
+							case 0:
+								s_content = '已结束';
+								break;
+							case 1:
+								s_content = '抢购中';
+								break;
+							case 2:
+								s_content = '即将开始';
+								break;
+						}
+						%>
+							<li name="tab_<%=k%>" data-hour="<%=data.server_time%>" data-status=<%= data.status%> data-unix=<%= data.unix_time%> <%=data.lightspot ? 'class="curr"' : ''%>>
+								<a href="###">
+									<span><%=data.server_time%>:00<label><%=s_content%></label></span>
+								</a>
+							</li>
+					<%});%> 
+				</ul>
+			</div>
+			<div class="lhp100 navbl"></div>
+
+		</section>
+	</section> 
+	<div class="act-tip">
+		<span class="split"></span>限量好货 限时疯抢<span class="t-c"><i class="c-tip">距离本场结束还有</i> <i class='red_f1 time' time='0'>00:00:00</i></span>
+	</div>
+	<section id="content_box"></section>
+	<script type="text/html" id="zd_info">
+		<%= requireFn("wx_new/wxgoods.html")({
+
+	});%>
+	</script>
+	<%}%>
+	<div class="no-goods">没有更多商品了...</div>		
+
+	<span class="a-desc movelr">
+		<!-- <img src="http://d01.res.meilishuo.net/pic/_o/ba/45/6e19d86a5c8a3945df7c67285e6d_87_42.ch.png" alt="活动规则"> -->
+		活动规则
+	</span>
+</div>
+<script>
+	fml.vars.event_id='<%=this.event_id%>';
+	fml.vars._os='<%=this.os.mlsApp%>';
+	fml.vars._r='<%=this.r%>';
+</script>
+<script type="text/html" id="alertMsg">
+  <div class="dialog_box">
+    <p style="text-align: center;"><?= this.msg?></p>   
+    <a class="mask_btn l_btn" href="<?=this.detail_url?>">看此商品</a>
+  </div>
+</script>
+<script type="text/html" id="errorMsg">
+  <div class="dialog_box">
+    <p style="text-align: center;"><?= this.msg?></p>   
+  </div>
+</script>
+<script type="text/html" id="ruleMsg">
+   <img style="min-height:310px" class="rules" src="<%= s_list.q8_ruler%>" />
+   <div class="rbclose"></div>
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/wx_new/tuan_buy');
+_use:", this._JSstack , this._JSmods); %>
+<%# wx_new/footer.html%>

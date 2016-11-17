@@ -1,0 +1,38 @@
+<%#head.html%>
+<div class="main">
+	<div class="wrap <%if(this._time._data){%>wrap-base<%}else{%>wrap-change<%}%>">
+		<div class="erwei">
+			<img src="<%= this.erweima%>">
+		</div>
+		<%if(this._time._data){%>
+		<p class="timeStamp" end-date="<%= this._time._t%>">
+			还有：
+			<span id="day"><%= this._time._d%></span>天
+			<span id="hour"><%= this._time._h%></span>小时
+			<span id="minute"><%= this._time._m%></span>分
+			<span id="seconds"><%= this._time._s%></span>秒开抢…
+		</p>
+		<%}%>
+	</div>
+	<div class="wrap2"></div>
+	<div class="wrap3">
+		<div class="down">
+			<a href="http://meilishuo.com/u/EIeaMh/?frm=LLF_099pcyyAd" target="_blank">
+				<img src="http://img.meilishuo.net/css/images/huodong/dot99/android.png" />
+			</a>
+			<a href="http://itunes.apple.com/cn/app/meilishuo/id431023686" target="_blank">
+				<img src="http://img.meilishuo.net/css/images/huodong/dot99/iphone.png" />
+			</a>
+			<a href="http://itunes.apple.com/cn/app//id492006720?mt=8" target="_blank">
+				<img src="http://img.meilishuo.net/css/images/huodong/dot99/ipad.png" />
+			</a>
+		</div>
+	</div>
+	<div class="wrap4"></div>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('app/countdown',function(){
+		this();
+		});
+_use:", this._JSstack , this._JSmods);%>
+<%#foot.html%>

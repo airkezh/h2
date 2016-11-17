@@ -1,0 +1,161 @@
+@height : 32px;
+
+.shop-hd {
+  position   : relative;
+  min-width  : 1200px;
+  margin-top : 15px;
+  border-top : 1px solid #e6e6e6;
+  /* 店铺的评分 z-index 是 11 */
+  z-index    : 11;
+}
+
+/*------------------------------------*\
+
+    店铺顶部 banner
+
+\*------------------------------------*/
+.top-banner {
+  display             : block;
+  height              : 120px;
+  background-position : center center;
+  background-repeat   : no-repeat;
+}
+
+/*------------------------------------*\
+
+    店铺导航
+    可以吸顶
+
+\*------------------------------------*/
+.shop-nav {
+  top                : 0;
+  left               : 0;
+  width              : 100%;
+  height             : @height;
+  font-size          : 14px;
+  background-color   : #333;
+  -webkit-transition : all .5s ease;
+  -moz-transition    : all .5s ease;
+  -o-transition      : all .5s ease;
+  transition         : all .5s ease;
+  -webkit-transform  : translateZ(0);
+  transform          : translateZ(0);
+
+  a {
+    color : #fff;
+  }
+}
+
+.shop-nav-fixed {
+  position : fixed;
+  top      : 0;
+}
+
+.shop-nav-fixed-anim {
+  position : fixed;
+  top      : -1 * @height;
+}
+
+.shop-nav-top {
+  width  : 1200px;
+  margin : auto;
+
+  & > li {
+    position    : relative;
+    float       : left;
+    height      : @height;
+    line-height : @height;
+    text-align  : center;
+
+    &:first-child {
+      padding-left : 0;
+    }
+
+    &:hover {
+      .shop-nav-nest {
+        display : block;
+      }
+    }
+  }
+
+  a {
+    display : block;
+    padding : 0 20px;
+    .ellipsis;
+
+    &:hover {
+      background-color : #505050;
+      background-color : rgba(255, 255, 255, .05);
+    }
+  }
+
+  .is-on {
+    background-color : #505050;
+  }
+
+  /* 新品到货 */
+  .shop-new-goods {
+    display : none;
+  }
+}
+
+.has-new-goods .label-item-new, .has-new-goods .label-item-num {
+  display : inline-block;
+}
+
+.shop-nav-nest {
+  display          : none;
+  position         : absolute;
+  min-width        : 100%;
+  background-color : #333;
+  text-align       : center;
+
+  li {
+    white-space : nowrap;
+  }
+
+  li:hover {
+    background-color : #505050;
+  }
+}
+
+/*
+  三角形图标
+*/
+.icon-tr {
+  display        : inline-block;
+  margin-left    : 4px;
+  line-height    : @height;
+  font-size      : 10px;
+  font-style     : normal;
+  vertical-align : top;
+}
+
+/*
+  导航栏上的『新品到货』数字
+*/
+.label-item-new {
+  display          : none;
+  padding          : 0 6px;
+  height           : 14px;
+  margin-left      : 4px;
+  line-height      : 14px;
+  font-size        : 12px;
+  border-radius    : 6px;
+  background-color : #fd5b78;
+  text-align       : center;
+  margin-right     : 3px;
+}
+
+.label-item-num {
+  display : none;
+  color   : #f69;
+}
+
+.shop-nav-new {
+  text-align : left;
+
+  i {
+    font-style : normal;
+  }
+}

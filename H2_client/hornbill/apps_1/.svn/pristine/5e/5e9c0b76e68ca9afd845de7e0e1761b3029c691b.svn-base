@@ -1,0 +1,39 @@
+<%# head.html%>
+<%
+	var bookinfo = this.bookinfo.bookinfo;
+	var shareitem = this.shareitem.shareitem;
+	var shopinfo = this.shopinfo.shopinfo
+%>
+<div class="main">
+	<div class="bookmap">
+		<div class="list">
+			<%bookinfo && bookinfo.forEach(function(v,k){%>
+			<a href="/book/<%=v.id%>" target="_blank"><%=v.word_name%></a>
+			<%});%>
+		</div>
+	</div>
+
+	<div class="sharemap">
+		<div class="list">
+			<%shareitem && shareitem.forEach(function(v,k){%>
+			<a href="/share/item/<%=v.twitter_id%>" target="_blank"><%=v.goods_title%></a>
+			<%});%>
+		</div>
+	</div>
+
+	<div class="shopmap">
+		<div class="list">
+			<%shopinfo && shopinfo.forEach(function(v,k){%>
+			<a href="/shop/<%=v.shop_id%>" target="_blank"><%=v.shop_nick%></a>
+			<%});%>
+		</div>
+		
+	</div>
+	<div class="paging_panel">
+		<%# paging.html%>
+	</div>
+	
+</div>
+
+
+<%# foot.html%>

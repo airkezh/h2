@@ -1,0 +1,24 @@
+<%#head.html%>
+<%
+var mSubstr =  _extFn.mSubstr;
+%>
+	<div class="content border-Top">
+		<%# help/search-title.html%>
+		<ul class="list">
+			<li>常见问题</li>
+			<li><a href="/help/question/?cate_id=281&title=退货退款问题">退货退款问题</a></li>
+			<li><a href="/help/question/?cate_id=279&title=发货配送问题">发货配送问题</a></li>
+			<li><a href="/help/question/?cate_id=277&title=支付问题">支付问题</a></li>
+			<li><a href="/help/question/?cate_id=273&title=账户问题">账户问题</a></li>
+			<li><a href="/help/question/?cate_id=275&title=优惠券问题">优惠券问题</a></li>
+			<li><a href="/help/question/?cate_id=283&title=会员权益">会员权益</a></li>	
+			<li><a href="/help/question/?cate_id=287&title=消费者保障说明">消费者保障说明</a></li>	
+		</ul>
+		<ul class="list border-Top">
+			<li>更多常见问题</li>
+			<%this.know_center && this.know_center.data.forEach(function(item){%>
+			<li><a href="/help/contact/?know_id=<%=item.know_id%>&channel=1"><%= mSubstr(item.title, 13, '...') || '' %></a></li>
+			<%});%>
+		</ul>
+	</div>
+<%#foot.html%>

@@ -1,0 +1,190 @@
+<%#head.html%>
+<div class="banner"></div>
+<div class="top">
+<div class="tab">
+	<div class="tab-inner">
+		<a class="j-cur <%if(this.type === 0){%>choice<%}%>" type="dress">
+			<img class="img-1" src="http://i.meilishuo.net/css/images/huodong/newbuy/tab7.png" />
+			<img class="img-2" src="http://i.meilishuo.net/css/images/huodong/newbuy/tab1.png" />
+		</a>
+		<a class="j-cur <%if(this.type === 1){%>choice<%}%>" type="skirt">
+			<img class="img-1" src="http://i.meilishuo.net/css/images/huodong/newbuy/tab8.png" />
+			<img class="img-2" src="http://i.meilishuo.net/css/images/huodong/newbuy/tab2.png" />
+		</a>
+		<a class="j-cur <%if(this.type === 2){%>choice<%}%>" type="pants">
+			<img class="img-1" src="http://i.meilishuo.net/css/images/huodong/newbuy/tab9.png" />
+			<img class="img-2" src="http://i.meilishuo.net/css/images/huodong/newbuy/tab3.png" />
+		</a>
+		<a class="j-cur <%if(this.type === 3){%>choice<%}%>" type="shoes">
+			<img class="img-1" src="http://i.meilishuo.net/css/images/huodong/newbuy/tab10.png" />
+			<img class="img-2" src="http://i.meilishuo.net/css/images/huodong/newbuy/tab4.png" />
+		</a>
+		<a class="j-cur <%if(this.type === 4){%>choice<%}%>" type="bag">
+			<img class="img-1" src="http://i.meilishuo.net/css/images/huodong/newbuy/tab11.png" />
+			<img class="img-2" src="http://i.meilishuo.net/css/images/huodong/newbuy/tab5.png" />
+		</a>
+		<a class="j-cur last <%if(this.type === 5){%>choice<%}%>" type="other">
+			<img class="img-1" src="http://i.meilishuo.net/css/images/huodong/newbuy/tab12.png" />
+			<img class="img-2" src="http://i.meilishuo.net/css/images/huodong/newbuy/tab6.png" />
+		</a>
+	</div>
+	<div class="clear_f"></div>
+</div>
+</div>
+<div class="main">
+<div class="show-list"></div>
+<div class="clear_f"></div>
+<div id="newPagingNav">
+</div>
+<div class="bottom">
+<div class="groundInfo pd20">
+	<div class="grd_line">
+				<div class="grd_tle grd_tle2"></div>
+			</div>
+			<div class="exbuyer f14_f l30_f">
+				<p class="wedo">1日24小时潜心研究潮流趋势<br/>
+					1周7日不间断掌握品牌动态</p>
+				<p class="makyou">365天足不出户变身时髦大咖</p>
+			</div>
+			<div class="grd_line">
+				<div class="grd_tle grd_tle3"></div>
+			</div>
+			<div class="inspect"></div>
+			<div class="grd_line">
+				<div class="grd_tle grd_tle4"></div>
+			</div>
+			<div class="wxpay">
+				<div class="wxpic left_f"></div>
+				<div class="savmony left_f">
+					<p class="forsav"></p>
+					<p class="forsvtxt f14_f l30_f">在享受活动页面新品尝鲜价的基础上，<br/>
+					首次使用微信支付立减10元~<br/>
+					春夏最流行款式，高品质保证，超值价格三位一体<br/>
+					不买美丽说好东西，你家里人知道吗？</p>
+				</div>
+				<div class="clear_f"></div>
+			</div>
+</div>
+</div>
+
+</div>
+<div class="pro_line"></div>
+<%# doota/promise.html%>
+<script type="text/html" id="showli">
+<div class="perbuyer">
+
+	<div class="buyerCon" id="jp_container_1" style='background: url(<?=item.static["content_" + item.type].image?>)'>
+		<div class="audio_box">
+			<div id="jp-jplayer" class="jp-jplayer" audio_url="<?= item.static["content_" + item.type].audio_url ?>"></div>
+			<div class="audio_control" id="jp_container_<?= item.type?>">
+				<div class="audio_info">
+					<p class="audio_duration"><span class="time"><?= item.static["content_" + item.type].audio_time ?></span>”</p>
+					<p class="control_btn jp-play"><span class="start"><img src="http://i.meilishuo.net/css/images/activity/buyersay1.png"/></span></p>
+					<p class="control_btn jp-pause" style="display:none;"><span class="pause"><img src="http://i.meilishuo.net/css/images/activity/buyersay1.gif"/></span></p>
+				</div>
+			</div>
+		</div>
+		<p class="buyertxt f14_f">
+		<?=item.static['content_' + item.type].content?>
+		</p>
+	</div>
+</div>
+<div class="list">
+<? item && $.each(item.tInfo , function(key , data){?>
+	<div class="todayPoster poster_grid" twitter_id="<?= data.twitter_id?>">
+		<div class="tPosterCon">
+			<div class="tpPic">
+				<a class="img_load" href="/share/item/<?= data.twitter_id?>?d_r=<?= data.d_r?>" target="_blank"><img class="goods_pic" src="<?= data.image?>"></a>
+				<div class="mergeLay">
+					<a class="grypeach right_f">
+						<em class="<?if(!data.is_liked){?>addlike<?}else{?>dellike<?}?>">&nbsp;</em>
+					</a>
+					<a class="grymag right_f" href="javascript:void(0)">
+        				<em class="addM">&nbsp;</em>收进杂志
+					</a>
+				</div>
+			</div>
+			<div class="tpInfo">
+				<p class="tptit">
+					<a href="/share/item/<?= data.twitter_id?>?d_r=<?= data.d_r?>" target="_blank"><?= data.goods_title?></a>
+				</p>
+				<p class="tpsale">
+					<span class="red_f f16_f mr8">￥<?= data.price?></span>
+					<?if(!data.is_end){?><s>￥<?= data.original_price?></s><?}?>
+				</p>
+				<p class="likebuy">
+					<a class="likeBtn left_f fcg">
+						<em class="like_ico">&nbsp;</em><span><?= data.count_like?></span>人已喜欢
+					</a>
+					<a class="saleNum right_f fcg"><span class="red_f"><?= data.sell_num?></span>人已购买
+					</a>
+				</p>
+			</div>
+			<div class="tpshare">
+				<a class="avatar32_f imgbrd" href="<?= data.comment.url?>" target="_blank">
+					<img src="<?= data.comment.avatar?>"/>
+				</a>
+				<p class="ml42_f tphead">
+					<a href="<?= data.comment.url?>" target="_blank"><?= data.comment.nick_name?></a>
+				</p>
+				<p class="ml42_f fcg tpdel"><?= data.comment.description?></p>
+				<div class="clear_f"></div>
+			</div>
+		</div>
+	</div>
+<?});?>
+<div class="clear_f"></div>
+<div class="groundInfo pd30 page-show">
+<div class="grd_line">
+	<div class="grd_tle grd_tle1"></div>
+</div>
+<div class="popwrd">
+<? item && $.each(item.static['hot_keywords_' + item.type] , function(key , data){?>
+	<a href="<?= data.link?>" target="_blank" class="f14_f left_f poptxt"><?= data.txt?></a>
+<?});?>
+	<div class="clear_f"></div>
+</div>
+</div>
+<div class="clear_f"></div>
+</div>
+</script>
+<script type="text/html" id="pagingNav">
+<div class="pageNav1">
+	<? if(page > 0){?>
+		<a index="-1" class="pagePrev" href="javascript:void(0)">&lt;上一页</a>
+	<?};?>
+	<?
+		var left_num = page >5 ? page - 5: 0 , right_num = left_num + 10;
+		if ( right_num > pageLen) right_num = pageLen;
+	?>
+	<?if (left_num >= 1){?>
+		<a index="1" href="javascript:void(0)" class="pageitem <?if(page == 1){?>currentpage<?}?>"><?= 1?></a>
+		<span>...</span>
+	<?}?>
+	<?for (var i = left_num ;i < right_num;i++ ){?>
+		<a index="<?= i?>" href="javascript:void(0)" class="pageitem <?if(page == i){?>currentpage<?}?>"><?= i+1?></a>
+	<?}?>
+	<?if (right_num < pageLen) {?>
+		<span>...</span>
+		<a index="<?= pageLen-1?>" href="javascript:void(0)" class="pageitem <?if(page == pageLen-1){?>currentpage<?}?>"><?= pageLen?></a>
+	<?}?>
+	<? if(page != pageLen - 1){?>
+		<a class="pageNext" href="javascript:void(0)" index="1">下一页&gt;</a>
+	<?}?>
+</div>
+</script>
+<script type="text/javascript">
+fml.vars.type = <%= this.type%>;
+fml.vars.num0 = "<%= (this.list0 && this.list0.data && this.list0.data.totalNum) || 40%>";
+fml.vars.num1 = "<%= (this.list1 && this.list1.data && this.list1.data.totalNum) || 40%>";
+fml.vars.num2 = "<%= (this.list2 && this.list2.data && this.list2.data.totalNum) || 40%>";
+fml.vars.num3 = "<%= (this.list3 && this.list3.data && this.list3.data.totalNum) || 40%>";
+fml.vars.num4 = "<%= (this.list4 && this.list4.data && this.list4.data.totalNum) || 40%>";
+fml.vars.num5 = "<%= (this.list5 && this.list5.data && this.list5.data.totalNum) || 40%>";
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use('page/huodong/groundnew');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>
+
+

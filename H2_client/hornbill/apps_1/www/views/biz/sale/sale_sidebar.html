@@ -1,0 +1,14 @@
+<% if(this.sale_sidebar){ %>
+	<ul class="sidebar" style="width:<%= this.sale_sidebar.nav_width%>; background:url('<%= this.sale_sidebar.nav_img%>') no-repeat center top;">
+		<li style="height:<%= this.sale_sidebar.top_height%>"></li>
+		<% this.sale_sidebar.nav_sub.map(function(data , index){  %>
+			<li>
+				<% if(data.li_link){ %>
+					<a href="<%= data.li_link%>" target="_blank" style="height:<%= data.li_height%>" ></a>
+				<%}else{%>
+					<a href="#a<%= index%>" style="height:<%= data.li_height%>"></a>
+				<%}%>
+			</li>
+		<%});%>
+	</ul>
+<%}%>

@@ -1,0 +1,32 @@
+<%#head.html%>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<% 
+    var data  = this.main.data;
+%>
+<div class="sub_box">
+	<img class="head" src="<%= data.designer_info.designer_img%>">
+	<img src="<%= data.designer_info.info_img%>">
+
+	<div class="vote_box">
+		<p class="vote_btn" did="<%= data.designer_info.designer_id%>" lottery="<%=data.designer_info.lottery%>" sid="<%= data.designer_info.shop_id%>">
+			<% if(data.designer_info.is_voted == 0){ %>
+				<img src="http://d01.res.meilishuo.net/pic/_o/f8/25/23d8f465a3c5aee3170089d925c1_90_90.ch.png">
+			<%}else{%>
+				<img src="http://d05.res.meilishuo.net/pic/_o/b8/7f/a507d953132c62d134c3d81c2d96_90_90.cg.png">
+			<%}%>
+		</p>
+		<p class="vote_num">1234</p>
+	</div>
+
+	<% data.items && data.items.map(function(data){ %>
+		<% var link = _extFn.getAppLink('twitter_single', {'twitter_info' : {'twitter_id' : data.tid , 'is_doota' : 1}}, this.os, this.r, '/share/item/' + data.tid) %>
+		<a href="<%= link%>" class="item_box"><img src="<%= data.item_img%>"></a>
+	<%});%>
+	<img class="end" src="http://d02.res.meilishuo.net/pic/_o/3b/45/6792ec81d909683ea5983a056902_284_155.cf.jpg">
+</div>
+
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use('wap/page/activity/designer2');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

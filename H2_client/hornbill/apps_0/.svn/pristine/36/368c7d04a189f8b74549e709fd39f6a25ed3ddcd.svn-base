@@ -1,0 +1,92 @@
+<%
+	var _appeal_detail = this.appeal_data.info || {},
+		appeal_header = _appeal_detail.header || {};
+	if(_appeal_detail.appeal_info){
+		var appeal_buyer = _appeal_detail.appeal_info.buyer,
+			appeal_seller = _appeal_detail.appeal_info.seller,
+			appeal_result = _appeal_detail.appeal_result,
+			appeal_header = _appeal_detail.header;
+	}
+	var flow = appeal_header.flow,
+	    step = appeal_header.step;
+	if(appeal_header.notice_text){
+		var appeal_displayText = appeal_header.notice_text.msg,
+			redmsg = appeal_header.notice_text.redmsg;
+		if(redmsg){
+			for(var i = 0;i<redmsg.length;i++){
+				appeal_displayText = appeal_displayText.replace('%s','<span class="red_f">'+redmsg[i]+'</span>');
+			}
+		}
+	}
+%>
+<%
+function getOriImgUrl(url, isNew, w, h){
+	if(isNew){
+		var param = '{"url":"'+url+'", "img_width":'+w+', "img_height" : '+h+' }';
+		var result = 'meilishuo://open_img.meilishuo?json_params=' + encodeURIComponent(param);
+		return result;
+	}
+	return url;
+}
+var isNewest = this.isNewest;
+function getImgItem(e){
+%>
+	<a href="<%=getOriImgUrl(e.orig,isNewest,e.img_width,e.img_height) %>" class="img_item"><img src="<%= e.thumb %>" /></a>
+<%
+}
+%>
+
+<%#common/head.html%>
+<section class="appeal_container">
+	<!-- 申请仲裁 start -->
+
+	<% if(appeal_header.initiate == 1){ %>
+	<div id="mls_arbitrary" class="refund_modules mls_arbitrary arbitral_form js_prove_info">
+		<p class="arb_title">
+			申请美丽说仲裁，请您举证
+		</p>
+		<div class="arb_item">
+			<div class="title"><b>*</b>申诉说明</div>
+			<textarea name="description" id="statetext" class="statetext"></textarea>
+		</div>
+		<div class="arb_item">
+			<div class="title"><b>*</b>申诉凭证</div>
+			<div class="certificate">
+				<div class="img_list" id="img_wrapper">
+					<a class="pic pic_upload addBtn" href="javascript:;"></a>
+					<div class="clear_f"></div>
+				</div>
+			</div>
+			<%#common/low_version_tip.html%>
+			<p class="tip">如商品破损图、客服聊天截屏等(最多5张)</p>
+		</div>
+		<div class="arb_item">
+			<div class="title"><b>*</b>联系人</div>
+			<div class="arbinput-item">
+				<div class="rbinput-label">姓名</div>
+				<input name="concact" type="text">
+			</div>
+			<div class="arbinput-item">
+				<div class="rbinput-label">手机</div>
+				<input name="phone" type="text">
+			</div>
+		</div>
+		<div class="arb_btn">
+			<a class="button button-red js_submit_appeal" href="#">
+				提交举证
+			</a>
+		</div>
+		<div class="sepline"></div>
+	</div>
+	<% }%>
+</section>
+<%#common/mls_hotline.html%>
+<script>
+	Meilishuo.config.refundId = '<%= this.refundId %>';
+    var CONSTANT = CONSTANT || {};
+    CONSTANT.flow = <%= (flow && flow.length)%>;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('order_app/appeal/appeal');
+_use:", this._JSstack , this._JSmods ); %>
+<%#common/foot_simple.html%>

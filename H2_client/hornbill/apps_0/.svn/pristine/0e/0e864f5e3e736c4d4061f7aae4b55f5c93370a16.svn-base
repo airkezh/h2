@@ -1,0 +1,265 @@
+<style>
+<%
+var ANI_CONFIG = this.ANI_CONFIG;
+var ANI_LBR = {
+	'flyFromBottom' : {
+		path : 'animations/flyFromBottom.html'
+		,initCss : {'top':'100%;'}
+		,startKey : ['top']
+	}
+	,'scaleFromLeft' :{
+		path: 'animations/scaleFromLeft.html'
+		,initCss : {
+			'transform':'scale(0)'
+			,'-ms-transform':'scale(0)'
+			,'-moz-transform':'scale(0)'
+			,'-webkit-transform':'scale(0)'
+			,'-o-transform':'scale(0)'
+			,'-moz-transform-origin':'left center'
+			,'-webkit-transform-origin':'left center'
+			,'-o-transform-origin':'left center'
+			,'-ms-transform-origin':'left center'
+			,'transform-origin':'left center'
+		}
+		,startKey : ['transform','-ms-transform','-moz-transform','-webkit-transform','-o-transform']
+	}
+	,'scaleFromRight' :{
+		path: 'animations/scaleFromLeft.html'
+		,initCss : {
+			'transform':'scale(0)'
+			,'-ms-transform':'scale(0)'
+			,'-moz-transform':'scale(0)'
+			,'-webkit-transform':'scale(0)'
+			,'-o-transform':'scale(0)'
+			,'-moz-transform-origin':'right center'
+			,'-webkit-transform-origin':'right center'
+			,'-o-transform-origin':'right center'
+			,'-ms-transform-origin':'right center'
+			,'transform-origin':'right center'
+		}
+		,startKey : ['transform','-ms-transform','-moz-transform','-webkit-transform','-o-transform']
+	}
+	,'fadeIn' : {
+		path:'animations/fadeIn.html'
+		,initCss :{
+			'opacity':0
+		}
+	}
+}
+%>
+
+<% 
+	function genAni(aname,astr){
+		['-moz-','-webkit-','-o-','-ms-',''].forEach(function(str){ 
+			str = '@'+str+'keyframes'+' '+aname;
+%>
+	<%=str+astr %> 
+<% 
+		}); 
+	} 
+%>
+
+<%
+	var getAniCss = function(aname,opt){
+		var params = {
+			duration: opt.duration||'200ms'
+			,tfn: opt.tfn||'linear'
+			,delay : opt.delay||'0ms'
+			,count : opt.count||'1'
+			,direction : opt.direction||'normal'
+		};
+		var resultStr = '';
+		['-webkit-','',].forEach(function(str){
+			resultStr += str+'animation:'
+						+aname
+						+' '+params.duration
+						+' '+params.tfn
+						+' '+params.delay
+						+' '+params.count
+						+' '+params.direction
+						+' forwards'
+						+';';
+		});
+		return resultStr;
+	}
+%>
+
+<%
+	var genClass = function(className,css){
+%>
+	.<%=className %>{
+		<%
+			[].forEach.call(arguments,function(argu,index){
+				if(!index) return;
+		%>
+			<%=argu %>
+		<%
+			});
+		%>
+	}
+<%
+	}
+%>
+
+<%
+	var genId = function(id,css){
+%>
+	#<%=id %>{
+		<%
+			[].forEach.call(arguments,function(argu,index){
+				if(!index) return;
+		%>
+			<%=argu %>
+		<%
+			});
+		%>
+	}
+<%
+	}
+%>
+
+
+<%
+	function getResultCssFromAni(aniStr){
+		var reg = /(100%|to)\s*{([^}]*)}/;
+		var css = '';
+		if(reg.test(aniStr)){
+			css = reg.exec(aniStr)[2].trim();
+		}
+		return css;
+	}
+	function getStyleSetFromStr(str){
+		str = str || '';
+		var o = {};
+		var a = str.split(';');
+		a.forEach(function(item){
+			item = item.trim();
+			if(!item) return
+			var sa = item.split(':');
+			o[sa[0].trim()] = sa[1].trim();
+		});
+		return o;
+	}
+	function extendObj(unExtendKeyArr,target){
+		unExtendKeyArr = unExtendKeyArr || [];
+		var o = {};
+	    var args = [].slice.call(arguments,1);
+	    args.forEach(function(obj){
+	    	for(var p in obj){
+	    		if(unExtendKeyArr.indexOf(p)!=-1) continue;
+	    		o[p] = obj[p];
+	    	}
+	    });
+	    return o;
+	}
+	function getCssStrFromObj(opts){
+		var itemClassStr = '';
+		var styleObj = opts.styleObj
+		var backgroundObj = opts.backgroundObj
+		var initObj = opts.initObj
+
+		if(styleObj){
+			for(var s in styleObj){
+				itemClassStr += s+':'+styleObj[s]+'%'+';';
+			}
+		}
+		if(backgroundObj){
+			for(var b in backgroundObj){
+				itemClassStr += 'background-'+b+':'+backgroundObj[b]+';';	
+			}
+		}
+		if(initObj){
+			for(var i in initObj){
+				itemClassStr += i+':'+initObj[i]+';';
+			}
+		}
+		//console.log(itemClassStr)
+		return itemClassStr;
+	}
+	function getItemStyleFromId(page,item_id){
+		for(var i =0;i<page.items.length;i++){
+			if(page.items[i].id==item_id){
+				return page.items[i].style||{};
+			}
+		}
+	}
+	ANI_CONFIG.forEach(function(page,id1){
+		var itemClassArr = {};
+		var pageClass = 'page_'+id1;
+		var opts = {backgroundObj:page.background}
+		genId(pageClass,getCssStrFromObj(opts));
+		page.class_name = pageClass;
+		page.items.forEach(function(item,item_id){
+			var cName = 'item'+'_'+id1+'_'+item_id;
+			itemClassArr[item.item_id]={};
+			itemClassArr[item.item_id].class_name = cName;
+			item.class_name = cName;
+			itemClassArr[item.item_id].styleObj = item.style;
+			itemClassArr[item.item_id].backgroundObj = item.background;
+		});
+		var actionClassSet = {};
+		page.actions.forEach(function(action,id2){
+			var cName = action.name + '_'+id1+'_'+id2
+			action.class_name = cName;
+			var aniName = action.name+'_ani_'+id1+'_'+id2
+			var aniCss = getAniCss(aniName,{
+					duration: parseFloat(action.time)+'ms'
+					,delay:parseFloat(action.delay)+'ms'
+				});
+			var thisParam = action.param||{};
+			var initCss = ANI_LBR[action.name].initCss;
+			var startParam = getItemStyleFromId(page,action.item_id);
+			if(!actionClassSet[action.item_id]){
+				actionClassSet[action.item_id] = [];
+			}
+			if(actionClassSet[action.item_id].length){
+				var lastObj = actionClassSet[action.item_id][actionClassSet[action.item_id].length-1].styleSet;
+				actionClassSet[action.item_id][actionClassSet[action.item_id].length-1].styleSet = extendObj(ANI_LBR[action.name].startKey,lastObj,initCss);
+				startParam = extendObj([],actionClassSet[action.item_id][actionClassSet[action.item_id].length-1].styleSet,startParam);
+			}
+			//console.log( action.param);
+			var aniStr = requireFn(ANI_LBR[action.name].path)({style : thisParam||{},start:startParam||{}});
+			genAni(aniName,aniStr);
+			var cssObj = extendObj([],getStyleSetFromStr(aniCss));
+			actionClassSet[action.item_id].push({
+				className : cName
+				,styleSet : cssObj
+				,aniTrueName : action.name
+			});
+			
+			itemClassArr[action.item_id]['initObj'] = initCss
+
+		});
+		for(var p in itemClassArr){
+			var opts = {
+				initObj:itemClassArr[p].initObj,
+				styleObj:itemClassArr[p].styleObj,
+				backgroundObj:itemClassArr[p].backgroundObj
+			}
+			//console.log(opts)
+			var itemClassStr = getCssStrFromObj(opts);
+			genClass(itemClassArr[p].class_name,itemClassStr);
+		}
+		for(var i in actionClassSet){
+			actionClassSet[i].forEach(function(c){
+				var opts = {
+					initObj:c.styleSet
+				}
+				var cssStr = getCssStrFromObj(opts)
+				,className = c.className;
+				genClass(className,cssStr);
+			});
+			
+		}
+	});
+%>
+
+
+
+</style>
+
+
+
+<script>
+fml.vars.ANI_CONFIG_PAGES = <%= JSON.stringify(this.ANI_CONFIG) || '{}'%>
+</script>

@@ -1,0 +1,169 @@
+@import '../block.less';
+@orange:#f5bc08;
+body{
+
+	overflow-x:hidden;
+}
+.cities{
+	.pt(percentage(283/640));
+	width:100%;
+	img{
+		width:100%;
+	}
+}
+.page{
+	.pa;
+	left:0;
+	top:0;
+	.w(100%);
+	.pt(percentage(1136/640));
+	display:none;
+	background-size:cover;
+	>div{
+		.pa;
+		top:0;
+		.w(100%);
+		left:0;
+	}
+}
+
+#start{
+	.block;
+	background-image: url("@{pic_url}/images/luhan/start_bg.png");
+	.gap{
+		.pt(percentage(569/640));
+	}
+	#start_play{
+		.block;
+		.auto;
+		.pt(percentage(97/640));
+		width:percentage(346/640);
+		background-color:white;
+		background-image: url("@{pic_url}/images/luhan/start_play.png");
+		background-size:cover;
+	}
+}
+#play{
+	background-image: url("@{pic_url}/images/luhan/play_bg1.png");
+	.inputs{
+		.pt(percentage(233/640));
+		input{
+			padding:0;
+			vertical-align:top;
+			border:0;
+			outline:0;
+			background-color:transparent;
+			font-weight:bolder;
+			.w(percentage(100/640));
+			text-align:right;
+			color:@orange;
+		}
+		#score{
+			.pl(percentage(155/640));
+		}
+		#remain_time{
+			.w(percentage(40/640));
+			.pl(percentage(213/640));
+		}
+	}
+	.btn{
+		.pt(percentage(760/640));
+		#click,#calculating{
+			.block;
+			.auto;
+			.w(percentage(346/640));
+			.pt(percentage(97/640));
+			background-image: url("@{pic_url}/images/luhan/click.png");
+			background-size:cover;
+		}
+		#calculating{
+			background-image: url("@{pic_url}/images/luhan/calculating.png");
+			display:none;
+		}
+	}
+}
+
+#final{
+	display:none;
+	width:100%;
+	.pa;
+	top:0;
+	.pt(percentage(990/640));
+	background-size:percentage(547/640);
+	background-repeat:no-repeat;
+	background-position:bottom center;
+	background-image: url("@{pic_url}/images/luhan/final_bg3.png");
+	z-index:2;
+	div{
+		.pa;
+		top:0;
+		width:100%;
+		span,a{
+			.pt(percentage(132/640));
+			.w(percentage(375/640));
+			background-position:bottom right;
+			background-size:cover;
+			.block;
+		}
+		strong{
+			.block;
+			.pa;
+			bottom:0;
+			.pr(percentage(240/640));
+			color:@orange;
+			font-size:2em;
+			text-align:right;
+			right:0;
+		}
+	}
+	.score{
+		.pt(percentage(433/640));
+	}
+	.rank{
+		.pt(percentage(505/640));
+		strong{
+			.w(percentage(96/640));
+			text-align:center;
+			.pr(percentage(220/640));
+			font-size:1.2em;
+		}
+	}
+	.share{
+		.pt(percentage(515/640));
+		z-index:3;
+		span{
+			background-image: url("@{pic_url}/images/luhan/share.png");
+		}
+	}
+	.watch_live{
+		z-index:2;
+		.pt(percentage(652/640));
+		a{
+			background-image: url("@{pic_url}/images/luhan/watch_live.png");
+		}
+	}
+	.replay{
+		.pt(percentage(790/640));
+		span{
+			background-image: url("@{pic_url}/images/luhan/replay.png");
+		}
+	}
+	.share,.watch_live,.replay{
+		.pl(percentage(118/640))
+	}
+}
+.cover{
+	display:none;
+	.pa;
+	top:0;
+	left:0;
+	z-index:100;
+	.w(100%);
+	.h(100%);
+	background-color:black;
+	background-image: url("@{pic_url}/images/luhan/cover.png");
+	background-position: top right;
+	background-repeat:no-repeat;
+	opacity:.8;
+	background-size:100%;
+}

@@ -1,0 +1,18 @@
+<%# head_simple.html%>
+</head>
+<body>
+	<div class="main">
+		<div class="top_bnr">
+			<% this.topBnr && this.topBnr.top_bnr.map(function(data,idx){ %>
+				<img src="<%= data.image_src %>"/>
+			<%}); %>
+		</div>
+		<div class="download btn" id="downloadShare" appUrl="<%= this.appUrl %>">
+			<img src="<%= this.topBnr.btn %>"/>
+		</div>
+	</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/openClient');
+_use:", this._JSstack , this._JSmods);%>
+<%# foot_simple.html%>
+

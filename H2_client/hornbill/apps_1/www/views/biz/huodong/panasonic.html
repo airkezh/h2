@@ -1,0 +1,91 @@
+<%#head.html%>
+<div class="panaBg">
+<div class="pana_top">
+	<a href="http://www.meilishuo.com/u/EMtEMn?frm=songxia118" target="_blank" class="top_link"></a>
+	<div class="video">
+		<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,19,0" width="280" height="206">
+			<param name="movie" value="http://player.youku.com/player.php/sid/XNjI4MDQ4MTIw/v.swf?VideoIDS=XNjI4MDQ4MTIw&isAutoPlay=true" />
+			<param name="quality" value="high" />
+			<param name="wmode" value="transparent" />
+			<embed src="http://player.youku.com/player.php/sid/XNjI4MDQ4MTIw/v.swf?VideoIDS=XNjI4MDQ4MTIw&isAutoPlay=true" quality="high" wmode="transparent" pluginspage="http://www.macromedia.com/go/getflashplayer" allowScriptAccess="always" allowFullScreen="false" type="application/x-shockwave-flash" width="280" height="206">
+			</embed>
+		</object>
+	</div>
+</div>
+<div class="pana_step1" id="01">
+	<div class="lun_box">
+		<p class="left_btn" id="btn-left"></p>
+		<p class="right_btn" id="btn-right"></p>
+		<div class="pics">
+			<ul id="photos-table">
+				<% this.top_pics && this.top_pics.map(function(data){ %>
+					<li><img src="<%= data.src%>" /></li>
+				<%});%>
+			</ul>
+		</div>
+	</div>
+</div>
+<div class="pana_up">
+	<%= requireFn('biz/huodong/upload_photo.html')({
+		'upload_style' : 'panaUpWapper',
+		'reload_style' : 'pana_reup'
+	}); %>
+	<div class="back_pic"><img src="" /></div>
+	<textarea>我要Change，焕美新生</textarea>
+	<div class="words"></div>
+	<button class="sub_btn">我要CHANGE >></button>
+	<div class="sina"><iframe width="374" height="355"  frameborder="0" scrolling="no" src="http://widget.weibo.com/livestream/listlive.php?language=zh_cn&width=374&height=352&uid=1986303511&skin=1&refer=1&appkey=&pic=0&titlebar=1&border=1&publish=1&atalk=1&recomm=0&at=0&atopic=%E6%88%91%E8%A6%81CHANGE%EF%BC%8C%E7%84%95%E7%BE%8E%E6%96%B0%E7%94%9F&ptopic=%E6%88%91%E8%A6%81Change%EF%BC%8C%E7%84%95%E7%BE%8E%E6%96%B0%E7%94%9F&dpc=1"></iframe></div>
+	<div class="blank" id="tab"></div>
+	<ul class="pana_tab">
+		<a href="?type=0#tab"><li <%if(!this.type){%>class="tab_red"<%}%>>最新宣言</li></a>
+		<a href="?type=1#tab"><li <%if(this.type){%>class="tab_red"<%}%> style="margin-right:0;">最热宣言</li></a>
+	</ul>
+</div>
+<%#biz/huodong/basic.html%>
+<div class="pana_pro" id="02">
+	<a href="http://meilishuo.com/u/EL_Dex?frm=songxia106" target="_blank" class="pro0"></a>
+	<a href="http://meilishuo.com/u/EMbu9n?frm=songxia103" target="_blank" class="pro1"></a>
+	<a href="http://www.meilishuo.com/u/ENKZA1?frm=songxia107" target="_blank" class="pro2"></a>
+	<a href="http://meilishuo.com/u/EL_Hat?frm=songxia105" target="_blank" class="pro3"></a>
+	<a href="http://www.meilishuo.com/u/ENKaGD?frm=songxia108" target="_blank" class="pro4"></a>
+	<a href="http://meilishuo.com/u/EMbtqF?frm=songxia108" target="_blank" class="pro5"></a>
+</div>
+<div class="pana_group" id="03">
+	<% 
+		var showimg = 0;
+		var magItemRenderFn = requireFn('group/magitem.html');
+		this.len_group && this.len_group.map(function(magazine){ %>
+			<%= magItemRenderFn(magazine , showimg++)%>	
+		<% });%>
+</div>
+<div id="l_side" class="l_side">
+	<ul>
+		<li><a href="http://www.meilishuo.com/welfare/activity/329" target="_blank">福利社一期<br /><span>11月4日开始申领</span></a></li>
+		<li><a href="http://www.meilishuo.com/welfare/activity/341" target="_blank">福利社二期<br /><span>11月11日开始申领</span></a></li>
+		<li><a href="http://www.meilishuo.com/welfare/activity/345" target="_blank">福利社三期<br /><span>11月18日开始申领</span></a></li>
+		<li><a href="http://www.meilishuo.com/welfare/activity/355" target="_blank">福利社四期<br /><span>11月25日开始申领</span></a></li>
+	</ul>
+</div>
+<div id="r_side" class="r_side">
+	<ul>
+		<li><a href="javascript:" id="pana_rule" class="hlight">活动规则</a></li>
+		<li><a href="#01">我要CHANGE</a></li>
+		<li><a href="#02">更多明星产品</a></li>
+		<li><a href="#03">焕美新生の小窝</a></li>
+		<li><a href="#04">达人美图秀</a></li>
+	</ul>
+</div>
+
+</div>
+
+<!--弹窗-->
+<script type="text/html" id="rule">
+	<div class="rule">
+		<span id="close_btn" class="pana_close"></span>
+	</div>
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+    fml.use('page/huodong/panasonic');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

@@ -1,0 +1,70 @@
+<%
+    var shopList     = this.shop_list,
+        suggestShops = [],
+
+        queryObj     = this._Request_query || {},
+        page         = queryObj.page;
+%>
+<div id="js-shop-suggest" class="section shop-suggest">
+    <div class="hd">
+        <h2 class="icon-title"></h2>
+    </div>
+    <div class="bd">
+        <%
+            var shops = shopList.tInfo;
+            shops && shops.forEach(function(s, i) {
+                if(i >= 6) return;
+                var url = '/shop/' + s.shop_id + '?frm=rec_shop',
+                    className = 'mod-shop';
+                suggestShops.push(s.shop_id);
+
+                if ( i != 2 && i != 5 ) {
+                    className += ' mr24_f '
+                }
+
+                if ( s.is_cs == 1 ) {
+                    className += ' competitive-shop '
+                } else if ( s.is_star == 1 ) {
+                    className += ' star-shop '
+                }
+        %>
+        <div class="<%= className %>">
+            <i class="icon-shop"></i>
+            <a href="<%= url %>" class="shop-img-wrap" target="_blank">
+                <img src="<%= s.img2 %>" width="372" height="352">
+            </a>
+            <div class="info">
+                <a class="avatar" href="<%= url %>" target="_blank">
+                    <img src="<%= s.shop_face_img %>">
+                </a>
+                <ul class="wrap">
+                    <li class="title-info">
+                        <a href="<%= url%>" target="_blank" class="title"><%= s.shop_nick %></a><% s.horizontal_mark && s.horizontal_mark.forEach(function(m) { %><span class="label"><? if(~m.mark_text.indexOf('满')) { ?> 满减<? } else {?><?= m.mark_text?><?}?></span><% }); %>
+                    </li>
+                    <%if(s.is_star == 1){%>
+                    <li class="assess-info">
+                        <span>粉丝<i class="gray"><%= s.follower_num %></i></span>
+                        <span>评分<i class="gray"><%= s.avg_point %></i></span>
+                    </li>
+                    <%}else{%>
+                    <li class="shop-intro">
+                        <p class="intro"><%= s.shop_desc %></p>
+                    </li>
+                    <%}%>
+                    <li class="sale-info">
+                        <span>销量<i class="gray"><%= s.sales_num %></i></span>
+                        <span>商品数<i class="gray"><%= s.goods_count %></i></span>
+                    </li>
+                    <li class="btn-wrap">
+                        <a class="btn no_att" href="javascript: void 0;" data-shop="<%=s.shop_id%>"><i class="icon-add">+</i>关 注</a>
+                        <a class="btn" href="<%= url %>" target="_blank">去逛逛</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <%})%>
+    </div>
+</div>
+<script>
+    var GLOBAL_SUGGEST_SHOPS = [<%= suggestShops %>];
+</script>

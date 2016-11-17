@@ -1,0 +1,303 @@
+<%#head.html%>
+<%
+	var mainData = this.main_info.data || {}
+		, userInfo = this.userInfo || {}
+		, userStats = this.user_stats.data || {}
+		, userNum = userStats.stats || {}
+		, coupon=this.coupon||{}
+		, couponData=coupon.data||[]
+		, pageInfo = this.share_info || {}
+		, qunquanData=pageInfo.qunquan||[];
+%>
+<div class="wrap">
+	<nav class="tab" id="tab">
+		<div class="select">
+			<a href="javascript:;" class="prveTab">
+				待我挑选
+				<!--<%if(parseInt(userNum.new_style_num)){%>
+					<span class="newGoods">
+						+<%= parseInt(userNum.new_style_num) %>
+					</span>
+				<%}%>
+				<div class="hr"></div>-->
+			</a>
+			<a href="javascript:;" class="nextTab">
+				火热开售
+					<!--<b>HOT</b>
+				<div class="hr"></div>-->
+			</a>
+			<span href="javascript:;" class="personal">
+				我的
+				<%if(parseInt(userNum.want_style_new_done_num)){%>
+					<b class="love-num" id="love_num">
+						<%= parseInt(userNum.want_style_new_done_num) %>
+					</b>
+				<%}%>
+			</span>
+		</div>
+<!-- 		<span  class="personal">
+			<img src="<%=this.PICTURE_URL%>/images/wap/web/zulily/personal2.png"/> 
+			<b class="love-num "  id="love_num"
+			<% if(userNum.have_view_want != 0){%>style="display:none;"
+			<%}%>></b>
+		</span> -->
+	</nav>
+	<%= requireFn('block/banner.html')({
+		'banner' : this.banner,
+		'hide_btn':false,
+		'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+	});%>
+	<% if(couponData.length){ %>
+		<div class="coupon_wrap">
+			<% couponData.forEach(function(coupons, index){ %>
+				<div class="coupons <%= coupons.status ? '' : 'btnCoupons' %>" code="<%= coupons.coupon_apply_code %>">
+					<b class="title"><%= coupons.title %></b>
+					<% if(coupons.status){ %>
+						<span class="no">已经领取</span>
+					<% }else{ %>
+						<span class="yes">立即领取</span>
+					<% } %>
+				</div>
+			<% }); %>
+		</div>
+	<% } %>
+	<% if(qunquanData.length){ %>
+		<section class="qunquan-box" id="qunquanBox">
+			<h3>Desire 热门圈子</h3>
+			<ul>
+				<% qunquanData.forEach(function(data, index){ %>
+					<li>
+						<a href="javascript:;" data-id="<%= data.id %>">
+							<img src="<%= data.image_src %>" alt="">
+							<p><%= data.text %></p>
+						</a>
+					</li>
+				<% }); %>
+			</ul>
+		</section>
+	<% } %>
+	<section class="support" id="tabContent">
+		<div id="prevContent" class="choice contentArea">
+			<div class="tab-inner"></div>
+		</div>
+		<div id="nextContent" class="sale contentArea">
+			<div class="tab-inner"></div>
+		</div>
+	</section>
+	<div class="s_page" id="pageBox"></div>
+</div>
+<div class="top-box" style="bottom:<%if(this.isIphone){%>60<%}else{%>20<%}%>px">
+	<a class="gotop">
+		<img src="http://d02.res.meilishuo.net/img/_o/41/62/c1d9e0f159bfb506b27dea648ccb_80_80.cg.png" />
+	</a>
+	<!-- <span  class="personal">
+		<img src="http://d05.res.meilishuo.net/img/_o/c1/09/71f5ed7d8c305f6c3c899e6ccc8f_80_80.cg.png"/>
+		<b class="love-num "  id="love_num"
+		<% if(userNum.have_view_want != 0){%>style="display:none;"
+		<%}%>></b>
+		
+	</span> -->
+</div>
+<!-- <div class="act_info" style="display: block;">
+	<div class="content" style="background-image:url(http://d01.res.meilishuo.net/img/_o/a8/7a/a3479a9c6a1cabc19542eaddce12_560_560.cf.jpg);">
+		<div class="coupons" type="10元直减" code="201502032320343fded608ea"></div>
+	</div>
+</div> -->
+<%= requireFn('wapShare.html')({
+	'share' : this.share 
+    , 'shareTitle' : '选择分享到'
+    , '_JSstack' : this._JSstack
+	, '_JSmods' : this._JSmods
+}); %>
+
+<script type="text/html" id="emptyTpl">
+	<div class="empty-box">
+		<img src="<%=this.PICTURE_URL%>/images/wap/web/zulily/empty_icon.png" alt="" class="bg-empty">
+		<%
+			var url = this.mlsApp ? 'meilishuo://changetab.meilishuo?json_params=' + encodeURIComponent(JSON.stringify({"r":"","tab":"逛流行"})) : '/welcome'
+		%>
+		<a href="<%= url%>">去逛逛更多</a>
+	</div>
+</script>
+<script type="text/html" id="pageTpl">
+	<a class="disabled" href="javascript:;" id="pagePre">上一页</a>
+	<div class="selector" id="selectorBox">
+		<? var totlePage=this.totlePage; ?>
+		<span id="selectorInfo"><span id="curPage">1</span>/<?= totlePage ?></span>
+	    <i class="arrow"></i>
+	    <select class="selector_select" id="selSelect">
+	    	<? for(var i=1;i<=totlePage;i++){ ?>
+	    		<option value='<?= i ?>'>"第<?= i ?>页"</option>
+	    	<? }; ?>
+	    </select>
+    </div>
+    <a href="javascript:;" id="pageNext">下一页</a>
+</script>
+<script type="text/html" id="coupon_alert">
+	<div class="mask">
+		<div class="coupon_alert">
+			<h3>领取<?= this.isSuccess ? '成功' : '失败' ?></h3>
+			<p class="<?= this.isSuccess ? '' : 'fail' ?>"><?= this.text ?></p>
+			<? if(this.use_time){ ?>
+				<p class="use_time"><?= this.use_time ?></p>
+			<? } ?>
+			<div class="close_btn"><span>知道了</span></div>
+		</div>
+	</div>
+</script>
+<script type="text/html" id="choiceTpl">
+<? 
+	var isPrev = this.isPrev
+		, dataObj = this.dataObj || {}
+		, bigData = dataObj.big || []
+		, smallData = dataObj.small || [];
+?>
+<?if(bigData.length != 0){?>
+	<? dataObj && bigData && bigData.map(function(item, index){ ?>
+		<div class="most_wrap <?= isPrev ? 'detailUrl' : 'salelUrl' ?>" styleId="<?= item.id ?>" twitter_id="<?= item.twitter_id ?>" data-status="<?= item.status ?>">
+			<div class="most">
+				<div class="lazy_pic img-box" asrc="<?= item.poster_img?>">
+					<? if(parseInt(item.status)==5){ ?>
+						<span class="sold"></span>
+					<? } ?>
+				</div>
+				<div data-index="<?= item.id ?>" class="danmu d<?= item.id ?>"></div>
+				<?if(isPrev){?>
+					<?if(this.markShow == 0){?>
+						<span class="mark">
+							<img src="<%= this.PICTURE_URL%>/images/wap/web/zulily/mark_icon.png" />
+						</span>
+					<?}?>
+					<div class="progress_wrap">
+						<dl class="progress">
+							<dt class="zan_normal <?= item.is_mywant ? 'zan_love' : '' ?>"></dt>
+							<dd>
+								<p class="want">
+									<span class="num"><?= parseInt(item.want_base) +  parseInt(item.want_num) ?></span>
+									人想买
+								</p>
+								<p class="strip">
+									<span class="strip_red" style="width : <?if(parseInt(item.want_base) +  parseInt(item.want_num) >= parseInt(item.want_target)){?>100%;<?}else{?><?=(parseInt(item.want_base) +  parseInt(item.want_num)) /  parseInt(item.want_target) * 100?>%;
+										<?}?>">
+									</span>
+								</p>
+							</dd>
+						</dl>
+					</div>
+				<?}else{?>
+					<div class="tips-box">
+						<span class="tips">
+							<b><?= parseInt(item.want_base) +  parseInt(item.want_num) ?>人想买
+							</b>
+						</span>
+					</div>
+					<!--
+					注释掉头像
+					<div class="pic">
+						<img src="<?= item.founder.avatar_a ? item.founder.avatar_a : 'http://d05.res.meilishuo.net/ap/a/56/de/19e804632c91d96c684320171e31_256_256.cc.jpg'?>" />
+						<p><?= item.founder.nickname ? item.founder.nickname :'资深买手' ?></p>
+					</div>
+					-->
+				<?}?>
+			</div>
+			<p class="most_intro <?= isPrev ? '' : 'sale-title' ?>"><?= item.title ?></p>
+			<?if(!isPrev){?>
+				<p class="price">
+					<span><?= item.sale_price ?></span>
+					<del><?= item.price ?></del>
+				</p>
+				<? if(parseInt(item.status)==5){ ?>
+					<a href="javascript:;" class="btn btn-none">售完欣赏</a>
+				<?} else {?>
+					<a href="javascript:;" class="btn btn-buy">立即购买</a>
+				<?}?>
+			<?}?>
+		</div>
+	<?}); ?>
+<?}?>
+<?if(smallData.length != 0){?>
+	<ul class="goods">
+		<? dataObj && smallData && smallData.map(function(item){ ?>
+			<li styleId="<?= item.id ?>" twitter_id="<?= item.twitter_id ?>" data-status="<?= item.status ?>" class="<?= isPrev ? 'detailUrl' : 'salelUrl' ?>">
+				<div class="goods_info">
+					<div class="lazy_pic img-box" asrc="<?= item.main_img?>">
+						<span class="shadow"></span>
+						<? if(parseInt(item.status)==5){ ?>
+							<span class="sold"></span>
+						<? } ?>
+					</div>
+					<?if(isPrev){?>
+						<div class="progress_wrap">
+							<dl class="progress">
+								<dt class="pic"><img src="<?= item.founder.avatar_a ?>" alt="" class="maishou_pic"></dt>
+								<dd class="name"><span class="maishou_name"><?= item.founder.nickname ?></span></dd>
+								<dd><p class="most_intro"><?= item.title ?></p></dd>
+								<dt class="zan_normal <?= item.is_mywant ? 'zan_love' : '' ?>"></dt>
+								<dd>
+									<p class="strip">
+										<span class="strip_red" style="width:<?if(parseInt(item.want_base) +  parseInt(item.want_num) >= parseInt(item.want_target)){?>100%;<?}else{?><?= (parseInt(item.want_base) +  parseInt(item.want_num)) /  parseInt(item.want_target) * 100 ?>%<?}?>"
+										</span>
+									</p>
+									<p class="want">
+										<span class="num"><?= parseInt(item.want_base) +  parseInt(item.want_num)?></span>
+										人想要&nbsp;/&nbsp;<span><?= item.status_name?></span>
+									</p>
+								</dd>
+							</dl>
+						</div>
+					<?}else{?>
+						<span class="tips">
+							<img src="<%= this.PICTURE_URL%>/images/wap/web/zulily/like-icon2.png" />
+							<?= parseInt(smallData[0].want_base) +  parseInt(smallData[0].want_num) ?>人定制
+						</span>
+					<?}?>
+				</div>
+				<?if(!isPrev){?>
+					<p class="price">
+						<span><?= smallData[0].sale_price ?></span>
+						<del><?= smallData[0].price ?></del>
+					</p>
+				<?}?>
+			</li>
+		<?}); ?>
+		<? if(smallData.length % 2 != 0){ ?>
+			<li>
+				<div class="lazy_pic sub-lazy" asrc="http://i.meilishuo.net/css/images/wap/web/zulily/normal.jpg"></div>
+			</li>
+		<?}?>
+	</ul>
+<?}?>
+</script>
+
+<script type="text/html" id="noLove">
+	<div class="dialog_box">我不想要啦</div>
+</script>
+
+<script type="text/html" id="leadIntro">
+	<div class="dialog_lead">
+		<p class="leadOne">
+			<img src="<%=this.PICTURE_URL%>/images/wap/web/zulily/leadone1.png" />
+		</p>
+		<p class="leadTwo none_f">
+			<img src="<%=this.PICTURE_URL%>/images/wap/web/zulily/leadtwo1.png" />
+		</p>
+		<p class="leadThree none_f">
+			<img src="<%=this.PICTURE_URL%>/images/wap/web/zulily/leadthree1.png" />
+		</p>
+	</div>
+</script>
+
+<script>
+	fml.vars.isLogin = <%= this.userInfo.user_id%>;
+	fml.vars.mlsHost = '<%= this.mlsHost%>';
+	fml.vars.showTab = <%= this.showTab %>; 
+	fml.vars.inAppTabbar = <%= this.inAppTabbar %>;
+	fml.vars.trace_id = '<%= this.desireTraceId %>'; 
+	fml.vars.doneNum = <%= parseInt(userNum.want_style_new_done_num) %>;
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/zulily/index');
+_use:", this._JSstack, this._JSmods); %>
+
+<%# foot.html%>

@@ -1,0 +1,86 @@
+<%# head_simple.html%>
+<%
+  var coreInfo = this.core.data || {}
+%>
+<div class="wrap">
+    <section>
+        <img src="http://d04.res.meilishuo.net/pic/_o/f6/04/a987269d53d669701d61172d68a6_640_283.cj.png">
+    </section>
+    <section class="middle-wrap">
+        <img src="http://d04.res.meilishuo.net/pic/_o/47/64/13cb43ddaee3ac62408b8e1a7c6b_428_184.cj.png" class="pic">
+        <div class="luck">
+            <p> 
+                <img src="http://d03.res.meilishuo.net/pic/_o/55/8b/00fd225f9c8339a85ea5d40a6771_109_103.cj.png">
+                <span class="gray" style="border-top-left-radius: 100%;"></span> 
+            </p>
+            <p>
+                <img src="http://d01.res.meilishuo.net/pic/_o/2b/90/48f5d9c2b3dad45bed6ae6928750_109_103.cj.png">
+                <span class="gray"></span> 
+            </p>
+            <p> 
+                <img src="http://d05.res.meilishuo.net/pic/_o/c0/7c/88710c749fd8abd5448dd2a52787_109_103.cj.png"> 
+                <span class="gray" style="border-top-right-radius: 100%;"></span>
+            </p>
+            <p> 
+                <img src="http://d04.res.meilishuo.net/pic/_o/ad/b9/7b18282397f78f44c0547c7d3d0c_109_103.cj.png">
+                <span></span> 
+            </p>
+            <p> 
+                <img src="http://d02.res.meilishuo.net/pic/_o/5f/2b/53492aceae7ff2260a6403078f21_109_103.cj.jpg"> 
+                <span class="gray"></span>
+            </p>
+            <p> 
+                <img src="http://d03.res.meilishuo.net/pic/_o/1b/65/35cfc76c7aaa0dbf8d1cdaf8339d_109_103.cj.jpg">
+
+                <span class="gray"></span>
+            </p>
+            <p> 
+                <img src="http://d02.res.meilishuo.net/pic/_o/37/00/207ea4048c49a7e51eed0707fe6d_109_103.cj.png">
+                <span class="gray"></span>
+            </p>
+            <a class="fire"><!-- <img src="http://d02.res.meilishuo.net/pic/_o/0c/73/1cfc771082a8511700692eb39afb_101_154.cj.jpg" alt=""> --></a>
+        </div>
+        <% if( coreInfo.leftTimes ||  coreInfo.leftTimes == 0 ){ %>
+            <div class="opp">今天还剩<span id="leftTimes"><%= coreInfo.leftTimes %></span>次抽奖机会</div>
+        <%}%>
+    </section>
+    <section class="share-wrap">
+        <div class="invite share">
+            <img src="http://d01.res.meilishuo.net/pic/_o/67/48/059dea8bf1217cd7d885a6e0da44_264_88.cj.png" alt="">
+        </div>
+        <a class="main" href="http://pages.w.meilishuo.com/cooper/169403">
+            <img src="http://d05.res.meilishuo.net/pic/_o/69/43/b60c02d98373c197d52795903744_264_88.cj.png" alt="">
+        </a>
+
+
+        <!-- <span class="share">一起分享喜悦</span> -->
+        <!-- <a href="http://m.meilishuo.com/wx/record">查看中奖记录 >></a> -->
+    </section>
+</div>
+<script type="text/html" id="share_md">
+</script>
+<script>
+    fml.vars.useId = <%= JSON.stringify(this.user_id)%>;
+    fml.vars.myId = <%= JSON.stringify(this.fromid)%>;
+    var imgUrl = 'http://d05.res.meilishuo.net/pic/_o/61/a5/a8d167b12c1b7751b1667170f444_130_130.cj.png';
+    var lineLink = /uid/g.test(location.href) ? location.href.replace(/(uid=)\d*/g,'$1' + fml.vars.useId + '&page_name=xmas_fire&suid=' + fml.vars.useId) : location.href + '&uid=' + fml.vars.useId + '&page_name=xmas_fire&suid=' + fml.vars.useId;  
+    var descContent = '一大票红包来袭，妹子们准备好了咩？';
+    var shareTitle = 'High翻圣诞 抢100元红包';
+    var shareTimelineText = '一大票红包来袭，妹子们准备好了咩？';
+
+    fml.vars.isWx = <%= this.isWx %>;
+    fml.vars.appShare = <%= this.appShare %>;
+    fml.vars.imgUrl = imgUrl;
+    fml.vars.lineLink = lineLink;
+    fml.vars.descContent = descContent;
+    fml.vars.shareTitle = shareTitle;
+    fml.vars.shareTimelineText = shareTimelineText;
+</script>
+
+<!-- <script src="<%= this.JCSTATIC_BASE  %>/js/open/shareCollect.js?<%= this.SVERSION%>"></script> -->
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+    fml.use('wap/page/activity/stove');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

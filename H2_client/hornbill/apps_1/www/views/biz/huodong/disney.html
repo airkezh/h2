@@ -1,0 +1,63 @@
+<%#head.html%>
+
+<div class="main">
+	<div class="activityInfo"><a id="activityInfo" href="javascript:void(0)"></a></div>
+	<div class="princessInfo">
+		<img src="<%= this.PICTURE_URL%>/images/huodong/disney/princessIntro.jpg" alt="" usemap="#Map" >
+		<map name="Map" id="Map">
+			<area shape="circle" coords="99,263,70" href="http://disney.tmall.com/p/rd261756.htm" target="_blank" />
+			<area shape="circle" coords="224,373,73" href="http://disney.tmall.com/p/rd261756.htm" target="_blank" />
+			<area shape="circle" coords="366,251,73" href="http://disney.tmall.com/p/rd261756.htm" target="_blank" />
+			<area shape="circle" coords="501,365,73" href="http://disney.tmall.com/p/rd261756.htm" target="_blank" />
+			<area shape="circle" coords="642,250,76" href="http://disney.tmall.com/p/rd261756.htm" target="_blank" />
+			<area shape="circle" coords="788,368,75" href="http://disney.tmall.com/p/rd261756.htm" target="_blank" />
+			<area shape="circle" coords="949,255,75" href="http://disney.tmall.com/p/rd261756.htm" target="_blank" />
+		</map>
+	</div>
+	<div class="upload">
+		<div class="imgUpload">
+			<%= requireFn('biz/huodong/upload_photo.html')({
+				'upload_style' : 'lenUpWapper',
+				'reload_style' : 'len_reup'
+			}); %>
+			<span class="upsure" id="upsure"></span>
+			<div class="photoFrame"></div>
+		</div>
+
+		<div class="getGoods">
+			<img class="goodsPreview" src="<%= this.PICTURE_URL%>/images/huodong/disney/step_02.jpg" >
+			<div class="goodsFrame"></div>
+			<a class="goodsLink" href="http://meilishuo.com/u/EIxVM9?frm=disney02" target="_blank"></a>
+		</div>
+		<div class="preview">
+			<textarea name="disneyShare" id="goodsUrl" cols="30" rows="10"></textarea>
+			<input type="button" value="" class="preBtn" />
+			<div id="linkMessageTips" class="linkMessageTips"></div>
+			<input type="button" value="" class="subBtn" id="subBtn" />
+			<div class="followSina"><input type="checkbox" checked>关注迪士尼美丽说品牌帐号</div>
+		</div>
+	</div>
+	<div class="posterWrap">
+		<%#biz/huodong/basic.html%>		
+	</div>
+</div>
+
+<!--弹窗-->
+<script type="text/html" id="activityIntro">
+	<div class="activityIntro">
+		<span id="close_btn1" class="disney_close"></span>
+		<div class="disney_info"><img src="<%= this.PICTURE_URL%>/images/huodong/disney/disney_t.png" ></div>
+	</div>
+</script>
+<script type="text/html" id="joinActivity">
+	<div class="joinActivity">
+		<span id="close_btn2" class="disney_close"></span>
+		<a id="getVote" class="getVote" href="javascript:void(0)"></a>
+		<a href="javascript:void(0)" class="share_sina"></a>
+	</div>
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+    fml.use('page/huodong/disney');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

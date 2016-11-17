@@ -1,0 +1,66 @@
+/*--/Users/MLS/Documents/H2/H2_client/hornbill/apps_0/www/views/commerce/adm_banner.html--*/ 
+     var est = require(config.path.lib + 'est/est.js'); 
+     var _extFn = require('/Users/MLS/Documents/H2/H2_client/hornbill/nestnew/server/lib/est/extFn.js'); 
+     function requireFn(tpl) { return est.renderFile('/Users/MLS/Documents/H2/H2_client/hornbill/apps_0/www/views/' ,tpl , null , null ,'www' ,true); } ; 
+     function __getHtml (_data) { 
+       function jsRender(tpl , id) { return est.jsRender(requireFn(tpl)(_data), id  ); } ; 
+       var __htm ='';
+__htm += '';
+if (_data.ad[0].slot_id == 17 && _data.ad[0].ad_backupdata) {;__htm += '\n	';
+__htm += est.renderFile("/Users/MLS/Documents/H2/H2_client/hornbill/apps_0/www/views/" ,"commerce/adm_pull_banner.html",_data,null,"www" )||"";
+__htm += '\n';
+}else{;__htm += '\n<div class="ads_banner adm ';
+__htm +=_data.admId;
+__htm += '">\n	<div class="boxImg">\n		';
+ var seclen = _data.ad.length; ;__htm += '\n		<ul class="_img banner">\n			';
+ 
+			var forRobot = '' 
+			_data.ad.map(function(data, index){ 
+				forRobot += '<a href="/api/adm/?spm='+data.ad_robot_clickurl+ '">'+data.ad_name+'</a>';
+				;__htm += '\n			<li>\n				';
+ if (data.ad_type == 1) { ;__htm += '\n				<div class="pic" ';
+if(index==0){;__htm += 'style="background:url(';
+__htm +=data.ad_filedata;
+__htm += ') center top no-repeat;"';
+}else{;__htm += 'p_url="';
+__htm +=data.ad_filedata;
+__htm += '"';
+};__htm += '>\n					<a class="adm_mon" href="/api/adm/?spm=';
+__htm +=data.ad_clickspm;
+__htm += '" target="_blank" monitor="';
+__htm +=data.ad_click_monitor;
+__htm += '" show_mon="';
+__htm +=data.ad_view_monitor;
+__htm += '"></a>\n				</div>\n				';
+ } else if (data.ad_type == 2) { ;__htm += '\n				<div class="auto_f pr_f" style="width:950px;">\n				<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0" width="946" height="100" align="middle" class="none_f">\n					<param name="movie" value="';
+__htm +=data.ad_filedata;
+__htm += '" />\n					<param name="quality" value="high" />\n					<param name="wmode" value="opaque" />\n					<param name="bgcolor" value="#ffffff" />\n					<embed src="';
+__htm +=data.ad_filedata;
+__htm += '" quality="high" wmode="opaque" bgcolor="#ffffff" width="946" height="100" align="middle" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />\n				</object>\n				<div class="pa_f" style="top: 0; left: 0; height:100px; width:950px; background:url(about:blank);">\n					<a class="adm_mon pa_f" style="top: 0; left: 0; width: 100%; height: 100%;" href="/api/adm/?spm=';
+__htm +=data.ad_clickspm;
+__htm += '" target="_blank" monitor="';
+__htm +=data.ad_click_monitor;
+__htm += '" show_mon="';
+__htm +=data.ad_view_monitor;
+__htm += '"></a>\n				</div>\n				</div>\n				';
+ } else if (data.ad_type == 3) { ;__htm += '\n				<div class="c_f">\n				';
+__htm += data.ad_filedata;
+__htm += '\n				</div>\n				';
+ };__htm += '\n			</li>\n			';
+ }); ;__htm += '\n		</ul>\n	</div>\n	<div class="_num adType1 ';
+ if(seclen == 1) { ;__htm += 'none_f';
+ } ;__htm += '">\n		';
+ for (var i=1; i<=seclen; i++) { ;__htm += '\n		';
+ var current = i==1 ? 'current' : ''; ;__htm += '\n		<a class="';
+__htm += current ;
+__htm += '"><span class="none_f">';
+__htm += i ;
+__htm += '</span></a>\n		';
+ } ;__htm += '\n	</div>\n</div>\n<div id=\'c4r\' style=\'display:none\'>\n';
+__htm += forRobot;
+__htm += '\n</div>\n';
+__htm += est.callFn("useModule")("fml.use('app/adPoster' , function(){\n		var admId = '.' + %j;\n		/*flash is only one; & hack for flash in ie bug---click to activate and use this control*/\n		var obj = $(admId).find('object');\n		if (obj.length > 0) {\n			obj.html(obj.innerHTML).removeClass('none_f');\n			return;\n		}\n		this.carousel(admId);\n	});", _data._JSstack, _data._JSmods, _data.admId) || '';
+ ;__htm += '\n';
+};__htm += '\n';
+return __htm;} 
+ exports.html = __getHtml; 

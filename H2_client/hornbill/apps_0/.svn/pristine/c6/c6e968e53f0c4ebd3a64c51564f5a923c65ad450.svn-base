@@ -1,0 +1,32 @@
+		<div class="help-title">
+			<a href="/helpcenter/" class="help-logo">帮助中心</a>
+			<div class="operate-area">
+				<div class="search-box">
+					<form action="/helpcenter/search/" method="get">
+						<span class="ipt-f">
+							<em class="i_search">&nbsp;</em>
+							<input class="searchQa" name="title" type="text" autocomplete="off" value="<%= this.title || ''%>" placeholder="搜索常见问题"/>
+						</span>
+						<span class="ipt-s">
+							<input type="submit" class="qa-search-btn" value="搜索"/>
+						</span>
+					</form>
+				</div>
+				<a class="btn qa-btn" href="/helpcenter/issue/">常见问题</a>
+				<a class="btn contact-btn" href="/helpcenter/custom-service/">联系客服</a>
+				<a class="help-notice red_f" href="/helpcenter/notice/"><em class="notice-icon">&nbsp;</em>公告</a>
+			</div>
+			<div class="clear_f"></div>
+		</div>
+
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('jquery', function($){
+		$('.qa-search-btn').click(function() {
+			var $serKey = $(this).parents('.search-box').find('.searchQa');
+			if ($.trim($serKey.val()) == '' || $serKey.val() == $serKey.attr('placeholder')){
+				return false;
+			}
+		});
+	});
+_use:", this._JSstack , this._JSmods ); %>

@@ -1,0 +1,17 @@
+function sq(){ return this }
+
+var controlFns = {
+	interfaces : function (params){
+		var php = {
+			'waterfall' : '/shouq/ShouQ_user_like_tids',
+			'collect_or_not' : '/shouq/ShouQ_like_tid_action',
+			'show_list' : '/shouq/shouQ_goods_show_list',
+			'associated_word': '/shouq/ShouQ_search_associative_word',
+			'comment_submit' : '/shouq/ShouQ_comments'
+		}
+
+		this.ajaxTo(php[params])
+	}
+}
+
+exports.__create = controller.__create(sq , controlFns);

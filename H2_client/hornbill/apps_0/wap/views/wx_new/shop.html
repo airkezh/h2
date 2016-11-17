@@ -1,0 +1,110 @@
+<%*
+ * @fileoverview 微信店铺页
+ * @author qindai@meilishuo.com
+ * @date 2015-09-20
+%>
+<%# wx_new/header.html %>
+<%
+	var basicD = this.basic;
+%>
+
+<div class="storefront">
+	<section class="sec1 follow-wrap" style="background-image: url(<%= basicD.shop_focus_img %>);">
+		<div class="shop">
+		<div class="shop_img">
+		   <a class="shop-logo"><img src="<%= basicD.shop_face_img %>" alt="shop logo"></a>
+		</div>
+		<p class="shop-name">
+			<%= _extFn.mSubstr(basicD.shop_nick, 8, '') %>
+		</p>
+			<div class="btns">
+			<% var shop_c_url = "http://im.meilishuo.com/wap/chat/?shop_id="+this.shop_id+"&source=wap&type=2&button_stat_area=single_service"%>
+			<a href="<%= shop_c_url%>" class="btns_a">
+				<button class="btn-connect">联系</button>
+			</a>
+				<% if(basicD.following == 0 ){ %>
+					<button class="btn-focus can-focus">
+						<i class="icono-plus"></i>
+						关注
+					</button>
+				<%}else{%>
+					<button class="btn-focus">已关注</button>
+				<%}%>
+
+			</div>
+		</div>
+	</section>
+
+	<!-- 领券版块 -->
+	<%= requireFn('wx_new/mdl_coupon.html')({
+		'coupons' : basicD.shop_coupon_apply || []
+		,'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+	});%>
+	
+	<% 
+		var hot = this.hot && this.hot.contents; 
+		if(hot && hot.length > 0){
+	%>
+	<section class="static-wall">
+		<h3 class="title"><i class="english">HOT</i>爆款专区</h3>
+		<ul class="new_goods">
+		<% hot.forEach(function(dataH){%>
+		<li class="goods_li">   
+			<div class="li_border">   
+				<a href="/wx/detail?tid=<%=dataH.twitter_id %>&d_r=<%=dataH.d_r %>" class="list_img">
+					<img width="<%=dataH.pic_width%>"  src="<%=dataH.goods_img %>" alt="">
+				</a>
+				<div class="list_info">
+					<p class="list_title"><%=dataH.goods_title %></p>
+					<p class="list_cost">
+						<span class="money_now"><%=dataH.discount_price %></span>
+						<span class="like-img">       	<img src="http://d05.res.meilishuo.net/pic/_o/66/d2/642ace0797b9ca81f4f64b793c3f_22_20.cf.png" alt="">
+						</span>      
+						<span class="like-num"><%=dataH.count_like %></span>
+					</p>    
+				</div>     
+			</div>  
+		</li>
+		<%});%>
+
+		</ul>
+	</section>
+	<%};%>
+	
+	<%*
+		增加返回时的tab定位问题
+	*%>
+	<section class="sec3" id="goods-nav">
+		<ul class="goods_was_sort_by">
+			<li class="s_item <%=this.tabType == 'base' ? 'active' : '' %>" data-type="base" >
+				<span class="s-txt">默认</span>
+			</li>
+			<li class="s_item  <%=this.tabType == 'new' ? 'active' : '' %>" data-type="new"><span class="s-txt" >最新</span></li>
+			<li class="s_item  <%=this.tabType == 'hot' ? 'active' : '' %>" data-type="hot"><span class="s-txt">热销</span></li>
+
+			<%if(this.tabType == 'price-l' || this.tabType =='price-h'){%> 
+				<li class="s_item  active" data-type="<%== this.tabType %>"><span class="s-txt">价格</span><i class="price-icon"></i></li>
+			<%}else{ %>
+				<li class="s_item" data-type="price"><span class="s-txt">价格</span><i class="price-icon"></i></li>
+			<%}%>
+		</ul>
+		<ul class="goods-wall new_goods"></ul>
+		<div class="pullUp" status="loading"></div>
+	</section>
+</div>
+
+<%# wx_new/waterfall.html %>
+<% var share_des = basicD.shop_nick + '-' + basicD.shop_desc; %>
+<script>
+fml.vars.shareData = {'title': '<%=share_des %>','imgUrl' : '<%= basicD.shop_face_img %>' , 'desc' : '<%=share_des %>', 'link' : window.location.href + '&channel=weixin_share' };
+</script>
+
+<%! 
+	$_ENGINE_SELF.callFn("useModule")(
+		"<<<_use:fml.use('wap/page/wx_new/shop');_use:", 
+		this._JSstack, 
+		this._JSmods 
+	); 
+%>
+<%# wx_new/side.html%>
+<%# wx_new/footer.html %>

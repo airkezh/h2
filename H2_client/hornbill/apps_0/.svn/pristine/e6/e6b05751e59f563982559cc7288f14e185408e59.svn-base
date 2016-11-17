@@ -1,0 +1,61 @@
+<%#head.html%>
+<%
+var getTimeRemain = function(time){
+	if(time && time > this.cur_time){
+		return time - this.cur_time;
+	}else{
+		return ''; 
+	}
+}
+%>
+<img src="<%= this.PICTURE_URL%>images/wap/activity/bedook/top.jpg" />
+<div class="countbg">
+	<img src="<%= this.PICTURE_URL%>images/wap/activity/bedook/pic1.jpg" />
+	<div class="cd">
+		<div class="cont">
+			<img src="<%= this.PICTURE_URL%>images/wap/activity/bedook/clock.jpg" />
+			<div class="down">
+				<% if(this.status == 'nostart'){ %>
+					距离热卖&nbsp;还有<span class="time" remain="<%= getTimeRemain(this.start_time)%>">--天--时--分--秒</span>
+				<%}else if(this.status == 'saling'){%>
+					距离抢购结束&nbsp;还有<span class="time" remain="<%= getTimeRemain(this.end_time)%>">--天--时--分--秒</span>
+				<%}else{%>
+					活动已结束
+				<%}%>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="goods">
+	<img src="<%= this.PICTURE_URL%>images/wap/activity/bedook/pic2.jpg" />
+	<div class="coupon" tid="2738890155"></div>
+	<a href="<%= _extFn.getAppLink('twitter_single', {'twitter_info' : {'twitter_id' : '2738890155', 'is_doota' : 1}}, this.os, this.r, '/share/item/2738890155')%>" class="buy"></a>
+	<div class="num">已抢购<span class="red_f"><%= this.bedooke.data.tInfo[0].sale_num%></span>份，还剩<span class="red_f"><%= this.bedooke.data.tInfo[0].repertory%></span>份</div>
+</div>
+<div class="goods">
+	<img src="<%= this.PICTURE_URL%>images/wap/activity/bedook/pic3.jpg" />
+	<div class="coupon" tid="2738944295"></div>
+	<a href="<%= _extFn.getAppLink('twitter_single', {'twitter_info' : {'twitter_id' : '2738944295', 'is_doota' : 1}}, this.os, this.r, '/share/item/2738944295')%>" class="buy"></a>
+	<div class="num">已抢购<span class="red_f"><%= this.bedooke.data.tInfo[1].sale_num%></span>份，还剩<span class="red_f"><%= this.bedooke.data.tInfo[1].repertory%></span>份</div>
+</div>
+<img src="<%= this.PICTURE_URL%>images/wap/activity/bedook/pic4.jpg" />
+<a href="<%= _extFn.getAppLink('twitter_single', {'twitter_info' : {'twitter_id' : '2738890155', 'is_doota' : 1}}, this.os, this.r, '/share/item/2738890155')%>"><img src="<%= this.PICTURE_URL%>images/wap/activity/bedook/pic5.jpg" /></a>
+<img src="<%= this.PICTURE_URL%>images/wap/activity/bedook/pic6.jpg" />
+<a href="<%= _extFn.getAppLink('twitter_single', {'twitter_info' : {'twitter_id' : '2738944295', 'is_doota' : 1}}, this.os, this.r, '/share/item/2738944295')%>"><img src="<%= this.PICTURE_URL%>images/wap/activity/bedook/pic7.jpg" /></a>
+<img src="<%= this.PICTURE_URL%>images/wap/activity/bedook/pic8.jpg" />
+<% if(this.share){ %>
+	<%= requireFn('wapShare.html')({
+		'share' : this.share 
+		, 'shareTitle' : '选择分享到'
+		, '_JSstack' : this._JSstack
+		, '_JSmods' : this._JSmods
+	}); %>
+<%}%>
+<script>
+fml.vars.isLogin = "<%=this.isLogin%>";
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/app/hackWeixin');
+	fml.use('wap/page/activity/bedook');
+_use:", this._JSstack , this._JSmods); %>
+<%#foot_simple.html%>

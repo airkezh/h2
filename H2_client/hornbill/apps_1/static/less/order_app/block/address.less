@@ -1,0 +1,66 @@
+.address(){
+	.common(){
+		.unit{
+			.common_box;.common_box > .lra;
+			.hidden;
+			//.pt(20*@px);
+			//.pb(10*@px);
+			.mt(20*@px);
+			p{
+				padding:10*@px 20*@px;.l(1.6);.f(140%);
+				border-bottom:1px dashed #ccc;
+				span{.fc(#000);}
+				&:nth-last-of-type(1){.border-n;}	
+			}
+			input{.none;}
+			a{.dgray;.block;
+				&:hover{.dgray;}
+			}
+			&:nth-child(1){
+				.mt(0px);
+			}
+		}
+	}
+	.default(){
+		.adrl_list{
+			p{
+				&:nth-child(1){
+					&:before{
+						content:"收货信息"	
+					}
+				}
+				&:nth-child(2){
+					&:before{
+						content:"收货地址"	
+					}
+				}
+				span{.ml(20*@px);}
+			}
+		}
+	}
+	.settings(){
+		.unit{
+			p{
+				&:nth-child(1){
+					.clearfix;
+					span{
+						&:nth-child(1){ .left; }
+						&:nth-last-child(1){ .right; }
+					}
+				}
+			}
+			&[is_default="1"]{
+				p{
+					&:nth-child(1){
+						.bgc(#8aaf6c);
+						border-color:#8aaf6c;
+					}
+				}
+			}
+		}
+		.adrl_new{
+			.none;	
+		}
+	}
+}
+

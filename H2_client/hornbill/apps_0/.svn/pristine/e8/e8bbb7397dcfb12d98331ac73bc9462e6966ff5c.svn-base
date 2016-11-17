@@ -1,0 +1,252 @@
+/*common*/
+require('wap/zepto')
+require('wap/zepto/touch')
+
+var WXShare = require('wx/share')
+var WXSign = require('wx/sign')
+var sale = require('wap/page/wx_new/sale_circle')
+
+var shareInfo = fml.vars.shareInfo
+var previewImageInfo = fml.vars.previewImage
+var $goodsPics = $('.goods-pic-list')
+var $pic = $goodsPics.find('.item')
+var $showOrNot = $('.show-or-not')
+var $goodsAttr = $('#goods_attr')
+var tracking = require('wap/app/tracking')
+
+$showOrNot.on('tap', function (){
+	$goodsAttr.toggle()
+	$showOrNot.toggleClass('show')
+})
+
+if(dcId != -1){
+    var $tag = $('.goods-detail-nav').find('.item')
+    var $goodsCommonInfo = $('.goods_detail_content')
+    var $goodsSizeInfo = $('.size_content')
+    var $showDetailBtn = $('.show-detail-btn')
+    var dcId = fml.vars.dcId
+    var shopId = fml.vars.shopId
+
+    $tag.on('tap', function (){
+        var self = $(this)
+        if(self.hasClass('curr'))return
+        var index = self.index()
+        if(index){
+            $showDetailBtn.hide()
+        }else{
+            $showDetailBtn.show()
+        }
+        $tag.toggleClass('curr')
+        $goodsCommonInfo.toggle()
+        $goodsSizeInfo.toggle()
+    })
+
+    $showDetailBtn.on('tap', function (){
+        $showDetailBtn.toggleClass('show-all show-section')
+        $goodsCommonInfo.toggleClass('show-less')
+    })
+    sale.addExtraParams({
+        'dc_id' : dcId,
+        'shop_id' : shopId
+    })
+}
+
+/* goods image slide */
+var $imageWrap = $('#imageSlide')
+var $image = $imageWrap.find('li')
+var imgAmounts = $image.length
+var PI = Math.PI
+
+if (imgAmounts > 2) {
+    var $bookmarkWrap = $('.bookmark-wrap')
+    var $bookmark = $('.bookmark')
+    var wrapWidth = $imageWrap.width()
+    var basicStep = 20
+    var _index = 0
+    var clicked = false
+    var $curr, $next, $prev, startX, xStep, p1, p2, p3, isScroll
+
+    $bookmarkWrap.show()
+    updateBookmark(_index) 
+    $imageWrap.on({
+        'touchstart': touchStart,
+        'touchmove': touchMove,
+        'touchend': touchEnd
+     })
+    prepare()
+}
+ 
+function prepare() {
+    rectifier(_index)
+
+    for (var i = 0; i < imgAmounts; i++) {
+        $image.eq(i).css('left', -100 * i + '%')
+    }
+
+    $image.css({
+        '-webkit-transform': 'translate3d(100%,0,0)',
+        'transform': 'translate3d(100%,0,0)'
+     })
+    translate()
+}
+
+function rectifier(index) {
+    if (index >= imgAmounts) index %= imgAmounts
+    if (index < 0) index = imgAmounts - 1
+
+    var pi, ci, ni
+
+    _index = index
+
+    switch (index) {
+        case 0:
+            ci = index
+            pi = imgAmounts - 1
+            ni = 1
+            break
+        case imgAmounts - 1:
+            ci = index
+            pi = index - 1
+            ni = 0
+            break
+        default:
+            ci = index
+            pi = index - 1
+            ni = index + 1
+    }
+
+    $prev = $image.eq(pi)
+    $curr = $image.eq(ci)
+    $next = $image.eq(ni)
+}
+
+function translate(direction) {
+    $prev.css({
+        '-webkit-transform': 'translate3d(-100%,0,0)',
+        'transform': 'translate3d(-100%,0,0)'
+     })
+    $curr.css({
+        '-webkit-transform': 'translate3d(0,0,0)',
+        'transform': 'translate3d(0,0,0)'
+    })
+    $next.css({
+        '-webkit-transform': 'translate3d(100%,0,0)',
+        'transform': 'translate3d(100%,0,0)'
+    })
+ }
+
+function touchStart(e) {
+    //e.preventDefault()
+    if (!e.touches.length) return
+    var touch = e.touches[0]
+    startX = touch.pageX
+	startY = touch.pageY
+    $image.removeClass('onmove')
+	isScroll = false
+}
+
+function touchMove(e) {
+    //e.preventDefault()
+
+    if (!e.touches.length || isScroll) return
+
+    var touch = e.touches[0]
+    xStep = touch.pageX - startX
+	yStep = touch.pageY - startY
+	
+	var t = Math.abs(yStep/xStep)
+	
+	if(t < Math.tan(PI/6)){
+    	e.preventDefault()
+	}else{
+		isScroll = true
+		return
+	}
+	
+    p2 = xStep / wrapWidth * 100
+
+    p1 = -100 + p2
+    p3 = 100 + p2
+
+    $prev.css({
+        '-webkit-transform': 'translate3d(' + p1 + '%,0,0)',
+        'transform': 'translate3d(' + p1 + '%,0,0)'
+    })
+    $curr.css({
+        '-webkit-transform': 'translate3d(' + p2 + '%,0,0)',
+        'transform': 'translate3d(' + p2 + '%,0,0)'
+    })
+    $next.css({
+        '-webkit-transform': 'translate3d(' + p3 + '%,0,0)',
+        'transform': 'translate3d(' + p3 + '%,0,0)'
+    })
+}
+
+function touchEnd(e) {
+	if(isScroll){
+		translate()
+		return
+	}
+    if (xStep > basicStep) {
+        _index--
+        $prev.addClass('onmove')
+    } else if (xStep < -1 * basicStep) {
+        _index++
+        $next.addClass('onmove')
+    } else {
+        translate()
+        return
+     }
+ 
+    $curr.addClass('onmove')
+    rectifier(_index)
+    updateBookmark(_index);
+    translate()
+}
+
+function updateBookmark(index) {
+    if (typeof index == 'undefined') index = 0
+
+    var content = +index + 1 + ' / ' + imgAmounts
+    $bookmark.text(content)
+}
+
+
+/**
+ 设置微信二次分享
+ */
+;
+(function() {
+    WXSign() 
+    var shareData = {
+        title: shareInfo.title,
+        desc: shareInfo.price + '\n这个宝贝不错，去看看吧~',
+        link: '',
+        imgUrl: shareInfo.imgUrl
+    }
+
+    WXShare.bind(shareData)
+}())
+
+/* 微信图片预览 */
+function preview(){
+	var index = $(this).index()
+	wx.previewImage({
+		current: previewImageInfo[index],
+		urls: previewImageInfo
+	})
+}
+$image.on('click', preview)
+$('#wei-btn').on('click', function(e) {
+    if(e && e.preventDefault) {  
+    　　//阻止默认浏览器动作(W3C)  
+    　　e.preventDefault();  
+    } else {  
+    　　//IE中阻止函数器默认动作的方式   
+    　　window.event.returnValue = false;   
+    }  
+    var _this = $(this),
+        _href = _this.attr('shref');
+    tracking.cr('/weiquan_h5', {'action': 'click', 'value': 'download'});
+    window.location.href = _href;
+});

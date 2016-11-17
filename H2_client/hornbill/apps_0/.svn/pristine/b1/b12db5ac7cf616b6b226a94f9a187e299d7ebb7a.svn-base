@@ -1,0 +1,627 @@
+<%
+	/**
+ 	 * @fileoverview 会员权益－会员中心
+     * @requires jquery
+     * @author kehuang@meilishuo.com
+     * @date 2015-08-28
+     */
+%>
+
+<%# head.html%>
+<%
+	var userMaxLevel = 5;
+	var curUserIsLogin = this.isLogin;
+	var curUserInfo = this.userInfo || {};
+	var curUserData = this.userInfoData.data || {};
+	var curUserBeautyData = this.percentData.data || {};
+	var curUserBeautyExpireData = this.beautyExpireData.data || {};
+	var curUserBeautyDetailData = this.beautyDetailData.data || {};
+	var curUserBeautyDetailArr = curUserBeautyDetailData.data || [];
+	var curUserName = curUserInfo.nickname || '';
+	var curUserLevel = curUserData.grade || 0;
+	var curUserOrderTotal = curUserData.order_num || 0;
+	var curUserUpdateLevel = (curUserLevel < 4) ? (curUserLevel + 1) : 4;
+	var curUserBeauty = curUserBeautyData.score || 0;
+	var curUserRemainBeauty = curUserBeautyData.remaind_score || 0;
+	var curUserBeautyExpireTime = curUserBeautyExpireData.expired_time || '';
+	var tempUserPercent = curUserBeautyData.left_percent || 0;
+	var curUserPercent = (curUserBeautyData.percent || 0) + '%';
+	var tempTotalPercent = (curUserLevel +  tempUserPercent / 100) * 25;
+	var curUserTotalPercent = tempTotalPercent + '%';
+	var curUpdateLevelTipsLeft = ((tempTotalPercent * 844) / 100) + 28 - 120;
+%>
+
+<div class="header_bg">
+	<div class="header_top logo_wrap">
+		<%
+			var logo_href = curUserIsLogin ? '/?frm=logoa' : '/welcome';
+		%>
+		<a class="logo_new" href="<%= logo_href %>"></a>
+
+		<div class="tab_nav">
+			<ul>
+				<li><a href="/member/main/">会员首页</a></li>
+				<li class="active"><a href="/member/interests/">会员特权</a></li>
+				<li><a href="/member/beans_interests/">美美豆特权</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<div class="wrap">
+	<div class="user_info_wrap">
+		<ul class="user_info_box">
+			<li>
+				<div class="user_level level_<%= curUserLevel %>"></div>
+				<div class="user_info">
+					<div class="name"><%= curUserName %></div>
+					<div class="desc">您是尊贵的V<%= curUserLevel %>会员</div>
+				</div>
+			</li>
+			<li>
+				<div class="user_beauty">
+					<div class="beauty">我的美丽值：<span><%= curUserBeauty %></span></div>
+					<div class="detail"><a href="#j_beauty_detail">查看美丽值明细 ></a></div>
+				</div>
+			</li>
+			<li>
+				<div class="user_percent">
+					<div class="percent">已经打败了<%= curUserPercent %>的爱美丽们</div>
+					<%
+						switch (curUserLevel) {
+							case 0:
+								updateText = '还差一单购物即可升级V1';
+
+								break;
+							case 1:
+							case 2:
+							case 3:
+								updateText = '还差' + curUserRemainBeauty + '美丽值即可成为V' + curUserUpdateLevel + '会员';
+
+								break;
+							case 4:
+								updateText = '你已成为尊贵的V4会员，有效期1年';
+								break;
+							default:
+								break;
+						}
+					%>
+					<div class="percent"><%= updateText %></div>
+				</div>
+			</li>
+			<li>
+				<div class="beauty_expire">有效期至：<%= curUserBeautyExpireTime %></div>
+			</li>
+		</ul>
+	</div>
+
+	<div class="user_update_wrap">
+		<ul class="user_update_box">
+			<li>
+				<div class="beauty_info_box">
+					<div class="beauty">美丽值：<%= curUserBeauty %></div>
+					<div class="date">有效期至：<%= curUserBeautyExpireTime %></div>
+				</div>
+
+				<div class="progress_bar_box">
+					<%
+						var text = ((curUserLevel == 4) && (curUserRemainBeauty < 1)) ? '恭喜你升到最高等级啦！' : '升级还需美丽值：' + curUserRemainBeauty,
+							updateTipsHtml = '<div class="level_update_tips" style="left:' + curUpdateLevelTipsLeft + 'px;">' + text + '</div>';
+					%>
+
+					<%= updateTipsHtml %>
+
+					<div class="outer_progress_bar">
+						<div class="inner_progress_bar" style="width: <%= curUserTotalPercent %>;"></div>
+					</div>
+
+					<ul class="level_box">
+						<%
+							for (var i = 0; i < userMaxLevel; i++) {
+								var liStyle = '',
+									mtStyle = '',
+									levelClass = '',
+									marginLeft = 155;
+
+								if (i > curUserLevel) {
+									levelState = 0;
+								} else if (i < curUserLevel) {
+									levelState = 1;
+								} else {
+									levelState = 2;
+
+									mtStyle = 'margin-top: -12px;';
+								}
+
+								switch (curUserLevel) {
+									case 0:
+										if (i == curUserLevel) {
+											liStyle = 'margin-right: 131px;';
+										} else {
+											if (i < 4) {
+												liStyle = 'margin-right: 155px;';
+											} else {
+												liStyle = 'margin-right: 0px;';
+											}
+										}
+
+										break;
+									case 1:
+										if ((i == curUserLevel) || (i == 0)) {
+											liStyle = 'margin-right: 143px;';
+										} else {
+											if (i < 4) {
+												liStyle = 'margin-right: 155px;';
+											} else {
+												liStyle = 'margin-right: 0px;';
+											}
+										}
+
+										break;
+									case 2:
+										if ((i == curUserLevel) || (i == 1)) {
+											liStyle = 'margin-right: 143px;';
+										} else {
+											if (i < 4) {
+												liStyle = 'margin-right: 155px;';
+											} else {
+												liStyle = 'margin-right: 0px;';
+											}
+										}
+
+										break;
+									case 3:
+										if ((i == curUserLevel) || (i == 2)) {
+											liStyle = 'margin-right: 143px;';
+										} else {
+											if (i < 4) {
+												liStyle = 'margin-right: 155px;';
+											} else {
+												liStyle = 'margin-right: 0px;';
+											}
+										}
+
+										break;
+									case 4:
+										if (i == curUserLevel) {
+											liStyle = 'margin-right: 0px;';
+										} else if (i == 3) {
+											liStyle = 'margin-right: 131px;';
+										} else {
+											liStyle = 'margin-right: 155px;';
+										}
+
+										break;
+								}
+						%>
+						<li style="<%= liStyle %><%= mtStyle %>"><div class="level_<%= i %>_<%= levelState %>"></div></li>
+						<%
+							}
+						%>
+					</ul>
+				</div>
+			</li>
+			<li>
+				<div class="beauty_info_box">
+					<div class="beauty">超过10元以上购买单数</div>
+					<div class="date">当前有效购买单数：<%= curUserOrderTotal %></div>
+				</div>
+
+				<div class="progress_bar_box">
+					<%
+						var initOrder = 1,
+							orderState = 0,
+							displayStyle = 'display: none;',
+							orderTipsHtml = '<div class="order_0_tips"></div>';
+
+						if (curUserOrderTotal > 0) {
+							initOrder = 0;
+							orderState = 1;
+							displayStyle = 'display: block;';
+							orderTipsHtml = '<div class="order_1_tips"></div>';
+						}
+					%>
+
+					<%= orderTipsHtml %>
+
+					<div class="outer_progress_bar">
+						<div class="inner_progress_bar" style="width: 100%;<%= displayStyle %>"></div>
+					</div>
+
+					<ul class="order_box">
+						<li><div class="order order_0_<%= initOrder %>"></div></li>
+						<li><div class="order order_1_<%= orderState %>"></div></li>
+					</ul>
+				</div>
+			</li>
+		</ul>
+	</div>
+
+	<div class="member_interests_wrap">
+		<p class="interests_title">我的会员权益</p>
+
+		<ul class="interests_box">
+			<%
+				var interestsHtml = '';
+
+				switch (curUserLevel) {
+					case 0:
+						interestsHtml = [
+							'<li><div class="interests interests_0 active">签到领美美豆</div></li>',
+							'<li><div class="interests interests_1 active">72小时发货</div></li>',
+							'<li><div class="interests interests_3 active">新人专享活动</div></li>',
+							'<li><div class="interests interests_4 active">7天无理由退货</div></li>',
+							'<li><div class="interests interests_5 active">美美豆半价购</div></li>',
+							'<li><div class="interests interests_6 active">美美豆大转盘</div></li>',
+							'<li><div class="interests interests_8 active">退货运费补贴</div></li>',
+							'<li><div class="interests interests_9 active">先行赔付退款</div></li>',
+							'<li><div class="interests interests_2">白付美定向邀请</div></li>',
+							'<li><div class="interests interests_7">美美豆兑好礼</div></li>',
+							'<li><div class="interests interests_10">会员专属客服</div></li>'
+						].join('');
+
+						break;
+					case 1:
+						interestsHtml = [
+							'<li><div class="interests interests_0 active">签到领美美豆</div></li>',
+							'<li><div class="interests interests_1 active">72小时发货</div></li>',
+							'<li><div class="interests interests_4 active">7天无理由退货</div></li>',
+							'<li><div class="interests interests_5 active">美美豆半价购</div></li>',
+							'<li><div class="interests interests_6 active">美美豆大转盘</div></li>',
+							'<li><div class="interests interests_8 active">退货运费补贴</div></li>',
+							'<li><div class="interests interests_9 active">先行赔付退款</div></li>',
+							'<li><div class="interests interests_2">白付美定向邀请</div></li>',
+							'<li><div class="interests interests_3">新人专享活动</div></li>',
+							'<li><div class="interests interests_7">美美豆兑好礼</div></li>',
+							'<li><div class="interests interests_10">会员专属客服</div></li>'
+						].join('');
+
+						break;
+					case 2:
+						interestsHtml = [
+							'<li><div class="interests interests_0 active">签到领美美豆</div></li>',
+							'<li><div class="interests interests_1 active">72小时发货</div></li>',
+							'<li><div class="interests interests_4 active">7天无理由退货</div></li>',
+							'<li><div class="interests interests_5 active">美美豆半价购</div></li>',
+							'<li><div class="interests interests_6 active">美美豆大转盘</div></li>',
+							'<li><div class="interests interests_7 active">美美豆兑好礼</div></li>',
+							'<li><div class="interests interests_8 active">退货运费补贴</div></li>',
+							'<li><div class="interests interests_9 active">先行赔付退款</div></li>',
+							'<li><div class="interests interests_2">白付美定向邀请</div></li>',
+							'<li><div class="interests interests_3">新人专享活动</div></li>',
+							'<li><div class="interests interests_10">会员专属客服</div></li>'
+						].join('');
+
+						break;
+					case 3:
+						interestsHtml = [
+							'<li><div class="interests interests_0 active">签到领美美豆</div></li>',
+							'<li><div class="interests interests_1 active">72小时发货</div></li>',
+							'<li><div class="interests interests_4 active">7天无理由退货</div></li>',
+							'<li><div class="interests interests_5 active">美美豆半价购</div></li>',
+							'<li><div class="interests interests_6 active">美美豆大转盘</div></li>',
+							'<li><div class="interests interests_7 active">美美豆兑好礼</div></li>',
+							'<li><div class="interests interests_8 active">退货运费补贴</div></li>',
+							'<li><div class="interests interests_9 active">先行赔付退款</div></li>',
+							'<li><div class="interests interests_2">白付美定向邀请</div></li>',
+							'<li><div class="interests interests_3">新人专享活动</div></li>',
+							'<li><div class="interests interests_10">会员专属客服</div></li>'
+						].join('');
+
+						break;
+					case 4:
+						interestsHtml = [
+							'<li><div class="interests interests_0 active">签到领美美豆</div></li>',
+							'<li><div class="interests interests_1 active">72小时发货</div></li>',
+							'<li><div class="interests interests_2 active">白付美定向邀请</div></li>',
+							'<li><div class="interests interests_4 active">7天无理由退货</div></li>',
+							'<li><div class="interests interests_5 active">美美豆半价购</div></li>',
+							'<li><div class="interests interests_6 active">美美豆大转盘</div></li>',
+							'<li><div class="interests interests_7 active">美美豆兑好礼</div></li>',
+							'<li><div class="interests interests_8 active">退货运费补贴</div></li>',
+							'<li><div class="interests interests_9 active">先行赔付退款</div></li>',
+							'<li><div class="interests interests_10 active">会员专属客服</div></li>',
+							'<li><div class="interests interests_3">新人专享活动</div></li>'
+						].join('');
+
+						break;
+				}
+			%>
+			<%= interestsHtml %>
+		</ul>
+	</div>
+
+	<div class="member_beauty_wrap">
+		<p class="beauty_title">如何增加美丽值</p>
+
+		<ul class="beauty_box">
+			<li>
+				<div class="icon">
+					<div class="pic icon_login"></div>
+				</div>
+				<div class="title">登录奖励</div>
+				<div class="desc">
+					<p>美丽说App每日登录成功后，获得3美丽值；美丽说电脑端每日登录成功后，获得1美丽值</p>
+				</div>
+			</li>
+			<li>
+				<div class="icon">
+					<div class="pic icon_shopping"></div>
+				</div>
+				<div class="title">购物奖励</div>
+				<div class="desc three">
+					<p>订单确认收货后获得美丽值；1单实际支付金额在1-100元之间奖励相对应的美丽值</p>
+					<p>1单实际支付金额在100元以上奖励2倍金额的美丽值；若发生退款，则增加的美丽值会相应被扣除</p>
+					<p>每个月购买天数2天及以上的用户在次月1-3日再额外奖励100美丽值</p>
+				</div>
+			</li>
+			<li>
+				<div class="icon">
+					<div class="pic icon_comment"></div>
+				</div>
+				<div class="title">评价奖励</div>
+				<div class="desc">
+					<p>每个购物评价审核成功可获得3美丽值；删除评价则增加的美丽值将会被扣除</p>
+				</div>
+			</li>
+			<li>
+				<div class="icon">
+					<div class="pic icon_sport"></div>
+				</div>
+				<div class="title">晒单奖励</div>
+				<div class="desc">
+					<p>每个购物晒单审核成功可获得5美丽值；删除晒单则增加的美丽值将会被扣除</p>
+				</div>
+			</li>
+		</ul>
+
+		<p class="beauty_desc">注：每个用户单日美丽值上限最高500，单月上限最高2000，超过不再增加。</p>
+	</div>
+
+	<div class="member_table_wrap">
+		<p class="table_title">会员级别规则</p>
+
+		<ul class="table_box level_rule">
+			<li class="title">
+				<div><p>会员级别</p></div>
+				<div><p>达成条件</p></div>
+				<div><p>会员有效期</p></div>
+			</li>
+			<li>
+				<div><p>V0会员</p></div>
+				<div><p>美丽说注册用户</p></div>
+				<div><p>永久有效</p></div>
+			</li>
+			<li>
+				<div><p>V1会员</p></div>
+				<div><p>美丽值为：10-299，且有一单超过10元购物</p></div>
+				<div><p>永久有效</p></div>
+			</li>
+			<li>
+				<div><p>V2会员</p></div>
+				<div><p>美丽值为：300-2999，且有一单超过10元购物</p></div>
+				<div><p>会员有效期1年，1年后扣除200美丽值，根据剩余美丽值重新计算级别</p></div>
+			</li>
+			<li>
+				<div><p>V3会员</p></div>
+				<div><p>美丽值为：3000-5999，且有一单超过10元购物</p></div>
+				<div><p>会员有效期1年，1年后扣除600美丽值，根据剩余美丽值重新计算级别</p></div>
+			</li>
+			<li>
+				<div><p>V4会员</p></div>
+				<div><p>美丽值为：6000-无上限，且有一单超过10元购物</p></div>
+				<div><p>会员有效期1年，1年后扣除2000美丽值，根据剩余美丽值重新计算级别</p></div>
+			</li>
+		</ul>
+	</div>
+
+	<div class="member_table_wrap">
+		<p class="table_title">会员特权</p>
+
+		<ul class="table_box member_interests">
+			<li class="title">
+				<div><p>会员特权</p></div>
+				<div><p>V0会员</p></div>
+				<div><p>V1会员</p></div>
+				<div><p>V2会员</p></div>
+				<div><p>V3会员</p></div>
+				<div><p>V4会员</p></div>
+			</li>
+			<li>
+				<div><p>72小时发货</p></div>
+				<div><p>可享</p></div>
+				<div><p>可享</p></div>
+				<div><p>可享</p></div>
+				<div><p>可享</p></div>
+				<div><p>可享</p></div>
+			</li>
+			<li>
+				<div><p>7天无理由退货</p></div>
+				<div><p>可享</p></div>
+				<div><p>可享</p></div>
+				<div><p>可享</p></div>
+				<div><p>可享</p></div>
+				<div><p>可享</p></div>
+			</li>
+			<li>
+				<div><p>退货运费补贴</p></div>
+				<div><p>可享</p></div>
+				<div><p>可享</p></div>
+				<div><p>可享</p></div>
+				<div><p>可享</p></div>
+				<div><p>可享</p></div>
+			</li>
+			<li>
+				<div><p>先行赔付退款</p></div>
+				<div><p>可享</p></div>
+				<div><p>可享</p></div>
+				<div><p>可享</p></div>
+				<div><p>可享</p></div>
+				<div><p>可享</p></div>
+			</li>
+			<li>
+				<div><p>新人专享活动（App端）</p></div>
+				<div><p>首单满减优惠</p></div>
+				<div><p>无</p></div>
+				<div><p>无</p></div>
+				<div><p>无</p></div>
+				<div><p>无</p></div>
+			</li>
+			<li>
+				<div><p>美美豆兑礼券（App端）</p></div>
+				<div><p>可享</p></div>
+				<div><p>可享</p></div>
+				<div><p>可享</p></div>
+				<div><p>可享</p></div>
+				<div><p>可享</p></div>
+			</li>
+			<li>
+				<div><p>美美豆兑好礼（App端）</p></div>
+				<div><p>无</p></div>
+				<div><p>无</p></div>
+				<div><p>可享</p></div>
+				<div><p>可享</p></div>
+				<div><p>可享</p></div>
+			</li>
+			<li>
+				<div><p>签到领美美豆（App端）</p></div>
+				<div><p>每天领5美美豆</p></div>
+				<div><p>每天领10美美豆</p></div>
+				<div><p>每天领15美美豆</p></div>
+				<div><p>每天领20美美豆</p></div>
+				<div><p>每天领25美美豆</p></div>
+			</li>
+			<li>
+				<div><p>连续签到奖励美美豆（App端）</p></div>
+				<div><p>连续5天奖励10美美豆</p></div>
+				<div><p>连续5天奖励20美美豆</p></div>
+				<div><p>连续5天奖励30美美豆</p></div>
+				<div><p>连续5天奖励40美美豆</p></div>
+				<div><p>连续5天奖励50美美豆</p></div>
+			</li>
+			<li>
+				<div><p>会员专属客服（App端）</p></div>
+				<div><p>无</p></div>
+				<div><p>无</p></div>
+				<div><p>无</p></div>
+				<div><p>无</p></div>
+				<div><p>可享</p></div>
+			</li>
+			<li>
+				<div><p>美丽说白付美定向邀请（App端）</p></div>
+				<div><p>无</p></div>
+				<div><p>无</p></div>
+				<div><p>无</p></div>
+				<div><p>无</p></div>
+				<div><p>可享</p></div>
+			</li>
+		</ul>
+	</div>
+
+	<div id="j_beauty_detail" class="member_table_wrap">
+		<p class="table_title">我的美丽值明细</p>
+
+		<ul class="table_box beauty_detail">
+			<li class="title">
+				<div><p>&nbsp;</p></div>
+				<div><p class="left">美丽值来源</p></div>
+				<div><p>实付款（元）</p></div>
+				<div><p>美丽值数量</p></div>
+				<div><p>获得时间</p></div>
+			</li>
+
+			<%
+				beautyDetailLen = curUserBeautyDetailArr.length || 0;
+
+				for (var j = 0; j < beautyDetailLen; j++) {
+					var data = curUserBeautyDetailArr[j] || {},
+						descHtml = '',
+						iconClass = '',
+						type = parseInt(data.type) || 1,
+						score = data.score || '无',
+						price = data.price || '无',
+						ctime = data.ctime || '无',
+						remark = data.remark || '无',
+						order_id = data.order_id || 0;
+
+					if (order_id == 0) {
+						if ((type == 8) || (type == 9) || (type == 10)) {
+							descHtml = '<div class="two left"><p>' + remark + '</p><p>当月购物超过2天</p></div>';
+						} else {
+							descHtml = '<div><p class="left">' + remark + '</p></div>';
+						}
+					} else {
+						descHtml = '<div class="two left"><p>' + remark + '</p><p>订单号：<a href="http://order.meilishuo.com/order/detail/?order_id=' + order_id + '" target="_blank">' + order_id + '</a></p></div>';
+					}
+
+					switch (type) {
+						case 1:
+						case 9:
+						case 10:
+							iconClass = 'icon_7';
+
+							break;
+						case 2:
+							iconClass = 'icon_3';
+
+							break;
+						case 3:
+							iconClass = 'icon_6';
+
+							break;
+						case 4:
+							iconClass = 'icon_2';
+
+							break;
+						case 5:
+							iconClass = 'icon_1';
+
+							break;
+						case 6:
+						case 11:
+							iconClass = 'icon_4';
+
+							break;
+						case 7:
+						case 12:
+							iconClass = 'icon_5';
+
+							break;
+						case 8:
+							iconClass = 'icon_8';
+
+							break;
+					}
+			%>
+			<li>
+				<div><p class="icon <%= iconClass %>"></p></div>
+				<%= descHtml %>
+				<div><p><%= price %></p></div>
+				<div><p><%= score %></p></div>
+				<div><p><%= ctime %></p></div>
+			</li>
+			<%
+				}
+			%>
+		</ul>
+
+		<div class="clear_f"></div>
+		<div class="paging_panel c_f">
+			<%#member/paging.html%>
+		</div>
+	</div>
+</div>
+
+<script>
+	fml.vars.isLogin = <%= curUserIsLogin %>;
+	fml.vars.pageNum = <%= this.groupPg.page_num || 5 %>;
+	fml.vars.totalNum = <%= this.groupPg.total_num || 0 %>;
+	fml.vars.pageSize = <%= this.groupPg.page_size || 20 %>;
+	fml.vars.currentPage = <%= this.groupPg.current_page || 0 %>;
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/member/interests');
+_use:", this._JSstack, this._JSmods); %>
+
+<%# foot.html%>

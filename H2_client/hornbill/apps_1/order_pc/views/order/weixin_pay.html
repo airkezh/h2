@@ -1,0 +1,37 @@
+<%
+var order = this.order;
+%>
+<%# head.html%>
+<div class="container">
+	<div class="tle"></div>
+	<div class="content">
+		<div class="info">
+			<p class="price">￥<%=order.total_price %></p>
+			<p class="order">
+				<span>交易单号&nbsp;<%=order.order_id %></span><br>
+				<span>创建时间&nbsp;<%=order.create_time %></span>
+			</p>
+			<div class="kefu">
+				<span class="tel_ico"></span>
+				<p class="f20_f">4000-800-577</p>
+				<p class="f14_f mt4_f">美丽说客服热线</p>
+			</div>
+		</div>
+		<div class="ewm">
+			<a class="ewm_wrapper">
+				<img src="<%=order.pic_url %>">
+				<div class="mobile"></div>
+			</a>
+			<div class="desc">
+				请使用微信扫描<br>
+				二维码以完成支付
+			</div>
+		</div>
+		<div class="clear_f"></div>
+	</div>
+</div>
+<input type="hidden" id="order_id" value="<%=order.order_id %>">
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+		fml.use('order_pc/order/weixin_pay');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

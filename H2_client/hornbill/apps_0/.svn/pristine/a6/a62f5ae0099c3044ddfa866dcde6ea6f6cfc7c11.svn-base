@@ -1,0 +1,25 @@
+<%#head.html%>
+<% var links = this.links; %>
+<div class="friendlink">
+	<h2 class="link">友情链接</h2>
+    <div class="content">文字链接</div> 
+    <ul class="links_content desc">
+    	<% links.text.forEach(function(text){ %>
+			<li class="textlink">
+				<a href="<%= text.link_to %>" target="_blank"><%= text.link_text %></a>
+			</li>
+		<% }); %>
+	</ul>
+	<div class="content">图片链接</div>
+    <ul class="links_content imglink">
+    	<% links.img.forEach(function(img){ %>
+		<li class="li2">
+			<a href="<%= img.link_to %>" title="<%= img.link_desc %>" target="_blank">
+				<img src="<%= img.link_img %>">
+			</a>
+		</li>
+		<% }); %>
+	</ul>
+</div>
+
+<%#foot.html%>

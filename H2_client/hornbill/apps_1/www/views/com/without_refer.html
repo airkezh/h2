@@ -1,0 +1,22 @@
+<html>
+<head>
+<% if (! this.isWebkit) {
+	if (this.link) this.link = this.link.replace(/\;/g,'%3B')
+	%>
+<meta http-equiv = "refresh" content = "0; url=<%=this.link%> " />
+<% }%>
+<style>iframe{display:none;}</style>
+</head>
+<body>
+
+<% if (this.isWebkit) {%>
+<script>
+var link="<%=this.link%>";
+function open_without_referrer(link){
+	document.body.appendChild(document.createElement('iframe')).src='javascript:"<script>top.location.replace(\''+link+'\')<\/script>"';
+}
+open_without_referrer(link);
+</script>
+<% }%>
+<body>
+</html>

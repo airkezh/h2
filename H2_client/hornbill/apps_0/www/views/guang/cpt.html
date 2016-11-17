@@ -1,0 +1,24 @@
+<% var mSubstr = _extFn.mSubstr ;%>
+<% this.cpt && this.cpt.map(function(data, index){%>
+<div class="poster_grid alpha omega">
+	<div class="new_poster">
+		<% if(index <= 2){ %>
+		<span class="cpt"></span>
+		<%}else{%>
+		<span class="p4p"></span>
+		<%}%>
+		<div class="ads_pic">
+			<div class="ads_pic_top"></div>
+			<a href="<%=data.url %>" target="_blank"><img title="<%= data.intro %>" width="200" height="270px" src="<%= data.pic_url %>"><span class="ads_shadow"></span></a>
+			<div class="ads_pic_bottom"></div>
+		</div>
+		<p class="ads_share"><a href="<%=data.url %>" target="_blank"><%= data.intro %></a></p>
+		<div class="ads_user">
+			<a class="attention <%if(data.is_followed){%>att<%}else{%>no_att<%}%>" shopId='<%= data.extid %>'>
+				<%if(data.is_followed){%>已关注<%}else{%><span>+</span>关注本店<%}%>
+			</a>
+			<a class="identity_small_style shop_name" href="/shop/<%= data.extid %>" target="_blank"><%= mSubstr(data.nickname , 6 , '...') %><%if(data.purpleV){%>&nbsp;<span class="mls_zv" title="美丽说认证商家">&nbsp;</span><%}%></a>
+		</div>
+	</div>
+</div>
+<% }); %>

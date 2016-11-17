@@ -1,0 +1,392 @@
+@import "../block.less";
+
+html,body{.hidden;}
+.wrap{
+	.w(100%);
+}
+.main,.page{.w(100%);.h(100%);}
+.main{
+}
+.page{
+	.pa;.hidden;
+
+	&[status="drop"]{
+		-webkit-transition:all 0.3s ease-out 0s;
+		z-index:1;
+	}
+
+	>div{.pa;}
+}
+
+/*************page*************/
+.top-banner{
+	.w(100%);
+	.block();
+}
+.bottom-banner{
+	.w(100%);
+	.pf();
+	bottom: 0;
+}
+/************page_1***********/
+#page_1{
+	.w(100%);
+	.bgc(#019270);
+	.start{
+		.w(418*@w);
+		.block();
+		.auto();
+		.mt(24px);
+	}
+	p:nth-child(3){
+		.fc(@white);
+		.c();
+		.mt(12px);
+		span{
+			.fc(#ffd200);
+		}
+	}
+	.share{
+		.w(241*@w);
+		.block();
+		.auto();
+		.mt(12px);
+	}
+	p:nth-child(6){
+		.w(460*@w);
+		.auto();
+		.mt(24px);
+		span{
+			text-decoration: underline;
+			.f(18px);
+			.fc(@white);
+			.fb();
+		}
+		span:nth-child(1){
+			.left();
+		}
+		span:nth-child(2){
+			.right();
+		}
+	}
+}
+/************page_2***********/
+#page_2{
+	visibility: hidden;
+	.w(100%);
+	.bgc(#019270);
+	.game-top-banner{
+		.w(640*@w);
+		.block();
+	}
+	.game-board{
+		.w(532*@w);
+		.block();
+		.auto();
+	}
+	.count-down{
+		.pa();
+		.w(80%);
+	}
+	p{
+		.pa();
+		.c();
+		.f(24px);
+		.fc(#07c094);
+		span{
+			.f(28px);
+			.fc(#e33228);
+		}
+	}
+}
+/************popwin***********/
+.pt-board{
+	.pr();
+	img{
+		.left();
+		border-bottom: #f7ebd3 solid 1px;
+		border-left: #f7ebd3 solid 1px;
+	}
+}
+.popwin{
+	 .pa();
+	 top: 0;
+	 right: 0;
+	 bottom: 0;
+	 left: 0;
+	 //.bgc(@black);
+	 background: rgba(0, 0, 0,.4);
+	 //.opacity(40);
+	 z-index: 10;
+	.none();
+}
+.popwin-share{
+	.pa();
+	top: 0;
+	left: 0;
+	.w(100%);
+	z-index: 200;
+	margin: 0 auto;
+	.none();
+	.share-point{
+		.w(100%);
+	}
+	.share-know{
+		.w(50%);
+		.mt(20%);
+		.ml(25%);
+	}
+}
+.popup-img{
+	.pa();
+	left:0;
+	top:50px;
+	z-index: 20;
+	.w(100%);
+	.block();
+}
+.popup-container{
+	.pa();
+	left:0;
+	top:50px;
+	.h(200px);
+	.w(80%);
+	.hidden();
+	z-index:30;
+	.pl(10%);
+}
+.winner-list-popup{
+	.none();
+	.winner-content{
+		.pa();
+		top: 0;
+	}
+	p{
+		border-bottom:#b2b2b2 solid 1px;
+		// .pb(10px);
+		// .pt(10px);
+		text-align: left;
+		span{
+			.fc(#e33228);
+		}
+	}
+}
+.rules-popup,.results-good,.results-lucky,.results-pity,.results-hum{
+	.none();
+}
+.popup-container{
+	.c();
+}
+.p1{
+	.f(11px);
+	.mt(10px);
+}
+.p2{
+	.f(11px);
+	.mt(10px);
+	span{
+		.fc(#e33228);
+		.fb();
+	}
+}
+.pic{
+	.w(30%);
+	.mt(12px);
+}
+.chance{
+	.f(16px);
+	.fc(#e33228);
+	.mt(12px);
+}
+.result-btn{
+	.mt(12px);
+}
+.last-count5{
+	animation:font-change5 1.3s;
+	-moz-animation:font-change5 1.3s; /* Firefox */
+	-webkit-animation:font-change5 1.3s; /* Safari and Chrome */
+	-o-animation:font-change5 1.3s; /* Opera */
+	animation-timing-function: ease;
+	animation-fill-mode: forwards;
+}
+.last-count4{
+	animation:font-change4 1.3s;
+	-moz-animation:font-change4 1.3s; /* Firefox */
+	-webkit-animation:font-change4 1.3s; /* Safari and Chrome */
+	-o-animation:font-change4 1.3s; /* Opera */
+	animation-timing-function: ease;
+	animation-fill-mode: forwards;
+}
+.last-count2{
+	animation:font-change2 1.3s;
+	-moz-animation:font-change2 1.3s; /* Firefox */
+	-webkit-animation:font-change2 1.3s; /* Safari and Chrome */
+	-o-animation:font-change2 1.3s; /* Opera */
+	animation-timing-function: ease;
+	animation-fill-mode: forwards;
+}
+.last-count1{
+	animation:font-change1 1.3s;
+	-moz-animation:font-change1 1.3s; /* Firefox */
+	-webkit-animation:font-change1 1.3s; /* Safari and Chrome */
+	-o-animation:font-change1 1.3s; /* Opera */
+	animation-timing-function: ease;
+	animation-fill-mode: forwards;
+}
+.last-count0{
+	animation:font-change0 1.3s;
+	-moz-animation:font-change0 1.3s; /* Firefox */
+	-webkit-animation:font-change0 1.3s; /* Safari and Chrome */
+	-o-animation:font-change0 1.3s; /* Opera */
+	animation-timing-function: ease;
+	animation-fill-mode: forwards;
+}
+
+@keyframes font-change0
+{
+from {font-size:60px;opacity:1;}
+to {font-size:24px;opacity:0;}
+}
+
+@-webkit-keyframes font-change0 /* Safari and Chrome */
+{
+from {font-size:60px;opacity:1;}
+to {font-size:24px;opacity:0;}
+}
+
+@-moz-keyframes font-change0 /* Firefox */
+{
+from {font-size:48px;opacity:1;}
+to {font-size:24px;opacity:0;}
+}
+
+@-o-keyframes font-change0 /* Opera */
+{
+from {font-size:48px;opacity:1;}
+to {font-size:24px;opacity:0;}
+}
+
+
+@keyframes font-change1
+{
+from {font-size:60px;opacity:1;}
+to {font-size:24px;opacity:0;}
+}
+
+@-webkit-keyframes font-change1 /* Safari and Chrome */
+{
+from {font-size:60px;opacity:1;}
+to {font-size:24px;opacity:0;}
+}
+
+@-moz-keyframes font-change1 /* Firefox */
+{
+from {font-size:48px;opacity:1;}
+to {font-size:24px;opacity:0;}
+}
+
+@-o-keyframes font-change1 /* Opera */
+{
+from {font-size:48px;opacity:1;}
+to {font-size:24px;opacity:0;}
+}
+
+
+@keyframes font-change2
+{
+from {font-size:60px;opacity:1;}
+to {font-size:24px;opacity:0;}
+}
+
+@-webkit-keyframes font-change2 /* Safari and Chrome */
+{
+from {font-size:60px;opacity:1;}
+to {font-size:24px;opacity:0;}
+}
+
+@-moz-keyframes font-change2 /* Firefox */
+{
+from {font-size:48px;opacity:1;}
+to {font-size:24px;opacity:0;}
+}
+
+@-o-keyframes font-change2 /* Opera */
+{
+from {font-size:48px;opacity:1;}
+to {font-size:24px;opacity:0;}
+}
+
+
+@keyframes font-change3
+{
+from {font-size:60px;opacity:1;}
+to {font-size:24px;opacity:0;}
+}
+
+@-webkit-keyframes font-change3 /* Safari and Chrome */
+{
+from {font-size:60px;opacity:1;}
+to {font-size:24px;opacity:0;}
+}
+
+@-moz-keyframes font-change3 /* Firefox */
+{
+from {font-size:48px;opacity:1;}
+to {font-size:24px;opacity:0;}
+}
+
+@-o-keyframes font-change3 /* Opera */
+{
+from {font-size:48px;opacity:1;}
+to {font-size:24px;opacity:0;}
+}
+
+
+@keyframes font-change4
+{
+from {font-size:60px;opacity:1;}
+to {font-size:24px;opacity:0;}
+}
+
+@-webkit-keyframes font-change4 /* Safari and Chrome */
+{
+from {font-size:60px;opacity:1;}
+to {font-size:24px;opacity:0;}
+}
+
+@-moz-keyframes font-change4 /* Firefox */
+{
+from {font-size:48px;opacity:1;}
+to {font-size:24px;opacity:0;}
+}
+
+@-o-keyframes font-change4 /* Opera */
+{
+from {font-size:48px;opacity:1;}
+to {font-size:24px;opacity:0;}
+}
+
+
+@keyframes font-change5
+{
+from {font-size:60px;opacity:1;}
+to {font-size:24px;opacity:0;}
+}
+
+@-webkit-keyframes font-change5 /* Safari and Chrome */
+{
+from {font-size:60px;opacity:1;}
+to {font-size:24px;opacity:0;}
+}
+
+@-moz-keyframes font-change5 /* Firefox */
+{
+from {font-size:48px;opacity:1;}
+to {font-size:24px;opacity:0;}
+}
+
+@-o-keyframes font-change5 /* Opera */
+{
+from {font-size:48px;opacity:1;}
+to {font-size:24px;opacity:0;}
+}

@@ -1,0 +1,41 @@
+<%
+var order = this.order;
+%>
+<%# head.html%>
+<div class="container">
+  <div class="pay_label"><img src="<%= this.PICTURE_URL %>images/doota/app_pay/app_pay_logo.png"/></div>
+  <div class="content">
+    <div class="deal">
+      <div class="deal-price"><label for="total_price">应支付总额：</label><span class="total_price" id="total_price">￥<%=order.total_price %></span></div>
+      <div class="deal-info">
+        <span>交易单号：<%=order.order_id %></span><br/>
+        <span>创建时间：<%=order.create_time %></span>
+      </div>
+      <div class="clear_f"></div>
+    </div>
+    <div class="qrcode">
+      <div class="img-wrapper">
+        <img src="<%=order.pic_url %>" width="200px" height="200px"/>
+        <img class="mobile-example" src="<%= this.PICTURE_URL %>images/doota/app_pay/app_new_hover.png"/>
+      </div>
+      <div class="desc">
+        <div class="desc-top">请使用<span class="strong">美丽说APP</span></div>
+        <div class="desc-body">扫描二维码以完成支付</div>
+      </div>
+      <div class="clear_f"></div>
+    </div>
+    <div class="kefu">
+      <div class="tel_ico"></div>
+      <div class="kefu-info">
+        <div class="kefu-phone">4000-800-577</div>
+        <div class="kefu-label">美丽说客服热线</div>
+      </div>
+      <div class="clear_f"></div>
+    </div>
+  </div>
+</div>
+<input type="hidden" id="order_id" value="<%=order.order_id %>">
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use('order_pc/order/app_pay');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

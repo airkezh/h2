@@ -1,0 +1,57 @@
+<%#head.html%>
+<% var httpUrl = this.locaUrl.split("?")[0] %>
+<div class="sec_nav" style="display:none"></div>
+<div class="t_main">
+	<%if (this.act_config.head_bg){%>
+    <div class="mp_top">
+		<% if( this.act_config.banner.text != ''){%>
+        <div class="clock" style="color:#fff;"><%=this.act_config.banner.text%><span class="time" time="<%= new Date(this.act_config.banner.date).getTime()/1000 - new Date().getTime() / 1000%>">-天-时-分-秒</span></div>
+        <%}%>
+    </div>
+    <%}%>
+    
+    <% if(this.act_config.bg_exp && this.act_config.bg_exp.is_hide != '1'){%>
+    <div class="mp_firlook" id="mp_firlook" style="height:<%=this.act_config.bg_exp.h%>px;background:url('<%=this.act_config.bg_exp.img_src%>') top center no-repeat"></div>
+    <%}%>
+    <% if (this.cate_list){%>
+    <div id="mp_firlook1" style="position:relative; top:-40px;"></div>
+    <div class="links bgred" id="goods_rg" <% if(this.act_config.cate_list_style && this.act_config.cate_list_style.bg_color != ''){%>style="background:<%= this.act_config.cate_list_style.bg_color%>"<%}%>>
+        <div class="content">
+            <% this.cate_list && this.cate_list.length && this.cate_list.map(function(data,i){%>
+            <a class="a_li <%if(this.pid == data.c_id){%>current<%}%>" href="<%= httpUrl%>?cid=<%=this.cid%>&pid=<%=data.c_id%>&hdtrc=<%= this.newHdtrcT%><%= data.c_id%>#mp_firlook1"><%=data.name%></a><% });%>
+        </div>
+    </div>
+    <%}%>
+    <div class="shops_main">
+        <% this.cate_list && this.cate_list.length && this.cate_list.map(function(data,i){
+        %>
+            <% if( data.shop_extent != "" && data.c_id == this.pid ){
+                var nums = data.shop_extent.split("-");
+                for(var j = (nums[0]-1); j < nums[1]; j++){
+                    if( this.act_config.shops[j] == null ){
+                        continue;
+                    }else{
+            %>
+                <a href="<%= this.act_config.shops[j].link %>" target="_blank" style="display:block;width:226px;height:369px;border:1px solid #ddd;overflow:hidden;"><img src="<%= this.act_config.shops[j].src %>" alt=''></a>
+                
+            <%}}}%>
+        <%});%>
+    </div>
+</div>
+<% if(this.rightNav == 1) {%>
+<%#biz/promotion/rightNav_dc.html%>
+<%}%>
+<script>
+    fml.vars.word_id = '';
+    fml.vars.notFluid =true;
+    fml.vars.pid = <%= this.pid%>;
+    fml.vars.cid = <%=this.cid%>;
+    fml.vars.rightNav = <%= this.rightNav%>;
+    fml.vars.navBgColor = <%= JSON.stringify(this.act_config.cate_list_style) %>;
+</script>
+<% this.hideGoTop = true; %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+    fml.use('page/huodong/promotion/shop_venue');
+_use:", this._JSstack , this._JSmods); %>
+
+<%#foot.html%>

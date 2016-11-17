@@ -1,0 +1,92 @@
+<%# head.html %>
+<%
+var mSubstr = _extFn.mSubstr;
+var html_encode = _extFn.html_encode;
+%>
+<div class="con_box">
+	<div class="brand_l">
+		<%if(this.banner) {%>
+			<div class="banner"><img alt="<%=this.banner.brand_title%>" title="<%=this.banner.brand_title%>" src="<%=this.banner.brand_banner%>" /></div>
+		<%}%>
+		<div class="list_box">
+			<div class="redline1"></div>
+			<h2 class="c_tle">品牌LOOK</h2>
+			<div class="list">
+				<% this.tlist.list && this.tlist.list.map(function(data) { %>	
+					<a href="/share/<%=data.twitter_id%>" target="_blank">
+						<img alt="<%=data.title%>" title="<%=data.title%>" src="<%=data.image_url%>" />
+						<span><%=data.title%></span>
+					</a>
+				<% }); %>
+			</div>
+			<div class="clear_f"></div>
+			<div class="paging_panel c_f">
+				<%#paging.html%>
+			</div>
+			<p class="more red_f"><a href="<%=this.bar_info.brand_moreurl%>" target="_blank">去看看<%=this.bar_info.brand_name_en%>风格的单品&gt;&gt;</a></p>
+			<div class="clear_f"></div>
+		</div>
+	</div>
+	<div class="brand_r">
+		<div class="userinfo">
+			<div class="redline2"></div>
+			<div class="avatar">
+				<img alt="<%=this.bar_info.brand_name%>" src="<%=this.bar_info.brand_logo%>"/>
+			</div>
+			<h3 class="nickname"><%=this.bar_info.brand_name_en%></h3>
+			<p class="speclial"><%=this.bar_info.brand_slogan%></p>
+			<p class="speclial red_f"><a href="<%=this.bar_info.brand_moreurl%>" target="_blank">去看看<%=this.bar_info.brand_name_en%>风格的单品&gt;&gt;</a></p>
+		</div>
+		<div class="bd_info">
+			<div class="redline2"></div>
+			<h3 class="f16_f m12_0_f">品牌档案</h3>
+			<%if(this.bar_info.brand_name != ''){%><p>中文名：<%=this.bar_info.brand_name%></p><%}%>
+			<p>英文名：<%=this.bar_info.brand_name_en%></p>
+			<p>国 家：<%=this.bar_info.brand_country%></p>
+			<%if(this.bar_info.brand_start_time != ''){%><p>创建年代：<%=this.bar_info.brand_start_time%></p><%}%>
+			<%if(this.bar_info.brand_founder != ''){%><p>创建人：<%=this.bar_info.brand_founder%></p><%}%>
+			<%if(this.bar_info.brand_products != ''){%><p>产品系列：<%=this.bar_info.brand_products%></p><%}%>
+			<%if(this.bar_info.brand_weburl != ''){%><p>官方网站：<a class="red_f" href="<%=this.bar_info.brand_linkurl%>" target="_blank"><%=this.bar_info.brand_weburl%></a></p><%}%>
+		</div>
+		<div class="bd_info">
+			<div class="redline2"></div>
+			<h3 class="f16_f m12_0_f">品牌故事</h3>
+			<p><%= mSubstr(this.bar_info.brand_introduce , 185 , '...')%></p>
+			<p class="fold">&gt;&gt;展开查看更多</p>
+		</div>
+		<div class="bd_info">
+			<div class="redline2"></div>
+			<h3 class="f16_f m12_0_f">相关品牌</h3>
+			<ul class="tb_pic">
+				<% this.brand_logo.list && this.brand_logo.list.map(function(data) { %>
+					<li>
+						<a class="hoverpic">
+							<img alt="<%=data.brand_name%>" src="<%=data.brand_index_logo%>" />
+							<span class="gray_f"><%=data.brand_slogan%></span>
+						</a>
+						<a class="onpic none_f" <%if(data.brand_minisiteurl != ''){%>href="<%=data.brand_minisiteurl%>"<%}else {%>href="/brand/<%=data.domain%>"<%}%> target="_blank">
+							<%if(data.brand_name != ''){ %>
+								<b class="f18_f mt20_f"><%=data.brand_name_en%></b>
+								<b><%=data.brand_name%></b>
+							<%}else {%>
+								<b class="f18_f mt30_f"><%=data.brand_name_en%></b>
+							<%}%>
+						</a>
+					</li>
+				<% }); %>
+			</ul>
+		</div>
+	</div>
+</div>
+<script type="text/html" id="brandPop">
+<div class="brand_pop">
+	<p><%=this.bar_info.brand_introduce%></p>
+</div>
+</script>
+
+<%# user/windows.html%>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/brand');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot.html%>

@@ -1,0 +1,142 @@
+var path = require('path')
+
+var VIEW_DIR = 'views/'
+var SRC_DIR = 'src/'
+var DIST_DIR = 'dist/'
+var PREDIST_DIR = '_dist/'
+var TPL_DIR = '_tpl/'
+var TRANS_TPL_DIR = '_transTpl/'
+
+module.exports = function(grunt) {
+	grunt.config.init({
+		pkg: grunt.file.readJSON('package.json'),
+		clean : {
+		  before : [TPL_DIR,TRANS_TPL_DIR, PREDIST_DIR],
+		  after: [TPL_DIR,TRANS_TPL_DIR, PREDIST_DIR]
+		},
+		concat: {
+			options: {
+				banner: "'use strict';\n",
+				process: function(src, filepath) {
+						return '// Source: ' + filepath + '\n' +
+						src.replace(/(^|\n)[ \t]*('use strict'|"use strict");?\s*/g, '$1');
+				},
+			},
+			v1:{
+				src: [
+					TRANS_TPL_DIR+'passport.js',
+					TRANS_TPL_DIR+'etic.js',
+					TRANS_TPL_DIR+'shareTmp.js',
+					TRANS_TPL_DIR+'validate.js',
+
+					TRANS_TPL_DIR+'bridge.js',
+					TRANS_TPL_DIR+'cookie.js',
+					TRANS_TPL_DIR+'params.js',
+
+					TRANS_TPL_DIR+'bridge2.js',
+					TRANS_TPL_DIR+'iframe.js',
+					TRANS_TPL_DIR+'url.js',
+
+		//			TRANS_TPL_DIR+'jsonp.js',
+					TRANS_TPL_DIR+'ajax.js',
+
+					TRANS_TPL_DIR+'mobile.js',
+					TRANS_TPL_DIR+'risk.js',
+					TRANS_TPL_DIR+'login.js',
+					TRANS_TPL_DIR+'logout.js',
+				],
+				dest: PREDIST_DIR+'v1.js'
+			},
+			blank:{
+				src: [
+					TRANS_TPL_DIR+'bridge.js',
+					TRANS_TPL_DIR+'cookie.js',
+					TRANS_TPL_DIR+'params.js',
+				],
+				dest: PREDIST_DIR+'blank.js'
+			}
+		},
+		uglify:{
+			options: {
+				banner: '/*! <%= pkg.name %> - v<%= pkg.version %> ' + 
+					'- <%= grunt.template.today("yyyy-mm-dd") %> ' +
+					'- <%= pkg.author.url %> ' + 
+					'- */'
+			},
+			build:{
+				files: [
+					{ src: [DIST_DIR+'v1.js'],dest: DIST_DIR+'v1.min.js' },
+					{ src: [DIST_DIR+'blank.js'],dest: DIST_DIR+'blank.min.js'}
+				]
+			}	
+		},
+		watch: {
+			watch : {
+				files:[VIEW_DIR + '**/*.html', SRC_DIR + '**/*.js'],	
+				tasks:['clean:before','mkTpl','transTpl','concat', 'mkPackage','uglify', 'clean:after']
+			}
+		}
+	});
+
+	grunt.loadNpmTasks('grunt-contrib-watch')
+	grunt.loadNpmTasks('grunt-contrib-clean');
+	grunt.loadNpmTasks('grunt-contrib-concat')
+	grunt.loadNpmTasks('grunt-contrib-uglify');
+
+	grunt.registerTask('mkTpl', function(){
+		grunt.file.recurse(VIEW_DIR, function(abspath, rootdir, subdir, filename){
+			if(filename.split('.').slice(-1) != 'html') return;
+
+			var html = grunt.file.read(abspath)
+			html = html
+				.replace(/[\r\t\n]/g, "")
+				.replace(/'/g, "\\'")
+				.replace(/"/g, '\\"')
+
+			grunt.file.write(path.join(TPL_DIR, filename), html);
+		})
+	});
+
+	grunt.registerTask('transTpl', function(){
+		var type = '.html'
+		var reg = new RegExp("require\\((\'|\")([a-zA-Z0-9]+[_|\_|\.|\-]?)*[a-zA-Z0-9]" + type + "(\'|\")\\)", "g");
+		grunt.file.recurse(SRC_DIR, function(abspath, rootdir, subdir, filename){
+			if(filename.split('.').slice(-1) != 'js') return;
+
+			var js = grunt.file.read(abspath)
+			var jsLine = js.split('\n')
+
+		   	jsLine.forEach(function(line, index){
+				if (!reg.test(line)) return;
+
+				line = line.replace(/,/g , ';')
+
+				var evaFn = new Function('require' , line)
+
+				evaFn(function(modName){
+					var body = grunt.file.read(path.join(TPL_DIR, modName))
+					var fanal = line.replace(reg, '\''+body+'\'')
+					jsLine.splice(index,1, fanal)
+
+				})
+
+			})
+
+			grunt.file.write(abspath.replace(new RegExp(rootdir), TRANS_TPL_DIR), jsLine.join('\n'));
+
+		})
+	});
+
+	grunt.registerTask('mkPackage', function(){
+		grunt.file.recurse(PREDIST_DIR, function(abspath, rootdir, subdir, filename){
+			var js = grunt.file.read(abspath)
+			grunt.file.write(path.join(DIST_DIR, filename), ';(function(){'+js+'})();');
+		})
+	})
+
+
+	grunt.registerTask('default', ['watch']);
+	grunt.registerTask('debug', ['clean:before','mkTpl','transTpl','concat', 'mkPackage', 'uglify']);
+	grunt.registerTask('build', ['clean:before','mkTpl','transTpl','concat', 'mkPackage', 'uglify', 'clean:after']);
+
+};

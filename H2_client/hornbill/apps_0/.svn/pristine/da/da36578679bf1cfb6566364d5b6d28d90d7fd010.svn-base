@@ -1,0 +1,44 @@
+<%# head_simple.html%>
+</head>
+<body>
+<div class="wrap">
+	<div class="wrap-img">
+		<img src="<%=this.PICTURE_URL%>/images/wap/five/img/last2.png" />
+	</div>
+  <p class="login_content">
+    点击<span>"登录"</span>并 <span>"分享到朋友圈"</span></p>
+  <p  class="login_content">你的幸运数字尾数为“5”的用户有机会获得美丽说5周年礼包！</p>
+  <p class="number_content">你是美丽说第<span><%= this.userInfo.user_id%></span>位用户</p>
+	<div class="login_go">
+		<img class="wrap-btn login_btn" src="<%=this.PICTURE_URL%>/images/wap/five/img/login_mm.png" />
+    <img class="wrap-btn sign_btn"src="<%=this.PICTURE_URL%>/images/wap/five/img/sign_m.png" />
+	</div>
+  <div class="go_share">
+    <img class="share_pic" src="<%=this.PICTURE_URL%>/images/wap/five/img/fenxiang.png">
+  </div>
+</div>
+
+<script>
+    var a = '<%= this.userInfo.user_id%>';
+    var imgUrl = 'http://i.meilishuo.net/css/images/wap/five/img/iconshare.png';
+    var lineLink = 'http://m.meilishuo.com/activity/five/index/';
+    var descContent = '我是美丽说的第'+a+'位用户, 幸运数字尾数为5就有机会获得礼包哦!';
+    var shareTitle = '美丽说五周年';
+    var shareTimelineText = '美丽说五周年,我是美丽说的第'+a+'位用户, 幸运数字尾数为5就有机会获得礼包啦!';
+    var customAppId = 'wxd00a5f16e02bed58';
+    if(a == 0){
+      descContent = '美丽说五岁啦,幸运数字尾数为5就有机会获得美丽说五周年礼包哦!';
+      shareTimelineText = '美丽说五周年,共同开启美丽之旅,幸运数字尾数为5就有机会获得礼包啦!';
+    }
+</script>
+
+<script src="<%= this.JCSTATIC_BASE  %>/js/open/shareCollect.js?<%= this.SVERSION%>"></script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use('wap/page/fiveLogin');
+_use:", this._JSstack , this._JSmods ); %>
+<%# block/gotop.html%>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use('wap/page/global');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html%>

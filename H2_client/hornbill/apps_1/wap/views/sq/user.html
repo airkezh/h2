@@ -1,0 +1,24 @@
+<%# sq/header.html%>
+<div class="wrap">
+	<% if (0 && this.userInfo_sq && this.userInfo_sq.user_id) { %>
+		<% if (this.userInfo_sq.bind_status == 0) { %>
+		<div class="binding">
+			<a href="/sq/bind">绑定已有美丽说账号</a>, 不用填写地址哦</div>
+		<% } %>
+	<% } %>
+	<%
+		var isCoupon = this.args_type && this.args_type == 'coupon';
+	%>
+
+	<% if (isCoupon) { %>
+	<%# sq/coupon.html%>
+	<% } else { %>
+	<%# sq/orderList.html%>
+	<% }; %>
+
+</div>
+<script>
+fml.vars.orderStatus = <%= this.orderStatus%>;
+fml.vars.couponStatus = '<%= this.couponStatus%>';
+</script>
+<%# sq/footer.html%>

@@ -1,0 +1,152 @@
+<%# head_simple.html%>
+
+<%
+    var main          = this.main.data || {},
+        matchGoods    = this.match.data || {},
+        similarGoods  = this.similar.data || {},
+        shops         = this.shops.data,
+        errorMsg      = '<script>console.log("$")</script>',
+        R             = this.xr.r,
+        os            = this.os,
+        oldGetAppLink = _extFn.getAppLink,
+        getAppLink    = function( protocol, params ) {
+            return oldGetAppLink( protocol, params, os, R );
+        },
+        mainGood     = main.ginfo || {};
+
+    if ( this.main.error_code != '0' ) {
+    %>
+        <%= errorMsg.replace( '$', '/recommend/recommend_root_goods 接口请求出错！！！' ) %>
+    <%
+    }
+
+    if ( this.match.error_code != '0' ) {
+    %>
+    <%= errorMsg.replace( '$', '/recommend/Recommend_match_goods 接口请求出错！！！' ) %>
+    <%
+    }
+
+    if ( this.shops.error_code != '0' ) {
+    %>
+    <%= errorMsg.replace( '$', '/recommend/Recommend_similar_shop 接口请求出错！！！' ) %>
+    <%
+    }
+%>
+<div class="wrap">
+	<div class="item">
+        <div class="item-mainpic" style="background-image: url(<%= main.show_pic %>)"></div>
+		<div class="item-desc">
+			<h2 class="item-title"><%= mainGood.goods_title %></h2>
+            <div class="item-info">
+                <span class="item-price"><%= mainGood.goods_price %></span>
+                <span class="item-like"><i class="icon-like"></i><%= main.count_like %></span>
+            </div>
+		</div>
+	</div>
+
+    <div class="main js-tab">
+        <div class="tab">
+            <div class="tab-item js-tab-item active" data-type="similar">相似宝贝</div>
+            <div class="tab-item js-tab-item" data-type="match">搭配宝贝</div>
+            <div class="tab-item js-tab-item" data-type="shop">相似店铺</div>
+        </div>
+
+        <div class="content-wrap">
+            <div class="content content-similar js-tab-content" data-type="similar">
+                <div class="waterfall-wrap"></div>
+            </div>
+            <div class="content content-match js-tab-content" data-type="match">
+            <%
+                for( var key in matchGoods ) {
+                    var matchGood = matchGoods[ key ];
+            %>
+                <h3 class="match-goods-title">推荐搭配 <%= key %></h3>
+                <%
+                matchGood.forEach( function( v, index ) {
+                    var ginfo = v.ginfo,
+                        pt    = 130,
+                        clssName = ( !( index % 2 ) ? '' : 'even ' ) + 'match-goods';
+                %>
+                <div class="<%= clssName %>">
+                    <a href="<%= v.url %>" class="similar-item-pic" style="padding-top:<%= pt %>%;background-image: url(<%= v.show_pic %>);" xr="<%= R %>"></a>
+                    <div class="item-desc">
+                        <h2 class="item-title"><%= ginfo.goods_title %></h2>
+                        <div class="item-info">
+                            <span class="item-price"><%= ginfo.goods_price %></span>
+                            <span class="item-like"><i class="icon-like"></i><%= v.count_like %></span>
+                        </div>
+                    </div>
+                </div>
+                <% });%>
+            <% }%>
+            </div>
+            <div class="content content-shop js-tab-content" data-type="shop">
+                <%
+                    shops && shops.forEach(function( v ) {
+                        var followText, followClass;
+
+                        if ( v.has_followed ) {
+                            followText = '已关注';
+                            followClass = 'follow-btn is-followed js-follow-btn';
+                        } else {
+                            followText = '关注';
+                            followClass = 'follow-btn is-not-follow js-follow-btn';
+                        }
+                %>
+                <div class="shop-item">
+                    <div class="hd">
+                        <div class="shop-info-wrap">
+                            <img src="<%= v.shop_info.shop_head_img %>" alt="" class="shop-avatar">
+                            <span class="shop-name"><%= v.shop_info.shop_nick %></span>
+                            <span class="<%= followClass %>" data-shop="<%= v.shop_info.shop_id %>"><%= followText %></span>
+                        </div>
+                        <div class="info">
+                           <span class="desc"><%= v.new_time %> 新品上架</span>
+                           <a href="<%= getAppLink( 'shop_new', { shop_id: v.shop_info.shop_id } ) %>" class="desc-link" xr="<%= R %>"><%= v.new_num %>款商品<i class="icon-more"></i></a>
+                       </div>
+                    </div>
+                    <div class="bd">
+                        <ul class="item-list" style="width: <%= v.goods_list.length * 1.56 %>rem;">
+                            <% v.goods_list.forEach(function( good ) { %>
+                            <li class="item-single">
+                                <a href="/share/item/<%= good.twitter_id %>" class="item-pic" style="background-image: url(<%= good.goods_img %>)" xr="<%= R %>"></a>
+                                <p class="item-price">￥<%= good.goods_price %></p>
+                            </li>
+                            <% }) %>
+                        </ul>
+                    </div>
+                </div>
+                <%
+                });
+               %>
+            </div>
+            <div id="pullUp" class="pullUp" status="loading"></div>
+        </div>
+    </div>
+</div>
+
+<script type="text/html" id="tmpl_similar">
+    <?
+        var v = this.v,
+            pt = 130;
+    ?>
+    <div class="similar-item">
+        <a href="<?= v.url ?>" class="similar-item-pic" style="padding-top:<?= pt ?>%;background-image: url(<?= v.show_pic ?>);" xr="<%= R %>"></a>
+        <div class="item-desc">
+            <h2 class="item-title"><?= v.ginfo.goods_title ?></h2>
+            <div class="item-info">
+                <span class="item-price"><?= v.ginfo.goods_price ?></span>
+                <span class="item-like"><i class="icon-like"></i><?= v.count_like ?></span>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script>
+    fml.vars.tid = <%= this.twitter_id || 0 %>;
+    fml.vars.similarGoods = <%= JSON.stringify( similarGoods )%>;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/similar');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

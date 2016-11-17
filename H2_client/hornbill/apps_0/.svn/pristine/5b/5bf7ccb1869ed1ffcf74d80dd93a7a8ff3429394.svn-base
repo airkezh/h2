@@ -1,0 +1,320 @@
+<!--
+/**
+ * @fileoverview 首页 － 会员中心
+ * @requires zepto
+ * @author kehuang@meilishuo.com
+ * @date 2015-06-23
+ */
+-->
+
+<%#head.html%>
+<%
+	var userMaxLevel = 5;
+	var curPageData = this.pageData || {};
+	var curUserInfo = this.userInfo || {};
+	var curUserData = this.userInfoData.data || {};
+	var curUserName = curUserInfo.nickname || '';
+	var curUserLevel = curUserData.grade || 0;
+	var curUserBeauty = curUserData.score || 0;
+	var tempUserPercent = this.userPercent || 0;
+	var tempTotalPercent = (curUserLevel +  tempUserPercent / 100) * 25;
+	var curUserPercent = tempTotalPercent + '%';
+%>
+
+<div class="main">
+	<div class="banner_wrap">
+		<div class="user_box">
+			<div class="user_info">
+				<div class="name"><%= curUserName %>&nbsp;<span class="level<%= curUserLevel %>"></span></div>
+				<div class="beauty">美丽值<%= curUserBeauty %></div>
+			</div>
+		</div>
+
+		<div class="beauty_tips">如何提升美丽值</div>
+
+		<div class="level_wrap">
+			<div class="progress_bg">
+				<%
+					if (curUserLevel < 4) {
+				%>
+				<div class="percent_txt" style="left: <%= curUserPercent %>"><%= tempUserPercent %>%</div>
+				<%
+					}
+
+					if (tempTotalPercent < 96) {
+				%>
+				<div class="percent_dot" style="left: <%= curUserPercent %>"></div>
+				<%
+					}
+				%>
+				<div class="progress_up" style="width: <%= curUserPercent %>"></div>
+
+				<ul class="level_area">
+					<%
+						for (var i = 0; i < userMaxLevel; i++) {
+							var levelClass = '';
+
+							if (i <= curUserLevel) {
+								levelClass = 'l_' + i + ' active';
+							} else {
+								levelClass = 'l_' + i;
+							}
+					%>
+					<li data-index="<%= i %>"><div class="<%= levelClass %>"></div></li>
+					<%
+						}
+					%>
+				</ul>
+			</div>
+		</div>
+
+		<ul class="arrow_wrap">
+			<%
+				for (var j = 0; j < userMaxLevel; j++) {
+					var arrowClass = '';
+
+					if (j == curUserLevel) {
+						arrowClass = 'arrow_top active';
+					} else {
+						arrowClass = 'arrow_top';
+					}
+			%>
+			<li><div class="<%= arrowClass %>"></div></li>
+			<%
+				}
+			%>
+		</ul>
+	</div>
+
+	<div class="body_wrap">
+		<div id="j_interests_swipe" class="swipe" data-type="interests">
+			<div class="swipe_wrap">
+				<%
+					var swipeHtml = '';
+
+					for (var l = 0; l < userMaxLevel; l++) {
+						var levelClass = (l == curUserLevel) ? '' : 'level' + l;
+
+						switch (l) {
+							case 0:
+								swipeHtml += [
+									'<div class="swipe_pic">',
+										'<div class="interest_title ' + levelClass + '"></div>',
+										'<ul class="interest_box">',
+											'<li><div class="interest_1"></div></li>',
+											'<li><div class="interest_4"></div></li>',
+											'<li><div class="interest_3"></div></li>',
+										'</ul>',
+									'</div>'
+								].join('');
+								break;
+							case 1:
+								swipeHtml += [
+									'<div class="swipe_pic">',
+										'<div class="interest_title ' + levelClass + '"></div>',
+										'<ul class="interest_box">',
+											'<li><div class="interest_5"></div></li>',
+											'<li><div class="interest_6"></div></li>',
+											'<li><div class="interest_3"></div></li>',
+										'</ul>',
+									'</div>'
+								].join('');
+								break;
+							case 2:
+								swipeHtml += [
+									'<div class="swipe_pic">',
+										'<div class="interest_title ' + levelClass + '"></div>',
+										'<ul class="interest_box">',
+											'<li><div class="interest_1"></div></li>',
+											'<li><div class="interest_2"></div></li>',
+											'<li><div class="interest_3"></div></li>',
+										'</ul>',
+									'</div>'
+								].join('');
+								break;
+							case 3:
+								swipeHtml += [
+									'<div class="swipe_pic">',
+										'<div class="interest_title ' + levelClass + '"></div>',
+										'<ul class="interest_box">',
+											'<li><div class="interest_2"></div></li>',
+											'<li><div class="interest_3"></div></li>',
+											'<li><div class="interest_6"></div></li>',
+										'</ul>',
+									'</div>'
+								].join('');
+								break;
+							case 4:
+								swipeHtml += [
+									'<div class="swipe_pic">',
+										'<div class="interest_title ' + levelClass + '"></div>',
+										'<ul class="interest_box">',
+											'<li><div class="interest_9"></div></li>',
+											'<li><div class="interest_2"></div></li>',
+											'<li><div class="interest_3"></div></li>',
+										'</ul>',
+									'</div>'
+								].join('');
+								break;
+						}
+					}
+				%>
+				<%= swipeHtml %>
+			</div>
+		</div>
+
+		<div class="beauty_title"></div>
+
+		<div class="beauty_intro">
+			<p>会员是指美丽说的注册用户。美丽说的会员有五个等级，分别为v0、v1、v2、v3、v4。</p>
+			<p>美丽说的会员等级主要由美丽值决定，系统会根据您的美丽值自动更新您的会员等级。美丽值越高，会员等级就越高，享受的会员权益就越大。</p>
+			<p>美丽值是美丽说会员的成长值，是衡量用户价值及活跃度的综合指标，可通过登录、购物、评价、晒单等操作获得美丽值。</p>
+			<p>会员现有的美丽值是2014年以来的所有渠道获得的累计总和，每年会有相应的保级/降级策略。</p>
+		</div>
+
+		<div class="level_title"></div>
+
+		<ul class="level_box">
+			<%
+				for (var k = 0; k < userMaxLevel; k++) {
+					var levelClass = '';
+
+					if (k == curUserLevel) {
+						levelClass = 'level_' + k + ' active';
+					} else {
+						levelClass = 'level_' + k;
+					}
+			%>
+			<li data-index="<%= k %>"><div class="<%= levelClass %>"></div></li>
+			<%
+				}
+			%>
+		</ul>
+
+		<div class="level_swipe">
+			<div id="j_level_swipe" class="swipe" data-type="level">
+				<div class="swipe_wrap">
+					<div class="swipe_pic">
+						<div class="level_intro">
+							<p class="title">达成条件：美丽说注册用户，且从未有过10元以上订单。</p>
+							<p class="desc">会员权益：</p>
+							<div class="content">
+								<div>72h发货</div>
+								<div>7天无理由退货</div>
+								<div>退货运费补贴</div>
+								<div>新人专享活动</div>
+								<div>新手专区</div>
+								<div>福利社</div>
+								<div>大转盘抽奖</div>
+								<div>签到领5美美豆</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="swipe_pic">
+						<div class="level_intro">
+							<p class="title">达成条件：美丽值10~499之间，且单笔订单实际支付金额>10元。</p>
+							<p class="desc">会员权益：</p>
+							<div class="content">
+								<div>72h发货</div>
+								<div>7天无理由退货</div>
+								<div>退货运费补贴</div>
+								<div>福利社</div>
+								<div>大转盘抽奖</div>
+								<div>签到领10美美豆</div>
+								<div>美美豆半价购</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="swipe_pic">
+						<div class="level_intro">
+							<p class="title">达成条件：美丽值500~1999之间，且单笔订单实际支付金额>10元。</p>
+							<p class="desc">会员权益：</p>
+							<div class="content">
+								<div>72h发货</div>
+								<div>7天无理由退货</div>
+								<div>退货运费补贴</div>
+								<div>福利社</div>
+								<div>大转盘抽奖</div>
+								<div>签到领15美美豆</div>
+								<div>美美豆全额兑换优品</div>
+								<div>美美豆半价购</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="swipe_pic">
+						<div class="level_intro">
+							<p class="title">达成条件：美丽值2000~5999之间，且单笔订单实际支付金额>10元。</p>
+							<p class="desc">会员权益：</p>
+							<div class="content">
+								<div>72h发货</div>
+								<div>7天无理由退货</div>
+								<div>退货运费补贴</div>
+								<div>福利社</div>
+								<div>大转盘抽奖</div>
+								<div>签到领20美美豆</div>
+								<div>美美豆全额兑换优品</div>
+								<div>美美豆半价购</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="swipe_pic">
+						<div class="level_intro">
+							<p class="title">达成条件：美丽值>=6000，且单笔订单实际支付金额>10元。</p>
+							<p class="desc">会员权益：</p>
+							<div class="content">
+								<div>72h发货</div>
+								<div>7天无理由退货</div>
+								<div>退货运费补贴</div>
+								<div>福利社</div>
+								<div>大转盘抽奖</div>
+								<div>签到领25美美豆</div>
+								<div>美美豆全额兑换优品</div>
+								<div>美美豆半价购</div>
+								<div>美丽说白付美定向邀请</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="gotop_wrap">
+		<a class="gotop">
+			<img src="http://d03.res.meilishuo.net/pic/_o/d0/68/f89d059f09d440f4ee7a37669383_80_80.cg.png" alt="">
+		</a>
+	</div>
+</div>
+
+<script type="text/html" id="j_tips_tpl">
+	<div class="layer_shade j_layer_shade"></div>
+	<div class="layer_main j_layer_main">
+		<div class="m">
+			<?
+				var data = this.data || {},
+					title = data.title || '',
+					src = data.src || 'http://d03.res.meilishuo.net/pic/_o/ca/ee/3f0e33d1e9b3b7a5d6e50edf3110_500_698.cg.png';
+			?>
+			<img src="<?= src ?>" alt="<?= title ?>">
+			<div class="know_btn"></div>
+		</div>
+	</div>
+</script>
+
+<script>
+	fml.vars.isLogin = <%= this.isLogin %>;
+	fml.vars.userLevel = <%= curUserLevel %>;
+	fml.vars.pageData = <%= JSON.stringify(curPageData) %>;
+</script>
+
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/member/interests');
+_use:", this._JSstack, this._JSmods); %>
+
+<%#foot_simple.html%>

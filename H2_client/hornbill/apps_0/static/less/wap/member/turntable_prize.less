@@ -1,0 +1,158 @@
+/**
+ * @fileoverview 我的大转盘奖品 － 会员中心
+ * @requires
+ * @author kehuang@meilishuo.com
+ * @date 2015-07-01
+ */
+
+@import "../block.less";
+
+html,body{
+	.w(100%);
+	.f(10px);
+	.bgc(#fff);
+}
+
+img{
+	.block;
+	.w(100%);
+}
+
+ul{
+	list-style:none;
+}
+
+i{
+	font-style:normal;
+}
+
+.prize_wrap{
+	margin:20*@w;
+}
+
+.prize_item{
+	.pr;	
+	.mb(20*@w);
+	.bgc(#fff);
+	min-height:140px;
+
+	figure{
+		.pr;
+		.w(45%);
+		.mt(2px);
+		.i_block;
+		.bgc(#f7f7f7);
+		border:1px solid rgba(0,0,0,.05);
+
+		img{
+			.w(70%);
+			margin:30% auto;
+		}
+
+		span.bs_load_img{
+			.block;
+			.w(100%);
+			.pt(100%);
+			opacity:.75;
+			background-image:url("http://d05.res.meilishuo.net/pic/_o/33/cf/a618bae2cdf43bc03289e82cb53f_290_290.cg.png");
+			background-size:cover;
+		}
+
+		span.df_show_img{
+			.block;
+			.w(100%);
+			.pt(100%);
+			opacity:.75;
+			background-image:url("http://d05.res.meilishuo.net/pic/_o/33/cf/a618bae2cdf43bc03289e82cb53f_290_290.cg.png");
+			background-size:cover;
+		}
+	}
+
+	.desc{
+		.right;
+		.w(55%);
+
+		li{
+			.pa;
+			.hidden;
+			.w(52%);
+			.f(1.1rem);
+			margin:0 20*@w;
+		}
+
+		.title{
+			top:1%;
+			.hidden;
+			.fc(#333);
+			.f(1.4rem);
+			.l(1.6rem);
+			clear:both;
+			white-space:nowrap;
+			text-overflow:ellipsis;
+			display:-webkit-box;
+			-webkit-line-clamp:1;
+			-webkit-box-orient:vertical;
+		}
+
+		.date{
+			top:18%;
+			.l(1.4rem);
+			.fc(#999);
+		}
+
+		.state{
+			top:56%;
+			.l(1.2rem);
+			.fc(#ffa600);
+		}
+
+		.btn{
+			.c;
+			.fc(#fff);
+			.pt(10px);
+			.pb(10px);
+			.f(1.4rem);
+			bottom:4px;
+			.bgc(#fe6054);
+		}
+	}
+}
+
+.pullUp{
+	.pullUpDown > .common;.pullUpDown > .loading;
+	&:before{
+		.nowrap;
+		.ml(-10px);
+	}
+	&[status="tap"]{
+		background:0 none;	
+	}
+	&[status="stop"]{
+		background:0 none;	
+	}
+}
+
+.gotop_wrap{
+	.pf;
+	.none;
+	.w(82*@w);
+	.pt(82*@w);
+	z-index:10;
+	right:10px;
+	bottom:40px;
+
+	.gotop{
+		.block;
+		.w(100%);
+	}
+
+	img{
+		.w(100%);
+	}
+}
+
+@media screen and (min-width:360px){
+	html,body{
+		.f(12px);
+	}
+}

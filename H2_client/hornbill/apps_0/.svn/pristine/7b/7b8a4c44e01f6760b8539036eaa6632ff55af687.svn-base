@@ -1,0 +1,654 @@
+/**
+ * @fileoverview 会员权益 － 会员中心
+ * @requires
+ * @author kehuang@meilishuo.com
+ * @date 2015-07-03
+ */
+
+@import "../block.less";
+
+html{
+	.f(10*@f);
+}
+
+body{
+	.bgc(#f5f5f5);
+}
+
+img{
+	.block;
+	.w(100%);
+}
+
+a{
+	.block;
+	outline:none;
+}
+
+ul{
+	list-style:none;
+}
+
+i{
+	font-style:normal;
+}
+
+.banner_wrap{
+	.pr;
+	.w(100%);
+	.fc(#fff);
+	.pt(200*@w);
+	background:url("http://d02.res.meilishuo.net/pic/_o/b1/f4/2a4240be366a8efa4f95522f32cf_640_200.ch.png") no-repeat;
+	background-size:100%;
+
+	.user_box{
+		.pa;
+		top:15%;
+		left:0;
+		right:0;
+		.hidden;
+		clear:both;
+
+		.user_info{
+			.pr;
+			margin:0 30*@w;
+
+			.level0{
+				.pl(32*@px);
+				background:url("http://d01.res.meilishuo.net/pic/_o/85/77/b7b40c48ca7dd9d7fe11295d2879_24_24.cg.png") no-repeat;
+				background-size:15px auto;
+			}
+
+			.level1{
+				.pl(32*@px);
+				background:url("http://d03.res.meilishuo.net/pic/_o/fc/97/0e58d84c43c61a61331a875407db_24_24.ch.png") no-repeat;
+				background-size:15px auto;
+			}
+
+			.level2{
+				.pl(32*@px);
+				background:url("http://d01.res.meilishuo.net/pic/_o/60/27/bf63ffcbc3e9e86436a0bbf0d3fd_24_24.cg.png") no-repeat;
+				background-size:15px auto;
+			}
+
+			.level3{
+				.pl(32*@px);
+				background:url("http://d05.res.meilishuo.net/pic/_o/95/b6/4dc74d84b1f1423422d87a317454_24_24.ch.png") no-repeat;
+				background-size:15px auto;
+			}
+
+			.level4{
+				.pl(32*@px);
+				background:url("http://d03.res.meilishuo.net/pic/_o/ee/a5/8a0f3e7be007d86aaafd92ecd596_24_24.cg.png") no-repeat;
+				background-size:15px auto;
+			}
+
+
+			.name{
+				.l(1.4);
+				.f(1.3rem);
+				.fc(#fff);
+			}
+
+			.beauty{
+				.l(1.4);
+				.f(1.4rem);
+				.fc(#fee503);
+			}
+		}
+	}
+
+	.beauty_tips{
+		.pa;
+		.l(1.2);
+		.f(1.2rem);
+		top:15%;
+		right:30*@w;
+	}
+
+	.arrow_wrap{
+		.pa;
+		.w(70%);
+		left:15%;
+		bottom:0;
+
+		li{
+			.left;
+			.inline;
+			.w(8%);
+			.ml(1%);
+			.mr(13.75%);
+		}
+
+		li:last-child{
+			.mr(0);
+		}
+
+		.arrow_top{
+			width:0;
+			height:0;
+			.vhidden;
+			border-left:8px solid transparent;
+			border-right:8px solid transparent;
+			border-bottom:10px solid #fff;
+		}
+
+		.arrow_top.active{
+			  visibility:visible;
+		}
+	}
+
+	.level_wrap{
+		.pa;
+		.l(1.2);
+		.f(1.2rem);
+		.w(70%);
+		left:15%;
+		bottom:4%;
+
+		.progress_bg{
+			.pr;
+			.h(0);
+			.w(100%);
+			border-bottom:2px dotted #999;
+
+			.percent_txt{
+				.pa;
+				.l(1.2);
+				.f(1rem);
+				top:-24px;
+				.fc(#f8de29);
+				z-index:9;
+			}
+
+			.percent_dot{
+				.pa;
+				top:-3px;
+				.w(8px);
+				.h(8px);
+				.bgc(#f8de29);
+				.border-r(100%);
+				/*z-index:9;*/
+			}
+
+			.progress_up{
+				.h(0);
+				.w(70%);
+				.mb(-2px);
+				border-bottom:2px solid #f8de29;
+			}
+
+			.level_area{
+				.pr;
+				top:-10px;
+
+				li{
+					.left;
+					.inline;
+					.w(10%);
+					.mr(12.5%);
+				}
+
+				li:last-child{
+					.mr(0);
+				}
+
+				.l_0{
+					.w(100%);
+					.pt(100%);
+					background:url("http://d02.res.meilishuo.net/pic/_o/f8/1b/23f2f3f19a99a97a4e911c0b9f87_44_44.cg.png") no-repeat;
+					background-size:100%;
+				}
+
+				.l_0.active{
+					background:url("http://d01.res.meilishuo.net/pic/_o/6b/bf/16b644b173b2837b8d987a39431d_44_44.cg.png") no-repeat;
+					background-size:100%;
+				}
+
+				.l_1{
+					.w(100%);
+					.pt(100%);
+					background:url("http://d02.res.meilishuo.net/pic/_o/c3/33/ffd017db07f7bcf14ba5ed009030_44_44.cf.png") no-repeat;
+					background-size:100%;
+				}
+
+				.l_1.active{
+					background:url("http://d04.res.meilishuo.net/pic/_o/ff/48/cb2a0d2201f78e7ff6ac04c215f5_44_44.cg.png") no-repeat;
+					background-size:100%;
+				}
+
+				.l_2{
+					.w(100%);
+					.pt(100%);
+					background:url("http://d05.res.meilishuo.net/pic/_o/5f/57/1461ec4b1b708efa15a523ef7573_44_44.cg.png") no-repeat;
+					background-size:100%;
+				}
+
+				.l_2.active{
+					background:url("http://d02.res.meilishuo.net/pic/_o/25/50/a4f04880830b9adad09c2f9bf372_44_44.cg.png") no-repeat;
+					background-size:100%;
+				}
+
+				.l_3{
+					.w(100%);
+					.pt(100%);
+					background:url("http://d05.res.meilishuo.net/pic/_o/78/c5/6f59aa1c5794b35ae7ef12e02487_44_44.cf.png") no-repeat;
+					background-size:100%;
+				}
+
+				.l_3.active{
+					background:url("http://d05.res.meilishuo.net/pic/_o/51/4a/2fcba71b7e24368203bbfa1eb114_44_44.cg.png") no-repeat;
+					background-size:100%;
+				}
+
+				.l_4{
+					.w(100%);
+					.pt(100%);
+					background:url("http://d02.res.meilishuo.net/pic/_o/69/e1/02974237ae41bca4865c3b0a2284_44_44.cf.png") no-repeat;
+					background-size:100%;
+				}
+
+				.l_4.active{
+					background:url("http://d02.res.meilishuo.net/pic/_o/ce/00/062480b7f18ec7ffc4ea5d47b7e5_44_44.cg.png") no-repeat;
+					background-size:100%;
+				}
+			}
+		}
+	}
+}
+
+.body_wrap{
+	.interest_title{
+		.w(100%);
+		.pt(90*@w);
+		background:url("http://d03.res.meilishuo.net/pic/_o/40/a2/e1b05c5c8170fc8beef7e032ff6b_640_90.ch.png") no-repeat;
+		background-size:100%;
+	}
+
+	.level0{
+		background:url("http://d05.res.meilishuo.net/pic/_o/88/7f/f3ac159f23e0487f0dd4dabc90c2_640_90.cf.png") no-repeat;
+		background-size:100%;
+	}
+
+	.level1{
+		background:url("http://d02.res.meilishuo.net/pic/_o/26/de/3bc0da25c6ac10f86668c7137339_640_90.ch.png") no-repeat;
+		background-size:100%;
+	}
+
+	.level2{
+		background:url("http://d04.res.meilishuo.net/pic/_o/59/14/3621d0cdab82466af5c1b7a6fa86_640_90.cg.png") no-repeat;
+		background-size:100%;
+	}
+
+	.level3{
+		background:url("http://d05.res.meilishuo.net/pic/_o/31/bc/ceb238e6f15501c54c343009172a_640_90.ch.png") no-repeat;
+		background-size:100%;
+	}
+
+	.level4{
+		background:url("http://d04.res.meilishuo.net/pic/_o/f6/0f/893dcb09fc4c25215003f8d4d323_640_90.ch.png") no-repeat;
+		background-size:100%;
+	}
+
+	.level_title,.beauty_title{
+		.mt(2%);
+		.w(100%);
+		.pt(74*@w);
+	}
+
+	.beauty_title{
+		background:url("http://d04.res.meilishuo.net/pic/_o/0e/b5/209982ec60f6bcd50a15476e3cfb_640_74.ch.png") no-repeat;
+		background-size:100%;
+	}
+
+	.level_title{
+		background:url("http://d03.res.meilishuo.net/pic/_o/b4/ab/09b42b432519e5b668e132592997_640_74.ch.png") no-repeat;
+		background-size:100%;
+	}
+
+	.beauty_intro{
+		.f(1.2rem);
+		.fc(#666);
+		.bgc(#fff);
+		padding:0 4% 2%;
+
+		p{
+			.mb(2%);
+			.l(1.4);
+		}
+	}
+
+	.interest_box{
+		.hidden;
+		clear:both;
+		margin: 0 5% 4%;
+
+		li{
+			.left;
+			.inline;
+			.mr(5%);
+			.w(30%);
+		}
+
+		li:nth-child(2n){
+			.w(30%);
+		}
+
+		li:nth-child(3n){
+			.mr(0);
+			.w(30%);
+		}
+
+		.interest_1{
+			.w(100%);
+			.pt(100%);
+			background:url("http://d02.res.meilishuo.net/pic/_o/c7/21/3ae781e3e39b2a2f7df84108fcf9_150_150.cf.png") no-repeat;
+			background-size:100%;
+		}
+
+		.interest_2{
+			.w(100%);
+			.pt(100%);
+			background:url("http://d03.res.meilishuo.net/pic/_o/37/6e/6149be14460c65ef9c6fdde5cd67_150_150.ch.png") no-repeat;
+			background-size:100%;
+		}
+
+		.interest_3{
+			.w(100%);
+			.pt(100%);
+			background:url("http://d05.res.meilishuo.net/pic/_o/44/d6/de94e6ca0438b57d3a727b81c872_150_150.ch.png") no-repeat;
+			background-size:100%;
+		}
+
+		.interest_4{
+			.w(100%);
+			.pt(100%);
+			background:url("http://d02.res.meilishuo.net/pic/_o/28/b5/1fbe94c728ab245123419568d08e_150_150.cf.png") no-repeat;
+			background-size:100%;
+		}
+
+		.interest_5{
+			.w(100%);
+			.pt(100%);
+			background:url("http://d05.res.meilishuo.net/pic/_o/bc/ab/5068878dbda393434c430b4ad210_150_150.ch.png") no-repeat;
+			background-size:100%;
+		}
+
+		.interest_6{
+			.w(100%);
+			.pt(100%);
+			background:url("http://d03.res.meilishuo.net/pic/_o/eb/e6/2e9896fcec4cd438f48037984444_150_150.ch.png") no-repeat;
+			background-size:100%;
+		}
+
+		.interest_7{
+			.w(100%);
+			.pt(100%);
+			background:url("http://d04.res.meilishuo.net/pic/_o/5f/b5/d9252d51a9c85d2cb058b5093084_150_150.ch.png") no-repeat;
+			background-size:100%;
+		}
+
+		.interest_8{
+			.w(100%);
+			.pt(100%);
+			background:url("http://d02.res.meilishuo.net/pic/_o/44/12/34c07322727931eb5d8fb6d5d22c_150_150.ch.png") no-repeat;
+			background-size:100%;
+		}
+
+		.interest_9{
+			.w(100%);
+			.pt(100%);
+			background:url("http://d01.res.meilishuo.net/pic/_o/2b/8c/280ec54eb94f9ce817772157ff09_150_150.cg.png") no-repeat;
+			background-size:100%;
+		}
+	}
+
+	.level_box{
+		.hidden;
+		.bgc(#fff);
+		clear:both;
+		padding:2% 9%;
+
+		li{
+			.left;
+			.inline;
+			.mr(5%);
+			.w(16%);
+		}
+
+		li:last-child{
+			.mr(0);
+		}
+
+		.level_0{
+			.w(100%);
+			.pt(100%);
+			background:url("http://d05.res.meilishuo.net/pic/_o/5e/30/50f30dbf2dd7a4e8db0408ebe21c_70_70.cf.png") no-repeat;
+			background-size:100%;
+		}
+
+		.level_0.active{
+			background:url("http://d05.res.meilishuo.net/pic/_o/a7/b7/e1ae1197908db551069e9d4dfc7c_70_70.ch.png") no-repeat;
+			background-size:100%;
+		}
+
+		.level_1{
+			.w(100%);
+			.pt(100%);
+			background:url("http://d01.res.meilishuo.net/pic/_o/e9/99/4c7bc3358881e48aa6e8cd778af2_70_70.cg.png") no-repeat;
+			background-size:100%;
+		}
+
+		.level_1.active{
+			background:url("http://d01.res.meilishuo.net/pic/_o/e1/2c/8d462abdcfdf772f99205328e524_70_70.cg.png") no-repeat;
+			background-size:100%;
+		}
+
+		.level_2{
+			.w(100%);
+			.pt(100%);
+			background:url("http://d01.res.meilishuo.net/pic/_o/1f/93/70fe28fcadde32d4bb4059dfaaf1_70_70.ch.png") no-repeat;
+			background-size:100%;
+		}
+
+		.level_2.active{
+			background:url("http://d04.res.meilishuo.net/pic/_o/ed/a0/c8d148b3df1386d5448f1be3aed8_70_70.cg.png") no-repeat;
+			background-size:100%;
+		}
+
+		.level_3{
+			.w(100%);
+			.pt(100%);
+			background:url("http://d05.res.meilishuo.net/pic/_o/56/f8/0ea9e9622be0df38743337e81c74_70_70.cf.png") no-repeat;
+			background-size:100%;
+		}
+
+		.level_3.active{
+			background:url("http://d04.res.meilishuo.net/pic/_o/aa/bf/3f195fe9dea7f1b3c961754f17ce_70_70.cf.png") no-repeat;
+			background-size:100%;
+		}
+
+		.level_4{
+			.w(100%);
+			.pt(100%);
+			background:url("http://d01.res.meilishuo.net/pic/_o/f4/a6/0db699b18da8b2d47e820f6b06eb_70_70.ch.png") no-repeat;
+			background-size:100%;
+		}
+
+		.level_4.active{
+			background:url("http://d04.res.meilishuo.net/pic/_o/7c/b4/f68ffa34ea89bf0f08fb5d781aaf_70_70.ch.png") no-repeat;
+			background-size:100%;
+		}
+	}
+
+	.level_swipe{
+		.hidden;
+		.mb(12%);
+		.bgc(#fff);
+		clear:both;
+
+		.level_intro{
+			padding:2% 4%;
+
+			.title,.desc{
+				.tl;
+				.l(1.4);
+				.f(1.2rem);
+				.fc(#666);
+				padding:0 3%;
+			}
+
+			.desc{
+				.l(2);
+			}
+
+			.content{
+				.hidden;
+				clear:both;
+				padding:2% 0 2% 2%;
+
+				div{
+					.left;
+					.fc(#fff);
+					.f(1.3rem);
+					margin:1%;
+					.bgc(#fe6054);
+					.border-r(16px);
+					padding:8px 10px;
+				}
+			}
+		}
+	}
+}
+
+/* 返回顶部 */
+.gotop_wrap{
+	.pf;
+	.none;
+	.w(82*@w);
+	.pt(82*@w);
+	z-index:10;
+	right:10px;
+	bottom:40px;
+
+	.gotop{
+		.block;
+		.w(100%);
+	}
+
+	img{
+		.w(100%);
+	}
+}
+
+/* 弹层 */
+.layer_shade{
+	.pf;
+	top:0;
+	left:0;
+	.w(100%);
+	.h(100%);
+	z-index:999;
+	background:rgba(0,0,0,.85);
+}
+
+.layer_main{
+	.pf;
+	top:10%;
+	left:0;
+	.w(100%);
+	.h(auto);
+	z-index:999;
+
+	.m{
+		.pr;
+
+		img{
+			.w(78%);
+			margin:0 auto;
+		}
+
+		.know_btn{
+			.pa;
+			.w(78%);
+			.h(13%);
+			left:11%;
+			bottom:0;
+		}
+	}
+}
+
+/* 组图 */
+.swipe{
+	.c;
+	.pr;
+	.hidden;
+	visibility:hidden;
+}
+
+.swipe_wrap{
+	.pr;
+	.hidden;
+	-webkit-backface-visibility:hidden;
+	-moz-backface-visibility:hidden;
+	-ms-backface-visibility:hidden;
+	-o-backface-visibility:hidden;
+	backface-visibility:hidden;
+	/* Fix of Webkit flickering */
+	z-index:1;
+}
+
+.swipe_wrap > div{
+	.pr;
+	.left;
+	.w(100%);
+}
+
+.swipe_pic{
+	.pr;
+	.hidden;
+	.w(100%);
+	.bgc(#fff);
+}
+
+.swipe_pic img{
+	.w(100%);
+}
+
+.swipe_num{
+	.pa;
+	left:0;
+	.w(100%);
+	bottom:8px;
+	z-index:9;
+
+	li{
+		.vm;
+		.w(5px);
+		.h(5px);
+		.mr(2px);
+		.i_block;
+		.bgc(#fff);
+		float:none;
+		.border-r(50%);
+	}
+
+	li.active{
+		border:1px solid #fff;
+		background-color:transparent;
+	}
+}
+
+@media screen and (min-width:360px){
+	.banner_wrap .level_wrap{
+		bottom:8%;
+	}
+
+	.banner_wrap .level_wrap .progress_bg .level_area{
+		top:-13px;
+	}
+
+	.banner_wrap .level_wrap .progress_bg .percent_txt{
+		top:-27px;
+	}
+}

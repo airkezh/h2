@@ -1,0 +1,59 @@
+<%# head.html%>
+<%
+	var data = this.dataInfo || {}
+%>
+<div>
+	<a href="<%= data.header.link ? data.header.link : 'javascript:;'%>">
+		<img src="<%= data.header.image_src %>" class="<%= data.header.is_download ? "download" : ""%>"/>
+	</a>
+	<section class="step toggleClass">
+		<a href="<%= data.banner.link ? data.banner.link : 'javascript:;'%>">
+			<img src="<%= data.banner.image_src %>" class="<%= data.banner.is_download ? "download" : ""%>"/>
+		</a>
+		<%if(data.stepOne) {%>
+			<a href="<%= data.stepOne.link ? data.stepOne.link : 'javascript:;'%>">
+				<img src="<%= data.stepOne.image_src %>" class="<%= data.stepOne.is_download ? "download list stepOne" : "list stepOne"%>"/>
+			</a>
+		<%}%>
+		<%if(data.stepTwo){%>
+			<a href="<%= data.stepOne.link ? data.stepTwo.link : 'javascript:;'%>">
+				<img src="<%= data.stepTwo.image_src %>" class="<%= data.stepTwo.is_download ? "list stepTwo download" : "list stepTwo"%>"/>
+			</a>
+		<%}%>
+	</section>
+	<a href="<%= data.downBtn.link ? data.downBtn.link : 'javascript:;'%>">
+		<img src="<%= data.downBtn.image_src %>" class="<%= data.downBtn.is_download ? "download" : ""%>"/>
+	</a>
+	<section>
+		<% data && data.goods && data.goods.map(function(data){ %>
+			<a href="<%= data.link ? data.link : 'javascript:;'%>">
+				<img src="<%= data.image_src%>" class="<%= data.is_download ? "download" : ""%>"/>
+			</a>
+		<%}); %>
+	</section>
+	<a href="<%= data.fixed.link ? data.fixed.link : 'javascript:;'%>" class="fixed">
+		<img src="<%= data.fixed.image_src %>" class="<%= data.fixed.is_download ? "download" : ""%>"/>
+	</a>
+</div>
+<a href="/welcome?channel=<%= this.channel%>" class="goHome">继续访问触屏版 &gt;&gt;</a>
+<script>
+	fml.vars.appUrl = '<%= this.appUrl %>';
+	fml.vars.refer = '<%= this.refer %>';
+</script>
+<script type='text/javascript'>
+	var _fxcmd=_fxcmd||[];
+	_fxcmd.sid='f13cc91387963845156f4c204bc63e9a';
+	_fxcmd.trackAll= false;
+	(function () {
+	   var _pzfx=document['createElement']('script');
+	   _pzfx.type='text/javascript';
+	   _pzfx.async=true;
+	   _pzfx.src='//static.w3t.cn/fx/1/1/fx.js';
+	  var sc=document.getElementsByTagName('script')[0];
+	  sc.parentNode.insertBefore(_pzfx,sc);
+	  })();
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/semDownload');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

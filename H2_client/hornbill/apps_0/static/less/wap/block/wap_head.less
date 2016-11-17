@@ -1,0 +1,113 @@
+@icon_bg: 'http://d03.res.meilishuo.net/img/_o/91/4c/7e7b92cde0c6eb57af6776129ef8_89_1110.ch.png';
+@self_search_icon: 'http://d04.res.meilishuo.net/pic/_o/ac/d1/359034d567472a19ff97f5837e8e_250_254.cj.png';
+@cate: 'http://d03.res.meilishuo.net/img/_o/bb/12/1fb0a885744ff045c03a6c8f153b_60_760.ch.png';
+
+.self_search_bg(@x:0, @y:0){
+	background: url(@self_search_icon) no-repeat;
+	background-position: @x @y;
+	background-size: 1.25rem;
+}
+
+.wap_head(){
+
+	.wap_head{ .pr;.w(100%);.h(1rem);z-index: 500; }
+	.wap_nav{
+		.bgc(#fff);.h(1rem);.f(.22rem);.pr;top: 0;left: 0;.hidden;
+
+		.home_btn{ .left;.w(.48rem);.h(1rem);margin: 0 .2rem;background: url('http://d05.res.meilishuo.net/pic/_o/46/c2/7545d5f20d276e84af0f034b0287_92_94.cf.png') no-repeat center;background-size: .46rem;.c;.f(.22rem);.fc(#666); }
+		.search_wrap{
+			.w(4.64rem);.h(.6rem);.bgc(#F2F2F2);.border-r(.4rem);.c;.left;.mt(.2rem);.pr;outline: none;z-index: 100;
+
+			input{ .bgc(transparent);outline: none;border: none;.w(100%);.h(.6rem);.pl(.5rem);.f(.22rem);.fc(#999);.pr;z-index: 100; }
+		}
+
+		.im_enter,
+		.cate{ .pa;top: 0;right: 0;.w(.88rem);.h(.72rem);.l(.72rem);margin: .14rem 0 0;.c;.f(.22rem);.fc(#666);.bgc(#fff);transition: all .5s ease-in-out; }
+		.cate{ -webkit-transform: translatex(-100%);transform: translatex(-100%);opacity: .4; }
+		.im_enter{ -webkit-transform: translatex(0);transform: translatex(0);opacity: 1; }
+
+		.im_icon{
+			.pr;.w(.44rem);.h(.38rem);.ml(.15rem);.mt(.15rem);.self_search_bg(48.9%, bottom);
+
+			span{ .pa;top: -.14rem;right: -.12rem;.w(.3rem);.h(.3rem);.l(.3rem);.c;.f(.18rem);.fc(#333);.self_search_bg(100%, 50%); }
+		}
+	}
+	.wap_nav_show{
+		.cate{ -webkit-transform: translatex(0);transform: translatex(0);opacity: 1; }
+		.im_enter{ -webkit-transform: translatex(100%);transform: translatex(100%);opacity: .4; }
+	}
+
+	.search_icon{ .pa;top: .21rem;left: .2rem;.pl(.3rem);.h(.22rem);.l(.22rem);.self_search_bg(0%, 2%); }
+	.delect_icon{
+		.pa;top: 0;right: 0;.w(.5rem);.h(.44rem);.pt(.16rem);z-index: 120;
+
+		span{ .block;.w(.28rem);.h(.28rem);.self_search_bg(48%, top); }
+	}
+
+	.search_content{
+		.h(100%);.w(100%);.bgc(#fff);.hidden;.f(.24rem);.fc(#666);
+
+		.title{
+			.f(.26rem);.fc(#666);font-weight: normal;.pt(.3rem);.l(.28rem);
+
+			.icon{ .left;.w(.28rem);.h(.28rem);.ml(.2rem);.mr(.1rem);.self_search_bg(-1%, bottom); }
+		}
+		.list{
+			.w(5.78rem);.ml(.31rem);.hidden;
+
+			a{ .left;margin: .2rem .09rem 0;padding: .04rem .2rem;.border-r(.16rem);.bgc(#F4F4F4); }
+			.red_words{ .fc(#FF7A9A); }
+		}
+		.his_box .title .icon{ .self_search_bg(-1%, 50%); }
+		.clear_his{
+			.c;.mt(.7rem);.l(.3rem);.w(1.8rem);.pr;left: 50%;.ml(-.9rem);
+
+			.icon{ .i_block;.w(.3rem);.h(.28rem);.mb(-.05rem);.self_search_bg(50%, 50%); }
+		}
+
+		.sea_box{
+			.w(6.1rem);.ml(.3rem);
+
+			li{ .pr;.w(100%);.pb(.16rem);.pt(.16rem);border-bottom: 1px solid rgba(51,51,51,0.15);.hidden; }
+			a{ .i_block;padding: .05rem; }
+			.left{ .left;.w(100%);.f(.22rem);.fc(#333); }
+			.right{
+				.pa;right: 0;top: .16rem;.mr(.3rem);text-align: right;.f(.22rem);
+
+				a{ .ml(.18rem);.bgc(#F8F8F8);.border-r(.16rem); }
+			}
+		}
+	}
+
+	.search_section{
+		.pr;top: 0;left: 0;.w(100%);z-index: 600;
+	}
+}
+
+.wap_foot(){
+	.wap_foot{ .pr;.h(1rem);.w(100%); }
+	.foot_fixed_wrap{
+		.pf;bottom: 0;left: 0;z-index: 600;.w(100%);.h(.98rem);border-top: 1px solid rgba(0,0,0,.2);.f(.2rem);.fc(#666);.bgc(#FFF);
+
+		a{ .left;.w(1.6rem);.c;.pb(.12rem); }
+		span{ .block;.w(.5rem);.h(.4rem);.auto;.mt(.15rem);.mb(.06rem);background: url('http://d02.res.meilishuo.net/pic/_o/78/85/cc0cc3bc64c60b92fab53471f001_1280_284.ch.png') no-repeat;background-size: 6.4rem; }
+		.i_home{ background-position: 8.7% bottom; }
+		.i_catalog{ background-position: 36.5% bottom; }
+		.i_cart{ background-position: 63.3% bottom; }
+		.i_myCenter{ background-position: 90.6% bottom; }
+		.active{
+			.fc(#FF7A9A);
+
+			.i_home{ background-position: 8.7% top; }
+			.i_catalog{ background-position: 36.5% top;.h(.42rem);.mt(.14rem);.mb(.05rem); }
+			.i_cart{ background-position: 63.3% top; }
+			.i_myCenter{ background-position: 90.6% top; }
+		}
+		.promotion{ .none; }
+		&.promotion_active{
+
+			a{ .w(1.28rem); }
+			.promotion{ .block;.w(1.28rem);.h(1.1rem);background: center no-repeat;background-size: contain;box-sizing: border-box;.pr;top: -.11rem; }
+		}
+	}
+}

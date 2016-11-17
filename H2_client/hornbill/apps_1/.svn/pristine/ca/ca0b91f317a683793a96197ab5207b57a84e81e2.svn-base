@@ -1,0 +1,246 @@
+<%# head.html%>
+<% this.headName = '宝贝详情'; %>
+<%# head_share.html%>
+<%
+var goodsInfo = this.goods_info || {};
+var cur_time  = (new Date).getTime() / 1000
+var globalKey = this._Request_cookies.MEILISHUO_GLOBAL_KEY;
+
+function getTimeRemain(end_time){
+	if (end_time && end_time > cur_time) return end_time - cur_time
+	else return ''
+	}
+%>
+<div class="detail twitter" twitter_id="<%= goodsInfo.twitter_id%>">
+	<figure class="picture">
+		<span class="pic">
+			<span class="sale_ico"></span>
+			<img src="<%= goodsInfo.image.image[0]%>"/>
+		</span>
+		<figcaption class="sale">
+			<h2 class="title"><%= goodsInfo.goods_title%></h2>
+			<ul class="sku_meta">
+				<li>
+					<span class="sort">价 格<em></em></span>
+					<span class="price">￥<%= goodsInfo.price%></span>
+					<% goodsInfo.label.forEach(function(label){%>
+					<span class="btn"><%= label%></span>
+					<%});%>
+				</li>
+				<%if(1 == goodsInfo.in_activity ){%>
+				<li>
+					<span class="sort">原 价</span>
+					￥<span class="del"><%= goodsInfo.original_price%></span>
+				</li>
+				<%}%>
+				<li>
+					<span class="sort">运 费</span><%= goodsInfo.freight%>
+				</li>
+				<li>
+					<span class="sort">销 量</span>共售出<span><%= goodsInfo.sales%></span>件
+				</li>
+				<%if(1==0 && goodsInfo.activity_desc.words != ''){%>
+				<li class="activeNews red_f">
+					<span class="sort">活 动</span><a <%if(goodsInfo.activity_desc.link != ''){%>href="<%= goodsInfo.activity_desc.link%>" target="_blank"<%}%>><%= goodsInfo.activity_desc.words%></a>
+				</li>
+				<%}%>
+			</ul>
+		</figcaption>
+	</figure>
+	<div class="sku_info">
+		<div class="skin">
+			<%if(1 == goodsInfo.shelf ){%>
+			<p class="text">请选择您要的商品信息</p>
+			<p class="notice none_f">请选择<span>尺寸/颜色分类</span></p>
+			<ul class="selected none_f">
+				<li class="sizeInfo">尺寸：<span></span></li>
+				<li class="colorInfo">颜色：<span></span></li>
+			</ul>
+			<% if (goodsInfo.prop && goodsInfo.prop.size && goodsInfo.prop.size.is_show) { %>
+			<dl class="prop">
+				<dt><%= goodsInfo.prop.size.name%>：</dt>
+				<dd>
+					<ul id="sizeList">
+						<% goodsInfo.prop.size.value.forEach(function(item , key){%>
+							<li><span><%= item%></span></li>
+						<%});%>
+					</ul>
+				</dd>
+			</dl>
+			<%}%>
+			<% if (goodsInfo.prop && goodsInfo.prop.color && goodsInfo.prop.color.is_show) { %>
+				<dl class="prop">
+					<dt><%= goodsInfo.prop.color.name%>：</dt>
+					<dd>
+						<ul id="colorList">
+							<% goodsInfo.prop.color.value.forEach(function(item , key){
+								if (goodsInfo.prop.color.color_image) {%>
+								<li class="img_list"><span><img src="<%= goodsInfo.prop.color.color_image[key] %>" bsrc="<%= goodsInfo.prop.color.image[key] %>"  title="<%= item%>" alt="<%= item%>" /></span></li>
+								<% }else{%>
+								<li><span><%= goodsInfo.prop.color.value[key] %></span></li>
+
+								<%}%>
+							<%});%>
+						</ul>
+					</dd>
+				</dl>
+			<%}%>
+			<dl class="amount">
+				<dt>数 量：</dt>
+				<dd>
+					<div class="numBox">
+						<span class="minus">-</span>
+						<input class="nums" title="请输入购买数量" type="text" value="1">
+						<span class="plus">+</span>
+					</div>
+					<span class="stock">(库存<span>-</span>件)</span>
+				</dd>
+			</dl>
+			<div class="msg_box">
+				<p class="msg_limit"><span class="msg_ico"></span>对不起！每人最多限购10件！</p>
+				<p class="msg_zero"><span class="msg_ico"></span>对不起，这件宝贝已经卖光啦！</p>
+				<p class="msg_over"><span class="msg_ico"></span>您所填写的宝贝数量超过库存！</p>
+			</div>
+			<%}%>
+			<%
+			var promptRemain = getTimeRemain(goodsInfo.end_time)
+			///if (goodsInfo.end_time && !promptRemain) goodsInfo.shelf = 0
+			%>
+			<% if (goodsInfo && 1 == goodsInfo.shelf ) { %>
+			<div class="btn_box">
+				<span href="javascript:void(0)" class="define">确定</span>
+				<span href="javascript:void(0)" class="add_cart">加入购物车</span>
+				<span href="javascript:void(0)" class="buy_btn">立即购买</span>
+			</div>
+			<%}else{%>
+				<% if(!this.goods_info.is_zero){ %>
+				<span class="msg_shelf">宝贝已下架!</span>
+				<% } else { %>
+				<span class="msg_shelf">请回活动换购</span>
+				<% }%>
+			<%}
+				var count_like = goodsInfo.twitter_stat && goodsInfo.twitter_stat.count_like
+					,beauty_me = goodsInfo.beauty_me
+				%>
+			<% if (promptRemain && 1 == goodsInfo.shelf ){%>
+			<div class="timeBox">
+				<em class="big_clock"></em>
+				<p class="countdown" remain="<%= promptRemain%>">剩余<span >-天--小时--分--秒</span></p>
+			</div>
+			<%}%>
+		</div>
+	</div>
+</div>
+<div class="wrapBox">
+	<div class="wrap">
+		<h2 class="tab_tle">
+			<a href="javascript:void(0)" class="tabArea cur">商品详情<em class="sharp none_f"></em></a>
+		</h2>
+		<div class="contentArea">
+			<%if(this.format != ''){%>
+				<h2 class="title"><span>商品规格</span></h2>
+				<ul class="format">
+					<% this.format && this.format.map(function(data) { %>
+						<li><%=data[0]||''%>：<%= data[1]||''%></li>
+					<%});%>
+				</ul>
+			<%}%>
+			<%if(1 == this.details.is_taobao){%>
+				<div class="more_pic">
+					<% this.details.data && this.details.data.map(function(imgs) { %><span class="load_img" asrc="<%=imgs.image%>"></span><%});%>
+				</div>
+			<%}else{%>
+				<% this.details && this.details.map(function(data) { %>
+					<h2 class="title"><span><%=data.title%></span></h2>
+					<% data.content && data.content.map(function(cons){ %>
+						<%if(cons.type == 'txt'){%>
+							<p class="pro_txt"><%=cons.value%></p>
+						<%}else if(cons.type == 'img'){%>
+							<div class="more_pic">
+								<span class="load_img" asrc="<%=cons.value%>"></span>
+							</div>
+						<%}else if ('gap' == cons.type){%>
+							<p class="pro_txt"></p>
+						<%}%>
+					<%});%>
+				<%});%>
+			<%}%>
+		</div>
+		<div class="contentArea none_f">
+			<div class="comments twitter" twitter_author_uid="<%= this.userInfo.user_id%>"  twitter_id="<%= goodsInfo.twitter_id%>">
+				<ul class="list" id="twitter_comment_list">
+				</ul>
+				<div id="showPagingNav">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="service">
+	<a href="/help/return/" target="_blank">
+		<ul class="promise">
+			<% this.service && this.service.map(function(data){ %>
+				<li><span class="pro_ico"><img src="<%=data.icon_pc%>" /></span><%=data.text%></li>
+			<% }); %>
+		</ul>
+	</a>
+</div>
+<div class="service">
+	<div class="hotline">
+		<span class="hotline_ico"></span>
+		<p class="tel">400-080-0577</p>
+		<p>美丽说客服热线</p>
+	</div>
+</div>
+
+<script type="text/html" id="twitter_comment">
+<? item && $.each(item , function(key , data){?>
+	<li>
+		<img class="avatar" src="<?= data.uinfo.avatar_b?>" />
+		<p class="twitter_comment_name"><?= data.uinfo.nickname?></p>
+		<p class="l_con"><?= data.twitter_content?></p>
+		<p class="date"><?= data.twitter_create_time?></p>
+	</li>
+<?});?>
+</script>
+
+<script type="text/html" id="pagingNav">
+<div class="pageNav1">
+	<? if(page > 0){?>
+		<a index="-1" class="pagePrev" href="javascript:void(0)">&lt;上一页</a>
+	<?};?>
+	<?
+		var left_num = page >5 ? page - 5: 0 , right_num = left_num + 4;
+		if ( right_num > pageLen) right_num = pageLen;
+	?>
+	<?if (left_num >= 1){?>
+		<a index="1" href="javascript:void(0)" class="pageitem <?if(page == 1){?>currentpage<?}?>"><?= 1?></a>
+		<span>...</span>
+	<?}?>
+	<?for (var i = left_num ;i < right_num;i++ ){?>
+		<a index="<?= i?>" href="javascript:void(0)" class="pageitem <?if(page == i){?>currentpage<?}?>"><?= i+1?></a>
+	<?}?>
+	<?if (right_num < pageLen) {?>
+		<span>...</span>
+		<a index="<?= pageLen-1?>" href="javascript:void(0)" class="pageitem <?if(page == pageLen-1){?>currentpage<?}?>"><?= pageLen?></a>
+	<?}?>
+	<? if(page != pageLen - 1){?>
+		<a class="pageNext" href="javascript:void(0)" index="1">下一页&gt;</a>
+	<?}?>
+</div>
+</script>
+
+<script>
+fml.vars.count_discuss = "<%= goodsInfo.twitter_stat.discuss_num%>";
+fml.vars.goods = {"id" : "<%=goodsInfo.goods_id %>" , "twitter_id": "<%= goodsInfo.twitter_id%>" ,"pid" :"<%= goodsInfo.pid || 0%>"};
+fml.vars.goods_stock = <%= JSON.stringify(goodsInfo.stock)%>;
+fml.vars.goods_prop = <%= JSON.stringify(goodsInfo.prop)%>;
+fml.vars.globalKey = '<%= globalKey %>'
+</script>
+
+<%# block/foot.html%>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/doota/sale');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

@@ -1,0 +1,146 @@
+<%# activity/mew_lucky/head.html %>
+
+<%
+    var isTime = this.ViewTools.timeStuff({
+        '2015/6/09 00:00:00': false,
+        '2015/6/16 00:00:00': true
+    }, '');
+
+	var info = this.info || {},
+        os = this.os,
+        stateClass = 'state-',
+        content = '';
+/*
+1 领取成功
+0 领取失败，矮油~这次没抢到（＞▽＜）
+-1 已领取
+-2 已抢完
+-3 红包满了
+-4 风控，跟 0 的文案一样
+*/
+    switch( info.code ) {
+        case 1:
+            stateClass += 'normal';
+            break;
+        case 0:
+        case -4:
+            stateClass += 'fail';
+            content = '矮油~这次没抢到<br>（＞▽＜）';
+            break;
+        case -1:
+            stateClass += 'fetched';
+            content = '￥<i class="num">' + info.credit + '</i>无门槛';
+            break;
+        case -2:
+            stateClass += 'none';
+            content = '红包已抢完';
+            break;
+        case -3:
+            stateClass += 'full';
+            content = '你的红包<br>已经满了';
+            break;
+    }
+%>
+<div class="main <%= stateClass %>">
+	<div class="hd">
+		<div class="kitty"></div>
+		<div class="lucky-bag">
+            <div class="lucky-num js-lucky-num"><%= content %></div>
+            <i class="fetched-stamp"></i>
+        </div>
+	</div>
+	<div class="bd">
+		<div class="bd-wrap bd-normal">
+			<a href="/wx/mew_lucky/main?frm=catred_from_goqunred" class="link">去求喵大人赐红包</a>
+            <% if(info.code != 0 && info.code != -4) {%>
+            <% if ( os.weixinBrowser ) {%>
+			<p class="tip-text-1">使用<span class="nickname">昵称<%= info.nickname %>的微信</span>登录美丽说App查看直减券</p>
+            <% } else { %>
+            <p class="tip-text-1">使用<span class="nickname">昵称<%= info.nickname %></span>登录美丽说App查看直减券</p>
+            <% } %>
+            <%}%>
+			<p class="tip-text-2">哇~喵主子赏我的红包耶!我要去美丽说花掉它</p>
+		</div>
+        <div class="bd-wrap bd-full">
+            <p class="tip-text-1">每人最多获得5张优惠券哦～快去买买买吧</p>
+            <a class="tip-text-2 js-download">下载美丽说，更多好货等你喔</a>
+        </div>
+        <div class="bd-wrap bd-none">
+            <a href="/wx/mew_lucky/main?frm=catred_from_goqunred" class="link">去求喵大人赐红包</a>
+            <a class="tip-text-2 js-download">下载美丽说，更多好货等你喔</a>
+        </div>
+
+        <%
+            if ( isTime ) {
+               var GoodsList = this.goods_list;
+
+                if ( GoodsList.data && GoodsList.data.data ) {
+        %>
+		<a class="coupon-area" href="http://m.meilishuo.com/wx/ad_temp?cid=9845&cate_id=5166&page=daily&frm=cat_receivecoupon">
+			<h3 class="text">立即使用优惠券&gt;</h3>
+			<ul class="goods-list">
+                <% GoodsList.data.data.forEach( function( item) {%>
+				<li class="goods-item">
+                    <span class="img-wrap" style="background-image:url(<%= item.ginfo.goods_img %>);"></span>
+                    <span class="price"><%= item.ginfo.goods_price %></span>
+                    <span class="label">包邮</span>
+                </li>
+                <%  }); %>
+			</ul>
+		</a>
+        <%
+            }
+        } else {
+        %>
+        <a class="coupon-area js-open-app">
+            <h3 class="text">616傲娇节精选商品</h3>
+            <ul class="goods-list">
+                <li class="goods-item">
+                    <span class="img-wrap" style="background-image:url(http://d03.res.meilishuo.net/pic/_o/fd/0e/6c633cfa9f2927c37ac64ab90360_640_960.cg.jpg);"></span>
+                    <span class="price">￥9.90</span>
+                    <span class="label">包邮</span>
+                </li>
+                <li class="goods-item">
+                    <span class="img-wrap" style="background-image:url(http://d02.res.meilishuo.net/pic/_o/5a/6d/b1bb86d9949f2fa942c4b8f55024_450_632.cf.jpg);"></span>
+                    <span class="price">￥9.90</span>
+                    <span class="label">包邮</span>
+                </li>
+                <li class="goods-item">
+                    <span class="img-wrap" style="background-image:url(http://d04.res.meilishuo.net/pic/_o/8e/1f/2de4a1005ef9da972a099940a4a2_450_585.cf.jpg);"></span>
+                    <span class="price">￥9.90</span>
+                    <span class="label">包邮</span>
+                </li>
+            </ul>
+        </a>
+        <% } %>
+
+		<% if( info.rInfo && info.rInfo.length ) {%>
+		<div class="money-list">
+			<h3>看看其他猫奴的赏金</h3>
+			<ul>
+				<% info.rInfo.forEach(function( item ) {%>
+				<li class="money-item">
+					<img class="avatar" src="<%= item.uinfo.avatar_c %>">
+					<p class="money-info">
+						<span class="nickname"><%= item.uinfo.nickname %></span>
+						<span class="time"><%= item.update_time %></span>
+					</p>
+					<p class="credit"><i class="num"><%= item.credit %></i>元</p>
+				</li>
+				<% }); %>
+			</ul>
+		</div>
+		<% } %>
+	</div>
+</div>
+
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script>
+    fml.vars.bid = <%= this.bid %>;
+    fml.vars.code = <%= info.code %>;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/mew_lucky/index');
+_use:", this._JSstack , this._JSmods); %>
+<%# block/dialog.html %>
+<%#foot_simple.html%>

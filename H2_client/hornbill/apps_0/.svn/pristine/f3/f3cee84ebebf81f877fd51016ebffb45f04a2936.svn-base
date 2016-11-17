@@ -1,0 +1,156 @@
+<%# wx_new/header.html%>
+<div class="posterWall wrap">
+	<!-- 分享隐藏图 -->
+	<figure class="wxShareImg none_f">
+		<img src="<%=this.PICTURE_URL%>/images/wap/web/wx/shareWXB.jpg"/>
+	</figure>
+	<!-- 砸彩蛋 -->
+	<% if(0 && this.can_hit && this.can_hit.ret == 0){%>
+	<section id="egg">
+		 <img src="<%=this.PICTURE_URL%>/images/wap/sq/box-1.png" class="egg"/>
+		<img src="<%=this.PICTURE_URL%>/images/wap/sq/box-2.png" class="egg-open"/>
+	</section>
+	<%}%>
+
+	<% if(this.banner.head){%>
+	<section style="-webkit-transform: translateZ(0);">
+		<%= requireFn('block/banner.html')({
+			'banner' :this.banner.head
+			,'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+		});%>
+	</section> 
+	<% } %>
+
+	<header class="search">
+	<form action="" id="form_search" method="post">
+		<input class="ipt" type="search" autocomplete="off" placeholder="<%=this.ad_ban.search_default_word ? this.ad_ban.search_default_word : '立即搜索你想要的商品'%> ">
+		<span class="search-close">取消</span>
+	</form>
+	</header>
+	
+	
+	<div class="ad-box">
+		<h3 class="ad-title">每日9.9元时尚优选</h3>
+		<%if(this.ad_ban && this.ad_ban.hook_list){
+			var hook = this.ad_ban.hook_list;
+			var banner = hook.banner;
+			var items = hook.items;
+		%>
+		<ul class="ul-box">
+			<li class="li-box">
+				<a href="<%=banner.url %>" class="w-normal"><img src="<%=banner.image.pic_url %>" alt=""></a>
+			</li>
+			<% items && items.map(function(data,idx){ %>
+				<li class="li-box">
+					<a href="<%=data.url %>"  class="w-normal"> <img src="<%=data.image.pic_url %>" alt="">
+					</a>
+				</li>
+			<% });%>
+		</ul>
+		<%};%>
+
+		<%if(this.ad_ban && this.ad_ban.hook_product){
+			var items = this.ad_ban.hook_product.item;
+		%>
+		<ul class="ul-box" style="clear:both;">
+			<% items && items.map(function(data,idx){ %>
+				<li class="li-box">
+					<a href="<%=data.url %>"  class="w-normal"> <img src="<%=data.img %>" alt="">
+					</a>
+				</li>
+			<% });%>
+		</ul>
+		<%};%>
+	</div>
+	
+	<%if(this.ad_ban && this.ad_ban.popular){
+			var items = this.ad_ban.popular.item;
+		%>
+	<div class="ad-box pd-10">
+		<h3 class="ad-title">流行聚焦</h3>
+		<div class="popular-box">
+			<% items && items.map(function(data,idx){%>
+				<a href="<%=data.url %>"  class="w-normal"> <img src="<%=data.img%>" alt="">
+				</a>
+			<%});%>
+		</div>
+	</div>
+	<%};%>
+	
+	<%if(this.ad_ban && this.ad_ban.godness){
+		var items = this.ad_ban.godness.item;
+		%>
+	<div class="ad-box pd-10">
+		<div class="more-box">
+			<h3 class="ad-title">99元变女神</h3>
+			<a href="http://pages.w.meilishuo.com/page/55af0fca1facb7cbb46c2207" class="a-more">更多</a>
+		</div>
+		<a href="/wx/dapei_detail/?dress_id=<%=items.dress_id %>">
+			<img src="<%=items.image.pic_url %>" alt="">
+		</a>
+	</div>
+	<%};%>
+
+	<div class="ad-box g-wall">
+		<h3 class="ad-title">买手精选</h3>
+	</div>
+
+	<ul class="goods_wall new_goods">
+
+
+	</ul>
+	
+	<div class="pullUp" status="loading"></div>
+</div>
+
+<script type="text/html" id="posterWall">
+<?
+var pt = this.pt * 100;
+if(!pt){
+	pt = (this.v.pic_height / this.v.pic_width) * 100;	
+}
+
+var rom = Math.floor(Math.random()*2);
+
+?>
+<li class="goods_li poster_grid"> 
+	<div class="li_border">
+		<a style="padding-top:<?= pt ?>%; background-repeat: no-repeat;" asrc="<?=this.v.goods_img?>" href="<?if(this.v.show_type){?> <?=this.v.direct_open_url || '' ?> <?}else{?>/wx/detail?tid=<?= this.v.twitter_id?>&d_r=<?= this.v.d_r?>&page_name=<?= this.v.page_name?>  <?};?>" class="list_img pic_load">
+		</a>
+		<span class="goods_type">
+			<? this.v.mark && this.v.mark.map(function(data, idx){?>
+				<img src="<?= data.img_url?>"/>
+			<?});?>
+		</span>
+
+		<?if(!this.v.show_type){?>
+			<div class="list_info">
+				<?if(this.v.buying_point){?>
+					<p class="sell_title"><?= this.v.buying_point?></p>
+				<?};?>
+				<p class="list_title"><?= this.v.goods_title?></p>
+				<p class="list_cost">
+					<span class="money_now"><?= this.v.discount_price?></span>
+					<span class="like-img">
+						<img src="http://d05.res.meilishuo.net/pic/_o/66/d2/642ace0797b9ca81f4f64b793c3f_22_20.cf.png" alt="">
+					</span>
+					<span class="like-num"><?=this.v.count_like || 0?></span>
+				</p>
+			</div>
+		<?};?>
+
+	</div> 
+</li>
+</script>
+
+
+<!--  fml.vars.isShare = true; 微信分享 -->
+<script>
+fml.vars.isShare = true;
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/wx_new/daily');
+_use:", this._JSstack , this._JSmods ); %>
+<%# wx_new/side.html%>
+<%# wx_new/footer.html%>

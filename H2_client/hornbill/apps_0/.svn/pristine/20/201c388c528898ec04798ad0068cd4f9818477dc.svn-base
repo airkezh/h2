@@ -1,0 +1,52 @@
+<%# head.html %>
+
+<% var shopInfo = this.shopInfo; %>
+
+<header class="page_head">
+	<div class="back_icon" id="back_btn"><i></i></div>
+	<a class="right_btn" href="/cart" xr="<%= this.xr.r %>">购物车<span class="cart_nums"></span></a>
+	<div class="title"><%= this.pageTitle %></div>
+</header>
+
+<nav class="js_poster_nav">
+	<ul>
+		<li class="order current"><strong>默认</strong></li>
+		<li class="order"><strong>最新</strong></li>
+		<li class="order"><strong>销量</strong></li>
+		<li class="order on_price"><strong>价格<span id="price_order"></span></strong></li>
+	</ul>
+</nav>
+
+<section>
+	<div class="goods_wrap">
+		<div id="goods_wall"></div>
+		<%# block/pullUpRem.html %>
+	</div>
+</section>
+
+<script>
+	<%= 'fml.vars.shopId = ' + this.shopId + ';' %>
+</script>
+
+<script type="text/html" id="poster_tpl">
+	<? var v = this.v; ?>
+	<div class="poster_grid poster_wall" twitter_id="<?= v.twitter_id ?>">
+		<figure>
+			<div class="pic_load">
+				<a xr="<?= fml.vars.poster_r ?>" class="bs_load_img" href="<?= '/share/item/' + v.twitter_id ?>" asrc="<?= v.goods_img ?>">
+				</a>
+			</div>
+			<p class="clothesTitle"><?= v.goods_title ?></p>
+			<figcaption>
+				<span class="price"><?= v.goods_price ?></span>
+				<span class="like icon-heart"><?= v.count_like ?></span>
+			</figcaption>
+		</figure>
+	</div>
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/shop/guang');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot.html %>

@@ -1,0 +1,1184 @@
+<%# head.html%>
+<%
+var query   = this._Request_query,
+    mSubstr = _extFn.mSubstr,
+
+    shopGoodsCate     = this.shop_goods_category || {},
+    shopCategoryDatas = shopGoodsCate.datas,
+    topNavs = shopCategoryDatas && shopCategoryDatas[1] && shopCategoryDatas[1].cats || [],
+
+    shop_in         = this.shop_in || '',
+    featureGoods    = this.feature_goods = this.feature_goods || {},
+    defaultShopHead = this.PICTURE_URL + 'images/shop/head-img.jpg',
+    shop_head_img   = shop_in.shop_head_img ? shop_in.shop_head_img : defaultShopHead,
+    goodsInfo       = this.goods_info || {},
+    shopId          = goodsInfo.shop_id;
+
+function justifyTxt(str , endTag){
+    endTag = endTag || 'span'
+    return str.split('').join(' ') + '<'+endTag+'></'+endTag+'>'
+}
+var cur_time  = (new Date).getTime() / 1000
+
+    //评价条数
+var shopCommentsCount = goodsInfo.comment.totalUser || 0,
+    //晒单数
+    shoppingShowCount = goodsInfo.count_shoppingShow || 0,
+
+    shopDisAll = this.satisfy_rate;
+var reportCheck =  this.reportCheck;
+
+/* 好评率 */
+if ( !goodsInfo.satisfy_rate ) {
+    this.hasNoSatisfyRatio = true
+    goodsInfo.satisfy_rate = '--'
+}
+
+function getTimeRemain(end_time){
+    if (end_time && end_time > cur_time) return end_time - cur_time
+    else return ''
+}
+
+/**
+    注意：后端传的价格都是字符串，如果要进行比较的时候需要手动转(比如下面的 preheatPrice)
+*/
+var nowPriceMin, nowPriceMax, nowPrice, oriPrice,
+    oriPriceMin = goodsInfo.original_price_min,
+    oriPriceMax = goodsInfo.original_price_max;
+
+if ( goodsInfo.campaign_price_min ) {
+    nowPriceMin = goodsInfo.campaign_price_min;
+    nowPriceMax = goodsInfo.campaign_price_max;
+} else {
+    nowPriceMin = goodsInfo.original_price_min;
+    nowPriceMax = goodsInfo.original_price_max;
+}
+
+if ( nowPriceMin == nowPriceMax ) {
+    nowPrice = nowPriceMin
+} else {
+    nowPrice = nowPriceMin + '-' + nowPriceMax
+}
+
+if ( oriPriceMin == oriPriceMax ) {
+    oriPrice = oriPriceMin
+} else {
+    oriPrice = oriPriceMin + '-' + oriPriceMax
+}
+
+/* 0 表示不在大促，1 表示预热，2 表示大促 */
+var promoteStatus  = goodsInfo.is_bigpromote,
+    promoteInfo    = this.promote_info,
+    promoteContent = this.promote_info.info || {},
+    promoteTime    = {},
+    bigPromoteClass, preheatPrice, isBigPromote, promotePhase;
+
+promoteTime[ promoteInfo.preheat_time ] = 1;
+promoteTime[ promoteInfo.stime ] = 2;
+promoteTime[ promoteInfo.etime ] = 0;
+
+promotePhase = this.ViewTools.timeStuff( promoteTime, '' );
+switch( promotePhase ) {
+    case 1:
+        bigPromoteClass = 'big-promote big-promote-preheat';
+        preheatPrice = goodsInfo.preheat_price_min || 0;
+        isBigPromote = promoteStatus != 0 && parseFloat( nowPriceMin ) >= parseFloat( preheatPrice ) && goodsInfo.platform_type != 5;
+        break;
+    case 2:
+        bigPromoteClass = 'big-promote big-promote-now';
+        preheatPrice = nowPriceMin;
+        isBigPromote = promoteStatus != 0 && parseFloat( nowPriceMin ) >= parseFloat( preheatPrice ) && goodsInfo.platform_type != 5;
+        break;
+    default:
+        isBigPromote = false;
+        bigPromoteClass = preheatPrice = '';
+        break;
+}
+
+/* 上面 isBigPromote 的代码无用了 */
+var promoteMsg = goodsInfo.promot_msg;
+
+if ( promoteMsg ) {
+    promoteMsg = promoteMsg.replace( /(￥\d+(?:.\d+)?)/, '<i class="num">$1</i>' )
+}
+
+/* 加入购物车按钮上的 className */
+var addToCartClass = "add_cart";
+%>
+<div id="navbar"><div class="sec_nav"></div></div>
+<%if( !this.is_iPad ) {%>
+<div id="shop-hd" class="shop-hd">
+    <%if ( shop_in != '' ) { %>
+    <a class="top-banner" href="/shop/<%=shopId%>" target="_blank" style="background-image:url(<%=shop_head_img%>)">
+    </a>
+    <%}%>
+    <%= requireFn('doota/nav.html')({
+            categoryId: this._Request_query.category_id,
+            shopId: shopId,
+            categories: topNavs
+        });
+    %>
+</div>
+<%}%>
+
+<div class="main <%= bigPromoteClass %>">
+
+    <%if ( 1 == goodsInfo.buyer_verify ) {%>
+    <div class="you_shop">
+        <h3 class="tle_ico"><a href="/help/return/#d_5" target="_blank">优品认证</a></h3>
+        <p class="f14_f"><a href="/help/return/#d_5" target="_blank">美丽说已对商品进行详细抽检，质量合格，可放心购买</a></p>
+    </div>
+    <%}%>
+
+    <div class="item-box" data-tid="<%= goodsInfo.twitter_id %>">
+        <div class="content twitter" twitter_id="<%= goodsInfo.twitter_id%>">
+            <div class="item-sale">
+                <h3 class="item-title"><% if(goodsInfo.count_shoppingShow) { %><a href="#" id="js-shopping-show" class="label-show">[晒单] </a><% } %><%= goodsInfo.goods_title%></h3>
+                <% if (goodsInfo.goods_subtitle) {%>
+                <h4 class="item-sub-title"><%= goodsInfo.goods_subtitle %></h4>
+                <%}%>
+
+                <div class="item-price-info">
+                    <span class="price-now">￥<i id="price-now" class="num" data-price-min="<%= nowPriceMin %>" data-price-max="<%= nowPriceMax %>"><%= nowPrice %></i></span>
+                    <%if(1 == goodsInfo.in_activity ){%>
+                    <span class="price-original">￥<i id="price-original" class="num" data-price-min="<%= oriPriceMin %>" data-price-max="<%= oriPriceMax %>"><%= oriPrice %></i></span>
+                    <%}%>
+                    <%goodsInfo.label.forEach(function(label) {%>
+                    <span class="label-text js-label" style="background-color:<%= label.color %>" data-text="<%= label.text%>"><%= label.text %></span>
+                    <%});%>
+                </div>
+
+                <!-- big promote -->
+                <div class="big-promote-notice">
+                    <p style="background-color:#<%= promoteContent.bgcolor%>;">
+                        <i class="logo" style="background-image:url(<%= promoteContent.icon%>);"></i>
+                        <span>
+                            <%= promoteMsg %>
+                        </span>
+                    </p>
+                    <a href="<%= promoteContent.url %>" target="_blank"><%= promoteContent.word %>&nbsp;&gt;&gt;</a>
+                </div>
+                <!-- big promote end -->
+
+                <%
+                var promptRemain = getTimeRemain( goodsInfo.end_time ),
+                labelText    = goodsInfo.end_time_text == '团购' ? '团' : '限';
+                %>
+                <ul class="item-promote-infos js-shop-promote">
+                    <% if (promptRemain && 1 == goodsInfo.shelf ){%>
+                    <li class="js-promote-item">
+                        <i class="label-mark-limit"><%=labelText%></i>
+                        距离恢复原价仅剩<span class="countdown" data-remain="<%= promptRemain %>"><i class="day countdown-time">&nbsp;</i>天<i class="hour countdown-time">&nbsp;</i>小时<i class="minute countdown-time">&nbsp;</i>分<i class="second countdown-time">&nbsp;</i>秒</span>
+                    </li>
+                    <%}%>
+                    <% if(goodsInfo.ext_info) { %>
+                    <li class="js-promote-item">
+                        <i class="label-mark-limit">预</i>
+                        预售发货时间<span><i class="countdown-time"><%= goodsInfo.ext_info.info.mon %></i>月<i class="countdown-time"><%= goodsInfo.ext_info.info.day %></i>日</span>
+                    </li>
+                    <% } %>
+
+
+                    <% if(goodsInfo.coin_discount){%>
+                    <li class="js-promote-item">
+                        <i class="label-mark-dou">豆</i>
+                        <%=goodsInfo.coin_discount%>
+                    </li>
+                    <%}%>
+                </ul>
+
+                <%
+                    var promoteRoomInfos = goodsInfo.promoteRoomInfos;
+                    if(promoteRoomInfos) {
+                %>
+                <a class="big-promote-room" href="<%= promoteRoomInfos.url %>" target="_blank"><%= promoteRoomInfos.notice %>&nbsp;&gt;&gt;</a>
+                <% } %>
+
+                <div class="item-freight">
+                    <label>运 费</label>
+                    <%= shop_in && shop_in.location%><span class="gray_f pl6_f">至</span><a id="js-dest-city" class="pl6_f pr6_f city-name" href="#"><span class="js-city-name"><%= goodsInfo.freight_city || '北京' %></span><i class="arrow-down"></i></a>
+                    <span id="js-freight-text"><% if(goodsInfo.freight_free) { %>全场免运费<% } else if(goodsInfo.freight) {%> 运费: <%= goodsInfo.freight %>元<% if(goodsInfo.freight_quota){ %> (满<%= goodsInfo.freight_quota %>元包邮) <% } } else {%>免运费<%}%></span>
+                </div>
+
+                <ul class="item-data">
+                    <li>销量
+                    <span class="item-data-wrap">
+                        <%= goodsInfo.sales%>件
+                    </span>
+                    </li>
+                    <li class="item-data-middle">好评率
+                    <span class="item-data-wrap">
+                        <a href="#" id="js-comment"><%= goodsInfo.satisfy_rate %></a> (<%= goodsInfo.comment.totalUser
+                        %>人)
+                    </span>
+                    </li>
+                    <li>喜欢
+                    <span class="item-data-wrap">
+                        <%= goodsInfo.twitter_stat.count_like%>人
+                    </span>
+                    </li>
+                </ul>
+
+                <%if(goodsInfo.promo != ''){%>
+                <p class="s_tle red_f"><%= goodsInfo.promo%></p>
+                <%}%>
+
+                <ul class="sku_meta">
+                    <%if(goodsInfo.is_preheat) {%>
+                    <li class="sku-item">
+                        <span class="sort">活动价</span>
+                        <span class="price-normal">￥<i id="price-preheat" class="num" data-price-min="<%= goodsInfo.preheat_price_min%>" data-price-max="<%= goodsInfo.preheat_price_max %>"><%= goodsInfo.preheat_price_min == goodsInfo.preheat_price_max ? goodsInfo.preheat_price_min : (goodsInfo.preheat_price_min + '-' + goodsInfo.preheat_price_max)%></i></span><span class="js-promotion-desc" data-time="<%= goodsInfo.start_time %>"></span>
+                    </li>
+                    <%}%>
+
+                    <% if(goodsInfo.campaign_phone_price_min) {%>
+                    <li class="sku-item mob-exclusive">
+                        <span class="sort">手机专享</span>
+                        <span class="price">¥<i id="price-phone" class="num" data-price-min="<%= goodsInfo.campaign_phone_price_min %>" data-price-max="<%= goodsInfo.campaign_phone_price_max %>"><%= goodsInfo.campaign_phone_price_min == goodsInfo.campaign_phone_price_max ? goodsInfo.campaign_phone_price_min : (goodsInfo.campaign_phone_price_min + '-' + goodsInfo.campaign_phone_price_max)%></i></span>
+                        <div class="dropdown-wrap">
+                            <a class="red_f js-mob-exclusive-btn dropdown-wrap-btn" href="javascript: void 0;"><% if(goodsInfo.is_preheat == 1) {%>扫码享916优惠价<%} else {%>扫码立享专享价<%}%><i class="arrow-ico"></i></a>
+                            <div class="js-mob-exclusive-panel dropdown-panel">
+                                <img src="<%= goodsInfo.qr_img %>" width="170">
+                            </div>
+                        </div>
+                    </li>
+                    <% } %>
+                </ul>
+                <div class="sku_info">
+                    <div class="skin">
+                        <%if(1 == goodsInfo.shelf ){%>
+                        <p class="text none_f"><span class="close_z"></span><span class="msg_ico"></span>请选择您要的商品信息</p>
+
+                        <%
+                        if( goodsInfo.color ) {
+                            var goodsColor    = goodsInfo.color,
+                                index         = 1,
+                                itemColors    = [],
+                                hasImageColor = false,
+                                renderHtml    = [],
+                                metaTitle     = '',
+                                c, itemColor;
+
+                            for ( c in goodsColor ) {
+                                if ( goodsColor.hasOwnProperty( c ) ) {
+                                    itemColor = goodsColor[ c ];
+                                    metaTitle = itemColor.meta_title;
+                                    if ( itemColor.color_image) {
+                                        hasImageColor = true;
+                                        renderHtml.push('<li class="img_list"><a href="#" class="js-item item-color-img" data-type="color" data-id="' + itemColor.meta_id + '" data-index="' + (index++) + '"><img src="' + itemColor.color_image + '" bsrc="' + itemColor.image + '" title="' + itemColor.meta_name + '" alt="' + itemColor.meta_name + '"><i class="icon-outofstock-mask"></i></a></li>');
+                                    } else {
+                                        renderHtml.push('<li ><a href="#" class="js-item item-color-text" data-type="color" data-id="' + itemColor.meta_id + '" data-index="' + (index++) + '">' + itemColor.meta_name + '</a></li>');
+                                    }
+                                }
+                            }
+                        %>
+                        <dl class="prop">
+                            <dt>
+                                <%= justifyTxt( metaTitle )%>
+                            </dt>
+                            <dd>
+                                <ul id="colorList" class="item-colorlist <%= hasImageColor ? 'has-image-color' : '' %>">
+                                <%= renderHtml.join('') %>
+                                </ul>
+                            </dd>
+                        </dl>
+                        <%}%>
+                        <%
+                        if(goodsInfo.size) {
+                        var goodsSize = goodsInfo.size;
+                        var index = 1;
+                        %>
+                        <dl class="prop">
+                            <dt><% for(var c in goodsSize) { %>
+                                <%= justifyTxt(goodsSize[c].meta_title)%>
+                                <% break;}%></dt>
+                            <dd>
+                                <ul id="sizeList" class="item-size-types">
+                                    <%
+                                    for(var s in goodsSize) {
+                                    var itemSize = goodsSize[s];
+                                    %>
+                                    <li><a href="#" class="js-item item-size-type" data-type="size" data-id="<%= itemSize.meta_id %>" data-index="<%= index++ %>"><%= itemSize.meta_name %></a></li>
+                                    <%}%>
+                                </ul>
+                            </dd>
+                        </dl>
+                        <%}%>
+                        <dl class="amount">
+                            <dt>数 量</dt>
+                            <dd>
+                                <div class="item-stock js-stock">
+                                    <input class="item-stock-num js-stock-num" title="请输入购买数量" type="text" value="1" <%if(goodsInfo.coupon_seller){%> readonly<%}%>>
+                                <span class="item-stock-btns">
+                                    <span class="item-stock-plus js-stock-plus <%if(goodsInfo.coupon_seller){%>hidden<%}%>"><i class="icon-up"></i></span>
+                                    <span class="item-stock-minus js-stock-minus <%if(goodsInfo.coupon_seller){%>hidden<%}%>"><i class="icon-down"></i></span>
+                                </span>
+                                <span class="item-stock-reserve js-stock-reserve">
+                                    <% if(goodsInfo.platform_type == 1) {%>
+                                    (预订款 <a href="/help/korea_shop#h_03" target="_blank" class="red_f">查看说明</a>)
+                                    <% } else {%>
+                                    (库存<span>-</span>件)
+                                    <%}%>
+                                </span>
+                                </div>
+                            </dd>
+                        </dl>
+                        <% if(this._serviceIM){ %>
+                        <dl class="mt10_f">
+                            <dt>客 服</dt>
+                            <dd>
+                                <% if(this._serviceIM){%>
+                                <a class="goqq knilmi" href="<%= this.ViewTools.callIM(this._serviceIM) %>" target="_blank"><em class="qqico">&nbsp;</em>联系客服</a>
+                                <% } %>
+                            </dd>
+                        </dl>
+                        <% } %>
+                        <% if ( shop_in.is_shop_realshot || shop_in.is_goods_realshot ) { %>
+                        <dl class="mt10_f">
+                            <dt>承 诺</dt>
+                            <dd>
+                                <i class="icon-realshot"></i><span class="item-real-shot">实拍认证</span>
+                            </dd>
+                        </dl>
+                        <% } %>
+
+                        <div class="msg_box">
+                            <p class="msg_limit"><span class="msg_ico"></span>对不起！每人最多限购100件！</p>
+                            <p class="msg_zero"><span class="msg_ico"></span>对不起，这件宝贝已经卖光啦！</p>
+                            <p class="msg_over"><span class="msg_ico"></span>您所填写的宝贝数量超过库存！</p>
+                        </div>
+                        <%}%>
+                        <div class="btn_box">
+                            <% if(goodsInfo && goodsInfo.purchased){ %>
+                            <span class="msg_shelf">MM你已经购买过该优惠券啦!</span>
+                            <% } else if (goodsInfo && 1 == goodsInfo.shelf) { %>
+                            <% if(goodsInfo.seckill_status > 0) {%>
+                            <a class="go-to-client" href="/client/?frm=daeh">此宝贝只能手机上购买，赶紧去下载客户端吧!&nbsp;&gt;&gt;</a>
+                            <% } else {
+                            if ( goodsInfo.in_storage == 1 ) {
+                                addToCartClass += " btn-disabled js-btn-disabled";
+                            }
+                            %>
+                            <a class="define" title="确定">确定</a>
+                            <div class="same_btn">
+                                <a class="<%= addToCartClass %>" title="加入购物车"><em class="cartico">&nbsp;</em>加入购物车</a>
+                                <a class="buy_btn" title="立即购买"><em class="rmbico">&nbsp;</em>立即购买</a>
+                            </div>
+                            <%}%>
+                            <%}else{%>
+                            <% if(!this.goods_info.is_zero){ %>
+                            <span class="msg_shelf">宝贝已下架!</span>
+                            <% } else { %>
+                            <span class="msg_shelf"><a href="/biz/fouryears/zero/#welcome">请回活动换购</a></span>
+                            <% }%>
+                            <%}%>
+                        </div>
+                    </div>
+                </div>
+
+                <%
+                var twitterStat = goodsInfo.twitter_stat,
+                count_like  = twitterStat && twitterStat.count_like,
+                beauty_me = goodsInfo.beauty_me
+                %>
+                <div class="item-spread">
+                    <% if (2 == beauty_me){ %>
+                    <a class="love_msg">这是你自己分享的哦!</a>
+                    <% } %>
+                    <div class="item-like-wrap">
+                        <a class="item-like-btn js-like-btn" data-liked="<%= 1==goodsInfo.beauty_me?1:0%>" isshowlike="<%= 2==beauty_me?0:1 %>" like_twitter_id="<%= goodsInfo.twitter_id %>">
+                            <%if (1 == beauty_me) {%>
+                            已喜欢
+                            <%}else{%>
+                            <i class="icon-like"></i>喜欢
+                            <%}%>
+                            <i class="item-like-num"><%= count_like?'('+count_like+')' :'' %></i>
+                        </a>
+                        <span class="addOneLike">+1</span>
+                    </div>
+                    <a class="item-share-btn js-item-share-btn">
+                        <i class="icon-share"></i>分享
+                    </a>
+                    <a id="twitter_magazi" class="add-in-magazine-btn">
+                        <i class="icon-magazine" title="收进杂志"></i>
+                    </a>
+                </div>
+                <div class="report"><a class="reportL" href=
+                    <% if(reportCheck.success!=0){ %>
+                    "/reportGoods?event_id=<%= goodsInfo.twitter_id%>"
+                    <%}else{%>
+                    "javascript:void(0)"
+                    <%};%>
+                     >举报</a></div>
+                <% if(this.isLogin && reportCheck.success==0){ %>
+                    <span class="warn">
+                        <%= reportCheck.error_info %>
+                    </span>
+                <%}%>
+                <% if(goodsInfo.banner) {%>
+                <a href="<%= goodsInfo.banner_url %>" target="_blank"><img class="ad-banner" src="<%= goodsInfo.banner %>"></a>
+                <% } %>
+            </div>
+
+            <div id="picture" class="item-pic">
+                <div class="item-pic-origin" style="max-height:<%= goodsInfo.image.max_height%>px;">
+                    <%= requireFn('mark.html')({
+                    'marks' : goodsInfo.marks
+                    }); %>
+                    <img class="j-big-pic twitter_pic" alt="<%= this.winTitle %>" src="<%= goodsInfo.image.image[0]%>"/>
+                    <% if ( goodsInfo.count_latestSaleNum ) {%>
+                    <div class="js-pop-tip item-pop-tip" data-num="<%= goodsInfo.count_latestSaleNum || 0 %>"><i class="icon-people"></i><i class="num"><%= goodsInfo.count_latestSaleNum%></i> 人最近已购买</div>
+                    <% } %>
+                </div>
+                <div class="item-pic-thumb js-pic-thumb">
+                    <% goodsInfo && goodsInfo.image.small_image.forEach(function( img, i ) { %>
+                    <span><img src="<%= img %>" bsrc="<%= goodsInfo.image.image[i]%>" width="68"></span>
+                    <% }); %>
+                </div>
+            </div>
+        </div>
+        <div class="sidebar">
+            <% if( shop_in ) {
+                var _tmpClassName = 'shop ';
+                if ( shop_in.is_cs == 1 ) {
+                    _tmpClassName += 'competitive-shop'
+                } else if ( shop_in.is_star == 1 ) {
+                    _tmpClassName += 'star-shop'
+                }
+            %>
+            <div class="<%= _tmpClassName %>">
+                <a class="shop-avatar" href="/shop/rating/?shop_id=<%=shop_in.shop_id%>&frm=rate_to_rateall" target="_blank"><img width="48" src="<%=shop_in.shop_face_img%>"></a>
+                <i class="icon-shop"></i>
+                <div class="shop-wrap">
+                    <a href="/shop/<%=shop_in.shop_id%>?pos=guangNick" target="_blank" class="shop-name"><%=shop_in.shop_nick%></a>
+                    <div class="shop-follow-state js-follow-shop">
+                        <a class="shop-follow-btn <%if(shop_in.isFollowing){%>is-followed<%} else {%>is-not-followed<%}%>">
+                            <%if(shop_in.isFollowing){%>
+                            <i class="icon-check"></i>已关注
+                            <%}else{%>
+                            <i class="icon-plus">+</i>关注
+                            <%}%>
+                        </a>
+                        <span class="shop-fans-wrap"><i class="shop-fans js-fans"><%= shop_in.followerNum %></i>粉丝</span>
+                    </div>
+                </div>
+                <ul class="shop-assess">
+                    <%
+                    var trend = shop_in.points_trend;
+                    if(trend) {
+                    [
+                        [ '描述', 'accord', 'first' ],
+                        [ '质量', 'quality', 'middle' ],
+                        [ '服务', 'attitude', 'middle' ],
+                        [ '发货', 'fast', 'last' ]
+                    ].forEach(function(data, i) {
+                    var prop = data[1],
+                        mark, avg, content, stateClass;
+
+                    if ( !trend[prop] ) return
+
+                    mark = trend[prop].mark
+                    avg  = trend[prop].avg
+
+                    if ( mark == 1 ) {
+                        stateClass = 'up'
+                    } else if ( mark == 0 ) {
+                        stateClass = 'fair'
+                    } else {
+                        stateClass = 'down'
+                    }
+
+                    if ( !avg || avg == '0.0' ) {
+                        content = '--'
+                    } else {
+                        content = '<i class="arrow-ico">--</i>' + avg
+                    }
+                    %>
+                    <li class="shop-assess-<%=data[2]%>">
+                        <%=data[0]%>
+                        <a href="/shop/rating/?shop_id=<%=shop_in.shop_id%>&frm=rate_to_rateall" class="shop-point <%=stateClass%>" target="_blank"><%=content%></a>
+                    </li>
+                    <%
+                    })
+                    }
+                    %>
+                </ul>
+                <ul class="shop-info">
+                    <li>所在地区：<%= shop_in.location%></li>
+                    <li>商品数量：<%=shop_in.goods_count%></li>
+                    <li>销售数量：<%=shop_in.goods_sales%></li>
+                    <li>店铺资质：
+                        <i class="icon-approve" title="美丽说认证 <%=shop_in.shop_ctime%>"></i>
+						<i class="icon-money<%=shop_in.shop_margin%>" title="已缴纳<%=shop_in.shop_margin%>元保证金"></i>
+                    </li>
+                    <li>联系客服：<a class="knilmi" href="<%= this.ViewTools.callIM(this._serviceIM) %>" target="_blank"><i class="icon-contact"></i></a></li>
+                </ul>
+
+                <a href="/shop/<%=shop_in.shop_id%>?frm=rate_to_shop" class="into-shop-btn" target="_blank"><i class="into-shop-ico"></i>进入店铺</a>
+            </div>
+            <% } %>
+
+            <% if(this.maybe_like && this.maybe_like.length) {%>
+            <div class="maybe-like">
+                <h3 class="hd">你可能还喜欢</h3>
+                <ul>
+                    <% this.maybe_like.forEach(function(data, i) { %>
+                    <li class="<% if(i%2) { %>even<% } else {%>odd<%}%>">
+                        <a href="<%= data.link_url%>" target="_blank" title="<%= data.goods_title %>"><img src="<%= data.image %>"></a>
+                        <p class="price">￥<%= data.price %></p>
+                    </li>
+                    <% }) %>
+                </ul>
+            </div>
+            <% } %>
+        </div>
+    </div>
+
+    <!-- 优惠套餐展示 开始-->
+    <%
+    var has_collocation,has_mayLike;
+    if(this.collocation){
+    has_collocation = this.collocation.length;
+    }
+    if(featureGoods.other_items){
+    has_mayLike = featureGoods.other_items.length;
+    }
+    %>
+    <% if(has_collocation || has_mayLike){ %>
+    <div class="tab_match">
+        <h2 class="tab_top">
+            <%if( has_collocation ){%><a href="javascript:void(0)" class="tabArea1 cur">优惠套餐</a><%}%>
+            <%if(has_mayLike){%><a href="javascript:void(0)" class="tabArea1 <%if(!has_collocation){%>cur<%}%>">人气单品</a><%}%>
+        </h2>
+    </div>
+
+    <%if(has_collocation){%>
+    <div class="contentArea1">
+        <div class="may_like">
+            <% if(!this.is_iPad){ %>
+            <%# doota/match.html%>
+            <%}%>
+        </div>
+    </div>
+    <%}%>
+    <%if(has_mayLike){%>
+    <div class="contentArea1 <%if(has_collocation){%>none_f<%}%>">
+        <div class="may_like">
+            <% if(!this.is_iPad){ %>
+            <%# doota/recommend.html%>
+            <%}%>
+        </div>
+    </div>
+    <%}%>
+    <%}%>
+    <!--优惠套餐展示 结束-->
+
+    <div class="box item-detail js-item-detail">
+        <div class="content wrap js-ceiling-tab">
+            <div class="js-tab-wrap">
+                <div class="tab_tle">
+                <h2 class="tab_top">
+
+                    <a href="javascript:void(0)" class="tabArea cur">商品详情</a>
+                    <a href="javascript:void(0)" class="tabArea eva">购买评价（<span class="twitter_comment_num"><%= shopCommentsCount  %></span>）</a>
+                    <% if( shoppingShowCount ){ %>
+                    <a href="javascript:void(0)" class="tabArea shopping">购物晒单（<span class="twitter_comment_num"><%= shoppingShowCount %></span>）</a>
+                    <% } %>
+                    <% if ( goodsInfo.sales ) {%>
+                    <a href="javascript:void(0)" class="tabArea deal">成交记录（<span class="twitter_comment_num"><%= goodsInfo.sales%></span>）</a>
+                    <% } %>
+                    <span class="js-item-price subtab-item-price"></span>
+                    <%if (1 == goodsInfo.shelf){%>
+                    <span class="<%= addToCartClass %>"><em class="cartico">&nbsp;</em>加入购物车</span><%}%>
+                </h2>
+                <%# doota/detail_items.html%>
+            </div>
+            </div>
+            <%if(shop_in && shop_in.is_vip){%>
+                <div class="vip"></div>
+            <%}%>
+            <div class="contentArea">
+                <%# doota/sale_detail.html%>
+                <div id="short_show">
+                    <% if (shopCommentsCount) { %>
+                    <h2 class="detail_tle">购买评价（<span class="twitter_comment_num"><%= shopCommentsCount %></span>）</h2>
+                    <div class="pro_line"></div>
+                    <%# doota/goods_rate.html  %>
+                    <div class="comments twitter" twitter_author_uid="<%= this.userInfo.user_id%>"  twitter_id="<%= goodsInfo.twitter_id%>">
+                        <ul class="list short_eva_comments">
+                        </ul>
+                    </div>
+                    <p class="evaLink">查看更多评价 &gt;</p>
+                    <% } %>
+                    <% if( shoppingShowCount ){ %>
+                    <h2 class="detail_tle">购物晒单</h2>
+                    <div class="shoppingshow_comments item-show"></div>
+                    <p class="shoppingLink">查看更多晒单 &gt;</p>
+                    <% } %>
+
+                    <% if ( goodsInfo.sales ) { %>
+                    <% if(goodsInfo.sales != '0') { %>
+                    <h2 class="detail_tle">成交记录（<%= goodsInfo.sales%>）</h2>
+
+                    <table class="deal-all w100">
+                        <thead class="j-deal-comments">
+                        <tr>
+                            <th class="deal-buyer">买家</th>
+                            <th class="deal-time">成交时间</th>
+                            <th class="deal-style">款式和型号</th>
+                        </tr>
+                        </thead>
+                    </table>
+                    <table class="deal-all w100">
+                        <tbody class="deal-comments j-deal-comments">
+                        </tbody>
+                    </table>
+                    <p class="dealLink">查看更多记录 &gt;</p><% }%>
+                    <% } %>
+                </div>
+            </div>
+            <div class="contentArea shpcmt none_f">
+                <% if (shopCommentsCount) { %>
+                <%# doota/goods_rate.html  %>
+                <% } %>
+                <div class="comments twitter" twitter_author_uid="<%= this.userInfo.user_id%>"  twitter_id="<%= goodsInfo.twitter_id%>">
+                    <div class="clear_f"></div>
+                    <% if(shopCommentsCount) {%>
+                    <ul class="eva_comments_filter_tab">
+                    </ul>
+                    <% } %>
+                    <div class="clear_f"></div>
+                    <div id="shop_comments_null">暂无购物评价。</div>
+                    <ul class="list eva_comments" id="eva_comments">
+                    </ul>
+                    <div class="clear_f"></div>
+                    <div id="shopPagingNav">
+                    </div>
+                    <div class="clear_f"></div>
+                </div>
+            </div>
+            <!-- 购物晒单 start -->
+            <% if( shoppingShowCount ) { %>
+            <div class="contentArea none_f">
+                <% if( goodsInfo.shopingshow_aid ) { %>
+                <div class="new_shoppingshow_wrap">
+                    <a href="/club/single/<%= goodsInfo.shopingshow_aid %>" class="new_shoppingshow" target="_blank"><span></span>查看晒单</a>
+                </div>
+                <% } else if ( goodsInfo.can_shoppingShow ) { %>
+
+                <div class="new_shoppingshow_wrap">
+                    <a href="/club/newShoppingTopic?tid=<%= goodsInfo.twitter_id %>" class="new_shoppingshow" target="_blank"><span></span>发布晒单</a>
+                </div>
+                <% } %>
+                <div class="shoppingshow_null">暂无购物晒单</div>
+                <div class="shoppingshow_comments item-show" id="shoppingshow_comments"></div>
+                <div class="clear_f"></div>
+                <div id="shsPagingNav"></div>
+                <div class="clear_f"></div>
+            </div>
+            <%}%>
+            <!-- 购物晒单 end -->
+            <div class="contentArea none_f">
+                <div class="comments twitter" twitter_author_uid="<%= this.userInfo.user_id%>"  twitter_id="<%= goodsInfo.twitter_id%>">
+                    <div class="clear_f"></div>
+                    <div id="shop_deal_null">30天内暂无成交记录。</div>
+                    <% if ( goodsInfo.sales ) { %>
+                    <table class="deal-all w100">
+                        <thead class="j-deal-comments deal-head">
+                        <tr>
+                            <th class="deal-buyer">买家</th>
+                            <th class="deal-time">成交时间</th>
+                            <th class="deal-style">款式和型号</th>
+                        </tr>
+                        </thead>
+                    </table>
+                    <% } %>
+                    <table class="deal-all w100">
+                        <tbody class="deal-comments j-deal-comments" id="j-deal-comments">
+                        </tbody>
+                    </table>
+                    <div class="clear_f"></div>
+                    <div id="dealPagingNav">
+                    </div>
+                    <div class="clear_f"></div>
+                </div>
+
+            </div>
+
+            <%if(featureGoods.top_items && featureGoods.top_items.length){%>
+            <div class="hot_sale">
+                <h2 class="like_tle">本店热卖</h2>
+                <ul class="all_goods">
+                    <% var goods_count = 0; %>
+                    <% featureGoods.top_items.forEach(function(data) { %>
+                    <% var style = ++goods_count % 4 ? '' : 'style="margin-right:0"' ; %>
+                    <li class="poster_grid" <%= style %> twitter_id="<%=data.twitter_id%>" twitter_author_uid="<%=data.twitter_author_uid%>" twitter_source_tid="<%= data.twitter_source_tid%>" twitter_show_type="<%=data.twitter_show_type%>" like_twitter_id="<%=data.like_twitter_id%>">
+                    <div class="hover_pic">
+                        <a href="<%= data.url %>" target="_blank"><img class="goods_pic" src="<%= data.goods_img %>" /></a>
+                        <span class="price"><%= data.goods_price %></span>
+                        <div class="like_merge">
+                            <a class="right_f poster_forward" href="javascript:void(0)"><em class="lm_shouji">&nbsp;</em>收进杂志</a>
+                        </div>
+                    </div>
+                    <p class="tle"><a href="<%= data.url %>" target="_blank"><%= mSubstr(data.goods_title , 32 , '...')%></a></p>
+                    <p class="comm_num">
+                        <a isShowLike="<%= data.isShowLike%>" s_uid="<%=data.like_author_uid%>" class="left_f poster_likes likes <%if(data.is_liked){%>liked<%}%>" href="javascript:void(0)">
+                            <b class="likes_status">
+                                <%if(data.is_liked){%>已喜欢<%}else{%><i class="lm_love2">&nbsp;</i>喜欢<%}%>
+                            </b>
+                            <span class="red_f f14_f poster_like_num"><%= data.count_like%></span>
+                        </a>
+                        <span class="gray_f right_f">销量（<%= data.sale_num %>）</span>
+                    </p>
+                    <%= requireFn('mark.html')({
+                    'marks' : data.horizontal_mark
+                    }); %>
+                    </li>
+                    <% }); %>
+                </ul>
+            </div>
+            <%}%>
+
+            <% if( shop_in ) {%>
+            <div class="shop_box">
+                <%if(shop_in != ''){%>
+                <h3 class="sp_tle"><a href="/shop/<%= shop_in.shop_id%>" target="_blank"><span class="sp_ico">&nbsp;</span><%= shop_in.shop_nick%></a></h3>
+                <%}%>
+                <% if(this._serviceIM){%>
+                <a class="goqq knilmi" href="<%= this.ViewTools.callIM ( this._serviceIM) %>" target="_blank"><em class="qqico">&nbsp;</em>联系客服</a>
+                <% } %>
+                <a class="attention <%if(shop_in.isFollowing){%>att<%}else{%>no_att<%}%>">
+                    <%if(shop_in.isFollowing){%><i class="check-ico"></i>已关注<%}else{%><i class="plus-ico"></i>关注本店<%}%>
+                </a>
+                <div class="fans_bottom j_fans">
+                    <i><%= shop_in.followerNum%></i>粉丝
+                </div>
+                <div class="clear_f"></div>
+                <%if(shop_in != ''){%>
+                <p class="sp_link"><a href="/shop/<%=shop_in.shop_id%>" target="_blank">http://www.meilishuo.com/shop/<%=shop_in.shop_id%></a></p>
+                <a href="/shop/?frm=banner_to_shop" target="_blank" class="check-more-shop"><i class="right-arrow-ico"></i>查看更多店铺</a>
+                <%}%>
+            </div>
+            <% } %>
+        </div>
+        <div class="sidebar">
+            <div class="js-shop-cover shop-cover">
+                <h3 class="title"></h3>
+                <a target="_blank"><img width="226" height="226"></a>
+            </div>
+            <%
+            if( shopCategoryDatas && shopCategoryDatas.length ) {
+            %>
+            <div class="cat">
+                <h3 class="hd">商品分类</h3>
+                <div class="cat-wrap">
+                    <%
+                    var frm;
+                    shopCategoryDatas.forEach(function(data){
+                        frm = data.frm;
+                    %>
+                    <h4><%= data.head %></h4>
+                    <ul class="cat-list<% if(data.type == 1) { %>-horizon<%}%>">
+                        <%
+                        data.cats.forEach(function(item){
+                        %>
+                        <li><a href="<%= item.url + '&' + frm %>" target="_blank"><%= item.name %></a></li>
+                        <% item.childs && item.childs.forEach(function(n) { %>
+                        <li><a href="<%= n.url + '&' + frm %>" target="_blank"><%= n.name %></a></li>
+                        <%});%>
+                        <% }); %>
+                    </ul>
+                    <% }) %>
+                </div>
+            </div>
+            <%}%>
+
+            <%
+            if(this.buy_more && this.buy_more.list) {
+            %>
+            <div class="buy-more">
+                <h3 class="hd"><%= this.buy_more.title %></h3>
+                <ul>
+                    <%
+                    this.buy_more.list.forEach(function(data) { %>
+                    <li class="item">
+                        <div class="wrap">
+                            <a href="<%= data.link_url %>" target="_blank"><img src="<%= data.image%>"></a>
+                            <span class="price">￥<%= data.price %></span>
+                        </div>
+                        <p class="title"><a href="<%= data.link_url %>" target="_blank"><%= data.goods_title %></a></p>
+                        <div class="buy-more-info">
+                            <span class="sales">销量 ( <%= data.sale_num %> )</span>
+                            <span class="likes"><i class="love-ico">&nbsp;</i><%= data.count_like %>人已喜欢</span>
+                        </div>
+                    </li>
+                    <%})%>
+                </ul>
+            </div>
+            <%}%>
+        </div>
+    </div>
+</div>
+
+<div class="pro_line"></div>
+<%# doota/promise.html%>
+<%# shop/shop_coupon.html%>
+
+<div id="js-cities" class="cities">
+</div>
+<div class="item-share-panel-wrap js-item-share-panel">
+    <div class="item-share-panel label-arrow-top">
+        <a id="share-sina" class="i_sina">&nbsp;</a>
+        <a id="share-tx" class="i_tx">&nbsp;</a>
+        <a id="share-qzone" class="i_qzone">&nbsp;</a>
+    </div>
+</div>
+
+<!-- 加入购物车解除风控 -->
+<%# doota/check_code.html %>
+
+<script type="text/html" id="tmplCities">
+    <div class="hd">选择你所在的城市:</div>
+    <ul class="bd">
+        <?
+        $.each(data, function(i, item) {
+    ?>
+        <li class="js-city item" style="z-index:<?= 35 - (+item.value)?>;">
+            <?= item.name ?>
+            <ul class="sec-items">
+                <?
+                    $.each(item.content, function(i, city) {
+                ?>
+                <li class="js-cities-sec sec-item" data-id="<?= city.value ?>" title="<?= city.name ?>"><?= city.name ?></li>
+                <? }); ?>
+            </ul>
+        </li>
+        <? }); ?>
+    </ul>
+</script>
+<script type="text/html" id="tmpl_coupon">
+    <? item && $.each(item, function(i, v) { ?>
+    <li class="item">
+        <span class="coupon">￥<?= v.credit ?></span>
+        <div class="intro">
+            <p class="desc"><?= v.tips ?></p>
+            <p class="time"><?= v.exp_date ?></p>
+        </div>
+        <span class="coupon-btn js-coupon-btn" data-code="<?= v.coupon_apply_code ?>">领取</span>
+    </li>
+    <?});?>
+</script>
+<script type="text/html" id="tmpl_newgoods">
+    <? item && $.each(item, function(i, v) {
+        var showNum = i == 0,
+            shopId  = v.shop_id,
+            date    = v.goods_ctime,
+            href    = '/shop/' + shopId + '?current_date=' + date;
+    ?>
+    <li><a class="<?=showNum ? 'js-newest-goods' : ''?>" href="<?= href ?>" target="_blank"><?= date ?> 新品 <? if( showNum ) {?><i class="label-item-num"><?=v.goods_num?></i><?}?></a></li>
+    <?});?>
+</script>
+<script type="text/html" id="tmpl_goods_tag">
+    <? item && $.each(item, function( i, v ) {?>
+    <li>
+        <label><?= v.content ?>:</label>
+        <span class="item-tag-progressbar">
+            <i class="item-tag-progress" style="width:<?= 150 * v.tag_count/item.totalTags?>px;"></i>
+        </span>
+        <?= v.tag_count ?>
+    </li>
+    <?});?>
+</script>
+<script type="text/html" id="tmpl_handpick_comment">
+    <?
+    for( var i = 0; i < item.length; i++) {
+        var comment = item[ i ];
+    ?>
+    <li>
+        <div class="comment-wrap js-comment-show">
+            <a class="comment-user-info" target="_blank">
+                <img src="<?= comment.avatar ?>">
+                <p class="comment-user-nickname"><?= comment.nickname ?></p>
+            </a>
+            <p class="comment-content" style="font-size:<?= comment.fontSize?>px;">
+                <i class="icon-quote-before"></i><?= comment.content ?><i class="icon-quote-after"></i>
+            </p>
+            <p class="comment-date"><?= comment.time ?></p>
+        </div>
+    </li>
+    <?}?>
+</script>
+<script type="text/html" id="tmpl_handpick_comment_tag">
+    <ul class="item-features-list">
+        <? item && $.each(item, function( i, v ) {?>
+        <li>
+            <label><?= v.content ?></label>
+        <span class="item-tag-progressbar">
+            <i class="item-tag-progress" style="width:<?= 150 * v.tag_count/item.totalTags?>px;"></i>
+        </span>
+            <i class="icon-good"></i> <?= v.tag_count ?>
+        </li>
+        <?});?>
+    </ul>
+</script>
+<script type="text/html" id="tmpl_handpick_comment_shopping">
+    <? item && $.each(item, function( i, v ) {?>
+        <li>
+            <? if( v.pinfo && v.pinfo.length ) {?>
+            <img src="<?= v.pinfo[0].g_show_pic ?>" alt="<?= v.article_htmlcontent ?>" width="160" height="160">
+            <? } ?>
+            <div class="item-shoppingshow-avatar">
+                <div class="avatar-wrap">
+                    <img src="<?= v.uinfo.avatar_a?>" width="48" alt="<?= v.uinfo.nickname ?>">
+                </div>
+                <span class="item-shoppingshow-nickname"><?= v.uinfo.nickname ?></span>
+            </div>
+        </li>
+    <?});?>
+</script>
+<script type="text/html" id="twitter_comment_deal">
+    <? item && $.each(item , function(key , data){?>
+    <tr>
+        <td class="deal-buyer">
+            <img src="<?= data.uInfo.avatar_a?>" width="32px" height="32px" />
+            <span><?= data.uInfo.nickname?></span>
+            <span>（匿名）</span>
+        </td>
+        <td class="deal-time">
+            <?= data.time?>
+        </td>
+        <td class="deal-style">
+            <?= data.color?><?if(data.color && data.size){?>/<?}?><?= data.size?>
+        </td>
+    </tr>
+    <?});?>
+</script>
+<script type="text/html" id="twitter_comment_count">
+    <? item && $.each(item , function(key , data){?>
+    <li class="item <? if(key == 0) { ?>cur<? } ?>"><?= data.name ?> (<?= data.total ?>)</li>
+    <?});?>
+    <li class="last_item"><label><input class="all_rate_btn" checked="checked" type="checkbox"/> 只看有内容的评价</label></li>
+</script>
+<script type="text/html" id="twitter_comment_shop">
+    <?
+        item && $.each( item, function( key, data ) {
+            var level = data.level,
+                txt, icon;
+
+            if ( level < 3 ) {
+                txt  = '差评';
+                icon = 'bad-level'
+            } else if( level > 3 ) {
+                txt  = '好评';
+                icon = 'good-level'
+            } else {
+                txt  = '中评';
+                icon = 'normal-level'
+            }
+    ?>
+    <li class="show">
+        <span class="avatar">
+            <img src="<?= data.uInfo.avatar_a?>">
+            <span class="twitter_comment_name" ><?= data.uInfo.nickname ?></span>
+        </span>
+        <p class="twitter-comment-hd <?=icon?>">
+            <i class="icon-<?=icon?>"></i><?=txt?>
+        </p>
+        <p class="l_con bgray_f"><?= data.content?></p>
+        <p class="twitter_goods_style"><?= data.style ?><span class="date-dis"><?= data.time?></span></p>
+        <?
+            var _pr  = data.partner_reply;
+            var _prt = data.partner_reply_time;
+            var _ac  = data.append_content;
+            var _ad  = data.append_day;
+            _ad = _ad != '0' ? (' ' + _ad) : '当';
+
+            if(_pr && _ac) {
+                var _r = /年|月|日/g,
+                    _d1 = new Date(_prt.replace(_r, '-')),
+                    _d2 = new Date(data.append_time.replace(_r, '-'));
+                if(+_d1 > +_d2) {
+        ?>
+        <div class="append_comment">
+            <p class="append_comment_content">[追加评论] <?= _ac ?></p>
+            <p class="date-dis">确认收货后<?= _ad ?>天追加评价</p>
+        </div>
+        <div class="partner_reply">
+            <p class="partner_reply_content">[商家回复] <?= _pr ?></p>
+            <p class="date-dis"><?= _prt ?></p>
+        </div>
+        <? } else { ?>
+        <div class="partner_reply">
+            <p class="partner_reply_content">[商家回复] <?= _pr ?></p>
+            <p class="date-dis"><?= _prt ?></p>
+        </div>
+        <div class="append_comment">
+            <p class="append_comment_content">[追加评论] <?= _ac ?></p>
+            <p class="date-dis">确认收货后<?= _ad ?>天追加评价</p>
+        </div>
+        <? } } else if(_pr) { ?>
+        <div class="partner_reply">
+            <p class="partner_reply_content">[商家回复] <?= _pr ?></p>
+            <p class="date-dis"><?= _prt ?></p>
+        </div>
+        <? } else if(_ac) { ?>
+        <div class="append_comment">
+            <p class="append_comment_content">[追加评论] <?= _ac ?></p>
+            <p class="date-dis">确认收货后<?= _ad ?>天追加评价</p>
+        </div>
+        <? } ?>
+    </li>
+    <?});?>
+</script>
+<script type="text/html" id="shoppingshow_tmp">
+    <? item && $.each( item, function( key, data ) {?>
+    <div class="item-show-li">
+        <div class="left_f">
+            <img class="avatar" src="<?= data.uinfo.avatar_a ?>" width="70" height="70">
+            <p class="nickname"><?= data.uinfo.nickname ?></p>
+        </div>
+        <div class="content_cl item-show-content">
+            <div class="hd">
+                <span class="time"><?= data.article_create_time ?></span>
+                <? if(data.highlight){ ?>
+                <i class="icon-best"></i>
+                <? } ?>
+                <h3>
+                    <a href="/club/single/<?= data.article_id ?>" target="_blank">
+                        <?= data.article_title ?>
+                    </a>
+                </h3>
+            </div>
+
+            <div class="shop_detail">
+                <div class="clearfix_f mb20_f">
+                    <p class="cnt_r"><?= data.article_htmlcontent ?></p>
+                </div>
+                <div class="cnt_imgs clearfix_f">
+                    <? data.pinfo && $.each(data.pinfo, function(index , pic){?>
+                    <? if(index < 3){ ?>
+                    <a href="/club/single/<?= data.article_id ?>" target="_blank"<? if(index==3){?> style="margin-right: 0;" <?}?> ><img src="<?= pic.g_show_pic || pic.pic_url ?>" width="190" height="190"></a>
+                    <? } ?>
+                    <?});?>
+                </div>
+            </div>
+            <div class="item-show-toolbar">
+                <? var isLike = data.like == 1 ? 'cl_love' : 'cl_unlove';?>
+                <a class="btn_bar cl_like" uid="<?= data.uinfo.user_id ?>" aid="<?= data.article_id ?>"
+                   href="javascript:;"><em class="<?= isLike ?>">&nbsp;</em>喜欢<em><?= data.count_like||''?></em></a>
+                <a class="btn_bar cl_reply" href="/club/single/<?= data.article_id ?>#reply" target="_blank"><em
+                        class="cl_i_comment">&nbsp;</em>回复<?= data.count_reply || '' ?></a>
+                <?if (fml.vars.user_id == data.uinfo.user_id){?>
+                <a class="love_pro none_f">这是你自己的晒单哦！</a>
+                <?}?>
+            </div>
+        </div>
+        <div class="clear_f"></div>
+    </div>
+    <?});?>
+</script>
+<script type="text/html" id="pagingNav">
+    <div class="pageNav1">
+        <? if(page > 0){?>
+        <a index="-1" class="pagePrev" href="javascript:void(0)" data-action="prev">&lt;上一页</a>
+        <?};?>
+        <?
+		var left_num = page >5 ? page - 5: 0 , right_num = left_num + 10;
+        if ( right_num > pageLen) right_num = pageLen;
+        ?>
+        <?if (left_num >= 1){?>
+        <a index="1" href="javascript:void(0)" class="pageitem <?if(page == 1){?>currentpage<?}?>" data-action="jump" data-page="1"><?= 1?></a>
+        <span>...</span>
+        <?}?>
+        <?for (var i = left_num ;i < right_num;i++ ){?>
+        <a index="<?= i?>" href="javascript:void(0)" class="pageitem <?if(page == i){?>currentpage<?}?>" data-action="jump" data-page="<?= i + 1 ?>"><?= i+1?></a>
+        <?}?>
+        <?if (right_num < pageLen) {?>
+        <span>...</span>
+        <a index="<?= pageLen-1?>" href="javascript:void(0)" class="pageitem <?if(page == pageLen-1){?>currentpage<?}?>" data-action="jump" data-page="<?= pageLen?>"><?= pageLen?></a>
+        <?}?>
+        <? if(page != pageLen - 1){?>
+        <a class="pageNext" href="javascript:void(0)" index="1" data-action="next">下一页&gt;</a>
+        <?}?>
+    </div>
+</script>
+<script type="text/html" id="tmpl_shop_coupons">
+<li>
+    <i class="label-mark-coupon">券</i>
+    <ol class="item-promotion">
+        <?
+            var isMulti = coupons.length > 1;
+            $.each( coupons, function( i, coupon ) {
+        ?>
+        <li class="<?= isMulti ? 'item-promotion-multi' : 'item-promotion-single'?>"><?=coupon.text?>
+            <? if(coupon.coupon_apply) { ?>
+            <div class="dropdown-wrap js-coupon coupon-wrap">
+                <a class="red_f dropdown-wrap-btn js-coupon-btn" href="javascript: void 0;">立即领取&nbsp;&#9662;</a>
+                <div class="js-coupon-panel dropdown-panel label-arrow-top">
+                    <div class="hd">领券下单，更多优惠等你拿</div>
+                    <ul class="bd">
+                    </ul>
+                    <span class="info js-info red_f"></span>
+                </div>
+            </div>
+            <? } else if(coupon.link != '') { ?>
+            <a class="red_f" href="<?=coupon.link?>" target="_blank"> <?=coupon.link_text?>》</a>
+            <?}?>
+        </li>
+        <?});?>
+    </ol>
+</li>
+</script>
+<script type="text/html" id="tmpl_shop_promote">
+<?
+    var marketToolTypes = {
+        'mail': '邮',
+        'reduce': '减',
+        'discount': '折'
+    };
+
+    $.each( datas, function( i, v ) {
+        var type = v.type;
+?>
+    <li>
+        <i class="label-mark-<?= type ?>"><?= marketToolTypes[type] ?></i>
+        <a class="js-promote-<?=type?>-btn item-promote-btn" href="#"><?= v.brief?>&nbsp;<i>&#9662;</i></a>
+        <div class="js-promote-<?=type?>-panel item-promote-panel label-arrow-top">
+            <?= v.text ?>
+            <p class="note">时间：<?= v.note ?></p>
+        </div>
+    </li>
+<?});?>
+</script>
+
+<script>
+    fml.vars.count_discuss = "<%= goodsInfo.twitter_stat.discuss_num%>";
+    fml.vars.count_dis = {'meaning':"<%= shopCommentsCount %>",'all':"<%= shopCommentsCount %>"};
+    fml.vars.count_deal = "<%= goodsInfo.sales || 0 %>";
+    fml.vars.count_shs = "<%= shoppingShowCount %>";
+    fml.vars.goods = {"id" : "<%=goodsInfo.goods_id %>" , "twitter_id": "<%= goodsInfo.twitter_id%>" ,"pid" :"<%= goodsInfo.pid || 0%>"};
+    fml.vars.goods_stock = <%= JSON.stringify(goodsInfo.stock)%>;
+    fml.vars.sku = <%= JSON.stringify(goodsInfo.sku) %>;
+    fml.vars.hasColor = <%= !!goodsInfo.color %>;
+    fml.vars.hasSize  = <%= !!goodsInfo.size %>;
+    fml.vars.repertory = <%= goodsInfo.repertory || 0 %>;
+    fml.vars.goods_prop = <%= JSON.stringify(goodsInfo.prop)%>;
+    fml.vars.shop_id = <%= shopId %>;
+    fml.vars.tid = <%== this.tid %>;
+    fml.vars.is_item_page = true;
+    fml.vars.user_id = "<%= this.userInfo.user_id %>";
+    fml.vars.satisfy_rate = "<%= goodsInfo.satisfy_rate %>";
+    fml.vars.in_storage = "<%= goodsInfo.in_storage %>";
+    fml.vars.goodsInfo = {
+        title: "<%= goodsInfo.goods_title %>",
+        picSrc: "<%= goodsInfo.image.image[0] %>",
+        twitterId: "<%= goodsInfo.twitter_id %>"
+    };
+    fml.vars.shareInfo = <%= JSON.stringify(this.share_info) %>;
+    fml.vars.hasShoppingShow = <%= !!shoppingShowCount %>;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+        fml.use('page/doota/sale');
+_use:", this._JSstack , this._JSmods); %>
+
+<%# foot.html%>

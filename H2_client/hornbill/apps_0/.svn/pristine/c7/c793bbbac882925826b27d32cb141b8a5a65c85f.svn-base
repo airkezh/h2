@@ -1,0 +1,147 @@
+@import "../block.less";
+
+body {
+  overflow-x       : hidden;
+  background-color : #ebebeb;
+}
+
+.wrap {
+  overflow-x : hidden;
+  .w(100%);
+  .wrap-show {
+    .w(100%);
+    .auto;
+    img {
+      .w(100%);
+      .bgc(red);
+    }
+  }
+  .share {
+    .w(100%);
+    img {
+      .w(100%);
+    }
+  }
+}
+
+.title {
+  .c;
+  .pt(10px);
+  .pb(10px);
+  .pl(15px);
+  .pr(15px);
+  .bgc(white);
+  .black;
+}
+
+.act {
+  .block;
+  .w(100%);
+  .pf;
+  bottom  : -3px;
+  img {
+    .w(100%);
+  }
+  z-index : 1;
+}
+
+.wrap-rule {
+
+  p {
+    .break-all;
+  }
+  img {
+    display : block;
+    width   : 100%;
+  }
+}
+
+.tabs {
+  font-size : 0;
+  overflow  : hidden;
+  border    : 1px solid #b2b2b2;
+
+  .tab {
+    .left;
+    width              : 50%;
+    font-size          : 1rem;
+    padding-top        : 10px;
+    padding-bottom     : 10px;
+    color              : #000;
+    line-height        : 1.2;
+    margin-top         : 1px;
+    text-align         : center;
+    -webkit-box-sizing : border-box;
+    -moz-box-sizing    : border-box;
+    box-sizing         : border-box;
+    border             : 1px solid transparent;
+    border-top         : 0;
+    border-bottom      : 0;
+  }
+
+  .active {
+    border-left-color  : #b2b2b2;
+    border-right-color : #b2b2b2;
+    background-color   : #fff600;
+    color              : #000;
+  }
+}
+
+/*
+  为了解决 6plus 下的瀑布流崩溃问题，将布局改成绝对定位
+*/
+.content {
+  position : relative;
+
+  .post {
+    position : absolute;
+    left     : 0;
+    width    : 100%;
+  }
+}
+
+.share {
+  .w(100%);
+}
+
+.wShare {
+  position         : fixed;
+  top              : 0;
+  left             : 0;
+  display          : none;
+  background       : url("http://d04.res.meilishuo.net/pic/_o/67/60/603ac3ea4a5af12a920461894551_640_1136.ch.png") no-repeat;
+  .w(100%);
+  .h(100%);
+  .hidden;
+  background-color : rgba(0, 0, 0, 0.8);
+  z-index          : 100;
+  background-size  : 100%;
+}
+
+.has-mask, .has-mask body {
+  height   : 100%;
+  overflow : hidden;
+}
+
+.show {
+  display : block;
+}
+
+.hide {
+  display : none;
+}
+
+.is-like .icon-like {
+  background-image : url("http://d02.res.meilishuo.net/pic/_o/bd/81/7bd39876214446046fd89222cabc_42_40.cf.png");
+  .animation(fill .3s cubic-bezier(0.42, 0, 0.47, 1.1));
+}
+
+.not-like .icon-like {
+  .animation(expand .3s )
+}
+
+@import "../component/loading";
+@import "../../footer.less";
+div.loading-bar {
+  .mb(30px);
+}

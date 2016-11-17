@@ -1,0 +1,122 @@
+<%# head.html%>
+<% this.headName = '订单详情'; %>
+<%# head_share.html%>
+<script>
+	var order_id = <%=this.order_id%>;
+</script>
+<div class="order_area">
+	<input type="hidden" id="order_id" value="<%=this.order_id%>">
+</div>
+
+<script type="text/html" id="orderDetailTpl">
+<?
+if(this.order_info && this.order_info.info){
+	var order = this.order_info.info.order,
+		address = this.order_info.info.address,
+		goods = this.order_info.info.goods,
+		step = order.step,
+		msgObj = order.words,
+		status = order.status,
+		express = order.express;
+	this.order = order;
+?>
+
+	<div class="order_goods">
+		<ul class="order_goods_list">
+			<? goods && goods.map(function(goods, i){ ?>
+			<li id="goods_<?= goods.sid ?>">
+				<div class="last">
+					<p class="price u_price"><?= goods.price || goods.goods_activity_price ?></p>
+					<p class="num">X&nbsp;<?= goods.amount?></p>
+					<p class="status"><?= goods.goods_text || (Number(goods.amount)*Number(goods.price || goods.goods_activity_price)).toFixed(2) ?></p>
+				</div>
+				<a href="/share/<?if(goods.is_doota == '1'){?>item/<?}?><?= goods.twitter_id ?>">
+					<img class="pic" src="<?= goods.b_pic_url?>"/>
+					<div class="middle">
+						<p class="title"><?= goods.goods_title?></p>
+						<p class="prop">
+							<? goods.prop && goods.prop.map(function(prop){ ?>
+							<?if(prop.is_show){?>
+							<span><?= prop.name?>：<?= prop.value?></span>
+							<?}?>
+							<?});?>
+						</p>
+					</div>
+				</a>
+			</li>
+			<?});?>
+		</ul>
+
+		<p class="order_price">商品总价：<strong><?= order.total_price ?></strong></p>
+
+		<div class="order_status">
+			<p><?= order.status_text ?></p>
+		</div>
+		<?if(order.show_pay_and_close){?>
+		<ul class="btnBox">
+			<li><a target="_blank" id="pay_now" href="/order/pay/?source=5-0.0.1&order_id=<?=order.order_id?>&total_price=<?=order.total_price?>" class="btn">立即支付</a></li>
+			<li><a id="cancel_order" href="javascript:;" class="btn gray" order_id="<?= order.order_id?>">取消订单</a></li>
+		</ul>
+		<?}?>
+
+		<div class="order_control_info">
+			<p>如需退换货或退款，请前往美丽说网站（www.meilishuo.com）或使用美丽说客户端操作。</p>
+		</div>
+
+		<?if(0){?>
+		<? if(order.show_receive_button){ ?>
+		<ul class="btnBox">
+			<li><a href="/order/confirm_receive/?order_id=<?=order.order_id?>" class="disableBtn">确认收货</a></li>
+		</ul>
+		<div class="order_control_info">
+			<p>如需确认收货，请前往美丽说网站（www.meilishuo.com）或使用美丽说客户端。</p>
+		</div>
+		<?}?>
+		<?}?>
+
+	</div>
+
+	<ul class="c_list">
+		<li>
+			<label>商家：</label><p><?= order.shop_name?></p>
+		</li>
+	</ul>
+
+	<ul class="c_list">
+		<li><label>订单号：</label><span><?= order.order_id ?></span></li>
+		<?if(order.ctime){?><li><label>下单时间：</label><span><?= order.ctime ?></span></li><?}?>
+		<?if(order.pay_time){?><li><label>付款时间：</label><span><?= order.pay_time?></span></li><?}?>
+		<?if(order.send_time){?><li><label>发货时间：</label><span><?= order.send_time?></span></li><?}?>
+	</ul>
+
+	<ul class="c_list">
+		<li><label>收货地址：</label><p><?= address.address ?></p></li>
+		<li><label>购买留言：</label><p><?= order.comment?></p></li>
+		<li><label>支付方式：</label><p><?= order.pay_name?></p></li>
+	</ul>
+
+	<?if(order.express_id){?>
+	<div class="order_express">
+		<ul class="c_list">
+			<li><label>物流公司：</label><p><?= order.express_company ?></p></li>
+			<li><label>物流单号：</label><p><?= order.express_id ?></p></li>
+			<? if(express && express.length){ ?>
+			<li>
+				<label>物流信息：</label>
+				<p>
+					<? express.forEach(function(e,i){ ?>
+					<span <?= i=== express.length - 1 ? 'class="current"':''?>><?= e ?></span>
+					<? }); ?>
+				</p>
+			</li>
+			<? } ?>
+		</ul>
+	</div>
+	<?}?>
+
+<?}?>
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('m/page/doota/orderDetail');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

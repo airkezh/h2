@@ -1,0 +1,61 @@
+<%# head.html %>
+
+<% var shopInfo = this.shopInfo; %>
+
+<header class="page_head">
+	<div class="back_icon" id="back_btn"><i></i></div>
+	<a class="right_btn" href="/cart" xr="<%= this.xr.r %>">购物车<span class="cart_nums"></span></a>
+	<div class="title"><%= this.pageTitle %></div>
+</header>
+
+<div class="space_bg"></div>
+
+<section>
+	<div class="intro">
+		<div class="img_wrap" style="background-image: url(<%= shopInfo.shop_face_img %>);"></div>
+		<h2><%= shopInfo.shop_nick %></h2>
+		<p><span><%= shopInfo.following_num %></span>人已关注</p>
+	</div>
+
+	<div class="nums">
+		<div class="salse_num">
+			<p class="num"><%= shopInfo.total_sale_num %></p>
+			<p class="title">累计销量</p>
+		</div>
+		<div class="goods_num">
+			<p class="num"><%= shopInfo.shop_goods_num %></p>
+			<p class="title">宝贝数量</p>
+		</div>
+		<div class="news_num">
+			<p class="num"><%= shopInfo.new %></p>
+			<p class="title">本月上新</p>
+		</div>
+	</div>
+
+	<div class="quality">
+		<% shopInfo.points.forEach(function(item){ %>
+			<%
+				var color_text = 'green_text';
+				switch(item.mark){
+					case '0': color_text = 'yellow_text';
+						break;
+					case '1': color_text = 'red_text';
+						break;
+				}
+			%>
+			<p><%= item.text %> <%= item.avg %><span class="ftt">比同行平均</span><span class="<%= color_text %>"><%= item.ratio %></span></p>
+		<% }); %>
+	</div>
+
+	<div class="desc">
+		<p>所在地区<span><%= shopInfo.shop_location %></span></p>
+		<p class="phone">客服电话<a href="tel:<%= shopInfo.phone %>" xr="<%= this.xr.r %>"><span><%= shopInfo.phone %></span></a></p>
+		<p>店主推荐<span><%= shopInfo.shop_desc %></span></p>
+	</div>
+</section>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/shop/detail');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot_simple.html %>

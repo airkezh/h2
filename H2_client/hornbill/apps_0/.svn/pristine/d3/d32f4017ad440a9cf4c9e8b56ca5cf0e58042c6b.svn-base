@@ -1,0 +1,25 @@
+<%#head.html%>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<%
+	var pageData = this.pageData || {}
+		, userInfo = this.getUserInfo || {}
+%>
+
+<div class="wrap" user_id="<%= userInfo.user_id %>">
+	<% pageData && pageData.over && pageData.over.map(function(data){ %>
+		<img src="<%= data.image_src %>" />
+	<%}); %>
+	<div class="goApp">
+		<img src="<%= pageData.overBtn %>" />
+	</div>
+</div>
+
+<script>
+	fml.vars.mlsHost = "<%= this.mlsHost%>";
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/redPaper/index');
+_use:", this._JSstack, this._JSmods); %>
+
+<%# foot.html%>

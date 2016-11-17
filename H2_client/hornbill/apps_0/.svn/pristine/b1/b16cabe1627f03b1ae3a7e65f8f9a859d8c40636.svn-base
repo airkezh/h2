@@ -1,0 +1,73 @@
+<script>
+function __get_r(href ,r){
+	if (!r) return href
+	if (!href) return
+	if (href.indexOf('meilishuo://') === 0 || href.indexOf('meilishuohd://') === 0) {
+		var scheme = href.split('?json_params=')
+		try {
+			var params = scheme[1] ? JSON.parse(decodeURIComponent(scheme[1])) : {}
+			if (scheme[0].indexOf('openURL') > -1) {
+				params.url = __get_r(params.url ,r)
+			}
+			params.r = r
+			params = encodeURIComponent(JSON.stringify(params))
+		}catch(err){
+			alert(err)
+		}
+
+		return scheme[0] + '?json_params=' + params
+	}
+
+	var hash = href.split('#')
+
+	var query = hash[0].split('?')
+	var search = query[1]
+	if (search){
+		search = search.split('&')
+		for (var i = search.length - 1; i >= 0;i --){
+			var item = search[i]
+			if (item.slice(0,2) == 'r=') search.splice(i,1)
+		}
+	}else {
+		search = []
+	}
+
+	search.push('r=' + encodeURIComponent(r) )
+	search = search.join('&')
+
+
+	var link =  query[0] + '?' + search
+	if (hash[1]) link += '#' + hash[1]
+	return link
+}
+
+document.addEventListener('click' , function(evt){
+	var ele = evt.target
+	while (ele){
+		if ('A' == ele.tagName) break
+		ele = ele.parentNode
+		if (ele === this) return
+	}
+	if (!ele) return
+
+	var status = ele.getAttribute('_der')
+	if (1 == status ) return evt.preventDefault()
+	if (2 == status) return
+	ele.setAttribute('_der' , 1)
+	var href = ele.getAttribute('href')
+	if(href.indexOf('#') === 0) return
+	if (!href || href.indexOf('javascript:') === 0 ) return
+
+	var r = ele.dataset.xr || ele.getAttribute('xr')
+
+	if (!r) {
+		evt.preventDefault()
+		alert('链接参数丢失')
+		return
+	}
+
+	ele.setAttribute('href', __get_r(href , r))
+	ele.setAttribute('_der' , 2)
+
+},false)
+</script>

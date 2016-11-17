@@ -1,0 +1,133 @@
+/*common*/
+require('wap/zepto')
+
+var RenderTpl = require('wap/component/shareTmp')
+
+var $wd  = $(window)
+var $s   = $('.search')
+var $f   = $('#form')
+var $sm  = $('#submit')
+var $cc  = $('#cancel')
+var $ct  = $('#cart')
+var $i   = $f.find('#input')
+var $cl = $f.find('#clear')
+var $awl = $('#associated_word_list')
+var $cw  = $('.content_wrap')
+var $m50 = $('.m50')      // 撑起底部导航的那块砖~
+
+var url = '/aj/sq/interfaces/associated_word'
+var windowScrollTop = 0
+var flag = true
+
+function search(e){
+	e && e.preventDefault()
+
+	var v = $.trim( $i.val() )
+
+	if(v){
+		location.href = '/sq/search/?key=' + encodeURIComponent(v)
+	}else{
+		$i.val('')
+	}
+}
+ 
+function forBrevityOnly($a, $b, $c, d){
+	$a.hide()
+	if(d || $i.val() ){
+		$b.show()
+		$c.hide()
+	}else{
+		$b.hide()
+		$c.show()
+	}
+}
+
+function clearInput(){
+	$i.val('')
+	forBrevityOnly($cc, $sm, $ct)
+	restoreStyles()
+	$awl.empty()
+	$cl.hide()
+	$m50.show()
+	$cw.show()
+	$wd.scrollTop(windowScrollTop)
+}
+
+function changeSyles(){
+	$s.css({
+		height: 'calc(100% - .15rem)'
+	})
+	$awl.css({
+		height: '100%'
+	})
+}
+
+function restoreStyles(){
+	$s.css({
+		height: 'auto'
+	})
+	$awl.css({
+		height: 0
+	})
+}
+
+$wd.on('scroll', function (e){
+	windowScrollTop = $wd.scrollTop()
+})
+
+$i.on('focus', function (){
+
+	forBrevityOnly($ct, $sm, $cc)
+
+}).on('blur', function (){
+
+	if($awl.height() <= 0){
+		forBrevityOnly($cc, $sm, $ct)
+	}
+
+}).on('input', function (){
+	var v = $i.val()
+	if(v){
+		forBrevityOnly($cc, $sm, $ct, true)
+
+		if(flag){
+			var data = { key_word: v }
+
+			flag = false
+			$.get(url, data, function (res){
+				if(res.count > 0){
+					var tpl = RenderTpl('associated_word_tpl', res.associative_word)
+					changeSyles()
+					$awl.empty().append(tpl)
+					$cl.show()
+					$m50.hide()
+					$cw.hide()
+				}
+				flag = true
+			}, 'json')
+		}
+	}else{
+		$cl.hide()
+		forBrevityOnly($sm, $ct, $cc, false)
+		restoreStyles()
+		$awl.empty()
+		$m50.show()
+		$cw.show()
+		$wd.scrollTop(windowScrollTop)
+	}
+
+})
+
+$f.on('submit', search)
+$sm.on('click', search)
+
+$cc.on('click', function (){
+	if($awl.height() > 0){
+		clearInput()
+	}
+})
+
+$cl.on('click', function (){
+	clearInput()
+	$i.focus()
+})

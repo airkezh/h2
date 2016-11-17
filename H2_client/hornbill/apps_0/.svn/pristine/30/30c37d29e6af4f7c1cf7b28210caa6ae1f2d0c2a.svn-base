@@ -1,0 +1,33 @@
+@import "../../block.less";
+@borderColor:#e6e6e6;
+input,div,textarea{cursor: default;}
+input:-webkit-autofill { 
+	-webkit-box-shadow: 0 0 0px 1000px white inset;
+} 
+.Transform(@r){
+	transform:@r;
+	-webkit-transform:@r;
+}
+.Transition(@f:transform,@t:0.5s){
+	transition:@f @t;
+	-webkit-transition:@f @t; 
+}
+.Animate(@name,@duration:2s,@timingfunction:linear,@delay:0s,@count:1,@direction:normal){
+	animation:@name @duration @timingfunction @delay @count @direction;
+	-webkit-animation:@name @duration @timingfunction @delay @count @direction;
+}
+
+/* webkit自定义滚动条 */
+::-webkit-scrollbar {.w(8px);.h(8px);
+	&-button{display: none;}
+	&-track{background: #fff;border-left: 1px solid #c1c1c1;
+		&-piece{
+		}
+	}
+	&-thumb{background: #ccc;.border-r(5px);border:1px solid #c1c1c1;min-height: 24px;min-width: 24px;
+		&:hover{background: #999;}
+		&:active{background: #666;}
+	}
+
+}
+/*--webkit自定义滚动条*/

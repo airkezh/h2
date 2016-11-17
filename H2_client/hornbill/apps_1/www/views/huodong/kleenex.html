@@ -1,0 +1,248 @@
+<%#head.html%>
+<%
+	var wlInfoRenderFn = requireFn('welfare/welfare_info.html');
+%>
+<div class="kleenex_box">
+	<div class="kleenex_center">
+		<img src="<%= this.PICTURE_URL%>images/huodong/kleenex/top130926.jpg" />
+		<img src="<%= this.PICTURE_URL%>images/huodong/kleenex/topbanner130926.jpg" />
+		<div class="kleenex_banner">
+			<div class="video">
+				<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,19,0" width="520" height="428">
+					<param name="movie" value="http://i7.imgs.letv.com/player/swfPlayer.swf?id=2113241&autoplay=true" />
+					<param name="quality" value="high" />
+					<param name="wmode" value="transparent" />
+					<embed src="http://i7.imgs.letv.com/player/swfPlayer.swf?id=2113241&autoplay=true" quality="high" wmode="transparent" pluginspage="http://www.macromedia.com/go/getflashplayer" allowScriptAccess="always" allowFullScreen="false" type="application/x-shockwave-flash" width="520" height="428"></embed>
+				</object>
+			</div>
+			<div id="k1" class="kl_apo"></div>	
+		</div>
+		<div class="kl_title1"></div>
+		<div class="klwf_klweibo">
+			<div class="kl_wf">
+				<%=wlInfoRenderFn(this.wl_header)%>
+			</div>
+			<div class="kl_weibo">
+				<iframe width="320" height="310"  frameborder="0" scrolling="no" src="http://widget.weibo.com/livestream/listlive.php?language=zh_cn&width=320&height=310&uid=1806340543&skin=1&refer=1&appkey=&pic=0&titlebar=1&border=1&publish=1&atalk=1&recomm=0&at=0&atopic=%E8%88%92%E6%B4%81%E6%B9%BF%E5%8E%95%E7%BA%B8%20%E6%B4%81%E7%99%96%E5%A5%BD%E8%80%81%E6%B9%BF&ptopic=%E8%88%92%E6%B4%81%E6%B9%BF%E5%8E%95%E7%BA%B8%20%E6%B4%81%E7%99%96%E5%A5%BD%E8%80%81%E6%B9%BF&dpc=1"></iframe>
+			</div>
+			<div id="k2" class="kl_apo"></div>
+		</div>
+		<div class="kl_title2"></div>
+		<div class="kl_daren">
+			<div class="kl_d1">
+				<a class="kl_nd1" href="http://www.meilishuo.com/group/43810963" target="_blank"></a>
+				<a class="kl_meng" href="http://www.meilishuo.com/group/43810963" target="_blank"></a>
+			</div>
+			<div class="kl_d2">
+				<a class="kl_nd2" href="http://www.meilishuo.com/group/43810963" target="_blank"></a>
+				<a class="kl_meng" href="http://www.meilishuo.com/group/43810963" target="_blank"></a>
+			</div>
+			<div class="kl_d3">
+				<a class="kl_nd3" href="http://www.meilishuo.com/group/43810963" target="_blank"></a>
+				<a class="kl_meng" href="http://www.meilishuo.com/group/43810963" target="_blank"></a>
+			</div>
+			<div class="kl_d4">
+				<a class="kl_nd4" href="http://www.meilishuo.com/group/43810963" target="_blank"></a>
+				<a class="kl_meng" href="http://www.meilishuo.com/group/43810963" target="_blank"></a>
+			</div>
+			<div class="kl_d5">
+				<a class="kl_nd5" href="http://www.meilishuo.com/group/43810963" target="_blank"></a>
+				<a class="kl_meng" href="http://www.meilishuo.com/group/43810963" target="_blank"></a>
+			</div>
+			<div class="kl_d6">
+				<a class="kl_nd6" href="http://www.meilishuo.com/group/43810963" target="_blank"></a>
+				<a class="kl_meng" href="http://www.meilishuo.com/group/43810963" target="_blank"></a>
+			</div>
+			<div class="kl_darentext"></div>
+			<div id="k3" class="kl_apo"></div>
+		</div>
+		<div class="kl_title3"></div>
+		<div class="join_kl">
+			<div class="kl_user">
+				<%this.users_apply && this.users_apply.map(function(data){%>
+				<div class="wl_she">
+					<a class="wl_sheimg" target="_blank" href="/person/u/<%=data.user_id%>"><span asrc="<%=data.avatar_c%>"></span></a>
+					<a class="wl_shename" target="_blank" href="/person/u/<%=data.user_id%>"><%=data.nickname%></a>
+				</div>
+				<%});%>			
+			</div>
+			<% if(this.user_list.followed == 0) {%>
+			<span class="btn_join">立即<br />加入</span>
+			<%}else if(this.user_list.followed == 1){%>
+			<span class="joined">已经<br />加入</span>
+			<%}%>
+			<div id="k4" class="kl_apo"></div>
+		</div>
+		<div class="kl_title4"></div>
+		<div class="kl_newpro">
+			<div class="prolink">
+				<a href="http://sale.jd.com/act/b6Yg4RNzVw.html" target="_blank">想要即刻体验如水洗般干净舒爽？湿厕纸组合装（4包）超值价只要 21.9元！</a>
+			</div>
+			<div class="clear_f"></div>
+				<a href="http://sale.jd.com/act/b6Yg4RNzVw.html" target="_blank">
+					<img src="<%= this.PICTURE_URL%>images/huodong/kleenex/newpro130822.jpg" />
+				</a>
+			<div id="k5" class="kl_apo"></div>
+		</div>
+		<div class="kl_title5"></div>
+		<div class="spec_pack">
+			<p>
+				舒洁明星产品优惠回馈，把柔软带回家！<span>（新会员首次购买可获得10元代金券）</span>
+			</p>
+			<a href="http://sale.jd.com/act/b6Yg4RNzVw.html" target="_blank">
+				<img src="<%= this.PICTURE_URL%>images/huodong/kleenex/banner130911.jpg" />	
+			</a>
+			<a class="g_p_1" target="_blank" href="http://www.yihaodian.com/item/13456572_1?ref=gl.1.1.52.[1_1_52_search.ctg_1].4BtGeA.4BtNbb"></a>
+			<a class="g_p_2" target="_blank" href="http://meilishuo.com/u/EI4Knn?frm=shujie04(http://item.jd.com/853220.html)"></a>
+			<a class="g_p_3" target="_blank" href="http://meilishuo.com/u/EI4K0b?frm=shujie05(http://item.jd.com/853263.html)"></a>
+			<!--
+			<a class="g_1" target="_blank" href="http://sale.jd.com/act/b6Yg4RNzVw.html"></a>
+			<a class="g_2" target="_blank" href="http://www.yihaodian.com/cmsPage/show.do?pageId=48221&tracker_u=10658449145&provinceId=2"></a>
+			<a class="g_3" target="_blank" href="http://meilishuo.com/u/EI4Knn?frm=shujie04(http://item.jd.com/853220.html)"></a>
+			<a class="g_4" target="_blank" href="http://meilishuo.com/u/EI4K0b?frm=shujie05(http://item.jd.com/853263.html)"></a>
+			-->
+			<div class="clear_f"></div>
+		</div>
+		<div class="kleenex_nav">
+			<ul>
+				<li><a class="k_hnav0" href="#k1"></a></li>
+				<li><a class="k_hnav1" href="#k2"></a></li>
+				<li><a class="k_hnav2" href="#k3"></a></li>
+				<li><a class="k_hnav3" href="#k4"></a></li>
+				<li><a class="k_hnav4" href="#k5"></a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<%*弹窗部分--转发到微博@好友--通过绑定%>
+<script type="text/html" id="welfare_apply">
+<div class="welfare_apply" id="welfare_apply_after">
+	<p class="wf_explain">我们会优先选择有真人头像的姑娘获奖~</p>
+	<form class="wf_form" onsubmit="return false;" action="">
+		<input type="hidden" name="activity_id" value="<%=this.wl_header.activity_id%>">
+		<p>
+			<span class="wa_info">真实姓名：</span>
+			<input id="real_name" class="wfipt1" type="text" value="<?=info.realname?>" name="real_name">
+		</p>
+		<p>
+			<span class="wa_info">联系电话：</span>
+			<input id="telephone" class="wfipt1" type="text" value="<?=info.mobile?>" name="telephone">
+		</p>
+		<p>
+			<span class="wa_info">收货地址：</span>
+			<input id="address" class="wfipt2" type="text" value="<?=info.shipping_address?>" name="address">
+		</p>
+		<p>
+			<span class="wa_info">申请理由：</span>
+			<textarea id="reason" class="wfipt3" name="reason"></textarea>
+		</p>
+		<p>
+			<span class="wa_info">备注：</span>
+			<input id="note" class="wfipt2" type="text" placeholder="非必填选项，按此活动需求，请填写你衣服或鞋子的尺寸" name="note">
+		</p>
+		<p class="l22_f">
+			<span class="wa_info">同步：</span>
+			<div id="weibo_area">
+				<p>
+					<?if(fans && fans.length>0) {?><span id="weibo_area_change">换一组</span>同步到我的微博，并@美丽说和我的好友
+					<?} else {?>
+					同步到我的微博，并@美丽说。
+					<?}?>
+				</p>
+				<div class="mt5_f">
+					<?fans && $.each(fans, function(k, v){?>
+					<img class="avatar48_f" alt="<?=v.screen_name?>" src="<?=v.image_url?>">
+					<?});?>
+					<div class="clear_f"></div>
+				</div>
+				<?if(fans && fans.length>0) {?>
+				<p class="mt5_f">你@了<span id="weibo_area_info">0</span>位微博好友</p>
+				<?}?>
+			</div>
+		</p>
+		<p>
+			<label class="cursor_f"><input fuid="<%=this.wl_info.userInfo.user_id%>" id="fol_actor" type="checkbox" checked>关注<%=this.user_list.nickname%></label>
+			<br/>
+			<label class="cursor_f"><input id="share_home" type="checkbox" checked>分享到我的首页</label>
+		</p>
+		<p>
+			<input id="applying_submit" type="submit" value="提交申请">
+			<a class="wf_cancel" href="javascript:void(0)">取消</a>
+		</p>
+	</form>
+</div>
+</script>
+<%*弹窗部分--转发到微博@好友--未绑定%>
+<script type="text/html" id="welfare_apply_before">
+<div class="welfare_apply_before">
+	<p class="c_f">亲，绑定以下任意微博就能参加活动啦！</p>
+	<div class="mt14_f wf_bind">
+		<a class="wfr_ico1" href="/settings/syncBind/weibo"></a>
+		<a class="wfr_ico2" href="/settings/syncBind/txweibo"></a>
+		<div class="clear_f"></div>
+	</div>
+</div>
+</script>
+<%*弹窗部分--转发到微博@好友--绑定失败%>
+<script type="text/html" id="welfare_apply_error">
+<div class="c_f">
+	<p class="erro_info">授权失败，请再试一次吧！</p>
+	<p>
+		<span class="btn sure" id="welfare_sure">确定</span>
+		<span class="" id="welfare_return">返回</span>
+	</p>
+</div>
+</script>
+<%*申请成功提示%>
+<script type="text/html" id="welfare_apply_success">
+<div class="apply_success">
+	<p>你已经成功提交申请了，我们会尽快处理，</p>
+	<%*207号福利社定制功能 4.16下线%>
+	<%if(this.wl_header.activity_id == 207){%>
+	<p>来<a class="red_f fb_f" href="http://c.admaster.com.cn/c/a13079,b200160760,c1981,i0,m101,h" target="_blank">ORBIS官网</a>浏览，寻找更多惊喜。</p>	
+	<%}else{%>
+	<p>获得试用资格的MM将收到系统消息通知，</p>
+	<p>请注意查收哦～</p>
+	<%}%>
+	<%if(this.wf_girl.followed == 0){%>
+	<p>想获得更多福利情报，请关注福利花小美^_^</p>
+	<div class="mt8_f clearfix_f" style="margin-left:20px;">
+		<a class="left_f" target="_blank" href="/person/u/<%=this.wf_girl.user_id%>">
+			<img width="86" height="86" src="<%=this.wf_girl.avatar_a%>">
+		</a>
+		<div class="wf_girl_r">
+			<a class="f14_f fb_f block_f" target="_blank" href="/person/u/<%=this.wf_girl.user_id%>"><%=this.wf_girl.nickname%>
+				<span class="identity_big_style">
+				<%= jsRender('identity.html')(this.wf_girl) ;%>
+				</span>
+			</a>
+			<span class="red_follow add_follow_ok" fuid="<%= this.wf_girl.user_id%>" following=<%= this.wf_girl.following%> followed="<%= this.wf_girl.followed%>">+ 加关注</span>
+		</div>
+	</div>
+	<%}else{%>
+	<p class="mt14_f" style="margin-left:100px;"><input class="apply_success_ok cursor_f btn sure" type="button" value="确定"/></p>
+	<%}%>
+</div>
+</script>
+<script>
+	Meilishuo.config.begin = <%=this.wl_header.begin%>;
+	Meilishuo.config.activity_id = <%=this.wl_header.activity_id%>;
+	Meilishuo.config.editor = <%=this.wl_header.editor%>;
+	Meilishuo.config.pid = <%=this.wl_header.twitter_images_id%>;
+	Meilishuo.config.wl_title = '<%=this.wl_header.title%>';
+	Meilishuo.config.topic_title = '<%=this.wl_header.topic_title%>';
+</script>
+<script type='text/javascript'>
+(function() {
+    var c = document.createElement('script'); 
+    c.type = 'text/javascript';
+    c.async = true;
+    c.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'sitemonitor.cn.miaozhen.com/boot/45479';
+    var h = document.getElementsByTagName('script')[0];
+    h.parentNode.insertBefore(c, h);
+})();
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+     fml.use('page/huodong/kleenex');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

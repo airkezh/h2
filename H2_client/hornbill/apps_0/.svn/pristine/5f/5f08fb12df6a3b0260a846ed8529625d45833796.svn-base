@@ -1,0 +1,37 @@
+<%# head.html%>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<div class="wrap">
+	<div class="main">
+		<div class="page p1" transition="translateX" style="z-index:1;">
+			<img src="http://d01.res.meilishuo.net/pic/_o/56/20/6d483e1e6dd7996a31d2544d3f33_640_455.cg.jpg">
+			<div class="bt">
+				<p></p>
+			</div>	
+		</div>
+		<div class="page p2" transition="translateX" style="z-index:2;">
+			<img class="talk1" src="http://d01.res.meilishuo.net/pic/_o/e3/1b/2c1e7441d881b97d672015c6c539_169_100.cg.png">
+			<img class="talk2" src="http://d04.res.meilishuo.net/pic/_o/27/84/63a52f99efaadbd9b2b37078c9e9_479_186.cg.png">
+			<div class="talk3">
+				<img class="head" src="<%= this.wx_userInfo.headimgurl ? this.wx_userInfo.headimgurl : 'http://d02.res.meilishuo.net/pic/_o/de/f6/5af6f528b473bfd2c2d7fbce51da_512_513.cf.png' %>">
+				<div>
+					<p><%= this.wx_userInfo.nickname ? this.wx_userInfo.nickname : '花小美' %></p>
+					<img class="yes" src="http://d05.res.meilishuo.net/pic/_o/9f/2a/8e8f73631d57522c61e2148ba936_194_63.ch.png">
+				</div>
+			</div>
+			<a href="/luhan/kiss/mua" class="talk4" xr="<%= this.xr.r%>">
+				<img class="biaoq" src="<%= this.PICTURE_URL%>images/huodong/22.png">
+				<img class="dianme" src="http://d04.res.meilishuo.net/pic/_o/11/b9/e07846a9c764362bbadff602a538_301_99.cg.png">
+			</a>
+			<img class="bt" src="http://d04.res.meilishuo.net/pic/_o/29/cb/1b2eae051a302f5d8c0e24de8aaf_640_90.cf.jpg">
+		</div>
+	</div>
+</div>
+<!-- 音乐 -->
+<audio hidden="true" preload="auto" autobuffer>
+	<source src="http://d03.res.meilishuo.net/tmp/69417a1dbeee3f6d9c201daa34bd6c6b.ch.mp3">
+</audio>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use("wap/page/luhan_kiss");
+_use:", this._JSstack , this._JSmods); %>
+<%# foot.html%>

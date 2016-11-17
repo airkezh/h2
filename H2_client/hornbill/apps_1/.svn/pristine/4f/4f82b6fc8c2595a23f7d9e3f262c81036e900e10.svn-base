@@ -1,0 +1,34 @@
+<%# head.html%>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<%
+	var circleUrl = 'meilishuo://circle.meilishuo?json_params=' + encodeURIComponent(JSON.stringify({'circle_id':'561895'}))
+%>
+<div class="wrap">
+	<div class="circle">
+		<img src="http://d03.res.meilishuo.net/pic/_o/53/cc/d5f3365f3992b9986897020364a8_461_499.cf.png"/>
+		<a href="<%= this.weixinBrowser ? 'http://circle.meilishuo.com/circle/landing?circle_id=561895' : circleUrl %>"></a>
+	</div>
+	<img src="http://d01.res.meilishuo.net/pic/_o/92/f9/2b88ac7ee24ef0ff4b43c9cfd12a_436_132.cf.png" class="shareBtn"/>
+</div>
+
+<script type="text/html" id="shareLead">
+	<div class="dialog_share">
+		<span class="share_pic"></span>
+	</div>
+</script>
+
+<div class="appshare">
+	<%= requireFn('wapShare.html')({
+		'share' : this.share 
+	    , 'shareTitle' : '选择分享到'
+	    , '_JSstack' : this._JSstack
+		, '_JSmods' : this._JSmods
+	}); %>
+</div>
+<script>
+	fml.vars.mlsHost = '<%=this.mlsHost%>';
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/music/index');
+_use:", this._JSstack, this._JSmods); %>
+<%# foot.html%>

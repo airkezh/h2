@@ -1,0 +1,95 @@
+@import "../block.less";
+@import "../window.less";
+
+body{.bgc(#fff);}
+.main{.w(900px);.auto;}
+.wrap{
+	.border-1(#e6e6e6);padding: 20px;margin: 20px 0;
+	.goods{padding: 10px;.bgc(#f5f5f5);.mb(20px);}
+	.no_goods{
+		.cursor;
+		img{.left;.mr(10px);}
+		p{.l(50px);}
+	}
+	.shopping_wrap{
+		img{.left;.mr(10px);}
+		.goods_title{.hidden;.h(32px);.l(16px);}
+		.goods_price{.f(14px);.fb;.mt(2px);}
+	}
+	.goods_comment{
+		.mb(20px);
+		p{.left;.mr(30px);.l(26px);}
+		span{padding: 0 14px;.border-1(#e6e6e6);.i_block;.ml(-1px);.cursor;}
+		.active, span:hover{border-color: #ff679a;.pr;}
+		input{.border-1(#e6e6e6);.h(26px);.w(54px);.mr(5px);padding: 0 3px;}
+	}
+	.article_subject{
+		.content{.border-1(#e6e6e6);.w(819px);.h(88px);padding: 20px;.mb(20px);}
+		.article_toolbar_load{border-top: 1px solid #e6e6e6;.pt(20px);}
+		.add_pic{background: url("@{pic_url}/images/club/sp_upload_img.jpg") no-repeat;.pt(108px);.w(99px);.c;.pr;.left;}
+		.add_pic input{.h(100%);}
+		.addPic_tips{.f(12px);.ml(10px);}
+		.addPic_con{border-bottom: 1px dotted #e6e6e6;.pb(20px);.f(14px);.mb(20px);.hidden;}
+	}
+	.article_post_error, .article_post{
+		.pr;
+		textarea:focus{border: 1px solid #ff679a;outline: none;}
+	}
+	.article_post_error .item_arrow p{.none;}
+	.item{top: 0;opacity: 1;.bgc(#fff);}
+	.separation{border-top: 1px solid #e7e7e7;.w(100%);}
+	.item_arrow{
+		.pa;left: 14px;top: 20px;.fc(#b6b6b6);.hidden;
+		.arrow_up{width:0; height:0; .mt(-7px); border:7px solid;border-color:#fff #fff #b6b6b6 #fff;.mb(2px);}
+		.arrow_down{width:0; height:0; border:7px solid; border-color:#b6b6b6 #fff #fff #fff;}
+	}
+	.item_con{padding: 20px 40px;}
+		.pic_title{.w(300px);.mr(12px);.left;.l(16px);}
+		.progress_bar{.w(250px);.h(14px);.border-r(2px);.bgc(#eee);.left;.mt(1px);}
+		.upload_percentage{.w(0);.h(14px);.border-r(2px);.bgc(#f69);}
+		.upload_errormsg{.l(16px);}
+
+		.upload, .addGoods{
+			img{.w(132px);.h(132px);border: solid 1px #e7e7e7;.left;}
+			.desp{.w(588px);.h(92px);padding: 20px;.ml(13px);.bgc(#fff);border: solid 1px #e7e7e7;.left;}
+		}
+		.price_wrap{.pa;bottom: 34px;left: 41px;overflow: hidden;}
+			.price_tx{padding: 3px 7px 3px 17px;.l(20px);.ml(-10px);.fc(#fff);.bgc(rgb(51,51,51));.bgc(rgba(51,51,51,.6));.border-r(10px);}
+	.move{.pa;z-index: 100;border-bottom: 1px solid #e7e7e7;opacity: .9;cursor: move;.w(858px);}
+	.moving .item_con{visibility: hidden;}
+	.error .upload_errormsg{.fc(#FF679A);}
+	.submit{.bgc(#ff679a);.w(100px);.c;.right;.l(44px);.h(44px);.f(14px);.fc(#fff);.cursor;}
+	.checkBox {
+		.pt(10px);.w(220px);.left;.f(14px);.ml(520px);
+		label{.left;}
+		.l_ipt{.w(64px);.h(22px);.bgc(#fff);
+			.border-1(#ccc);
+		}
+		.checkImage{
+			.cursor;
+			span{.pl(10px);}
+		}
+	}
+}
+.goods_alert{
+	padding: 0 20px 20px;
+	.goods_wrap{max-height: 364px;overflow: auto;}
+	.shopping_wrap{
+		border-bottom: 1px dotted #e6e6e6;.pb(20px);.pt(20px);
+		input{.left;.mt(20px);}
+		img{.left;.mr(10px);.ml(20px);}
+		.goods_title{.h(32px);.l(16px);.hidden;.w(430px);}
+		.goods_price{.f(14px);.fb;.mt(2px);}
+	}
+	.getGoods{
+		.mt(20px);.c;
+		span{.i_block;.bgc(#ff679a);.w(100px);.c;.l(44px);.h(44px);.f(14px);.fc(#fff);.mr(10px);.cursor;}
+		a{.fc(#999);}
+		a:hover{text-decoration: underline;}
+	}
+}
+.example{
+	p{border-bottom: 1px solid #e6e6e6;.mb(20px);.f(20px);padding: 10px 0;}
+	img{.mb(20px);}
+}
+.cl_i_close{background: url("@{pic_url}/images/club/club_icons_4.png") no-repeat;.bp(0, -20px);padding: 5px;.h(0);.pa;top: 20px;right: 15px;.cursor;}

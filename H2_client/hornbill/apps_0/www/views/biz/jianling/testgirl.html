@@ -1,0 +1,64 @@
+<div class="girlword"></div>
+<div class="testgirl">
+	<div class="choice-item">
+		<div class="r1">
+			<h2>1. 夏季让你联想到?</h2>
+			<label class="q1-1"><input type="radio" name="q1" value="a" />A. 飘逸的长裙  </label><br/>
+			<label class="q1-2"><input type="radio" name="q1" value="b" />B. 性感的比基尼</label>
+		</div>
+		<div class="r1">
+			<h2>2. 最想去哪个地方避暑? </h2>
+			<label><input type="radio" name="q2" value="a"/>A. 白色雪山,清凉至极  </label>
+			<label><input type="radio" name="q2" value="b"/>B. 郁郁森林,回归自然</label>
+		</div>
+
+		<div class="r1">
+			<h2>3. 海边聚会你倾向哪一种? </h2>
+			<label><input type="radio" name="q3" value="a"/>A. 篝火晚会  </label><br/>
+			<label><input type="radio" name="q3" value="b"/>B. 泳装 PARTY</label>
+		</div>
+		<input type="hidden" name='cpic' id="cpic" value='0'/>
+	</div>
+
+	<div class="upload-box">
+		<%= requireFn('biz/huodong/upload_photo.html')({
+			'upload_style' : 'jlUpWapper',
+			'reload_style' : 'jl_reup'
+		}); %>
+		<div class="csuit">选择泳装</div>
+		<button class="next none_f">查看我的冰雪属性</button>
+	</div>
+</div>
+
+<!-- 选择泳装弹窗-->
+<script type="text/html" id="suit">
+	<div class="suit_pop">
+		<a class="close_btn" href=""></a>
+		<div class="suit_pop_main">
+			<a class="choicesuit" href="http://www.meilishuo.com/search?searchKey=%E6%B3%B3%E8%A3%85&searchType=1&filter=goods&frm=searchsuggestion&suggest_frm=" target="_blank">选择泳装</a>
+			<input type="text" class="bb_link" placeholder="粘贴泳装宝贝的链接"/>
+			<div class="topreview">生成预览图</div>
+		</div>
+	</div>
+</script>
+
+
+
+
+<!-- 查看冰雪属性弹窗-->
+<script type="text/html" id="ice">
+	<div class="ice_pop">
+		<a class="close_btn" href="">完成</a>
+		<img src="<?=lpic?>" width="244" height="344" class="lpic"/>
+		<img src="<?=tpic?>" class="tpic"/>
+		<a id="share_sina" href="javascript:;"></a><span class="sinaicon"></span>
+	</div>
+</script>
+
+
+
+
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+     fml.use('page/huodong/jianling_sec');
+_use:", this._JSstack , this._JSmods ); %>

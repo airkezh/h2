@@ -1,0 +1,89 @@
+<%#head_simple.html%>
+<%
+	var answer = this.answer;
+	var resultInfo = answer.resultInfo;
+	var resultBall = answer.resultBall;
+	var resultShare = answer.resultShare;
+	var resultShareItem = resultShare.items[0];
+	var resultShareBtn = answer.resultShareBtn;
+	var resultShareBg = answer.resultShareBg;
+
+	var resultStyle = ['background-image:url(' + resultInfo.bg + ')'].join(';');
+
+	var wxShareStyle = ['background-image:url(' + resultShareBg + ')'].join(';');
+
+	var shareBallStyle = [
+		'background-image:url(' + resultShare.img + ')',
+		coordStyle(resultShare.top,1),
+		coordStyle(resultShare.left),
+		'width:' + resultShare.width,
+		'height:' + resultShare.height
+	].join(';');
+
+	var shareBtnStyle = [
+		'background-image:url(' + resultShareBtn.img + ')',
+		coordStyle(resultShareBtn.top,1),
+		coordStyle(resultShareBtn.left),
+		'width:' + resultShareBtn.width,
+		'height:' + resultShareBtn.height
+	].join(';');
+
+	function coordStyle(str,dir){
+		var rtn = '';
+		var side = dir ? 'top:' : 'left:'; 
+		if(str){
+			rtn = side + str;
+		}else{
+			rtn = side + '50%;';
+			if(dir){
+				rtn += '-webkit-transform:translateY(-50%)';
+			}else{
+				rtn += '-webkit-transform:translateX(-50%)';
+			}
+		}
+		return rtn;
+	}
+
+	function ballStyle(item){
+		var style = [
+			'background-image:url(' + item.img + ')',
+			coordStyle(item.top,1),
+			coordStyle(item.left),
+			'width:' + item.width,
+			'height:' + item.height,
+			'z-index:' + (item['z-index'] || 1)
+		].join(';');
+		return style;
+	}
+
+%>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+
+<div class="doc" >
+	<div class="result" style="<%=resultStyle %>">
+		<% resultBall.forEach(function(item){ %>
+			<a class="ball" data-link="<%=item.link %>" style="<%=ballStyle(item) %>"></a>
+		<% }); %>
+		<div class="shareball" style="<%=shareBallStyle %>"></div>
+		<div class="sharebtn" style="<%=shareBtnStyle %>"></div>
+	</div>
+</div>
+<div class="wxshare" style="<%=wxShareStyle %>"></div>
+<div class="appshare">
+	<%= requireFn('wapShare.html')({
+		'share' : this.share 
+	    , 'shareTitle' : '选择分享到'
+	    , '_JSstack' : this._JSstack
+		, '_JSmods' : this._JSmods
+	}); %>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+  	fml.use('wap/page/activity/result');
+_use:", this._JSstack , this._JSmods ); %>
+<script>
+	fml.vars.resultShare = <%=JSON.stringify(resultShareItem) %>;
+</script>
+<%#foot_simple.html%>
+

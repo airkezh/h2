@@ -1,0 +1,79 @@
+function ja(){
+	return this;
+}
+var controlFns = {
+	proxy : function(){
+        this.res.write('<script>')
+        this.res.write('parent.' +this.req.__get['__callback'] + '('+ JSON.stringify(this.req.__get.data)+')')
+        this.res.write('</script>')
+        this.res.end()
+        },
+	topic : function(params) {
+        var php = {
+            'create' : '/topic/Topic_add_twitter'
+        };
+        this.ajaxTo(php[params]);
+    },	
+	twitter : function(params) {
+		var php = {
+			'verify' : '/twitter/verify'
+	//		,'fetch' : '/twitter/fetch'
+	//		,'pick' : '/twitter/pick'
+	//		,'create' : '/twitter/create'
+		};
+		this.ajaxTo(php[params]);
+	},
+	search: function () {
+        this.ajaxTo('/goods/search_autocomplete');
+    },
+    msg: function (params) {
+        var php = {
+            'clear_msg': '/msg/clear_alert',
+            'setzero': '/msg/setmsg_zero'
+        }
+        this.ajaxTo(php[params]);
+    },
+	blast : function(params){
+		var conf = JSON.parse(this.req.__get['conf']);
+		var php = {
+			'friendlink' : '/friendlink/bottom',
+			'ads_one' : '/welcome/banner_ads?key=web_welcome_promotion',
+			'msg': '/msg/getmsg'
+		};
+
+		this.setDefaultData(php);
+		this.bridgeMuch(php);
+		this.listenOver(function(data){
+
+			data.front_conf = conf;
+			data.MAIN_SITE_DOMAIN = data.MAIN_SITE_DOMAIN || 'http://www.meilishuo.com';
+
+			var rtnData = { };
+
+			if(conf.topbar){
+				this.render('common/topbar.html' , data , function(err, html){
+					rtnData.topbar = html;
+				});
+			}
+			if(conf.search){
+				this.render('common/search.html' , data , function(err, html){
+					rtnData.search = html;
+				});
+			}
+			if(conf.nav){
+				this.render('common/nav.html' , data , function(err, html){
+					rtnData.nav = html;
+				});
+			}
+			if(conf.foot){
+				this.render('common/foot.html' , data , function(err, html){
+					rtnData.foot = html;
+				});
+			}
+
+			this.res.write(this.req.__get['callback'] + '(' + JSON.stringify(rtnData) + ')');
+			this.res.end();
+		});
+	}
+}
+exports.__create = controller.__create(ja , controlFns);

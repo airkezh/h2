@@ -1,0 +1,47 @@
+<%#head.html%>
+<div class="beauty">
+	<div class="mt14_f"><a href="/beauty/">美妆首页</a>&nbsp;&gt;&nbsp;</a><a href="/beauty/catalog/<%=this.star.category_words_id%>"><%=this.singleStar.refer%></a></div>
+	<div class="beauty_con" style="float:left;">
+		<%#beauty/singleStar.html%>	
+		<div class="com_title"><h2>使用心得</h2></div>
+		<div class="star_rec">
+			<%this.comments.gInfo && this.comments.gInfo.map(function(data){%>
+			<div class="clearfix_f">
+			<div class="avatar64_f">
+				<a href="/person/u/<%=data.user_id%>" target="_blank"><img src="<%=data.avatar_c%>" alt="" /></a>
+			</div>
+			<div class="com_con">
+				<%if(data.star!=0){%><div class="arrow"></div><%}%>
+				<div class="name">
+					<a href="/person/u/<%=data.user_id%>" target="_blank"><%=data.nickname%></a>
+				</div>
+				<span>评分</span><em><i style="width:<%=Math.floor(5.8*data.comment_grade)%>px;"></i></em>
+				<div class="u_com">
+					<b>使用心得：</b><%=data.comment%>
+				</div>
+				<span class="time" style="display:none;"><%=data.comment_ctime%></span>
+			</div>
+			</div>
+			<%});%>
+		</div>
+		<div class="paging_panel mt14_f">
+			<%#paging.html%>
+		</div>
+	</div><!-- end 单品 -->
+	<div class="sideBar pr_f" style="float:right;">
+		<h2 class="mt14_f f16_f">用该商品的MM还在用</h2>
+		<%this.goodsMain.gInfo && this.goodsMain.gInfo.map(function(data){%>
+			<div class="groupBox" style="margin-left:0;margin-right:0;">
+				<div class="groupCon">
+					<a class="picBox" href="/beauty/single/<%=data.goods_id%>" target="_blank"><img src="<%=data.img%>" alt="" /></a>
+					<h3><a href="/beauty/single/<%=data.goods_id%>" target="_blank"><%=data.goods_name%></a></h3>
+					<div class="u_like">
+						<div class="u_num"><b><%=data.test_user%></b>人使用</div>
+						<span>好评度</span><em><i style="width:<%=Math.floor(5.8*data.grade)%>px;"></i></em>
+					</div>
+				</div>
+			</div>
+		<%});%>
+	</div>
+</div>
+<%#foot.html%>

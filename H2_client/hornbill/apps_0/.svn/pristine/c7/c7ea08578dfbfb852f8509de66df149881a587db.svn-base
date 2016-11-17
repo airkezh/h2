@@ -1,0 +1,19 @@
+<?if(this.simple !== 1){?>
+<form class="passport-form" id="riskForm" method="post" onsubmit="return false" action="">
+<?}?>
+	<div class="passport-form-list captchaArea">
+		<div class="passport-form-item">
+			<input class="passport-form-input" id="captcha" name="captcha" type="text" placeholder="<?= this.captchaPlaceholder ?>" maxlength="4" />
+			<span></span>
+			<span class="icon-code"></span>
+			<div class="captchaImage" onselectstart="return false;">
+				<img width="90" height="36" src="http://i.meilishuo.net/css/images/register/blank.jpg"><span class="icon-refresh"></span>
+			</div>
+		</div>
+	</div>
+<?if(this.simple !== 1){?>
+	<div class="passport-form-submit">
+		<input type="submit" value="<?= this.submitBtnText || '立即验证' ?>"/>
+	</div>
+</form>
+<?}?>

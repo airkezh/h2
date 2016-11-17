@@ -1,0 +1,22 @@
+<script>
+
+var url = '<%== this.link && this.link.source_link %>';
+
+function goURL( goUrlStr ) {
+	if ( typeof(goUrlStr) != 'undefined') {
+		var isIe=(document.all)? true : false;
+		if(isIe) {
+			var linka = document.createElement('a');
+			linka.href = goUrlStr;
+			document.body.appendChild(linka);
+			linka.click();
+		} else {
+			window.location = goUrlStr;
+		}
+	}
+	return true;
+}
+
+goURL(url);
+
+</script>

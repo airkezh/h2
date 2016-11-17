@@ -1,0 +1,90 @@
+<%#head.html%>
+	<section class="wrapper">
+		<div class="r_box">
+			<label for="r_title" class="lbl">报告标题：</label>
+			<div class="txt_wrap">
+				<input type="text" class="r_txt" id="txtTitle" placeholder="产品名称(不能超过20个字)" maxlength="20" value="<%=this.report.info.trial_title%>" />
+			</div>
+		</div>
+		<div class="r_box">
+			<h2 class="r_title">详细描述：
+			</h2>
+			<textarea id="txtCon" class="txt_area" placeholder="请详细描述产品的功能、样式、试用效果以及自己的使用心得。"><%=this.content%></textarea>
+			<p class="r_subT">添加图片</p>
+			<ul class="imgList">
+				<%for(var i=0;i<this.report.info.trial_pics.length;i++){
+					if(i%3==0&&i>0){%>
+					<li class="img_item show_pics" style="margin-right: 0;"><img src="<%=this.report.info.trial_pics[i]%>" alt="pic" title="pic" /><span class="deleteImg"></span></li>
+					<%}else{%>
+						<li class="img_item show_pics"><img src="<%=this.report.info.trial_pics[i]%>" alt="pic" title="pic" /><span class="deleteImg"></span></li>
+						<%}}%>
+							<li class="img_item" id="btnAddImg" style="margin-right: 0;">
+								<img src="<%=this.PICTURE_URL%>images/m_welfare/wlf_icon_addImg.jpg" alt="添加图片" title="添加图片" class="" />
+							</li>
+			</ul>
+		</div>
+		<div class="r_box">
+			<h2 class="r_title">试用评分</h2>
+			<ul class="r_score" id="rScore">
+				<li>
+					<span class="r_st">外观评分:</span><span class="star" id="appearance">
+						<%for(var i=0;i<5;i++){
+							if(i<this.report.info.appearance){%>
+								<b class="open"></b>
+							<%}else{%>
+								<b class="shut"></b>
+						<%}}%>
+					</span>
+				</li>
+				<li>
+					<span class="r_st">功效评分:</span><span class="star" id="effect">
+						<%for(var i=0;i<5;i++){
+							if(i<this.report.info.effect){%>
+								<b class="open"></b>
+							<%}else{%>
+								<b class="shut"></b>
+						<%}}%>
+					</span>
+				</li>
+				<li>
+					<span class="r_st">推荐程度:</span><span class="star" id="recommentd">
+						<%for(var i=0;i<5;i++){
+							if(i<this.report.info.recommend){%>
+								<b class="open"></b>
+							<%}else{%>
+								<b class="shut"></b>
+						<%}}%>
+					</span>
+				</li>
+			</ul>
+		</div>
+		<div class="wlf_apply">
+			<a class="apply_btn pink" href="javascript:void(0)" id="btnAddReport">确认修改</a>
+		</div>
+	</section>
+	<script type="text/html" id="dTips">
+		<div class="smallTips">
+			<?=this.tip?>
+		</div>
+	</script>
+	<script type="text/html" id="dialogTips">
+		<div class="dialog_box">
+			<div class="dialog_con dia_style3">
+				<p>
+					确定删除吗？
+				</p>
+				<span id="btnCancle">取消</span><span id="btnOk">确定</span>
+			</div>
+		</div>
+	</script>
+	<script>
+		fml.vars.isLogin = "<%= this.userInfo.user_id%>";
+		fml.vars.report_id = '<%=this.report_id%>';
+		fml.vars.pics="<%=this.report.info.trial_pics%>";
+	</script>
+	<%! $_ENGINE_SELF.callFn( "useModule")( "<<<_use:
+
+	fml.use('wap/page/welfare_new/wlf_updateReport');
+
+_use:", this._JSstack , this._JSmods ); %>
+		<%#foot.html%>

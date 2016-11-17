@@ -1,0 +1,183 @@
+<%# head_simple.html%>
+<% 
+    var data  = this.main.data;
+    var sponsor = data.sponsor;
+    var judges = data.judges;
+    var works = data.items;
+    var shops = data.shops;
+    var btn = ['http://d01.res.meilishuo.net/pic/_o/75/5a/9f9dd643e145efa8133849f91df9_112_40.ch.png','http://d05.res.meilishuo.net/pic/_o/3a/30/532049cacd2e25b49d222d7bb156_112_40.cf.png'];
+
+%>
+
+    <script> 
+            (function(win,doc){
+                var docel = doc.documentElement;
+                var meta = doc.querySelectorAll('meta[name=viewport]');
+                meta[0].setAttribute('content','width=device-width,user-scalable=no,initial-scale='+1/devicePixelRatio);
+                function recalc(){
+                    var width = docel.clientWidth;
+                    docel.style.fontSize = 100 * width/640+'px';
+                }
+                if(doc){
+                    recalc();
+                    win.addEventListener('orientationchange',recalc,false);
+                }else if (doc.addEventListener){
+                    doc.addEventListener('DOMContentLoaded', recalc, false);
+                }
+            })(window,document)
+     </script>
+</head>
+<body>
+    <div class="title">
+        
+      
+        <img alt="原创女装" src="http://d05.res.meilishuo.net/img/_o/a2/83/cde9bff7e56c27e8334e75d0b307_640_543.cf.jpg"  />
+
+
+        <i class='rule'  id="openRule" ></i>
+        <a class = 'govote' href="#toupiao"></a>
+        <a class = 'support' href="<%=sponsor.shop_link_mob%>"></a>
+        <a class = 'first' href="<%=sponsor.item1_link_mob%>"></a>
+        <a class = 'second' href="<%=sponsor.item2_link_mob%>"></a>
+    </div>
+
+    <div class="judge">
+        <img src="http://d04.res.meilishuo.net/pic/_o/9f/b2/03afa721d4a14bcf5d8c034633bf_215_90.ch.png" alt="">
+    </div>
+    
+    <!--  carousel -->
+    <div class="banner_wrap">
+        <div class="imageSlide" id="imageSlide">
+            <ul>
+                <% judges.forEach(function(bannar, index){ %>
+                    <li>
+                        <a class="top_bannar swipe" ><img src="<%= bannar.image_url %>"></a>
+                    </li>
+                <% }); %>
+            </ul>
+            <div class="num"></div>
+        </div>
+    </div>
+    <!--  carousel end -->
+
+    <div class="works" id = 'toupiao'>
+        <img src="http://d02.res.meilishuo.net/pic/_o/be/83/9927e53494a17c1939f8b672faed_243_90.ch.png" alt="">
+    </div>
+    <ul class="works-items">
+        <% works.forEach(function(v,i){%>
+         <li>
+            <div class="works-items-authorInfo">
+                <div class="photo">
+                    
+                        <img src="<%=v.designer_img%>" alt="">
+                                  
+                </div>
+                <div class="desc">
+                    <span class='desc-name'><b><%=v.name%></b><i>作品名称</i></span>
+                    <i class="x"></i>
+                    <span class='desc-desig'><b><%=v.designer_name%></b><i>设计师</i></span>
+                    <i class="x"></i>
+                    <span class='desc-vote'><b><%=v.votes%></b><i>目前票数</i></span>
+                </div>
+                <img class="vt" data-tid="<%=v.tid%>" src="<%= btn[v.is_voted]%>" alt="">
+            </div>
+            <div class="works-items-authorImg">
+              <a href="<%=v.detail_link%>"><img src="<%=v.img%>" alt=""></a>
+            </div>
+        </li>
+        <%})%>
+    </ul>
+    <div class="shops">
+        <img src="http://d02.res.meilishuo.net/pic/_o/a1/53/d587430a6b0afc11139673cdf67d_167_90.cg.png" alt="">
+    </div> 
+    <div class="shops-items">
+        <% shops.forEach(function(v,i){%>
+            <a href="<%=v.link_mob%>">
+                <img src="<%=v.img%>" alt="">
+            </a>
+        <%})%>
+    </div>
+    <div class="liucheng">
+        <!-- <img src="<%=data.progress_bar.banner%>" alt=""> -->
+        <img src="http://d02.res.meilishuo.net/pic/_o/c2/12/2062e2e3a2148e695e43cafdb0ec_640_88.cg.png" alt="">
+    </div>
+    <div id="designer_share" class="share">
+        分享
+    </div>
+
+
+    <!-- alert -->
+    <div class="mypopbox" id="mypopbox">
+        
+        <div id="wxGuide" class="wxGuide">
+            <img src="http://d04.res.meilishuo.net/pic/_o/7f/f0/e075ef17b5540e07ea62a004cca1_517_580.ch.png">
+        </div>
+
+        <div class="dialog" id="dialogAlert" >
+            <span class="close" id="dialogAlertClose"></span>
+            <div class="tit">
+                <img src="http://d04.res.meilishuo.net/pic/_o/52/24/ae5772a2bf3028bca45caad37488_439_312.cf.jpg">
+            </div>
+            <div class="bottom">
+                <a class="but" href="/activity/designer/pt/?activity_has_gesture=1">进入游戏</a>
+            </div>
+            
+        </div>
+        
+        <div class="dialog" id="dialogRule">
+            
+            <div class="tit" id="dialogRuleTit">
+                <img src="http://d03.res.meilishuo.net/pic/_o/52/0c/60308cf7538d296aedb2704e8e3c_440_221.cf.jpg">
+            </div>
+            
+            <div class="con" id="dialogRuleCon">
+                <p>
+                    1、本次原创女装设计大赛以“初恋”为设计主题。2015年6月28日10:00-6月30日24:00为入围作品网络投票环节;美丽说将会对本次票数TOP3的设计作品给其资源推广。
+                </p>
+                <p>
+                    2、用户参与投票后便有玩游戏抽奖资格，活动期间同一作品只能投1票。使用他人手机号、地址等信息注册，或以非正常手段注册、一人注册多个账号等视为违规注册同一手机、同一IP地址、同一设备号或其他可以合理显示为同一用户的情形，均视为同一用户。违反本规则，美丽说有权利收回已领用的优惠券及对注册用户进一步处罚甚至冻结其账号的权利。
+                </p>
+                <p>
+                    3、用户一旦选择参加本活动，即同意接受活动涉及到的所有规则，任何对活动规则或者其他相应规则有异议的，不得参加活动，否则，美丽说有权取消其参与资格。如作弊行为美丽说平台造成损失的，美丽说保留追究赔偿的权利，针对违法行为将采取法律措施。
+                </p>
+                <p>
+                    4、美丽说对活动期间的各项规则保留最终解释权。
+                </p>
+
+            </div>
+
+            <div class="bottom" id="dialogRuleBottom">
+                <a class="but" id="dialogRuleClose" href="javascript:;">点击关闭</a>
+            </div>
+            
+        </div>
+
+        <div class="overlay">
+        </div>
+    </div>
+
+ <%= requireFn('wapShare.html')({
+    'share' : this.share 
+    , 'shareTitle' : '选择分享到'
+    , '_JSstack' : this._JSstack
+    , '_JSmods' : this._JSmods
+});%>
+
+<script>
+    fml.vars.isWxLogin= <%= this.isWxLogin || false %>   ;
+
+    fml.vars.isWx = <%= this.isWx %>;
+
+    fml.vars.shareTitle   = '<%= data.share.title %>';
+    fml.vars.shareContent   = '<%= data.share.content %>';
+    fml.vars.shareIcon   = '<%= data.share.icon %>';
+    fml.vars.shareLink   = '<%= data.share.link %>';
+</script>
+
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use('wap/page/activity/designer');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot.html%>
+

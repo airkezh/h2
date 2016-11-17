@@ -1,0 +1,19 @@
+<!-- index参数说明：1精选，2分类，3购物车，4我 -->
+<!-- this.userInfo.user_id || '' -->
+<%if(this.tabShow){%>
+<%= requireFn('wx_new/nav.html')({
+		'index' : this.tabIndex || 1
+		,'user_id' : this.userInfo.user_id || 0
+		,'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+});%>
+<%}%>
+<%if(!this.wechatpay){%>
+<script type="text/javascript" src="http://tajs.qq.com/res/js/wechatpay.min.js" charset="UTF−8"> </script>
+<%}%>
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js" charset="UTF−8"> </script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use('wap/page/wx_new/global');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot_simple.html%>

@@ -1,0 +1,63 @@
+ <%
+ var safeinfo=this.safeinfo.info;
+  var loginp=this.loginp;
+
+ %>
+ <strong class="title">安全中心</strong>
+ <fieldset>
+ 	<div class="safe-center">
+ 		<div class="tab-con login-title">
+			<span>项目类型</span>
+			<span class="safe-one">状态</span>
+			<span>操作</span>
+		</div>
+		<div class="tab-con">
+			<span>用户密码</span>
+				<%if(loginp.code=="1"){%>
+ 				<span class="set">已经设置用户密码</span>
+ 				<a href="/settings/setPassword"><span class="prompt-info safe-last">修改密码</span></a>
+ 				<%}else if(loginp.code=="-1"){%>
+ 				<span class="no-set">未设置用户密码</span>
+ 				<a href="/settings/setPassword"><span class="prompt-info safe-last">设置密码</span></a>
+ 				<%}%>
+ 		
+		</div>
+ 		 <div class="tab-con">
+ 			<span>支付密码</span>
+ 			<%if(safeinfo.is_setPayPsd=="1"){%>
+ 			<span class="set">已设置支付密码</span>
+ 			<span class="prompt-info safe-last"style="color:#ccc">前往手机更改密码</span>
+ 			<%}else if(safeinfo.is_setPayPsd=="0"){%>
+ 				<span class="no-set">未设置支付密码</span>
+ 				<span class="prompt-info safe-last"style="color:#ccc">前往手机设置密码</span>
+ 			<%}%>
+
+ 		</div>
+ 		 <div class="tab-con">
+ 			<span>手机绑定</span>
+		<%if(safeinfo.is_bindmobile=="0"){%> 		
+			<span class="no-set">未进行手机绑定，绑定手机后可以通过手机直接登录</span>
+ 			<a href="/settings/bindMobile"><span class="prompt-info">绑定手机</span></a>
+ 		<%}else if(safeinfo.is_bindmobile=="1"){%>
+ 				<span class="set">已绑定手机</span>
+ 				<a href="/settings/bindMobile"><span class="prompt-info safe-last">查看绑定</span></a>
+ 			<%}%>
+
+ 		</div>
+ 		 <div class="tab-con">
+ 			<span>邮箱绑定</span>
+ 			<%if(safeinfo.is_bindmail=="0"){%> 	
+ 			
+ 			<span class="set">已绑定邮箱</span>
+ 			<span class="prompt-info"style="color:#ccc;">无需操作</span>	
+ 			<%}else if(safeinfo.is_bindmail=="1"){%>
+ 			<span class="no-set">未绑定邮箱</span>
+ 			<span class="prompt-info"style="color:#ccc;">暂无操作</span>	
+
+ 			<%}%>
+
+ 		</div>
+
+ 	</div>
+
+ </fieldset>

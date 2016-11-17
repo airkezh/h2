@@ -1,0 +1,181 @@
+<%# head_simple.html%>
+</head>
+<body>
+<div id="topBanner" class="banner">
+	<img src="<%= this.topic_info.ac_banner%>"/>
+</div>
+
+<div class="wrapper">
+	<p class="act_info">
+        	<span class="name">乐活良品专场，全场包邮32元起，</span>特别推荐四大温暖系列产品，活动时间11月5日-11月10日，期间分享活动并@三位闺蜜，就有机会获得价值98元的精美礼盒一份，限量200份。这个冬天，让温暖与你同行。
+	</p>
+
+	<div class="nuanwei">
+		<div class="banner">
+      			  <img src="http://i.meilishuo.net/css/images/wap/activity/lehuo/nuanwei.png"/>
+		</div>
+
+		<p class="act_info">
+			【乐活暖胃有机茶系列】土壤三年净化，国际权威有机认证，精选六款优质有机茶品，只为生活点滴，让你的生活多一点温暖。
+		</p>
+		
+		<div class="pic_box">
+		<% for(var i=0; i<this.nuanwei.goods_list.length; i++){ 
+			var buy_link =  this.nuanwei.goods_list[i].url; 
+			if(this.phoneType == 'ipad'){
+				buy_link = 'meilishuohd' + buy_link 
+			}else{
+				buy_link = 'meilishuo'+ buy_link 
+			} %>
+			<figure class="small_pics">
+				<% if(this.nuanwei.goods_list[i].is_end === 1) {%>
+					<img class="soldout" src="http://i.meilishuo.net/css/images/wap/activity/lehuo/soldout_1.png" />
+				<%}%>
+				<a class="pic_load" href="<%= buy_link%>">
+					<img src="<%= this.nuanwei.goods_list[i].pic_pathe%>" />
+				</a>
+				<figcaption>
+					<p class="goods_title"><%= this.nuanwei.goods_list[i].goods_title%></p>
+					<p class="goods_price">
+						<span class="price_l">￥<%= this.nuanwei.goods_list[i].discount_cost%></span>
+						<span class="price_r">￥<%= this.nuanwei.goods_list[i].cost%></span>
+					</p>
+					<p class="sold">
+						<span class="line"></span><span class="sold_num"><%= this.nuanwei.goods_list[i].sell_num%></span>人已购买<span class="line last"></span>
+					</p>
+				</figcaption>
+			</figure>
+		<%}%>
+		</div>
+	</div>
+        <div class="lace">
+            <img src="http://i.meilishuo.net/css/images/wap/activity/lehuo/line.png" />
+        </div>
+        <div class="nuanxin">
+                <div class="banner">
+                          <img src="http://i.meilishuo.net/css/images/wap/activity/lehuo/nuanxin.jpg"/>
+                </div>
+                <div class="pic_box">
+		 <% for(var i=0; i<this.nuanxin.goods_list.length; i++){ 
+			var buy_link =  this.nuanxin.goods_list[i].url;
+                        if(this.phoneType == 'ipad'){
+                                buy_link = 'meilishuohd' + buy_link 
+                        }else{
+                                buy_link = 'meilishuo'+ buy_link 
+                        } %>
+                        <figure class="small_pics">
+                                <% if(this.nuanxin.goods_list[i].is_end === 1) {%>
+                                        <img class="soldout" src="http://i.meilishuo.net/css/images/wap/activity/lehuo/soldout_1.png" />
+                                <%} else {%>
+					<img class="special" src="http://i.meilishuo.net/css/images/wap/activity/lehuo/special_1.png"/>
+				<%}%>
+                                <a class="pic_load" href="<%= buy_link%>">
+                                        <img src="<%= this.nuanxin.goods_list[i].pic_pathe%>" />
+                                </a>
+                                <figcaption>
+                                        <p class="goods_title"><%= this.nuanxin.goods_list[i].goods_title%></p>
+                                        <p class="goods_price">
+                                                <span class="price_l">￥<%= this.nuanxin.goods_list[i].discount_cost%></span>
+                                                <span class="price_r">￥<%= this.nuanxin.goods_list[i].cost%></span>
+                                        </p>
+                                        <p class="sold">
+                                                <span class="line"></span><span class="sold_num"><%= this.nuanxin.goods_list[i].sell_num%></span>人已购买<span class="line last"></span>
+                                        </p>
+                                </figcaption>
+                        </figure>
+                <%}%>
+        </div>
+        <div class="lace">
+            <img src="http://i.meilishuo.net/css/images/wap/activity/lehuo/line.png" />
+        </div>
+        <div class="nuanshou">
+                <div class="banner">
+                          <img src="http://i.meilishuo.net/css/images/wap/activity/lehuo/nuanshou.jpg"/>
+                </div>
+                <div class="pic_box">
+		<% for(var i=0; i<this.nuanshou.goods_list.length; i++){  
+			var buy_link =  this.nuanshou.goods_list[i].url;
+                        if(this.phoneType == 'ipad'){
+                                buy_link = 'meilishuohd' + buy_link 
+                        }else{
+                                buy_link = 'meilishuo'+ buy_link 
+                        } %>
+                        <figure class="small_pics">
+                                <% if(this.nuanshou.goods_list[i].is_end === 1) {%>
+                                        <img class="soldout" src="http://i.meilishuo.net/css/images/wap/activity/lehuo/soldout_1.png" />
+                                <%}%>
+                                <a class="pic_load" href="<%= buy_link%>">
+                                        <img src="<%= this.nuanshou.goods_list[i].pic_pathe%>" />
+                                </a>
+				<figcaption>
+                                        <p class="goods_title"><%= this.nuanshou.goods_list[i].goods_title%></p>
+                                        <p class="goods_price">
+                                                <span class="price_l">￥<%= this.nuanshou.goods_list[i].discount_cost%></span>
+                                                <span class="price_r">￥<%= this.nuanshou.goods_list[i].cost%></span>
+                                        </p>
+                                        <p class="sold">
+                                                <span class="line"></span><span class="sold_num"><%= this.nuanshou.goods_list[i].sell_num%></span>人已购买<span class="line last"></span>
+                                        </p>
+                                </figcaption>
+                        </figure>
+                <%}%>
+		</div>
+        </div>
+        <div class="lace">
+            <img src="http://i.meilishuo.net/css/images/wap/activity/lehuo/line.png" />
+        </div>
+        <div id="nuanqing">
+                <div class="banner">
+                          <img src="http://i.meilishuo.net/css/images/wap/activity/lehuo/nuanqing.jpg"/>
+                </div>
+                <div class="pic_box">
+		<% for(var i=0; i<this.nuanqing.goods_list.length; i++){  
+			var buy_link =  this.nuanqing.goods_list[i].url;
+                        if(this.phoneType == 'ipad'){
+                                buy_link = 'meilishuohd' + buy_link 
+                        }else{
+                                buy_link = 'meilishuo'+ buy_link 
+                        } %>
+                        <figure class="small_pics">
+                                <% if(this.nuanqing.goods_list[i].is_end === 1) {%>
+                                        <img class="soldout" src="http://i.meilishuo.net/css/images/wap/activity/lehuo/soldout_1.png" />
+                                <%}%>
+                                <a class="pic_load" href="<%= buy_link%>">
+                                        <img src="<%= this.nuanqing.goods_list[i].pic_pathe%>" />
+                                </a>
+                                <figcaption>
+                                        <p class="goods_title"><%= this.nuanqing.goods_list[i].goods_title%></p>
+                                        <p class="goods_price">
+                                                <span class="price_l">￥<%= this.nuanqing.goods_list[i].discount_cost%></span>
+                                                <span class="price_r">￥<%= this.nuanqing.goods_list[i].cost%></span>
+                                        </p>
+                                        <p class="sold">
+                                                <span class="line"></span><span class="sold_num"><%= this.nuanqing.goods_list[i].sell_num%></span>人已购买<span class="line last"></span>
+                                        </p>
+                                </figcaption>
+                        </figure>
+		<%}%>
+		</div>
+        </div>
+
+	<div class="review">
+		<div class="title">
+			<img src="http://i.meilishuo.net/css/images/wap/activity/lehuo/review_bg.jpg" />
+			<p>精彩回顾</p>
+		</div>
+		<div class="review_content">
+			<a href="http://wap.meilishuo.com/activity/summer_match/match/?ac_id=143" ><img src="http://i.meilishuo.net/css/images/wap/activity/lehuo/review_act1.jpg" /></a>
+			<a href="http://wap.meilishuo.com/activity/summer_match/match/?ac_id=142" ><img src="http://i.meilishuo.net/css/images/wap/activity/lehuo/review_act2.jpg" /></a>
+		</div>
+	</div>
+</div> 
+
+<%= requireFn('wapShare.html')({
+	'share' : this.share 
+	, 'shareTitle' : '选择分享到'
+	, '_JSstack' : this._JSstack
+	, '_JSmods' : this._JSmods
+}); %>
+
+
+<%# foot_simple.html%>

@@ -1,0 +1,56 @@
+<%#head.html%>
+<% var resultNum = this.resultNum;
+%>
+<div class="wrap">
+		<% var bannerCate = this.bannerCate.data.data || '';  %>
+		<div class="banner">
+			<a href="<%= bannerCate.banner_url %>"><img src="<%= bannerCate.banner_pic %>"></a>
+			<div class="desc"><%= bannerCate.introduction %></div>
+		</div>
+	<div class="sortWrap">
+		<div class="sortPlaceHolder">
+			<div class="sortBox">
+				<div class="wortWay">
+					<div class="sort active" data-key="weight">流行</div>
+					<div class="sort" data-key="boom">热销</div>
+					<div class="sort" data-key="id">上新</div>
+					<div class="sort sortPrice" data-key="price_desc">价格<i></i></div>
+				</div>
+			</div>
+		</div>
+		<div class="pullUp loading" status="loading"></div>
+		<div class="goodsWrap goods_wall">
+		</div>
+   		<div class="pullUp more" status="tap"></div>
+	</div>
+</div>
+<a class="gotop" style="bottom:<%if(this.isIphone){%>60<%}else{%>20<%}%>px">
+    <img class="img100" src="<%= this.PICTURE_URL%>/images/wap/tuan/gotop.png" />
+</a>
+<script>
+	fml.vars.keyword = <%= JSON.stringify(this.key_word) %>;
+</script>
+<script type="text/html" id="posterWall">
+	<? var data = this.v;
+		var heart = data.is_liked ?
+			'http://d02.res.meilishuo.net/pic/_o/ad/c4/d1ffc7b8a94e77c24cd4decf9e84_30_25.cj.png'
+		:
+			'http://d04.res.meilishuo.net/pic/_o/ea/be/5c5e3f238b0b23cfeab125c5de8e_30_25.cj.png'
+		;
+		var heartClass= data.is_liked ? 'like redHeart' : 'like'
+	?>
+	<div class="goods">
+		<div class="goodsImg" data-tid="<?= data.twitter_id ?>">
+			<div asrc="<?= data.show_fix_pic ?>"  style="background:no-repeat center;background-size:100%;"></div>
+		</div>
+		<div class="goodsName"><?= data.ginfo.goods_title ?></div>
+		<div class="priceWrap">
+			<div class="price"><?= data.ginfo.goods_price ?></div>
+			<div class="<?= heartClass ?>" data-tid="<?= data.twitter_id ?>" style="background:url('<?= heart ?>) no-repeat;"><?= data.count_like ?></div>
+		</div>
+	</div>
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+    fml.use('wap/page/hiGoods/classify');
+_use:", this._JSstack , this._JSmods); %>
+<%#foot_simple.html%>

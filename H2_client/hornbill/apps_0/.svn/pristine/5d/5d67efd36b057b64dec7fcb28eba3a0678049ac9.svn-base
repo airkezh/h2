@@ -1,0 +1,27 @@
+<div class="goods_wrap" style="width:100%;background:<%= this.beauty_sale_goods_section.bgcolor%>;">
+	<% this.beauty_sale_goods_section.goods_section && this.beauty_sale_goods_section.goods_section.map(function(data,index){ %>
+		<p class="dw" id="a<%= index%>"></p>
+		<div class="tit" style="width:<%= data.tit_width%>;height:<%= data.tit_height%>;background:url(<%= data.tit_img%>) no-repeat;">
+			<a href="<%= data.titright_link%>" target="_blank" class="right_f" style="width:<%= data.titright_width%>;height:<%= data.titright_height%>"></a>
+		</div>
+		<div class="mzgoods_box">
+			<% if(data.first_img && data.first_link){ %>
+				<a href="<%= data.first_link%>" target="_blank" class="more"><img src="<%= data.first_img%>" /></a>
+			<%}%>
+			<% if(this.temai_arr[index]){ %>
+				<%  
+					var is_start;
+					if(this.status == 'nostart'){ is_start = 1; }else{ is_start = 0; } 
+				%>
+				<% this.temai_arr[index].data[0].twitters.length = data.goods_num; %>
+				<%= requireFn("huodong/block/beautySale_twitter.html")({
+					'goods': this.temai_arr[index].data[0].twitters,
+					'is_start': is_start
+				});%>
+			<%}%>
+			<% if(data.last_img && data.last_link){ %>
+				<a href="<%= data.last_link%>" target="_blank" class="more"><img src="<%= data.last_img%>" /></a>
+			<%}%>
+		</div>
+	<% }); %>
+</div>

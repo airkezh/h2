@@ -1,0 +1,187 @@
+<%
+	var userInfo = this.userInfo
+		, orderList = this.order_list
+		, orderInfo = orderList.info
+		, all_num = this.order_list.total_num
+		, payment_num = this.payment_num
+		, send_num = this.send_num
+		, get_num = this.get_num;
+%>
+
+<%# head.html %>
+
+<%= requireFn('block/page_head.html')({
+	'pageTitle' : '个人中心'
+	, 'right_type' : 'logout'
+	, 'xr' : this.xr
+	, '_JSstack' : this._JSstack
+	, '_JSmods' :  this._JSmods
+}); %>
+
+<div class="wrap">
+	<div class="userInfo">
+		<div class="img_wrap">
+			<div class="img_innner">
+				<img src="<%= userInfo.avatar_e || 'http://d04.res.meilishuo.net/pic/_o/52/fb/ad3d1ba23b0c5d21dcdf40f3f9de_69_79.cf.png' %>" />
+			</div>
+		</div>
+		<p><%= userInfo.nickname %></p>
+		<div class="list">
+			<a href="/coupon/list/" xr="<%= this.xr.r%>"><span class="couponIcon"></span>优惠券</a>
+			<a href="/address/" xr="<%= this.xr.r%>"><span class="addressIcon"></span>收货地址</a>
+		</div>
+	</div>
+
+	<div class="orderTab">
+		<div class="order_status all current" data-status="0" data-type="all" data-num="<%= all_num %>"><span></span>全部订单</div>
+		<div class="order_status payment" data-status="1" data-type="payment" data-num="<%= payment_num %>"><span></span><% if(payment_num){ %><div class="num"><%= payment_num %></div><% } %>待付款</div>
+		<div class="order_status send" data-status="5" data-type="send" data-num="<%= send_num %>"><span></span><% if(send_num){ %><div class="num"><%= send_num %></div><% } %>待发货</div>
+		<div class="order_status get" data-status="2" data-type="get" data-num="<%= get_num %>"><span></span><% if(get_num){ %><div class="num"><%= get_num %></div><% } %>待收货</div>
+	</div>
+
+	<div class="list_wrap">
+		<div class="tab_content"></div>
+		<div class="pullUp" status="loading"></div>
+	</div>
+</div>
+
+<%# block/wap_foot.html %>
+
+<script type="text/html" id="poster">
+<?
+	var merge_order_total = 0,
+		merge_order_array = this.order_list.merge_info,
+		i = 0,
+		j = 0,
+		k = merge_order_array.length,
+		is_end = false,
+		get_merge_name = function(order_id){
+			var className = false;
+			if(k && !is_end){
+				if(merge_order_array[i].join(',').indexOf(order_id) > -1){
+						className = ' merge_order';
+					if(j == 0){
+						className += ' merge_order_first';
+					}
+					j += 1;
+					if(j == merge_order_array[i].length){
+						className += ' merge_order_last';
+						i += 1;
+						j = 0;
+					}
+					if(i == k){
+						is_end = true;
+					}
+				}
+			}
+			return className;
+		};
+?>
+	<? this.order_list.info.forEach(function(order_item, index){ ?>
+		<?
+			var order = order_item.order;
+			var sku_list = order_item.goods;
+			var refund_btn = false;
+			var orderName = get_merge_name(order.order_id);
+		?>
+		<div class="orderList<?= orderName ? orderName : '' ?>">
+			<ul class="orderInfo">
+				<li>
+					<div class="shop">
+						<a href="/shop/<?= order.shop_id ?>" xr="<%= this.xr.r %>">商家：<?= order.shop_name ?></a>
+						<span><?= order.status_text ?></span>
+					</div>
+					<ul class="goodsList">
+						<? sku_list.forEach(function(sku, index){ ?>
+							<li class="goodsInfo">
+								<a href="/order/detail/?order_id=<?= order.order_id ?>" xr="<%= this.xr.r %>">
+									<div class="img_wrap" style="background-image:url(<?= sku.goods_img ?>);">
+										<? if(sku.refund_id){ ?>
+											<div class="refund_btn">退款中</div>
+										<?
+											} else {
+												refund_btn = true;
+											}
+										?>
+									</div>
+									<div class="content">
+										<p class="title"><?= sku.goods_title ?></p>
+										<p class="desc">
+											<span class="num">数量：<?= sku.amount ?></span>
+											<span class="price">￥<?= sku.price ?></span>
+										</p>
+									</div>
+								</a>
+							</li>
+						<? }); ?>
+						<? if(!orderName){ ?>
+							<div class="pay">
+								<p class="total">合计：<span>￥<?= order.total_price ?></span></p>
+								<? if(order.status == 0){ ?>
+									<div class="order_btn">
+										<div class="btn logistics cancel_order" data-type="single_order" order_id="<?= order.order_id?>">取消订单</div>
+										<a class="pay_btn" target="_blank" href="/cashier?orderno=<?= order.order_id ?>&merchantcode=<?= order.merchant_id ?>&biztype=1&transtype=2" xr="<%= this.xr.r %>">付款</a>
+									</div>
+								<? } else if(order.status == 1){ ?>
+									<div class="order_btn">
+										<? if(refund_btn){ ?><div class="btn logistics js_download_btn" data-frm="dingdanBI_tuikuan">申请退款</div><? } ?>
+										<div class="pay_btn js_download_btn" data-frm="dingdanBI_tixing">提醒商家发货</div>
+									</div>
+								<? } else if(order.status == 3 || order.status == 4){ ?>
+									<div class="order_btn">
+										<div class="btn logistics js_download_btn" data-frm="dingdanBI_tousu">我要投诉</div>
+										<div class="btn logistics js_download_btn" data-frm="dingdanBI_pingjia">评价</div>
+									</div>
+								<? } else if(order.status == 2){ ?>
+									<div class="order_btn">
+										<div class="btn logistics js_download_btn" data-frm="dingdanBI_tuikuan">申请退款</div>
+										<div class="btn logistics js_download_btn" data-frm="dingdanBI_wuliu">查看物流</div>
+										<div class="btn logistics js_download_btn" data-frm="dingdanBI_shouhuo">确认收货</div>
+									</div>
+								<? } ?>
+							</div>
+						<? } else if(orderName.indexOf('merge_order_last') > -1){ ?>
+							<div class="pay">
+								<p class="total">合计：<span>￥<?= merge_order_total + (+order.total_price) ?></span></p>
+								<? if(order.status == 0){ ?>
+									<div class="order_btn">
+										<? if(order.total_id){ order.order_id = order.total_id; } ?>
+										<div class="btn logistics cancel_order" data-type="total_order" order_id="<?= order.order_id?>">取消订单</div>
+										<a class="pay_btn" target="_blank" href="/cashier?orderno=<?= order.order_id ?>&merchantcode=<?= order.merchant_id ?>&biztype=1&transtype=2" xr="<%= this.xr.r %>">合并付款</a>
+									</div>
+								<? } ?>
+							</div>
+						<?
+								merge_order_total = 0;
+							} else {
+								merge_order_total += (+order.total_price);
+							}
+						?>
+					</ul>
+				</li>
+			</ul>
+		</div>
+	<? }); ?>
+</script>
+
+<script type="text/html" id="downloadApp">
+	<div class="fixed_download">
+		<div class="black_mask"></div>
+		<div class="dialog_box">
+			<p class="intro">您尚未安装美丽说APP</br>下载后可使用此功能</p>
+			<p class="downloadBtn btn">立即下载</p>
+			<p class="noDownload btn">忽略</p>
+		</div>
+	</div>
+</script>
+
+<script>
+	fml.vars.poster0 = <%= JSON.stringify(this.order_list) || false %>;
+	fml.vars.nums = [<%= all_num + ',' + payment_num + ',' + send_num + ',' + get_num%>];
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/myCenter');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot.html %>

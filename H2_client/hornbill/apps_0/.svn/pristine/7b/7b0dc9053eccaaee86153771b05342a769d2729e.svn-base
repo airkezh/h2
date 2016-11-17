@@ -1,0 +1,204 @@
+/*common*/
+var $ = require( 'wap/zepto' )
+	, Danmu = require( 'wap/component/danmu/index' )
+	, shareTmp = require('wap/component/shareTmp')
+require('wap/zepto/fastclick')
+
+var danmuDataPreset = fml.vars.barrage_get || []
+
+var isLoadingDanmu = false
+function getDanmu(){
+	if(isLoadingDanmu) return;
+	isLoadingDanmu = true;
+	$.ajax({
+		url: '/aj/running_man/barrage/get',
+		type: 'get',
+		dataType: 'json',
+		success: function(res) {
+			res = res || [];
+			[].push.apply(danmuDataPreset, res)
+		},
+		complete: function() {
+			isLoadingDanmu = false;
+		}
+	})
+}
+
+var danmuWrapperHeight = $('#stage').height()
+var danmu = Danmu( {
+    el: '#stage',
+    mode: 'auto',
+    bulletHeight: danmuWrapperHeight/5,
+    bulletTmpl: '<div class="bullet"><span data-name="content"></span></div>',
+    initChannel: {
+        offset: 10,
+        height: danmuWrapperHeight/5,
+        size: 5
+    },
+
+    getMessage: function(){
+    	if(danmuDataPreset.length<50){
+    		getDanmu()
+    	}
+    	return (danmuDataPreset.shift() || '期待已久~').replace(/</g,'&lt;').replace(/</g,'&gt;')
+    },
+
+    initBullet: function() {
+        var bullet = this.bullet,
+            els    = this.bullet.els
+
+        bullet.speed = -.15
+
+        if ( this.type == 'mine' ) {
+            els.content.innerHTML = this.content.replace(/</g,'&lt;').replace(/</g,'&gt;')
+            els.el.className += ' bullet-m'
+        }
+
+        // if(danmuDataPreset.length===0){
+        // 	danmu && danmu.shutdown()
+        // }
+
+    }
+} )
+
+function sendDanmu(con, danmu){
+	if(!con) return;
+	setTimeout(function(){
+		danmu.load(function() {
+	        this.type = 'mine'
+	        this.content = con;
+	    })
+	}, 1000)
+}
+
+$('.send_danmu_form').on('submit', function(event) {
+	event.preventDefault();
+	if(isLogin()===false) return;
+	var val = $('[name="danmu_content"]').val().trim()
+	if(!val) return;
+	this.reset()
+	sendDanmu(val, danmu)
+	$.ajax({
+	 	url: '/aj/running_man/barrage/store',
+	 	type: 'get',
+	 	dataType: 'json',
+	 	data:{
+	 		barrage:val
+	 	},
+	 	success: function(res){}
+	 })
+});
+
+$('.rank_wrapper').on('click', '.tab_btn', function(event) {
+	event.preventDefault();
+	var _index = $(this).index()
+	$(this).addClass('act').siblings().removeClass('act')
+	$('.rank_wrapper').find('.content').eq(_index).addClass('act').siblings().removeClass('act')
+}).find('.tab_btn').eq(0).trigger('click')
+
+window.MLS = {
+	didLogin : function() {
+		window.location.reload();
+	}
+};
+
+function isLogin(){
+	if(Meilishuo.config.user_id) return true;
+	if(Meilishuo.config.os.mlsApp){
+		location.href = 'meilishuo://login.meilishuo/'
+		return false;
+	}
+	location.href = '/user/login'
+	return false;
+}
+
+$('.vote_to_btn').on('click', function(event) {
+	//投票
+	event.preventDefault();
+	if(isLogin()===false) return;
+	var $btn = $(this)
+	var runnerId = $(this).data('id')
+	$.ajax({
+	 	url: '/aj/running_man/vote/store',
+	 	type: 'get',
+	 	dataType: 'json',
+	 	data: {
+	 		voteId:runnerId
+	 	},
+	 	success: function(res){
+	 		if(res.error_code==0){
+	 			addOne(runnerId)
+	 			$btn.after(shareTmp('voted_btn_tmp'))
+	 			$btn.parents('table').find('.vote_to_btn').remove()
+	 			$(shareTmp('success_pop_tmp')).appendTo('body')
+	 			disableScroll()
+	 		} else {
+	 			alert(res.message)
+	 		}
+	 	}
+	 })
+});
+
+function addOne(id){
+	var $num = $('.vote_num[data-id='+id+']')
+		,num = $num.html()|0
+	$num.html(num+1)
+}
+
+function disableScroll(){
+	$(document).on('touchmove.popWin', function(event) {
+		event.preventDefault();
+	});
+}
+
+function activeScroll(){
+	$(document).off('touchmove.popWin');
+}
+
+$('body').on('click', '.pop_win .close_btn', function(event) {
+	event.preventDefault();
+	$(this).parents('.pop_win').trigger('closeCb').trigger('closeWin')
+}).on('click', '.share_btn', function(event) {
+	event.preventDefault();
+	$(this).parents('.pop_win').trigger('closeWin')
+	$(shareTmp('share_tip_tmp')).appendTo($('body'))
+	disableScroll()
+}).on('click', '.more_phone', function(event) {
+	event.preventDefault();
+	$(this).hide().siblings('.phone_input_wrapper').show()
+}).on('submit', '.submit_phone_form', function(event) {
+	event.preventDefault();
+	$.ajax({
+		url: '/aj/running_man/vote/phone',
+		type: 'get',
+		dataType: 'json',
+		data:  $(this).serialize(),
+		success: function(res){
+			$('.phone_input_tip').html(res.message)
+		}
+	})
+}).on('closeWin', '.pop_win', function(event) {
+	$(this).remove()
+	activeScroll()
+}).on('click', '.share_tip_pop', function(event) {
+	event.preventDefault();
+	$(this).trigger('closeWin')
+})
+
+if(Meilishuo.config.os.weixinBrowser){
+	var signWX = require('wx/sign')//认证签名
+	var shareWX = require('wx/share')//分享
+	signWX()
+	if(fml.vars.share_info){
+		shareWX.bind({
+		    "desc":fml.vars.share_info.content,
+		    "imgUrl":fml.vars.share_info.img,
+		    "title":fml.vars.share_info.title
+		});
+	}
+}
+
+if(Meilishuo.config.os.mlsApp && fml.vars.appShare){
+	var appShare = require('wap/app/appShare');
+    appShare(fml.vars.params, ['weixin', 'weixin_timeline'], 'image');
+}

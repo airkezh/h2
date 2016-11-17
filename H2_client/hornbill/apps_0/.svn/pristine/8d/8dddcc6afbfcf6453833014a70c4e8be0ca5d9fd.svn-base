@@ -1,0 +1,259 @@
+/* @group general styles
+--------------------------------------------------*/
+@import "sq.less";
+@import "search_md.less";
+
+html, body { .bgc(@bgc); }
+
+h2 { 
+	.pl(.1rem);
+	.pr(.1rem);
+	.f(.28rem); 
+	.fn;
+	.black;
+	.clearfix;
+	i {
+		.right;
+		.mt(.08rem);
+		font-size: .20rem;
+		color: #999;
+		font-style: normal;
+	}
+}
+
+section { .bgwhite; }
+
+.sec2,
+.sec3-part1,
+.sec3-part2 {
+	.mt(.2rem); 
+	.pt(.2rem);
+}
+
+@bgc: #f6f6f6;
+.bg_common (@bg_size: contain) {
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: @bg_size;
+}
+
+/* @group page structure
+--------------------------------------------------*/
+
+// sec1 style
+.banner-slider{
+	.pr;.hidden;.auto;.c;
+	&-wrap{
+		.box;
+		li{
+			.pr;
+			img{.w(100%);}	
+			
+			&[status="drop"]{
+				-webkit-transition:all 0.2s ease-out 0s;
+			}
+		}
+	}
+	&-point{ 
+		.pa; bottom: 0; left: 50%; .i_block; .clearfix; .mb(.15rem);
+		li{ 
+			.left; .pr; left: -50%; .w(.1rem); .h(.1rem); .bgwhite; .mr(.12rem); .border-r(50%);
+		}
+		li:last-child{ .mr(0); }
+		.curr{ .bgred; }	
+	}
+}
+
+// sec2 style
+.sec2 {
+	.pl(.1rem);
+	.pr(.1rem);
+	h2 { .pl(0); .pr(0); }
+}
+
+// 团购秒杀
+.sec2-wrap {
+	.mt(.1rem);
+	.pb(.2rem);
+	.clearfix;
+	width:auto;
+	.bgc(@white);
+	padding:0 0 .15rem 0;
+	.hidden;
+}
+
+.sec2-wrap-wrap {
+	.hidden;
+	.sec2-wrap-wrap-part1 {
+		.w(2.1rem);
+		.left;
+		.hidden;
+		.pt(2.36rem);
+		.pb(.4rem);
+		.bgc(#f3f3f3);
+		background-size: 100% auto;
+		background-position: left top;
+
+	.sec2-wrap-wrap-part1-ctn {
+		.miaosha-title {
+			.none;
+			.fc(#4C4C4C);
+	        .f(.18rem);
+	        font-weight: bolder;
+		}
+		.miaosha-prompt {
+			.mb(.1rem); .f(.18rem); .fc(#4C4C4C); .c; 
+		}
+	}
+
+	}
+	.sec2-wrap-wrap-part2 {
+		.w(4.06rem);
+		.right;
+		.hidden;
+		a { 
+			.block; 
+			.w(100%);
+			background-repeat: no-repeat;
+			background-position: center top;
+			background-size: cover;
+		}
+		.sec2-wrap-wrap-part2-t { 
+			.h(1.68rem); 
+		}
+		.sec2-wrap-wrap-part2-b { .mt(.04rem); .clearfix; }
+		.sec2-wrap-wrap-part2-b-r,
+		.sec2-wrap-wrap-part2-b-l { 
+			.w(2.01rem); .h(1.68rem);
+		}
+		.sec2-wrap-wrap-part2-b-r { .right; }
+		.sec2-wrap-wrap-part2-b-l { .left; }
+	}
+	dl{	
+		.pl(.19rem);
+		.clearfix;}
+	dd{
+		.left;
+		.mr(.07rem);
+		background: url("http://d03.res.meilishuo.net/pic/_o/58/2b/007be8285a95ddfc8a5fde033845_43_36.cf.png") no-repeat center center;
+        background-size: .43rem auto;
+        .fc(#fff);
+        .f(.22rem);
+		.w(.39rem);
+		.h(.36rem);
+        .l(.4rem);
+        .c;
+		letter-spacing: .1rem;
+		.pl(.04rem);
+	       
+	    }
+	    strong{
+			.left;
+			.mt(.07rem);
+			.f(.2rem);
+			.mr(.07rem);
+			.fc(#F23B36);
+
+		}
+}
+
+//sec3 style
+.sec3-part1-ctn {
+	padding: .1rem .0725rem .2rem;
+	.f(0);
+	.clearfix;
+	a {
+		.left;
+		margin: .025rem;
+		.w(1.5125rem);
+		.pt(1.5125rem);
+		.bgwhite;
+		.bg_common;
+	}
+}
+
+.sec3-part2-ctn {
+	padding: .1rem .05rem .2rem;
+	.f(0);
+	.clearfix;
+	a {
+		.left;
+		margin: .05rem;
+		.w(2rem);
+		.pt(1.2rem);
+		.bgwhite;
+		.bg_common(cover);
+	}
+}
+
+// sec4 style
+.sec4 {
+	.mt(.2rem);
+	.sec4-wrap {
+		.pr; 
+		.pt(.2rem); 
+	}
+}
+
+// 时间小方块
+.sec4-wrap-part1 { 
+	.none;
+	.pa; 
+	left: 0; 
+	top: .54rem; 
+	.w(3.2rem); 
+	.c; 
+	.sec4-wrap-part1-ctn1 { 
+		.i_block;
+		.pl(.3rem); 
+		.f(.3rem); 
+		.fc(#ff8cb3);
+		vertical-align: middle;
+		background: url("http://d04.res.meilishuo.net/pic/_o/67/ad/30a96955fcc5deffc8ac9ef44a3c_27_27.cf.png") no-repeat left center; 
+		background-size: auto 83%; 
+	}
+	.sec4-wrap-part1-ctn2 { 
+		.i_block;
+		.h(.4rem);
+		.ml(.1rem);
+		.pl(.1rem);
+		.f(.2rem);
+		vertical-align: middle;
+		border-left: 1px solid #ccc;  
+		.sec4-wrap-part1-ctn2-t,
+		.sec4-wrap-part1-ctn2-b {
+			.f(.2rem); 
+			.c; 
+			.fc(#bebebe);
+		}
+	}
+}
+
+// 瀑布流样式 
+.sec4-wrap-part2 {
+	.pr;
+}
+
+/* @group page components
+--------------------------------------------------*/
+// 加载状态条
+.pullUp;
+
+// 右下角的挂件
+.pendant {
+	.pf;
+	bottom: 1rem; 
+	right: 0;  
+	.mr(.08rem);
+	z-index: 450;
+	li {
+		.w(.80rem);
+		.h(.80rem); 
+		.mb(.16rem);
+		.c;
+	}
+	.pendant-b {
+		.icon > .gotop;
+		opacity: 0;
+	}
+}

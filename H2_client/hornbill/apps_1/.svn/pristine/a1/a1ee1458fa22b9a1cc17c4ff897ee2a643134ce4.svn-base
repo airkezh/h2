@@ -1,0 +1,303 @@
+<%
+function set56Video(url,width,height){
+%>
+<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,19,0" width="<%=width || 280 %>" height="<%=height || 206 %>">
+	<param name="movie" value="<%=url %>" />
+	<param name="quality" value="high" />
+	<param name="wmode" value="transparent" />
+	<embed src="<%=url %>" quality="high" wmode="transparent" pluginspage="http://www.macromedia.com/go/getflashplayer" allowScriptAccess="always" allowFullScreen="false" type="application/x-shockwave-flash" width="<%=width || 280 %>" height="<%=height || 206 %>">
+	</embed>
+</object>
+<%
+}
+%>
+<%
+var PICTURE_URL = this.PICTURE_URL;
+var topVideo = {
+	defaultIndex : 3
+	,videoIds : [
+		{url:'http://www.56.com/flashApp/player_open.14.03.31.a.swf?vid=MTEyMjUyOTY1&ref=&player_key=open&appid=3000000466&qq-pf-to=pcqq.c2c',title:'第一集',is_video:1,monitor:"_smq.push(['custom', '聚合专题', '视频播放', '第一集']);"}
+		,{url:'http://www.56.com/flashApp/player_open.14.04.28.a.swf?vid=MTEzMzg1NDEy&ref=&player_key=open&appid=3000000466',title:'第二集',is_video:1,monitor:"_smq.push(['custom', '聚合专题', '视频播放', '第二集']);"}
+		,{url:'http://www.56.com/flashApp/player_open.14.05.08.a.swf?vid=MTE1MjIyNzMz&ref=&player_key=open&appid=3000000466',title:'番外篇',is_video:2,monitor:"_smq.push(['custom', '聚合专题', '视频播放', '第四集']);"}
+		,{url:'http://www.56.com/flashApp/player_open.14.05.08.a.swf?vid=MTE1NzMwMjc5&ref=&player_key=open&appid=3000000465',title:'第三集',is_video:3,monitor:"_smq.push(['custom', '聚合专题', '视频播放', '第三集']);"}
+	]
+};
+%>
+<%#head.html%>
+<div class="left_nav">
+	<a href="#anchor_qiandao" onclick="_smq.push(['custom', '聚合专题', '左侧导航栏', '签到领福利']);"></a>
+	<a href="#anchor_daren" onclick="_smq.push(['custom', '聚合专题', '左侧导航栏', '达人丝滑蜜语']);"></a>
+	<a href="#anchor_mijue" onclick="_smq.push(['custom', '聚合专题', '左侧导航栏', '丝滑秘诀']);"></a>
+	<a href="#anchor_bainian" onclick=" _smq.push(['custom', '聚合专题', '左侧导航栏', '百年薇婷']);"></a>
+	<a href="#anchor_dongxiang" onclick="_smq.push(['custom', '聚合专题', '左侧导航栏', '品牌动向']);"></a>
+	<a href="http://www.meilishuo.com/share/item/2771541813?d_r=6__0-1-1-20" target="_blank" onclick="_smq.push(['custom', '聚合专题', '左侧导航栏', '天猫购买']);"></a>
+</div>
+<div class="main">
+	<div class="bg01">
+		<div class="f_p">
+			<a href="http://www.meilishuo.com/share/item/2771541813?d_r=6__0-1-1-20" target="_blank" class="gao" onclick="_smq.push(['custom', '聚合专题', '产品选择', '脱毛膏']);"></a>
+			<a href="http://www.meilishuo.com/share/item/2597470995?d_r=6__0-1-1-3" target="_blank" class="lazhi" onclick="_smq.push(['custom', '聚合专题', '产品选择', '脱毛蜡纸']);"></a>
+		</div>
+	</div>
+	<div class="bg02"></div>
+	<div class="bg03">
+		<div class="f_p top_video_wrapper">
+			<% topVideo.videoIds.forEach(function(item,index){%>
+			<div class="video" <%if(index!=topVideo.defaultIndex){%> style="display:none;"<%}%>>
+				<%if(item.is_video){
+					set56Video(item.url,514,287,1);
+				} else { %>
+				<img src="<%=item.url %>">
+				<% } %>
+			</div>
+			<%}); %>
+		</div>
+	</div>
+	<div class="bg04" id="anchor_qiandao">
+		<div class="top_video_b_w">
+			<% topVideo.videoIds.forEach(function(item,index){%>
+			<a <%if(index==topVideo.defaultIndex){%> class="s"<%}%> onclick="<%=item.monitor %>"><%=item.title %></a>
+			<%}); %>
+		</div>
+		<div class="wel_container">
+		<%= requireFn('welfare/welfare_info.html')(this.wl_info.info); %>
+		</div>
+		<a href="http://www.meilishuo.com/welfare/activity/419" class="try_situation" onclick="_smq.push(['custom', '聚合专题', '签到', '查看详情']);" target="_blank"></a>
+	</div>
+	<div class="bg05" id="anchor_daren">
+		<% ['s1','s2','s3'].forEach(function(item){%>
+		<a class="<%=item %>" href="<%=PICTURE_URL%>images/huodong/weiting/dr_<%=item %>.png" rel="dr_<%=item %>" target="_blank" onclick="_smq.push(['custom', '聚合专题', '达人专区', '查看图片']);"></a>
+		<%});%>
+	</div>
+	<div class="bg06">
+		<% ['x1','x2','x3','x4'].forEach(function(item){%>
+		<a class="<%=item %>" href="<%=PICTURE_URL%>images/huodong/weiting/dr_<%=item %>.png" rel="dr_<%=item %>" target="_blank" onclick="_smq.push(['custom', '聚合专题', '达人专区', '查看图片']);"></a>
+		<%});%>
+	</div>
+	<div class="bg07" id="anchor_mijue">
+		<% 
+		var l1Arr = ['summer','party','moment','daily'];
+		var l1Monitor = ["_smq.push(['custom', '聚合专题', '课程一', '夏日外出']);","_smq.push(['custom', '聚合专题', '课程一', '约会']);","_smq.push(['custom', '聚合专题', '课程一', '重要时刻']);","_smq.push(['custom', '聚合专题', '课程一', '日常护理']);"];
+		%>
+		<div class="l1_btn_wrapper">
+			<% l1Arr.forEach(function(item,index){ %>
+				<a class="<%=item %> <%if(!index){%>s<%}%>" onclick="<%=l1Monitor[index]%>"></a>
+			<% }); %>
+		</div>
+		<div class="l1_content">
+			<div class="<%=l1Arr[0] %>"></div>
+		</div>
+		<% 
+		var l2Arr = ['tidao','gao','lazhi'];
+		var l2Monitor = ["_smq.push(['custom', '聚合专题', '课程二', '剃刀']);","_smq.push(['custom', '聚合专题', '课程二', '脱毛膏']);","_smq.push(['custom', '聚合专题', '课程二', '脱毛蜡纸']);"];
+		%>
+		<div class="l2_btn_wrapper">
+			<% l2Arr.forEach(function(item,index){ %>
+				<a class="<%=item %> <%if(!index){%>s<%}%>" onclick="<%=l2Monitor[index]%>"></a>
+			<% }); %>
+		</div>
+		<div class="l2_content">
+			<div class="<%=l2Arr[0] %>"></div>
+		</div>
+	</div>
+	<div class="bg08">
+		<% var l3Arr = [
+			{cla : 'l3_gao', url : 'http://player.56.com/3000000466/open_OTI0MzY5ODc.swf', monitor : "_smq.push(['custom', '聚合专题', '课程三', '如何使用脱毛膏']);",monitor_play : "_smq.push(['custom', '聚合专题', '课程三', '脱毛膏视频播放']);"}
+			,{cla : 'l3_lazhi', url : 'http://player.56.com/3000000466/open_OTI0MzcxNTY.swf', monitor : "_smq.push(['custom', '聚合专题', '课程三', '如何使用脱毛蜡纸']);",monitor_play : "_smq.push(['custom', '聚合专题', '课程三', '蜡纸视频播放']);"}
+		];%>
+		<div class="tab_wrapper">
+			<% l3Arr.forEach(function(item,index){%>
+			<a class="<%=item.cla %> <%if(!index){%>s<%}%>" onclick="<%=item.monitor %>"></a>
+			<%}); %>
+		</div>
+		<div class="video_wrapper">
+			<p class="<%=l3Arr[0].cla %>"></p>
+			<div class="video">
+			<% l3Arr.forEach(function(item,index){%>
+				<div class="<%=item.cla %>" <%if(index){%>style="display:none;"<%}%> onclick="<%=item.monitor_play %>">
+					<img src="<%=PICTURE_URL %>images/huodong/weiting/stay.jpg" width="100%" height="100%" class="stay_img" style="cursor: pointer;">
+					<div style="display:none;" class="v_w">
+					<% set56Video(item.url,444,270); %>
+					</div>
+				</div>
+			<%}); %>
+			</div>
+		</div>
+		<div class="step_wrapper">
+			<div class="<%=l3Arr[0].cla %>"></div>
+		</div>
+	</div>
+	<div class="bg09">
+		<a class="banner_a" href="http://www.veet.com.cn/hualixueyuan-faq-common" target="_blank" onclick="_smq.push(['custom', '聚合专题', '课程四', '滑丽宝典']);"></a>
+	</div>
+	<div class="bg10" id="anchor_bainian"></div>
+	<div class="bg11">
+		<a class="wt_gao" href="http://www.veet.com.cn/chanpin/zzhbtmg" target="_blank" onclick="_smq.push(['custom', '聚合专题', '了解产品', '脱毛膏系列']);"></a>
+		<a class="wt_lazhi" href="http://www.veet.com.cn/chanpin/ptjftmlz" target="_blank" onclick="_smq.push(['custom', '聚合专题', '了解产品', '脱毛蜡纸系列']);"></a>
+		<a class="wt_muyu" href="http://www.veet.com.cn/chanpin/yxzymytmg" target="_blank" onclick="_smq.push(['custom', '聚合专题', '了解产品', '沐浴脱毛系列']);"></a>
+		<a class="wt_more" href="http://www.veet.com.cn/huali-dingzhi" target="_blank" onclick="_smq.push(['custom', '聚合专题', '了解产品', '搜索产品']);"></a>
+	</div>
+	<div class="bg12" id="anchor_dongxiang">
+		<% var brands = [
+			{cla:'meili1',url:'http://player.56.com/3000000465/open_MTEyMDU2MTE3.swf',monitor : "_smq.push(['custom', '聚合专题', '品牌动向', '视频当薇婷遇上美丽佳人一']);",monitor_play : "_smq.push(['custom', '聚合专题', '品牌动向', '视频当薇婷遇上美丽佳人一']);"}
+			,{cla:'meili2',url:'http://player.56.com/3000000465/open_MTEyMDUwNTc1.swf',monitor : "_smq.push(['custom', '聚合专题', '品牌动向', '视频当薇婷遇上美丽佳人二']);",monitor_play : "_smq.push(['custom', '聚合专题', '品牌动向', '视频当薇婷遇上美丽佳人二']);"}
+			,{cla:'caomei',url:'http://player.56.com/3000000466/open_NzM2MjAzMjM.swf',monitor : "_smq.push(['custom', '聚合专题', '品牌动向', '视频滑丽现身草莓音乐节']);",monitor_play : "_smq.push(['custom', '聚合专题', '品牌动向', '视频滑丽现身草莓音乐节']);"}
+		];%>
+		<div class="brand_video">
+			<p class="<%=brands[0].cla %>"></p>
+			<div class="video">
+			<% brands.forEach(function(item,index){%>
+				<div class="<%=item.cla %>" <%if(index){%>style="display:none;"<%}%> onclick="<%=item.monitor_play %>">
+					<img src="<%=PICTURE_URL %>images/huodong/weiting/stay.jpg" width="100%" height="100%" class="stay_img" style="cursor: pointer;">
+					<div style="display:none;" class="v_w">
+					<% set56Video(item.url,444,270); %>
+					</div>
+				</div>
+			<%}); %>
+			</div>
+		</div>
+		<div class="brand_tab_wrapper">
+			<% brands.forEach(function(item,index){%>
+			<div class="<%=item.cla %> <%if(!index){%>s<%}%>"></div>
+			<%}); %>
+			<a class="zuozhan" href="http://veet.renren.com/" target="_blank" onclick="_smq.push(['custom', '聚合专题', '品牌动向', '视频V蜜大作战']);"></a>
+		</div>
+	</div>
+</div>
+<div class="my_fancy">
+	<img alt="">
+</div>
+
+<%*弹窗部分--转发到微博@好友--通过绑定%>
+<script type="text/html" id="welfare_apply">
+<div class="welfare_apply" id="welfare_apply_after">
+	<p class="wf_explain">我们会优先选择有真人头像的姑娘获奖~</p>
+	<form class="wf_form" onsubmit="return false;" action="">
+		<input type="hidden" name="activity_id" value="<%=this.wl_header.activity_id%>">
+		<p>
+			<span class="wa_info">真实姓名：</span>
+			<input id="real_name" class="wfipt1" type="text" value="<?=info.realname?>" name="real_name">
+		</p>
+		<p>
+			<span class="wa_info">联系电话：</span>
+			<input id="telephone" class="wfipt1" type="text" value="<?=info.mobile?>" name="telephone">
+		</p>
+		<p>
+			<span class="wa_info">收货地址：</span>
+			<input id="address" class="wfipt2" type="text" value="<?=info.shipping_address?>" name="address">
+		</p>
+		<p>
+			<span class="wa_info">申请理由：</span>
+			<textarea id="reason" class="wfipt3" name="reason"></textarea>
+		</p>
+		<p>
+			<span class="wa_info">备注：</span>
+			<input id="note" class="wfipt2" type="text" placeholder="非必填选项，按此活动需求，请填写你衣服或鞋子的尺寸" name="note">
+		</p>
+		<p class="l22_f">
+			<span class="wa_info">同步：</span>
+			<div id="weibo_area">
+				<p>
+					<?if(fans && fans.length>0) {?><span id="weibo_area_change">换一组</span>同步到我的微博，并@美丽说和我的好友
+					<?} else {?>
+					同步到我的微博，并@美丽说。
+					<?}?>
+				</p>
+				<div class="mt5_f">
+					<?fans && $.each(fans, function(k, v){?>
+					<img class="avatar48_f" alt="<?=v.screen_name?>" src="<?=v.image_url?>">
+					<?});?>
+					<div class="clear_f"></div>
+				</div>
+				<?if(fans && fans.length>0) {?>
+				<p class="mt5_f">你@了<span id="weibo_area_info">0</span>位微博好友</p>
+				<?}?>
+			</div>
+		</p>
+		<p>
+			<label class="cursor_f"><input fuid="<%=this.wl_info.userInfo.user_id%>" id="fol_actor" type="checkbox" checked>关注<%=this.user_list.nickname%></label>
+			<br/>
+			<label class="cursor_f"><input id="share_home" type="checkbox" checked>分享到我的首页</label>
+		</p>
+		<p>
+			<input id="applying_submit" type="submit" value="提交申请">
+			<a class="wf_cancel" href="javascript:void(0)">取消</a>
+		</p>
+	</form>
+</div>
+</script>
+<%*弹窗部分--转发到微博@好友--未绑定%>
+<script type="text/html" id="welfare_apply_before">
+<div class="welfare_apply_before">
+	<p class="c_f">亲，绑定以下任意微博就能参加活动啦！</p>
+	<div class="mt14_f wf_bind">
+		<a class="wfr_ico1" href="/settings/syncBind/weibo"></a>
+		<a class="wfr_ico2" href="/settings/syncBind/txweibo"></a>
+		<div class="clear_f"></div>
+	</div>
+</div>
+</script>
+<%*弹窗部分--转发到微博@好友--绑定失败%>
+<script type="text/html" id="welfare_apply_error">
+<div class="c_f">
+	<p class="erro_info">授权失败，请再试一次吧！</p>
+	<p>
+		<span class="btn sure" id="welfare_sure">确定</span>
+		<span class="" id="welfare_return">返回</span>
+	</p>
+</div>
+</script>
+<%*申请成功提示%>
+<script type="text/html" id="welfare_apply_success">
+<div class="apply_success">
+	<p>你已经成功提交申请了，我们会尽快处理，</p>
+	<%*207号福利社定制功能 4.16下线%>
+	<%if(this.wl_header.activity_id == 207){%>
+	<p>来<a class="red_f fb_f" href="http://c.admaster.com.cn/c/a13079,b200160760,c1981,i0,m101,h" target="_blank">ORBIS官网</a>浏览，寻找更多惊喜。</p>	
+	<%}else{%>
+	<p>获得试用资格的MM将收到系统消息通知，</p>
+	<p>请注意查收哦～</p>
+	<%}%>
+	<%if(this.wf_girl.followed == 0){%>
+	<p>想获得更多福利情报，请关注福利花小美^_^</p>
+	<div class="mt8_f clearfix_f" style="margin-left:20px;">
+		<a class="left_f" target="_blank" href="/person/u/<%=this.wf_girl.user_id%>">
+			<img width="86" height="86" src="<%=this.wf_girl.avatar_a%>">
+		</a>
+		<div class="wf_girl_r">
+			<a class="f14_f fb_f block_f" target="_blank" href="/person/u/<%=this.wf_girl.user_id%>"><%=this.wf_girl.nickname%>
+				<span class="identity_big_style">
+				<%= jsRender('identity.html')(this.wf_girl) ;%>
+				</span>
+			</a>
+			<span class="red_follow add_follow_ok" fuid="<%= this.wf_girl.user_id%>" following=<%= this.wf_girl.following%> followed="<%= this.wf_girl.followed%>">+ 加关注</span>
+		</div>
+	</div>
+	<%}else{%>
+	<p class="mt14_f" style="margin-left:100px;"><input class="apply_success_ok cursor_f btn sure" type="button" value="确定"/></p>
+	<%}%>
+</div>
+</script>
+<script>
+	Meilishuo.config.begin = <%=this.wl_header.begin%>;
+	Meilishuo.config.activity_id = <%=this.wl_header.activity_id%>;
+	Meilishuo.config.editor = <%=this.wl_header.editor%>;
+	Meilishuo.config.pid = <%=this.wl_header.twitter_images_id%>;
+	Meilishuo.config.wl_title = '<%=this.wl_header.title%>';
+	Meilishuo.config.topic_title = '<%=this.wl_header.topic_title%>';
+</script>
+<%*监控代码%>
+<script type="text/javascript">
+var _smq = _smq || [];
+_smq.push(['_setAccount', '5198d29', new Date()]);
+_smq.push(['pageview']);
+(function() {
+var sm = document.createElement('script'); sm.type = 'text/javascript'; sm.async = true;
+sm.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'cdnmaster.com/sitemaster/sm.js';
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(sm, s);
+})();
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/huodong/veet');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

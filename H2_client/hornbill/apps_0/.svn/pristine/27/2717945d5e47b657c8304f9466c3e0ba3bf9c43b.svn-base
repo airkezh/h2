@@ -1,0 +1,29 @@
+<%
+	var actShow = this.actShow || 0;
+%>
+<div class="m50"></div>
+<nav class="nav-c">
+	<a href="/sq/handpick/" class="option">
+		<span class="bg<%if(this.index === 1){%> active <%}%>"></span>
+		<p>精选</p>
+	</a>
+	<a href="/sq/tuan/" class="option">
+		<span class="bg<%if(this.index === 2){%> active<%}%>"></span>
+		<p>团购</p>
+	</a>
+	<%if(actShow){%>
+	<a href="/sq/activity/915" class="option" id="act915">
+		<span class="bg<%if(this.index === 3){%> active<%}%>"></span>
+		<p>915特惠</p>
+	</a>
+	<%}else{%>
+	<a href="/sq/category/level1" class="option">
+		<span class="bg<%if(this.index === 3){%> active<%}%>"></span>
+		<p>分类</p>
+	</a>
+	<%}%>
+	<a href="/sq/userCen/" class="option">
+		<span class="bg<%if(this.index === 4){%> active<%}%> "></span>
+		<p>个人</p>
+	</a>
+</nav>

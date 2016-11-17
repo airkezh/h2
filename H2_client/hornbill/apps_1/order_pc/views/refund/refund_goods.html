@@ -1,0 +1,154 @@
+<%
+	var order,goods;
+	if(this.refund.info.order_detail){
+		order = this.refund.info.order_detail.order;
+		goods = this.refund.info.order_detail.goods_info;
+		refund = this.refund;
+	}
+	if(order && goods){
+		function reMsg(o){
+			if(!o) return '未使用';
+			var msg = o.msg
+				,redmsg = o.redmsg || [];
+			redmsg.forEach(function(m){
+				msg = msg.replace('%s', '<span class="red_f">'+m+'</span>');
+			});
+			return msg;
+		}
+		var coupon = reMsg(order.coupon);
+%>
+
+<div class="goods-container">
+	<div class="shop-info">
+		<strong>商家：</strong>
+		<span><%=order.shop_name%></span>
+		<%
+			order.qq = "21458763",
+			order.im =  {};
+		%>
+		<% if(order.im || order.qq){ %><a class="getserviceqq knilmi" href="<%= this.ViewTools.callIM(order.im , order.qq) %>" target="_blank">&nbsp;</a><% } %>
+	</div>
+
+	<div class="goods-info">
+		<div class="goods-img">
+			<a href="<%=this.DOMAIN.www%>/share/<%if(goods.is_doota == '1'){%>item/<%}%><%= goods.twitter_id %>" target="_blank">
+				<img class="pic" src="<%=goods.b_pic_url%>">
+			</a>
+		</div>
+		<div class="goods-detail">
+			<div class="detail-title">
+				<a href="<%=this.DOMAIN.www%>/share/<%if(goods.is_doota == '1'){%>item/<%}%><%= goods.twitter_id %>" target="_blank">
+					<%= goods.goods_title.length > 30 ? goods.goods_title.substr(0,30)+'...' : goods.goods_title %>
+				</a>
+			</div>
+			<div class="detail-spec">
+				<% goods.prop && goods.prop.map(function(prop){ %>
+					<%if(prop.is_show){%>
+					<p><%= prop.name%>：<%= prop.value%></p>
+					<%}%>
+				<%});%>
+			</div>
+		</div>
+	</div>
+
+	<div class="detail-info">
+		<ul>
+			<li>
+				
+			</li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li>
+				<% if(order.refund_coin && +order.refund_coin){ %><span class="left_f strong-color">&nbsp;&nbsp;金币抵扣：<%= order.refund_coin %>元</span> <% } %>
+			</li>
+			<li>
+				<span class="last">商品总价：<b>￥<%= order.goods_total_price %></b>元</span>
+			</li>
+		</ul>
+	</div>
+
+	<div class="order-info">
+		订单号：<%= order.order_id %>
+	</div>
+</div>
+
+<div class="bought_goods">
+	<table>
+		<colgroup>
+			<col width="20">
+			<col width="340">
+			<col>
+			<col>
+			<col width="150">
+			<col width="150">
+		</colgroup>
+		<thead>
+			<tr>
+				<th>&nbsp;</th>
+				<th>商品信息</th>
+				<th>单价（元）</th>
+				<th>数量</th>
+				<th>合计金额（元）</th>
+				<th>订单状态</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr class="seller_info">
+				<td colspan="6">
+					<span>
+						<%if(refund.info.header.is_haitao){%><%}else{%>商家：<%}%><%= order.shop_name %>
+					</span>
+					<% if(order.im || order.qq){ %><a class="getserviceqq knilmi" href="<%= this.ViewTools.callIM(order.im , order.qq) %>" target="_blank">&nbsp;</a><% } %>
+				</td>
+			</tr>
+			<tr class="order_goods">
+				<td class="blank_row">&nbsp;</td>
+				<td class="goods">
+					<a href="<%=this.DOMAIN.www%>/share/<%if(goods.is_doota == '1'){%>item/<%}%><%= goods.twitter_id %>" target="_blank">
+						<img class="pic" src="<%=goods.b_pic_url%>">
+					</a>
+					<div class="des">
+						<div class="title">
+							<a href="<%=this.DOMAIN.www%>/share/<%if(goods.is_doota == '1'){%>item/<%}%><%= goods.twitter_id %>" target="_blank">
+								<%= goods.goods_title.length > 30 ? goods.goods_title.substr(0,30)+'...' : goods.goods_title %>
+							</a>
+						</div>
+						<div class="spec">
+							<% goods.prop && goods.prop.map(function(prop){ %>
+							<%if(prop.is_show){%>
+							<span><%= prop.name%>：<%= prop.value%></span>
+							<%}%>
+							<%});%>
+						</div>
+					</div>
+				</td>
+				<td><%=goods.price%></td>
+				<td><%=goods.amount%></td>
+				<td class="status" rowspan="1"><%=order.goods_total_price%></td>
+				<td class="operate" rowspan="1"><%=order.status_text%></td>
+			</tr>
+		</tbody>
+	</table>
+	<div class="order_time">
+		<span class="first">订单号：<%= order.order_id %></span>
+		<%if(order.ctime){%><span>成交时间：<%= order.ctime %></span><%}%>
+		<%if(order.pay_time){%><span>付款时间：<%= order.pay_time%></span><%}%>
+		<%if(order.send_time){%><span>发货时间：<%= order.send_time%></span><%}%>
+		<%if(order.auto_confirm_time){%><span>系统自动确认收货时间：<%= order.auto_confirm_time%></span><%}%>
+		<%if(order.receive_time){%><span>确认收货时间：<%= order.receive_time%></span><%}%>
+		<%if(order.last_status_time){%><span>订单关闭时间：<%= order.last_status_time%></span><%}%>
+		<%if(order.auto_close_time){%><span>未付款订单关闭时间：<%= order.auto_close_time%></span><%}%>
+	</div>
+	<div class="total">
+		<p>
+			<%if(order.coupon_deduct){%><span>优惠券扣减：<%= order.coupon_deduct %>元</span><%}%>
+			<%if(order.express_price){%><span>运费：<%= order.express_price %>元</span><%}%>
+			<span class="last">商品总价：<b>￥<%= order.goods_total_price %></b>元</span>
+		</p>
+		<span class="left_f">优惠券：<%=coupon %></span>
+		<% if(order.refund_coin && +order.refund_coin){ %><span class="left_f strong-color">&nbsp;&nbsp;金币抵扣：<%= order.refund_coin %>元</span> <% } %>
+	</div>
+</div>
+<%}%>

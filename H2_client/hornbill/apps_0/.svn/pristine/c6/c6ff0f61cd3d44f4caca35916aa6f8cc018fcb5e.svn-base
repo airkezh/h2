@@ -1,0 +1,30 @@
+<%
+	var search = this.search || {};
+	var common_r = this.common_r || {};
+	var keyword = this.keyword || '';
+%>
+<div class="search-box search-box-show" id="searchBoxShow">
+	<div class="inner">
+		<img src="http://d05.res.meilishuo.net/img/_o/74/ff/90470c94578b10f7fd84fe6bd001_20_21.cf.png" alt="">
+		<div class="box">
+			<%= keyword || search.default_key_word %>
+		</div>
+	</div>
+</div>
+<div class="search-box hide" id="searchBox">
+	<div class="inner">
+		<img src="http://d05.res.meilishuo.net/img/_o/74/ff/90470c94578b10f7fd84fe6bd001_20_21.cf.png" alt="">
+		<div class="box">
+			<form action="/zulily/result" method="get" id="searchForm">
+				<input id="search" maxlength='15' name="keyword" type="search" autocomplete="off" placeholder="<%= keyword || search.default_key_word %>" data-xr="<%= common_r %>">
+			</form>
+		</div>
+	</div>
+</div>
+<script>
+	fml.vars.defaultWord = '<%= search.default_key_word %>';
+	fml.vars.searchWord = '<%= keyword || search.default_key_word %>';
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/zulily/searchHead');
+_use:", this._JSstack, this._JSmods); %>

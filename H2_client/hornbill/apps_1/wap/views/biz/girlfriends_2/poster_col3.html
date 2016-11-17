@@ -1,0 +1,45 @@
+<script type="text/html" id="posterWall">
+<?
+fml.vars.twitter_load = fml.vars.twitter_load || {};
+function getStringLengthArr(s , len){
+	var w = 0;
+	var time = 0;
+	for(length=s.length; time<length; ){
+		if(/[^\x00-\xff]/.test(s[time])){
+			w+=2;
+		}else{
+			w+=1;
+		}	
+		time ++;
+		if(w >= (len*2)){
+			break;
+		}
+	}
+	return time;
+}
+function mSubstr(str , len , pad){
+	if (!str || 0 == str.length) return '';
+	if (undefined == pad ) pad = '...';
+	len = getStringLengthArr(str , len);
+	return str.substr( 0 , len) + ((pad && str.length> len) ? pad : '');
+}
+$.each(this.tInfo , function(k , v){ 
+	if(!v || fml.vars.twitter_load[v.twitter_id]){return}
+	fml.vars.twitter_load[v.twitter_id] = true;
+	var pic_height = v.pic_height * fml.vars.poster.scale;
+	var len = fml.vars.poster.totalColNum * 2;
+	var nickname =  mSubstr(v.nickname , 4 , '...');
+?>
+<div class="poster_grid poster_wall" twitter_id="<?=v.twitter_id?>" style="width:<?= fml.vars.poster.colWidth?>px;" poster_height="<?= pic_height + 30?>">
+	<figure>
+		<a class="pic_load" href="<?= v.share_url?>" style="padding-top:<?= pic_height ?>px;">
+			<img src="<?= v.pic_url ?>" style="-webkit-transform: none;"/>
+		</a>
+		<figcaption>
+			<span class="price red_f"><?= nickname?></span>
+			<span class="like"><?= v.score?></span>
+		</figcaption>
+	</figure>
+</div>
+<? }); ?>
+</script>

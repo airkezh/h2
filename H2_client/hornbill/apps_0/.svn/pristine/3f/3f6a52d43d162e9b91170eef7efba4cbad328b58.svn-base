@@ -1,0 +1,156 @@
+/*common*/
+
+require('wap/zepto')
+require('wap/app/dialog')
+
+var tab = require('wap/app/doota/tab')
+	,fallAdd = require('wap/app/fallAdd')
+	,shareTmp = require('wap/component/shareTmp')
+	, lazyLoad = require('wap/component/lazzyLoad')
+
+var goods_id = fml.vars.goods.id
+
+var lazyLoad = lazyLoad.init({xpath:'.more_pic>span'})
+lazyLoad.load()
+lazyLoad.scroll()
+
+$('.moreDetailBtn').on('click', function(){
+	var $box = $(this).parents('.details')
+	$box.is('.hide') ? $box.removeClass('hide') : $box.addClass('hide')
+	lazyLoad.load()
+})
+
+
+tab.bind({
+	'tagPnl': '.tab_tle',
+	'tabTag': '.tabArea',
+	'activeTagClass': 'cur',
+	'contents': '.contentArea'
+});
+
+function rollCommentPnl() {}
+
+//点击详情的更多评论时 跳转评价详情标签
+$('.comm_more').on('click', function() {
+	$('#comments').trigger('tap')
+})
+
+$('.koubei_more').on('tap', function() {
+	$('#koubei').trigger('tap')
+})
+
+$('.cosmetic').on('tap', function() {
+	$(this).off('tap')
+
+	fallAdd({
+		'tid': fml.vars.goods.twitter_id,
+		'cbk': rollCommentPnl,
+		'url': '/aj/getComment/koubei',
+		'processData': function(res) {
+			return {
+				'item': res.infos,
+				'totalNum': res.pages.totalNum
+			}
+		},
+		'box': '.cosmetic_content',
+		'tmpId': 'twitter_cosmetic',
+		'page': 0
+	});
+})
+
+$('.recommend').on('tap', function() {
+	$(this).off('tap')
+
+	fallAdd({
+		'tid': fml.vars.goods.twitter_id,
+		'cbk': rollCommentPnl,
+		'url': '/aj/getComment/shop?filter=0&filter_point=0',// 取4/5星的评论
+		'processData': function(res) {
+			return {
+				'item': res.cInfos,
+				'totalNum': res.pages.totalNum
+			}
+		},
+		'box': '.comments_content',
+		'tmpId': 'twitter_comment',
+		'page': 0
+	});
+})
+
+
+
+$('#cpn_info').on('click',function(){
+	var tpl = shareTmp('downloadApp');
+    $.fn.dialog({dialogContent : tpl , dialogTitle : ''});
+	$('.dialog_box').on('click' , function(){
+		setTimeout(function(){
+			$('.closeDialog').trigger('tap');
+		} , 500);
+	});
+})
+
+
+/*购买评论*/
+$.get('/aj/share_item/goodsTag', {goods_id : fml.vars.goodsId}, function(data){
+	var infos = data.tInfos
+		,item;
+	if ( infos && infos.tags_info ) {
+		item = infos.tags_info
+	}
+	$('#cmt_evaluate').html(shareTmp('cmt_evaluateTpl', {'item' : item, 'totalTags' : infos.total_tags}));
+},'json');
+
+/*购买评论列表*/
+$.get('/aj/share_item/goodsCmt', {'tid' : fml.vars.twitter_id , 'page' : 0}, function(data){
+	if(!data || !data.length) {
+		return
+	}
+	//如果评论数为 0，则不显示分类。data[0] 表示“全部评价”
+	if(!data[0].total) {
+		return
+	}
+
+	$('#cmt_tab').html(shareTmp('cmt_tabTpl', {'item' : data}))
+
+	tab.bind({
+		'tagPnl': '.cmt_tab',
+		'tabTag': '.tab_list',
+		'activeTagClass': 'cur',
+		'contents': '.evaluateArea'
+	});
+
+},'json');
+
+$('#cmt_tab').on('tap','.tab_list',function(){
+	var cur = $(this).index()
+	$('.evaluateArea').removeAttr('binded')
+	$('.evaluate').empty()
+	fallAdd({
+		'tid': fml.vars.goods.twitter_id,
+		'cbk': rollCommentPnl,
+		'url': '/aj/getComment/shop?filter=0&filter_point='+cur,// 取4/5星的评论
+		'processData': function(res) {
+			return {
+				'item': res.cInfos,
+				'totalNum': res.pages.totalNum
+			}
+		},
+		'box': '.evaluateArea',
+		'tmpId': 'twitter_comment',
+		'page': 0
+	});
+})
+
+
+var tab_num = fml.vars.tab
+if(tab_num == 1 || tab_num == 2){
+	$('.tab_tle li').eq(tab_num).trigger('tap')
+
+	$('#details').one('tap', function(){
+		lazyLoad.load()
+	})
+}
+
+
+
+

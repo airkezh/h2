@@ -1,0 +1,38 @@
+/*common*/
+// var scroll = require('wap/component/windowScroll')
+// 	, lazy = require('wap/component/lazzyLoad');
+
+/* lazy load采用全屏扫点方式加载 */
+// var lazy_pic = lazy.init({'xpath' : '.lazy_pic'});
+// lazy_pic.scroll();
+// lazy_pic.load();
+
+/*回顶部*/
+// var gotop = $('.gotop');
+// gotop.on("click", function(e) {
+//     document.body.scrollTop = 0;
+// });
+// scroll.yIn(30,function(){
+//     gotop.show();
+// },function(){
+//     gotop.hide();
+// });
+
+var appShare = require('wap/app/appShare'),
+	openAppLink = require('wap/app/openAppLink');
+
+var gotoShop = $('.gotoShop');
+// 客户端类型的分享（客户端右上角）
+if (fml.vars.appShare) {
+	appShare(fml.vars.params, '', 'image');
+}
+gotoShop.on('click', function() {
+	var shop_id = parseInt($(this).data('shop_id')),
+		Url = Meilishuo.config.os.mlsApp ? openAppLink.getAppLink({
+			'protocol': 'shop',
+			'param': {
+				'shop_id': shop_id
+			}
+		}) : '/shop/shop/' + shop_id;
+	window.location.href = Url;
+})

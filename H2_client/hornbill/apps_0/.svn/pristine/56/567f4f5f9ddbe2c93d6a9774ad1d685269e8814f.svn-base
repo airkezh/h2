@@ -1,0 +1,68 @@
+<%# head.html%>
+<% this.headName = '编辑收货地址'; 
+	this.noHomeBtn = 1;
+%>
+<%# head_share.html%>
+
+<section id="wrapper_main" class="wrapper">
+
+<div class="addr_new">
+	<fieldset>
+		<form id="addressForm" method="post" onsubmit="return false" action="">
+			<legend>新增/编辑收货地址表单</legend>
+			<p><label for="addressUser">收货人姓名</label><input id="addressUser" type="text" name="nickname" value=""/></p>
+			<p><label for="validatePhoneOrMobile">联系电话</label><input id="validatePhoneOrMobile" type="tel" name="phone" value=""/></p>
+			<p>
+				<label for="addressPid">省份</label>
+				<select id="addressPid" name="pid">
+					<option value="0">请选择</option>
+					<% this.address_select && this.address_select.data.province.map(function(data){%>
+					<option value="<%= data.pid%>"><%= data.province %></option>
+					<%});%>
+				</select>
+			</p>
+			<p>
+				<label for="addressCid">城市</label>
+				<select id="addressCid" name="cid">
+					<option value="0">请选择</option>
+				</select>
+			</p>
+			<p>
+				<label for="addressDid">地区</label>
+				<select id="addressDid" name="did">
+					<option value="0">请选择</option>
+				</select>	
+			</p>
+			<p><label for="addressStreet">街道地址</label><input id="addressStreet" type="text" name="street" value=""/></p>
+			<div>
+				<p><label for="addressPostcode">邮政编码</label><input id="addressPostcode" type="tel" name="postcode" value=""/></p>
+				<p><label for="is_default">设为默认</label><input type="checkbox" name="is_default" id="is_default" value=""/></p>
+			</div>
+			<div class="addressErrorMessage"></div>
+			<div class="submitBox"><input class="addressBtn button" type="submit" value="保存地址"/></div>
+		</form>
+	</fieldset>
+</div>
+
+<script type="text/html" id="address_select_city">
+<option value="0">请选择</option>
+<? $.each(city , function(k , v){ ?> 
+	<option value="<?= v.cid?>"><?= v.city ?></option>
+<? }); ?>
+</script>
+<script type="text/html" id="address_select_district">
+<? $.each(district , function(k , v){ ?> 
+	<option value="<?= v.did?>"><?= v.district ?></option>
+<? }); ?>
+</script>
+<script type="text/html" id="address_select">
+<option value="0">请选择</option>
+</script>
+
+</section>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/doota/address');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot_simple.html%>

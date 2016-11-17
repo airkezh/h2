@@ -1,0 +1,150 @@
+<%	
+	if(this.searchNav){
+		var searchKey = this.keyWord;
+		var cartNum = this.cartNum;
+		var msg = this.message;
+		var searchDefaultKeyWord = this.searchInitData.value || '搜索宝贝';
+
+		var imUrl = "/sq/connectCircle/?goback=" + encodeURIComponent("http://im.meilishuo.com/wap/msgList/?button_stat_area=personal_message");
+%>
+
+<div class="search">
+	<a class="search-l" href="<%= imUrl %>">
+	<% if(msg.code == 0 && msg.data.msg_num > 0){ %>
+		<i class="search-l-tip"></i>
+	<% } %>
+	</a>
+	<form id="form" class="search-c" method="get">
+		<input id="input" class="search-c-input" type="text" placeholder="<%= searchDefaultKeyWord %>" <% if(searchKey){ %>value="<%= searchKey %>"<% } %> >
+		
+		<!-- @hack look search_md.js file for detail -->
+		<input id="dumb-input" type="hidden">
+		<span id="clear" class="search-c-clear" data-action="clear"></span>
+	</form>
+	<% if(this.from != "search"){ %>
+	<a class="js-search-r search-r1" href="/sq/cart/">
+		<% if(cartNum){ %>
+		<span class="search-r1-cart"><%= cartNum > 99 ? "99+" : cartNum %></span>
+		<% } %>
+	</a>
+	<% }else{ %>
+	<span class="js-search-r search-r4" data-action="showFilterPanel">筛选</span>
+	<% } %>
+	<span id="cancel" class="search-r2" data-action="cancel">取消</span>
+	<span id="submit" class="search-r3" data-action="submit">搜索</span>
+	<ul id="associated_word_list" class="search-b"></ul>
+</div>
+<div class="filter" data-action="filterCancel">
+	<section id="filter-content" class="filter-ctn">
+		<h2 class="filter-ctn-t">筛选</h2>
+		<div class="filter-ctn-m">
+		<% 
+			var filterD = {
+				price: [
+					{name:"fl_rg_price", value: '0~50', txt:"0-50"},
+					{name:"fl_rg_price", value: '50~100', txt:"50-100"},
+					{name:"fl_rg_price", value: '100~200', txt:"100-200"},
+					{name:"fl_rg_price", value: '200~', txt:"200以上"}
+				], 
+				service: [
+					{name:"fl_fm_service_group",value:"free_send",txt:"包邮"},
+					{name:"fl_fm_service_group",value:"well_comment",txt:"评价好"},
+					{name:"fl_fm_service_group",value:"real_shoot",txt:"实拍"},
+					{name:"fl_fm_service_group",value:"is_meilizhizao",txt:"美丽制造"}
+				],
+				discount: [
+					{name:"fl_fm_discount_group",value:"is_groupon",txt:"团购"},
+					{name:"fl_fm_discount_group",value:"market_gold_goods",txt:"美美豆折扣"},
+					{name:"fl_fm_discount_group",value:"shop_act",txt:"店铺促销"}
+				] 
+			};
+
+		%>
+			<h3>价格</h3>
+			<ul class="filter-ctn-m-ul">
+			<% filterD.price.forEach(function (item){ %>
+				<li class="filter-ctn-m-ul-li price" data-name="<%= item.name %>" data-value="<%= item.value %>" data-action="filterItemSelect"><%= item.txt %></li>
+			<% }); %>
+			</ul>
+			<h3>服务</h3>
+			<ul class="filter-ctn-m-ul">
+			<% filterD.service.forEach(function (item){ %>
+				<li class="filter-ctn-m-ul-li service" data-name="<%= item.name %>" data-value="<%= item.value %>" data-action="filterItemSelect"><%= item.txt %></li>
+			<% }); %>
+			</ul>
+			<h3>折扣</h3>
+			<ul class="filter-ctn-m-ul">
+			<% filterD.discount.forEach(function (item){ %>
+				<li class="filter-ctn-m-ul-li discount" data-name="<%= item.name %>" data-value="<%= item.value %>" data-action="filterItemSelect"><%= item.txt %></li>
+			<% }); %>
+			</ul>
+		</div>
+		<p class="filter-ctn-b">
+			<span class="filter-ctn-b-l" data-action="filterCancel">取消</span><span class="filter-ctn-b-r" data-action="gotoFilter">确定</span>
+		</p>
+	</section>
+</div>
+<%}%>
+
+<script>
+	fml.vars.hotWord = <%= JSON.stringify(this.searchInitData.hot_words) %>;
+	fml.vars.keyWord = "<%= this.keyWord %>";
+</script>
+
+<script type="text/html" id="associated_word_tpl">
+<? this.forEach(function (item){ ?>
+	<li class="search-b-item" data-kw="<?= item.key_word ?>" data-action="jump">
+		<strong class="search-b-item-l" data-kw="<?= item.key_word ?>" data-action="jump"><?= item.key_word ?></strong>
+		<ul class="search-b-item-r">
+		<? item.tags.forEach(function (tag){ ?>
+			<li class="search-b-item-r-item" data-kw="<?= tag.key_word ?>" data-action="jump"><?= tag.name ?></li>
+		<? }); ?>
+		</ul>
+	</li>	
+<? }); ?>
+</script>
+
+<script type="text/html" id="recommend_word_tpl">
+	<?
+		var hot = this.hotWord;
+		var his = this.historyWord;
+
+		function strLengthProcessor(str, len, sign){
+			var result = str || '';
+			var sign   = '...';
+			var strLen = result.replace(/[^\x00-\xff]/g,"**").length / 2;
+
+			if(strLen > len){
+				result = result.substr(0, len) + sign;
+			}
+
+			return result;
+		}
+	?>
+
+	<? if(hot && hot.length){ ?>
+	<li class="search-b-item_hot">
+		<ul class="search-b-item_hot-list">
+		<? 
+			hot.forEach(function (item){ 
+		?>
+			<li data-kw="<?= item.words ?>" data-action="jump"><?= strLengthProcessor(item.words, 10) ?></li>	
+		<? }); ?>
+		</ul>
+	</li>
+	<? } ?>
+
+	<li class="search-b-item_history">
+		<ul class="search-b-item_history-list">
+		<? if(his && his.length){ ?>
+		<? 
+			his.forEach(function (txt){ 
+		?>
+			<li data-kw="<?= txt ?>" data-action="jump"><?= strLengthProcessor(txt, 10) ?></li>	
+		<? }); ?>
+		<? }else{ ?>
+			<li class="search-b-item_history-list-empty">还没有搜索记录哦&nbsp;&gt;o&lt;lll</li>
+		<? } ?>
+		</ul>
+	</li>
+</script>

@@ -1,0 +1,24 @@
+<%# wx_new/header.html%>
+<div class="wall">
+<% var data = this.classify[0].children; %>
+<% data && data.forEach(function (item, index){%>
+	<figure>
+		<a href="/wx/search/?key=<%= item.query_word %>&d_r=<%= this.r %>" style="background-image: url(<%= item.pic %>);"></a>
+		<figcaption><%= _extFn.mSubstr(item.word_name, 4, '') %></figcaption>
+	</figure>
+<% }); %>
+</div>
+<!-- 瀑布流 -->
+<div class="posterWall wrap scroller">
+	<ul class="new_goods goods_wall"></ul>
+	<div class="pullUp" status="loading"></div>
+</div>
+<!-- 微信goods -->
+<%# wx_new/wxGoodsinfo.html%>
+<script>
+	fml.vars.key = '<%= this.pageTitle%>' ;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/wx_new/secClassify');
+_use:", this._JSstack , this._JSmods ); %>
+<%# wx_new/footer.html%>

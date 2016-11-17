@@ -1,0 +1,61 @@
+<%# head_simple.html%>
+</head>
+<body <%if(this.os.ios){%>class="ios"<%}%>>
+<div class="gift_source">
+	<img class="shake shake-constant" src="<%=this.PICTURE_URL%>/images/wap/wx/20141225/source_new.png" alt="">
+</div>
+<div class="score_board none">
+	<img src="<%= this.userWxInfo.headimgurl ? this.userWxInfo.headimgurl : 'http://d05.res.meilishuo.net/ap/a/56/de/19e804632c91d96c684320171e31_256_256.cc.jpg'%>" alt="">
+</div>
+<div class="sky">
+	<img src="<%=this.PICTURE_URL%>/images/wap/wx/20141225/sky.png" alt="">
+</div>
+<div class="tree">
+	<img src="<%=this.PICTURE_URL%>/images/wap/wx/20141225/tree.png" alt="">
+</div>
+<div class="basket none">
+	<!-- <img src="<%=this.PICTURE_URL%>/images/wap/wx/20141225/car.png" alt=""> -->
+</div>
+<div class="footer">
+	<div class="bg_bottom">
+		<div class="zhalan"></div>
+	</div>
+	<img class="logo" src="<%=this.PICTURE_URL%>/images/wap/wx/20141225/logo.png" alt="">
+</div>
+<img class="role" src="<%=this.PICTURE_URL%>/images/wap/wx/20141225/role.png" alt="">
+<div class="role_content none">
+	<img src="<%=this.PICTURE_URL%>/images/wap/wx/20141225/role_content.png" alt="">
+</div>
+<span class="scoreAlert">+1</span>
+<img class="begin_btn none" src="<%=this.PICTURE_URL%>/images/wap/wx/20141225/start_new.png" alt="">
+<img src="<%=this.PICTURE_URL%>/images/wap/wx/20141225/gift_bg.png" alt="" class="gift_init gift gift_bg">
+<img src="<%=this.PICTURE_URL%>/images/wap/wx/20141225/gift_gz.png" alt="" class="gift_init gift gift_gz">
+<img src="<%=this.PICTURE_URL%>/images/wap/wx/20141225/gift_ku.png" alt="" class="gift_init gift gift_ku">
+<img src="<%=this.PICTURE_URL%>/images/wap/wx/20141225/gift_ld.png" alt="" class="gift_init gift gift_ld">
+<img src="<%=this.PICTURE_URL%>/images/wap/wx/20141225/gift_tg.png" alt="" class="gift_init gift gift_tg">
+<img src="<%=this.PICTURE_URL%>/images/wap/wx/20141225/deer.png" alt="" class="gift_init gift gift_xh">
+<p class="score">0</p>
+<div class="share_alert mc none">
+	<% if(this.weixinBrowser){ %>
+		<a href="javascript:;" class="btn-again"></a>
+		<img src="<%=this.PICTURE_URL%>/images/wap/wx/20141225/share_new_new.png" alt="">
+	<% }else{ %>
+		<p class="share-box">
+			<a href="javascript:;" id="js-share" class="js-share"></a>
+			<a href="javascript:;" class="btn-again"></a>
+		</p>
+		<img src="http://d05.res.meilishuo.net/img/_o/0b/9a/e05e0fd5c2f2d34186b1da78130c_534_393.cf.png" alt="">
+	<% } %>
+</div>
+<div class="scoreLittle mc none">
+	<img src="<%=this.PICTURE_URL%>/images/wap/wx/20141225/scoreLittle.png" alt="">
+</div>
+<audio id="audio" src="http://i.meilishuo.net/css/images/wap/wx/20141225/jinglebells.mp3" loop="" preload="auto" autoplay="true"></audio>
+<script>
+	fml.vars.isLogin= <%= this.isLogin || false; %>
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/wx/christmas');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot.html%>

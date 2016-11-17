@@ -1,0 +1,102 @@
+<%# head.html%>
+<%
+	var shopping_data = this.shopping;
+	var avgPoint = shopping_data.avgPoint;
+	var avg_width = avgPoint*17 + parseInt(avgPoint%5);
+%>
+<div class="wrap">
+	<div class="wraper_l">
+		<div class="article_title_wrap shoppingshow">
+			<h1>晒单</h1>
+			<div class="shopping_wrap">
+				<div class="goods_img"><img src="<%= shopping_data.goods_img %>" width="77" height="77"></div>
+				<div class="goods_title"><%= shopping_data.goods_title %></div>
+				<div class="goods_avg">
+					商品综合评分
+					<p><span class="red_f satisfy_ratio"><%= shopping_data.satisfy_ratio || '0.0%' %></span>满意度</p>
+					<div class="avg_wrap"><div class="avg_outter"><div class="avg_inner" style="width:<%= avg_width %>px;"></div></div><span><%= avgPoint || 0 %>分（共有<%= shopping_data.totalUser || 0 %>人评价）</span></div>
+				</div>
+			</div>
+			<input type="hidden" class="dropdown_tog catalog" data="101">
+			<input type="hidden" class="twitter_id" data="<%= shopping_data.twitter_id %>">
+			<input type="hidden" class="goods_id" data="<%= shopping_data.goods_id %>">
+			<div class="clear_f"></div>
+		</div>
+		<div class="page_decoration"><div class="pd_left"></div><div class="pd_right"></div></div>
+		<div class="article_subject">
+			<input type="text" class="title cata_title_text" maxlength="40" placeholder="<%= this.userInfo.nickname %>来晒货啦！">
+			<div class="article_con">
+				<div class="article_context">
+					<textarea class="content editor" placeholder="收到的宝贝喜欢吗？马上拍下美照秀一下！"></textarea>
+				</div>
+				<div class="article_post"></div>
+			</div>
+			<div class="article_toolbar">
+				<div class="toolwrap">
+					<a href="javascript:;" class="add_smileys"><span class="share_smileys">&nbsp;</span><span class="cl_i_hover"></span></a>
+					<div id="addPic_con"><a href="javascript:;" id="add_pic" class="add_pic ntBdaolpu" style="display:block"><span>图片<em class="cl_i_img">&nbsp;</em></span><span class="cl_i_hover"></span></a></div>
+				</div>
+				<div class="checkBox<%= this.clubTest.checkCode ? '' : ' none_f' %>" id="checkBox">
+					<label for="checkcode">验证码：<input class="l_ipt<%= this.clubTest.checkCode ? '' : ' noCheck' %>" id="checkcode" name="checkcode" type="text" value="" placeholder="验证码" maxlength="4" /></label>
+					<div class="checkImage" title="点击换一张">
+						<span id="checkcodeImage">
+							<img width="78" height="26" isblank="true" src="<%= this.PICTURE_URL %>images/register/blank.jpg">
+						</span>
+					</div>
+				</div>
+				<div class="submit_con">
+					<span class="submit">发布</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="wraper_r">
+		<div class="sider">
+			<div class="redline1"></div>
+			<h2>晒单说明</h2>
+			<p><span>1.</span>分享自己的使用感受、选购建议、商品实物照片、拆包过程等。</p>
+			<p><span>2.</span>商品实物照片，要求背景干净，图片清晰，且可以完整展示商品。</p>
+			<p><span>3.</span>优质晒单将有机会获得100元现金券。</p>
+			<p class="red_f"><a href="http://www.meilishuo.com/club/single/554393?frm=shaidan_shuoming" target="_blank">教你玩转晒单，轻松拿百元现金券！</a></p>
+		</div>
+	</div>
+</div>
+<script type="text/html" id="addCon">
+	<div class="item pr_f">
+		<div class="separation"></div>
+		<div class="item_con">
+			<div class="item_arrow">
+				<p class="arrow_up <?=hide_up?>"></p>
+				<p class="arrow_down none_f"></p>
+			</div>
+			<div>
+				<? if (isPic) {?>
+					<div class="addPic">
+						<div class="uploading">
+							<span class="pic_title"><?= data.pic_title ?></span>
+							<div class="progress_bar"><div class="upload_percentage" id="<?= data.uppic_id ?>"></div></div>
+							<div class="upload_errormsg"></div>
+						</div>
+					</div>
+				<? } ?>
+				<div class="cl_i_close"></div>
+			</div>
+			<div class="clear_f"></div>
+		</div>
+	</div>
+</script>
+<script  type="text/html" id="addPicCon">
+	<div class="upload">
+		<img src="<?= pic_url ?>" pid="<?= pic_id ?>">
+		<textarea class="desp" placeholder="请添加图片描述..."></textarea>
+	</div>
+</script>
+
+<%# user/windows.html%>
+<script>
+	Meilishuo.config.is_shoppingshow = true;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/club/newTopicN');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

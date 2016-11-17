@@ -1,0 +1,72 @@
+<%#head.html%>
+	<h2 class="title"><%= this.wlfWapDetail.activity_title%></h2>
+	<div class="goods_img">
+		<!--img src="http://img.meilishuo.net/css/images/api/axigua/shujie_2.jpg" /-->
+		<img src="<%=this.wlfWapDetail.activity_banner%>" />
+	</div>
+	<div class="priceinfo_section">
+		<p class="left_f">共<span class="red_f"><%= this.wlfWapDetail.trynumber%></span>份</p>
+		<p class="left_f">价值：<span class="red_f"><%= this.wlfWapDetail.activity_price%></span></p>
+		<p class="right_f"><span class="red_f"><%= this.wlfWapDetail.applyNum%></span>人申请</p>
+	</div>
+	<p class="time timeStamp" end-date="<%= this.wlfWapDetail.end_time%>">
+		剩余时间：
+		<% if(this.wlfWapDetail.end_time * 1000 - Date.parse(new Date()) >= 0){ %>
+			<strong id="day">0</strong>天<strong id="hour">0</strong>小时<strong id="minute">0</strong>分<strong id="seconds">0</strong>秒	
+		<%}else{%>
+			已结束
+		<%}%>
+	</p>
+	<% if(this.wlfWapDetail.act_end == 0){ %>
+		<a class="allw redbg" href="/wapWelfare/welfare_apply/?activity_id=<%= this.activity_id%>">申请试用</a>
+	<%}else if(this.wlfWapDetail.act_end == 1){%>
+		<p class="allw graybg">申请试用</p>
+	<%}else if(this.wlfWapDetail.is_apply == 1){%>
+		<div class="subed">
+			<p><img src="<%=this.PICTURE_URL%>images/wap/welfare/confirm.png" /><span class="red_f">试用申请已提交</span></p>
+			<div class="main_no">申请结果将以<span class="red_f">私信</span>的形式通知，请注意查收！</div>
+			<div class="sub_no">提示：私信在<span class="red_f">"我"</span>页面左上角位置，点击查收！</div>
+		</div>
+	<%}%>
+	<div class="section">
+		<h3 class="subtitle"><span class="dot"></span>申请须知<span class="dot"></span></h3>
+		<p><%= this.wlfWapDetail.activity_notice%></p>
+	</div>
+	<div class="section">
+		<h3 class="subtitle"><span class="dot"></span>试用产品详情<span class="dot"></span></h3>
+		<a href=""><img src="<%= this.wlfWapDetail.activity_detial_imgurl%>" /></a>
+	</div>
+	<div class="section">
+		<h3 class="subtitle"><span class="dot"></span>中奖名单<span class="dot"></span></h3>
+		<ul class="list">
+			<% this.wlfWapDetail.user_award && this.wlfWapDetail.user_award.map(function(data){ %>
+				<li><%= data%></li>
+			<% }); %>
+		</ul>
+		<div class="flex">
+			<span class="flex_btn" id="nameList">展开全部名单</span>
+			<p class="angle"></p>
+		</div>
+	</div>
+	<% if(this.wlfWapDetail.act_end == 0){ %>
+		<a class="allw redbg" href="/wapWelfare/welfare_apply/?activity_id=<%= this.activity_id%>">申请试用</a>
+	<%}else if(this.wlfWapDetail.act_end == 1){%>
+		<p class="allw graybg">申请试用</p>
+	<%}%>
+	<hr />
+	<p class="allw redbg">查看试用报告</p>
+	<div class="exit_push">
+		<p>订阅福利社推送信息</p>
+		<span class="redbtn">退订推送</span>
+	</div>
+<script type="text/html" id="mingdan">
+	<ul class="list">
+		<% this.wlfWapDetail.user_award && this.wlfWapDetail.user_award.map(function(data){ %>
+			<li><%= data%></li>
+		<% }); %>
+	</ul>
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/welfare/welfare_detail');
+_use:", this._JSstack , this._JSmods);%>
+<%#foot.html%>

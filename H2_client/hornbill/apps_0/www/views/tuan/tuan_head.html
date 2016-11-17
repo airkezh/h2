@@ -1,0 +1,18 @@
+<div class="top_mlsslide">
+    <ul class="mlsslide_img">
+        <%this.top && this.top.data.forEach(function(v,k){%>
+        <li murl="<%= v.show_pic%>" <%if(k == 0){%>style=" background-image: url(<%= v.show_pic%>); display:block; opacity: 1; filter:alpha(opacity:100);"<%}%>>
+            <a href="<%= v.link%>" target="_blank"></a>
+        </li>
+        <%});%>
+    </ul>
+    <%var liWith = parseInt(948/this.top.data.length); %>
+    <%if(this.top.data.length > 1){%>
+    <ul class="mlsslide_tit">
+        <%this.top && this.top.data.length > 1 && this.top.data.forEach(function(v,k){%>
+        <li style="width: <%= liWith; %>px" <%if(k == 0){%>class="slide_tit_active firLi"<%}%>><%= v.tab_name%></li>
+        <%});%>
+    </ul>
+    <%}%>
+    <!-- <div class="mlsslide_shade"></div> -->
+</div>

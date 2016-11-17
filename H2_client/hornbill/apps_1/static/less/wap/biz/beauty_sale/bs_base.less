@@ -1,0 +1,179 @@
+@import "../../block.less";
+@import "goods_show.less";
+
+html{.f(10*@f);}
+body{background:#fff;}
+img{.block;.w(100%);}
+a{outline: none;}
+
+.slide;
+.gotop(){
+	.gotop_wrap{
+		.none;.pf;z-index: 10;right: 10px;.w(80*@w);bottom: 20px;
+		.sort{.mb(10px);}
+		.gotop{.block;.w(100%);}
+		img{.w(100%);}
+	}
+}
+
+.wap_rem(){
+	body{ .f(.24rem); }
+	input{ border: none;-webkit-appearance: none; }
+}
+
+.fallwall(){
+	.ios_simple;
+	.pullUp{
+		.pullUpDown > .common;
+		.pullUpDown > .loading;
+		&:before{.nowrap;.ml(-10px);}
+		&[status="tap"]{background:0 none;}
+		&[status="stop"]{
+			background:0 none;.h(2px);
+			&:before{
+				content:"木有了...";.pb(2rem);
+			}
+		}
+	}
+}
+
+/*
+	模拟客户端单品页优惠券弹窗
+*/
+.wap_fix_coupon(){
+	.fix_coupon{.w(100%);.h(100%);.pf;top: 0;left: 0;z-index: 100;visibility: hidden;}
+	.black_mask{.bgc(rgba(0,0,0,.58));.w(100%);.h(100%);transition: opacity .3s ease;}
+	.fix_coupon_wrap{
+		.pa;bottom: 0;left: 0;transition: -webkit-transform .5s ease;-webkit-transform:translateY(100%);transform:translateY(100%);
+		.w(100%);
+		.title{.bgc(#fff);.pr;.border-2b;.c;.l(4.5rem);.f(1.8rem);.fc(#595056);}
+		.close{.pa;right: 0;.w(72*@w);.h(100%);background: url('http://d06.res.meilishuo.net/img/_o/d7/af/52e287209931c82fecf51cea0bc8_32_32.ch.png') no-repeat center;background-size: 32/72*100%;}
+		.coupons{
+			.pl(20*@w);.bgc(rgba(255,255,255,.95));
+			.f(1.2rem);.fc(#80737b);
+		}
+		.coupon{
+			.border-2b;.hidden;.l(4.5rem);
+			.desc{.i_block;.w(480/620*100%);.ellipsis;}
+			.get_btn{.w(4.2rem);.c;.fc(@red);.right;.mr(20/620*100%);.border-1(#fd92b6);.l(100%);padding: .5rem 0;.border-r(3px);.mt(1.2rem);}
+			.has_get,
+			.has_over{
+				.fc(#ccc2c9);border: none;
+			}
+		}
+		.ps{
+			padding: 1.2rem 0 1.1rem;
+			span{.bgc(#f0edef);.i_block;padding: .5rem;.border-r(3px);}
+		}
+		.get_all{
+			padding: 1rem 0;.bgc(#fff);
+			.border-2t(#d9d9d9);
+			.get_all_btn{
+				.auto;.w(210*@w);.l(3rem);.bgc(#ff94b7);.c;.border-r(3px);.fc(#fff);.f(1.3rem);
+			}
+		}
+	}
+	//进场和退出动画
+	.slide_bottom_in{
+		.black_mask{opacity: 1;}
+		.fix_coupon_wrap{
+			-webkit-transform: translateY(0);
+			transform: translateY(0);
+		}
+	}
+	.slide_bottom_out{
+		.black_mask{opacity: 0;}
+		.fix_coupon_wrap{
+			-webkit-transform: translateY(100%);
+			transform: translateY(100%);
+		}
+	}
+	//重置弹框
+	.windowDrive .dialog-con{
+		.f(1.4rem);
+		.title{.f(1.8rem);.pb(.8rem);}
+	}
+	.windowDrive .dialog-btn .sureBtn{.fc(#007aff);.f(1.6rem);border-top: none;.border-2t(#d9d9d9);}
+}
+
+.sidebar(){
+	.sidebar_btn {
+		.pf;
+		.w(14%);
+		bottom:2%;
+		right:0;
+
+		transition: right 1s;
+		-webkit-transition: right 1s;	/* Safari 和 Chrome */
+		img { .block; .w(100%);margin-bottom: 3px; }
+	}
+
+	.sidebar_data {
+		.pf;
+		.w(28%);
+		top:7%;
+		right:-30%;
+		z-index: 10000000;
+		transition: right 1s;
+		-webkit-transition: right 1s;	/* Safari 和 Chrome */
+		img { .block; .w(100%); }
+	}
+	.sidebar_shade, .shade{.pf;top:0;left:0;z-index:10;.w(100%);.h(100%);background:rgba(0,0,0,.5);}
+}
+
+.pullUpDown-rem(){
+	.common(){
+		.w(100%);.c;.h(.6rem);.l(.6rem);.f(.14rem);color:#888;.pr;
+		.auto;
+		background:url("@{pic_url}/images/webwap/pull-icon@2x.png") 0 0 no-repeat;
+		-webkit-background-size:.6rem; background-size:.6rem;
+		-webkit-transition:-webkit-transition 0.25s ease-out 0;
+		.w(.6rem);.h(.6rem);
+	}
+	.loading(){
+		&[status="loading"]{
+			background-position:0 100%;
+			.transform(rotate(0deg) translateZ(0));
+			-webkit-transition-duration:0ms;
+			-webkit-animation-name:loading;
+			-webkit-animation-duration:2s;
+			-webkit-animation-iteration-count:infinite;
+			-webkit-animation-timing-function:linear;
+		}
+		@-webkit-keyframes loading {
+			from { .transform(rotate(0deg) translateZ(0)); }
+			to { .transform(rotate(360deg) translateZ(0)); }
+		}
+		&[status="tap"], &[status="stop"]{
+			-webkit-animation-name: none;
+		}
+	}
+
+	.down(){
+		.transform(rotate(0deg) translateZ(0));
+
+		&[status="flip"]{ .transform(rotate(-180deg) translateZ(0)); }
+		&[status="stop"]{ .none;}
+	}
+
+	.up(){
+		.transform(rotate(-180deg) translateZ(0));
+
+		&[status="flip"]{ .transform(rotate(0deg) translateZ(0)); }
+		&[status="stop"]{ .transform(scale(0)); }
+	}
+}
+.fallwall-rem(){
+	.ios_simple;
+	.pullUp{
+		.pullUpDown-rem > .common;
+		.pullUpDown-rem > .loading;
+		&:before{ .nowrap;.ml(-.1rem); }
+		&[status="tap"]{ background: 0 none; }
+		&[status="stop"]{
+			background:0 none;.h(2px);
+
+			&:before{ content:"木有了...";.pb(.2rem); }
+		}
+	}
+}

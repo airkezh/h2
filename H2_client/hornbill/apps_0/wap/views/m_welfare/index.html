@@ -1,0 +1,59 @@
+<%#head.html%>
+	<section id="wrapper_main" class="wrapper">
+		<div class="main">
+			<div id="bannerBox">
+				<%if(this.b_banner&&this.b_banner.list&&this.b_banner.list.length){ var b_banner=this.b_banner.list; %>
+					<div class="imageSlide" id="imageSlide">
+						<ul>
+							<% b_banner.forEach(function(data){ %>
+								<li>
+									<a href="javascript:void(0)" data-url="<%=data.url %>" class="bannerLink"><img src="<%= data.img %>"/></a>
+								</li>
+								<% }); %>
+						</ul>
+						<%if(b_banner.length>1){%>
+							<div class="num"></div>
+							<%}%>
+					</div>
+					<%}%>
+			</div>
+			<section class="nav_wap" id="nav_wap">
+				<div class="nav" id="m_ca">
+					<ul>
+						<li class="curr" data-url='/m_welfare/'>
+							<a href="javascript:void(0)"><span>福利社区</span></a>
+						</li>
+						<li data-url='/m_welfare/indexReport/'>
+							<a href="javascript:void(0)"><span>精彩试用</span></a>
+						</li>
+						<li data-url='/m_welfare/mywlf/'>
+							<a href="javascript:void(0)"><span>我的福利</span></a>
+						</li>
+					</ul>
+				</div>
+			</section>
+			<section id="container" class="container">
+				<div class="content show posterWall" id="content" style="padding-top: 10px;">
+					<div class="goods_wall wlfList">
+
+					</div>
+					<div class="pullUp" status="loading"></div>
+				</div>
+			</section>
+		</div>
+	</section>
+	<a class="gotop" style="bottom:<%if(this.isIphone){%>60<%}else{%>20<%}%>px">
+		<img src="<%= this.PICTURE_URL%>/images/wap/tuan/gotop.png" />
+	</a>
+	<script>
+		 <%= this.wlf_list ? 'Meilishuo.config.poster0=' + JSON.stringify(this.wlf_list) + ';' : ''; %>
+		fml.vars.geturl = '<%=this.geturl%>';
+		fml.vars.is_lazyload_poster = true;
+		fml.vars.isLogin = "<%= this.userInfo.user_id%>";
+	</script>
+	<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+	<%=requireFn( 'm_welfare/welfareList.html')({ '_JSstack' : this._JSstack , '_JSmods' : this._JSmods });%>
+		<%! $_ENGINE_SELF.callFn( "useModule")( "<<<_use:
+	fml.use('wap/page/welfare_new/wlf_index');
+_use:", this._JSstack , this._JSmods ); %>
+			<%#foot.html%>

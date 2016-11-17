@@ -1,0 +1,118 @@
+@import "../block";
+
+body {
+  position              : relative;
+  background-color      : #f8f8f8;
+  -webkit-touch-callout : none;
+}
+
+.menus {
+  height           : 100*@px;
+  line-height      : 60*@px;
+  overflow-x       : scroll;
+  white-space      : nowrap;
+  background-color : #fff;
+
+  &::before, &::after {
+    content        : "";
+    position       : absolute;
+    top            : 0;
+    width          : 8%;
+    height         : 100*@px;
+    pointer-events : none;
+  }
+
+  &::before {
+    left             : 0;
+    background-image : -webkit-gradient(linear, left center, right center, from(rgba(255, 255, 255, 1)), to(rgba(255, 255, 255, 0)));
+  }
+
+  &::after {
+    right            : 0;
+    background-image : -webkit-gradient(linear, right center, left center, from(rgba(255, 255, 255, 1)), to(rgba(255, 255, 255, 0)));
+  }
+
+  &::-webkit-scrollbar {
+    display : none;
+  }
+
+  li {
+    display   : inline-block;
+    margin    : 20*@px 0;
+    color     : #666;
+    font-size : 28*@px;
+
+    &:first-child {
+      margin-left : 38*@px;
+    }
+
+    &:last-child {
+      margin-right : 38*@px;
+    }
+  }
+
+  .active {
+    font-size     : 32*@px;
+    color         : #ff7a9a;
+    border-bottom : 2*@px solid;
+  }
+}
+
+.list {
+  margin : 20*@px 8*@px;
+}
+
+.container {
+  overflow : hidden;
+}
+
+.sticker {
+  float  : left;
+  width  : 33.333333%;
+  margin : 8*@px 0;
+
+  &:nth-child(3n - 2) .sticker-wrap {
+    margin-right : 8*@px;
+  }
+
+  &:nth-child(3n - 1) .sticker-wrap {
+    margin : 0 4*@px;
+  }
+
+  &:nth-child(3n) .sticker-wrap {
+    margin-left : 8*@px;
+  }
+}
+
+.sticker-wrap {
+  position        : relative;
+  display         : block;
+  font-size       : 0;
+  background-size : cover;
+}
+
+.is-lock::before {
+  content         : "";
+  position        : absolute;
+  top             : 0;
+  left            : 0;
+  right           : 0;
+  bottom          : 0;
+  background      : rgba(0, 0, 0, .6) url("http://d05.res.meilishuo.net/pic/_o/2a/ee/a92cfa76fba7161b45c1dde49b29_45_47.cf.png") center no-repeat;
+  background-size : 48*@px 48*@px;
+  pointer-events  : none;
+  z-index         : 10;
+}
+
+.is-new::after {
+  content         : "";
+  position        : absolute;
+  top             : 0;
+  left            : 0;
+  right           : 0;
+  bottom          : 0;
+  background      : url("http://d01.res.meilishuo.net/pic/_o/08/07/dca51250fa697bf5683b2afaffd5_47_49.cg.png") right top no-repeat;
+  background-size : 48*@px 48*@px;
+  pointer-events  : none;
+  z-index         : 20;
+}

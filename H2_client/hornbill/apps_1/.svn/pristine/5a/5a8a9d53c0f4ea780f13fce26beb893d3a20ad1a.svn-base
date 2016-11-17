@@ -1,0 +1,342 @@
+<%# head.html%>
+<%
+var query = this._Request_query, 
+	wlListRenderFn = requireFn('wins/reply_box.html');
+%>
+<div class="main-content">
+	<%if(this._data.data){%>
+		<div class="show-list main-shadow">
+			<h2><%if(this._data && this._data.data){%><%=this._data.data.title.content%><%}%></h2>
+			<%if(this._data && this._data.data){%>
+				<%for(var i = 0; i < this._data.data.list.length; i++){%>
+					<%var listThis = this._data.data.list[i];%>
+					<div class="list-item">
+						<a href="/person/u/<%=listThis.user_id%>" user_id="<%=listThis.user_id%>" class="list-img">
+							<img src="<%=listThis.avatar_b%>" width="64px" height="64px" />
+						</a>
+						<div class="list-content">
+							<p>
+								<a class="nick-name" href="/person/u/<%=listThis.user_id%>"><%=listThis.nickname%></a>
+								<%for(li in listThis.identity){%>
+									<%if(listThis.identity[li]){%>
+										<%if(li == 'editorV'){%>
+											<a href="/super_editor?frm=super" class="i_editor"></a>
+										<%}else if(li == 'diamond_buyer'){%>
+											<a class="i_diamond" href="/person/u/<%=listThis.user_id%>"></a>
+										<%}else if(li == 'heart_buyer'){%>
+											<a class="i_buyer" href="/person/u/<%=listThis.user_id%>"></a>
+										<%}%>
+									<%}%>
+								<%}%>
+							</p>
+							<p>
+								<span>关注：<a target="_blank" fid="<%=listThis.user_id%>" href="/nexus/follow?type=follow&user_id=<%=listThis.user_id%>"><%=listThis.following_num%></a>&nbsp;|</span> 
+								<span>粉丝：<a target="_blank" href="/nexus/follow?type=fans&user_id=<%=listThis.user_id%>"><%=listThis.follower_num%></a>&nbsp;|</span> 
+								<span>分享：<a target="_blank" href="/person/u/<%= listThis.user_id%>"><%= listThis.twitter_num%></a>
+									&nbsp;| </span>
+								<a target="_blank" class="lm_love" href="/atme/recommend/<%=listThis.user_id%>"></a>
+								<span> ：
+									<a target="_blank" href="/atme/recommend/<%=listThis.user_id%>" class="a" >
+										<%= listThis.heart_num %>
+									</a>
+								</span>
+							</p>
+							<p><%=listThis.province ? listThis.province + '，' : ''%><%=listThis.cityname || ''%></p>
+							<p class="beauty"><%=listThis.about_me%></p>
+						</div>
+						<%if(listThis.user_id != this.userInfo.user_id && this.userInfo.user_id){%>
+							<div class="list-right">
+								<%if(listThis.mutualFollow){%>
+									<p>互相关注</p>
+								<%}%>
+								<%if(listThis.followbyme){%>
+									<a class="followed attr" fuid="<%=listThis.user_id%>">已关注</a>
+								<%}else{%>
+									<a class="btn attr" fuid="<%=listThis.user_id%>">+加关注</a>
+								<%}%>
+								<div class="personal-msg" name="<%=listThis.nickname%>">
+									<span>发私信</span>
+								</div>
+							</div>
+						<%}%>
+						<br/>
+					</div>
+				<%}%>
+			<%}%>
+			<div class="paging_panel mt14_f">
+				<%#paging.html%>
+			</div>
+		</div>
+	<%}else if(this._data.tInfo){%>
+		<%if(this._data._str == '谁喜欢了你的分享'){%>
+			<div class="show-list main-shadow" style="margin-top:48px;">
+				<div class="recom_title_bg"></div>
+				<div class="recom_title_wrap<%if(this.pageType && this.pageType == 'liked_club'){%> liked_club<%}%>"><a href="/ur/recommend/<%=this.userInfo.user_id%>" class="liked_nav">被喜欢的分享</a><% if(this.clubTest && this.clubTest.canAccess == 1) {%><a href="/club/liked/<%=this.userInfo.user_id%>" class="clubliked_nav">被喜欢的帖子<%if(this.getmsg && this.getmsg.a_like_num){%><span>(<%=this.getmsg.a_like_num%>)</span><%}%></a><%}%></div>
+		<%} else {%>
+			<div class="show-list main-shadow">
+				<h2><%=this._data._str%></h2>
+		<%}%>
+			<%if(!this._data.tInfo.length && this._data.type != 'atme'){%>
+				<p><%=this._data._none%></p>
+			<%}%>
+			<%for(var i = 0; i < this._data.tInfo.length; i++){%>
+				<%var listThis = this._data.tInfo[i];%>
+				<div class="list-item-2 comments">
+					<a href="/person/u/<%=listThis.user_id%>" class="list-img" user_id="<%=listThis.user_id%>">
+						<img src="<%=listThis.avatar_b%>" width="64px" height="64px" />
+					</a>
+					<div class="list-content reply_item">
+						<div class="list-content-top">
+							<a href="/person/u/<%=listThis.user_id%>" target="_blank"><%=listThis.nickname%></a>
+							<%for(li in listThis.identity){%>
+								<%if(listThis.identity[li]){%>
+									<%if(li == 'editorV'){%>
+										<a href="/super_editor?frm=super" class="i_editor"></a>
+									<%}else if(li == 'diamond_buyer'){%>
+										<a class="i_diamond" href="/person/u/<%=listThis.user_id%>"></a>
+									<%}else if(li == 'heart_buyer'){%>
+										<a class="i_buyer" href="/person/u/<%=listThis.user_id%>"></a>
+									<%}%>
+								<%}%>
+							<%}%>
+							<span>：</span>
+							<%if(listThis.twitter_htmlcontent){%><%=listThis.twitter_htmlcontent%><%}else{%>
+							<span><%=listThis.wording%></span>
+							<span><img style=" margin-top: 2px;" alt="红心" src="http://i.meilishuo.net/css/images/twitter/ILikeit.gif"></span>
+							<%}%>
+						</div>
+						<div class="list-content-mid">
+							<%if(listThis.picture_url){%>
+							<a target="_blank" href="/share/<%=listThis.twitter_source_tid >0 ? listThis.twitter_source_tid : listThis.twitter_id%>" class="mid-left">
+								<img width="120px" height="120px" src="<%=listThis.picture_url%>" />
+							</a>
+							<%}%>
+							<div class="mid-right">
+								<%if(listThis.author || listThis.at_user){%>
+								<p>
+									<a href="/person/u/<%=listThis.user_id%>" target="_blank">
+										@
+										<%=listThis.author || listThis.at_user%></a>
+									<span>：</span>
+									<span><%=listThis.source_twitter_htmlcontent || listThis.twitter_content || ''%></span>
+									
+								</p>
+								<%}%>
+								<%if(listThis.goods_title){%>
+								<a target="_blank" class="block" href="/share/item/<%=listThis.twitter_source_tid || listThis.twitter_id%>"><%=listThis.goods_title%></a>
+								<%}%>
+								<%if(this._data.type === 'recommend' || listThis.discuss_num > 0){%><a target="_blank" class="block discuss" href="/share/<%=listThis.twitter_id%>"> 相关讨论<%=listThis.discuss_num%>条</a>
+								<%}%>
+							</div>
+						</div>
+						<br/>
+						<div class="list-content-bottom">
+							<span class="con_date"><%=listThis.twitter_create_time%>&nbsp;&nbsp;<%=listThis.twitter_source_code%></span>
+							<%if(this._data.type === 'atme'){%>
+							<div style="text-align:right; ">
+								<!-- <ul>		
+									<li><span class="i_qzone my_i_qzone">&nbsp;</span></li>		
+									<li><span class="i_sina my_i_sina">&nbsp;</span></li>		
+									<li><span class="i_tx my_i_tx">&nbsp;</span></li>	
+								</ul> -->
+								<%if(listThis.nickname === listThis.at_user){%>
+									<a href="javascript:void(0);" class="deleteMsg" tid="<%=listThis.twitter_id%>">删除</a>
+									<span>|</span>
+								<%}%>
+								
+								<a href="javascript:void(0);" class="transmitMsg">转发</a>
+								<span>|</span>
+								<a class="comment_btn" stid="<%=listThis.twitter_id%>" href="javascript:void(0);">回复</a>
+								<!-- <span>|</span>
+								<span>分享到</span>
+								<span>&nbsp;</span> -->
+								
+							</div>
+							<%}%>
+						</div>
+					
+						<% if(i == 0){%>
+							<div class="reply_block none_f">
+								<div class="separation"></div>
+								<div class="replay_triangle"><div class="inner"></div></div>
+								<div><textarea class="reply_sg editor" placeholder="在这里输入评论内容..."></textarea></div>
+								<div class="reply_bar mt10_f pr_f">
+									<span class="reply_btn" stid="<%=listThis.twitter_id%>" >立即回复</span>
+									<a class="share_smileys">&nbsp;</a>
+									<div class="img_wraper pa_f"></div>
+								</div>
+							</div>
+						<%}%>
+						
+					</div>
+					<br/>
+				</div>
+			<%}%>	
+			<div class="paging_panel mt14_f">
+				<%#paging.html%>
+			</div>
+		</div>
+	<%}%>
+	<div class="corner-notic">
+		<%if(this.user_list && this.user_list.identity){%>
+			<%# userinfo.html%>
+		<%}%>
+		<%if(this.user_medal && this.user_list){%>
+			<%# block/person_sidebar.html%>
+		<%}%>
+	</div>
+</div>
+<script type="text/html" id="tranMsg_ui" >
+<%*转发弹窗%>
+<div class="dialog_member can_not">
+	<p class="meb_content">
+		<textarea id="twitter_publish_forward" class="twitter_txt"><?= data?></textarea>
+	</p>
+	<p class="tab_sure">
+		<a class="btn sure mem_btn transmitBtn close_dailog">转发</a>
+		<a class="btn sure mem_btn cancelBtn">取消</a>
+	</p>
+</div>
+</script>
+<script type="text/html" id="beauty">
+<div class="beauty">
+	<h3><strong class="f14_f">说一句你的美丽宣言</strong><span class="limit">（最多40字）</span></h3>
+	<textarea class="area" id="contextDecl"></textarea>
+</div>
+</script>
+<script type="text/html" id="mytabs">
+<div class="mytabs">
+	<div class="ml40_f">
+		<ul class="sel_tab">
+		<%if(this.user_label.length > 0){%>
+		</ul>
+		<%}else{%>
+		</ul>
+			<p class="defaultText">从下方选择你的标签</p>	
+		<%}%>
+	<div class="clear_f"></div>
+		<h2 class="tips labelDesc">告诉大家自己最擅长的美丽技能吧</h2>
+		<p class="explain">点击进行选择，你可以给自己贴20个标签哦！<span class="labelerror red_f"></span></p>
+	</div>
+	<div class="tab_b">
+		<div class="before none_f">&lt;</div>
+		<div class="next">&gt;</div>
+		<div class="tab_list">
+			<ul class="tab_container">
+				<li class="tab_item">
+				<% 
+					var _typei; 
+					this.all_label && this.all_label.map(function(data){%>
+					<% if(_typei && data.type != _typei){%>
+					</li>
+					<li class="tab_item">
+					<%}%>
+						<span class="addLabel active" labelId="<%= data.label_id%>"><%= data.label_name%></span>
+						<% _typei = data.type;%>
+				<%});%>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="edit_box">
+		<span>或自己写标签：</span>
+		<span><input maxlength="10" class="newLabelName ipt searchKey" type="text" placeholder="自己写一个标签" /></span>
+		<span class="btn newLabel">贴上</span><span class="add_suc addLabelSucess none_f">添加成功!</span>
+	</div>
+</div>
+</script>
+<script type="text/html" id="recommendUser">
+<div class="rec_con">
+	<div class="zero_t">
+	<div class="close_z"></div>
+	<p class="f16_f">看看关注<b>"<%= this.user_list.nickname %>"</b>的用户还关注了谁吧！</p>
+</div>
+<ul class="zero_c">
+	<? $.each(fol_user, function(k, v) { ?>
+		<li>
+		<a class="avatar64_f userUrl1" href="/person/u/<?= v.user_id ?>?frm=gz_reuser" target="_blank"><img src="<?= v.avatar_b ?>" /></a>
+		<p class="z_tle"><span class="right_f"><input class="sel_box" usrId="<?= v.user_id ?>" id="checkedbox" type="checkbox" checked></span><a class="userUrl" href="/person/u/<?= v.user_id ?>?frm=gz_reuser" target="_blank"><?= v.nickname ?></a>
+			<span class="identity_small_style">
+				<? var identity = v.identity;?>
+				<%# identity.html%>
+			</span>
+		</p>
+		<p>
+		<span class="similar gray_f">
+			<?if(v.label == ''){?>这个爱美丽真懒，什么标签都没给自己贴<?}?>
+			<? $.each(v.label, function(k, v1){?>
+				<?= v1 ?>
+			<?});?>
+		</span></p>
+		<p>粉丝<a class="fans red_f" href="/ur/fans/<?= v.user_id ?>?frm=gz_reuser" target="_blank"><?= v.follower_num ?></a> 分享<a class="share red_f" href="/person/u/<?= v.user_id ?>?type=share&frm=gz_reuser" target="_blank"><?= v.twitter_num ?></a> <a class="red_f" href="/atme/recommend/<?= v.user_id ?>?frm=gz_reuser" target="_blank"><em class="lm_love">&nbsp;</em><?= v.heart_num ?></a></p>
+		</li>
+	<? }); ?>
+</ul>
+<div class="clear"></div>
+<div class="zero_b"><span class="ienot"><input id="selectall" type="checkbox" checked="">全选</span><a id="afterFollow" class="sure btn">关注，回我的首页</a></div>
+<div>
+</script>
+<script type="text/html" id="facePop" >
+<div class="face_pop">
+	<div class="corner_t none_f"></div>
+	<div class="pop_con">
+		<div class="fp_con">
+			<div class="fp_info">
+				<a class="avatar64_f" href="/person/u/<?=user_id?>" target="_blank"><img src="<?= avatar_c?>" /></a>
+				<p>
+					<a class="<?if(online_status){?> online <?}else{?> notonline <?}?>" href="/person/u/<?=user_id?>" target="_blank"><?= nickname?>
+					<?if(is_taobao_buyer == 1){?>
+						<em class="i_buyer" title="美丽说心级买家认证">&nbsp;</em>
+					<?}else if(is_taobao_buyer == 2){?>
+						<em class="i_diamond" title="美丽说黄钻买家认证">&nbsp;</em>
+					<?}?>
+					<?if(identity){?>
+						<?$.each(identity , function(data , key){?>
+							<?if(key == 's'){?>
+								<em class="i_special" title="美丽说特别认证">&nbsp;</em>
+							<?}else if(key == 'e'){?>
+								<em class="i_editor" title="美丽说超级主编">&nbsp;</em>
+							<?}else if(key == 't'){?>
+								<em class="i_lv" title="资深爱美丽">&nbsp;</em>
+							<?}else if(key == 'b'){?>
+								<em class="i_zv" title="美丽说认证品牌">&nbsp;</em>
+							<?}?>
+						<?});?>
+					<?};?>
+					</a>
+				</p>
+				<?if(province || city){?>
+					<p><?=province?> <?=city?></p>
+				<?}?>
+				<p class="nowrap_f"> 
+					<span><a href="/ur/fans/<?=user_id?>" target="_blank">粉丝</a><a class="red_f" href="/ur/fans/<?=user_id?>" target="_blank"><?= follower_num?></a></span>
+					<span><a href="/person/u/<?=user_id?>#personNavBar?type=book" target="_blank">分享</a><a class="red_f" href="/person/u/<?=user_id?>/all#personNavBar" target="_blank"><?= twitter_num?></a></span>
+					<a class="red_f" href="/atme/recommend/<?= user_id?>" target="_blank"><em class="lm_love">&nbsp;</em><?= heart_num?></a>
+				</p>
+			</div>
+			<div class="clear_f"></div>
+			<p class="fp_labels">标签：
+				<?if(label == ''){?><span class="gray_f">这个爱美丽真懒，什么标签都没给自己贴</span><?}?>
+					<? $.each(label , function(k , v){?>
+						<a class="labels"><?= v.label_name?></a>
+					<?});?>
+			</p>
+			<div class="isFollowedStatus">
+				<? if(followed == 0){?>
+					<p class="fp_follow"><span class="btn addFollow" fuid='<?=user_id?>' followed="<?= followed?>">+ 加关注</span></p>
+				<?}else if(followed == 1){?>
+					<p class="fp_follow"><span class="removeFollow followed" fuid='<?=user_id?>'>已关注</span></p>
+				<?}else if(followed == 2){?>
+					<p class="fp_follow"><span class="followed removeFollow" fuid='<?= user_id?>' followed="<?= followed?>">互相关注</span></p>
+				<?}?>
+			</div>	
+		</div>
+	</div>
+	<div class="corner_b none_f"></div>
+</div>
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('app/nexus');
+	fml.use('page/nexus');
+_use:", this._JSstack , this._JSmods);%>
+<%# foot.html%>

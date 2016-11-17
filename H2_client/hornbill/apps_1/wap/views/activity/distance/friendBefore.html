@@ -1,0 +1,147 @@
+<%#head.html%>
+<%	
+	var data = this.data ;
+	var welcome = data.welcome || {};
+	var error_code = welcome.error_code;
+if(error_code == 0){
+	var jinduW = welcome.data.originator.fin_dist / welcome.data.originator.total_dist * 100;
+	var jinducha = welcome.data.originator.total_dist - welcome.data.originator.fin_dist;
+	var fin_dist = welcome.data.originator.fin_dist
+	var arrFriend = welcome.data.assistant;
+	var role = welcome.data.role;
+	var status = welcome.data.originator.fin_status;
+	var have_origed = welcome.data.have_origed;
+	var originatorId = welcome.data.originator.user_id;
+	var got_coupon = welcome.data.originator.got_coupon;
+}else{
+	var jinduW = 0;
+	var jinducha = 0;
+	var fin_dist = '';
+	var arrFriend = [];
+	var role = '';
+	var status = '';
+	var have_origed = '';
+	var originatorId = '';
+	var got_coupon = '';
+}
+%>
+<div class="start">
+	<img class="title" src="http://d01.res.meilishuo.net/pic/_o/c7/c2/18f8e2ad1674bab2347c87a5bb17_640_339.cg.jpg">
+	
+	<% if(jinducha <=5000 && jinducha >= 4000){ %>
+	<!-- 5000m -->
+	<img class="person" src="http://d05.res.meilishuo.net/pic/_o/19/7e/51ff2eb4fa4d1ed7f43fd5fd8c19_640_198.cf.jpg">
+	
+	<% } else if(jinducha <4000 && jinducha >= 3000){%>
+	<!-- 4000m -->
+	<img class="person" src="http://d04.res.meilishuo.net/pic/_o/e1/33/0ece79609bc32ecafd09bd97b302_640_198.cg.jpg">
+	
+	<% } else if(jinducha <3000 && jinducha >= 2000){ %>
+	<!-- 3000m -->
+	<img class="person" src="http://d01.res.meilishuo.net/pic/_o/88/d0/fc13ec0aa6c32e1da0caa77140a6_640_198.ch.jpg">
+	
+	<% } else if(jinducha <2000 && jinducha >= 1000){ %>
+	<!-- 2000m -->
+	<img class="person" src="http://d04.res.meilishuo.net/pic/_o/63/58/58e73e7379707124a338110696a6_640_198.cg.jpg">
+	
+	<% } else if(jinducha < 1000){ %>
+	<!-- 1000m -->
+	<img class="person" src="http://d03.res.meilishuo.net/pic/_o/6e/83/b7cd5fa55e490fbe36700144a6f8_640_198.cg.jpg">
+	
+	<% } %>
+
+	<div class="content">
+		<div class="distance">
+			<span class="num num1">0米</span>
+			<div class="jindu"><div class="have-jindu" style="width:<%= jinduW %>%;"></div></div>
+			<span class="num">7000米</span>
+		</div>
+		<br/>
+		<% if(role != 2){ %>
+		<!-- 好友未助力过 -->
+		<p class="cha-distance">有缘人相遇还差<span class="num2"><%= jinducha %></span>米，来帮他助攻吧！</p>
+		<% } else { %>
+		<!-- 好友助力过 -->
+		<p>你已献出助攻，距离相遇还剩<span class="num2"><%= jinducha %></span>米</p>
+		<% } %>
+		<p class="friend-txt-change" style="display:none;">赞诶~你献出了<span class="num-friend"></span>米神助攻，距离他们相遇还剩<span class="num2"><%= jinducha %></span>米</p>
+		<p>
+			<!-- 助力按钮 -->
+			<% if(role != 2){ %>
+			<img class="zhu-btn" src="http://d04.res.meilishuo.net/pic/_o/47/54/31a7c3cf3fbaafd7bebd7a300f7d_260_80.ch.png">
+			<% } %>
+			<!-- 我也要玩 -->
+			<% if(have_origed == 0){ %>
+			<a href="/activity/distance/first/" class="play-btn" ><img src="http://d03.res.meilishuo.net/pic/_o/7d/5c/ecfd196e1a84931dd67301d6681f_260_80.cg.png"></a>
+			<% } else { %>
+			<!-- 查看战绩 -->
+			<a href="/activity/distance/start/?ass_gid=<%= have_origed %>" class="search-btn" ><img src="http://d03.res.meilishuo.net/pic/_o/ae/6a/4e8efad9acb8b0e80dea932668dc_260_80.cg.png"></a>
+			<% } %>
+		<p>
+	</div>
+	<img src="http://d02.res.meilishuo.net/pic/_o/54/5d/128c97918d8b92fa49bbed991fc7_640_54.cf.jpg">
+	<!-- 没有好友 -->
+	<% if(arrFriend.length == 0){ %>
+	<img src="http://d05.res.meilishuo.net/pic/_o/1b/55/3023c10d56d89b55e2a42fd02188_640_201.cf.jpg">
+	<%} else{ %>
+	<!-- 好友列表 -->
+	<div class="friends-list">
+		<% arrFriend.forEach(function(item,index){%>
+		<div class="friends-msg">
+			<div class="friend-img">
+				<img src="<%= item.user_pic %>">
+			</div>
+			<span class="friend-name"><%= item.nick_name %></span>
+			<span class="friend-desc">&nbsp;&nbsp;&nbsp;<%= item.ass_desc %></span>
+			<span class="friend-distance"><%= item.ass_dist %>米</span>
+		</div>
+		<% }) %>
+	</div>
+	<% } %>
+	<!-- 好友列表end -->
+	<div class="first-rules"></div>
+	<div class="first-popwin">
+		<img class="first-popwin-rules" src="http://d04.res.meilishuo.net/pic/_o/b2/8d/f378d89eec18874ebfdba457a1b6_550_860.cf.png" />
+		<div class="rules-content">
+			1.活动时间：2015年8月11日00:00:00—2015年8月20日23:59:59。<br/>
+			2.活动条件：通过手机美丽说for iOS或for Android，或者通过微信分享的链接参与活动。<br/>
+			3.用户可发起游戏，并分享到微信中邀请好友送助攻，好友的助攻数将随机出现正数或负数，最终能顺利走完7000米的发起者即可获得1元、5元、10元、15元的美丽说七夕专属优惠券奖励，8月18日至8月20日七夕期间更有777元直减券大放送。<br/>
+			4.若从美丽说APP发起游戏且完成相遇，返回到APP中再次打开游戏页面，即可成功获得优惠券，并在“我的优惠券”查看获得优惠券。<br/>
+			5. 若从微信中发起游戏且完成相遇，即可成功获得优惠券，用户可用微信账号登陆美丽说app后，在“我的优惠券”查看获得优惠券。<br/>
+			6.活动期间奖励数量有限，先到先得，发完为止。每个自然人用户仅能使用一个美丽说注册帐号参与本活动，美丽说任何活动均杜绝一切作弊行为，并保留追究其相关法律责任的权利。<br/>
+			7.优惠券的使用时间：2015年8月18日00:00:00—8月20日23:59:59。<br/>
+			8.活动中中奖的优惠券使用方式：适用于除海淘馆商品及个人商品外的全站所有商品，可与店铺优惠券叠加使用，但不能与平台优惠券同时使用。<br/>
+			9.优惠券不能提现、不能转赠、不能为他人付款。<br/>
+		</div>
+		<img class="first-popwin-know" src="http://d05.res.meilishuo.net/pic/_o/53/be/69c5755e3f9009ce9f05b176a3f7_208_59.cg.png" />
+	</div>
+	<div class="share-popwin">
+		<img src="http://d01.res.meilishuo.net/pic/_o/c8/ec/067ed0114af30bb8a2eb7565ffee_400_524.cf.png">
+	</div>
+</div>
+
+<script>
+	fml.vars.isWxLogin= <%= this.isWxLogin || false %>   ;
+    fml.vars.isWx = <%= this.isWx %>;
+	fml.vars.ass_gid = "<%== this.ass_gid%>";
+	fml.vars.status = "<%= status %>";
+	fml.vars.jinduW = "<%= jinduW %>";
+	fml.vars.jinducha = "<%= jinducha %>";
+	fml.vars.role = "<%= role %>";
+	fml.vars.originatorId = "<%= originatorId %>";
+	fml.vars.got_coupon = "<%= got_coupon %>";
+	fml.vars.pageId = 'friendBefore';
+	fml.vars.error_code = "<%= error_code %>";
+
+	var frm = fml.vars.isWx?'&frm=isWx':'&frm=isMLS';
+
+	if(fml.vars.role!=1 && fml.vars.status == 1 ){
+		/*好友助力的助力者步数满，可抽奖*/
+		window.location.href = '/activity/distance/awardFriend/?ass_gid=' + fml.vars.ass_gid + frm;
+	}
+</script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/distance');
+_use:", this._JSstack, this._JSmods); %>
+<%# foot.html%>

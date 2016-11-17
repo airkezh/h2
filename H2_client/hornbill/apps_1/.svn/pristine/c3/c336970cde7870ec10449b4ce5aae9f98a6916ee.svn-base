@@ -1,0 +1,106 @@
+<!--
+/**
+ * @fileoverview 首页 － 签到领优惠券V2
+ * @requires zepto
+ * @author kehuang@meilishuo.com
+ * @date 2014-12-25
+ */
+-->
+
+<%#head.html%>
+<%
+	var couponsData = this.couponsInfo.data || {},
+		headPic = this.mobUserInfo.data.avatar_b || this.PICTURE_URL + 'images/wap/activity/sign_mall/default_head.jpg';
+%>
+
+<div class="main">
+	<div class="banner">
+		<%
+			var banner_bg = this.PICTURE_URL + 'images/wap/activity/sign_coupon/sign_coupon_banner4.jpg';
+		%>
+		<img src="<%= banner_bg %>">
+	</div>
+
+	<div class="body_wrap">
+		<div class="head_wrap">
+			<a href="javascript:;" class="head">
+				<img src="<%= headPic %>">
+			</a>
+			<span class="award">我的奖金：<span id="j_total_award" class="num"><%= couponsData.total || 0 %></span>元</span>
+		</div>
+
+		<div class="coupon_wrap"></div>
+	</div>
+</div>
+
+<script type="text/html" id="j_coupon_layer">
+	<div class="layer_shade"></div>
+	<div class="layer_main">
+		<div class="coupon_info">
+			<span><?=this.coupon_price?></span>元现金券
+		</div>
+		<div class="view_coupon_btn"></div>
+		<div class="close_coupon_btn"></div>
+	</div>
+</script>
+
+<script type="text/html" id="j_coupon_tpl">
+	<?
+		var coupons = this.threshold || [],
+			curServerHours = this.curServerHours;
+
+		if (coupons.length > 0) {
+	?>
+	<div class="dividing_line"></div>
+	<ul class="coupon_wall">
+	<?
+			$.each(coupons, function(index, coupon){
+				var status = 0,
+					validityTime = '24小时',
+					curClassName = '',
+					statClassName = '',
+					left = coupon.left || 0,
+					credit = coupon.credit || 0,
+					threshold = coupon.threshold || 0,
+					starttime = coupon.expiration.start || '',
+					endtime = coupon.expiration.end || '';
+
+				if (curServerHours < 12) {
+					status = 2;
+					statClassName = ' robbed';
+				} else {
+					if (left < 1) {
+						status = 0;
+						statClassName = ' robbed';
+					} else {
+						status = 1;
+						statClassName = '';
+					}
+				}
+
+				curClassName = 'full_' + credit + '_' + status + '_coupon' + statClassName;
+	?>
+		<li>
+			<div class="coupon <?= curClassName ?>" data-price="<?= credit ?>" data-type="1">
+				<p class="title">满<?= threshold ?>使用</p>
+				<p class="desc">有效期：<?= validityTime ?></p>
+			</div>
+		</li>
+	<?
+			});
+	?>
+	</ul>
+	<?
+		}
+	?>
+</script>
+
+<script>
+	fml.vars.coupons_data = <%= JSON.stringify(couponsData) %>;
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use("wap/page/activity/sign_coupon3");
+_use:", this._JSstack, this._JSmods); %>
+
+<%#foot_simple.html%>

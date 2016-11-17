@@ -1,0 +1,21 @@
+<%# head.html%>
+<div class="main">
+	<%# help/help-title.html%>
+	<div class="help-crumbs">
+		<a href="/helpcenter/">帮助中心</a> > <a href="/helpcenter/issue/" class="red_f">常见问题</a>
+	</div>
+	<%# help/issue-table.html %>
+	<h3 class="list-head">更多常见问题</h3>
+	<h4 class="list-head-sub">MORE PROBLEMS</h4>
+	<ul class="more-problem-list">
+		<%if( this.moreQa && this.moreQa.data && this.moreQa.data.length > 0){%>
+			<%this.moreQa.data.forEach(function(item){%>
+				<li><a href="/helpcenter/detail/<%= item.know_id%>"><%= item.title %></a></li>	
+			<%});%>
+		<%}%>
+	</ul>
+	<div class="paging_panel c_f">
+		<%# paging.html%>
+	</div>
+</div>
+<%# foot.html%>

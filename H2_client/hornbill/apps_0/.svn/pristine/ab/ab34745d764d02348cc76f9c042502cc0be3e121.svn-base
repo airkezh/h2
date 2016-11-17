@@ -1,0 +1,17 @@
+<%# wx_new/header.html%>
+<%= requireFn('wx_new/user_head.html')({
+		'order_status' : this.order_status,
+		'orderStatus' : this.orderStatus,
+		'uInfo' : this.uInfo,
+		'message' : this.message || {}
+	});%>
+<div class="wrap-list"></div>
+<%# wx_new/orderList.html%>
+
+<script>
+	fml.vars.wx = <%= JSON.stringify(this.connect_weixin) %>;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/wx_new/user_head');
+_use:", this._JSstack , this._JSmods ); %>
+<%# wx_new/footer.html%>

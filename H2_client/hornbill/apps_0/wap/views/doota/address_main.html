@@ -1,0 +1,50 @@
+<%# head.html%>
+
+<%= requireFn('block/page_head.html')({
+	'pageTitle' : '收货地址'
+	, 'right_type' : 'add_address'
+	, 'xr' : this.xr
+	, '_JSstack' : this._JSstack
+	, '_JSmods' :  this._JSmods
+}); %>
+
+<section id="wrapper_main" class="wrapper">
+
+<div class="addr_list">
+	<ul class="addrShow">
+		<% this.addr && this.addr.addrInfo && this.addr.addrInfo.map(function(a){%>
+		<li class="unit">
+			<div class="inner">
+				<% if( a.is_default == 1) {
+					var chooseClass = 'choose'
+					var checked = true;
+				}else{
+					var chooseClass ='unchoose';
+					var checked = false;
+				}%>
+				<span class="choose_btn <%=chooseClass%>" addr_id="<%= a.addr_id %>" checked='<%=checked%>'></span>
+				<div class="adrl_list inner_msg" addr_id="<%= a.addr_id %>" is_default="<%= a.is_default%>" style="width:4.6rem;">
+					<p>
+						<span class="nick_name"><%= a.nickname%></span>
+						<span class="adrl_phone"><%= a.phone%></span>
+						<% if( a.is_default == 1){ %>
+						<span class="default_note">默认</span>
+						<% } %>
+					</p>	
+					<p class="add_detail"><%== a.address %></p>
+				</div>
+				<div class="addr_msg" addr_id="<%= a.addr_id %>" pid="<%=a.pid%>" cid="<%=a.cid%>" did="<%=a.did%>" style="display:none"></div>
+				<a href="/address/edit/edit?addr_id=<%= a.addr_id %>&_pid=<%=a.pid%>&_cid=<%=a.cid%>&_did=<%=a.did%>"><span class="edit_btn" ></span></a>
+			</div>
+		</li>
+		<%});%>
+	</ul>
+</div>
+
+</section>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/doota/address_main');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot_simple.html%>

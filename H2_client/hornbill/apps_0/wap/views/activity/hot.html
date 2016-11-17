@@ -1,0 +1,90 @@
+<%# head.html%>
+<% 
+	var lorealBox0 = this.lorealBox.data ? this.lorealBox.data[0] : {}
+		,lorealBox1 = this.lorealBox.data ? this.lorealBox.data[1] : {}
+		, status = lorealBox0.is_start ? "hot":"preheat"
+		, isNewest = this.os.iphone || this.appVersion
+		, goods_status_pic_name0 = ["buhuo1","buhuo1"] 
+		, goods_status_pic_name1 = ["buhuo2","buhuo2"] 
+		, promptRemain 
+		, appProtocol
+		, paramName
+		, paramVal
+
+	var cur_time  = (new Date).getTime() / 1000
+
+	function getTimeRemain(end_time){
+		if(this.is_ended) return
+		if (end_time && end_time > cur_time) return end_time - cur_time
+		else return end_time
+	}
+
+	if(lorealBox0.is_start) {
+		promptRemain = getTimeRemain(lorealBox0.end_time)
+		appProtocol = "twitter_single"
+		paramObj = {"twitter_info":{"twitter_id":"2761827489","is_doota":"1"}}
+	} 
+	else {
+		promptRemain = getTimeRemain(lorealBox0.start_time)
+		appProtocol = "club_article"
+		paramObj = {"article_id":"846765"}
+	}
+%>
+<div class="wrap">
+	<img src="<%=this.PICTURE_URL%>/images/wap/activity/lorealBox/<%= status %>_top6.jpg" />
+	<figure class="loreal_content">
+		<img src="<%=this.PICTURE_URL%>/images/wap/activity/lorealBox/lo3_img8.jpg" />
+		<div class="timedown">
+			<span class="line fl none_f"></span>
+			<span class="line fr none_f"></span>
+			<span><%if(this.is_ended){%>活动已结束<%} else {%>
+				距<%= status == "hot" ? "抢购结束":"开售" %>:还剩</span>
+			<span class='time' remain="<%= promptRemain%>">
+				<span>-天--小时--分--秒</span><%}%></span>
+		</div>
+	</figure>
+	<figure class="loreal_cost">
+		<a href="<%= _extFn.getAppLink("twitter_single", {"twitter_info":{"twitter_id":"2837529063","is_doota":"1"}} , this.os, this.r , '/share/item/2837529063') %>">
+			<% if(lorealBox0.goods_status < 2){%>
+				<img src="<%=this.PICTURE_URL%>/images/wap/activity/lorealBox/<%= goods_status_pic_name0[lorealBox0.goods_status] %>.jpg"/>
+			<% } else {%>
+				<img src="<%=this.PICTURE_URL%>/images/wap/activity/lorealBox/<%= status %>_buy3.jpg"/>
+			<% }%>
+		</a>
+		<div class="love_num">
+			<span><%= lorealBox0.like_num %>人喜欢</span>
+			<span><%= lorealBox0.view_num %>人参与</span>
+		</div>
+	</figure>
+	<img src="<%=this.PICTURE_URL%>/images/wap/activity/lorealBox/lo3_img6.jpg" />
+	<figure class="loreal_cost">
+		<a href="<%= _extFn.getAppLink("twitter_single", {"twitter_info":{"twitter_id":"2837686835","is_doota":"1"}} , this.os, this.r , '/share/item/2837686835') %>" >
+			<% if(lorealBox1.goods_status < 2){%>
+				<img src="<%=this.PICTURE_URL%>/images/wap/activity/lorealBox/<%= goods_status_pic_name1[lorealBox1.goods_status] %>.jpg"/>
+			<% } else {%>
+				<img src="<%=this.PICTURE_URL%>/images/wap/activity/lorealBox/<%= status %>_buy4.jpg"/>
+			<% }%>
+		</a>
+		<div class="love_num love_num1">
+			<span><%= lorealBox1.like_num %>人喜欢</span>
+			<span><%= lorealBox1.view_num %>人参与</span>
+		</div>
+	</figure>
+	<img src="<%=this.PICTURE_URL%>/images/wap/activity/lorealBox/lo3_img7.jpg" />
+</div>
+<% if(this.share){ %>
+	<%= requireFn('wapShare.html')({
+		'share' : this.share 
+	    , 'shareTitle' : '选择分享到'
+	    , '_JSstack' : this._JSstack
+		, '_JSmods' : this._JSmods
+	}); %>
+<%}%>
+<script>
+	fml.vars.is_start = <%=lorealBox0.is_start %>;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/app/hackWeixin');
+	fml.use('wap/page/activity/lorealBox');
+_use:", this._JSstack , this._JSmods); %>
+<%# foot.html%>

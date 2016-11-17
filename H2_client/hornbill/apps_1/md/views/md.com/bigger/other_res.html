@@ -1,0 +1,36 @@
+<%# header.html%>
+<%
+	var detailInfo = this.bg_detail.data;
+	var commentsInfo = this.bg_comments.data;
+%>
+<div class="wrapper">
+	<div>
+		<dl class="score_wrap">
+			<dt>
+				<img src="<%= detailInfo.bigger_image.image_middle%>">
+			</dt>
+			<dd>
+				<p class="score_red"><%= detailInfo.bigger_score%></p>
+				<p>共<span><%= detailInfo.bigger_count%></span>位小伙伴参与打分</p>
+			</dd>
+		</dl>
+	</div>
+	<div class="remark_wrap">
+		<h6>小伙伴来点评</h6>
+		<%for(var i = 0 ; i < commentsInfo.list.length; i++){%>
+			<dl>
+				<dt><img src="<%= commentsInfo.list[i].comment_avatar%>">
+				</dt>               
+				<dd>
+					<p><span><%= commentsInfo.list[i].comment_nickname%></span><i><%= commentsInfo.list[i].comment_score%></i></p>
+					<p><%= commentsInfo.list[i].comment_content%></p>
+				</dd>
+			</dl>
+		<%}%>
+	</div>
+</div>
+<div class="test_btn_wrapper">
+	<a href="http://m.midianapp.com//bigger/activity/mark/?bigger_id=<%= detailInfo.bigger_id%>">我要打分</a>
+	<a href="http://m.midianapp.com/bigger/activity/test/">我要测试</a>
+</div>
+<%# footer.html%>

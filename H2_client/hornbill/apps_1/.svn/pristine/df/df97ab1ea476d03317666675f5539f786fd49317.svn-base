@@ -1,0 +1,65 @@
+<%# head.html%>
+<%
+var query = this._Request_query;
+var getLink = _extFn.getLink;
+var info = this.feedback_list.info;
+%>
+<div class="route">
+	<div class="route_bread">
+		<a href="<%=this.DOMAIN.www%>/">美丽说</a>
+		<samp>&gt;</samp>
+		<a href="<%= this.DOMAIN.order%>/order/list/">我的美丽说订单</a>
+		<samp>&gt;</samp>
+		<span class="red_f">我的投诉</span>
+	</div>
+</div>
+<div class="complain_area">
+	<%# common/navBar.html %>
+	<div class="complain_content">
+		<div class="complain_content_box">
+			<h3>我的投诉</h3>
+			<table class="complain_list">
+				<colgroup>
+					<col width="100">
+					<col width="170">
+					<col width="120">
+					<col width="140">
+					<col width="100">
+					<col width="110">
+				</colgroup>
+				<thead>
+					<tr>
+						<th class="first">服务单号</th>
+						<th>投诉类型</th>
+						<th>订单编号</th>
+						<th>投诉时间</th>
+						<th>处理状态</th>
+						<th class="last">操作</th>
+					</tr>
+				</thead>
+				<tbody>
+				<%if(info && info.length > 0){%>
+					<%info.forEach(function(item){%>
+					<tr>
+						<td class="first"><a href="<%= this.DOMAIN.order%>/complain/?bat_order_id=<%= item.order_id%>"><%= item.id%></a></td>
+						<td><%= item.feed_type%></td>
+						<td><a target="_blank" href="<%= this.DOMAIN.order%>/order/detail/?order_id=<%= item.order_id%>"><%= item.order_id%></a></td>
+						<td><%= item.feed_ctime%></td>
+						<td><%= item.feed_status%></td>
+						<td class="last"><a href="<%= this.DOMAIN.order%>/complain/?bat_order_id=<%= item.order_id%>">查看详情</a></td>
+					</tr>
+					<%});%>
+				<%}else{%>
+					<tr>
+						<td colspan="6">暂无投诉</td>
+					</tr>
+				<%}%>
+				</tbody>
+			</table>
+		</div>
+		<div class="paging_panel c_f">
+		<%# paging.html%>
+		</div>
+	</div>
+</div>
+<%# foot.html%>

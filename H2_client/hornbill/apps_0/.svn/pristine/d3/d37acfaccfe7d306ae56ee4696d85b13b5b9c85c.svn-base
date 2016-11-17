@@ -1,0 +1,87 @@
+<%# head_simple.html%>
+<%
+var query = this._Request_query;
+%>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script>
+fml.vars.camry = {};
+fml.vars.CONFIG_SHARE = <%= JSON.stringify(this.CONFIG_SHARE) || '{}' %>;
+fml.vars.CONFIG_ID = '<%= this.CONFIG_ID %>';
+</script>
+</head>
+<body>
+
+<audio id="popmessage" hidden="true" preload="auto" autobuffer><source src="http://i.meilishuo.net/css/images/staticbed/弹窗声音.mp3"/></audio>
+<audio id="appmessage" hidden="true" preload="auto" autobuffer><source src="http://i.meilishuo.net/css/images/staticbed/在对话界面来消息与发消息声音.mp3"/></audio>
+
+<div class="mask shareWXMask"></div>
+
+<div class="page" id="chatPage">
+	<div class="messageList">
+	</div>
+	<div class="tools">
+		<div class="input" state="number"></div>
+		<span class="game" state="game"></span>
+		<div class="keyboard morePal">
+			<div class="keyboard-a js-key" data-value="A"></div>
+			<div class="keyboard-b js-key" data-value="B"></div>
+			<div class="keyboard-c js-key" data-value="C"></div>
+			<div class="keyboard-d js-key" data-value="D"></div>
+		</div>
+	</div>
+</div>
+
+<script type="text/html" id="chatTpl">
+<?
+	var isuser = !(this.headimgurl),
+		isImg  = !!this.isImg,
+		className = '';
+
+	if ( isuser ) {
+		className += 'user '
+	} else {
+		className += 'sys '
+	}
+
+	if ( isImg ) {
+		className += 'chat-img '
+	}
+
+?>
+<div class="<?= className ?>">
+	<span class="headimg" style="background-image:url('<?= this.headimgurl || fml.vars.camry.headimgurl ?>');"/>
+	<div class="message"><div class="messageCon"><?= this.message ?></div></div>
+</div>
+</script>
+
+<script>
+	fml.vars.chat = <%= JSON.stringify( this.chat )%>;
+</script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-66656481-4', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+<div class="blueMask mask">
+</div>
+
+<div class="redMask mask">
+	<div class="mobileArea">
+		<div class="mobileBox" id="mobileBox">
+			<input id="mobileInput" class="mobileInput" maxlength="11" type="tel" placeholder="输入手机号奖品才能找到你"/>
+		</div>
+		<span id="mobileBtn" class="mobileBtn"></span>
+	</div>
+</div>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/shake/chat');
+_use:", this._JSstack , this._JSmods); %>
+
+<%# foot_simple.html%>

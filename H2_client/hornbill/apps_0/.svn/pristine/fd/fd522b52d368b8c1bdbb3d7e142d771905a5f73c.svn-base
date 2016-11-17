@@ -1,0 +1,126 @@
+<%# head.html%>
+<%
+var query = this._Request_query;
+var getLink = _extFn.getLink;
+var feedback = this.feedback;
+%>
+<div class="route">
+	<div class="route_bread">
+		<a href="<%=this.DOMAIN.www%>/">美丽说</a>
+		<samp>&gt;</samp>
+		<a href="<%= this.DOMAIN.order%>/order/list/">我的美丽说订单</a>
+		<samp>&gt;</samp>
+		<span class="red_f">我的投诉</span>
+	</div>
+</div>
+<div class="complain_area">
+	<%# common/navBar.html %>
+	<div class="complain_content">
+		<div class="complain_content_box">
+			<div class="complain_title">
+				<h3>我的投诉详情</h3>
+				<p class="return_btn"><a class="red_f" href="<%= this.DOMAIN.order%>/complain/list/">返回我的投诉>></a></p>
+			</div>
+			<%if(feedback.info && feedback.info.length>0){
+				var info = feedback.info;
+				console.log(feedback);
+			%>
+			<div class="complain_info" order_id="<%= query.bat_order_id %>" feed_type="<%= info[0].feed_type %>" >
+				<%info.forEach(function(o,index){%>
+				<%if(o.from == 0){%>
+				<div class="complain_user">
+					<p class="user_time mb12_f">♀您 <em class="ml4_f"><%= o.feed_ctime%></em></p>
+					<div class="complain_msg">
+						<samp class="special gray_sp">╱╲</samp>
+						<p class="order_id">订单编号：<em><%=query.bat_order_id%></em></p>
+						<p class="order_cont">投诉详情：<%= o.feed_detail%></p>
+						
+						<div class="img_list" <%if(o.feed_img.length ==0){%>style="display:none;"<%}%> >
+							<%o.feed_img.length>0 && o.feed_img.forEach(function(pic){%>
+							<div class="img_detail"> 
+								<a href="<%= pic.o_pic_url%>" target="_blank">    
+									<img src="<%= pic.b_pic_url%>">   
+								</a>
+							</div>
+							<%});%>
+						</div>
+					</div>
+				</div>
+				<%}%>
+				<%if(o.from == 1){%>
+				<div class="im_service">
+					<p class="im_time mb12_f">♀美丽说客服&nbsp;&nbsp;<%= o.feed_ctime%></p>
+					<div class="im_msg">
+						<samp class="special red_sp">╱╲</samp>
+						<p class="im_cont"><%= o.feed_detail%></p>
+					</div>
+				</div>
+				<%}%>
+				<%if(o.from == 2){%>
+				<div class="im_service">
+					<p class="im_time mb12_f"><%= o.shop_nick %>&nbsp;&nbsp;<%= o.feed_ctime%></p>
+					<div class="im_msg">
+						<samp class="special red_sp">╱╲</samp>
+						<p class="im_cont">商家回复：<%= o.feed_detail%></p>
+						<ul class="img_list" <% if(o.feed_img.length ==0){ %>style="display:none;"<% } %> >
+							<%o.feed_img.length > 0 && o.feed_img.forEach(function(pic){ %>
+							<li class="img_detail"> 
+								<a href="<%= pic.o_pic_url %>" target="_blank">    
+									<img src="<%= pic.b_pic_url %>">   
+								</a>
+							</li>
+							<% }); %>
+						</ul>
+					</div>
+				</div>
+				<%}%>
+				<%});%>
+				<% if(feedback.finish != 3 && feedback.finish != 4){%>
+				<div class="status mt30_f">
+					<a href="javascript:;" class="btn sure done">已解决</a>
+					<a href="javascript:;" class="btn cancel sure deal">未解决</a>
+					<a href="javascript:;" class="btn cancel sure cancel_complaint">撤销投诉</a>
+				</div>
+				<%}%>
+				<%if(feedback.finish == 3){%>
+				<div class="red_f f14_f mt30_f">投诉已解决，感谢您的反馈^_^</div>
+				<%}%>
+				<%if(feedback.finish == 4){%>
+				<div class="red_f f14_f mt30_f">投诉已撤销，感谢您的反馈^_^</div>
+				<%}%>
+				<div class="complain_cont">
+					<div class="complain_txt">
+						<p><em class="red_f mr4_f">*</em>继续回复：</p>
+						<textarea id="textArea" placeholder="很抱歉，让你遇到不愉快的购物体验，请将要投诉的内容告诉我们，我们会尽快为你处理。"></textarea>
+						<p class="text_num"><span>0</span>/500</p>
+					</div>
+					<div class="complain_pic mb14_f">
+						<p class="left_f">投诉凭证：</p>
+						<span id="uploadImg" class="upload_btn">上传凭证图片</span>&nbsp;&nbsp;&nbsp;&nbsp;	最多4张，每张不超过5M，支持GIF,JPEG,JPG,PNG,BMP格式
+						<div class="clear_f"></div>
+						<div class="evidence img_wrapper no-mt">	
+						</div>
+						<div class="clear_f"></div>
+					</div>
+					<div class="c_f">
+						<input type="button" class="btn sure onSure" value="确定" />
+						<input type="button" class="btn cancel sure onCancel" value="取消" />
+					</div>
+				</div>
+			</div>
+			<%}%>
+		</div>
+	</div>
+</div>
+<script type="text/html" id="imgTmp">
+	<div class="imgUpload">
+		<span class="close"></span>
+		<a href="<?=o_pic_url ?>" target="_blank">
+			<img src="<?=H_pic_url ?>" alt="" data-src="<?=o_pic_url?>"/>
+		</a>
+	</div>
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+		fml.use('order_pc/complain/complain_detail');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

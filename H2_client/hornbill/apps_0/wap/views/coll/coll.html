@@ -1,0 +1,58 @@
+<%#head.html%>
+<% 
+	var dressInfo = this.dressInfo
+%>
+<header class="header" id="header">	
+	<div class="nav_ban">		
+		<h1>宝贝详情</h1>						
+		<a class="icon-home" href="/welcome"></a>			
+	</div>
+</header>
+<section class="wrapper">
+	<%if(dressInfo){%>
+		<div class="pic_wrap">
+			<img src="<%= dressInfo.imageInfos[0].pic_url%>">
+			<dl>
+				<dt><img src="<%= dressInfo.uinfo.avatar_c%>"></dt>
+				<dd>
+					<p class="fon_14"><%= dressInfo.uinfo.nickname%></p>
+					<p class="fon_10"><%= dressInfo.uinfo.identity_desc%></p>
+				</dd>
+				<dd>
+					<p class="share pt4"></p>
+					<p class="fon_10 cen"><%= dressInfo.count_like%></p>
+				</dd>
+			</dl>
+		</div>
+		<div class="iterm_wrapper">
+			<h3>购买搭配单品</h3>
+			<div class="iterm_list">
+				<ul>
+					<% var dress = dressInfo.goodsInfos;for(var i=0;i<dress.length;i++){%>				
+						<li>
+							<a <%if(dress[i].is_doota == 1){%>href="/share/item/<%= dress[i].twitter_id%>"<%}else{%>href="/share/<%= dress[i].twitter_id%>"<%}%>>
+								<img src="<%= dress[i].show_pic%>">
+								<p><span><%= dress[i].goods_price%></span><del><%= dress[i].origin_price%></del></p>
+							</a>
+						</li>				
+					<%}%>
+				</ul>				    
+			</div>
+		</div>
+		<div class="daren_wraper">
+			<h3>对话搭配达人</h3>
+			<% var reply = dressInfo.replyInfo;for(var o = 0; o < reply.length; o++){%>
+				<dl>
+					<dt><img src="<%= reply[o].uinfo.avatar_c%>"></dt>
+					<dd>
+						<p><%= reply[o].uinfo.nickname%></p>
+						<p><%= reply[o].update_time%></p>
+						<p><%= reply[o].reply_content%></p>
+					</dd>
+				</dl>
+			<%}%>
+		</div>
+	<%}%>
+</section>
+
+<%# foot_simple.html%>

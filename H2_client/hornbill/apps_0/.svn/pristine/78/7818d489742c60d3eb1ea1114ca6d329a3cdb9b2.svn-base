@@ -1,0 +1,398 @@
+/*common*/
+require('wap/zepto/fastclick')
+
+	var bindMobile = $('.bindMobile'),
+	    $send_code = bindMobile.find('#send_code'),
+		$send_bind = bindMobile.find('#send_bind'),
+		$change_bind = bindMobile.find('#change_bind'),
+		$mobile = bindMobile.find('#mobile'),
+		$code = bindMobile.find('#code')
+		$s_code = bindMobile.find('#s_code'),
+		$s_code2 = bindMobile.find('#s_code2'),
+		$send_next = bindMobile.find('#send_next'),
+		$success = bindMobile.find('#success'), 
+		$back = bindMobile.find('.back');
+
+	var reback_timer = false
+
+	$('#changeBtn').on('click', function(){
+		window.location.href = '/user/bindMobile/change'
+	})
+
+
+	/**
+	 * 绑定手机号页初始化
+	 * @author zhengke
+	 */
+	var bindMobile = function() {
+		$send_code.on('click', sendCode);
+		$send_bind.on('click', sendBind);
+		
+		$s_code.on('click', sCode);
+		$s_code2.on('click',sCode2);
+		$send_next.on('click', sBind);
+
+		$change_bind.on('click',changeBind);
+
+		$back.on('click', function() {
+			storage.setCookie('tip_close', new Date().getTime(), {
+				'duration': 3 * 86400
+			});
+		});
+	};
+	/**
+	 * 发送绑定
+	 * @author liuxueqi
+	 */
+	
+	
+	var sBind = function() {		
+		var $message = $(".bindErrorMessage"),
+			$button = $(this),
+			url = '/aj/sendcode/sBind',
+			data = {
+				'captcha': $.trim($code.val()),
+				'smsType':'change_bind_mobile_captcha',
+				'frm': 'bindok'
+			},
+			mobileRe = /^\d{11}$/,
+			codeRe = /^[0-9]{6}$/
+
+		mark_code = data.captcha;
+		if (data.captcha == '') {
+			$message.html("验证码为空").show();
+			return;
+		}
+		if (!codeRe.test(data.captcha)) {
+			$message.html("验证码填写有误，请重新输入").show();
+			return;
+		}
+
+		$button.val("下一步...");
+		$('#changeTips').html('更换后，下次登录可使用新手机号登录')
+
+		var callback = function(r) {
+			switch (r.code) {
+				case 0:
+					$message.html('').hide();
+					$(".pro").next().removeClass("no-on").addClass('on');
+					$("#protel").html("新手机号");
+					$s_code.hide();
+					$s_code2.show();
+
+					if($mobile){
+						$mobile.removeAttr("disabled");
+						$mobile.val("");
+						$code.val("");
+					}
+					$send_next.hide();
+					$change_bind.show();
+					reback_timer = true;
+					break;
+				case -1:
+					updateStatus(r);
+					break;
+				default:
+					$message.html(r.message).show();
+					alert(r.message)
+					break;
+			}
+		}
+		$.post(url, data, callback, 'json');
+		var updateStatus = function(r) {
+			setTimeout(function() {
+				$button.val("立即绑定");
+				$message.html(r.message).show();
+			}, 2000);
+		}
+	};
+	/**
+	 * 发送验证码
+	 * @author liuxueqi
+	 */
+
+
+	 var sCode2 = function(){
+	 	var $message = $(".bindErrorMessage"),
+			time = 60,
+			_this = this,
+			url = '/aj/sendcode/sCode2',
+	 	data = {
+
+				'mobile': $.trim($mobile.val()),
+				'smsType':'change_bind_mobile_captcha',
+				'frm': 'post_bind'
+			}
+	 	var callback = function(r) {
+	 			if(r.code==0){
+				    start();
+					$message.html('').hide();
+				}else{
+					$message.html(r.message).show();
+				}
+		}
+
+		$.get(url, data, callback, 'json');
+
+		var start = function() {
+			timeDown(time, function(times) {
+				if (!times) {
+					reback_timer = false;
+					$(_this).removeAttr("disabled");
+					$(_this).val("发送验证码");
+				} else {
+					$(_this).attr("disabled", "disabled");
+					$(_this).val("重新发送 (" + times + "秒)");
+
+				}
+			});
+		}
+
+
+	 }
+
+
+	var sCode = function() {
+
+		var $message = $(".bindErrorMessage"),
+			time = 60,
+			_this = this,
+			url = '/aj/sendcode/sCode',
+			mobileVal=$mobile.val(),
+			data = {
+				'smsType':'change_bind_mobile_captcha',
+				'frm': 'post_bind'
+			}
+		var callback = function(r) {
+			if(r.code==0){
+				start();
+					$message.html('').hide();
+				}else{
+					$message.html(r.message).show();
+				}
+		}
+
+		$.get(url, data, callback, 'json');
+
+		var start = function() {
+			timeDown(time, function(times) {
+				if (!times) {
+					reback_timer = false;
+					$(_this).removeAttr("disabled");
+					$(_this).val("发送验证码");
+				} else {
+					$(_this).attr("disabled", "disabled");
+					$(_this).val("重新发送 (" + times + "秒)");
+
+				}
+			});
+		}
+	};
+
+	/**
+	 * 倒计时
+	 * @author zhengke
+	 */
+	var timeDown = function(times, cbk) {
+		win_timer = window.setTimeout(function() {
+			if (!times) {
+				return;
+			} else if(reback_timer){
+				cbk(0);
+			}else {
+				times--;
+				cbk(times);
+				timeDown(times, cbk);
+			}
+		}, 1000);
+	};
+	
+
+	/*
+		******换绑手机号   @liuxueqi
+		*
+	 */
+	var changeBind = function(){
+		var $message = $(".bindErrorMessage"),
+			$button = $(this),
+			url = '/aj/sendcode/changeBind',
+			data = {
+				'mobile': $.trim($mobile.val()),
+				'captcha': $.trim($code.val()),
+				'pre_captcha':mark_code,
+				'smsType': 'change_bind_mobile_captcha'
+			},
+			mobileRe = /^\d{11}$/,
+			codeRe = /^[0-9]{6}$/
+
+		if (data.mobile == '') {
+			$message.html("手机号为空").show();
+			return;
+		}
+		if (data.captcha == '') {
+			$message.html("验证码为空").show();
+			return;
+		}
+		if (!mobileRe.test(data.mobile)) {
+			$message.html("手机号格式有误，请填写正确的11位手机号").show();
+			return;
+		}
+		if (!codeRe.test(data.captcha)) {
+			$message.html("验证码填写有误，请重新输入").show();
+			return;
+		}
+
+		$button.val("绑定中…");
+		$button.attr("disabled", "disabled");
+		var callback = function(r) {
+				if(r.code==0){
+				$message.html('').hide();
+					$button.val("更换成功");
+					$success.removeClass("no-on").addClass('on');
+					setTimeout(function(){
+						location.href = '/user/bindMobile'
+					}, 2000);
+				}else{
+					updateStatus(r);
+					
+				}
+
+		}
+		$.post(url, data, callback, 'json');
+
+
+		var updateStatus = function(r) {
+			setTimeout(function() {
+				$button.removeAttr("disabled");
+				$button.val("重新绑定");
+				$message.html(r.message).show();
+			}, 2000);
+		}
+
+	}
+
+
+	/*=======================================*/
+
+	/**
+	 * 发送绑定请求
+	 * @author zhengke
+	 */
+	var sendBind = function() {
+		var $message = $(".bindErrorMessage"),
+			$button = $(this),
+			url = '/aj/sendcode/sendBind',
+			data = {
+				'mobile': $.trim($mobile.val()),
+				'active_code': $.trim($code.val()),
+				'frm': 'bindok'
+			},
+			mobileRe = /^\d{11}$/,
+			codeRe = /^[0-9]{6}$/
+
+		if (data.mobile == '') {
+			$message.html("手机号为空").show();
+			return;
+		}
+		if (data.active_code == '') {
+			$message.html("验证码为空").show();
+			return;
+		}
+		if (!mobileRe.test(data.mobile)) {
+			$message.html("手机号格式有误，请填写正确的11位手机号").show();
+			return;
+		}
+		if (!codeRe.test(data.active_code)) {
+			$message.html("验证码填写有误，请重新输入").show();
+			return;
+		}
+
+		$button.val("绑定中…");
+		$button.attr("disabled", "disabled");
+
+		var callback = function(r) {
+			switch (r.code) {
+				case 0:
+					$message.html('').hide();
+					$button.val("绑定成功");
+					setTimeout(function(){
+						location.href = '/user/bindMobile'
+					}, 2000);
+					
+					break;
+				case 1:
+				case 2:
+				case 3:
+				case 4:
+				case 5:
+				case -1:
+					updateStatus(r);
+					break;
+				default:
+					break;
+			}
+		}
+		$.post(url, data, callback, 'json');
+
+		var updateStatus = function(r) {
+			setTimeout(function() {
+				$button.removeAttr("disabled");
+				$button.val("立即绑定");
+				$message.html(r.message).show();
+			}, 2000);
+		}
+	};
+	/**
+	 * 发送验证码
+	 * @author zhengke
+	 */
+	var sendCode = function() {
+		var $message = $(".bindErrorMessage"),
+			time = 60,
+			_this = this,
+			url = '/aj/sendcode/sendCode',
+			data = {
+				'mobile': $.trim($mobile.val()),
+				'frm': 'post_bind'
+			},
+			mobileRe = /^\d{11}$/
+
+		if (data.mobile == '') {
+			$message.html("手机号为空").show();
+			return;
+		}
+		if (!mobileRe.test(data.mobile)) {
+			$message.html("手机号格式有误，请填写正确的11位手机号").show();
+			return;
+		}
+
+		var callback = function(r) {
+			if(r.code==0){
+				start();
+					$message.html('').hide();
+				}else{
+					$message.html(r.message).show();
+				}
+		}
+
+		$.post(url, data, callback, 'json');
+
+		var start = function() {
+			timeDown(time, function(times) {
+				if (!times) {
+					$(_this).removeAttr("disabled");
+					$(_this).val("发送验证码");
+				} else {
+					$(_this).attr("disabled", "disabled");
+					$(_this).val("重新发送 (" + times + "秒)");
+				}
+			});
+		}
+	};
+	
+	exports.bindMobile = bindMobile;
+
+
+
+
+

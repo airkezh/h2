@@ -1,0 +1,49 @@
+<%# head_simple.html%>
+</head>
+<%
+var gene = this.gene ;
+%>
+<div class="wrap">
+	<div class="scrollWrap">
+		<div class="title">以下商品是你购买和喜好过的<%= gene.data.style %>风格商品 </div>
+		<div class="likeGoodsWrap">
+			<div class="likeGoods">
+				<ul>
+					<%  gene && gene.data && gene.data.goods && gene.data.goods.forEach(function(data){ %>
+						<li>
+							<a><img data-tid="<%= data.twitter_id %>" src="<%= data.img %>"></a>
+						</li>
+					<%})%>
+				</ul>
+			</div>
+		</div>
+	</div>
+    <div class="goodsWrap">
+        <div class="recGoods">其他<%= gene.data.style %>风格商品</div>
+        <div class="pullUp loading" status="loading"></div>
+        <div class="goods_wall">
+        </div>
+        <div class="pullUp more" status="tap"></div>
+    </div>
+</div>
+<script type="text/html" id="posterWall">
+    <? var data = this.v ?>
+    <div class="waterFall">
+        <div class="goodsInfo">
+            <img data-tid="<?= data.twitter_id ?>" src="<?= data.img ?>" asrc="<?= data.img ?>">
+            <div class="goodsName"><?= data.goods_title ?></div>
+            <div class="priceWrap">
+                <div class="price"><?= data.goods_price ?></div>
+                <div class="like"><?= data.like_count ?></div>
+            </div>
+        </div>
+    </div>
+</script>
+<script>
+    fml.vars.geneid = <%= this.geneid %>;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+    fml.use('wap/page/fashionGene');
+_use:", this._JSstack , this._JSmods); %>
+
+<%#foot_simple.html%>

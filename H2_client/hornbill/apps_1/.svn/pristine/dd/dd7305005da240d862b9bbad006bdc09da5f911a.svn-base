@@ -1,0 +1,401 @@
+/**
+ * @fileoverview 会员半价购 － 会员中心
+ * @requires
+ * @author kehuang@meilishuo.com
+ * @date 2015-06-24
+ */
+
+@import "../block.less";
+
+html,body{
+	.w(100%);
+	.f(10px);
+	.bgc(#fff);
+}
+
+// 0.5的水平线
+.line-h05(@lw){
+	.w(@lw);
+	.h(1px);
+	-webkit-transform:scaleY(.5);
+	background-color:rgb(213, 213, 213);
+}
+
+// 0.5的垂直线
+.line-v05(@lh, @lt){
+	.pa;
+	.w(1px);
+	.h(@lh);
+	top:@lt;
+	right:0px;
+	-webkit-transform:scaleX(.5);
+	background-color:rgb(213, 213, 213);
+}
+
+img{
+	.block;
+	.w(100%);
+}
+
+ul{
+	list-style:none;
+}
+
+i{
+	font-style:normal;
+}
+
+.nav_wrap{
+	min-height:3.6rem;
+}
+
+.nav_box{
+	.none;
+	.w(100%);
+	.f(1.4rem);
+	.fc(#a09e9f);
+	.bgc(#fff);
+}
+
+.scrollin{
+	.pf;
+	left:0;
+	top:-1px;
+	margin:0 auto;
+	z-index:100;
+}
+
+.scrollout{
+	.pr;
+}
+
+.navbl{
+	.mt(-16px);
+}
+
+.lhp100{
+	.line-h05(100%);
+}
+
+.points{
+	.pr;
+	.hidden;
+	.h(58px);
+	.w(100%);
+	margin:0 auto;
+
+	s{
+		.pa;
+		.w(52px);
+		.h(58px);
+		left:50%;
+		.ml(-26px);
+		background:url('http://d02.res.meilishuo.net/pic/_o/79/f7/fb2751ad391504db79146a5738fa_86_92.cg.png') top center no-repeat;
+		background-size:100%;
+		z-index:10;
+	}
+
+	s.active{
+		background:url('http://d01.res.meilishuo.net/pic/_o/a3/b6/8bb71ec3cdaaa33a8a8c47120dc4_90_92.cg.png') top center no-repeat;
+		background-size:104%;
+	}
+
+	ul{
+		.pr;
+		.hidden;
+		.w(1000px);
+		list-style:none;
+		-webkit-transform:translate3d(0,0,0);
+		-webkit-transition:all .3s ease-in-out;
+		z-index:10;
+
+		li{
+			.left;
+			.l(17px);
+
+			a{
+				.c;
+				.block;
+				.mt(5px);
+				.f(1.4rem);
+				.fc(#a6a4a5);
+				outline:0;
+				font-weight:400;
+				text-decoration:none;
+				font-family:"Helvetica Neue";
+
+				label{
+					.block;
+					.f(1rem);
+				}
+			}
+		}
+
+		.curr a{
+			.fc(#fff);
+		}
+	}
+}
+
+.goods_wrap{
+	.hidden;
+	min-height:700px;
+	margin:40*@w 15*@w 0 15*@w;
+}
+
+.goods_item{
+	.pr;
+	.mt(15*@w);
+	.bgc(#fff);
+	min-height:140px;
+
+	figure{
+		.pr;
+		.w(45%);
+		.i_block;
+		.mt(2px);
+
+		span.bs_load_img{
+			.block;
+			.w(100%);
+			.pt(100%);
+			opacity:.75;
+			background-image:url("http://d05.res.meilishuo.net/pic/_o/33/cf/a618bae2cdf43bc03289e82cb53f_290_290.cg.png");
+			background-size:cover;
+		}
+
+		span.df_show_img{
+			.block;
+			.w(100%);
+			.pt(100%);
+			opacity:.75;
+			background-image:url("http://d05.res.meilishuo.net/pic/_o/33/cf/a618bae2cdf43bc03289e82cb53f_290_290.cg.png");
+			background-size:cover;
+		}
+	}
+
+	.desc{
+		.right;
+		.w(55%);
+
+		li{
+			.pa;
+			.hidden;
+			.w(52%);
+			margin:0 15*@w;
+		}
+
+		li:nth-child(1){
+			top:1%;
+			.hidden;
+			.mt(1px);
+			.f(1.4rem);
+            white-space:nowrap;
+            text-overflow:ellipsis;
+		}
+
+		li:nth-child(2){
+			top:16%;
+		}
+
+		li:nth-child(3){
+			top:36%;
+		}
+
+		li:nth-child(4){
+			bottom:3px;
+		}
+
+		.status_btn{
+			.c;
+			.block;
+			.fc(#fff);
+			.pt(10px);
+			.pb(10px);
+			.f(1.4rem);
+			.bgc(#ffac5c);
+
+			a{
+				.block;
+				.w(100%);
+				.h(100%);
+				.fc(#fff);
+			}
+		}
+
+		.over_btn{
+			.bgc(#ffac5c);
+		}
+
+		.empty_btn{
+			.bgc(#b6b6b6);
+		}
+
+		.buy_btn{
+			.bgc(#fe6054);
+		}
+
+	}
+
+	.now_price{
+		.mr(0);
+		.ml(-6px);
+		.f(2rem);
+		.fc(#ffa600);
+	}
+
+	.old_price{
+		.f(1.3rem);
+		.ml(4px);
+		.fc(#a09e9f);
+	}
+
+	.gcata{
+		.right;
+		.i_block;
+		.l(15px);
+		.w(92px);
+		.mr(-10px);
+
+		i{
+			.fc(#fff);
+			.f(0.9rem);
+			.ml(1px);
+			padding:1px 2px;
+		}
+	}
+
+	.ded_bg{
+		.bgc(#fe6054);
+	}
+
+	.sale_info{
+		p{
+			.f(1rem);
+			.l(1.4rem);
+			.fc(#80737b);
+		}
+
+		.sale{
+			.mb(4px);
+			.f(1.1rem);
+			.fc(#999);
+		}
+
+		.level{
+			.c;
+			.w(50%);
+			.f(1.1rem);
+			.fc(#fff);
+			.bgc(#ffa600);
+		}
+	}
+}
+
+/* 下拉刷新 */
+.pullUp{
+	.pullUpDown > .common;.pullUpDown > .loading;
+	&:before{
+		.nowrap;
+		.ml(-10px);
+	}
+	&[status="tap"]{
+		background:0 none;	
+	}
+	&[status="stop"]{
+		background:0 none;	
+	}
+}
+
+/* 返回顶部 */
+.gotop_wrap{
+	.pf;
+	.none;
+	.w(82*@w);
+	.pt(82*@w);
+	z-index:10;
+	right:10px;
+	bottom:40px;
+
+	.gotop{
+		.block;
+		.w(100%);
+	}
+
+	img{
+		.w(100%);
+	}
+}
+
+/* 组图 */
+.swipe{
+	.pr;
+	.c;
+	.hidden;
+	min-height:240*@px;
+}
+
+.swipe_wrap{
+	.pr;
+	.hidden;
+	-webkit-backface-visibility:hidden;
+	-moz-backface-visibility:hidden;
+	-ms-backface-visibility:hidden;
+	-o-backface-visibility:hidden;
+	backface-visibility:hidden;
+	/* Fix of Webkit flickering */
+	z-index:1;
+}
+
+.swipe_wrap > div{
+	.pr;
+	.left;
+	.w(100%);
+}
+
+.swipe_pic{
+	.pr;
+	.hidden;
+	.w(100%);
+	.bgc(#fff);
+	min-height:240*@px;
+}
+
+.swipe_pic img{
+	.w(100%);
+	min-height:240*@px;
+}
+
+.swipe_num{
+	.pa;
+	left:0;
+	.w(100%);
+	bottom:8px;
+	z-index:9;
+
+	li{
+		.vm;
+		.w(5px);
+		.h(5px);
+		.mr(2px);
+		.i_block;
+		.bgc(#fff);
+		float:none;
+		.border-r(50%);
+	}
+
+	li.active{
+		border:1px solid #fff;
+		background-color:transparent;
+	}
+}
+
+@media screen and (min-width:360px){
+	html,body{
+		.f(12px);
+	}
+
+	.goods_item .now_price{
+		.f(2.2rem);
+	}
+}

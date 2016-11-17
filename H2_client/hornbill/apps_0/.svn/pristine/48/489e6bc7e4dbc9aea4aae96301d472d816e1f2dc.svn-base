@@ -1,0 +1,112 @@
+<%#head.html%>
+
+<%
+	var pageData = this.pageData;
+	if(new Date() > new Date('2014/08/23 00:00:00')){
+		pageData.head[0].img_src = 'http://d05.res.meilishuo.net/img/_o/a4/ae/0af0a669edd0edbbce4e10b47e8c_2000_420.cc.jpg';
+		pageData.seckill.length = 0;
+	}
+%>
+<div class="main">
+	<% pageData.head.length > 0 && pageData.head.map(function(data, index){ %>
+		<div class="head_bg" style="background-image:url('<%= data.img_src %>');height:<%= data.h %>px;"></div>
+	<% }); %>
+	<div class="top_bannar">
+		<% pageData.bannar.length > 0 && pageData.bannar.map(function(data, index){ %>
+			<a href="<%= data.url %>" target="_blank"><img src="<%= data.img_src %>"></a>
+		<% }); %>
+	</div>
+	<%
+		if(pageData.seckill.length > 0){
+			var now_date = new Date();
+			var seckill_index = -(20-now_date.getDate());
+			var goods_index = seckill_index < 0 ? 0 : seckill_index;
+			var seckill_goods = pageData.seckill[goods_index];
+			var lastDate1 = (new Date(''+seckill_goods.goods_time_1) - now_date)/1000;
+			var lastDate2 = (new Date(''+seckill_goods.goods_time_2) - now_date)/1000;
+	%>
+	<div class="seckill">
+		<div class="seckill_goods first_kill">
+			<a href="<%= seckill_goods.goods_url_1 %>" target="_blank"><img src="<%= seckill_goods.goods_img_1 %>"></a>
+			<p class="gtitle"><a href="<%= seckill_goods.goods_url_1 %>" target="_blank"><%= seckill_goods.title_1%></a></p>
+			<p><span class="red_f now_price"><%= seckill_goods.now_1%></span><del><%= seckill_goods.ori_1%></del><span class="num">限量<i class="red_f"><%= seckill_goods.num_1%></i>份</span></p>
+			<% if(this.seckill_num[seckill_goods.goods_id_1] === 0){ %>
+				<span class="soldout"></span>
+			<% } else if(seckill_index > -1){ %>
+				<% if(lastDate1 > 0 && !isNaN(lastDate1)){ %>
+				<p class="timeStamp_wrap red_f" time="<%= lastDate1 %>">距开抢仅剩<span class="hour">00</span>: <span class="sec">00</span>: <span class="min">00</span></p>
+				<% } else { %>
+					<p class="timeStamp_wrap red_f">正在抢购中</p>
+				<% } %>
+			<% } %>
+		</div>
+		<div class="seckill_goods">
+			<a href="<%= seckill_goods.goods_url_2 %>" target="_blank"><img src="<%= seckill_goods.goods_img_2 %>"></a>
+			<p class="gtitle"><a href="<%= seckill_goods.goods_url_2 %>" target="_blank"><%= seckill_goods.title_2%></a></p>
+			<p><span class="red_f now_price"><%= seckill_goods.now_2%></span><del><%= seckill_goods.ori_2%></del><span class="num">限量<i class="red_f"><%= seckill_goods.num_2%></i>份</span></p>
+			<% if(this.seckill_num[seckill_goods.goods_id_2] === 0){ %>
+				<span class="soldout"></span>
+			<% } else if(seckill_index > -1){ %>
+				<% if(lastDate2 > 0 && !isNaN(lastDate2)){ %>
+				<p class="timeStamp_wrap red_f" time="<%= lastDate2 %>">距开抢仅剩<span class="hour">00</span>: <span class="sec">00</span>: <span class="min">00</span></p>
+				<% } else { %>
+					<p class="timeStamp_wrap red_f">正在抢购中</p>
+				<% } %>
+			<% } %>
+		</div>
+		<div class="clear_f"></div>
+	</div>
+	<% } %>
+	<div class="poster_tab" data_class="tab0_hover">
+		<div class="poster_anchor" id="poster_anchor"></div>
+		<div class="tab1"><a href="/biz/beauty/sale820/classics?pid=40469&hdtrc=<%= this.hdtrc %>_classics#poster_anchor" data_style="background-color:#ffa0c0;left:122px;" data="tab1_hover"><span>经典护肤</span></a></div>
+		<div class="tab2"><a href="/biz/beauty/sale820/charm?pid=40467&hdtrc=<%= this.hdtrc %>_charm#poster_anchor" data_style="background-color:#feba95;left:320px;" data="tab2_hover"><span>魅力彩妆</span></a></div>
+		<div class="tab3"><a href="/biz/beauty/sale820/fragrance?pid=40485&hdtrc=<%= this.hdtrc %>_fragrance#poster_anchor" data_style="background-color:#fcd78e;left:514px;" data="tab3_hover"><span>香氛美体</span></a></div>
+		<div class="tab4"><a href="/biz/beauty/sale820/sale?pid=40487&hdtrc=<%= this.hdtrc %>_sale#poster_anchor" data_style="background-color:#8cdbbf;left:714px;" data="tab4_hover"><span>凑单专区</span></a></div>
+		<div class="tab_choosed <%= this.name %>"></div>
+		<div class="clear_f"></div>
+	</div>
+	<div class="poster">
+		<div class="goods_units">
+		<%
+			this.list && this.list.tInfo.forEach(function(goods_data){
+				var goods_link = '/share/item/'+goods_data.twitter_id;
+		%>
+			<a href="<%= goods_link %>" target="_blank" class="productCon">
+				<% if(goods_data.horizontal_mark.length){ %>
+					<div class="new-png" style="left: -1px;"><img src="<%= goods_data.horizontal_mark[0].img_url %>" /></div>
+				<% } %>
+				<div class="proImg">
+					<img width="220" src="<%=goods_data.show_pic %>" />
+				</div>
+				<div class="proTitle">
+					<%= goods_data.ginfo.goods_title %>
+				</div>
+				<div class="proPrice">
+					<%
+						var o_goods_price = goods_data.ginfo.goods_price.slice(1);
+						var o_origin_price = goods_data.ginfo.origin_price.slice(1);
+						var discount_num = '' + Math.round(o_goods_price/o_origin_price*100)/10;
+						if(discount_num.indexOf('.')<0){
+							discount_num += '.0';
+						}
+					%>
+					<b><em>￥</em><%= o_goods_price %></b>
+					<% if(o_origin_price){ %>
+						<span class="original_price">￥<%=o_origin_price%></span>
+					<% } %>
+				</div>
+				<div class="proStatus">
+					<%=goods_data.sale_num%><%= this.is_start ? "人已喜欢" : "人在抢购" %>
+				</div>
+			</a>
+		<% }); %>
+		</div>
+	</div>
+</div>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/huodong/beauty_sale820');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot.html%>

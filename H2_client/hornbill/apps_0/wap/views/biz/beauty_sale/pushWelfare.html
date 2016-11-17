@@ -1,0 +1,70 @@
+<%#head.html%>
+<%
+	var pageData = this.pageData;
+	var activityinfo = pageData.activityinfo;
+%>
+<div class="main">
+	<img src="<%= activityinfo.banner %>">
+	<p class="word"><%= activityinfo.description %></p>
+	<div class="recGoods">
+		<div class="title"><div class="line"></div><span class="text"><i>超值福利推荐</i></span></div>
+		<%
+			var time_word = '距开始：',
+				last_time = 0,
+				status_text = '即将开始'
+				status_class = 'not_start';
+			var now = new Date();
+			var start_time = new Date(activityinfo.start_time);
+			var end_time = new Date(activityinfo.end_time);
+			if(now < start_time){
+				last_time = (start_time - now)/1000;
+			} else if(now < end_time){
+				time_word = '距结束：';
+				status_text = '马上抢购';
+				last_time = (end_time - now)/1000;
+			} else {
+				status_text = '已结束';
+			}
+		%>
+
+		<% pageData.goods.forEach(function(goods, index){ %>
+		<% var goods_link = _extFn.getAppLink('twitter_single', {'twitter_info' : {'twitter_id' : goods.twitter_id, 'is_doota' : 1}}, this.os, this.r, '/share/item/' + goods.twitter_id); %>
+			<div class="goods <%= index == 0 ? 'first' : '' %>">
+				<a href="<%= goods_link %>"><img src="<%= goods.img %>"></a>
+				<div class="desc">
+					<p class="name"><a href="<%= goods_link %>"><%= goods.title %></a></p>
+					<p class="prece">￥<span><%= goods.discount_cost %></span>元<del><%= goods.cost %>元</del></p>
+					<div class="buy_status"><a href="<%= goods_link %>"><%= status_text %></a></div>
+					<% if(last_time){ %>
+						<div class="time"><%= time_word %><span class="timeStamp" time="<%= last_time %>"> 0天0时0分0秒0</span></div>
+					<% } %>
+				</div>
+			</div>
+		<% }); %>
+	</div>
+	<div class="poster">
+		<div class="title"><div class="line"></div><span class="text"><i>更多精选美妆</i></span></div>
+		<%= requireFn("biz/beauty_sale/goods_fallwall.html")({
+			'goods': '',
+			'is_lazyload' : true,
+			'os' : this.os,
+			'r' : this.r+'_mz_pushWelfare',
+			'_JSstack': this._JSstack,
+			'_JSmods': this._JSmods
+		});%>
+	</div>
+</div>
+<div class="check_history">
+	<a href="<%= _extFn.getAppLink('openURL', {"url": "http://mapp.meilishuo.com/biz/shareact/main/","inApp":1, "require_app_info":1, "title": "美妆"}, this.os, this.r) %>"><span>更多潮流美妆></span></a>
+</div>
+</div>
+
+<script>
+	fml.vars.pid = '<%= activityinfo.rankid || 41051 %>';
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/biz/pushWelfare');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot_simple.html%>

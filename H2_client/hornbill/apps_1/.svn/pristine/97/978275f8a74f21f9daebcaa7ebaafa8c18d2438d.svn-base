@@ -1,0 +1,43 @@
+<div class="registerLike">
+	<ul class="registerStep">
+	<% if(this.headTag == 'register_step3'){ %>
+		<li class="this">选择喜好</li>
+	<% }else{ %>
+		<li><a href="/user/register/step3">选择喜好</a></li>
+	<% } %>
+		<li<% if(this.headTag == 'register_step4'){ %> class="this"<% } %>>推荐关注</li>
+		<li>进入首页</li>
+	</ul>
+	<div class="clear_f"></div>
+<% if(this.headTag == 'register_step3'){ %>
+	<h3>注册成功！</h3>
+	<p class="fb_f">点击选择一个你喜欢的分类，我们会为你推荐值得关注的内容</p>
+	<ul class="registerLikeStyle">
+		<li><h4>显瘦</h4><p class="r_oumei"></p><span></span></li>
+		<li><h4>娇小女生</h4><p class="r_tianmei"></p><span></span></li>
+		<li><h4>复古文艺</h4><p class="r_fugu"></p><span></span></li>
+		<li><h4>小清新</h4><p class="r_rixi"></p><span></span></li>
+		<li><h4>个性随意</h4><p class="r_gexing"></p><span></span></li>
+		<li><h4>轻熟女</h4><p class="r_jiepai"></p><span></span></li>
+		<li><h4>约会</h4><p class="r_hanxi"></p><span></span></li>
+		<li><h4>萌宠</h4><p class="r_chongwu"></p><span></span></li>
+		<li><h4>宅女爱家居</h4><p class="r_jiaju"></p><span></span></li>
+		<li><h4>其他</h4><p class="r_qita">都不喜欢？点这里&nbsp;&nbsp;</p><span></span></li>
+	</ul>
+<% }else if(this.headTag == 'register_step4'){ %>
+	<p class="fb_f">为你关注了一些你可能感兴趣的内容，快去首页看看吧</p>
+	<span id="registerLikeGroupBtn" class="big_btn"><em class="big_btnr"></em>进入我的首页>></span>
+	<a class="registerLikeBackBtn" href="/user/register/step3"><<返回选择喜好</a>
+	<div class="registerLikeGroup">
+	<%# user/register_magitem.html %>
+	</div>
+
+	<script type="text/html" id="registerLikeInfoTpl" >
+	<div class="registerLikeInfoWin">
+		<p class="info">亲，请至少保留一个关注对象哦～</p>
+		<span class="btn">确认</span>
+	</div>
+	</script>
+
+<% } %>
+</div>

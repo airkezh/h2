@@ -1,0 +1,69 @@
+function Bridge(opts){
+	this.protocol = (("https:" == document.location.protocol) ? "https://" : "http://")//当前协议
+	this.domainname = document.location.hostname //当前域名
+	var hosts = {
+		"https://":{
+			"jcstatic":""//静态域名
+			,"domain":""//passport接口域名
+			,"captcha":"https://account.meilishuo.com/Register/Captcha?token=asde39ad9"
+		}
+		,"http://":{
+			"jcstatic":"http://"+(opts.jcstatic || 's.meilishuo.net')
+			,"domain":"http://"+(opts.domain || 'www.meilishuo.com')
+			,"captcha":"http://captcha.meilishuo.com/Register/Captcha?token=asde39ad9"
+		}
+	}
+	this.host = hosts[this.protocol]
+}
+
+
+
+Bridge.prototype.bridges = {}
+Bridge.prototype.ajax = function(url,data,cbk){
+	var mSelf = this
+
+	if(this.protocol + this.domainname == this.host.domain){
+		$.ajax({
+			url: '/aw/passport' + url,
+			dataType:'json',
+			data:data,
+			success:function(res){
+				cbk(res)
+				mSelf.watch(res)
+			}
+		})
+		return;
+	}
+
+
+	this.bridges[url] = cbk
+
+	data.domainname = this.domainname
+	data.protocol = this.protocol
+	data.timestamp = Math.random()
+
+	var params = this.urlHandle.http_build_query(data)
+	var src = this.host.domain + '/passport/blank'+url+'?'+encodeURIComponent(params)
+
+	console.log(data,params, src)
+
+	var ifr = document.createElement('iframe');
+	ifr.style.display = 'none';
+	ifr.src = src
+	document.body.appendChild(ifr);
+
+//	return;
+};
+
+
+Bridge.prototype._watchs = []
+Bridge.prototype.addWatch = function(fn){
+	this._watchs.push(fn)
+}
+Bridge.prototype.watch = function(res){
+	for(var i in this._watchs){
+		this._watchs[i](res)
+	}	
+}
+
+

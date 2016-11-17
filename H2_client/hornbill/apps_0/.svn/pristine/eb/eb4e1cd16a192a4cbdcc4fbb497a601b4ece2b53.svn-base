@@ -1,0 +1,92 @@
+<%# sq/header.html%>
+<% var feedbackUrl = this.userInfo_sq.feedbackUrl;%>
+<div class="wrap">
+	<% if (0 && this.userInfo_sq && this.userInfo_sq.user_id) { %>
+		<% if (this.userInfo_sq.bind_status == 0) { %>
+		<div class="binding">
+			<a href="/sq/bind">绑定已有美丽说账号</a>, 不用填写地址哦</div>
+		<% } %>
+		<a class="user_head">
+			<span class="user_head_img" >
+				<img src="<%=this.userInfo_sq.avatar_a%>" alt="">
+			</span>
+			<p class="nikename"><%=this.userInfo_sq.nickname%></p>
+			<p class="adr"><em class="adr-img"></em>我的收货地址</p>
+			<i class="jiantou"></i>
+		</a>
+	<% } %>
+	
+	<!-- 
+	/qq/Order_list_classify_statistic
+	{"code":0,"data":{"wait_pay":1,"wait_receive":1,"wait_comment":0,"refund":0,"wait_send":6}}
+	 -->
+	<%if(this.order_info && this.order_info.code == 0){%>
+	<%var data = this.order_info && this.order_info.data %>
+	<%var numN = function(num){return num > 9 ? 'N' : num};%>
+	<div class="nav">
+		<a href="/sq/user/?orderStatus=1" class="nav-i">
+			<p class="name">待付款</p>
+			<%if(data.wait_pay){%>
+			<i class="icon"><span class="num"><%=numN(data.wait_pay)%></span></i>
+			<%}%>
+		</a>
+		<a href="/sq/user/?orderStatus=2" class="nav-i">
+			<p class="name">待发货</p>
+			<%if(data.wait_send){%>
+			<i class="icon"><span class="num"><%=numN(data.wait_send)%></span></i>
+			<%}%>
+		</a>
+		<a href="/sq/user/?orderStatus=3" class="nav-i">
+			<p class="name">待收货</p>
+			<%if(data.wait_receive){%>
+			<i class="icon"><span class="num"><%=numN(data.wait_receive) %></span></i>
+			<%}%>
+		</a>
+		<a href="/sq/user/?orderStatus=4" class="nav-i">
+			<p class="name">退款中</p>
+			<%if(data.refund){%>
+			<i class="icon"><span class="num"><%=numN(data.refund) %></span></i>
+			<%}%>
+		</a>
+	</div>
+	<%}%>
+	
+	<div class="a-box">
+		<a class="line-pan" href="/sq/user/?orderStatus=0">
+			<p class="name">全部订单</p> 
+			<i class="jiantou"></i>
+		</a>
+		<a class="line-pan" href="/sq/user/coupon">
+			<p class="name">我的优惠劵 <span class="t-pink"><%if(this.coupon_num.totalNum > 0){%> <%=this.coupon_num.totalNum %>张可以用 <%}%></span></p> 
+			<i class="jiantou"></i>
+		</a>
+		<a class="line-pan" href="http://im.meilishuo.com/wap/msgList/?button_stat_area=personal_message">
+			<p class="name">我的消息 <span class="t-pink">
+			<% 
+				var msgNum = this.message.code === 0 ? this.message.data.msg_num : -1;
+				if(msgNum > 0){ 
+			%>
+				<%= msgNum %>
+			<% } %>
+			</span></p> 
+			<i class="jiantou"></i>
+		</a>
+		<a class="line-pan" href="<%=feedbackUrl%>">
+			<p class="name">问卷调查</p> 
+			<i class="jiantou"></i>
+		</a>
+		<a class="line-pan" href="javascript:;">
+			<p class="name">意见反馈 <span class="t-pink">QQ群:445645352</span></p> 
+		</a>
+		<a class="line-pan"  href="tel:4000800577">
+			<p class="name">客服电话 <span class="t-pink">400-080-0577</span></p> 
+		</a>
+	</div>
+	
+	
+</div>
+<script src="http://imgcache.qq.com/ac/vasapp/webviewlib/qw_plugin/address/mqaddr.public.js"></script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/sq/userCen');
+_use:", this._JSstack , this._JSmods ); %>
+<%# sq/footer.html%>

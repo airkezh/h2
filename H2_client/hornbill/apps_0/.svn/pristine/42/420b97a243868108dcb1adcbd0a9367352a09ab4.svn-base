@@ -1,0 +1,136 @@
+<%#head.html%>
+<canvas id="canvas"></canvas>
+	<section id="wrapper_main" class="wrapper">
+		<div class="main">
+			<div id="bannerBox">
+				<%if(this.b_banner&&this.b_banner.data.list&&this.b_banner.data.list.length){ var b_banner=this.b_banner.data.list; %>
+					<div class="imageSlide" id="imageSlide">
+						<ul>
+							<% b_banner.forEach(function(data){ %>
+								<li>
+									<a href="javascript:void(0)" data-url="<%=data.url %>" class="bannerLink"><img src="<%= data.img %>"/></a>
+								</li>
+								<% }); %>
+						</ul>
+						<%if(b_banner.length>1){%>
+							<div class="num"></div>
+							<%}%>
+					</div>
+					<%}%>
+			</div>
+
+			<section id="container" class="container">
+				<div class="content show posterWall" id="content" style="padding-left: 0;background: none; margin-top: 6px;">
+					<%if(this.wlf_new.error_code==0&&this.wlf_new.data&&this.wlf_new.data.list&&this.wlf_new.data.list.length){%>
+						<img src="<%= this.PICTURE_URL%>images/m_welfare/wlf_new_img.png" alt="" class="cms_title_img" />
+						<div class="wlfList clearfix" style="margin-bottom: 0;">
+							<%this.wlf_new.data.list.forEach(function(item){%>
+								<div class="new_wlf_box poster_wall" data-layed="1">
+									<div class="mini_warp">
+										<a class="link_box" href="javascript:void(0);" data_id='<%=item.activity_id%>'>
+											<figure>
+												<span class="bs_load_img" asrc='<%=item.index_banner%>'>
+													
+												</span>
+											</figure>
+										</a>
+										<div class="wlf_applyNo">
+											<figure>
+												<h3 class="wlf_title"><%=item.title%></h3>
+												<p class="wlf_info"><span>免费<b class="trynumber"><%=item.trynumber%></b>份</span>&nbsp;&nbsp;<span>已有<b class="apply_no"><%=item.apply_num%></b>人申请</span></p>
+												<%var style="";var desc="";var urlStr="http://mapp.meilishuo.com/m_welfare/item/"+item.activity_id;
+			var pcUrl="/m_welfare/item/"+item.activity_id;
+			var hasReport=item.hasReport;
+			status=item.status;
+			 		switch (status) {
+						case 0:
+							style="gray";
+							desc="即将开始";
+							break;
+						case 1:
+							style="yellow";
+							desc="立即申请";
+							if(item.final_status&&item.final_status==1){
+								style="gray";
+								desc="已申请";
+							}
+							break;
+						case 2:
+							style="gray";
+							desc="即将公布";
+							break;
+						case 3:
+						default:
+							if (hasReport == 0) {
+								style="gray";
+								desc="名单已公布";
+							} else {
+								style="yellow";
+								desc="试用报告";
+								urlStr="http://mapp.meilishuo.com/m_welfare/reprotList/"+item.activity_id;
+								pcUrl="/m_welfare/reprotList/"+item.activity_id;
+							}
+							break;
+						}
+			%>
+													<a class="<%=style%> nowApply " href="javascript:void(0)" data_url="<%=urlStr%>" data_pc_url="<%=pcUrl%>">
+														<%=desc%>
+													</a>
+										</div>
+										<img src="http://i.meilishuo.net/css/images/m_welfare/wlf_sku_snow_top.png" class="snow_top" />
+										<img src="http://i.meilishuo.net/css/images/m_welfare/wlf_sku_snow_bottom.png" class="snow_bottom" />
+										<img src="http://i.meilishuo.net/css/images/m_welfare/wlf_sku_line_01.png" class="snow_left" />
+										<img src="http://i.meilishuo.net/css/images/m_welfare/wlf_sku_line_03.png" class="snow_right" />
+									</div>
+								</div>
+								<%});%>
+									<%if(this.wlf_new.data.list.length%2==1){%>
+										<div class="new_wlf_box poster_wall" data-layed="1">
+											<div class="mini_warp" style="background: url('http://i.meilishuo.net/css/images/m_welfare/wlf_no_tips.jpg') no-repeat; background-size: 100% 100%;">
+												<figure style="opacity: 0;"> <span class="bs_load_img" data-shown="1" style="opacity: 1; background-image: url(http://124.202.144.17/img/_o/cb/b7/153f651bf7fe2ae7dde8d65786b9_640_640.ch.jpg);"></span> </figure>
+												<div class="wlf_applyNo">
+												</div>
+											</div>
+										</div>
+										<%}%>
+
+						</div>
+						<%}%>
+							<img src="<%= this.PICTURE_URL%>images/m_welfare/wlf_more_img.png" alt="" class="cms_title_img" />
+							<div class="goods_wall wlfList" style="margin-bottom: 0;">
+
+							</div>
+							<div class="pullUp" status="loading"></div>
+				</div>
+			</section>
+		</div>
+	</section>
+
+	<section id="main_nav" class="main_nav">
+		<ul class="clearfix">
+			<li class="index_cur">
+				<a href="/m_welfare/"></a>
+			</li>
+			<li class="sec">
+				<a href="/m_welfare/indexReport/"></a>
+			</li>
+			<li class="thr">
+				<a href="/m_welfare/mywlf/"></a>
+			</li>
+		</ul>
+	</section>
+	
+	<a class="gotop" style="bottom:<%if(this.isIphone){%>100<%}else{%>60<%}%>px">
+		<img src="<%= this.PICTURE_URL%>/images/wap/tuan/gotop.png" />
+	</a>
+	<script>
+		 <%= this.act_list.data.list ? 'Meilishuo.config.poster0=' + JSON.stringify(this.act_list.data.list) + ';' : ''; %>
+		fml.vars.geturl = '<%=this.geturl%>';
+		fml.vars.is_lazyload_poster = true;
+		fml.vars.isLogin = "<%= this.userInfo.user_id%>";
+	</script>
+	<%=requireFn( 'm_welfare/index_wlf_list.html')({ '_JSstack' : this._JSstack , '_JSmods' : this._JSmods });%>
+		<%! $_ENGINE_SELF.callFn( "useModule")( "<<<_use:
+	fml.use('wap/page/welfare_new/wlf_index');
+_use:", this._JSstack , this._JSmods ); %>
+			<%#foot.html%>

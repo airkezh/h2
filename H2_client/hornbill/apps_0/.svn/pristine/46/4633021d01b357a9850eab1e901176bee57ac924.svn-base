@@ -1,0 +1,868 @@
+// core lib模块
+;(function(window,document){
+
+	var w3c = document.dispatchEvent;
+	var SPACE = ' ';
+    var ANY = '*';
+	var core_trim = String.prototype.trim;
+	var rtrim = /(^\s*)|(\s*$)/g;
+    var quickID = /#([\w\-]+)$/;
+    var quickExpr = /^(?:[^<]*(<[\w\W]+>)[^>]*$|(?:#([\w-]+))?\s*([\w-]+|\*)?\.?([\w-]+)?$)/;
+
+    function tuneContext(context) {
+        if (context === undefined) {
+            context = document;
+        }else if (typeof context==='string' && quickID.test(context)) {
+            context = getElementById(context.slice(1), document);
+        }else if(context instanceof $){
+            context=context[0];
+        }else if (context && context.nodeType !== 1 && context.nodeType !== 9) {
+            context = null;
+        }
+        return context;
+    }
+
+    function getElementById(id, context) {
+        if (context.nodeType !== 9) {
+            context = context.ownerDocument;
+        }
+        return context.getElementById(id);
+    }
+
+    function getElementsByTagName(tag, context) {
+        return context.getElementsByTagName(tag);
+    }
+
+    function getElementsByClassName(cls, tag, context) {
+        var els = context.getElementsByClassName(cls),
+            ret = els, i = 0, j = 0, len = els.length, el;
+
+        if (tag && tag !== ANY) {
+            ret = [];
+            tag = tag.toUpperCase();
+            for (; i < len; ++i) {
+                el = els[i];
+                if (el.tagName === tag) {
+                    ret[j++] = el;
+                }
+            }
+        }
+        return ret;
+    }
+    if (!document.getElementsByClassName) {
+        if (document.querySelectorAll) {
+            getElementsByClassName = function(cls, tag, context) {
+                return context.querySelectorAll((tag ? tag : '') + '.' + cls);
+            }
+        }else {
+            getElementsByClassName = function(cls, tag, context) {
+                var els = context.getElementsByTagName(tag || ANY),
+                    ret = [], i = 0, j = 0, len = els.length, el, t;
+
+                cls = SPACE + cls + SPACE;
+                for (; i < len; ++i) {
+                    el = els[i];
+                    t = el.className;
+                    if (t && (SPACE + t + SPACE).indexOf(cls) > -1) {
+                        ret[j++] = el;
+                    }
+                }
+                return ret;
+            }
+        }
+    }
+
+
+	var $ = function(selector, context) {
+        return new $.fn.init(selector, context);
+    };
+
+    $.fn = $.prototype = {
+        constructor: $,
+        init: function(selector, context) {
+            var match, elem, id, tag, cls, ret;
+            context = tuneContext(context);
+            if (!selector) {
+                return this;
+            }
+
+            if (selector.nodeType || selector.window === window) {
+                this.context = this[0] = selector;
+                this.length = 1;
+                return this;
+            }
+
+            if (typeof selector === "string") {
+
+                if (quickID.test(selector)) {
+                    elem = getElementById(selector.slice(1), context);
+                    if (elem) {
+                        this.length = 1;
+                        this[0] = elem;
+                        this.context = context;
+                    }
+                    return this;
+                } else if (match = quickExpr.exec(selector)) {
+                    if (match) {
+                        if (match[1]) {
+                            // html片段攒不处理
+                        } else {
+                            id = match[2];
+                            tag = match[3];
+                            cls = match[4];
+
+                            if ((context = id ? getElementById(id, context) : context)) {
+                                if (cls) {
+                                    if (!id || selector.indexOf(SPACE) !== -1) {
+                                        ret = getElementsByClassName(cls, tag, context);
+                                    }else {
+                                        elem = getElementById(id, context);
+                                        if (elem && $.hasClass(elem, cls)) {
+                                            ret = [elem];
+                                        }
+                                    }
+                                }else if (tag) {
+                                    ret = getElementsByTagName(tag, context);
+                                }
+                            }
+
+                        }
+                    }
+                }
+
+            } else if (typeof selector === 'function') {
+                return $.ready(selector);
+            }
+
+            return $.merge(this, ret);
+        },
+        length : 0,
+        html: function(html) {
+		    if(html){
+                return this.each(function(){
+                    this.innerHTML = html;
+                })
+		    }else{
+		        return this[0] && this[0].innerHTML;
+    		}
+        },
+        css: function(key, value) {
+            key.replace(/\-(.)/g,function(a,b){return b.toUpperCase();});
+            return this.each(function(){
+                this.style[key] = value;
+            });
+        },
+        show : function(){
+        	//忽略默认的display
+		    return this.css('display','block');
+        },
+        hide : function(){
+        	return this.css('display','none');
+        },
+        addClass: function(name) {
+            return this.each(function(){
+                var classNames = name.split(SPACE),
+                           ori = SPACE + this.className + SPACE,
+                           rm;
+                while(rm = classNames.shift()){
+                    if (ori.indexOf(SPACE + rm + SPACE) === -1) {
+                        ori += rm + SPACE;
+                    }
+                }
+                this.className = $.trim(ori);
+            });
+        },
+        removeClass: function (name){
+        	return this.each(function(){
+                if(name){
+                    var classNames = name.split(SPACE),
+                               ori = SPACE + this.className + SPACE,
+                               rm;
+                    while(rm = classNames.shift()){
+                        ori=ori.replace(SPACE+rm+SPACE,SPACE);
+                    }
+                    this.className=$.trim(ori);
+                }else {
+                    this.className = '';
+                }
+            });
+        },
+        hasClass: function(selector) {
+            if(this[0]){
+                return (SPACE+this[0].className+SPACE).indexOf(SPACE+selector+SPACE)!=-1?true:false;
+            }
+        },
+        on : w3c ? function(type, fn, phase) {
+            return this.each(function(){
+                this.addEventListener(type, function(event){
+                    if('mouseenter|mouseleave'.indexOf(type) != -1){
+                        var r = event.relatedTarget;
+                        if(this === r || $.contains(this,r)){
+                            return
+                        }
+                    }
+                    fn.call(this,event);
+                }, !!phase);
+            });
+        } : function(type, fn) {
+            return this.each(function(){
+                var that = this;
+                this.attachEvent && this.attachEvent("on" + type, function(event){
+                    event = $.fixEvent();
+                    fn.call(that,event);
+                });
+            });
+        },
+        attr : function(name,value){
+            if(arguments.length != 1){
+                return this.each(function(){
+                    $.setAttr(this,name,value);
+                });
+            }else if(this[0]){
+                return $.getAttr(this[0],name,value);
+            }
+        },
+        append:function(node){
+            this[0] && this[0].appendChild(node);
+            return this;
+        },
+        val : function(value){
+            if(typeof value == 'undefined' && this[0]){
+                return this[0].value;
+            }
+
+            return this.each(function(){
+                this.value = value;
+            })
+        },
+        prev:function(){
+            if(!this[0]) return this;
+            var pv=this[0].previousSibling;
+            if (pv && pv.nodeType !== 1) {
+                pv=pv.previousSibling;
+            }
+            return $(pv);
+        },
+        next:function(){
+            if(!this[0]) return this;
+            var nx=this[0].nextSibling;
+            if (nx && nx.nodeType !== 1) {
+                nx=nx.nextSibling;
+            }
+            return $(nx);
+        },
+        first : function(){
+            return this[0] ? $(this[0].firstChild) : this;
+        },
+        last : function(){
+            return this[0] ? $(this[0].lastChild) : this;
+        },
+        offset:function(){
+            var left = 0, top = 0, right = 0, bottom = 0;
+            if(this[0]){
+                var elem = this[0];
+                if (elem.getBoundingClientRect) {
+                    var rect = elem.getBoundingClientRect();
+                    left = right = $.getScrollLeft(elem); top = bottom = $.getScrollTop(elem);
+                    left += rect.left; right += rect.right;
+                    top += rect.top; bottom += rect.bottom;
+                } else {
+                    var n = elem;
+                    while (n) { left += n.offsetLeft, top += n.offsetTop; n = n.offsetParent; };
+                    right = left + elem.offsetWidth; bottom = top + elem.offsetHeight;
+                };
+            }
+            return { "left": left, "top": top, "right": right, "bottom": bottom };
+        }
+    };
+
+    $.fn.init.prototype = $.fn;
+
+    $.noop = function(){};
+
+    $.each = $.fn.each = function(object, callback) {
+        var i = 0,
+            length,
+            name;
+
+        if (typeof object==='function') {
+            callback = object;
+            object = this;
+        }
+
+        length = object.length;
+
+        if (typeof length === 'number') {
+            for (; i < length; i++) {
+               if(callback.call(object[i], i, object[i], object)===false){
+                  break;
+               }
+            }
+        } else {
+            for (name in object) {
+                if(object.hasOwnProperty(name)){
+                    if(callback.call(object[name], name, object[name], object)===false){
+                        break;
+                    }
+                }
+            }
+        }
+        return object;
+    }
+
+    $.trim = $.fn.trim = core_trim ? function(string) {
+            return string.trim();
+        } : function(string) {
+            return string.replace(rtrim, '');
+    }
+
+    $.extend = $.fn.extend = function(target, source) {
+        var args = [].slice.call(arguments), key,
+                ride = typeof args[args.length - 1] == "boolean" ? args.pop() : true;
+        target = target || {};
+        for (var i = 1; source = args[i++]; ) {
+            for (key in source) {
+                if (ride || !(key in target)) {
+                    target[key] = source[key];
+                }
+            }
+        }
+        return target;
+    }
+
+    if (window.JSON) {
+        $.JSON = window.JSON;
+    }else{
+        $.JSON = {
+            parse: function(data) {
+                return (new Function("return " + data))();
+            },
+            stringify: function (vContent) { 
+              if (vContent instanceof Object) { 
+                var sOutput = ""; 
+                if (vContent.constructor === Array) { 
+                  for (var nId = 0; nId < vContent.length; sOutput += this.stringify(vContent[nId]) + ",", nId++); 
+                  return "[" + sOutput.substr(0, sOutput.length - 1) + "]"; 
+                } 
+                if (vContent.toString !== Object.prototype.toString) { return "\"" + vContent.toString().replace(/"/g, "\\$&") + "\""; } 
+                for (var sProp in vContent) { sOutput += "\"" + sProp.replace(/"/g, "\\$&") + "\":" + this.stringify(vContent[sProp]) + ","; } 
+                return "{" + sOutput.substr(0, sOutput.length - 1) + "}"; 
+              } 
+              return typeof vContent === "string" ? "\"" + vContent.replace(/"/g, "\\$&") + "\"" : String(vContent); 
+            } 
+        }
+    }
+
+    $.extend($,{
+        merge: function( first, second ) {
+            var l = second.length,
+                i = first.length,
+                j = 0;
+
+            if ( typeof l === "number" ) {
+                for ( ; j < l; j++ ) {
+                    first[ i++ ] = second[ j ];
+                }
+            } else {
+                while ( second[j] !== undefined ) {
+                    first[ i++ ] = second[ j++ ];
+                }
+            }
+            first.length = i;
+            return first;
+        },
+        contains: document.defaultView ? function (a, b) { return !!( a.compareDocumentPosition(b) & 16 ); }
+        : function (a, b) { return a != b && a.contains(b); },
+        fixEvent : function(event){
+            if (event) return event;
+            event = window.event;
+            event.pageX = event.clientX + $.getScrollLeft(event.srcElement);
+            event.pageY = event.clientY + $.getScrollTop(event.srcElement);
+            event.target = event.srcElement;
+            event.stopPropagation = function(){
+                this.cancelBubble = true;
+            };
+            event.preventDefault = function(){
+                this.returnValue = false;
+            };
+            var relatedTarget = {
+                    "mouseout": event.toElement, "mouseover": event.fromElement
+                }[ event.type ];
+            if ( relatedTarget ){ event.relatedTarget = relatedTarget;}
+
+            return event;
+        },
+        getScrollTop: function(node) {
+            var doc = node ? node.ownerDocument : document;
+            return doc.documentElement.scrollTop || doc.body.scrollTop;
+        },
+        getScrollLeft: function(node) {
+            var doc = node ? node.ownerDocument : document;
+            return doc.documentElement.scrollLeft || doc.body.scrollLeft;
+        },
+        setAttr : function(el, name, value){
+            if (name in el) {
+                el[name] = value;
+            } else {
+                el.setAttribute(name, value);
+            }
+        },
+        getAttr:function(el,name){
+            if ((name in el) && 'href' != name) {
+                return el[name];
+            } else {
+                return el.getAttribute(name);
+            }
+        },
+    	browser : (function() {
+            var ua = navigator.userAgent.toLowerCase(),
+            browser = {
+                msie: /msie/,
+                msie6: /msie 6\.0/,
+                msie7: /msie 7\.0/,
+                msie8: /msie 8\.0/,
+                msie9: /msie 9\.0/,
+                msie10: /msie 10\.0/,
+                firefox: /firefox/,
+                opera: /opera/,
+                webkit: /webkit/,
+                iPad: /ipad/,
+                iPhone: /iphone/,
+                android: /android/
+            };
+            for (var key in browser) {
+                browser[key] = browser[key].test(ua);
+            }
+            return browser;
+        })(),
+        addStyle : function(css){
+            var head = document.head || document.getElementsByTagName('head')[0];
+            var style = document.createElement("style");
+            style.type = "text/css";
+            if (style.styleSheet) {
+                style.styleSheet.cssText = css;
+            }else{
+                style.appendChild(document.createTextNode(css));
+            }
+            head.appendChild(style);
+        },
+        loadJs: function(url, callback, options) {
+			options = options || {};
+			var head = document.head || document.getElementsByTagName('head')[0],
+				script = document.createElement('script'),
+				done = false;
+			script.src = url;
+			if (options.charset) {
+				script.charset = options.charset;
+			}
+			if ( "async" in options ){
+				script.async = options["async"] || "";
+			}
+			script.onerror = script.onload = script.onreadystatechange = function() {
+				if (!done && (!this.readyState || this.readyState == "loaded" || this.readyState == "complete")) {
+					done = true;
+					if (callback) {
+						callback();
+					}
+					script.onerror = script.onload = script.onreadystatechange = null;
+					head.removeChild(script);
+				}
+			};
+			head.insertBefore(script, head.firstChild);
+		},
+		loadJsonp : (function(){
+			var seq = new Date() * 1;
+			return function (url , callback , options){
+				options = options || {};
+                var funName = "BJsonp" + seq++,
+                    cb = options.cb || 'callback';
+                window[funName] = function (data){
+                    if (callback) {
+                        callback(data);
+                    }
+                    window[funName] = null;     
+                };
+                url += (/\?/.test( url ) ? "&" : "?") + cb +'=' + funName;
+                $.loadJs(url,null,options);
+			};
+		}()),
+		isReady : false,
+		ready: (function() {
+            var list = [], self = function(fn) {
+                fn && fn.call && list.push(fn);
+                return self;
+            }
+            self.fire = function(fn) {
+                list = self.reuse ? list.concat() : list
+                while (fn = list.shift()) {
+                    fn();
+                }
+                return list.length ? self : self.complete();
+            }
+            self.complete = $.noop;
+            return self;
+        }()),
+		fireReady : function(){
+			if ($.isReady) return;
+            $.isReady = true;
+            $.ready.fire();
+            $.fireReady = $.noop;
+		}
+    });
+
+	if (document.readyState === "complete") {
+        $.fireReady();
+    } else if (document.addEventListener) {
+        document.addEventListener("DOMContentLoaded", function() {
+            document.removeEventListener("DOMContentLoaded", arguments.callee, false);
+            $.fireReady();
+        }, false);
+    } else if (document.attachEvent) {
+        document.attachEvent("onreadystatechange", function() {
+            if (document.readyState === "complete") {
+                document.detachEvent("onreadystatechange", arguments.callee);
+                $.fireReady();
+            }
+        });
+
+        var top = false;
+        try {
+            top = window.frameElement == null && document.documentElement;
+        } catch (e) { }
+
+        if (top && top.doScroll) {
+            (function doScrollCheck() {
+                if (!$.isReady) {
+                    try {
+                        // http://javascript.nwbox.com/IEContentLoaded/
+                        top.doScroll("left");
+                    } catch (e) {
+                        return setTimeout(doScrollCheck, 50);
+                    }
+                    $.fireReady();
+                }
+            })();
+        }
+    }
+
+	window.Blast = $;
+
+})(window,document);
+
+// 业务模块
+;(function($){
+	var conf;
+    var domain = 'http://www.meilishuo.com/';
+    var domains = domain;
+    if(location.protocol === 'https:'){
+        domains = 'https://account.meilishuo.com/';
+    }
+
+	var drawUI = function(data){
+        if(data.css){
+            $.addStyle(data.css);
+        }
+
+		if(conf.topbar){
+            $(conf.topbar.container).html(data.topbar);
+        } 
+		if(conf.search){
+            $(conf.search.container).html(data.search);
+        } 
+		if(conf.nav){
+            $(conf.nav.container).html(data.nav);
+        } 
+        if(conf.foot){
+            $(conf.foot.container).html(data.foot);
+            // $(function(){ //不会执行，加上保险
+            //     $(conf.foot.container).html(data.foot);
+            // });
+        }
+	}
+
+    function bindTopbar(){
+        var root = $('#com-topbar');
+
+        $('.drop',root).on('mouseover',function(){
+            $('.down',this).show();
+        }).on('mouseout',function(){
+            $('.down',this).hide();
+        });
+
+        $('.know',root).on('click',function(){
+            var url = domains + 'ja/msg/setzero?param=all';
+            $.loadJsonp(url ,function(data){
+                if(data && data.code == 0){
+                    // 全部hide当remove用
+                    $('.msg-num',root).hide();
+                    $('.notice',root).hide();
+                    $('.know',root).hide();
+                }
+            });
+        });
+
+        if(conf.topbar){ //更新购物车数
+            var url = 'http://dootaapi.meilishuo.com/cart/number';
+            $.loadJsonp(url,function(data){
+                if(data && data.info){
+                    $('.cart-num',root).html(data.info.count);
+                }
+            },{cb : '__callback'});
+        }
+    }
+
+    function bindSeach(){
+        var root = $('#com-search');
+        var tab = $('.search-tab',root);
+        var searchInput = $('.search-txt',root);
+        var suggBox = $('.suggest-box',root);
+        var searchBtn = $('.search-btn',root);
+        var isSuppInput = 'oninput' in document;
+        var isSuppPlaceholder = 'placeholder' in document.createElement('input');  
+        var selIndex = 0;
+
+        // tab 切换点击
+        $('span',tab).on('click',function(){
+            $('span',tab).removeClass('active');
+            $(this).addClass('active');
+            selIndex = +$(this).attr('data-type');
+
+            if(isSuppPlaceholder){
+                searchInput.attr('placeholder', selIndex == 0 ? searchInput.attr('data-placeholder') : '');
+            }
+        });
+
+        function selectItem(dir){
+            var cur = $('.active',suggBox).removeClass('active');
+            if(!cur.length){
+                cur = suggBox.first();
+            }else{
+                if(dir == 'up'){
+                    cur = cur.prev();
+                    if(!cur.length){
+                        cur = suggBox.last()
+                    }
+                }else{
+                    cur = cur.next();
+                    if(!cur.length){
+                        cur = suggBox.first()
+                    }
+                }
+            }
+            cur.addClass('active');
+            searchInput.val(cur.html());
+        }
+
+        function jump(searchKey){
+            searchKey = encodeURIComponent($.trim(searchKey));
+            if(!searchKey) return;
+            var url = domain + 'search/baobei/?filter=goods';
+            if(selIndex != 0){
+                url = domain + 'search/searchShop/?filter=shop';
+            }
+            location.href = url + '&searchKey=' + searchKey;
+        }
+
+        var searchConf = {
+            lastVal : null,
+            delayId : null,
+            cache : { },
+            url : domains + 'ja/search/',
+            delayTime : 500,
+            render : function(data){
+                if(data && data.result){
+                    var html = '';
+                    for (var i = 0; i < data.prompt.length; i++) {
+                        html += '<a>'+data.prompt[i]+'</a>';
+                    };
+                    suggBox.html(html).show();
+                }else{
+                    suggBox.hide();
+                }
+            }
+        }
+
+        function autoSeach(){
+            //只有宝贝有suggest
+            if(selIndex != 0) return;
+
+            var val = $.trim($(this).val());
+
+            if(!val) return;
+
+            if(searchConf.lastVal == val){
+                suggBox.show();
+                return;
+            }else{
+                searchConf.lastVal = val;
+            }
+
+            searchConf.cache[selIndex] = searchConf.cache[selIndex] || {};
+
+            var searchData = searchConf.cache[selIndex];
+
+            clearTimeout(searchConf.delayId);
+
+            searchConf.delayId = setTimeout(function(){
+                if(searchData[val]){
+                    searchConf.render(searchData[val]);
+                }else{
+                    var url = searchConf.url + '?searchKey=' + encodeURIComponent(val);
+                    $.loadJsonp(url,function(data){
+                        searchData[val] = data;
+                        searchConf.render(searchData[val]);
+                    });
+                }
+            },searchConf.delayTime);
+        }
+        
+        if(isSuppInput){
+            searchInput.on('input',function(e){
+                autoSeach.call(this);
+            });
+        }else{
+            searchInput.on('propertychange',function(e){
+                autoSeach.call(this);
+            });
+        }
+
+        searchInput.on('blur',function(){
+            setTimeout(function(){
+                suggBox.hide();
+            },250);
+        }).on('focus',function(){
+            autoSeach.call(this);
+        }).on('keyup',function(e) {
+            var keyCode = e.keyCode;
+            if(keyCode == 38 || keyCode == 40){ //上下方向键
+                var dir = keyCode == 38 ? 'up' : 'down';
+                selectItem(dir);
+            }else if(keyCode == 13){
+                jump(this.value);
+            }
+        });
+
+        suggBox.on('mouseover',function(e) {
+            $('a',this).removeClass('active');
+            $(e.target).addClass('active');
+        }).on('click',function(e) {
+            jump(e.target.innerHTML);
+        });
+
+        searchBtn.on('click',function(){
+            jump(searchInput.val());
+        });
+    }
+
+    function bindNav(){
+        var root = $('#com-nav');
+
+        var hasStr = function(str,search){
+            return str.indexOf(search) != -1;
+        }
+
+        var active = /\/(\w+)$/.exec(location.pathname);
+        if(active){
+            active = active[1];
+            if(active == 'dress'){
+                var search = location.search;
+                if(hasStr(search,'nid=210113')){
+                    active = 'jacket';
+                }else if(hasStr(search,'nid=210115')){
+                    active = 'skirt';
+                }else if(hasStr(search,'nid=210117')){
+                    active = 'pants';
+                }else if(hasStr(search,'nid=210119')){
+                    active = 'underwear';
+                }
+            }
+        }else if(location.pathname == '/'){
+            active = 'welcome';
+        }
+
+        $('a',root).each(function(){
+            if($(this).attr('data-word') == active){
+                $(this).addClass('active');
+                return false;
+            }
+        });
+
+        var disHeight = root.offset().top;
+
+        $(window).on('scroll',function(){
+            if($.getScrollTop() > disHeight){
+                root.addClass('fixed');
+            }else{
+                root.removeClass('fixed');
+            }
+        })
+    }
+
+    function bindFoot(){
+        var root = $('#com-foot');
+        var linkSlide = $('.link-slide',root);
+        var marginTop = 1;
+        var endTop = 20;
+        var interEnd = 150;
+        var scroll = true;
+
+        if(linkSlide.length){
+            setInterval(function(){
+                if(!scroll){
+                    if(marginTop++ >= interEnd){
+                        marginTop = 1;
+                        scroll = true;
+                    }
+                    return;
+                }
+                var first = $('li',linkSlide)[0];
+                $(first).css('margin-top',-(marginTop++) + 'px');
+                if(marginTop >= endTop){
+                    scroll = false;
+
+                    $(first).css('margin-top', 0);
+                    linkSlide.append(first);
+                }
+            },16.7);
+        }
+    }
+
+	var bindEvent = function(){
+        bindTopbar();
+        bindSeach();
+        bindNav();
+        bindFoot();
+	}
+
+	var init = function(){
+        var url = domains + 'ja/blast/';
+        url += '?conf=' + encodeURIComponent($.JSON.stringify(conf)) + 
+               '&path=' + encodeURIComponent(location.pathname);
+
+		$.loadJsonp(url ,function(data){
+			drawUI(data);
+			bindEvent();
+		});
+	}
+
+	$.init = function(opt){
+		conf = opt;
+        $.each(conf,function(key,value,obj){
+            if(typeof value == 'string'){
+                obj[key] = {
+                    container : value
+                }
+            }
+
+            var cur = obj[key];
+            if(!$(cur.container).length){
+                cur = null;
+            }
+
+        });
+
+		init();
+	}
+
+})(window.Blast);
+

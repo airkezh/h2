@@ -1,0 +1,294 @@
+/**
+ * @fileoverview 大促分会场－会员
+ * @requires
+ * @author kehuang@meilishuo.com
+ * @date 2015-11-25
+ */
+
+@import "../block.less";
+@import "../block/sidebar.less";
+
+html{
+	.f(10*@f);
+}
+
+body{
+	.bgc(#fff);
+}
+
+img{
+	.block;
+	.w(100%);
+}
+
+a{
+	.block;
+	outline:none;
+}
+
+ul{
+	list-style:none;
+}
+
+i{
+	font-style:normal;
+}
+
+.container{
+	.hidden;
+	min-height:100px;
+	margin:20*@w 20*@w 30*@w;
+
+	.even{
+		li:nth-child(odd){.mr(3%);}
+	}
+
+	.odd{
+		li:nth-child(odd){.mr(3%);}
+	}
+}
+
+.goods_wall{
+	.clearfix;
+
+	li{
+		.left;
+		.mr(0);
+		.w(48.5%);
+
+		figure{
+			.pr;
+
+			.mark{
+				.pa;
+				top:0;
+				left:5px;
+				z-index:5;
+
+				img{
+					.w(34px);
+				}
+			}
+
+			.soldout{
+				.pa;
+				top:50%;
+				left:50%;
+				z-index:10;
+				.w(298*@w);
+				.pt(298*@w);
+				margin:-149*@w 0 0 -149*@w;
+				background:url("http://d04.res.meilishuo.net/pic/_o/1a/d7/70bb562514b6d8f86d9dcf7699d9_149_149.ch.png") no-repeat center;
+				background-size:100%;
+			}
+
+			span.bs_load_img{
+				.block;
+				.w(100%);
+				.pt(140%);
+				opacity:.75;
+				background-image:url("http://d01.res.meilishuo.net/pic/_o/b9/0a/fd965c6f94c2fd9df704e481098f_304_425.cg.png");
+				/*background-image:url("http://d05.res.meilishuo.net/pic/_o/33/cf/a618bae2cdf43bc03289e82cb53f_290_290.cg.png");*/
+				background-size:cover;
+			}
+
+			span.df_show_img{
+				.block;
+				.w(100%);
+				.pt(140%);
+				opacity:.75;
+				background-image:url("http://d01.res.meilishuo.net/pic/_o/b9/0a/fd965c6f94c2fd9df704e481098f_304_425.cg.png");
+				/*background-image:url("http://d05.res.meilishuo.net/pic/_o/33/cf/a618bae2cdf43bc03289e82cb53f_290_290.cg.png");*/
+				background-size:cover;
+			}
+
+			div.new_png{
+				.pa;
+				.w(100%);
+
+				div{
+					.left;
+					.ml(6/290*100%);
+
+					img{
+						.border-r(0 0 0 0);
+					}
+				}
+			}
+		}
+
+		figcaption{
+			.c;
+			.bgwhite;
+			padding:8px 0 16px;
+
+			.pro{
+				&Title{
+					.hidden;
+					.l(1.4);
+					.f(1rem);
+					.fc(#666);
+					text-overflow:ellipsis;
+					display:-webkit-box;
+					-webkit-line-clamp:1;
+					-webkit-box-orient:vertical;
+					clear:both;
+				}
+
+				&Login{
+					.w(70%);
+					.f(1.1rem);
+					.fc(#f66);
+					.border-r(2px);
+					padding:8px 4px;
+					margin:8px auto 0;
+					border:1px solid #f66;
+				}
+
+				&Price{
+					.l(1.4);
+					.f(1.1rem);
+					.fc(#999);
+
+					.word{
+						.f(1rem);
+					}
+				}
+
+				&NowPrice{
+					.l(1.8);
+					.f(1.4rem);
+					.fc(#fe6054);
+
+					.word{
+						.f(1rem);
+					}
+				}
+
+				&SaleInfo{
+					.auto;
+					.w(90%);
+					.f(.9rem);
+					.mt(4px);
+					.fc(#999);
+
+					.outer_bar{
+						.w(100%);
+						.h(2px);
+						.bgc(#ffc042);
+						margin:4px 0;
+					}
+
+					.inner_bar{
+						.w(50%);
+						.h(100%);
+						.bgc(#fe6054);
+					}
+
+					.single_bar{
+						.w(50%);
+						.h(2px);
+						.bgc(#ffc042);
+						margin:4px auto;
+					}
+
+					.single_text{
+						.c;
+						.auto;
+						.w(50%);
+					}
+
+					.text_box,.price_box{
+						.hidden;
+						.l(1.2);
+						.w(100%);
+						clear:both;
+
+						p{
+							.c;
+							.left;
+							.w(50%);
+						}
+					}
+				}
+			}
+
+			.loginSaleInfo{
+				.mt(8px);
+			}
+
+			.buy_btn{
+				.c;
+				.w(54%);
+				.f(1.3rem);
+				.fc(#fff);
+				.bgc(#f66);
+				.border-r(3px);
+				padding:8px 0;
+				margin:6px auto 0;
+			}
+		}
+	}
+}
+
+.windowDrive{
+	.dialog{
+		.border-r(6px);
+	}
+
+	.dialog-con{
+		.l(1.8);
+		.f(1.4rem);
+		.fc(#666);
+	}
+
+	.dialog-btn{
+	    border-top:1px solid #e5e5e5;
+
+	    span{
+	      	.f(1.5rem);
+	      	.fc(#f66);
+	    }
+	}
+}
+
+.pullUp{
+	.pullUpDown > .common;.pullUpDown > .loading;
+	&:before{
+		.nowrap;
+		.ml(-10px);
+	}
+	&[status="tap"]{
+		background:0 none;	
+	}
+	&[status="stop"]{
+		background:0 none;	
+	}
+}
+
+.gotop_wrap{
+	.pf;
+	.none;
+	.w(82*@w);
+	.pt(82*@w);
+	z-index:10;
+	right:10px;
+	bottom:40px;
+
+	.gotop{
+		.block;
+		.w(100%);
+	}
+
+	img{
+		.w(100%);
+	}
+}
+
+@media screen and (min-width:360px){
+	
+}
+
+@media screen and (min-width:400px){
+	
+}

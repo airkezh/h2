@@ -1,0 +1,134 @@
+fml.define('page/help/survey',['jquery','app/login','ui/alert'],function (require){
+	var $ = require('jquery');
+	var login = require('app/login');
+	var Alert = require('ui/alert');
+	
+
+	//submib
+	$('#btn').click(function() {
+		var pageId = $('#pageId').val();
+		var items  = $('#box').find('div.list'); //总题目数
+		var result = {}, type, errMsg=[];
+		$.each(items, function(i, item) {
+			type = $(item).find('input:first').attr('type');
+
+			if(type == 'radio'){
+				var radioChecked = $(item).find('input:radio:checked'),
+					radioOther   = radioChecked.parent('span').find('input:text');
+					console.log(radioChecked);
+					if (radioChecked.size() > 0) {
+						//先push选项
+						result[radioChecked.attr('name')] = radioChecked.val();
+						//如果选了其他，再push其他的值
+						if (radioOther.size() && radioOther.val()) {
+							result[radioOther.attr('name')] = radioOther.val();
+						}
+						// console.log(radioOther.size());
+						if (radioOther.val() == ''){
+							errMsg.push(i+1);
+						}
+					} else {
+						errMsg.push(i+1);
+					}			
+			}else if(type == 'checkbox' ){
+				var checkboxVal = [], checkboxOther,
+					checkboxs   = $(item).find('input:checkbox:checked');
+					if (checkboxs.size() > 0) {
+						$.each(checkboxs, function(i, checkboxChecked) {
+							checkboxVal.push($(checkboxChecked).val());
+							//下一个是否是text
+							checkboxOther = $(checkboxChecked).parent('span').find('input:text');
+							if (checkboxOther.size() && checkboxOther.val()) {
+								result[checkboxOther.attr('name')] = checkboxOther.val();
+							}
+
+						});
+						result[checkboxs.attr('name')] = checkboxVal;
+						if (checkboxOther.val() == ''){
+								errMsg.push(i+1);	
+							}
+					} else {
+						errMsg.push(i+1);
+					}
+			
+			}else{
+				var textarea = $(item).find('textarea');
+					if (textarea.val()|| textarea.attr('data-empty') == 1) {
+						result[textarea.attr('name')] = textarea.val();
+					} else {
+						
+						errMsg.push(i+1);
+					}
+			}
+
+
+			
+		});
+
+		// console.log(errMsg);
+		if (errMsg.length) {
+			var errStr = '';
+			$.each(errMsg, function(i, n) {
+				// console.log();
+				errStr = '您的第'+errMsg[0]+'题未作答呦';
+			});
+			alert(errStr);
+			return false;
+		}
+		
+		var json = JSON.stringify(result);
+		var data = {
+			'page_snapshot_id': pageId,
+			'data': json
+		}
+		$.post('/help/robot/survey' , data ,function (res){
+			alert('提交成功啦，感谢你的参与。');
+			history.back();
+		});
+
+	});
+		$.each($('#box').find('div.list'), function(i, item) {
+			var type  = $(item).find('input:first').attr('type');
+			var other = $(item).find('input[name^=other_]');
+			if (other.size() && (type=='radio') || (type=='checkbox') ){
+				other.hide();
+				var options = $(item).find('input:'+type);
+				if(type == 'checkbox'){
+					options.click(function(e) {
+						if (options.last()[0].checked) {
+							$(item).find('input[name^=other_]').show();
+						} else {
+							$(item).find('input[name^=other_]').hide();
+						}
+					});
+				}
+				if(type == 'radio'){
+					options.click(function(e){
+						var radioItem = $(this) ,				
+							other = radioItem.parent('span').find('input[name^=other_]');
+							//console.log(other);
+						if(other.length == 0){
+							radioItem.parents('.list').find('input[name^=other_]').hide()
+						}
+
+						if (radioItem[0].checked) {
+							other.parents('.list').find('input[name^=other_]').hide();
+							other.size() && other.show();
+							//console.log(other);
+						} else {
+							other = radioItem.parent('span').find('input[name^=other_]');
+							other.size() && other.parents('.list').find('input[name^=other_]').hide();
+						}
+					});
+				}
+			}
+		});
+		
+
+
+
+
+
+	
+
+});

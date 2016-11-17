@@ -1,0 +1,82 @@
+<%
+var query = this._Request_query;
+var getLink = _extFn.getLink;
+var mSubstr = _extFn.mSubstr;
+%>
+
+<%if(this.catalog_bottom.choose == 'cata'){%>
+<%if(this.catalog_bottom.cata.attr_words.length || this.catalog_bottom.cata.top_ten.length){%>
+<div class="catalog_word">
+	<div class="catalog_word_con">
+		<% this.catalog_bottom.cata.attr_words && this.catalog_bottom.cata.attr_words.map(function(data , index){%>
+		<% if(data.words.length){%>
+		<div class="catalog_word_words <%if(index == 0){%>first<%}%>">
+			<h2><%= data.type%></h2>
+			<% data.words.map(function(more , num){%>
+			<a href="/attr/direct?searchKey=<%= encodeURIComponent(more.title)%>" class="<%if(more.red){%>red_f<%}%>" target="_blank"><%= more.title%></a>
+			<%});%>
+		</div>
+		<%}%>
+		<%});%>
+		<%if(this.catalog_bottom.cata.top_ten){%>
+		<div class="catalog_word_top">
+			<h2>单品排行</h2>
+			<ul>
+				<% this.catalog_bottom.cata.top_ten.map(function(data , index){%>
+					<li class="<%if(index % 2 == 0){%>odd_num<%}%>">
+						<a href="<%= data.url%>" target="_self">
+							<span class="<%if(index >= 3){%>num2<%}else{%>num1<%}%>"><%= index+1%></span>
+							<span><%= data.word_name%></span>
+						</a>
+					</li>
+				<%});%>
+			</ul>
+		</div>
+		<%}%>
+		<div class="clear_f"></div>
+	</div>
+</div>
+<%}%>
+<%}%>
+
+
+<%if(this.catalog_bottom.choose == 'attr'){%>
+<%if(this.catalog_bottom.attr.recomend_words.length || this.catalog_bottom.attr.match.length){%>
+<div class="attr_word">
+	<div class="redline2"></div>
+	<% if(this.catalog_bottom.attr.recomend_words.length){%>
+	<div class="attr_word_rec<%if(this.catalog_bottom.attr.match.length){%> line<%}%>">
+		<h2>喜欢<%=this.rec_poster.title%>的MM还喜欢</h2>
+		<div class="attr_word_list">
+		<% this.catalog_bottom.attr.recomend_words.map(function(data){%>
+			<%if(data.isBrand){
+				var url = '/guang/brand/' + data.word_name + getLink({'frm' : 'section4_keyWords'});    
+			}else{
+				var url = '/guang/attr/' + data.word_id + getLink({'frm' : 'section4_keyWords'}); 
+			}%>              
+			<a href="<%= url%>" target="_blank"><%= data.word_name%></a>
+		<%});%>
+		</div>
+		<div class="clear_f"></div>
+	</div>
+	<%}%>
+	<% if(this.catalog_bottom.attr.match.length){%>
+	<div class="attr_word_match">
+		<h2><%=this.rec_poster.title%>的推荐搭配</h2>
+		<div class="attr_word_list">
+		<% this.catalog_bottom.attr.match.map(function(data){%>
+			<% if(data.isBrand){
+				var url = '/guang/brand/' + data.word_name + getLink({'frm' : 'section4_dapei'});   
+			}else{
+				var url = '/guang/attr/' + data.word_id + getLink({'frm' : 'section4_dapei'});    
+			}%>
+			<a target="_blank" href="<%= url%>" target="_self"><%= data.word_name%></a>
+		<%});%>
+		</div>
+		<div class="clear_f"></div>
+	</div>
+	<%}%>
+</div>
+<%}%>
+<%}%>
+

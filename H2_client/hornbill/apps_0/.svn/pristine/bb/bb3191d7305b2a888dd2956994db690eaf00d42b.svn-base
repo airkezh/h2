@@ -1,0 +1,238 @@
+<%# wx_new/header.html%>
+<div class="wrap">
+</div>
+<div id="wx_loading" class="load_box">
+	<div class="load_panel">
+		<div class="pullUp" status="loading"></div>
+	</div>
+</div>
+
+<script type="text/html" id="tmpAll">
+	<div class="order_info">
+		<?if(order.step != undefined){
+			var cls;
+			switch(order.step){
+				case 0:
+					cls = ['no_send_goods','no_send_goods','no_send_goods'];
+					break;
+				case 1:
+					cls = ['send_goods','no_send_goods','no_send_goods'];
+					break;
+				case 2:
+					cls = ['send_goods','send_goods','no_send_goods'];
+					break;
+				case 3:
+				default:
+					cls = ['send_goods','send_goods','send_goods'];
+					break;
+			};
+		?>
+		<div class="progress">
+			<div class="pro_info">
+				<div class="<?=cls[0]?>">
+					<span class="on">1</span>
+					<span class="strip"></span>
+				</div>
+				<div class="<?=cls[1]?>">
+					<span class="strip"></span>
+					<span class="on">2</span>
+					<span class="strip"></span>
+				</div>
+				<div class="<?=cls[2]?>">
+					<span class="strip"></span>
+					<span class="on">3</span>
+				</div>
+			</div>
+			<div class="txt_info">
+				<span>买家付款</span>
+				<span>卖家发货</span>
+				<span>买家收货</span>
+			</div>
+			<div class="pro_message">
+				<?= order.weixin_step_text ?>
+			</div>
+		</div>
+		<?}?>
+
+		<div class="goods border_tb">
+			<div class="shop_info">
+				<span class="wx_right">共<?= goods.length || 0 ?>件</span>
+				<div class="shop_name">
+					<img src="<%=this.PICTURE_URL%>/images/wap/web/wx_new/shop_icon.png" class="shop_icon">
+					店铺：<span class="ml_color"><?= order.shop_name ?></span>
+				</div>
+			</div>
+			<? goods && $.each(goods, function(i, goods){ 
+				var url = 'javascript:void(0)';
+			?>
+			<div class="goods_wrap" mid="<?= goods.mid ?>">
+				<a href="<?= url ?>" <?if(!order.is_weixin){?> class="eventnone"<?}?>>
+					<div class="goods_info_wrap goods_info_btm padding_b_20 <?if(i == order_info.goods.length - 1){?>goods_info_bno<?}?>">
+					<a href="/wx/detail?tid=<?= goods.twitter_id?>">
+						<img src="<?= goods.b_pic_url?>" class="goods_img <?if(!order.is_weixin){?>no_weixin_goods<?}?>" />
+					</a>
+						<? if(goods.refund_button_text != ''){?>
+						<p class="refund">
+							<? if(goods.refund_id){?>
+								<a class="re_btn word_border" href="/app/refund/detail/?refund_id=<?=goods.refund_id?>">
+							<? } else {?>
+							<a class="re_btn word_border" href="/app/refund/apply/?order_id=<?=order.order_id?>&mid=<?=goods.mid?>">
+							<? }?>
+								<?= goods.refund_button_text ?></a>
+							<span><?= goods.refund_status_text ?></span>
+						</p>
+						<?}?>
+						<div class="goods_info">
+						<a href="/wx/detail?tid=<?= goods.twitter_id?>">
+							<p class="goods_title <?if(!order.is_weixin){?>gray no_weixin_goods<?}?>"><?= goods.goods_title?></p>
+						</a>
+							<p class="goods_size">
+							<?goods.prop && goods.prop.map(function(data, i){?>
+							<?if(data.is_show){?>
+								<span><?= data.name?>：<?= data.value?></span>
+							<?}?>
+							<?});?>
+							</p>
+							<p class="goods_price">
+								<span>价格：<?= goods.price?></span>
+								<span>数量：<?= goods.amount?></span>
+							</p>
+						</div>
+					</div>
+				</a>
+			</div>
+			<?});?>
+			<div class="total">
+				运费：<span class="ml_color"><?if(order.express_price){?>¥<?= order.express_price?><?}else{?>包邮<?}?></span>
+				<?if(order.coin_price && order.coin_price > 0){?>
+				<span class="money_discount">
+					金币抵扣：<span class="ml_color">- ¥<?= order.coin_price ?></span>
+				</span>
+				<?}?>
+				
+			</div>
+
+			<div class="order_coupon">
+			本店优惠：<span class="gray_color"><?= order.shop_coupon_msg ? order.shop_coupon_msg : '未使用优惠劵' ?></span>
+			<span class="total_money">
+					合计：<span class="ml_color">¥<?= order.total_price ?></span>
+				</span>
+
+
+			</div>
+		</div>
+
+		<div class="receiver">
+			<img src="<%=this.PICTURE_URL%>/images/wap/web/wx_new/adr_icon.png" alt="" class="i_address">
+			<div class="receiver_info">
+				<p>
+					<span style="width:50%;">收件人：<?= address.nickname ?></span>
+					<span>电话：<?= address.phone ?></span>
+				</p>
+				<p>收货地址：<?= address.address ?></p>
+			</div>
+		</div>
+
+		<div class="status">
+			<img src="<%=this.PICTURE_URL%>/images/wap/web/wx_new/status.png" alt="" class="status_icon">
+			<div class="status_info">
+				订单状态：<span class="ml_color"><?= order.status_text ?></span>
+				<? if(express_company || express_id){ ?>
+				<span class="more_next">
+					<a href="/wx/expressInfo/?order_id=<?=order.order_id?>&express_id=<?=order.express_id?>&express_company=<?= order.express_company?>"> 查看物流 </a>
+					<img src="<%=this.PICTURE_URL%>/images/wap/web/wx_new/next.png" alt="" class="next_icon">
+				</span>
+				<?}?>
+				
+			</div>
+
+			<div class="payment">
+				<img src="<%=this.PICTURE_URL%>/images/wap/web/wx_new/payment.png" class="payment_icon" />
+				支付方式：<span class="gray_color right"><?= order.pay_name ?> </span>
+			</div>
+
+			<div class="payment">
+				<img src="<%=this.PICTURE_URL%>/images/wap/web/wx_new/plat.png" class="plat_icon" />
+				全场优惠：<span class="gray_color right"><?if(order.plat_coupon_msg){?><?= order.plat_coupon_msg ?><?}else{?>未使用优惠劵<?}?></span>
+			</div>
+
+			<div class="payment">
+				<img style="width:14px; margin-right:6px;" src="<%=this.PICTURE_URL%>/images/wap/web/wx_new/wx_card.png" class="plat_icon" />
+				微信卡券：<span class="green_color right"><?if(order.weixin_card_coupon_msg){?><?= order.weixin_card_coupon_msg ?><?}else{?>未使用微信卡劵<?}?></span>
+			</div>
+		</div>
+	</div>
+
+		
+	
+	<div class="safety">
+		<span class="gray_color">美丽说无忧购服务保障</span>
+		<ul>
+			<li class="safe_tro">
+				<img src="<%=this.PICTURE_URL%>/images/wap/web/wx_new/safe1.png">
+				<p>7天退货</p>
+			</li>
+			<li class="safe_tro">
+				<img src="<%=this.PICTURE_URL%>/images/wap/web/wx_new/safe2.png">
+				<p>先行赔付</p>
+			</li>
+			<li class="safe_tro">
+				<img src="<%=this.PICTURE_URL%>/images/wap/web/wx_new/safe3.png">
+				<p>退货补贴</p>
+			</li>
+			<li class="safe_tro">
+				<img src="<%=this.PICTURE_URL%>/images/wap/web/wx_new/safe4.png">
+				<p>极速发货</p>
+			</li>
+		</ul>
+		<div class="tel">
+			客服电话：<span class="ml_color">4000800577</span>
+		</div>
+		<div class="indent_info">
+			<p>订单号：<span class="eventnone"><?= order.order_id?></span></p>
+			<?if(order.ctime){?><p>下单时间：<span><?= order.ctime ?></span></p><?}?>
+			<?if(order.pay_time){?><p>成功支付时间：<span><?= order.pay_time ?></span></p><?}?>
+			<?if(order.send_time){?><p>卖家发货时间：<span><?= order.send_time?></span></p><?}?>
+			<?if(order.receive_time){?><p>确认收货时间：<span><?= order.receive_time?></span></p><?}?>
+			<?if(order.last_status_time){?><p>订单关闭时间：<span><?= order.last_status_time?></span></p><?}?>
+			<?if(order.receive_time_out){?><p>系统确认收货时间：<span><?= order.receive_time_out?></span></p><?}?>
+			<?if(order.auto_close_time){?><p>未付款订单关闭时间：<span><?= order.auto_close_time?></span></p><?}?>
+		</div>
+		<?if(false){?>
+		<p class="refund">
+			如果您想要退款或遇到了其他困难，也可以
+			<a class="re_btn word_border" href="/refund?order_id=<?= order.order_id?>">申请退款</a>
+		</p>
+		<?}?>
+	</div>
+	<?if(order.show_pay_and_close || order.show_receive_button){?>
+	<div class="blank"></div>
+	<div class="verify">
+		<?if(order.show_pay_and_close){?>
+		<p>
+			<a href="javascript:;" id="pay_now" order_id="<?= order.order_id ?>" total_price="<?= order.total_price ?>" >微信支付</a>
+			<a id="cancel_order" order_id="<?= order.order_id ?>" href="javascript:;">取消订单</a>
+		</p>
+		<?}?>
+		<?if(order.show_receive_button == '1'){?>
+		<span>
+			<a href="javascript:void(0)" class="recvOrder" order_id="<?= order.order_id ?>">确认收货</a>
+		</span>
+		<?}?>
+	</div>
+	<?}?>
+</script>
+<!-- 
+<div class="pay_hint gray_color" style="display:none;">
+	您的订单已经提交，请在 time 前完成支付，超时订单将自动关闭。
+</div>
+ -->
+<script>
+	fml.vars.order_id = "<%= this.order_id%>";
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/wx_new/orderDetail');
+_use:", this._JSstack , this._JSmods ); %>
+<%# wx_new/footer.html%>
+
+

@@ -1,0 +1,99 @@
+/*common*/
+require('wap/zepto/fastclick')
+require('wap/zepto/scroll')
+
+var $ = require('wap/zepto')
+var lazy = require('wap/component/lazzyLoad')
+var shareTmp = require('wap/component/shareTmp')
+var posterWall = require('wap/app/posterWalls2')
+var onscroll = require('wap/component/windowScroll')
+var pin = require('wap/component/wapfall')
+var $nav = $('.nav');
+var $gotop = $('.gotop');
+var $curTab = $nav.find('.js_tab.p_tab_active');
+var ajaxRequestUrl = '/aj/xuanguan/middle';
+
+//标签吸顶
+function navFixed(){
+	onscroll.yIn($nav.position().top + 10,function(){
+		$nav.removeClass('scrollout').addClass('scrollin');
+	},
+	function(){
+		$nav.removeClass('scrollin').addClass('scrollout');
+	})
+}
+navFixed();
+
+var main = {
+	init : function(){ //页面初始化
+		/* lazy load setting, 采用全屏扫点方式加载 */
+        this.lazyer = lazy.init({'xpath' : '.bs_load_img'});
+        this.lazyer.load();
+        this.lazyer.scroll();
+        $nav.find('.js_tab').css('color', fml.vars.normal_fcolor);
+        $curTab.css('color', fml.vars.active_fcolor).find('.word').css('background-color', fml.vars.act_bg_color);
+        this.posterWall($curTab.attr('asid'), $curTab.data('r'));
+        this.eventInit();
+	},
+	posterWall : function(type, paramR){
+		var search = '';
+        var that = this;
+        if (type) {
+            search = (ajaxRequestUrl.indexOf('?') >= 0 ? '&' : '?') + 'asid=' + type;
+        }
+        pin.init({
+            containerId: '.goods_wall'
+        });
+        var urlData = {
+            'frame' : 0,
+            'page_size' : 30,
+            'r' : paramR
+        }
+        var pullUpAction = function() {
+            posterWall.ajaxPoster(ajaxRequestUrl + search);
+        }
+        Meilishuo.config.poster0 = '';
+        posterWall.testPoster0(urlData, pullUpAction);
+        posterWall.scrollPoster(true);
+	},
+	eventInit : function(){
+		var that = this;
+        fml.eventProxy('logPoster', function(res) {
+            if (!res.tInfo.length) {
+                $('.pullUp').hide();
+            } else {
+                $('.pullUp').show();
+            };
+            that.lazyer.load();
+        })
+        $nav.find('.js_tab').on('click', function(){
+        	var $this = $(this);
+            if($(this).hasClass('p_tab_active')) {
+                return;
+            }
+        	$this.addClass('p_tab_active').siblings().removeClass('p_tab_active');
+            $nav.find('.js_tab').css('color', fml.vars.normal_fcolor).find('.word').css('background-color', fml.vars.tab_bg);
+            $this.css('color', fml.vars.active_fcolor).find('.word').css('background-color', fml.vars.act_bg_color);
+        	$('.goods_wall').html('');
+        	that.posterWall($this.attr('asid'), $this.data('r'));
+            if ($nav.hasClass('scrollin')) {
+                window.scrollTo(0, $('.nav_wrap').position().top + 10);
+            }
+        })
+	}
+}
+main.init();
+
+// 回顶部
+$gotop.on("click" , function(e){
+    document.body.scrollTop = 0;
+});
+onscroll.bind(gotop,'gotop');
+
+function gotop(pos,isDown){
+    if(pos < 30){
+        $gotop.hide();          
+    } else {
+        $gotop.show();
+    }
+}

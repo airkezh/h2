@@ -1,0 +1,29 @@
+<%#head.html%>
+
+<div class="brand_mass">
+	<div class="goods_wall"></div>
+	<div class="pullUp" status="loading"></div>
+</div>
+
+<div class="gotop_wrap">
+	<a class="gotop">
+		<img src="http://i.meilishuo.net/css/images/wap/tuan/gotop.png" />
+	</a>
+</div>
+
+<script type="text/html" id="posterWall">
+	<?
+		function getAppLink(shop_id, brand_name){
+			return 'meilishuo://shop.meilishuo?json_params='+encodeURIComponent(JSON.stringify({'shop_id': shop_id, 'r' : '<%= this.r %>'}));
+		}
+	?>
+	<? this.tInfo && this.tInfo.forEach(function(brand, index){ ?>
+		<a href="<?= getAppLink(brand.shop_id, brand.brand_name) ?>" style="background-image:url(<?= brand.img ?>);"><?= brand.brand_name ?></a>
+	<? }); ?>
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/biz/bs_brand_list');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot_simple.html%>

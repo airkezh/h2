@@ -1,0 +1,131 @@
+<%#head.html%>
+<div class="main">
+	<div class="top">
+		<a href="/act/<%=this.act.activity_id%>" target="_blank">
+			<div style="background: url('<%=this.act.banner%>') center top no-repeat; width: 100%; height: 100%;"></div>
+		</a>
+	</div>
+	<div class="left main-left main-shadow">
+		<div class="main-left-inner">
+			<div class="redline2 red-top"></div>
+			<%if(this.userInfo.user_id){%>
+			<div class="info">
+				<img width="64px" height="64px" src="<%=this.user.avatar_b%>" class="left" />
+				<div class="left info-cont">
+					<div>
+						<a href="http://www.meilishuo.com/person/u/<%=this.user.user_id%>" target="_blank"><%=this.user.nickname%></a>
+						<span class="identity_big_style">
+							<%if(this.user.identity){%>
+								<%= jsRender('identity.html')(this.user);%>
+							<%}%>
+						</span>
+					</div>
+					<p><%=this.user.words%></p>
+				</div>
+			</div>
+			<%}%>
+			<div class="middle <%if(!this.userInfo.user_id){%>middle-top<%}%>">
+				<h2>
+					超级主编，美丽说的SUPER STAR!
+				</h2>
+				<img src="http://img.meilishuo.net/css/images/superEditor/super-main-pic.png" />
+			</div>
+			<div class="down">
+				<h2>
+					<img src="http://img.meilishuo.net/css/images/superEditor/left.png" />
+					超级主编申请办法
+					<img src="http://img.meilishuo.net/css/images/superEditor/right.png" />
+				</h2>
+				<p class="down-top"><span>创建20个</span><img src="http://img.meilishuo.net/css/images/superEditor/nice.png" /><a href="http://www.meilishuo.com/group" target="_blank">优质杂志</a><span>，既可申请美丽说超级主编认证&nbsp;</span><img src="http://img.meilishuo.net/css/images/superEditor/super.png" /><br/></p>
+				<p><span class="num">1</span><span>&nbsp;拥有20个以上优质杂志，且发宝无logo、水印、拼图，宝贝优质率达80%以上。</span><br/></p>
+				<p><span class="num">2</span><span>&nbsp;原创发宝数不少于500（当你发宝数达到500，会自动获得分享5级勋章</span><img class="five-hundred" src="http://img.meilishuo.net/css/images/superEditor/500.png" /><span>）</span> <br/></p>
+				<p><span class="num">3</span><span>&nbsp;最近一周分享数100以上。</span><br/></p>
+				<p><span class="num">4</span><span>&nbsp;每天在线2小时以上。</span><br/></p>
+				<p><span class="num">5</span><span>&nbsp;账号注册时间2个月以上。</span><br/></p>
+				<p><span class="num">6</span><span>&nbsp;非商家。</span><br/></p>
+				<div class="down-end">
+					<p class="down-top"><img src="http://img.meilishuo.net/css/images/superEditor/nice.png" /><span class="nice">优质杂志标准：</span><br/></p>
+					<p>1.主题：鲜明且统一。</p>
+					<p>&nbsp;&nbsp;&nbsp;例如：同一风格（例如欧美风，甜美风，复古风等）</p>
+					<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;同一色系（例如红色，粉色，蓝色等）</p>
+					<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;同一元素（例如碎花，条纹，波点等）</p>
+					<p>2.质量：图片及宝贝不能有拼图、水印（图片上的文字、logo都叫水印），背景简洁，清晰。</p>
+					<p>3.杂志无作弊行为。    </p>      
+					<p>4.每个杂志分享数50以上。</p>
+					<p><span>20个杂志！想不到有哪些主题可以创建？参考这里吧：</span><a href="http://www.meilishuo.com/magazine" target="_blank">http://www.meilishuo.com/magazine</a><br/>
+					</p>
+					<p><b>注：</b>满足上述基本条件后，需由工作人员人工审核添加认证，审核时间一般为1-7个工作日。若审核过程中发现其他不合要求的地方，也不予添加认证。</p>
+				</div>
+			</div>
+			<div class="bottom">
+				<h3>获得认证之后你需要</h3>
+				<p>1. 每周原创分享50个以上优质宝贝。</p>
+				<p>2. 每周登录3次以上。</p>
+				<h3>超级主编行为规范</h3>
+				<p>1. 严禁重复分享带logo、拼图、水印、广告的宝贝。</p>
+				<p>2. 严禁美丽说昵称、头像、标签、美丽宣言带广告性质，如添加QQ、微博、淘宝店铺地址等信息。</p>
+				<p>3. 严禁任何形式的作弊行为。</p>
+				<h3>违规后的处理方式</h3>
+				<p>1. 分享质量太差者：取消认证，第一次发现，一个月后酌情恢复，第二次发现，不再恢复。
+				<p>2. 美丽说昵称、头像、标签、美丽宣言有问题者：取消认证，不再恢复。</p>
+				<p>3. 违规作弊及被举报投诉者，一经核实，取消认证，同时永久禁言。</p>
+				<p>我们会定期对所有的超级主编进行检查，请获得超级主编认证的爱美丽们珍惜自己的权利，认真履行义务，严格遵守超级主编行为规范。 </p>
+				<p>在未来的时间里，杂志精灵真心希望和你一起关注、爱护美丽说的成长。谢谢你对美丽说的支持。</p>
+			</div>
+		</div>
+	</div>
+	<div class="main-right left">
+		<div class="main-shadow">
+			<div class="redline2 red-top"></div>
+			<h2 class="red-head">超级主编公告栏</h2>
+			<p><%=this.act.words%></p>
+		</div>
+		<div class="main-shadow">
+			<div class="redline2 red-top"></div>
+			<h2 class="red-head">主编专属活动</h2>
+			<a href="/act/<%=this.act.activity_id%>" target="_blank">
+				<img src="<%=this.act.award_pic%>" width="200px">
+			</a>
+			<a class="submit" href="/act/<%=this.act.activity_id%>" target="_blank">参加活动</a>
+		</div>
+		<div class="main-shadow">
+			<div class="redline2 red-top"></div>
+			<h2>超级主编<a href="http://www.meilishuo.com/daren/?tab=editor" target="_blank">全部>></a></h2>
+			<div class="show">
+				<%for(var i = 0; i < this.editor.length; i++){%>
+				<a <%if(i%3 != 2){%>class="not-right"<%}%> href="http://www.meilishuo.com/person/u/<%=this.editor[i].user_id%>" target="_blank">
+					<img width="64px" height="64px" src="<%=this.editor[i].avatar_b%>">
+				</a>
+				<%}%>
+				<br />
+			</div>
+		</div>
+		<div class="main-shadow">
+			<div class="redline2 red-top"></div>
+			<h2>优质杂志<a href="http://www.meilishuo.com/group" target="_blank">全部>></a></h2>
+			<div class="box">
+				<div class="boxImg">
+					<ul class="_img">
+						<% 
+						var showimg = 0;
+						var magItemRenderFn = requireFn('group/magitem.html');
+						this.group && this.group.map(function(group){ %>
+						<div class="goodsTJ">
+
+								<%= magItemRenderFn(group ,showimg++);%>
+
+
+
+							<div class="clear_f"></div>
+						</div>
+						<% });%>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/super_editor');
+_use:", this._JSstack , this._JSmods);%>
+<%#foot.html%>

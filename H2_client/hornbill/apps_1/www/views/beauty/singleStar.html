@@ -1,0 +1,23 @@
+<div class="star_rec clearfix_f">
+	<%if(this.star.star!=0){%><div class="ico"></div><%}%>
+	<%if(this.type=='single'){%>
+	<img class="pic" src="<%=this.star.img%>" />	
+	<%}else{%>
+	<a class="pic" href="/beauty/single/<%=this.star.goods_id%>" target="_blank"><img src="<%=this.star.img%>" /></a>
+	<%}%>
+	<div class="r_com">
+		<%if(this.type=='single'){%>
+		<h3><%=this.star.goods_name%></h3>
+		<%}else{%>
+		<h3><a href="/beauty/single/<%=this.star.goods_id%>" target="_blank"><%=this.star.goods_name%></a></h3>
+		<%}%>
+		<div class="clear_f"></div>
+		<span>好评度</span><em><i style="width:<%=Math.floor(this.star.grade*5.8)%>px;"></i></em>
+		<span class="u_num"><b><%=this.star.test_user%></b>人使用</span>
+		<div class="pros">
+			<%if(this.star.func_name){%><p><b>功效：</b><%=this.star.func_name%></p><%}%>
+			<p><b>产品介绍：</b><%=this.star.introduction%></p>
+		</div>
+	</div>
+</div>
+

@@ -1,0 +1,127 @@
+<% var getLink = this.getLink
+	,query = this.query
+	,unselSizer = this.sizer.unselected
+	,selSizer = this.sizer.selected;
+%>
+<!-- 类目筛选 start-->
+<div class="filter_wrap">
+	<!--面包屑-->
+	<div class="bread_crumbs">
+		<%if(this.catalog){%>
+			<span class="cata_text"><%= this.catalog.currentWord %></span>
+			<samp class="corner">&gt;</samp>
+			<%if(this.catalog.currentWord != this.catalog.currentSubWord){%>
+			<a href="javascript:void(0)" class="subcata_text"><span class="cata_text"><%= this.catalog.currentSubWord%></span></a>
+			<%}
+		}else{%>
+			<span class="cata_text">所有</span>
+			<samp class="corner">&gt;</samp>
+		<%}%>
+		<%selSizer.forEach(function(data){
+			var valarr = []; var vallen = 0;
+			for(var i=0; i < data.option.length; i++){
+				prelen = vallen;
+				vallen += data.option[i].title.length;
+
+				if(vallen > 8){
+					valarr.push(data.option[i].title.substring(0, 6 - prelen)+ '...');
+					break;
+				}else{
+					valarr.push(data.option[i].title);
+				}
+			}
+			var valstring = valarr.join(',');
+			%>
+		<a data-key="<%= data.info.name%>" class="item_tag js_delete" href="javascript:void(0);"><%= data.info.title%>: <%= valstring%><span class="icon_x"></span></a>
+		<%})%>
+		<span class="g_total">共<%= this.showTotalNum%>件</span>
+	</div>
+	<!--筛选器-->
+	<%if(unselSizer && unselSizer.length){%>
+	<div class="group_box">
+		<div class="inner_box">
+			<%unselSizer.forEach(function(data, i){%>
+			<div class="row<%= i == 0 ? ' first' : ''%>">
+				<div class="left_cate"><%= data.info.title%>：</div>
+				<div class="center_content">
+					<div class="items_wraper">
+						<div class="items" data-key="<%= data.info.name%>">
+							<% data.option.forEach(function(item){
+								var paramsobj = {'page' : '0', 'tag_word' : item.title };
+								paramsobj[data.info.name] = item.value;%>
+							<a href="javascript:void(0);" data-value="<%= item.value%>">
+								<span class="icon_filter"></span><span><%= item.title%></span>
+							</a>
+							<%})%>
+						</div>
+					</div>
+					<%if(data.info.name != 'fl_mt_cataid'){%>
+					<div class="operate_btns">
+						<span class="mbtn enable">提交</span>
+						<span class="calloff">取消</span>
+					</div>
+					<%}%>
+				</div>
+				<div class="right_selector">
+					<%if(data.info.name != 'fl_mt_cataid'){%>
+					<span class="multiply">多选</span>
+					<%}%>
+					<span class="togglebtn more">更多<i class="arrow_down"></i></span>
+					<span class="togglebtn retract">收起<i class="arrow_up"></i></span>
+				</div>
+			</div>
+			<%})%>
+		</div>
+	</div>
+	<%if(unselSizer.length > 4){%>
+		<div class="box_expend">
+			<span class="more">更多筛选<i class="arrow_down"></i></span>
+			<span class="retract">收起筛选<i class="arrow_up"></i></span>
+		</div>
+		<%}%>
+	<%}%>
+	<!-- 排序-->
+	<div class="sort_box">
+		<div class="bytype">
+			<ul><li><a class="theme first<%= this.section == 'hot' ? ' curr' : ''%>" href="<%=getLink({'section' : 'hot' , 'page' : '0'} , query)%>">流行</a></li>
+				<li><a class="theme<%= this.section == 'boom' ? ' curr' : ''%>" href="<%=getLink({'section' : 'boom' , 'page' : '0'} , query)%>">热销</a></li>
+				<li><a class="theme<%= this.section == 'new' ? ' curr' : ''%>" href="<%=getLink({'section' : 'new' , 'page' : '0'} , query)%>">上新</a></li>
+				<li class="laypr">
+					<div class="trigger_link">
+						<span>价格</span><i class="arrow_down"></i>
+					</div>
+					<ul class="pricesort">
+						<li><a href="<%=getLink({'section' : 'price_asc' , 'page' : '0'} , query)%>">价格从低到高</a></li>
+						<li><a href="<%=getLink({'section' : 'price_desc' , 'page' : '0'} , query)%>">价格从高到低</a></li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		<% var pricearr = this.pricebt && this.pricebt.split('~');
+			pricestart = pricearr && pricearr[0] >0 ? pricearr[0] : '';
+			priceend = pricearr && pricearr[1] > 0 ? pricearr[1] : '';
+		%>
+		<div class="byprice">
+			<input class="start input" placeholder="¥" type="text" value="<%= pricestart%>">
+			<span class="wavemark">~</span>
+			<input class="end input" placeholder="¥" type="text" value="<%= priceend%>">
+			<a href="javascript:void(0);" class="p_submit">确认</a>
+		</div>
+		<%if(this.search_types && this.search_types.length){%>
+		<div class="byother">
+			<%
+			this.search_types.forEach(function(data){
+				var searchobj={}, isselected = '';
+				if(data.key in query) {
+					isselected = ' selected';
+				}
+				searchobj[data.key] = data.value;
+				searchobj['page'] = 0;
+				var link = getLink(searchobj , query)%>
+				<a href="<%= link%>" data-filterkey="<%= data.key%>" class="tag<%=isselected%>"><span class="icon_filter"></span><span><%= data.desc%></span></a>
+			<%})%>
+		</div>
+		<%}%>
+	</div>
+</div>
+<!-- 类目刷选 end-->

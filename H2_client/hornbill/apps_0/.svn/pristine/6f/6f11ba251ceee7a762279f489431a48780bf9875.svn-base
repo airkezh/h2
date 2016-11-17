@@ -1,0 +1,77 @@
+<%
+	var domain = this.MAIN_SITE_DOMAIN;
+%>
+<div id="com-foot">
+	<div class="inner">
+		<div class="flist">
+			<div class="tel-ico"></div>
+			<div class="custem">
+				<div class="tel">4000-800-577</div>
+				<div>美丽说客服热线</div>
+				<div class="time">周一至周日：08:00-24:00</div>
+			</div>
+		</div>
+		<div class="flist">
+			<h4>买家帮助</h4>
+			<div><a href="<%=domain%>/help/" target="_blank">新手指南</a></div>
+			<div><a href="<%=domain%>/help/return/" target="_blank">服务保障</a></div>
+			<div><a href="<%=domain%>/helpcenter/" target="_blank">帮助中心</a></div>
+		</div>
+		<div class="flist">
+			<h4>商家帮助</h4>
+			<div><a href="http://zhaoshang.meilishuo.com/business" target="_blank">商家入驻</a></div>
+			<div><a href="http://pro.meilishuo.com" target="_blank">商家推广</a></div>
+			<div><a href="http://zhaoshang.meilishuo.com/business/help" target="_blank">帮助中心</a></div>
+		</div>
+		<div class="flist">
+			<h4>关于我们</h4>
+			<div><a href="<%=domain%>/aboutus?sl=h3" target="_blank">关于美丽说</a></div>
+			<div><a href="<%=domain%>/aboutus/contactus?sl=h3" target="_blank">联系我们</a></div>
+			<div><a href="http://www.hotjob.cn/wt/meilishuo/web/index" target="_blank">加入美丽说</a></div>
+		</div>
+		<div class="flist">
+			<h4>关注我们</h4>
+			<div>
+				<a href="http://t.sina.com.cn/meilishuo" target="_blank">
+					<span class="i-sina"></span>新浪微博
+					<div class="follow">
+						一键关注新浪微博
+						<wb:follow-button uid="1718455577" type="red_1" width="67" height="24" ></wb:follow-button>
+					</div>
+				</a>
+			</div>
+			<div><a href="http://user.qzone.qq.com/1379986183/" target="_blank"><span class="i-qzone"></span>QQ空间</a></div>
+			<div><a href="http://t.qq.com/meilishuo" target="_blank"><span class="i-tencent"></span>腾讯微博</a></div>
+		</div>
+		<div class="flist">
+			<h4>美丽说微信服务号</h4>
+			<img class="qrcode" src="<%= this.PICTURE_URL%>images/header/qrcode-new.jpg" alt="美丽说服务号二维码"/>
+		</div>
+		<div class="flist last">
+			<h4>美丽说客户端下载</h4>
+			<a class="client" href="<%=domain%>/client/" target="_blank"></a>
+		</div>
+
+		<% if(this.friendlink){ %>
+		<div class="friendlink">
+			<span class="link">友情链接：</span>
+			<ul class="link-slide">
+				<% this.friendlink.map(function(item,index){ %>
+					<% if(index % 12 == 0 && index != 0){%>
+						</li>
+					<% }%>
+					<% if(index % 12 == 0){%>
+						<li>
+					<% }%>
+					<a href="<%= item.link_to%>" target="_blank"><%= item.link_text%></a>
+				<% }); %>
+			</ul>
+			<a class="more" href="<%=domain%>/aboutus/links" target="_blank">更多&gt;&gt;</a>
+		</div>
+		<% } %>
+
+		<div class="record">			
+			Copyright ©<%= new Date().getFullYear()%> Meilishuo.com &nbsp;<a href="http://d03.res.meilishuo.net/pic/_o/42/c6/b0fd45f6233a973e46c3f6891de5_896_629.cg.jpg" target="_blank">电信与信息服务业务经营许可证100798号</a>&nbsp;<a href="http://d03.res.meilishuo.net/pic/_o/e1/80/4f22feee45bb9d0a92e7a950f9c5_1131_1600.cg.jpg" target="_blank">经营性网站备案信息</a>&nbsp; 京ICP备11031139号&nbsp; 京公网安备110108006045&nbsp;</br>客服邮箱：kf@meilishuo.com&nbsp;&nbsp;客服电话：4000-800-577&nbsp; 文明办网文明上网举报电话：010-82615762 &nbsp;<a href="http://net.china.com.cn/index.htm" target="_blank">违法不良信息举报中心</a>&nbsp;<a href="http://www.mps.gov.cn/n16/n983040/n3967568/n4038844/n4110655/toupiao.html" target="_blank">我最喜爱的人民警察评选>></a> <a href="<%=domain%>/fraud/index" target="_blank">反诈骗信息</a>	
+		</div>
+	</div>
+</div>

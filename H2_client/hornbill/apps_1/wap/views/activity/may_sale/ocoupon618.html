@@ -1,0 +1,54 @@
+<%#head.html%>
+<%
+	var pageData = this.pageData;
+%>
+<div class="top">
+	<% pageData.head.forEach(function(data){ %>
+		<a href="javascript:;" <%= data.link ? 'class="' + data.link + '"' : '' %>><img src="<%= data.img_src %>" /></a>
+	<% }); %>
+</div>
+<div class="user_info">
+	<p><%= this.mobUserInfo.data.nickname %>：</p>
+	<% if(this.page_from == 1){ %>
+		<p>谢谢你一如既往的支持，你已过期的<span>价值<%= this.coupon_info.total_price || 0 %>元</span>的优惠券，将于618女神购物节<span>当日全部复活。</span></p>
+	<%} else { %>
+		<p>谢谢你一如既往的支持，你已过期的优惠券，将于618女神购物节<span>当日全部复活。</span></p>
+	<% } %>
+	<p class="last">记得来用哦！</p>
+</div>
+<% if(this.share){ %>
+	<%= requireFn('wapShare.html')({
+		'share' : this.share 
+		, 'shareTitle' : '选择分享到'
+		, '_JSstack' : this._JSstack
+		, '_JSmods' : this._JSmods
+	}); %>
+<%}%>
+<script>
+	fml.vars.page_from = <%= this.page_from == 1 ? false : true %>;
+	fml.vars.is_dead = <%= this.coupon_info.is_dead %>
+</script>
+<script type="text/html" id="result">
+<div class="dialog_box">
+	<p><%= pageData.settings.alert_text %></p>
+	<p><%= pageData.settings.alert_text_1 || '' %></p>
+	<a class="btn3zi delayclose" href="javascript:;">确定</a>
+</div>
+</script>
+<script type="text/html" id="result_1">
+<div class="dialog_box">
+	<p>你的过期优惠券已全部复活</p>
+	<p>请于24：00后去我的优惠券查看</p>
+	<a class="btn3zi delayclose" href="javascript:;">确定</a>
+</div>
+</script>
+<script type="text/html" id="alertMsg">
+	<div class="dialog_box">
+		<p style="text-align: center;"><?= this.msg?></p>
+		<a class="btn3zi delayclose" href="javascript:;">确定</a>
+	</div>
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/ocoupon618');
+_use:", this._JSstack , this._JSmods); %>
+<%# foot_simple.html%>

@@ -1,0 +1,42 @@
+<%# head.html %>
+<%
+    var isApp = this.os.mlsApp
+%>
+<div id="danmu">
+    <span class="circle-entrance-top" data-action="chatItOut">新步步惊心官方群</span>
+    <div id="stage">
+        <div id="bullet-signal" class="bullet"></div>
+    </div>
+    <div class="ft">
+        <div class="wrap">
+            <p id="error-msg"></p>
+        </div>
+        <div class="inputs">
+            <input placeholder="果断穿越 疯爱一场" id="input">
+            <span id="shoot" class="btn" data-action="shoot">发射</span>
+        </div>
+        <div class="call-board">
+        <img src="http://d01.res.meilishuo.net/pic/_o/5a/5f/bca0e5190f78687ac4a8aa425278_1242_1754.ch.png" alt="说明">
+        </div>
+        <div class="circle-entrance-bottom" data-action="chatItOut">
+                点击进群抢票
+        </div>
+    </div>
+</div>
+<script>
+    fml.vars.isLogin = <%= this.userInfo.user_id %>;
+    fml.vars.danmakuDatas = <%= JSON.stringify( this.danmu.data.info ) %>;
+</script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<%if(isApp){%>
+<%= requireFn('wapShare.html')({
+    'share' : this.share
+    , 'shareTitle' : '选择分享到'
+    , '_JSstack' : this._JSstack
+    , '_JSmods' : this._JSmods
+}); %>
+<%}%>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+    fml.use('wap/page/activity/scarlet_heart');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html %>

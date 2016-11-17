@@ -1,0 +1,64 @@
+<%# head.html%>
+<%
+	var mobile = this.userInfo.mobile || '';
+
+	function changeShow(str,len){
+		str = str + '';
+		len = len || -4;
+		if(str.length > len){
+			str = new Array(str.slice(0,len).length).join('*')+str.slice(len);
+		}
+		return str;
+	}
+%>
+<div class="active">
+	<%if(this.active){%>
+	<div class="step1">
+		<div class="tip">
+			系统检测到你的账号可能存在安全风险，为了确保账号安全，请输入绑定的手机号进行短信验证重新激活。 
+			<%if(mobile != ''){%>
+				<div class="phone" data-phone="<%=mobile %>">之前绑定的手机号码 <%=changeShow(mobile) %></div>
+			<%}%>
+		</div>
+		<div class="cont">
+			<%if(mobile == ''){%>
+				<div class="txt">
+					<input id="bind_phone" type="text" placeholder="请输入要绑定的手机号" />
+				</div>
+			<%}%>
+			<div class="txt">
+				<input id="seccode" type="text" placeholder="请输入验证码" />
+				<div class="checkImage">
+					<span id="checkcodeImage">
+						<img width="90" height="45" isblank="true" src="<%= this.PICTURE_URL %>images/register/blank.jpg">
+					</span>
+				</div>
+			</div>
+			<div class="err-msg"></div>
+			<div class="btn">
+				<input class="send-sms" type="submit" value="发送验证短信" />
+			</div>
+		</div>
+	</div>
+	<%}else{%>
+	<div class="step2">
+		<div class="cont">
+			<div class="txt">
+				<input class="sms-code" type="text" placeholder="输入短信验证码" />
+				<div class="resend">59s后重新发送</div>
+			</div>
+			<div class="err-msg"></div>
+			<div class="btn">
+				<input class="active-now" type="submit" value="马上激活" />
+			</div>
+		</div>
+	</div>
+	<%}%>
+</div>
+<script>
+	fml.vars.active = <%=this.active %>;
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/active');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html %>

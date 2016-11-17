@@ -1,0 +1,132 @@
+/*common*/
+require('m/zepto/touch');
+
+var slipPageFn = require('cooper/component/slipPage');
+var checkLogin = require('circle/app/checkLogin');
+var signWX = require( 'wx/sign' );
+var shareWX = require( 'wx/share' );
+var shareTmp = require('wap/component/shareTmp');
+var dialog = require('wap/ui/dialog');
+var tracking = require('wap/app/tracking');
+var openApp = require('wap/app/openAppCustom');
+var openAppLink = require('wap/app/openAppLink');
+
+// 判断登录，包含app和wx
+ checkLogin();
+//滑动翻页效果
+window.slipPage = slipPageFn.init({
+	outer:'.wrap .main'
+	, page:'.page'
+	, transitionExt : function(dir, type, y){
+        var scaleType = {
+            'curr' : [1,1]
+            , 'prev' : [0.8, 0.8]
+            , 'next' : [0.8, 0.8]
+        }
+        return {'transform':'scale3d(' + scaleType[type][0] + ', ' + scaleType[type][1] + ', ' + '1' + ')'}
+
+    }
+});
+slipPage.getPages().on('pageShow', function(){
+	tracking.cr('member_time_machine', { 'page':($(this).index()+1)});
+})
+
+/*music*/
+var music = $('audio')[0]
+	, $musicicon = $('.music')
+	, musicStatus = 0;
+musicon();
+$('body').one('touchstart', musicon);
+
+$musicicon.on('tap', function(){
+	if(musicStatus == 0){
+		musicon();
+		musicStatus = 1;	
+	}else{
+		musicoff();
+		musicStatus = 0;
+	}
+})
+function musicon(){
+	if(!music) return;
+	$musicicon
+		.removeClass('musicoff')
+		.addClass('musicon');
+	music.play();
+}
+function musicoff(){
+	if(!music) return;
+	$musicicon
+		.removeClass('musicon')
+		.addClass('musicoff');
+	music.pause();
+}
+
+/*微信分享*/
+var $tShareBtn = $('.tShareBtn') //weixin share btn
+	, $shareMask = $('.mask'); //weixin share mask
+if(Meilishuo.config.os.weixinBrowser){
+	signWX();
+	shareWX.bind({
+        'desc': fml.vars.share_text,
+        'imgUrl':fml.vars.share_pic,
+        'title': fml.vars.share_title,
+        'link': fml.vars.share_url,
+        'success': function(res, name, eventName){
+            hideMask()
+            var area = {'Timeline' : 'pyq' , 'AppMessage' : 'wx'};
+            // alert(area[eventName])
+            tracking.cr('member_time_machine' , {'area' : area[eventName] })
+        }
+    });
+
+	$tShareBtn
+		.on('tap', showMask)
+		.on('tap', function(){
+			tracking.cr('member_time_machine', {'click':'share_button'});
+		});
+	$shareMask
+		.on('tap', hideMask);
+}
+function showMask(){
+    if(Meilishuo.config.os.weixinBrowser) $shareMask.show();
+}
+function hideMask(){
+    if(Meilishuo.config.os.weixinBrowser) $shareMask.hide();
+}
+
+/*app内分享*/
+if(Meilishuo.config.os.mlsApp){
+	var tpl = shareTmp('wapShare' , {"share" :JSON.parse(fml.vars.share)});
+	$tShareBtn.on('tap', function(){
+		tracking.cr('member_time_machine' , {'click' : 'share_button' , });
+		var sharePalDlg = new dialog({
+			content:tpl
+		});
+		var share_url = $('#share_ico .active').attr('share_url');
+		$('#share_ico a').bind('click', function(){
+			$('#share_ico a.active').removeClass('active');
+			$(this).addClass('active');
+			share_url = $(this).attr('share_url');
+		});
+		$('#shareBtn').on('click', function(){
+			//console.log(share_url)
+			var area = $('#share_ico a.active').html();
+			var share_area = {'朋友圈' : 'pyq' , '微信' : 'wx'};
+			// alert(share_area[area])
+
+			tracking.cr('member_time_machine' , { 'area' : share_area[area] });
+
+			window.location.href =  share_url;  
+		});		
+	});
+}	
+	
+
+
+
+
+
+
+
+

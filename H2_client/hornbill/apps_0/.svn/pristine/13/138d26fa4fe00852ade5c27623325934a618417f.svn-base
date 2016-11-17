@@ -1,0 +1,150 @@
+@import "../block.less";
+/* color pick */
+@mls_red: #ff6699;
+@gap_color: #f8f8f8;
+@border_color: #ebebeb;
+@circle_color: #ccc2c9;
+@red1: #ff94b7;
+@w580: 1/580*100%;
+@w470: 1/470*100%;
+/* common style */
+
+/*---------------------*/
+//@problem  chrome 的问题：
+//	 		chrome上为html设置百分数会出现样式问题
+//@dealwith 替换rem为px		
+//html { .f(6.25%); }
+body { .f(12px); }
+/*---------------------*/
+
+body, div { .bgwhite; }
+h1,h2,h3 { .fn; }
+.red { font-weight: normal; font-style:normal; color: @mls_red; }
+.goods_list { .mb(240*@w); }
+
+.goods_list {
+	.pl(30*@w);
+	.pr(30*@w);
+	border-top: 1px solid @border_color;
+}
+
+.goods {
+	.pr;
+	.pl(80*@w580);
+	.pt(30*@w580);
+	.pb(30*@w580);
+	.fc(#666);
+	border-top: 1px solid @border_color;
+	.basic_info {
+		.pr;
+		.pl(120*@w470);
+		.pt(120*@w470);
+		background-size: 120*@w470 auto;
+		background-repeat: no-repeat;
+		background-position: left top;
+		figcaption {
+			.pa;
+			top: 0;
+			left: 140*@w470;
+			.w(330*@w470);
+		}
+		.goods_desc {}
+		.goods_price {
+			.pt(24*@w470);
+			.price { .fc(@mls_red); }
+		}
+		.selected_info {  
+			.pt(24*@w470);
+			.fc(@mls_red);
+			span { .mr(6px); }
+			.grey { .fc(#666); }
+		}
+	}
+	.checkbox {
+		.pa;
+		top: 30*@w580;
+		left: 0;
+		.w(50*@w);
+		.pt(50*@w580);
+		.border-r(50%);
+		border: 1px solid @circle_color;
+		background: url(//d03.res.meilishuo.net/pic/_o/93/eb/1ed0b17919a4b40c6b7af4b2cfbe_30_28.cf.png) center 20% no-repeat;
+		background-size: 70%;
+	}
+	.checked { 
+		background-color: @red1; 
+		border: 1px solid @red1; 
+	}
+}
+
+.select {
+	//.fc(#666);
+	.clearfix;
+	dt { .pt(30*@w470); .f(14px) }
+	dd { .f(13px); }
+	ul { .clearfix; }
+	.item {
+		.left;
+		.i_block;
+		.w(120*@w470);
+		.mr(30*@w470);
+		.mt(30*@w470);
+		.pt(23*@w470);
+		.pb(23*@w470);
+		.c;
+		border: 1px solid #666;
+		.border-r(3px);
+	}
+	.selected {
+		.bgc(@mls_red);
+		.white;
+		border: 1px solid @mls_red;
+	}
+	.out_of_stock {
+		color: #999;
+		border: 1px solid #999;
+	}
+}
+
+.buy {  
+	.pf;
+	left: 0;
+	bottom: 0;
+	.w(100%);
+	//.h(100px);
+	.c;
+	border-top: 10px solid @border_color;
+	.total_price {
+		.pt(32*@w);
+		.pb(32*@w);
+		border-bottom: 1px solid @border_color;
+		i { .mr(12px); .f(21px); .fc(@mls_red); }
+		span { .f(16px); .fc(#999); }
+	}
+	#confirm_btn {
+		.i_block;
+		padding: 12px 36px;
+		.mt(20*@w);
+		.mb(20*@w);
+		.white;
+		.bgc(@red1);
+		.border-r(3px);
+		.f(13px);
+	}
+}
+
+.layer_wrap {
+	.none; 
+	padding: 20px; 
+	.c; 
+	transition: all .2s ease-in 0s; 
+	.pf; 
+	top: 300*@w; 
+	.w(420*@w); 
+	.bgc(#666); 
+	opacity:0.85; 
+	.f(28*@px); 
+	.white;
+	z-index: 99;
+	left: 40*@w;
+}

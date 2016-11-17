@@ -1,0 +1,69 @@
+<%# head.html %>
+
+<%
+	var sales = this.navigation.sales;
+	var pro_spec_banner = this.pro_spec_banner || {};
+%>
+
+<%= requireFn('block/wap_head.html')({
+	'xr' : this.xr
+	, 'search_words' : this.default_navigate.search_promote.search_keyword
+	, 'search_url' : this.default_navigate.search_promote.search_jump_url
+	, 'default_navigate' : this.default_navigate && this.default_navigate.root_category
+	, 'cat_banner' : pro_spec_banner.cat_bar
+	, '_JSstack' : this._JSstack
+	, '_JSmods' :  this._JSmods
+});%>
+
+<div class="sales page_area">
+	<div class="title"><h2>折扣区</h2><span class="nickname">Sales</span><span class="desc">最新 最流行 最便宜 一次买个够</span></div>
+	<div class="content">
+		<a class="miaosha" href="<%= sales.seckill.url %>" style="background-image:url(<%= sales.seckill.pic %>);">
+			<h3>限时抢购</h3>
+			<p>距离下一场还有</p>
+			<div class="seckill_timing" stime="<%= '324738' %>">
+				<span id="hour_1">0</span><span id="hour_2">0</span>:<span id="minu_1">0</span><span id="minu_2">0</span>:<span id="sec_1">0</span><span id="sec_2">0</span>
+			</div>
+		</a>
+		<a class="welfare" href="<%= sales.welfare.url %>">
+			<div class="pic_wrap" style="background-image:url(<%= sales.welfare.pic %>);"></div>
+			<h3>福利社</h3>
+			<p>福利免费领</p>
+		</a>
+		<a class="clearance" href="<%= sales.clearance.url %>">
+			<h3>清仓</h3>
+			<p>品质尾货 4折封顶</p>
+			<div class="pic_wrap" style="background-image:url(<%= sales.clearance.pic %>);"></div>
+		</a>
+		<a class="qiang" href="<%= sales.qiang.url %>">
+			<h3>9块9疯抢</h3>
+			<p>挑战最低价</p>
+			<div class="pic_wrap" style="background-image:url(<%= sales.qiang.pic %>);"></div>
+		</a>
+	</div>
+</div>
+<% if(this.default_navigate){ %>
+	<div class="category page_area">
+		<div class="title"><h2>热门分类</h2><span class="nickname">Catelog</span><span class="desc">你想要的这里都有</span></div>
+		<div class="content">
+			<% this.default_navigate.root_category.forEach(function(category){ %>
+				<% if(!category.pic) return; %>
+				<a href="/guang/catalog_new/?<%= 'nid=' + category.nid + '&tag_word=' + encodeURIComponent(category.tag_word) %>" xr="<%= this.xr.r %>">
+					<img src="<%= category.pic %>">
+				</a>
+			<% }); %>
+		</div>
+	</div>
+<% } %>
+
+<script>
+	<%= "fml.vars.seckill_time =" + JSON.stringify(sales.seckill_timing) %>;
+</script>
+
+<%# block/wap_foot.html %>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/category/main');
+_use:", this._JSstack, this._JSmods); %>
+
+<%# foot.html %>

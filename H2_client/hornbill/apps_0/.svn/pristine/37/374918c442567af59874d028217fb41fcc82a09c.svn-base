@@ -1,0 +1,177 @@
+fml.define('wap/page/sq/mall', ['wap/ui/alert' , 'wap/zepto/fastclick','wap/component/shareTmp','wap/app/doota/timedown'/*,'wap/ui/confirm'*/,'m/app/posterWall', 'm/app/posterPa', 'm/component/lazyLoad', 'wap/app/tracking'], function(require) {
+	var timedown = require('wap/app/doota/timedown')
+		, shareTmp = require('wap/component/shareTmp')
+	    , remain = parseInt($('.countdown').attr('remain'))
+	    , is_over = parseInt($('.countdown').attr('data-is-over'))
+	    , poster = require('m/app/posterPa')
+	    , lazyLoad = require('m/component/lazyLoad')
+	    , posterWall = require('m/app/posterWall')
+	    , tracking = require('wap/app/tracking')
+	    , Alert = require('wap/ui/alert')
+	var alertDiv = function(msg){
+		var a = new Alert({
+			content : msg
+		});
+	}
+	var $mask = $('#mask');
+	$mask
+	.on('touchmove', function(){
+		return false;
+	})
+	.on('click',function(){
+		$('html').css('overflow','scroll');
+		$mask.animate({'height': '0'}, 600);
+	})
+	$mask.children('.redirect').click(function() {
+		window.location.href = "http://m-qiang.meilishuo.com/sq/coupon_zone?type=noqq"
+		return false;
+	});
+
+	//砸蛋start
+	var $egg = $('#egg')
+	,mark = true;
+	if ($egg.length) {
+		tracking.cr(' sq/statistics_action', {'action' : 'eggShow', 'value' : 'null'});
+	}
+	$egg.find('.egg').click(function(event) {
+		tracking.cr(' sq/statistics_action', {'action' : 'eggBreak', 'value' : 'null'});
+		//$.getJSON('http:///m-qiang.meilishuo.com/aj/sq/hit_egg?callback=?', function(data) {
+		if(mark){
+			mark = false;
+			$.post('/aj/sq/hit_gift', function(data){
+			if (data && data.ret == 0) {
+				// tracking.cr(' /cr/sq/statistics_action', {'action' : 'eggShow', 'value' : 'null'});
+				$egg.find('.egg').hide();
+				 $egg.find('.egg-open').show();
+				var suid = data.user_id;
+				setTimeout(function(){
+					//砸蛋新页面start
+					// var _a = "http://"+window.location.host + '/sq/egg_act?from=eggBreak&coupon_id=' + data.coupon_id + '&suid=' + suid;
+					// $('title').html('返回');
+					// mqq.ui.refreshTitle();
+					// mqq.ui.openUrl({
+					// 	url:_a,
+					// 	target:1,
+					// 	style:0
+					// });
+					// setTimeout(function(){
+					// 	$('title').html('美丽说');
+					// },0);
+					//砸蛋新页面end
+					alertDiv('恭喜您获得1张20元优惠劵，您可在6月16日-6月18日使用该优惠劵。记得要来哦！');
+					$egg.find('.egg-open').hide();
+				},500);
+			}else{
+				// console.log(data.msg)
+				alertDiv(data.msg);
+			}
+			mark = true
+
+		}, 'json');
+	}
+
+	});
+	//砸蛋end
+
+	//用户头像点击
+	$('.user_img_space').on('click',function(){
+		tracking.cr('sq/statistics_action', {'action': 'userCenterClick', 'value' : 'pop'})
+		$user_box = $('.user_box');
+		$user_box.css('display') == 'none' ? $user_box.show() : $user_box.hide()
+	})
+
+	$('a[href="/sq/user/order_list"]').on('click', function(){
+		tracking.cr('sq/statistics_action', {'action': 'goUserCenter', 'value' : 'userCenterPop'})
+		return true;	
+	})
+	$('a[href="/sq/cart/"]').on('click', function(){
+		tracking.cr('sq/statistics_action', {'action': 'goCart', 'value' : 'userCenterPop'})
+		return true;	
+	});
+	
+	var poster_info = fml.vars.poster
+	var p_name = poster_info.pageName || 'daily'
+	var poster_url = ''
+
+	switch(p_name){
+		case 'daily' :
+			poster_url = '/aj/sq/tuan?cate_id=' + poster_info.cate_id;
+			break;
+		case 'clothes':
+			poster_url = '/aj/sq/normal_goods?page_name=' + p_name + '&cate_id=' + poster_info.cate_id;
+			break;
+		case 'cosmetic':
+		default:
+			poster_url = '/aj/sq/search'
+			break;
+	}
+
+
+	//精选区 瀑布流
+	var data = {
+		url : poster_url
+		, poster : poster
+		, lazyLoad : lazyLoad.init({xpath:'.pic_load'})
+		, colNum : 2
+	}
+	if (fml.vars.keyword && fml.vars.keyword != "undefined") {
+		data.url += ("?key_word=" + fml.vars.keyword);
+	};
+	posterWall.scroll(data);
+
+
+
+	window.onload =  function(){
+		tracking.cr('sq/onload');
+	}
+
+	// $.getJSON("http://m-qiang.meilishuo.com/aj/sq/sq_coupon_all?callback=?",{
+ //         'type': '6',
+ //         'code' : '201409111544197720f39692'
+	// },function(data){ 
+	// 	if (data.success == 1) { //领取成功
+ //            var conf = new Confirm({
+	// 			content : '恭喜您获得全场通用29减5优惠劵！是否获得更多优惠劵？'
+	// 			,onSure : function(){
+	// 				 window.location.href = '/sq/coupon_zone?type=noqq';
+	// 			}
+	// 			,onCancel : function(){
+	// 				return;
+	// 			}
+	// 		})
+ //        }
+	// })
+	$('body').on('click','.li_border a,.tuan a',function(e){
+		var _this = $(this),
+			_a =  "http://"+window.location.host + _this.attr('href') + '&_wv=5123';
+			
+		$('title').html('返回');
+		mqq.ui.refreshTitle();
+		mqq.ui.openUrl({
+			url:_a,
+			target:1,
+			style:0
+		});
+		setTimeout(function(){
+			$('title').html('美丽说');
+		},0);
+		if(e && e.preventDefault) {  
+        　　//阻止默认浏览器动作(W3C)  
+        　　e.preventDefault();  
+        } else {  
+        　　//IE中阻止函数器默认动作的方式   
+        　　window.event.returnValue = false;   
+        }  
+        return false;
+	});
+	if(!remain) return
+	var down = timedown.down('.time_v>span', remain ,'0h-0i-0s',['<b>%v</b>:','<b>%v</b>:','<b>%v</b>'])
+	down.onTimeOver(function(){
+		var time_v = $('.countdown').children('.time_v');
+		if(is_over){
+        	time_v.html(shareTmp('time_over'));
+        }else{
+        	time_v.addClass('time0').text("抢购中…");
+        }
+	})
+})

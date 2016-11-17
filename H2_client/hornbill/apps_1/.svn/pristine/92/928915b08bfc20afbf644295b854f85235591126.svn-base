@@ -1,0 +1,28 @@
+<%# head.html%>
+<div class="t_banner">
+	<!-- top banner-->
+	<%if(this.mainbanner&&this.mainbanner.tuan_pcjuhenew_top_banner&&this.mainbanner.tuan_pcjuhenew_top_banner.length){
+		var topbanner=this.mainbanner.tuan_pcjuhenew_top_banner[0];%>
+		<div class="topbanner">		
+			<a href="<%= topbanner.link==''? 'javascript:void(0);' : topbanner.link%>">
+				<img src="<%= topbanner.show_pic%>" alt="<%= topbanner.tab_name%>" />
+			</a>
+		</div>
+	<%}%>
+</div>
+<!--分会场banners-->
+	<%if(this.meetbanner&&this.meetbanner.tuan_pcjuhenew_bottom_banner&&this.meetbanner.tuan_pcjuhenew_bottom_banner.length){
+		var meetbanners=this.meetbanner.tuan_pcjuhenew_bottom_banner;%>
+		<div class="sub_hc">
+		    <ul class="hc">	
+			    <%meetbanners.forEach(function(data){%>	
+			        <li class="hc_item">	
+						<a href="<%= data.link%>" target="_blank">
+							<img src="<%= data.show_pic%>" alt="<%= data.tab_name%>" />
+						</a>
+				    </li>
+				<%})%>
+		    </ul>
+		</div>
+	<%}%>
+<%# foot.html%>

@@ -1,0 +1,38 @@
+<% this.todayList && this.todayList.map(function(data){ %>
+	<div class="sale_content">
+		<h3>
+			<a onclick="javascript:Meilishuo.togo('<%=data.goods_url%>'); return false;" href="<%=data.goods_url%>" target="_blank">
+				<% if (data.is_promoting == 1) {%>
+					<span class="through gray_f">原价<%=data.goods_price%>元</span>
+					<span class="red_f">限时特价<%=data.item_promo_price%>元</span>
+				<%} else if(data.is_promoting == 0) {%>
+					<span class="red_f"><%=data.goods_price%>元</span>
+				<%}%>
+				<em><%=data.title%></em>
+			</a>
+		</h3>
+		<a onclick="javascript:Meilishuo.togo('<%=data.goods_url%>');  return false;"  class="sale_pic" href="<%=data.goods_url%>" target="_blank"><img src="<%=data.pic_url%>" /></a>
+		<div class="describe">
+			<p class="recom" ><span class="red_f">美丽说达人推荐：</span><a onclick="javascript:Meilishuo.togo('<%=data.goods_url%>');  return false;"  href="<%=data.goods_url%>" target="_blank"><em><%=data.recommend%></em></a></p>
+			<a onclick="javascript:Meilishuo.togo('<%=data.goods_url%>');  return false;"  href="<%=data.goods_url%>" target="_blank" class="price_go">
+				<% if(data.is_promoting == 1) {%>
+					<span <%if(data.item_promo_price && data.item_promo_price.length > 5){%> style="font-size:14px;"<%}%>class="price">¥<%=data.item_promo_price%></span>
+				<%} else if(data.is_promoting == 0) {%>
+					<span <%if(data.goods_price && data.goods_price.length > 5){%> style="font-size:14px;"<%}%>class="price">¥<%=data.goods_price%></span>
+				<%}%>
+				<span class="go">去购买</span>
+			</a>
+			<p class="sale_num"><a href="javascript:void(0);" class="num1 i_qzone"><strong><%=data.likes%></strong>人喜欢</a><a onclick="javascript:Meilishuo.togo('<%=data.goods_url%>');  return false;"  href="<%=data.goods_url%>" target="_blank" class="num2"><strong><%=data.purchase%></strong>人购买</a></p>
+			<p class="fb_f"><a onclick="javascript:Meilishuo.togo('<%=data.goods_url%>');  return false;"  href="<%=data.goods_url%>" target="_blank">买家评价</a></p>
+			<% data.comments && data.comments.map(function(subdata){ %>
+				<p class="comment"><img class="avatar32_f" src="<%=subdata.commentator_img%>" /><a onclick="javascript:Meilishuo.togo('<%=data.goods_url%>');  return false;"  href="<%=data.goods_url%>" target="_blank"><%=subdata.contents%></a></p>
+			<%});%>
+		</div>
+	</div>
+<%});%>
+<!--<% if(this.fans && this.fans.isFans != 1) { %>
+	<div class="qqshare">
+		<iframe src="http://open.qzone.qq.com/like?url=http%3A%2F%2Fuser.qzone.qq.com%2F1379986183&type=button&width=400&height=30&style=3" allowtransparency="true" scrolling="no" border="0" frameborder="0" style="width:62px;height:22px;border:none;overflow:hidden;float:left; "></iframe>
+		<div>关注空间有机会得冬季护肤套装</div>
+	</div>
+<%}%>-->

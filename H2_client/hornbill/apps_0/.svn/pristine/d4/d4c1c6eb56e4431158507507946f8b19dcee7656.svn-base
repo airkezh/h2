@@ -1,0 +1,36 @@
+<div class="nav_top" id="navTop">
+	<nav class="nav_box">
+		<ul class="goods">
+			<% for(var i=0,len = this.pageNameArr.length; i<len; i++){%>
+				<li <% if(this.pageName == this.pageNameArr[i].en){%> class="active"<%}%>>
+					<% if(this.pageName != this.pageNameArr[i].en){ %><a href="/sq/mall/<%=this.pageNameArr[i].en%>"><%= this.navTop[i].page_title %></a>
+					<%}else{%><span><%= this.navTop[i].page_title %></span><%}%>
+				</li>
+			<%}%>
+		</ul>
+		<!-- 头像+hot  <img src="<%=this.PICTURE_URL%>/images/wap/web/sq/icon-person-hot.png" /> -->
+		<span class="user_img_space">
+			<% if(this.cart || this.coupon){%>
+				<i class="red"></i>
+			<%};%>
+		</span>
+	</nav>
+	<!-- 购物车+个人中心 -->
+	<div class="user_box">
+		<span class="bg_triangle"><img src="<%=this.PICTURE_URL%>/images/wap/web/sq/icon_triangle.png" alt=""></span>
+		<a href="/sq/user/order_list" class="a_user a_line">
+			<span class="i_img"><img src="<%=this.PICTURE_URL%>/images/wap/web/sq/gray_user.png" alt=""></span>
+			<p>个人中心</p>
+			<% if(this.coupon){%>
+				<i class="red"></i>
+			<%};%>
+		</a>
+		<a href="/sq/cart/" class="a_line"><span class="i_img"><img src="<%=this.PICTURE_URL%>/images/wap/web/sq/gray_cart.png" alt=""></span>
+			<p>购物车</p>
+			<% if(this.cart){%>
+				<i class="red"></i>
+			<%};%>
+		</a>
+	</div>
+</div>
+<div style="height:50px"></div>

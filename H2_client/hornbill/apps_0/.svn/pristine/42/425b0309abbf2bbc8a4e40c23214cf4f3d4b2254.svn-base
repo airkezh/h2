@@ -1,0 +1,38 @@
+<%# head.html%>
+<% var focus = this.banner && this.banner.data && this.banner.data.focus; %>
+<% focus.forEach(function(data){  %>
+	<div class="top">
+		<img src="<%= data.img_url%>">
+		<p class="ac_rule">活动规则</p>
+	</div>
+<% }); %>
+<div class="goods_wall"></div>
+<div class="pullUp" status="loading"></div>
+<script type="text/html" id="posterWall">
+	<? $.each(this.data.posters , function(k , v){ ?>
+		<div class="goods_box" tid="<?= v.twitter_id?>" >
+			<img src="<?= v.ginfo.goods_pic_url?>">
+			<p><?= v.ginfo.sale_num?>个美丽的姑娘已购买</p>
+		</div>
+	<?});?>
+</script>
+<script type="text/html" id="rule">
+	<div class="dialog_box rule">
+		<div class="closeDialog chacha"></div>
+		<img src="<?= this.rule_pic?>">
+		<div class="closeDialog iknow"></div>
+	</div>
+</script>
+<a class="gotop" style="bottom:<%if(this.isIphone){%>60<%}else{%>20<%}%>px">
+	<img src="<%= this.PICTURE_URL%>/images/wap/tuan/gotop.png" />
+</a>
+<script>
+	fml.vars.vip_id = '<%= this.vip_id%>';
+	fml.vars.rule_pic = '<%= this.banner.data.stmt.img_url%>';
+	fml.vars.device_code = '<%= this.device_code%>';
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use("wap/page/new_user_june");
+_use:", this._JSstack , this._JSmods); %>
+<%# foot_simple.html%>

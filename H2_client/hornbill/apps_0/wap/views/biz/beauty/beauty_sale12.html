@@ -1,0 +1,139 @@
+<%#head.html%>
+
+<%
+	var pageData = this.pageData;
+	for(var i = 0,k = pageData.length; i<k; i++){
+		if(this.acid == pageData[i].page.cid){
+			var pageSettings = pageData[i];
+		}
+	}
+	var BeginDate = '2014/12/08 20:00:00';
+	var now_date = new Date();
+%>
+<div class="main">
+	<% if(pageSettings.page.bannar){ %><div class="top_bannar"><img src="<%= pageSettings.page.bannar %>"></div><% } %>
+	<div class="poster_tab">
+		<% pageSettings.nav.forEach(function(data, index){ %>
+			<div <%= index == 0 ? 'class="p_tab_active"' : '' %> data_name="<%= data.r %>" data_id="<%= index %>"><%= data.name %></div>
+		<% }); %>
+	</div>
+	<div class="poster">
+		<div class="pullUp" status="loading"></div>
+	</div>
+	<div class="banner">
+		<% pageSettings.bannar.forEach(function(data, index){ %>
+			<a href="<%= _extFn.getAppLink('openURL', {"url": data.link + '&r=hdtrc.' + this.hdtrc + '.' + this.r, "inApp":1, "require_app_info":1, "title": data.name || "美妆"}, this.os, '', data.link) %>"><img src="<%= data.pic %>"></a>
+		<% }); %>
+	</div>
+	<div class="fixed_wrap">
+		<div class="bs_tab">
+			<% pageSettings.nav.forEach(function(data, index){ %>
+				<div <%= index == 0 ? 'class="p_tab_active"' : '' %> data_name="<%= data.r %>" data_id="<%= index %>"><%= data.name %></div>
+			<% }); %>
+		</div>
+	</div>
+</div>
+
+<%= requireFn("biz/beauty_sale/gotop.html")({
+	'isIphone': this.os.ios,
+	'_JSstack': this._JSstack,
+	'_JSmods': this._JSmods
+});%>
+
+<script type="text/html" id="posterWall">
+<div class="goods_units">
+	<?
+		function getStringLengthArr(s , len){
+			var w = 0;
+			var time = 0;
+			for(length=s.length; time<length; ){
+				if(/[^\x00-\xff]/.test(s[time])){
+					w+=2;
+				}else{
+					w+=1;
+				}	
+				time ++;
+				if(w >= (len*2)){
+					break;
+				}
+			}
+			return time;
+		}
+		function mSubstr(str , len , pad){
+			if (!str || 0 == str.length) return '';
+			if (undefined == pad ) pad = '...';
+			len = getStringLengthArr(str , len);
+			return str.substr( 0 , len) + ((pad && str.length> len) ? pad : '');
+		}
+		function getAppLink(protocol,param , os , r ,wapHref ,extra){
+			if (!protocol || !param) return false;
+			if (!os) return wapHref || '###noapp';
+			if (r) param.r = r;
+			var link = 'meilishuo';
+			if (os && os.ipad) link = 'meilishuohd';
+			link += '://'+ protocol +'.meilishuo?json_params='+ encodeURIComponent(JSON.stringify(param));
+			if(extra) link += '&source=' + extra;
+
+			return link;
+		}
+		var r = this.r;
+
+		this.data && this.data.forEach(function(data){
+			if(data.is_end == 1){
+				var stutas_class = 'act_over';
+			} else if(data.repertory == 0){
+				var stutas_class = 'goods_end';
+			} else {
+				var stutas_class = '';
+			}
+			var goods_url = getAppLink('twitter_single', {'twitter_info' : {'twitter_id' : data.twitter_id, 'is_doota' : 1}}, <%= this.os && this.os.mlsApp %>, r, '/share/item/'+data.twitter_id);
+	?>
+		<div class="goods_box">
+			<a class="goods_img" href="<?= goods_url ?>">
+				<span class="bs_load_img" asrc="<?= data.image ?>"></span>
+				<? if(stutas_class){ ?>
+					<span class="goods_status <?= stutas_class ?>"></span>
+				<? } else if(data.marks && data.marks[0]){
+						var _l = 0; var style = '';
+						data.marks.forEach(function(marks_data, index){
+							if(index > 1) return;
+					?>
+							<div class="Farm" style="<?= style ?>">
+								<img class="Standard" src="<?= marks_data.img_url?>" style="width:<?= marks_data.img_width/1.3 ?>px;"/>
+							</div>
+					<?		style = 'left: ' + (parseInt(marks_data.img_width/1.3) + 6) + 'px;';
+					});
+				} ?>
+			</a>
+			<div class="desc_box">
+				<p class="desc"><a href="<?= goods_url ?>"><?= mSubstr(data.goods_title, 20, '...') ?></a></p>
+				<?
+					var discount_num = Math.round(data.price/data.original_price*100)/10;
+					if(discount_num > 10 || data.original_price > 1000){
+						discount_num = '';
+					} else {
+						if(discount_num.toString().indexOf('.')<0){
+							discount_num += '.0';
+						}
+						discount_num += '折';
+					}
+				?>
+				<p class="price"><span class="red_f now_price">¥<?= data.price ?></span><? if(data.original_price && discount_num != '10.0'){ ?><span class="sequence">￥<del><?= data.original_price ?></del></span><span><?= discount_num ?></span><? } ?></p>
+				<div class="like_buy"><p class="buy_num"><span class="red_f"><?= data.sell_num || 0 ?></span><%= now_date.getDate() - BeginDate < 0 ? "人已喜欢" : "人在抢购" %></p></div>
+			</div>
+		</div>
+	<? }); ?>
+</div>
+</script>
+
+<script>
+	fml.vars.acid = '<%== this.acid %>';
+	fml.vars.huodong_code = '<%= "bs_1212" %>';
+	fml.vars.r = '<%== this.r + "hdtrc=" + this.hdtrc + ".story" + this.acid %>';
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/biz/beauty_sale12');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot_simple.html%>

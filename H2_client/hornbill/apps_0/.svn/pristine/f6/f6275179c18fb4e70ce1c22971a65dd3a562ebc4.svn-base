@@ -1,0 +1,170 @@
+@import "sq.less";
+@import "search_md.less";
+
+body{
+	.f(12*@f);
+	.bgc(#efefef);
+}
+
+.search {
+	.pf;
+	top: 0;
+	left: 0;
+	width: 100%;
+	z-index: 1;
+	//box-shadow: 1px 0 7px #efefef;
+}
+
+.content_wrap {
+	.mt(.84rem);
+}
+
+.category_nav {
+	.mb(.20rem);
+	.hidden;
+	.l(.86rem); 
+	.f(.28rem);
+	.bgc(#f5f5f5); 
+	p{ .c; }
+	a{ .i_block(); }
+	.clothestap{
+		.ml(.16rem); 
+		.mr(.16rem); 
+		.pl(.10rem); 
+		.pr(.10rem);
+	}
+	.cosmetictap{
+		.left;
+		.w(20%);
+	}
+	span{
+		.i_block;
+		.l(.70rem);
+		border-bottom: 2px solid #f5f5f5; 
+	}
+	span.type_select{
+		.h(.56rem);
+		.fc(#ff6699); 
+		border-bottom: 2px solid #ff6699; 
+	}
+}
+
+.order_nav { 
+	.f(.26rem);
+	 .c;
+	.bgwhite;
+	.flexbox; 
+	.hidden;
+	li { 
+		.flex(1); 
+	}
+	.selected { 
+		.red; 
+		.f(.28rem);
+	}
+	a { 
+		.block;
+		.pt(.2rem);
+		.pb(.2rem);
+	}
+	span { 
+		.block;
+		border-left: 1px solid #d9d9d9; 
+	}
+	li:first-child { 
+		span {
+			.border-n; 
+		}
+	}
+}
+
+.goods_wall {
+	.pr;
+	.mt(.2rem);
+	.f(.24rem);
+	.clearfix;
+	.goods_li{
+		.pa;
+		.w(50%);
+		.hidden;
+		.li_border{
+			.ml(10*@w);
+			.mr(10*@w);
+		}
+	}
+	.li_border {
+		.pr;
+		.mb(20*@w); 
+		.bgwhite;
+		.list_img {
+			.block;
+			background-repeat: no-repeat;
+			background-position: center center;
+			background-size: cover;
+			.hidden;
+		}
+		.list_title {
+			.fc(#000); 
+			.l(.32rem);
+			.hidden;
+		}
+	}
+	.list_info { 
+		.pt(.20rem); 
+		.pl(.20rem); 
+		.pb(.20rem); 
+		.pr(.20rem); 
+	}
+	.list_cost { 
+		.pt(.20rem); 
+		.pb(.10rem); 
+	}
+	.money_now { 
+		.f(.30rem); 
+		.pr(.10rem); 
+	}
+	.money_normal {
+		.f(.22rem); 
+		.t-through; 
+	}
+	.goods_type{
+		.pa; 
+		top: -.04rem;; 
+		left: .10rem;
+		.l(.34rem); 
+		.white; 
+		.c; 
+		.border-r(0 0 .06rem .06rem);
+		img{ .i_block; }
+	}
+	.two_type { left: .9rem; }
+	.new { .bgc(#ff96b9); }
+	.hot { .bgc(#ff6f80); }
+}
+
+/* goods加载状态 */
+.pullUp {
+	.pullUpDown > .common;
+	.pullUpDown > .loading;
+	&:before{
+		.nowrap;
+		.ml(-.64rem);
+	}
+	&[status="tap"] {
+		background: 0 none;	
+	}
+	&[status="stop"] {
+		background: 0 none;
+		.h(.04rem);
+		&:before {
+			.i_block;
+			content: "未能找到更多商品";
+		}
+	}
+}
+
+/* 回到顶部 */
+.goTop;
+#goTop{
+	bottom: .2rem;
+}

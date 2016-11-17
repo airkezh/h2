@@ -1,0 +1,139 @@
+@import "../../block.less";
+body{ .bgc(#fff); .yahei; .f(.24rem); .w(6.4rem);}
+img{ .block;.w(100%); }
+a{ outline: none; }
+input{ border: none;-webkit-appearance: none; }
+
+.nav{
+	.h(.8rem); .l(.8rem); .clearfix;
+	a{ .left; .w(33.3%); .h(100%); box-sizing: border-box; .c; .f(.3rem); .pr;}	
+	a.curr{ .fc(#ff6666);}
+	a:after{ content: ''; .pa; top: .24rem; right: 0; .w(2px); .h(.3rem); .bgc(#ddd);}
+	a:last-child:after{ .w(0);}
+}
+.banner{ .w(100%); .h(2rem);}
+.seemore{ .w(100%); .h(.82rem); .bgc(#f8f8f8); .pt(.18rem);
+	.linkBtn{ .w(2.03rem); .h(.6rem); .l(.65rem); .f(.26rem); .c; .block; background: url('http://d04.res.meilishuo.net/pic/_o/5d/c5/c306735a46481cd8c514cc30d73c_394_126.cg.png') no-repeat; background-size: contain; .auto;}
+}
+
+.actTip{
+	.bgc(#F8F8F8); .pt(.15rem); .pb(.15rem); .h(.4rem); .l(.4rem); .clearfix;
+	.tipTxt{ border-left: 3px solid #ff6666; .pl(.1rem);}
+	.timeBox{ .right; .mr(.1rem); 
+		.time{ .ml(.16rem); .i_block;}
+		i{ font-style: normal; .i_block; .c; .white; .f(.2rem); .h(.4rem); .w(.3rem); .bgc(#ff6666); .border-r(4px);}
+	}
+}
+
+.content_box{ padding: 0 2%; .bgwhite;
+	.goodsList{ border-top: 1px solid #eee; .pt(.2rem); .pb(.2rem);
+		figure{ .w(34%); .i_block; .pr;}
+		.goodsInfo{ .w(60%); .right; .mr(3%); min-height:2rem; max-height: 2rem; height: 2rem;
+			li{ .w(100%);}
+			li:first-child{ .f(.26rem); .bgray; .nowrap; .ellipsis;}
+			li:nth-child(2){ .mt(.24rem);}
+			li:nth-child(3){ .mt(.24rem); .gray;}
+			li:nth-child(4){ .mt(.24rem); }
+			li.title{
+				a{ .bgray;}
+			}
+			li.pricebox{ .f(.36rem); .bgray;
+				i{ font-style: normal; .f(.3rem);}
+				del{ .gray; .f(.2rem);}
+				.discount{ .i_block; vertical-align: middle; .f(.16rem); .white; .bgc(#ff6666); padding: .05rem .06rem;}
+			}
+			a.statusInfo{ .block; .h(.46rem); .l(.46rem); border: 2px solid #ff6666; .border-r(.04rem); .hidden;
+				.statusBar{ .left; .pr; .w(50%); 
+					.scale{ .f(.2rem); .c; }
+					.progress{ .pa; left: 0; top: 0; opacity: .1; .h(.46rem); .bgc(#ff6666);}
+				}
+				.statusBtn{ .left; .w(50%); .h(100%); .c; .f(.26rem); .white; .bgc(#ff6666);}
+			}
+		}
+	}
+	.goodsList:first-child{ border-top: none;}
+}
+
+
+.content_box{ padding: 0 2%; }
+.status_btn {
+	.pt(10px);
+	.pb(10px);
+	.f(1.4rem);
+	.fc(#fff);
+	.block;
+	text-align: center;
+	background-color: #ff6666;
+}
+span.over_btn,li.over_btn{.bgc(#ccc;);}
+span.reminded_btn,li.reminded_btn{background: #ddd;}
+span.empty_btn,li.empty_btn{.bgc(#b6b6b6);} 
+span.buy_btn,li.buy_btn{
+	.bgc(#da333e); 
+	a{.block;.w(100%);
+		.h(100%); 
+		.fc(#fff);
+	}
+}
+/* new list*/
+.zhengdian-new.fir{ border-top: none;}
+.zhengdian-new{	.pt(14px); .mb(14px); .pr; .bgc(#fff); min-height:110px; border-top: 1px solid #eee;
+	>figure{ .w(34%); .i_block; .pr; .mt(2px); }
+	.desc{ .w(66%); .right; 
+		li{ .ml(2%); .pa; .w(64%); .bgray;}
+		li.li-a{top:1%; overflow: hidden; white-space: nowrap; .pt(14px);}
+		li.li-b{top:34%;}
+		li.li-c{top:55%;}
+		li.li-d{bottom:2px;}
+	}
+
+	.discout{
+		.bgc(#FF6666); .i_block; padding: 0.3rem 4px; .white; .ml(2.1%);
+	}
+	span.status_sum_empty,span.status_sum_over{
+		.bgc(#ccc);
+		.fc(#fff);
+	}
+	.now_price{ .bgray; .ml(-2px); vertical-align: bottom; }
+	.old_price{ .f(1rem); .gray;}
+	.saleinfo{
+		p{ .gray; height: 1.5rem; .f(1rem); line-height: 1.5rem; }	
+	}
+	.statusinfo{ border: 1px solid #ff6666; .border-r(3px); .h(2rem); .l(2rem); .flexbox;
+		.staus-bar, .status-btn{ .flex(1); .c; min-width: 50%; max-width: 50%;}
+		.staus-bar{ .pr;}
+		.status-btn{ .bgc(#ff6666); .white;
+			a{ .block; .white;}
+		}
+		.progress{ .pa; .h(2rem); opacity: .1; .bgc(#ff6666); left: 0; top: 0;}
+	}
+	.statusinfo.status_sum_empty,.statusinfo.status_sum_over{ 
+		border: 1px solid #ccc;
+		.scale{.pr;.fc(#fff);z-index: 10;}
+		.status-btn{.bgc(#fff);.fc(#ff7777);}
+		.progress{ opacity: 1; .bgc(#ccc);}
+	}
+	.statusinfo.status_sum_remind{ 
+		border: 1px solid #fdac29;
+		.status-btn{ .bgc(#fdac29);}
+	}
+	.mark{
+		position: absolute;
+		top: 16px;
+		left: 0;
+		.w(45px);
+		.h(45px);
+	}
+	.qiang{
+		background: url('http://d02.res.meilishuo.net/pic/_o/5d/ac/984022f732bb56bad475132745a5_114_107.ch.png') center center no-repeat;
+		background-size: 100% 100%;
+	}
+	.pin{
+		background: url('http://d01.res.meilishuo.net/pic/_o/11/f3/19f45df3dd53ae9ecaa050a4a83a_114_107.cg.png') center center no-repeat;
+		background-size: 100% 100%;
+	}
+	.newstyle{
+		background: url('http://d01.res.meilishuo.net/pic/_o/dd/3c/8bbbbdf968d88af26ef659d84a18_114_107.cg.png') center center no-repeat;
+		background-size: 100% 100%;
+	}
+}

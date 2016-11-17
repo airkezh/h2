@@ -1,0 +1,44 @@
+<%
+	var www = this.os.tablet ? 'meilishuohd://' : 'meilishuo://';
+	var red_url= this.os.ios ? www : www + 'open.meilishuo';
+
+	if(this.attr_id){
+		var dparam = {
+			'method' : "twitter\/attr"
+			, 'params' : {
+				'type' : '7d'
+				, 'attr_id' : this.attr_id
+			}
+			, 'title' : this.title
+			,'r' : 'wap-slideOpen'
+		}
+
+		red_url = www + 'twitter_list.meilishuo?json_params='+ encodeURIComponent(JSON.stringify(dparam))
+
+	}else if(this.twitter_id){
+		var dparam = {
+			'twitter_info':{
+				'twitter_id' : this.twitter_id	
+				, 'is_doota' : this.is_doota
+			}
+			,'r' : 'wap-slideOpen'
+		}
+
+		red_url = www + 'twitter_single.meilishuo?json_params='+ encodeURIComponent(JSON.stringify(dparam))
+	}
+	
+%>
+<div class="none_f <%if(this.footBanner){%>qianqian<%}else{%>slideOpen<%}%>" id="slideOpen">
+	<div class="track">
+		<span class="slider" red_url="/download/latest/wap" href="<%= red_url%>"></span>
+	</div>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+    fml.use(['wap/app/landUrl','wap/zepto'],function(){
+		var land = this.landUrl.getLandPlat();
+		if (land){
+			if ('asha' == land) $('#slideOpen').hide();
+			$('#slideOpen .slider').attr('red_url' , '/goto/land/'+ encodeURIComponent(land) );
+		}
+	});
+_use:", this._JSstack , this._JSmods ); %>

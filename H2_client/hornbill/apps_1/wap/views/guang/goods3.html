@@ -1,0 +1,56 @@
+<%#head_simple.html%>
+<%
+	var EfnSubstr = _extFn.mSubstr;
+%>
+
+</head>
+<body>
+
+<section id="guang_main" class="guang_main" ismove="0">
+	<header class="header">
+		<span class="btn_left btn_home"></span>
+		<h1><%== this.currentWord%></h1>
+		<span class="btn_right btn_aside">类目</span>	
+	</header>
+	<section id="wrapper_main" class="wrapper">
+		<div class="scroller">
+			<div class="pullDown" status="normal">
+				<span class="icon"></span>
+			</div>
+			<section class="wrapperInner">
+				<div class="goods_wall">
+					<b class="col_flag" col="0"></b>
+				</div>
+			</section>
+			<div class="pullUp" status="normal">
+				<span class="icon"></span>
+			</div>
+		</div>
+	</section>
+</section>
+<aside id="guang_aside" class="guang_aside">
+	<header class="header">
+		<h3>搜索</h3>
+		<% if(1==0){ %>
+		<form action="/search" method="get">
+			<p class="text"><input class="searchKeyCatalog" type="text" name="searchKey" value="" placeholder="去其他关键词"></p>
+			<p class="btn"><input type="submit" value="搜索"></p>
+		</form>
+		<% } %>
+	</header>
+	<section id="wrapper_aside" class="wrapper">
+		<div class="scroller">
+			<%# guang/aside2.html%>
+		</div>
+	</section>
+</aside>
+<%# wapPoster.html%>
+
+<script>
+fml.vars._guang_word_name = "<%== this.attrName%>";
+Meilishuo.config.curWord = "<%== this.currentWord%>";
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/guang3');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

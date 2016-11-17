@@ -1,0 +1,35 @@
+ <strong class="title">设置头像</strong>
+<fieldset>
+	<form id="setAvatar" method="post" action="/imageupload/user_avatar_save" target="upload_file" enctype="multipart/form-data" >
+		<div class="setAvatar">
+			<div>
+				<div class="img_submit">
+					<span>选择上传的图片</span>
+					<input type="file" name="attach" class="img_submit_in" value="img_submit" />
+				</div>
+
+				<input type="hidden" name="mode" value="3" />
+				<input type="hidden" name="x1" id="x1" value="" />
+				<input type="hidden" name="y1" id="y1" value="" />
+				<input type="hidden" name="w" id="w" value="" />
+				<input type="hidden" name="h" id="h" value="" />
+				<iframe id="get_upload_file" name="upload_file" class="none_f" frameborder="0"></iframe>
+			</div>
+				<p>选一张您喜欢的照片做头像吧(建议图片尺寸不小于200*200)。支持Jpeg和静态Gif格式，大小不超过2M。</p>
+			<img src="<%==this.setImg.avatar_e%>" class="original" />
+			<div class="preview_pic">
+				<p class="pic_msg">拖动下方方块，调整头像大小</p>
+				<img id="thumbn" src="" />
+				<div class="crop_out">
+					<p class="pic_msg">头像预览</p>
+					<div class="crop">
+						<img src="" class="preview">
+					</div>
+				</div>
+				<br />
+				
+				<input type="submit" name="save_thumbnail" value="确 认" id="set_submit" class="ext_submit">
+			</div>
+		</div>
+	</form>
+</fieldset>

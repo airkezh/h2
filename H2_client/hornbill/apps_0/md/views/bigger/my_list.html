@@ -1,0 +1,34 @@
+<%# header.html%>
+<% 
+	var listInfo = this.bg_my_list.data
+%>
+<div class="wrapper">
+	<div class="rank_list">
+		<h6>我的测试列表<span class="top_r"></span></h6>
+		<% if (listInfo.list.length > 0) { %>
+			<%for(var i = 0; i < listInfo.list.length;i++){%>
+				<a href="/bigger/activity/result/?bigger_id=<%= listInfo.list[i].bigger_id%>">
+					<dl>
+						<dt><span><%= i+1%></span></dt>
+						<dd class="mar_l"><img src="<%= listInfo.list[i].bigger_image.image_thumbnail%>"></dd>
+						<dd class="mark_det">
+							<p class="pad_b24"><%= listInfo.list[i].bigger_count%>人参加打分 <span class="rig"><%= listInfo.list[i].bigger_score%>分</span></p>
+							<% if (listInfo.list[i].last_comment) { %>
+								<p><%= listInfo.list[i].last_comment.comment_content%></p>
+							<% } %>
+						</dd>
+					</dl>
+				</a>
+			<%}%>
+		<% } else { %>
+			<div class="no_tank">
+				你有逼格?没测没真相!<br/>
+				<a href="/bigger/activity/test/" class="link_btn">擦，怒测!</a>
+			</div>
+		<% } %>
+	</div>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('md/page/conatr');
+_use:", this._JSstack , this._JSmods ); %>
+<%# footer.html%>

@@ -1,0 +1,99 @@
+function Risk(opts, passport){
+	this.opts = opts || {}
+    this.passport = passport || new Passport(opts)
+
+	opts.watch && this.passport.bridge.addWatch(opts.watch)
+
+    this.dom = {}
+
+	this.initDom()
+	this.initInput()
+	this.setValidate(function(){mSelf.doRisk()});
+
+	this.updateCaptcha();
+}
+
+Risk.prototype.initDom = function(){
+	var mSelf = this
+	var passport = this.passport
+
+	this.ui = $.extend({},{
+			captchaPlaceholder:'请输入验证码'
+		},this.opts.ui)
+
+	var tpl = require('risk.html')
+	this.dom.outer = $(this.opts.outer || '#riskBox').html(passport.shareTmp(tpl, this.ui))
+	this.dom.captchaArea = this.dom.outer.find('.captchaArea')
+	this.dom.captchaImage = this.dom.captchaArea.find('img')
+
+	var isDelay;
+	this.dom.captchaArea.on('click', '.captchaImage', function(){
+		if(isDelay) return;
+
+		mSelf.updateCaptcha();
+
+		isDelay = 1;
+		setTimeout(function(){
+			isDelay = 0;
+		},500);
+	});
+
+}
+
+Risk.prototype.initInput = function(){
+	var inputList = ['captcha']
+	for(var i in inputList){
+		var inputname = inputList[i]
+		this.dom[inputname] = this.dom.outer.find('#'+inputname)
+	}
+}
+
+//表单操作
+Risk.prototype.setValidate = function(cbk){
+	var passport = this.passport
+	var validate = passport.getValidate()
+
+	var validateRules = {
+		'captcha' : {}
+	}
+	validateRules.captcha['req=' + this.ui.captchaPlaceholder] = '请输入验证码'
+
+	if(validate){
+		validate.addValidate(validateRules)
+		return;
+	}
+
+	var formName = 'riskForm'
+	var showStyle = {
+		'showmsgbyline=msg_error' : '',
+		'showmsgforsubmit=passport-form-submit' : cbk
+	}
+	var opts = {
+		'success' : 'span=msg_ok',
+		'error': 'span=msg_err'
+	}
+
+	showStyle['showmsgforsubmit=passport-form-submit'] = cbk
+
+	passport.setValidate(formName, validateRules, showStyle, opts)
+}
+
+Risk.prototype.doRisk = function (){
+	var mSelf = this
+	var url = '/aw/passport/risk'; 
+	var data = {
+		'captcha': mSelf.dom.captcha.val(),
+		'expire_type':mSelf.expireType
+	};
+
+	var callback = function(r){
+		//返回status
+	};
+	$.post(url , data , callback ,'json');
+}
+
+Risk.prototype.updateCaptcha = function (callback){
+	this.dom.captchaImage.attr('src', this.passport.bridge.host.captcha + '&session='+Math.random());
+	callback && callback();
+}
+

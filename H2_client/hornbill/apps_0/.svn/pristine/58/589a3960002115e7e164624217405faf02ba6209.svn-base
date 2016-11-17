@@ -1,0 +1,31 @@
+<%# head.html%>
+<div class="route">
+	<div class="route_bread">
+		<a href="/activity/fashion/list/" class="red_f">美丽说时尚专题</a><em> | </em><a  class="red_f" href="/activity/fashion/list/?password=brand_topic&page=1">美丽说品牌专题</a>
+	</div>
+</div>
+<div class="seasonList">
+	<% this.list  && this.list.data.map(function(v,k) { %>
+	<div class="seasonBox <%if(k%2 == 0){%>se_l<%}else{%>se_r<%}%>">
+		<div class="se_con">
+			<a class="se_title" href="<%= v.image_link %>" target="_blank"><%= v.title%></a>
+			<span class="se_date"><%= v.date%></span>
+			<a class="se_image" href="<%= v.image_link %>" target="_blank">
+				<img src="<%= v.image_url %>"/>
+			</a>
+			<div class="se_desc"><a href="<%= v.image_link %>" target="_blank"><%= v.desc %></a></div>
+			<div class="se_arrow">◆</div>
+			<div class="se_arrows">◆</div>
+			<div class="se_point"></div>
+		</div>
+		<div class="clear_f"></div>
+	</div>
+	<%});%>
+	<div class="clear_f"></div>
+</div>
+<div class="paging_panel c_f">
+<%#paging.html%>
+</div>
+
+<%# foot.html%>
+

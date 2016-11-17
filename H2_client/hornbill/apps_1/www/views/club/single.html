@@ -1,0 +1,322 @@
+<%# head.html%>
+<div class="wrap">
+	<% if (!this.notShowCrumb){%>
+	<ul class="breadcrumb">
+		<li>
+			<a href="/club/">爱美丽Club</a>
+		</li>
+		<li>
+			<span class="divider">&gt;</span>
+			<%=this.detail.article_title%>
+		</li>
+	</ul>
+	<div class="clear_f"></div>
+	<%}%>
+	<div class="single_wraper_l">
+		<div class="article_sg">
+			<% if( this.page == 0){ %>
+			<a href="/person/u/<%=this.detail.uinfo.user_id%>" target="_blank" class="left_f"><img class="ava_r" src="<%=this.detail.uinfo.avatar_a%>" width="48" height="48"></a>
+			<p class="user_time">
+				<a href="/person/u/<%=this.detail.uinfo.user_id%>" target="_blank"><%=this.detail.uinfo.nickname%></a>
+				<span class="time"><%=this.detail.article_create_time%></span>
+			</p>
+			<%if(this.detail.highlight){%><div class="best_article"></div><%}%>
+			<div class="content_sg">
+				<h2><%=this.detail.article_title%></h2>
+				<%
+					if(this.detail.shoppingshow){
+						var ss_data = this.detail.shoppingshow;
+						ss_data.n_pic_width = 120;
+						ss_data.n_pic_height = 120;
+				%>
+				<!-- 晒单宝贝置顶 start -->
+					<%
+						var ss_width = parseInt(556 - ss_data.n_pic_width * 100/ss_data.n_pic_height);
+					%>
+					<div class="goods_sg pr_f">
+						<div class="goodsWrap clearfix_f">
+							<a class="imgWrap" href="/share/item/<%=ss_data.twitter_id%>?frm=club_d_shopping&x_pid=al:d-<%= this.detail.article_id %>" target="_blank">
+								<img class="img_sg" src="<%=ss_data.show_pic%>">
+							</a>
+							<div class="titleWrap" style="width: <%= ss_width %>px;">
+								<a class="go_item" href="/share/item/<%=ss_data.twitter_id%>?frm=club_d_shopping&x_pid=al:d-<%= this.detail.article_id %>" target="_blank">去购买</a>
+								<p class="goods_title"><a href="/share/item/<%=ss_data.twitter_id%>?frm=club_d_shopping&x_pid=al:d-<%= this.detail.article_id %>" target="_blank"><%=ss_data.goods_title%></a></p>
+								<span class="red_f">价格：<%=ss_data.goods_price%></span>
+							</div>
+						</div>
+					</div>
+					<!-- 晒单宝贝置顶 end -->
+				<%}%>
+
+				<p><%=this.detail.article_htmlcontent%></p>
+				<%this.detail.tinfo && this.detail.tinfo.map(function(data){%>
+				<%if( data.show_pic) {%>
+					<%if (data.ginfo && data.ginfo.goods_id) {%>
+					<%
+						var pic_w = data.n_pic_width;
+						var pic_h = data.n_pic_height;
+						var wrap_w = 352;
+						var mt = ml = 0;
+						if(pic_h>400){
+							pic_w = pic_w * 400 / pic_h;
+							pic_h = 400;
+						} else if(pic_w<352){
+							mt = (400 - pic_h)/2;
+						}
+						if(pic_w<352){
+							ml = (352 - pic_w)/2;
+						} else {
+							 if (pic_w > 534) {
+								pic_h = 'auto';
+								pic_w = 534;
+							}
+							wrap_w = pic_w;
+						}
+						style = 'width:'+ pic_w+'px;height:' +pic_h+'px;margin-top:'+mt+'px;margin-bottom:'+mt+'px;margin-left:'+ ml+'px;'
+					%>
+						<div class="goods_sg pr_f">
+							<div class="goodsWrap clearfix_f" style="width:<%= wrap_w %>px">
+								<a class="imgWrap" href="/share/<%=data.twitter_id%>" target="_blank">
+									<img class="img_sg" src="<%=data.show_pic%>" style="<%= style %>">
+								</a>
+								<div class="titleWrap">
+									<a class="goodstitle" href="/share/<%=data.twitter_id%>" target="_blank"><%=data.ginfo.goods_title%></a>
+									<span>价格：<%=data.ginfo.goods_price%></span>
+								</div>
+							</div>
+						</div>
+					<%}else{%>
+						<%	var pic_wid = data.n_pic_width;
+							var pic_hei = data.n_pic_height;
+							if(pic_wid>532){
+								pic_hei = pic_hei * 532 / pic_wid;
+								pic_wid = 532;
+							}
+						%>
+						<div class="goods_sg pr_f">
+							<img class="img_sg" src="<%= data.show_pic %>" width="<%= pic_wid %>">
+						</div>
+					<%}%>
+				<%}%>
+				<p><%=data.twitter_htmlcontent%></p>
+				<%});%>
+				<% if(this.detail.shoppingshow){ %>
+					<div class="buys_info">
+					<% if(this.detail.buyer_tips){ %>
+						<p>买家TIPS：<%= this.detail.buyer_tips %></p>
+					<% } %>
+					<%
+						var ss_width = parseInt(556 - ss_data.n_pic_width * 100/ss_data.n_pic_height);
+					%>
+						<div class="goods_sg pr_f">
+							<div class="goodsWrap clearfix_f">
+								<a class="imgWrap" href="/share/item/<%=ss_data.twitter_id%>?frm=club_d_shopping&x_pid=al:d-<%= this.detail.article_id %>" target="_blank">
+									<img class="img_sg" src="<%=ss_data.show_pic%>">
+								</a>
+								<div class="titleWrap" style="width: <%= ss_width %>px;">
+									<a class="go_item" href="/share/item/<%=ss_data.twitter_id%>?frm=club_d_shopping&x_pid=al:d-<%= this.detail.article_id %>" target="_blank">去购买</a>
+									<p class="goods_title"><a href="/share/item/<%=ss_data.twitter_id%>?frm=club_d_shopping&x_pid=al:d-<%= this.detail.article_id %>" target="_blank"><%=ss_data.goods_title%></a></p>
+									<span class="red_f">价格：<%=ss_data.goods_price%></span>
+								</div>
+							</div>
+						</div>
+					</div>
+				<% } %>
+				<div class="bar" id="reply">
+					<% if(this.detail.tinfo.length && this.detail.article_htmlcontent){ %>
+					<p class="share left_f" data_url="http://www.meilishuo.com/club/single/<%=this.detail.article_id%>" data_title="<%=this.detail.article_title%>" data_desc="<%== this.detail.article_htmlcontent%>" data_img="<%= this.detail.tinfo[0].show_pic %>">
+						分享到 <a class="i_sina cursor_f">&nbsp;</a><a class="i_qzone cursor_f">&nbsp;</a><a class="i_tx cursor_f">&nbsp;</a>
+					</p>
+					<% } %>
+					<span class="right_f pr_f">
+						<%var isLike = this.detail.like == 1 ? 'cl_love' : 'cl_unlove';%>
+						<span class="btn_bar cl_read"><em class="cl_views">&nbsp;</em>浏览<em><%=this.detail.count_read||''%></em></span>
+						<a class="btn_bar topic_love" href="javascript:;" uid="<%=this.detail.uinfo.user_id%>" aid="<%=this.detail.article_id%>"><em class="<%=isLike%>">&nbsp;</em>喜欢<em><%=this.detail.count_like || ''%></em></a>
+						<a class="btn_bar topic_comment" href="javascript:;" paid="<%=this.detail.article_id%>"><em class="cl_i_comment">&nbsp;</em>回复<%=this.detail.count_reply || ''%></a>
+						<%if (this.detail.canDel == 1){%>
+						<a class="btn_bar topic_del" href="javascript:;" aid="<%=this.detail.article_id%>">删除</a>
+						<%}%>
+						<%if (this.user_id == this.detail.uinfo.user_id){%>
+						<a class="love_pro none_f">这是你自己的晒单哦！</a>
+						<%}%>
+					</span>
+				</div>
+			</div>
+			<div class="clear_f"></div>
+			<% } %>
+			<div class="reply_list">
+			<%this.reply_list && this.reply_list.ainfo && this.reply_list.ainfo.map(function(data, index){%>
+				<div class="reply_item">
+					<% if( this.page == 0 || 0 != index){ %>
+					<div class="reply_se"><span <%if(0 == index){%>class="first_reply"<%};%>></span></div>
+					<% } %>
+					<a href="/person/u/<%=data.uinfo.user_id%>" target="_blank" class="left_f"><img class="ava_r" src="<%=data.uinfo.avatar_a%>" width="40" height="40"></a>
+					<div class="reply_con">
+						<a class="reply_name" href="/person/u/<%=data.uinfo.user_id%>" target="_blank"><%=data.uinfo.nickname%></a>
+						<span class="time"><%=data.article_create_time%></span>
+						<%data.tinfo && data.tinfo.map(function(reply_data){%>
+							<p class="mt10_f"><%=reply_data.twitter_htmlcontent%></p>
+							<%if(reply_data.f_show_pic){%>
+								<div class="pic mt10_f">
+									<div class="pic_big">
+										<%if(reply_data.ginfo && reply_data.ginfo.goods_id>0){%>
+											<%	
+												var goodsData = reply_data;
+												var pic_w = goodsData.n_pic_width;
+												var pic_h = goodsData.n_pic_height;
+												var wrap_w = 352;
+												var mt = ml = 0;
+												if(pic_h>400){
+													pic_w = pic_w * 400 / pic_h;
+													pic_h = 400;
+												} else if(pic_w<352){
+													mt = (400 - pic_h)/2;
+												}
+												if(pic_w<352){
+													ml = (352 - pic_w)/2;
+												} else {
+													 if (pic_w > 534) {
+														pic_h = 'auto';
+														pic_w = 534;
+													}
+													wrap_w = pic_w;
+												}
+												style = 'width:'+ pic_w+'px;height:' +pic_h+'px;margin-top:'+mt+'px;margin-bottom:'+mt+'px;margin-left:'+ ml+'px;'
+											%>
+											<div class="goodsWrap_reply clearfix_f" style="width:<%= wrap_w %>px">
+												<a class="imgWrap" href="/share/<%=reply_data.twitter_id%>" target="_blank">
+													<img class="img_sg" src="<%=reply_data.n_show_pic%>" style="<%= style %>">
+												</a>
+												<div class="titleWrap">
+													<a href="/share/<%=reply_data.twitter_id%>" class="goodstitle" target="_blank"><%=reply_data.ginfo.goods_title%></a>
+													<span>价格：<%=reply_data.ginfo.goods_price%></span>
+												</div>
+											</div>
+										<%} else {%>
+											<%	var pic_wid = reply_data.n_pic_width;
+												var pic_hei = reply_data.n_pic_height;
+												if(pic_wid>532){
+													pic_hei = pic_hei * 532 / pic_wid;
+													pic_wid = 532;
+												}
+											%>
+											<img src="<%= reply_data.n_show_pic %>" width="<%= pic_wid %>">
+										<% } %>
+									</div>
+								</div>
+							<%}%>
+						<%});%>
+						<div class="clear_f"></div>
+						<div class="item_bar clearfix_f">
+							<span class="item_reply" paid="<%=data.article_id%>">回复</span>
+							<%if (data.canDel == 1){%>
+								<span class="item_del" aid="<%=data.article_id%>">删除</span>
+							<%}%>
+						</div>
+					</div>
+					<div class="clear_f"></div>
+				</div>
+				<%});%>
+			<%if(this.reply_list.pages && this.reply_list.pages.total_num > 20){%>
+			<div class="separation"></div>
+			<%}%>
+			</div>
+			<div class="separation"></div>
+			<div class="paging_panel c_f">
+				<%#paging.html%>
+			</div>
+			<div class="content_sg reply_block">
+				<div>
+					<% if(!this.userInfo.user_id){ %>
+						<div class="no_login">请登录后回复，立即<span class="red_f"><a class="reply_login" href="javascript:void(0);">登录</a>/<a href="/user/register">注册</a></span></div>
+					<% } else if(this.clubTest.canReply){ %>
+						<textarea class="reply_sg editor" placeholder="在这里输入回复内容..."></textarea>
+					<% } else { %>
+						<div class="no_replay">爱美丽Club内测中，发帖/回复暂未全部开放。先去逛逛吧！</div>
+					<% } %>
+				</div>
+				<div class="reply_bar mt10_f pr_f">
+					<% if(this.clubTest.canReply){ %>
+						<div class="toolwrap">
+							<a class="share_smileys">&nbsp;</a>
+						</div>
+						<div class="checkBox<%= this.clubTest.checkCode ? '' : ' none_f' %>" id="checkBox">
+							<label for="checkcode">验证码：<input class="l_ipt<%= this.clubTest.checkCode ? '' : ' noCheck' %>" id="checkcode" name="checkcode" type="text" value="" placeholder="验证码" maxlength="4" /></label>
+							<div class="checkImage" title="点击换一张">
+								<span id="checkcodeImage">
+									<img width="78" height="26" isblank="true" src="<%= this.PICTURE_URL %>images/register/blank.jpg">
+								</span>
+							</div>
+						</div>
+					<% } else { %>
+						<span class="share_smileys_off">&nbsp;</span>
+					<% } %>
+					<span class="<%= this.clubTest.canReply ? 'reply_btn' : 'replay_off'%>">立即回复</span>
+					<div class="img_wraper pa_f"></div>
+				</div>
+			</div>
+			<div class="clear_f"></div>
+		</div>
+	</div>
+	<% if (!this.notShowCrumb){%>
+	<div class="wraper_r">
+		<a href="/club/newShoppingTopic" target="_blank" class="shopPublishor">我要晒单</a>
+		<div class="sider">
+			<div class="redline1"></div>
+			<h2 style="margin-bottom:10px;">今日晒单</h2>
+			<%this.hot_recommend && this.hot_recommend.map(function(data){%>
+			<div class="hot_topic clearfix_f">
+				<a class="hot_title" href="/club/single/<%=data.article_id%>" target="_blank"><em class="cl_i_item">&nbsp;</em><%=data.article_title%></a>
+				<div class="hot_imgs">
+					<%data.pinfo && data.pinfo.map(function(pics, index){%>
+					<a href="/club/single/<%=data.article_id%>" target="_blank"><img src="<%=pics.pic_url%>" width="51" height="51"<%if(index==0){%> style="margin-right:1px;"<%}%>></a>
+					<%});%>
+				</div>
+			</div>
+			<%});%>
+			<a href="/club/" target="_blank" class="moreTopics">更多晒单&gt;&gt;</a>
+		</div>
+		<div class="sider mt14_f">
+			<div class="redline1"></div>
+			<h2>最新发布</h2>
+			<ul class="newTopics">
+				<% this.newTopics && this.newTopics.map(function(data){ %>
+				<li><a href="/club/single/<%=data.article_id%>" target="_blank"><em class="cl_i_item">&nbsp;</em><%=data.article_title%></a></li>
+				<% }); %>
+			</ul>
+			<a href="/club/" target="_blank" class="moreTopics">更多晒单&gt;&gt;</a>
+		</div>
+	</div>
+	<% } %>
+</div>
+
+<%# user/windows.html%>
+<script>
+	Meilishuo.config.aid = '<%=this.detail.article_id%>';	
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/club/single');
+	fml.use(['jquery' , 'app/shareTo'] , function(){
+		var getShareMsg = function (dom){
+			return shareData = {
+				url : dom.attr('data_url'),
+				title : dom.attr('data_title'),
+				desc : dom.attr('data_desc'),
+				img : dom.attr('data_img')
+			}
+		}
+		$('.i_qzone').bind('click' , $.proxy(function(event){
+			var shareData = getShareMsg($(event.currentTarget).parents(':first'));
+			this.shareTo.shareToQzone(shareData.url , '' , shareData.desc , shareData.title , shareData.img);
+		} , this));
+		$('.i_sina').bind('click' , $.proxy(function(event){
+			var shareData = getShareMsg($(event.currentTarget).parents(':first'));
+			this.shareTo.shareToWeibo(shareData.url, shareData.desc, shareData.img);
+		} , this));
+		$('.i_tx').bind('click' , $.proxy(function(event){
+			var shareData = getShareMsg($(event.currentTarget).parents(':first'));
+			this.shareTo.shareToQQ(shareData.url , shareData.desc , shareData.img);
+		} , this));
+	});
+_use:", this._JSstack , this._JSmods); %>
+<%# foot.html%>

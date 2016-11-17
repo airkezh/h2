@@ -1,0 +1,209 @@
+@import "storeAtom.less";
+@import "../block.less";
+@import "../window.less";
+@import "../cssreset.less";
+@maincolor: #F69;
+@bdsl: 1px solid #ebeaea;
+@bds: 1px solid #e6e6e6;
+//日历控件的样式
+.datepicker; /* 设置字体的mixin */
+.mixin(@font-color: white;
+@font-size: 12px;
+) {
+	color: @font-color;
+	font-size: @font-size;
+}
+.doota > .icon;
+.page;
+.pageNav {
+	.page > .pageRed;
+}
+.paging_panel {
+	.pt(10px);
+	.pb(30px);
+}
+.content {
+	.tabs {
+		.clearfix();
+		.bgc(#f7f6f6);
+		border-top: @bdsl;
+		.menu {
+			.clearfix();
+			.left();
+			.bgc(#ffffff);
+			.un_selected {
+				.left;
+				.w(100px);
+				height: 48px;
+				text-align: center;
+				cursor: pointer;
+				background: #f7f6f6;
+				line-height: 48px;
+				font-size: 15px;
+				border-bottom: @bdsl
+			}
+			.selected_pannel {
+				float: left;
+				border-top: 3px solid #ff6699;
+				border-right: @bds;
+				border-left: @bds;
+				.left;
+				.w(100px);
+				.h(45px);
+				text-align: center;
+				cursor: pointer;
+				.bgc(#ffffff);
+				.l(45px);
+				font-size: 15px;
+			}
+			.last {
+				.w(578px)
+			}
+		}
+	}
+	
+	/* *1. 查询条件* */
+	.op-options {
+		background-color: white;
+		padding: 20px;
+		p {
+			margin-top: 20px;
+		}
+		.sale-time {
+			.cursor();
+			.bgc(#f5f2f1)
+		}
+		.time-input {
+			.w(100px);
+			display: inline-block;
+			vertical-align: middle;
+			height: 20px;
+		}
+		
+		/* 查询按钮的样式 */
+		.op-submit {
+			border: none;
+			background-color: @maincolor;
+			display: inline-block;
+			height: 30px;
+			width: 70px;
+			float: right;
+			vertical-align: middle;
+			border-radius: 3px; /* ie7 下float：right会出问题。所以hack其位置 */
+			*float: none;
+			*margin-left: 30px;
+			.mixin(white);
+			.cursor();
+		}
+		
+		/* 预设置的查询时间的样式 */
+		.sale-time {
+			width: 80px;
+			height: 30px;
+			text-align: center;
+			line-height: 30px;
+			display: inline-block;
+			margin-right: 20px;
+		}
+		
+		/* 选中之后的样式 */
+		.sale-time.selected {
+			.sale-time;
+			background-color: @maincolor;
+			.mixin(white);
+		}
+		
+		/* 显示平台的样式 */
+		.platform {
+			margin-right: 20px;
+			.mixin(black, 14px);
+		}
+	}
+	
+	/* *2.商品表格样式* */
+	.zonglan-goods-table {
+		margin-top: 20px;
+		width: 100%;
+		border: 1px solid #e6e6e6;
+		thead tr {
+			th {
+				border: 1px solid #e6e6e6;
+				height: 43px;
+				font-weight: normal;
+			}
+			background-color: #F5F2F1;
+		}
+		tbody td {
+			text-align: center;
+			border: 1px solid #e6e6e6;
+			padding: 10px;
+			&.first-col {
+				width: 184px;
+				.goods-item {
+					display: inline-block;
+					width: 170px;
+					.img-wrap {
+						display: inline-block;
+						height: 68px;
+						border: 1px solid #e6e6e6;
+						overflow: hidden;
+						margin-right: 10px;
+						float: left;
+					}
+					.goods-icon {
+						width: 68px;
+						float: left;
+					}
+					.goods-title {
+						width: 85px;
+						display: inline-block;
+					}
+				}
+			}
+		}
+	}
+	
+	/* *pc mob 数据表格 */
+	.pc-goods-table {
+		.zonglan-goods-table;
+		tbody td {
+			text-align: center;
+			max-width: 80px;
+			&.first-col {
+				width: 125px;
+			}
+			
+			/* 表格中查询按钮 */
+			.view-goods {
+				display: inline-block;
+				line-height: 25px;
+				height: 25px;
+				width: 80px;
+				border-radius: 5px;
+				color: white;
+				background-color: @maincolor;
+			}
+		}
+		.goods_props {
+			color: #BEBABA;
+		}
+	}
+	
+	/* 表格中查询按钮 */
+	.view-goods {
+		display: inline-block;
+		text-align: center;
+		line-height: 30px;
+		height: 30px;
+		width: 80px;
+		color: white;
+		border-radius: 3px;
+		background-color: @maincolor;
+		&:hover {
+			color: white;
+		}
+	}
+	.pagepanel {
+		margin-top: 30px;
+	}
+}

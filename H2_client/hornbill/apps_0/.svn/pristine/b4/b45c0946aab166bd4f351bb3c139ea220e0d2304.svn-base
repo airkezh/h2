@@ -1,0 +1,516 @@
+<%
+	/**
+ 	 * @fileoverview 会员首页－美丽说
+     * @requires jquery
+     * @author kehuang@meilishuo.com
+     * @date 2015-08-26
+     */
+%>
+
+<%# head.html%>
+<%
+	var curUserIsLogin = this.isLogin;
+	var curServerDate = this.serverDate;
+	var curServerTime = curServerDate.getTime();
+	var curUserInfo = this.userInfo || {};
+	var curSignData = this.signData || {};
+	var curBeautyData = this.percentData || {};
+	var curUserSignData = curSignData.data || {};
+	var curUserBeautyData = curBeautyData.data || {};
+	var curUserName = curUserInfo.nickname || '';
+	var curUserAvatar = curUserInfo.avatar_c || '';
+	var curUserLevel = curUserSignData.level || 0;
+	var curUserBeans = curUserSignData.beans_available || 0;
+	var curUserBeauty = curUserBeautyData.score || 0;
+	var curUserPercent = (curUserBeautyData.percent || 0) + '%';
+	var curUserHead = (curUserAvatar == '') ? 'http://d04.res.meilishuo.net/pic/_o/dd/be/6abcb45c3b38d9d1acf4a1d86938_128_128.ch.jpg' : curUserAvatar.replace('/c/', '/a/');
+
+	var tempTopBannerArr = [];
+	var cur_server_time = parseInt(curServerTime / 1000);
+    var curTopBannerArr = this.pageData.top_banner || [];
+	var curTopBannerLen = curTopBannerArr.length;
+
+	for (var i = 0; i < curTopBannerLen; i++) {
+		var banner_status = true,
+			curSwipeBannerData = curTopBannerArr[i],
+			banner_begin_time = Date.parse(curSwipeBannerData.begin_time || '') / 1000,
+			banner_end_time = Date.parse(curSwipeBannerData.end_time || '') / 1000;
+
+		if (banner_begin_time) {
+			if (!banner_end_time || (banner_end_time && (cur_server_time >= banner_begin_time) && (cur_server_time <= banner_end_time))) {
+				banner_status = true;
+			} else {
+				banner_status = false;
+			}
+		} else {
+			if (!banner_end_time || (banner_end_time && (cur_server_time <= banner_end_time))) {
+				banner_status = true;
+			} else {
+				banner_status = false;
+			}
+		}
+
+		banner_status && tempTopBannerArr.push(curSwipeBannerData);
+	}
+
+	var topBannerArr = tempTopBannerArr;
+%>
+
+<div class="header_bg">
+	<div class="header_top logo_wrap">
+		<%
+			var logo_href = curUserIsLogin ? '/?frm=logoa' : '/welcome';
+		%>
+		<a class="logo_new" href="<%= logo_href %>"></a>
+
+		<div class="tab_nav">
+			<ul>
+				<li class="active"><a href="/member/main/">会员首页</a></li>
+				<li><a href="/member/interests/">会员特权</a></li>
+				<li><a href="/member/beans_interests/">美美豆特权</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<div class="wrap">
+	<%
+		var topBannerArrLen = topBannerArr.length || 0;
+
+		if (topBannerArrLen > 0) {
+	%>
+	<div class="banner">
+		<ul>
+			<%
+				for (var i = 0; i < topBannerArrLen; i++) {
+					var data = topBannerArr[i],
+						src = data.img_src || '',
+						title = data.img_title || '',
+						url = data.img_link || 'javascript:;';
+
+					if (src != '') {
+			%>
+			<li>
+				<a href="<%= url %>" data-img="<%= src %>" style="background: repeat center top;"></a>
+			</li>
+			<%
+					}
+				}
+			%>
+		</ul>
+		<%
+			if (topBannerArrLen > 1) {
+		%>
+		<div class="focus">
+			<%
+				for (var j = 0; j < topBannerArrLen; j++) {
+			%>
+			<a></a>
+			<%
+				}
+			%>
+		</div>
+		<%
+			}
+		%>
+	</div>
+	<%
+		}
+	%>
+
+	<div class="user_info_wrap">
+		<div class="user_info_box">
+			<div class="user_box">
+				<div class="user_head">
+					<img src="<%= curUserHead %>" alt="<%= curUserName %>">
+				</div>
+
+				<div class="user_name"><%= curUserName %></div>
+
+				<div class="user_level level_<%= curUserLevel %>"></div>
+
+				<div class="user_desc">已经打败了<%= curUserPercent %>的爱美丽们</div>
+
+				<div class="user_value">
+					<div class="beauty_box">
+						<p class="value"><%= curUserBeauty %></p>
+						<p class="name">美丽值</p>
+					</div>
+					<div class="beans_box">
+						<p class="value"><%= curUserBeans %></p>
+						<p class="name">美美豆</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="interests_wrap">
+		<div id="j_interests_swipe" class="swipe">
+			<div class="swipe_wrap" style="width: 320000px;">
+				<%
+					var swipeHtml = '';
+
+					switch (curUserLevel) {
+						case 0:
+							swipeHtml = [
+								'<div class="swipe_pic">',
+									'<ul class="interest_box">',
+										'<li>',
+											'<div class="interests interest_0 active"></div>',
+											'<p class="name active">签到领美美豆</p>',
+											'<p class="desc active">V0-V4会员每天签到领5-25美美豆<br>不等，连续签到到达指定天数更有<br>超多美美豆奖励</p>',
+										'</li>',
+										'<li>',
+											'<div class="interests interest_1 active"></div>',
+											'<p class="name active">72小时发货</p>',
+											'<p class="desc active">会员完成付款后<br>72小时内完成发货<br>（不可抗力因素除外）</p>',
+										'</li>',
+										'<li>',
+											'<div class="interests interest_3 active"></div>',
+											'<p class="name active">新人专享活动</p>',
+											'<p class="desc active">首次下载美丽说App起7天内<br>有机会获得首次下单满减优惠<br>最高力度满89元减50</p>',
+										'</li>',
+										'<li>',
+											'<div class="interests interest_4 active"></div>',
+											'<p class="name active">7天无理由退货</p>',
+											'<p class="desc active">物流签收后的7天内，因主观原因不<br>愿完成交易，且满足退货条件，可<br>享受退货服务</p>',
+										'</li>',
+										'<li>',
+											'<div class="interests interest_5 active"></div>',
+											'<p class="name active">美美豆兑礼券</p>',
+											'<p class="desc active">滴滴打车券、本来生活优惠券、话<br>费优惠券...千款优惠礼券等你来领，<br>全场70美美豆起</p>',
+										'</li>',
+										'<li>',
+											'<div class="interests interest_6 active"></div>',
+											'<p class="name active">美美豆大转盘</p>',
+											'<p class="desc active">V0及以上会员<br>可享受20美美豆抽奖一次<br>大概率中iWatch</p>',
+										'</li>',
+										'<li>',
+											'<div class="interests interest_8 active"></div>',
+											'<p class="name active">退货运费补贴</p>',
+											'<p class="desc active">会员在美丽说购物，在线提交退货<br>申请，且退货成功可享受补贴5或<br>10元全场无门槛券</p>',
+										'</li>',
+										'<li>',
+											'<div class="interests interest_9 active"></div>',
+											'<p class="name active">先行赔付退款</p>',
+											'<p class="desc active">商家拒绝履行“7天无理由退货”的<br>情况下，美丽说将会员支付的金额<br>进行先行赔付退款</p>',
+										'</li>',
+									'</ul>',
+								'</div>',
+								'<div class="swipe_pic">',
+									'<ul class="interest_box">',
+										'<li>',
+											'<div class="interests interest_2"></div>',
+											'<p class="name">白付美定向邀请</p>',
+											'<p class="desc">可进行订单分期支付<br>支持3、6、9、12、期次分期<br>最长免息期50天</p>',
+										'</li>',
+										'<li>',
+											'<div class="interests interest_7"></div>',
+											'<p class="name">美美豆兑好礼</p>',
+											'<p class="desc">V2及以上会员<br>可享受美美豆兑换实物、优惠券等<br>小米移动电源等你哦</p>',
+										'</li>',
+										'<li>',
+											'<div class="interests interest_10"></div>',
+											'<p class="name">会员专属客服</p>',
+											'<p class="desc">V4会员在联系客服时，系统会优先<br>接入，由vip客服提供更加高效、专<br>业、优质的服务</p>',
+										'</li>',
+									'</ul>',
+								'</div>'
+							].join('');
+
+							break;
+						case 1:
+							swipeHtml = [
+								'<div class="swipe_pic">',
+									'<ul class="interest_box">',
+										'<li>',
+											'<div class="interests interest_0 active"></div>',
+											'<p class="name active">签到领美美豆</p>',
+											'<p class="desc active">V0-V4会员每天签到领5-25美美豆<br>不等，连续签到到达指定天数更有<br>超多美美豆奖励</p>',
+										'</li>',
+										'<li>',
+											'<div class="interests interest_1 active"></div>',
+											'<p class="name active">72小时发货</p>',
+											'<p class="desc active">会员完成付款后<br>72小时内完成发货<br>（不可抗力因素除外）</p>',
+										'</li>',
+										'<li>',
+											'<div class="interests interest_4 active"></div>',
+											'<p class="name active">7天无理由退货</p>',
+											'<p class="desc active">物流签收后的7天内，因主观原因不<br>愿完成交易，且满足退货条件，可<br>享受退货服务</p>',
+										'</li>',
+										'<li>',
+											'<div class="interests interest_5 active"></div>',
+											'<p class="name active">美美豆兑礼券</p>',
+											'<p class="desc active">滴滴打车券、本来生活优惠券、话<br>费优惠券...千款优惠礼券等你来领，<br>全场70美美豆起</p>',
+										'</li>',
+										'<li>',
+											'<div class="interests interest_6 active"></div>',
+											'<p class="name active">美美豆大转盘</p>',
+											'<p class="desc active">V0及以上会员<br>可享受20美美豆抽奖一次<br>大概率中iWatch</p>',
+										'</li>',
+										'<li>',
+											'<div class="interests interest_8 active"></div>',
+											'<p class="name active">退货运费补贴</p>',
+											'<p class="desc active">会员在美丽说购物，在线提交退货<br>申请，且退货成功可享受补贴5或<br>10元全场无门槛券</p>',
+										'</li>',
+										'<li>',
+											'<div class="interests interest_9 active"></div>',
+											'<p class="name active">先行赔付退款</p>',
+											'<p class="desc active">商家拒绝履行“7天无理由退货”的<br>情况下，美丽说将会员支付的金额<br>进行先行赔付退款</p>',
+										'</li>',
+										'<li>',
+											'<div class="interests interest_2"></div>',
+											'<p class="name">白付美定向邀请</p>',
+											'<p class="desc">可进行订单分期支付<br>支持3、6、9、12、期次分期<br>最长免息期50天</p>',
+										'</li>',
+									'</ul>',
+								'</div>',
+								'<div class="swipe_pic">',
+									'<ul class="interest_box">',
+										'<li>',
+											'<div class="interests interest_3"></div>',
+											'<p class="name">新人专享活动</p>',
+											'<p class="desc">首次下载美丽说App起7天内<br>有机会获得首次下单满减优惠<br>最高力度满89元减50</p>',
+										'</li>',
+										'<li>',
+											'<div class="interests interest_7"></div>',
+											'<p class="name">美美豆兑好礼</p>',
+											'<p class="desc">V2及以上会员<br>可享受美美豆兑换实物、优惠券等<br>小米移动电源等你哦</p>',
+										'</li>',
+										'<li>',
+											'<div class="interests interest_10"></div>',
+											'<p class="name">会员专属客服</p>',
+											'<p class="desc">V4会员在联系客服时，系统会优先<br>接入，由vip客服提供更加高效、专<br>业、优质的服务</p>',
+										'</li>',
+									'</ul>',
+								'</div>'
+							].join('');
+
+							break;
+						case 2:
+							swipeHtml = [
+								'<div class="swipe_pic">',
+									'<ul class="interest_box">',
+										'<li>',
+											'<div class="interests interest_0 active"></div>',
+											'<p class="name active">签到领美美豆</p>',
+											'<p class="desc active">V0-V4会员每天签到领5-25美美豆<br>不等，连续签到到达指定天数更有<br>超多美美豆奖励</p>',
+										'</li>',
+										'<li>',
+											'<div class="interests interest_1 active"></div>',
+											'<p class="name active">72小时发货</p>',
+											'<p class="desc active">会员完成付款后<br>72小时内完成发货<br>（不可抗力因素除外）</p>',
+										'</li>',
+										'<li>',
+											'<div class="interests interest_4 active"></div>',
+											'<p class="name active">7天无理由退货</p>',
+											'<p class="desc active">物流签收后的7天内，因主观原因不<br>愿完成交易，且满足退货条件，可<br>享受退货服务</p>',
+										'</li>',
+										'<li>',
+											'<div class="interests interest_5 active"></div>',
+											'<p class="name active">美美豆兑礼券</p>',
+											'<p class="desc active">滴滴打车券、本来生活优惠券、话<br>费优惠券...千款优惠礼券等你来领，<br>全场70美美豆起</p>',
+										'</li>',
+										'<li>',
+											'<div class="interests interest_6 active"></div>',
+											'<p class="name active">美美豆大转盘</p>',
+											'<p class="desc active">V0及以上会员<br>可享受20美美豆抽奖一次<br>大概率中iWatch</p>',
+										'</li>',
+										'<li>',
+											'<div class="interests interest_7 active"></div>',
+											'<p class="name active">美美豆兑好礼</p>',
+											'<p class="desc active">V2及以上会员<br>可享受美美豆兑换实物、优惠券等<br>小米移动电源等你哦</p>',
+										'</li>',
+										'<li>',
+											'<div class="interests interest_8 active"></div>',
+											'<p class="name active">退货运费补贴</p>',
+											'<p class="desc active">会员在美丽说购物，在线提交退货<br>申请，且退货成功可享受补贴5或<br>10元全场无门槛券</p>',
+										'</li>',
+										'<li>',
+											'<div class="interests interest_9 active"></div>',
+											'<p class="name active">先行赔付退款</p>',
+											'<p class="desc active">商家拒绝履行“7天无理由退货”的<br>情况下，美丽说将会员支付的金额<br>进行先行赔付退款</p>',
+										'</li>',
+									'</ul>',
+								'</div>',
+								'<div class="swipe_pic">',
+									'<ul class="interest_box">',
+										'<li>',
+											'<div class="interests interest_2"></div>',
+											'<p class="name">白付美定向邀请</p>',
+											'<p class="desc">可进行订单分期支付<br>支持3、6、9、12、期次分期<br>最长免息期50天</p>',
+										'</li>',
+										'<li>',
+											'<div class="interests interest_3"></div>',
+											'<p class="name">新人专享活动</p>',
+											'<p class="desc">首次下载美丽说App起7天内<br>有机会获得首次下单满减优惠<br>最高力度满89元减50</p>',
+										'</li>',
+										'<li>',
+											'<div class="interests interest_10"></div>',
+											'<p class="name">会员专属客服</p>',
+											'<p class="desc">V4会员在联系客服时，系统会优先<br>接入，由vip客服提供更加高效、专<br>业、优质的服务</p>',
+										'</li>',
+									'</ul>',
+								'</div>'
+							].join('');
+
+							break;
+						case 3:
+							swipeHtml = [
+								'<div class="swipe_pic">',
+									'<ul class="interest_box">',
+										'<li>',
+											'<div class="interests interest_0 active"></div>',
+											'<p class="name active">签到领美美豆</p>',
+											'<p class="desc active">V0-V4会员每天签到领5-25美美豆<br>不等，连续签到到达指定天数更有<br>超多美美豆奖励</p>',
+										'</li>',
+										'<li>',
+											'<div class="interests interest_1 active"></div>',
+											'<p class="name active">72小时发货</p>',
+											'<p class="desc active">会员完成付款后<br>72小时内完成发货<br>（不可抗力因素除外）</p>',
+										'</li>',
+										'<li>',
+											'<div class="interests interest_4 active"></div>',
+											'<p class="name active">7天无理由退货</p>',
+											'<p class="desc active">物流签收后的7天内，因主观原因不<br>愿完成交易，且满足退货条件，可<br>享受退货服务</p>',
+										'</li>',
+										'<li>',
+											'<div class="interests interest_5 active"></div>',
+											'<p class="name active">美美豆兑礼券</p>',
+											'<p class="desc active">滴滴打车券、本来生活优惠券、话<br>费优惠券...千款优惠礼券等你来领，<br>全场70美美豆起</p>',
+										'</li>',
+										'<li>',
+											'<div class="interests interest_6 active"></div>',
+											'<p class="name active">美美豆大转盘</p>',
+											'<p class="desc active">V0及以上会员<br>可享受20美美豆抽奖一次<br>大概率中iWatch</p>',
+										'</li>',
+										'<li>',
+											'<div class="interests interest_7 active"></div>',
+											'<p class="name active">美美豆兑好礼</p>',
+											'<p class="desc active">V2及以上会员<br>可享受美美豆兑换实物、优惠券等<br>小米移动电源等你哦</p>',
+										'</li>',
+										'<li>',
+											'<div class="interests interest_8 active"></div>',
+											'<p class="name active">退货运费补贴</p>',
+											'<p class="desc active">会员在美丽说购物，在线提交退货<br>申请，且退货成功可享受补贴5或<br>10元全场无门槛券</p>',
+										'</li>',
+										'<li>',
+											'<div class="interests interest_9 active"></div>',
+											'<p class="name active">先行赔付退款</p>',
+											'<p class="desc active">商家拒绝履行“7天无理由退货”的<br>情况下，美丽说将会员支付的金额<br>进行先行赔付退款</p>',
+										'</li>',
+									'</ul>',
+								'</div>',
+								'<div class="swipe_pic">',
+									'<ul class="interest_box">',
+										'<li>',
+											'<div class="interests interest_2"></div>',
+											'<p class="name">白付美定向邀请</p>',
+											'<p class="desc">可进行订单分期支付<br>支持3、6、9、12、期次分期<br>最长免息期50天</p>',
+										'</li>',
+										'<li>',
+											'<div class="interests interest_3"></div>',
+											'<p class="name">新人专享活动</p>',
+											'<p class="desc">首次下载美丽说App起7天内<br>有机会获得首次下单满减优惠<br>最高力度满89元减50</p>',
+										'</li>',
+										'<li>',
+											'<div class="interests interest_10"></div>',
+											'<p class="name">会员专属客服</p>',
+											'<p class="desc">V4会员在联系客服时，系统会优先<br>接入，由vip客服提供更加高效、专<br>业、优质的服务</p>',
+										'</li>',
+									'</ul>',
+								'</div>'
+							].join('');
+
+							break;
+						case 4:
+							swipeHtml = [
+								'<div class="swipe_pic">',
+									'<ul class="interest_box">',
+										'<li>',
+											'<div class="interests interest_0 active"></div>',
+											'<p class="name active">签到领美美豆</p>',
+											'<p class="desc active">V0-V4会员每天签到领5-25美美豆<br>不等，连续签到到达指定天数更有<br>超多美美豆奖励</p>',
+										'</li>',
+										'<li>',
+											'<div class="interests interest_1 active"></div>',
+											'<p class="name active">72小时发货</p>',
+											'<p class="desc active">会员完成付款后<br>72小时内完成发货<br>（不可抗力因素除外）</p>',
+										'</li>',
+										'<li>',
+											'<div class="interests interest_2 active"></div>',
+											'<p class="name active">白付美定向邀请</p>',
+											'<p class="desc active">可进行订单分期支付<br>支持3、6、9、12、期次分期<br>最长免息期50天</p>',
+										'</li>',
+										'<li>',
+											'<div class="interests interest_4 active"></div>',
+											'<p class="name active">7天无理由退货</p>',
+											'<p class="desc active">物流签收后的7天内，因主观原因不<br>愿完成交易，且满足退货条件，可<br>享受退货服务</p>',
+										'</li>',
+										'<li>',
+											'<div class="interests interest_5 active"></div>',
+											'<p class="name active">美美豆兑礼券</p>',
+											'<p class="desc active">滴滴打车券、本来生活优惠券、话<br>费优惠券...千款优惠礼券等你来领，<br>全场70美美豆起</p>',
+										'</li>',
+										'<li>',
+											'<div class="interests interest_6 active"></div>',
+											'<p class="name active">美美豆大转盘</p>',
+											'<p class="desc active">V0及以上会员<br>可享受20美美豆抽奖一次<br>大概率中iWatch</p>',
+										'</li>',
+										'<li>',
+											'<div class="interests interest_7 active"></div>',
+											'<p class="name active">美美豆兑好礼</p>',
+											'<p class="desc active">V2及以上会员<br>可享受美美豆兑换实物、优惠券等<br>小米移动电源等你哦</p>',
+										'</li>',
+										'<li>',
+											'<div class="interests interest_8 active"></div>',
+											'<p class="name active">退货运费补贴</p>',
+											'<p class="desc active">会员在美丽说购物，在线提交退货<br>申请，且退货成功可享受补贴5或<br>10元全场无门槛券</p>',
+										'</li>',
+									'</ul>',
+								'</div>',
+								'<div class="swipe_pic">',
+									'<ul class="interest_box">',
+										'<li>',
+											'<div class="interests interest_9 active"></div>',
+											'<p class="name active">先行赔付退款</p>',
+											'<p class="desc active">商家拒绝履行“7天无理由退货”的<br>情况下，美丽说将会员支付的金额<br>进行先行赔付退款</p>',
+										'</li>',
+										'<li>',
+											'<div class="interests interest_10 active"></div>',
+											'<p class="name active">会员专属客服</p>',
+											'<p class="desc active">V4会员在联系客服时，系统会优先<br>接入，由vip客服提供更加高效、专<br>业、优质的服务</p>',
+										'</li>',
+										'<li>',
+											'<div class="interests interest_3"></div>',
+											'<p class="name">新人专享活动</p>',
+											'<p class="desc">首次下载美丽说App起7天内<br>有机会获得首次下单满减优惠<br>最高力度满89元减50</p>',
+										'</li>',
+									'</ul>',
+								'</div>'
+							].join('');
+
+							break;
+					}
+				%>
+				<%= swipeHtml %>
+			</div>
+		</div>
+
+		<ul class="swipe_num">
+			<li class="active" data-index="0"></li>
+			<li data-index="1"></li>
+		</ul>
+	</div>
+</div>
+
+<script>
+	fml.vars.isLogin = <%=curUserIsLogin%>;
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/member/main');
+_use:", this._JSstack, this._JSmods); %>
+
+<%# foot.html%>

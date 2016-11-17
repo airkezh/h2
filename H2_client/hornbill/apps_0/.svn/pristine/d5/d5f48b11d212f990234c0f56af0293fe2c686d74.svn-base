@@ -1,0 +1,16 @@
+<%this.goods.tInfo && this.goods.tInfo.forEach(function(v){ %>
+<%var goods_title = v.ginfo ? v.ginfo.goods_title : "";%>
+<div class="poster_grid poster_wall" twitter_id="<%=v.twitter_id%>" twitter_author_uid="<%=v.twitter_author_uid%>" twitter_source_tid="<%= v.twitter_source_tid%>" twitter_show_type="<%=v.twitter_show_type%>" like_twitter_id="<%=v.like_twitter_id%>">
+<%*为了海报之间间距大2px，增加的层%>
+	<div class="new_poster">
+		<div class="np_pic">
+			<a href="/share/<%= v.like_twitter_id %>" target="_blank"><img class="goods_pic" width="<%=v.poster_width%>" height="<%=v.poster_height%>" src="<%= v.show_pic %>" title="<%= goods_title%>" alt="<%= goods_title%>" /></a>
+
+		</div>
+		<div class="comm_box">
+			<p class="l18_f posterContent"><%= goods_title %> <% if (v.ginfo) {%> 价格:<%= v.ginfo.goods_price.replace('¥','')%><%}%></p>
+		</div>
+	</div>
+</div>
+<%});%>
+

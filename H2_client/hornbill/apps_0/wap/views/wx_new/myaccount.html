@@ -1,0 +1,26 @@
+<%# wx_new/header.html%>
+<% 
+	var wxinfo = this.wxinfo
+%>
+<div class="wrap">
+	<div class="account_wrap">
+		<h2 class="wx_title">我的美丽说账号</h2>
+		<div class="myaccount">
+			<a href="" class="my_pic">
+				<img src="<%= wxinfo.avatar_a %>" />
+			</a>
+			<p class="nickname"><%= wxinfo.nickname %></p>
+			<%if(wxinfo.changeBind || wxinfo.release){ %>
+			<div class="setbtn_wrap">
+				<%if(wxinfo.changeBind){%><a href="/wx/bind/" class="cur set_btn first_btn change_bind">更换绑定账号</a><%}%>
+				<%if(wxinfo.release){%><div class="set_btn release">解除绑定</div><%}%>
+			</div>
+			<% }%>
+		</div>
+		<p class="to_mall"><a href="/wx/mall/daily">进入美丽说精选商城</a></p>
+	</div>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/wx_new/account');
+_use:", this._JSstack , this._JSmods ); %>
+<%# wx_new/footer.html%>

@@ -1,0 +1,191 @@
+@import "../../block.less";
+
+.transform(@param) {
+  -webkit-transform : @param;
+  transform         : @param;
+}
+
+.kitty {
+  position    : relative;
+  width       : 90.625%;
+  padding-top : 97.93%;
+  margin      : auto;
+}
+
+[class^="kitty-"] {
+  position          : absolute;
+  left              : 0;
+  top               : 0;
+  right             : 0;
+  bottom            : 0;
+  background-repeat : no-repeat;
+  background-size   : contain;
+}
+
+.kitty-shock {
+  display          : none;
+  top              : 18px;
+  left             : 12px;
+  background-image : url("http://d02.res.meilishuo.net/pic/_o/94/79/3347f42c7c03bd081764b4cf13d0_579_567.cg.png");
+}
+
+/* 猫没有脖子，晃头的幅度过大就会看到头与身子分离 */
+.kitty-ear-l, .kitty-ear-r, .kitty-head {
+  top : 5px;
+}
+
+.kitty-ear-l {
+  background-image : url("http://d05.res.meilishuo.net/pic/_o/41/b2/3e8dc5693d3581f834f4291c3f08_579_567.ch.png");
+}
+
+.kitty-ear-r {
+  background-image : url("http://d04.res.meilishuo.net/pic/_o/52/72/395ee46af2d2a0da732b08ed3e4d_579_567.ch.png");
+}
+
+.kitty-head {
+  background-image : url("http://d02.res.meilishuo.net/pic/_o/ad/e8/77cb358ce1243667e8bbe75c7d89_579_567.ch.png");
+  z-index          : 3;
+}
+
+.kitty-body {
+  background-image : url("http://d02.res.meilishuo.net/pic/_o/16/d4/3de0dfed2a6d2bd5d8be2e3abe6b_579_567.cg.png");
+  z-index          : 2;
+}
+
+.kitty-paw-l {
+  background-image : url("http://d02.res.meilishuo.net/pic/_o/36/8c/4e1a5f0e66705c6645d79997c160_579_567.cg.png");
+  z-index          : 3;
+}
+
+.kitty-paw-r {
+  background-image : url("http://d02.res.meilishuo.net/pic/_o/c9/53/c1bff12a9e2286d4cb9ff8a4f3d6_579_567.ch.png");
+  z-index          : 3;
+}
+
+.kitty-tail {
+  background-image : url("http://d01.res.meilishuo.net/pic/_o/9d/eb/c56f05b91d038bb9ef3a12d6487f_579_567.ch.png");
+}
+
+@duration: .5s;
+
+.active {
+  .kitty-ear-l {
+    .animation(shake-ear-l @duration 0s infinite alternate linear)
+  }
+
+  .kitty-ear-r {
+    .animation(shake-ear-r @duration 0s infinite alternate linear)
+  }
+
+  .kitty-paw-l {
+    .animation(move-paw-l @duration 0s infinite alternate linear)
+  }
+
+  .kitty-paw-r {
+    .animation(move-paw-r @duration 0s infinite alternate linear)
+  }
+
+  .kitty-tail {
+    .animation(shake-tail @duration 0s infinite alternate linear);
+  }
+}
+
+@-webkit-keyframes shake-ear-l {
+  from {
+    .transform(rotate(0deg) skewY(0deg));
+  }
+
+  to {
+    .transform(rotate(3deg) skewY(3deg));
+  }
+}
+
+@keyframes shake-ear-l {
+  from {
+    .transform(rotate(0deg) skewY(0deg));
+  }
+
+  to {
+    .transform(rotate(3deg) skewY(3deg));
+  }
+}
+
+@-webkit-keyframes shake-ear-r {
+  from {
+    .transform(translateX(0) rotate(0deg) skewY(0deg));
+  }
+
+  to {
+    .transform(translateX(-5px) rotate(-2deg) skewY(-2deg));
+  }
+}
+
+@keyframes shake-ear-r {
+  from {
+    .transform(translateX(0) rotate(0deg) skewY(0deg));
+  }
+
+  to {
+    .transform(translateX(-5px) rotate(-2deg) skewY(-2deg));
+  }
+}
+
+@-webkit-keyframes move-paw-l {
+  from {
+    .transform(translateY(0));
+  }
+
+  to {
+    .transform(translateY(-5px));
+  }
+}
+
+@keyframes move-paw-l {
+  from {
+    .transform(translateY(0));
+  }
+
+  to {
+    .transform(translateY(-5px));
+  }
+}
+
+@-webkit-keyframes move-paw-r {
+  from {
+    .transform(translate3d(0, 0, 0));
+  }
+
+  to {
+    .transform(translate3d(-3px, 5px, 0));
+  }
+}
+
+@keyframes move-paw-r {
+  from {
+    .transform(translate3d(0, 0, 0));
+  }
+
+  to {
+    .transform(translate3d(-3px, 5px, 0));
+  }
+}
+
+@-webkit-keyframes shake-tail {
+  from {
+    .transform(rotate(0deg));
+  }
+
+  to {
+    .transform(rotate(-4deg));
+  }
+}
+
+@keyframes shake-tail {
+  from {
+    .transform(rotate(0deg));
+  }
+
+  to {
+    .transform(rotate(-4deg));
+  }
+}

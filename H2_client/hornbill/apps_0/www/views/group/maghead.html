@@ -1,0 +1,83 @@
+<% 
+	var nl2br = _extFn.nl2br;
+	function linkUrl(str){
+		str = str.replace(/&amp;/g,'&')
+		var reg = /((http\:\/\/)?(\w+\.)+([a-z]{2,3})(\/)?([\/\w\=\?\&\.\-\_]+)?)\b/g;
+		if(reg.test(str)){
+			return str.replace(reg , function(a){
+				var href = a.replace('http://' , '');	
+				return '<a href="http://'+ href +'" target="_blank">' + a + '</a>';
+			});
+		}
+		return str;
+	}
+%>
+<div class="group_top">
+	<%if( this.group_header.group_info.header_path){%>
+	<img class="g_pic mt14_f" src="<%=this.group_header.group_info.header_path%>">
+	<%}%>
+	<a name="bar" ></a>
+	<div class="group_bar <%if( !this.group_header.group_info.header_path){%>mt14_f<%}%>">
+		<div class="info">
+			<ul class="members">
+				<% var group_editor = this.group_header.group_admins.concat(this.group_header.group_members);
+				%>
+				<% group_editor.map(function(data){%>
+				<li><a class="avatar32_f" href="/person/u/<%= data.user_id%>" title="<%= data.nickname%>" target="_blank"><img src="<%= data.avatar_c%>" /></a></li>
+				<%});%>
+				<% if(this.group_header.count_editor > 3){%>
+					<li class="ml4_f"><a href="/group/<%= this.group_header.group_info.group_id%>/members" target="_blank">所有成员<samp>&gt;&gt;</samp></a></li>
+				<%}else{%>
+					<% if(group_editor.length == 1){%>
+						<li class="ml4_f"><a href="/person/u/<%= group_editor[0].user_id%>" target="_blank"><%= group_editor[0].nickname %></a></li>
+					<%}%>
+				<%}%>
+			</ul>
+			<ul class="fans">
+				<li>分享<b class="block_f"><%= this.group_header.group_info.num%></b></li>
+				<li style="border-left: 1px solid #ccc;"><a href="/group/<%= this.group_header.group_info.group_id%>/followerlist" target="_blank">粉丝<b class="block_f"><%= this.group_header.group_info.count_member%></b></a></li>
+			</ul>
+			<div class="name">
+				<%if(this.group_header.high_quality == 1){%>
+					<a class="quality" href="/super_editor" target="_blank" title="优质杂志">&nbsp;</a>
+				<%}%>
+				<span class="font">
+					<%== _extFn.mSubstr(this.group_header.group_info.name , 40)%>
+				</span>
+				<span class="infoBox">
+					<% if(this.group_header.type == 1){%>
+						<span type_hover="<%= this.group_header.type_hover%>" type_now="<%= this.group_header.type_now%>" groupid="<%= this.group_header.group_info.group_id%>" class="pink_follow"><%= this.group_header.type_now%></span>
+					<%}%>
+					<% if(this.group_header.type == 0){%>
+						<span groupid="<%= this.group_header.group_info.group_id%>" class="groupFollow small_btn"><em class="small_btnr"></em><%= this.group_header.type_be%></span>
+					<%}%>
+					<% if(this.group_header.type == 2){%>
+						<a href="javascript:void(0)" class="show_edit">管理杂志<small class="f8_f">▼</small></a>
+					<%}%>
+				</span>
+			</div>
+		</div>
+	</div>
+	<%*{ 4.18暂时下线%>
+	<div class="notes" style="height:19px;overflow:hidden;">
+		<b class="f14_f left_f">卷首语：</b>
+		<div class="notesText left_f" style="width:650px;">
+			<pre><%=linkUrl(this.group_header.group_info.description);%></pre>
+		</div>
+	</div>
+	<p class="switch"><a href="/group/<%= this.group_header.group_info.group_id%>?<%if(this.poster==1){%>poster=0&elite=0">进入聊天吧<%}else{%>poster=1" style="color:#F69;">回到海报墙<%}%><samp>&gt;&gt;</samp></a></p>
+	<div class="clear_f"></div>
+	<div class="click putUp none_f">展开<small class="f8_f">▼</small></div>
+	<div class="click none_f putDown">收起<small class="f8_f">▲</small></div>
+	<%*}%>
+</div>
+
+<!-- <div class="share_group">
+	<p>推荐到</p>
+	<ul>
+		<li><span class="i_qzone"></span></li>
+		<li><span class="i_sina"></span></li>
+		<li><span class="i_tx"></span></li>
+	</ul>
+</div> -->
+<div class="clear_f"></div>

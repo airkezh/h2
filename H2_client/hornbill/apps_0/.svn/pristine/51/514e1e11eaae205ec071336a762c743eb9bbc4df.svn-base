@@ -1,0 +1,190 @@
+/*common*/
+require('wap/zepto')
+require('wap/zepto/touch')
+
+var RenderTpl = require('wap/component/shareTmp')
+
+var $wd  = $(window)
+var $s   = $('.search')
+var $f   = $('#form')
+var $sm  = $('#submit')
+var $cc  = $('#cancel')
+var $ct  = $('#cart')
+var $i   = $f.find('#input')
+var $cl = $f.find('#clear')
+var $awl = $('#associated_word_list')
+var $sw  = $('.section_wrap')
+var $m50 = $('.m50')      // 撑起底部导航的那块砖~
+var $nav = $('.nav-c')
+
+var SEARCH_HEIGHT = $wd.height() - (+($('html').css('fontSize')).slice(0, -2)*.1)
+var url = '/aj/sq/interfaces/associated_word'
+var pt = $s.css('position')
+var windowScrollTop = 0
+var flag1 = true
+var flag2 = true
+
+var EventHandler = {
+	submit : search,
+	cancel : function (){
+		$cc.hide()
+		$ct.show()
+		$awl.empty()
+		$m50.show()
+		$nav.show()
+		$sw.show()
+		$wd.scrollTop(windowScrollTop)
+		restoreStyles()
+		flag2 = true
+	},
+	clear  : function (){
+		$i.val('')
+		$cl.hide()
+		$sm.hide()
+		$cc.show()
+		$awl.empty()
+		$i.focus()
+	},
+	jump   : function (){
+		var $m = this
+		var jumpToWhere = $m.data('jumpto')
+
+		if(jumpToWhere){
+			location.href = jumpToWhere
+		}
+	}
+}
+
+function search(e){
+	e && e.preventDefault()
+
+	var v = $.trim( $i.val() )
+
+	if(v){
+		location.href = '/sq/search/?key=' + encodeURIComponent(v)
+	}else{
+		$i.val('')
+	}
+}
+ 
+function forBrevityOnly($a, $b, $c, d){
+	$a.hide()
+	if(d || $i.val() ){
+		$b.show()
+		$c.hide()
+	}else{
+		$b.hide()
+		$c.show()
+	}
+}
+
+function clearInput(){
+	$i.val('')
+	forBrevityOnly($cc, $sm, $ct)
+	$awl.empty()
+	$cl.hide()
+	$m50.show()
+	$nav.show()
+	$sw.show()
+	$wd.scrollTop(windowScrollTop)
+}
+
+function changeSyles(){
+	$s.css({
+		//height: 'calc(100% - .15rem)' 有支持性问题
+		height: SEARCH_HEIGHT + 'px'
+	})
+	$awl.css({
+		height: '100%'
+	})
+
+	if(pt == 'static' || pt == 'relative'){
+		$s.css({
+			position: 'fixed',
+			top: 0,
+			left: 0
+		})
+	}
+}
+
+function restoreStyles(){
+	$s.css({
+		height: 'auto'
+	})
+	$awl.css({
+		height: 0
+	})
+
+	if(pt == 'static' || pt == 'relative'){
+		$s.css('position', pt)
+	}
+}
+
+function getData(param){
+		$.get(url, param, function (res){
+			if(res.count > 0){
+				var tpl = RenderTpl('associated_word_tpl', res.associative_word)
+				$awl.empty().append(tpl)
+			}
+			flag1 = true
+		}, 'json')
+}
+
+$wd.on('scroll', function (e){
+	if(flag2){
+		windowScrollTop = $wd.scrollTop()
+	}
+})
+
+$i.on('focus', function (){
+	changeSyles()
+	var v = $i.val()
+
+	flag2 = false
+	$ct.hide()
+	$m50.hide()
+	$nav.hide()
+	$sw.hide()
+
+	if(v){
+		$sm.show()
+		$cl.show()
+
+		getData({key_word: v})
+	}else{
+		$cc.show()
+	}
+}).on('input', function (){
+	var v = $i.val()
+
+	if(v){
+		forBrevityOnly($cc, $sm, $ct, true)
+
+		if(flag1){
+			var param = { key_word: v }
+
+			flag1 = false
+			// $m50.hide()
+			// $nav.hide()
+			// $sw.hide()
+			//changeSyles()
+			getData(param)
+		}
+		$cl.show()
+	}else{
+		$cl.hide()
+		forBrevityOnly($sm, $ct, $cc, false)
+		$awl.empty()
+	}
+
+})
+
+$f.on('submit', search)
+
+$('body').on('tap', function (e){
+	var $t = $(e.target)
+	var fn = $t.data('action')
+	var _e = EventHandler[fn]
+
+	_e && _e.call($t)
+})

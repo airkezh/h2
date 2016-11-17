@@ -1,0 +1,54 @@
+<%#head.html%>
+<img src="<%=this.pics[this.rand].top_img%>"/>
+<img src="<%=this.cfg.gif%>"/>
+<div class="con_wrap">
+	<img src="http://d06.res.meilishuo.net/img/_o/29/c8/33a786141c05fa0852ea24a79a2b_640_356.c8.png"/>
+	<div class="get_num">抽奖机会:<span id="promoteNum"><%=this.get.data.num%></span></div>
+	<a class="get_btn" href="javascript:;"></a>
+	<div class="scroll_wrap"><div class="scroll_inner" style="">
+		<%this.display && this.display.length && this.display.forEach(function(data){%>
+			<p>恭喜用户<%=data.nickname%>抽取<%=data.awardname%></p>
+		<%});%>
+	</div></div>
+	<div class="remind_btn <%if(this.get.data.switch){%>has_remind<%}%>"></div>
+</div>
+<div class="masker"></div>
+<div class="popup">
+	<img src="http://d05.res.meilishuo.net/img/_o/f1/34/efb7481b5cb99fc0a544f25f51f0_640_584.c8.png"/>
+	<a id="closePopup" href="javascript:;"></a>
+	<div class="content">
+	</div>
+	<a class="btn"></a>
+</div>
+<script type="text/html" id="toupdate">
+<div class="toupdate">
+	<p>只有最新版本才可以享受优惠喔，亲快去升级吧。</p>
+	<a class="btn3zi delayclose" href="/goto/download/">去更新</a>
+</div>
+</script>
+<script type="text/html" id="drawing">
+	<img class="exo_head" src="<%=this.pics[this.rand].popup_img%>"/>
+	<p class="head"><?=this.header?></p>
+	<p class="img"><img src="<?=this.url?>"/></p>
+	<p class="end"><?=this.end?></p>
+</script>
+<script>
+	fml.vars.isNewest = "<%=this.isNewest%>";
+	fml.vars.isLogin = <%=this.isLogin%>;
+	fml.vars.ticket_left = <%=this.get.data.remainder%>
+</script>
+<div class="share_con">
+	<% if(this.share){ %>
+		<%= requireFn('wapShare.html')({
+			'share' : this.share 
+			, 'shareTitle' : '选择分享到'
+			, '_JSstack' : this._JSstack
+			, '_JSmods' : this._JSmods
+		}); %>
+	<%}%>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/app/hackWeixin');
+	fml.use('wap/page/activity/niuniu');
+_use:", this._JSstack , this._JSmods); %>
+<%#foot_simple.html%>

@@ -1,0 +1,428 @@
+/**
+ * @fileoverview 会员信息补全－会员中心
+ * @requires
+ * @author kehuang@meilishuo.com
+ * @date 2015-09-07
+ */
+
+@import "../block.less";
+
+html{
+	.f(10*@f);
+}
+
+body{
+	.bgc(#fff);
+}
+
+img{
+	.block;
+	.w(100%);
+}
+
+a{
+	.block;
+	outline:none;
+}
+
+ul{
+	list-style:none;
+}
+
+i{
+	font-style:normal;
+}
+
+input,button,select,textarea{
+	outline:none;
+	-webkit-appearance:none;
+}
+
+.step_wrap{
+	.pr;
+	.auto;
+	.none;
+	.w(81.25%);
+	.mt(30px);
+}
+
+.step_area{
+	.pa;
+	top:0;
+	left:0;
+	.w(100%);
+	z-index:9;
+
+	li{
+		.left;
+		.inline;
+		.w(9.6%);
+		.pt(10%);
+		.mr(13%);
+	}
+
+	li:last-child{
+		.mr(0);
+	}
+}
+
+.step{
+	.none;
+	.pt(10%);
+}
+
+.show{
+	.block;
+}
+
+.step_0{
+	background:url("http://d04.res.meilishuo.net/pic/_o/32/53/92551dcc3b0e06b539b8230ab528_520_50.cf.png") no-repeat;
+	background-size:100%;
+}
+
+.step_1{
+	background:url("http://d01.res.meilishuo.net/pic/_o/82/36/475c74888305fd31c8fb2225c179_520_50.cg.png") no-repeat;
+	background-size:100%;
+}
+
+.step_2{
+	background:url("http://d02.res.meilishuo.net/pic/_o/99/a5/f82a535f70997bbbdce74890761e_520_50.ch.png") no-repeat;
+	background-size:100%;
+}
+
+.step_3{
+	background:url("http://d02.res.meilishuo.net/pic/_o/f6/01/51e41b409ec884798de0c49574ac_520_50.cf.png") no-repeat;
+	background-size:100%;
+}
+
+.step_4{
+	background:url("http://d04.res.meilishuo.net/pic/_o/56/a5/6c3aaecbc7c317fa4e07789d63aa_520_50.cg.png") no-repeat;
+	background-size:100%;
+}
+
+.step_title{
+	.c;
+	.auto;
+	.w(90.6%);
+	.mt(15px);
+	.f(1.4rem);
+	.fc(#666);
+}
+
+.input_wrap{
+	.auto;
+	.w(90.6%);
+	.f(1.2rem);
+	.fc(#ccc);
+
+	li{
+		.w(100%);
+		.h(46px);
+		.l(46px);
+		border-bottom:1px solid #e1e1e1;
+
+		label{
+			.vm;
+			.i_block;
+			.w(8%);
+			.pt(15px);
+		}
+
+		input,select{
+			.vm;
+			.i_block;
+			.border-n;
+			.w(90%);
+			.l(27px);
+			margin:0;
+			padding:0;
+			.fc(#666);
+			.bgc(#fff);
+		}
+
+		.uname_icon{
+			background:url("http://d03.res.meilishuo.net/pic/_o/29/c2/ab3f9d77291f7b1b2e911828ae84_30_30.cg.png") no-repeat;
+			background-size:15px auto;
+		}
+
+		.rname_icon{
+			background:url("http://d01.res.meilishuo.net/pic/_o/e3/5f/6a4e0c32fbd4e6f08f649d3a0ca6_30_30.ch.png") no-repeat;
+			background-size:15px auto;
+		}
+
+		.gender_icon{
+			background:url("http://d04.res.meilishuo.net/pic/_o/99/99/979e3e08bdc29e987d7bc6f43ea0_30_30.cf.png") no-repeat;
+			background-size:15px auto;
+		}
+
+		.man_icon{
+			background:url("http://d04.res.meilishuo.net/pic/_o/b0/0c/6b691b9f60adf3486e66ef864883_30_30.ch.png") no-repeat;
+			background-size:15px auto;
+		}
+
+		.birth_icon{
+			background:url("http://d01.res.meilishuo.net/pic/_o/56/60/cb7156f368c583d0a73a7615a5df_30_30.cg.png") no-repeat;
+			background-size:15px auto;
+		}
+
+		.mobile_icon{
+			background:url("http://d01.res.meilishuo.net/pic/_o/de/25/3488d27759966e05cba17f6ccaef_30_30.ch.png") no-repeat;
+			background-size:15px auto;
+		}
+
+		.captcha_icon{
+			background:url("http://d02.res.meilishuo.net/pic/_o/11/c3/634539381300dc9876386ee144ac_30_30.cf.png") no-repeat;
+			background-size:15px auto;
+		}
+
+		.qq_icon{
+			background:url("http://d04.res.meilishuo.net/pic/_o/93/b0/0b1fb8f74139e55cd04065d511ff_30_30.cf.png") no-repeat;
+			background-size:15px auto;
+		}
+
+		input.mobile_input,input.captcha_input,input.qq_input{
+			.w(62%);
+		}
+
+		.blank_area{
+			.vm;
+			.i_block;
+			.w(27%);
+			.h(27px);
+			.l(27px);
+		}
+
+		.change_mobile,.send_captcha{
+			.c;
+			.i_block;
+			.w(27%);
+			.h(27px);
+			.l(27px);
+			.f(1.2rem);
+			.fc(#fff);
+			.bgc(#fe6054);
+		}
+
+		.send_captcha.disabled{
+			.bgc(#ccc);
+		}
+	}
+}
+
+.option_wrap{
+	.pr;
+	.auto;
+	.hidden;
+	clear:both;
+	.mt(15px);
+	.w(300px);
+	overflow:auto;
+	max-height:290px;
+
+	li{
+		.c;
+		.left;
+		.inline;
+		.w(74px);
+		.h(74px);
+		.l(74px);
+		.f(1.2rem);
+		.fc(#999);
+		.bgc(#fff);
+		.border-r(50%);
+		margin:10px 12px;
+		border:1px solid #999;
+	}
+}
+
+.option_education{
+	li.active{
+		.fc(#fff);
+		.bgc(#9ea7f6);
+		border:1px solid #fff;
+	}
+}
+
+.option_profession{
+	li.active{
+		.fc(#fff);
+		.bgc(#70d2ef);
+		border:1px solid #fff;
+	}
+}
+
+.option_style{
+	li.active{
+		.fc(#fff);
+		border:1px solid #fff;
+	}
+
+	li.active_0{
+		.bgc(#ffa279);
+	}
+
+	li.active_1{
+		.bgc(#ffcf59);
+	}
+
+	li.active_2{
+		.bgc(#9ea7f6);
+	}
+
+	li.active_3{
+		.bgc(#70d2ef);
+	}
+
+	li.active_4{
+		.bgc(#bbe080);
+	}
+}
+
+.blink_wrap{
+  	.pa;
+  	.hidden;
+  	.w(12%);
+  	.h(88px);
+  	left:44%;
+  	top:60%;
+  	z-index:2;
+
+  	.blink{
+  		.c;
+  		.auto;
+  		.w(38px);
+  		.h(28px);
+  		.mt(30px);
+  		-webkit-animation:slide 1s infinite linear;
+  		-moz-animation:slide 1s infinite linear;
+  		-o-animation:slide 1s infinite linear;
+  		animation:slide 1s infinite linear;
+  		background:url("http://d02.res.meilishuo.net/pic/_o/d5/7b/b88012af577161c1c6d33d82bb4c_149_112.cf.png") no-repeat;
+  		background-size:38px auto;
+  	}
+}
+
+.caption{
+	.c;
+	.l(1.8);
+	.mt(18px);
+	.f(1.1rem);
+	.fc(#999);
+}
+
+.confirm_btn,.gene_confirm_btn{
+	.c;
+	.auto;
+	.w(93.75%);
+	.h(34px);
+	.l(34px);
+	.f(1.5rem);
+	.fc(#fff);
+	.bgc(#fe6054);
+	.border-r(4px);
+}
+
+.confirm_btn{
+	.mt(105px);
+}
+
+.gene_confirm_btn{
+	.mt(20px);
+}
+
+/* 组图 */
+.swipe{
+	.c;
+	.pr;
+	.hidden;
+}
+
+.swipe_wrap{
+	.pr;
+	.hidden;
+	-webkit-backface-visibility:hidden;
+	-moz-backface-visibility:hidden;
+	-ms-backface-visibility:hidden;
+	-o-backface-visibility:hidden;
+	backface-visibility:hidden;
+	/* Fix of Webkit flickering */
+	z-index:1;
+}
+
+.swipe_wrap > div{
+	.pr;
+	.left;
+	.w(100%);
+}
+
+.swipe_pic{
+	.pr;
+	.hidden;
+	.w(100%);
+	.bgc(#fff);
+}
+
+.swipe_pic img{
+	.w(100%);
+}
+
+.mt10{
+	.mt(10px);
+}
+
+.mt50{
+	.mt(50px);
+}
+
+.prompt_main{
+	.pf;
+	top:40%;
+	left:0;
+	.w(100%);
+	.h(auto);
+	.opacity(0);
+	z-index:99;
+
+	.prompt_text{
+		.c;
+		.auto;
+		.l(1.8);
+		.f(1.1rem);
+		.fc(#fff);
+		.w(320*@w);
+		.border-r(4px);
+		padding:8px 12px;
+		background:rgba(0,0,0,.7);
+	}
+}
+
+.pullUp{
+	.mt(20px);
+	.mb(20px);
+
+	.pullUpDown > .common;.pullUpDown > .loading;
+	&:before{
+		.nowrap;
+		.ml(-10px);
+	}
+	&[status="tap"]{
+		background:0 none;	
+	}
+	&[status="stop"]{
+		background:0 none;	
+	}
+}
+
+@media screen and (min-width:360px){
+	.blink_wrap{
+		top:56%;
+	}
+
+	.confirm_btn{
+		.mt(150px);
+	}
+
+	.gene_confirm_btn{
+		.mt(50px);
+	}
+}

@@ -1,0 +1,90 @@
+<div class="main js-main">
+<%
+var list = this.list || [];
+
+list.forEach(function( circle, index ) {
+    var maxNum = 4,
+        circleData = circle.msg_data,
+        url = '//circle.meilishuo.com/circle/chat?circle_id=' + circle.id,
+        data, pt;
+%>
+
+    <div class="circle <%= (index % 2) ? 'right' : 'left'%>" data-cid="<%= circle.id %>">
+        <a class="circle-info-wrap" href="<%= url %>">
+            <img class="avatar" src="<%= circle.img %>"></img>
+            <p class="circle-info">
+                <span class="circle-name"><%= circle.name %></span>
+                <span class="circle-data"><%= circle.hightlight_num%>分享 <%= circle.member_num %>成员</span>
+            </p>
+        </a>
+        <a href="<%= url %>">
+            <ul class="list">
+                <% for(var i = 0; i < maxNum; i++ ) {
+                    data = circleData[ i ];
+                    if ( data ) {
+                        pt = data.height / data.width * 50;
+                %>
+                <li class="item" style="background-image:url(<%= data.picurl %>);padding-top:50%;">
+                </li>
+                <% } else {%>
+                <li class="item blank"></li>
+                <% } %>
+                <% } %>
+            </ul>
+        </a>
+    </div>
+<%
+});
+%>
+</div>
+
+<div id="loading-bar" class="loading-bar" status="stop"></div>
+<div class="gotop-wrap">
+    <a class="gotop">
+        <img src="http://i.meilishuo.net/css/images/wap/tuan/gotop.png"/>
+    </a>
+</div>
+<script type="text/html" id="repin-list-tmpl">
+<?
+var list   = this.list || [],
+    offset = this.offset;
+
+list.forEach(function( circle, index ) {
+    var maxNum = 4,
+        circleData = circle.msg_data,
+        url = '//circle.meilishuo.com/circle/chat?circle_id=' + circle.id,
+        data, pt;
+?>
+<div class="circle <?= (( index + offset )% 2) ? 'right' : 'left'?>" data-cid="<?= circle.id ?>">
+    <a class="circle-info-wrap" href="<?= url ?>">
+        <img class="avatar" src="<?= circle.img ?>"></img>
+        <p class="circle-info">
+            <span class="circle-name"><?= circle.name ?></span>
+            <span class="circle-data"><?= circle.hightlight_num?>分享 <?= circle.member_num ?>成员</span>
+        </p>
+    </a>
+    <a href="<?= url ?>">
+        <ul class="list">
+        <? for(var i = 0; i < maxNum; i++ ) {
+            data = circleData[ i ];
+            if ( data ) {
+                pt = data.height / data.width * 50;
+        ?>
+            <li class="item" style="background-image:url(<?= data.picurl ?>);padding-top:50%;">
+            </li>
+            <? } else {?>
+            <li class="item blank"></li>
+            <? } ?>
+        <? } ?>
+        </ul>
+    </a>
+</div>
+<?
+});
+?>
+</script>
+<script>
+    fml.vars.msg_id = '<%= this.msg_id %>';
+    fml.vars.offset = <%= list.length %>;
+</script>
+

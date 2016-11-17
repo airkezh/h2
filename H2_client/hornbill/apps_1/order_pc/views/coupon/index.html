@@ -1,0 +1,123 @@
+<%# head.html%>
+<%
+    var cur_time  = this.curTime / 1000;
+    var proStartDay = this.proStartDay / 1000;
+	function getStatusText(s){
+		var r = '';
+		switch (s){
+			case 'frozen':
+				r = '已冻结';
+				break;
+			case 'expired':
+				r = '已过期';
+				break;
+			default:
+				r = '可使用'
+				break;
+		}
+		return r;
+	}
+%>
+<div class="route">
+	<div class="route_bread">
+		<a href="<%=this.DOMAIN.www%>/">美丽说</a>
+		<samp>&gt;</samp>
+		<a href="<%= this.DOMAIN.order%>/order/list/">我的美丽说订单</a>
+		<samp>&gt;</samp>
+		<span class="red_f">我的优惠券</span>
+	</div>
+</div>
+<div class="coupon_area">
+	<%# common/navBar.html %>
+	<div class="coupon_content">
+		<div class="coupon_list">
+			<% if(this.coupon && this.coupon.coupons && this.coupon.coupons.length>0){%>
+					<div class="top">
+						<div class="tab-wrap">
+							<ul class="tab-nav" id="couponType" value="1">
+								<li class="tab-item selected" id="platCoupon" value="1"><a href="javascript:void(0)">平台券</a></li>
+								<li class="tab-item" id="shopCoupon" value="2"><a href="javascript:void(0)">店铺券</a></li>
+							</ul>
+							<select id="couponStatus" class="mls-select">
+			                	<option value="all" selected><a href="javascript:void(0)">全部状态</a></option>
+			                	<option value="available"><a href="javascript:void(0)">可使用</a></option>
+			                	<option value="used"><a href="javascript:void(0)">已使用</a></option>
+			                	<option value="expired"><a href="javascript:void(0)">已过期</a></option>
+		                    </select>
+						</div>
+				    </div>
+				<% 
+					this.coupon.coupons.map(function(data){ 
+					var coupon_rmb = data.credit;
+					var coupon_color = '';
+					if(coupon_rmb <= 50){
+						coupon_color = 'coupon_pink'
+					} else if(coupon_rmb <= 100){
+						coupon_color = 'coupon_orange'
+					} else if(coupon_rmb > 100){
+						coupon_color = 'coupon_blue'
+					}
+					if(data.coupon_sign=='美丽说优惠券') {
+						coupon_color = 'coupon_plt_red';
+						var startTime = new Date(data.start_time).getTime() / 1000;
+						if(startTime == proStartDay){coupon_color='coupon_pltpro_red';}
+					}
+					if(data.status == 'expired' || data.status == 'frozen'){
+						coupon_color = 'coupon_gray';
+						if(data.coupon_sign=='美丽说优惠券')
+						{
+							coupon_color = 'coupon_plt_gray';
+							var startTime = new Date(data.start_time).getTime() / 1000;
+							if(startTime == proStartDay){coupon_color='coupon_pltpro_gray';}
+						}
+					}
+				%>
+					<%= data.url ? ('<a href="'+this.DOMAIN.www+data.url+'" target="_blank">') : '' %>
+					<div class="coupon_box <%= coupon_color %>">
+						<% if(data.status == 'used' && data.coupon_sign!='美丽说优惠券'){ %>
+							<div class="coupon_used"></div>
+							<div class="title"><%= data.coupon_sign %> - NO.<%= data.coupon_id%></div>
+						<% }else if(data.status == 'used' && data.coupon_sign=='美丽说优惠券'){ %>
+							<div class="coupon_plt_used"></div>
+							<div class="title"><%= data.coupon_sign %> - NO.<%= data.coupon_id%></div>
+						<% } else { %>
+							<div class="title"><span><%=getStatusText(data.status) %></span><%= data.coupon_sign %> - NO.<%= data.coupon_id%></div>
+						<% } %>
+						<div class="coupon_value">
+							<div class="rmb">￥<span><%= coupon_rmb%></span></div>
+							<div class="name"><%= data.remark%></div>
+						</div>
+						<div class="condition"><i></i><%= data.condition%></div>
+						<div class="valid"><i></i>有效期：<%= data.start_time%> ~ <%= data.expire_time%></div>
+					</div>
+					<%= data.url ? '</a>' : '' %>
+				<%});%>
+				<div class="clear_f"></div>
+				<%# paging.html%>
+			<% } else {%>
+				<div class="top">
+					<div class="tab-wrap">
+						<ul class="tab-nav" id="couponType" value="1">
+							<li class="tab-item selected" id="platCoupon" value="1"><a href="javascript:void(0)">平台券</a></li>
+							<li class="tab-item" id="shopCoupon" value="2"><a href="javascript:void(0)">店铺券</a></li>
+						</ul>
+						<select id="couponStatus" class="mls-select">
+		                	<option value="all" selected><a href="javascript:void(0)">全部状态</a></option>
+		                	<option value="available"><a href="javascript:void(0)">可使用</a></option>
+		                	<option value="used"><a href="javascript:void(0)">已使用</a></option>
+		                	<option value="expired"><a href="javascript:void(0)">已过期</a></option>
+	                    </select>
+					</div>
+			    </div>
+				<div class="empty">
+					<div class="icon"></div>
+					<div class="con">您没有设定条件下的优惠券哦~</div>
+				</div>
+			<%}%>
+		</div>
+	</div>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('order_pc/coupon/index');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

@@ -1,0 +1,64 @@
+<%#head.html%>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<% 
+    var data  = this.main.data;
+%>
+<% data.top_banner_mob && data.top_banner_mob.map(function(data){ %>
+	<img src="<%= data.banner%>">
+<%});%>
+<% data.items && data.items.map(function(data){ %>
+		
+	<div class="design_img">
+		<a href="/activity/designer/vote_sub/<%= data.designer_id%>" xr="<%=this.xr.r%>"><img src="<%= data.item_img%>"></a>
+		<div class="vote_box">
+			<p class="vote_btn" did="<%= data.designer_id%>" lottery="<%= data.lottery%>" sid="<%= data.shop_id%>">
+				<% if(data.is_voted == 0){ %>
+					<img src="http://d01.res.meilishuo.net/pic/_o/f8/25/23d8f465a3c5aee3170089d925c1_90_90.ch.png">
+				<%}else{%>
+					<img src="http://d05.res.meilishuo.net/pic/_o/b8/7f/a507d953132c62d134c3d81c2d96_90_90.cg.png">
+				<%}%>
+			</p>
+			<p class="vote_num"><%= data.votes%></p>
+		</div>
+	</div>
+	<img class="detail" src="<%= data.designer_info%>">
+<% }); %>
+
+
+<a href="/hdstreet/new/" class="more" xr="<%= this.xr.r%>"><span>更多作品</span></a>
+<div id="designer_share" class="design_share">分享</div>
+
+<%= requireFn('wapShare.html')({
+    'share' : this.share 
+    , 'shareTitle' : '选择分享到'
+    , '_JSstack' : this._JSstack
+    , '_JSmods' : this._JSmods
+});%>
+
+<script type="text/html" id="shareLead">
+    <div class="dialog_share">
+        <span class="share_pic"></span>
+    </div>
+</script>
+<script type="text/html" id="getAward">
+    <div class="dialog_award">
+        <span class="closeIcon"></span>
+        <div class="show">
+            <h2>
+            	<img src="http://d02.res.meilishuo.net/pic/_o/c3/24/eaf27cc5e5b39131111c974f5fb8_74_74.cg.png">
+            	<span>投票成功</span>
+            </h2>
+            <h3 class="result">恭喜您获得 10元无门槛优惠券</h3>
+        </div>
+    </div>
+</script>
+<script>
+    fml.vars.shareTitle = '<%= data.share.title %>';
+    fml.vars.shareContent = '<%= data.share.content %>';
+    fml.vars.shareIcon = '<%= data.share.icon %>';
+    fml.vars.shareLink = '<%= data.share.link %>';
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use('wap/page/activity/designer2');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

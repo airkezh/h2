@@ -1,0 +1,156 @@
+@import "../block.less";
+@import "../atom.less";
+.bgPic(@height,@imgname,@bgdir:'bg'){
+	.h(@height);
+	background:url("@{pic_url}/images/activity/meibaolian/@{bgdir}/@{imgname}") no-repeat center center;
+}
+.ts(@width,@height,@left,@top){
+	.pa;.w(@width);.h(@height);left:@left;top:@top;
+}
+#flowerTable{
+	.pa;.w(100%);.h(100%);top:0px;left:0px;z-index:1000;display:none;
+}
+.main{
+	.w(100%);
+	.bg0{
+		.auto;.w(990px);.h(238px);
+		background:url('@{pic_url}/images/activity/meibaolian/bg3/head.jpg') no-repeat center center;
+	}
+	.bg1{
+		.auto;.w(990px);.h(680px);.mb(1px);
+		background:url('@{pic_url}/images/activity/meibaolian/bg/bg1.jpg') no-repeat center center;
+		.findMine{
+			.h(467px);.pr;
+			.detail{.pa;left:775px;top:291px;.block;.w(118px);.h(118px);.border-r(59px);}
+			.qa{
+				.pa;left:330px;top:295px;.w(353px);.h(75px);
+				background:url('@{pic_url}/images/activity/meibaolian/question-answer.png') no-repeat 0 0;
+			}
+			.radioGroup{
+				.pa;
+				a{
+					.pa;.block;.w(20px);.h(20px);.border-r(10px);
+					background:url('@{pic_url}/images/activity/meibaolian/rb.png') no-repeat -20px 0;
+				}
+				.radio(@left){left:@left;top:349px;}
+				.r11{.radio(338px)}
+				.r12{.radio(433px)}
+				.r13{.radio(536px)}
+				.r21{.radio(327px)}
+				.r22{.radio(512px)}
+				.r31{.radio(413px)}
+				.r32{.radio(527px)}
+				.selected{.bp(0,0);}
+			}
+			#lightBot{display:none;}
+			.lbot1{
+				.pa;left:318px;top:119px;.w(75px);.h(126px);
+				background:url('@{pic_url}/images/activity/meibaolian/lightbottles/tr.png') no-repeat;
+			}
+			.lbot2{
+				.pa;left:417px;top:119px;.w(75px);.h(126px);
+				background:url('@{pic_url}/images/activity/meibaolian/lightbottles/br.png') no-repeat;
+			}
+			.lbot3{
+				.pa;left:518px;top:119px;.w(75px);.h(126px);
+				background:url('@{pic_url}/images/activity/meibaolian/lightbottles/qr.png') no-repeat;
+			}
+			.q1{.bp(0,0);}
+			.q2{.bp(0,-80px);}
+			.q3{.bp(0,-160px);}
+			.congrat{.bp(0,-240px);}
+		}
+		.banner{
+			.hidden;
+			.ban1{.mr(1px);.left;}
+			.ban2{.left;}
+		}
+	}
+	.bg2{
+		.pr;.auto;.w(990px);
+		.back2{.bgPic(250px,'bg_01_1.jpg','bg3');}
+		.back3{.bgPic(638px,'bg_02.jpg','bg3');}
+	}
+	.bg3{
+		.pr;.auto;.w(990px);
+		.back1{.bgPic(537px,'bg_03.jpg','bg3');}
+		.back2{.bgPic(392px,'bg_04.jpg','bg3');}
+		.back3{.bgPic(431px,'bg_05.jpg','bg3');}
+		.track{
+			.pa;left:0px;top:0px;
+			.c1{.block;.ts(450px,450px,47px,82px)};
+			.c2{.block;.ts(450px,450px,450px,530px)};
+			.c3{.block;.ts(450px,450px,20px,900px)};
+		}
+	}
+	.bg4{
+		.pr;.auto;.w(990px);
+		.back1{.bgPic(470px,'bg_06.jpg','bg3');}
+		.back2{.bgPic(627px,'bg_07.jpg','bg3');}
+	}
+	.bg5{
+		.pr;.auto;.w(990px);
+		.back1{.bgPic(552px,'1017_01.jpg','bg3');}
+		.back2{.bgPic(555px,'1017_02.jpg','bg3');}
+		.back3{.bgPic(604px,'1017_03.jpg','bg3');}
+		.back4{.bgPic(647px,'1017_04.jpg','bg3');}
+		.track{
+			.pa;left:0px;top:0px;
+			.k1{.ts(360px,360px,60px,18px)};
+			.k2{.ts(360px,360px,500px,277px)};
+			.k3{.ts(360px,360px,38px,580px)};
+			.k4{.ts(360px,360px,600px,900px)};
+			.k5{.ts(360px,360px,35px,1250px)};
+			.k6{.ts(360px,360px,607px,1600px)};
+			.k7{.ts(360px,360px,35px,1940px)};
+		}
+	}
+	.bg6{
+		.pr;.auto;.w(990px);
+		.back1{.bgPic(561px,'bg_11.jpg','bg3');}
+	}
+}
+.pop-detail{
+	.pr;.w(824px);.h(485px);
+	.closeButton{
+		.pa;.w(40px);.h(40px);
+		right:-20px;top:-20px;
+		background:url('@{pic_url}/images/activity/meibaolian/close.png') no-repeat;
+	}
+}
+.pop-result-par{
+	.w(472px);.h(322px);.pt(140px);.pr(30px);background:'none';
+}
+.pop-result{
+	.pr;.w(472px);.h(322px);
+	overflow:visible;
+	.closeButton{
+		.pa;.w(40px);.h(40px);
+		right:-20px;top:-20px;
+		background:url('@{pic_url}/images/activity/meibaolian/close.png') no-repeat;
+	}
+	#buyNow{
+		.pa;.w(155px);.h(43px);left:252px;top:239px;
+	}
+	#shareWB{
+		.pa;.w(155px);.h(43px);left:66px;top:239px;
+	}
+	.bottle1{
+		.pa;left:36px;top:-138px;.w(102px);.h(174px);
+		background:url('@{pic_url}/images/activity/meibaolian/explain/bot_gold.png') no-repeat;
+	}
+	.bottle2{
+		.pa;left:134px;top:-138px;.w(102px);.h(174px);
+		background:url('@{pic_url}/images/activity/meibaolian/explain/bot_brown.png') no-repeat;
+	}
+	.bottle3{
+		.pa;left:236px;top:-138px;.w(102px);.h(174px);
+		background:url('@{pic_url}/images/activity/meibaolian/explain/bot_green.png') no-repeat;
+	}
+}
+.pop-r1{background:url('@{pic_url}/images/activity/meibaolian/explain/gold-terun-baixi.png') no-repeat;}
+.pop-r2{background:url('@{pic_url}/images/activity/meibaolian/explain/gold-terun-ziran.png') no-repeat;}
+.pop-r3{background:url('@{pic_url}/images/activity/meibaolian/explain/brown-beirun-baixi.png') no-repeat;}
+.pop-r4{background:url('@{pic_url}/images/activity/meibaolian/explain/brown-beirun-ziran.png') no-repeat;}
+.pop-r5{background:url('@{pic_url}/images/activity/meibaolian/explain/green-qingrun-baixi.png') no-repeat;}
+.pop-r6{background:url('@{pic_url}/images/activity/meibaolian/explain/green-qingrun-ziran.png') no-repeat;}

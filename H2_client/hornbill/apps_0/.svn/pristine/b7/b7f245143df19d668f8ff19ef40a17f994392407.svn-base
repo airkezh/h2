@@ -1,0 +1,67 @@
+<%# head.html %>
+
+<% 
+	var shopInfo   = this.shopInfo; 
+	var topImage = this.banner.banner || shopInfo.shop_focus_img;
+%>
+<header>
+	<div class="top-image" style="background-image:url(<%= topImage %>)"></div>
+	<div class="shop-info">
+		<div class="shop-logo">
+			<img src="<%= shopInfo.shop_face_img %>" alt="店铺logo">
+		</div>
+		<h3 class="shop-name"><%= shopInfo.shop_nick %></h3>
+		<%if(shopInfo.partner_weixin){%><p>微信号：<%= shopInfo.partner_weixin || ''%></p><%}%>
+		<p class="shop-wx"><%= shopInfo.shop_desc%></p>
+	</div>
+</header>
+
+<div id="goods_wall"></div>
+
+<div class="pullUp" status="loading"></div>
+
+<div class="weidian">
+	<a href="//a.app.qq.com/o/simple.jsp?pkgname=com.meilishuo.circle&g_f=991653" id="wei-btn">
+		<figure class="wei-show">
+			<figure>
+				<img src="//d02.res.meilishuo.net/pic/_o/a1/af/f8150e8aff1c7a86f85d8233d234_108_108.cf.png" alt="微店logo">
+			</figure>
+			<span>美丽微店 提供技术支持</span>
+		</figure>
+	</a>
+</div>
+
+<span id="gotop" style="bottom:<%if(this.os.iphone){%>60<%}else{%>20<%}%>px">
+	<img src="http://i.meilishuo.net/css/images/wap/tuan/gotop.png" />
+</span>
+
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script>
+	<%= 'fml.vars.shopId = ' + this.shopId + ';' %>
+	<%= 'fml.vars.shopName = "' + shopInfo.shop_nick + '";' %>
+	<%= 'fml.vars.shopLogo = "' + shopInfo.shop_face_img + '";' %>
+</script>
+
+<script type="text/html" id="posterWall">
+	<? 
+		var v = this.v; 
+		var dcId = v.dc_id == '-1' ? '' : '&dc_id=' + v.dc_id;
+		var pstrc = fml.vars.pstrc ? '&pstrc=' + fml.vars.pstrc : '';
+	?>
+	<div class="poster">
+		<figure>
+			<a class="poster-link" href="/wx/detailCircle?tid=<?= v.twitter_id ?>&page_name=circle&shop_name=<?= fml.vars.shopName ?><?= pstrc ?><?= dcId ?>" style="background-image:url(<?= v.goods_img ?>)">
+			</a>
+			<figcaption>
+				<p class="poster-info-title"><?= v.goods_title ?></p>
+				<div>
+					<span class="poster-info-price"><?= v.goods_price ?></span>
+				</div>
+			</figcaption>
+		</figure>
+	</div>
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/mainapp/shop');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot_simple.html%>

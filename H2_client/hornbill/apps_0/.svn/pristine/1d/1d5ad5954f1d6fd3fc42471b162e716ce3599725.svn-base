@@ -1,0 +1,51 @@
+<%#head.html%>
+<%
+	var qingcang = this.qingcang && this.qingcang.data
+		, tInfo = qingcang && qingcang.tInfo
+		, banner = this.banner && this.banner.data && this.banner.data.mrth_qingcang_top_banner
+		, bannerImg = banner && banner[0];
+%>
+<%= requireFn('activity/region99/header.html')({
+	'status' : 3,
+	'bannerImg' : bannerImg,
+	'_JSstack' : this._JSstack ,
+	'_JSmods' :  this._JSmods,
+	'_Request_query' : this._Request_query
+});%>
+<%if(tInfo && tInfo.length > 0){%>
+<div class="main">
+	<%tInfo.forEach(function(item){%>
+	<div class="shopList">
+		<a href="<%= item.shop_url%>" class="shopBanner"><img src="<%= item.shop_mod_head_img%>"></a>
+		<%if(item.goods && item.goods.length > 0){%>
+		<div class="goodsWrap">
+			<div class="goodsIscroll">
+				<%
+					var goods = item.goods;
+					goods.forEach(function(k){
+				%>
+					<a class="goods" href="<%= k.link%>">
+						<figure><img src="<%= k.ginfo.goods_pic_url%>"></figure>
+						<p>
+							<span><i>￥</i><%= k.price %></span>
+							<del><%= k.ginfo.origin_price%></del>
+						</p>
+					</a>
+				<%});%>
+				<a class="goods" href="<%= item.shop_url%>">
+					<figure><img src="http://d04.res.meilishuo.net/pic/_o/5f/24/04222db878cb0ccf5ea266a94fc5_180_180.ch.jpg"></figure>
+				</a>
+			</div>
+		</div>
+		<%}%>
+	</div>
+	<%});%>
+</div>
+<%}%>
+<div class="seemore">
+	<a class="linkBtn" href="<%= qingcang && qingcang.more_url%>">去逛更多</a>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/region99/index');
+_use:", this._JSstack , this._JSmods); %>
+<%# foot.html%>

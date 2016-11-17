@@ -1,0 +1,34 @@
+function Passport(opts){
+	this.init(opts)
+}
+Passport.prototype.init = function(opts){
+	this.opts = opts || {}
+	this.app_id = opts.app_id
+
+	this.setBridge(opts)
+
+	this.defaultCSS = opts.defaultCSS || true
+	if(this.defaultCSS)
+		this.bridge.loadCssFile("/css/passport.css")
+}
+
+Passport.prototype.setLogin = function(opts){
+	var login = new Login($.extend({},{},opts), this)
+	return login
+}
+Passport.prototype.setRisk = function(opts){
+	var risk = new Risk($.extend({},{type:'pic'},opts), this)
+	return risk
+}
+Passport.prototype.setBridge = function(opts){
+	this.bridge = new Bridge($.extend({},{},opts), this)
+	return this.bridge
+}
+Passport.prototype.setValidate = function(formName, validateRules, showStyle, opts){
+	this.validate = new Validate().validate(formName, validateRules, showStyle, opts)
+	return this.validate
+}
+Passport.prototype.getValidate = function(){
+	return this.validate	
+}
+

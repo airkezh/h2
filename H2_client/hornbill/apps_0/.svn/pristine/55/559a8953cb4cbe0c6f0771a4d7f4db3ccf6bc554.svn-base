@@ -1,0 +1,165 @@
+@import "../common/block.less";
+
+@dpr:2;
+
+@primary:#f69;
+@desc-gray:#888;
+@light-gray:#d2d2d2;
+@body-background-color:#f5f5f5;
+@block-background-color:#fff;  //每一个li背景色
+@block-border-color:#dddddd;  //每一个li的border色
+@common-padding-horizontal:30px / @dpr;
+@common-padding-vertical:16px / @dpr;
+@common-margin-vertical:20px / @dpr;
+@block-margin-verctical:20px / @dpr;
+
+@yellow-tip:#fffad1;
+@yellow-tip-color:#ffb432;
+@yellow-tip-border:#ffe399;
+
+@btn-background-color:#ff6666;
+
+select,textarea,input {
+	.f(12px);
+	.border-1(@color:@light-gray);
+	.border-r(@radius:5px);
+	color:#666;
+}
+select,textarea{
+	width:100%;
+	background-color: #fff;
+	.border-1(@color:@light-gray);
+}
+select,input[type=text]{
+	height:30px;
+}
+
+input[type=text]{
+	padding:0 5px;
+}
+
+//radio button
+input[type=radio].mls-input-radio {
+	display:none;
+}
+
+input[type=radio].mls-input-radio + label.mls-input-radio-label {
+	padding-left:17px;
+	height:21px; 
+	display:inline-block;
+	line-height:21px;
+	background-repeat:no-repeat;
+	background-position: 0 0;
+	vertical-align:middle;
+	cursor:pointer;
+
+}
+
+input[type=radio].mls-input-radio:checked + label.mls-input-radio-label {
+	background-position: 0 -24px;
+}
+
+label.mls-input-radio-label {
+	background-image:url("@{pic_url}/images/wilee/order/radio_16.png?as23asfas2322");
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+	select.mls-select{
+		color:#666666;
+		background: url("@{pic_url}/images/wilee/order/select_16.png") no-repeat right center transparent;
+		-webkit-appearance: none;
+		outline: none;
+		margin: 0;
+		padding: 4px 30px 4px 5px;
+		border: 1px solid #d2d2d2;
+		font-size: 12px;
+		border-radius: 0px;
+		background-color: #fff;
+	}
+	/*select.mls-select:focus{
+		background: url("@{pic_url}/images/wilee/order/select_top_16.png") no-repeat right center transparent;
+	}*/
+}
+
+@media screen and(max-width:375px){
+	select.mls-select{
+		margin-top:4px;
+	}
+}
+
+body{
+	background-color: @body-background-color;
+	font-size: 14px;
+	@media screen and (max-width:320px){
+		font-size: 12px;
+	}
+
+	//重置container样式
+	.container{
+		padding:0;
+	}
+}
+
+//热线
+.hotline {
+	padding:20px 0;
+	margin:0 @common-padding-horizontal;
+	margin-top: 25px;
+	border-top: 1px solid @light-gray;
+	span {
+		a{
+			color:@primary;
+		}
+	}
+}
+
+//上传图片的小样式
+.uploading(){
+	#progressLoading{
+		.pa;z-index: 11;.c;
+		.upload_loading{.w(50px);.h(50px);.i_block;
+			div{.pr;.w(100%);.h(100%);
+				-webkit-animation: auto-circle 1s linear infinite; -moz-animation: auto-circle 1s linear infinite;
+				span{.pa;.bgc(#f69);.border-r(100%);
+					&:nth-child(1){.w(18%);.h(18%);left: 50%;top: 0%;.ml(-9%);}
+					&:nth-child(2){.w(16.5%);.h(16.5%);left: 28%;top: 15%;.ml(-8.25%);.mt(-8.25%);}
+					&:nth-child(3){.w(15%);.h(15%);left: 12%;top: 30%;.ml(-7.5%);.mt(-7.5%);}
+					&:nth-child(4){.w(13.5%);.h(13.5%);left: 0%;top: 50%;.mt(-6.75%);}
+					&:nth-child(5){.w(12%);.h(12%);left: 12%;bottom: 28%;.ml(-6%);.mb(-6%);}
+					&:nth-child(6){.w(10.5%);.h(10.5%);left: 28%;bottom: 12%;.ml(-5.25%);.mb(-5.25%);}
+					&:nth-child(7){.w(9%);.h(9%);left: 50%;bottom: 0%;.ml(-4.5%);}
+					&:nth-child(8){.w(7.5%);.h(7.5%);right: 25%;bottom: 10%;.mr(-3.75%);.mb(-3.75%);}
+					&:nth-child(9){.w(6%);.h(6%);right: 8%;bottom: 26%;.mr(-3%);.mb(-3%);}
+				}
+			}
+		}
+		.upload_txt{.mt(20px);}
+	}
+	#progressLayer{
+		.closeDialog{.none;}
+		.bgwhite;top: 0;left: 0;.pa;opacity: 0.7;z-index: 10;		
+	}
+	
+	@-webkit-keyframes auto-circle{
+	    from{
+	        -webkit-transform: rotate(0deg);
+	    }
+	    to{
+	        -webkit-transform: rotate(360deg);
+	    }
+	}
+	@-moz-keyframes auto-circle{
+	    from{
+	        -moz-transform: rotate(0deg);
+	    }
+	    to{
+	        -moz-transform: rotate(360deg);
+	    }
+	}
+}

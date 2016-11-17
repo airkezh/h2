@@ -1,0 +1,526 @@
+<%#head.html%>
+<%
+	var core = this.core;
+	var serverDate = this.serverDate;
+	var sTime = serverDate.getTime();
+	var sYear = serverDate.getFullYear();
+	var sMonth = serverDate.getMonth() + 1;
+	sMonth = (sMonth < 10) ? '0' + sMonth : sMonth;
+	var sDate = serverDate.getDate();
+	sDate = (sDate < 10) ? '0' + sDate : sDate;
+	var serverDateStr = sYear + '-' + sMonth + '-' + sDate;
+	var actStartTime = new Date(2014,11,31,12,00,00).getTime();
+	var actEndTime = new Date(2014,11,28,23,59,59).getTime();
+	var plotStartTime = new Date(2014,11,31,20,00,00).getTime();
+	var plotEndTime = new Date(2015,0,3,23,59,59).getTime();
+%>
+<div class='load_shade'>
+	<div class='load'></div>
+</div>
+
+<div class="top_main">
+	<div class="pic_box">
+		<img src="<%= this.PICTURE_URL%>images/wap/activity/may_sale/after_pig.gif" alt="">
+	</div>
+	<div class="top_box"></div>
+	<div class="gz_box">
+		<a href="javascript:;" class="gz_btn"></a>
+	</div>
+	<div class="icon_date"></div>
+	<div class="coin"></div>
+</div>
+
+<div class="money_box">
+	<div class="today total <% if(!this.showDhBtn) {%> up_down <%}%>">我的奖金：<span class="num" id="totalMoney"><%= this.core.total %></span> 元</div>
+</div>
+
+<div class="qd_box <% if(!this.showDhBtn) { %> up_down <% } %>" <% if (this.showDhBtn) { %> style="display:none;" <% } %>>
+	<a href="javascript:;" id="qd_btn"></a>
+</div>
+
+<div class="mark_box" <% if (!this.showDhBtn) { %> style="display:none;" <% } %>>
+	<a href="javascript:;" class="top">
+		<img src="<%=this.mobUserInfo.data.avatar_b%>" alt="" style="border-radius:50%">
+	</a>
+	<div class="nums_my">我的奖金<span><%= core.total %></span>元</div>
+	<%
+		var btn_class = '',
+			txt_style = '',
+			tips_text = '';
+
+		if ((sTime >= actStartTime) && (sTime <= actEndTime)) {
+			btn_class = '';
+			txt_style = 'display:block';
+			tips_text = '年末开放兑换<br>最后12小时';
+		} else {
+			if (sTime > actEndTime) {
+				btn_class = '';
+			} else {
+				btn_class = 'dh_no';
+			}
+			txt_style = '';
+			tips_text = '你太心急了<br>还差<span id="dh_date">' + core.award_date.lastDays + '</span>天才能兑换哦';
+		}
+	%>
+	<div class="change_text" style="<%= txt_style %>"><%= tips_text %></div>
+
+	<a href="javascript:;" class="dh_btn <%= btn_class %>"></a>
+
+	<!-- <a href="/activity/sign/sign_explain/" class="sign_tips"></a> -->
+
+	<div class="m">
+		<%
+			if (this.showCapacityTip) {
+		%>
+		<p>你的小猪装满了<br>还有<span class="j_cap_size"><%= core.freeze %></span>元塞不进去~</p>
+		<a href="javascript:;" class="tips_button"></a>
+		<%
+			} else {
+				var mall_text = '',
+					mall_style = '';
+
+				if ((sTime >= plotStartTime) && (sTime <= plotEndTime)) {
+					mall_style = 'background-image:url(' + this.PICTURE_URL + 'images/wap/activity/may_sale/sign_mall_bg3.jpg);';
+					mall_text = '<span>新年<em>桃花运</em>特辑</span>';
+				} else {
+					mall_style = '';
+					mall_text = '<span>今日上新<em>' + core.goods_num + '</em>件</span>';
+				}
+		%>
+		<a href="/activity/sign/sign_mall/?hdtrc=tuan1300_qiandao">
+			<div class="sign_mall" style="<%= mall_style %>">
+				<div class="mall_tip"><%= mall_text %><br>每日上新，<em>双倍</em>兑换！</div>
+			</div>
+			<div class="visit_button"></div>
+		</a>
+		<%
+			}
+		%>
+	</div>
+</div>
+
+<div class="calanderWrap calanderWrap1" <% if (!this.showDhBtn) { %> style="display:none;" <% } %>>
+	<%
+		var calPrevYear = 2015,
+			calNextYear = 2015,
+			calPrevMonth = 1,
+			calNextMonth = 1,
+			calCurYear = serverDate.getFullYear(),
+			calCurMonth = serverDate.getMonth() + 1;
+
+		if (calCurMonth == 1) {
+			calPrevYear = calCurYear - 1;
+			calNextYear = calCurYear;
+			calPrevMonth = 12;
+			calNextMonth = calCurMonth + 1;
+		} else if (calCurMonth == 12) {
+			calPrevYear = calCurYear;
+			calNextYear = calCurYear + 1;
+			calPrevMonth = calCurMonth - 1;
+			calNextMonth = 1;
+		} else {
+			calPrevYear = calCurYear;
+			calNextYear = calCurYear;
+			calPrevMonth = calCurMonth - 1;
+			calNextMonth = calCurMonth + 1;
+		}
+
+		calPrevMonth = (calPrevMonth < 10) ? '0' + calPrevMonth : calPrevMonth;
+		calNextMonth = (calNextMonth < 10) ? '0' + calNextMonth : calNextMonth;
+	%>
+	<div class="date_box">
+		<div class="prev_btn j_calander_btn" data-flag="prev" data-year="<%= calPrevYear %>" data-month="<%= calPrevMonth %>"></div>
+		<div class="icon_cal"></div>
+		<div class="month"><%= serverDateStr %></div>
+		<div class="totals">
+			连续第<span class="num" id="j_sign_days">0</span>天签到
+		</div>
+		<div class="next_btn j_calander_btn" data-flag="next" data-year="<%= calNextYear %>" data-month="<%= calNextMonth %>"></div>
+	</div>
+	<div class="calander"></div>
+	<div class="cBottom"></div>
+	<p class="ret_tip" style="display:none;">
+		<span class="txt"></span>
+		<img src="<%= this.PICTURE_URL%>images/wap/activity/may_sale/ret_btn.png" alt="tip" class="ret_btn">
+	</p>
+</div>
+
+<div class="person_main">
+	<ul class='person_box'></ul>
+</div>
+
+<div class="date_top"></div>
+
+<div class="remind_box">
+	<div class="remind">
+		<a href="javascript:;" class="cont <%if(this.remind==1){%>open<%}%>"></a>
+	</div>
+</div>
+
+<script type="text/html" id="rule1">
+	<div class="shade"></div>
+	<div class="main layer">
+		<div class="t"></div>
+		<div class="m">
+			<p class="t1">活动规则</p>
+			<%
+				if (sTime > actEndTime) {
+			%>
+			<p>1、坚持每天签到，每天都能领1元。如果中途漏签，奖金清零。漏签后可以使用补签卡恢复，补签卡每天限用1张。</p>
+			<p>2、签到奖金可以在签到商城兑换店铺优惠券消费，店铺优惠券可以在店铺内使用。</p>
+			<p>3、平台优惠券兑换每天中午12点会限量发出，先到先得。如果没有兑换，奖金会继续累加。每张订单只能使用1张平台优惠券。</p>
+			<p>4、小猪容量等于5元免费容量加上累计支付金额，超出容量的奖金无法兑换。购买商品可以提高容量，奖金总额会根据签到记录自动补齐。</p>
+			<p>5、每个用户，每个手机设备只能签到一个账号。对任何通过不正当手段参与活动者，美丽说有权撤销优惠券和订单，取消签到资格。</p>
+			<p>6、在法律允许的范围内，美丽说对本次活动拥有最终解释权。如遇不可抗力因素，美丽说有权取消本次活动。</p>
+			<%
+				} else {
+			%>
+			<p>1、坚持每天签到，每天都能领1元。如果中途漏签，奖金清零。漏签后可以使用补签卡恢复，补签卡每天限用1张。</p>
+			<p>2、每累积5元，可以兑换一次奖金，截止到当天晚上24点。兑换奖金必须在美丽说累计支付过相等的金额。</p>
+			<p>3、优惠券每天中午12点开始兑换，限量发放，先到先得。兑换时可以在5元，10元，20元，50元，100元中选择优惠券组合，有效期24小时，累计金额不得超过奖金总额。如果没有兑换，奖金会继续累加。</p>
+			<p>4、小猪容量等于5元免费容量加上累计支付金额，超出容量的奖金无法兑换。购买商品可以提高容量，奖金总额会根据签到记录自动补齐。</p>
+			<p>5、对任何通过不正当手段参与活动者，美丽说有权撤销优惠券和订单，取消签到资格。</p>
+			<p>6、在法律允许的范围内，美丽说对本次活动拥有最终解释权。如遇不可抗力因素，美丽说有权取消本次活动。</p>
+			<%
+				}
+			%>
+			<a href="javascript:;" class="new_know"></a>
+		</div>
+		<div class="f"></div>
+	</div>
+</script>
+
+<script type="text/html" id="activity_layer">
+	<div class="shade"></div>
+	<div class="main">
+		<div class="t"></div>
+		<div class="m">
+			<p class="t1">916金秋福利</p>
+			<p>1、9.11~9.18期间，连续签到5天及5天以上的用户，即可额外获得一张满129减30优惠券一张。</p>
+			<p>2、获得优惠券的用户必须9.16之前在美丽说有过现金消费，并且支付成功。</p>
+			<p>3、优惠券会从9.16起每天下午5点统一发放到中奖账户。</p>
+			<a href="javascript:;" class="new_know"></a>
+		</div>
+		<div class="f"></div>
+	</div>
+</script>
+
+<script type="text/html" id="capacity_layer">
+	<div class="shade"></div>
+	<div class="main">
+		<div class="t"></div>
+		<div class="m">
+			<p class="t1">你的小猪装满了！</p>
+			<p class="sub_title">还有<em><%=core.freeze%></em>元塞不进去</p>
+			<p>小猪容量＝5元免费容量＋累计支付金额。</p>
+			<p>你累计支付<em><%=core.size - 5%></em>元，小猪最多只能装<em><%=core.size%></em>元，快去买东西吧～买完后奖金会自动补齐！</p>
+			<div class="tip_bg"></div>
+			<a href="javascript:;" class="ok_btn"></a>
+		</div>
+		<div class="f"></div>
+	</div>
+</script>
+
+<script type="text/html" id="pointbox">
+	<div class="shade"></div>
+	<div class="win_box">
+		<p class="title gz_tit">签到成功<br><span class="point_text">明天记得再来<br>漏签了奖金可是会清零的噢~</span></p>
+		<div class="point_pig"><img src="<%= this.PICTURE_URL%>images/wap/activity/may_sale/point1.jpg" alt=""></div>
+		
+		<a href="javascript:;" class="point_btn"></a> 
+	</div>
+</script>
+
+<script type="text/html" id="qd_suc">
+	<div class="shade"></div>
+	<div class="win_box">
+		<p class="title gz_tit">温馨提示</p>
+		<div class="qd_pig"><img src="<%= this.PICTURE_URL%>images/wap/activity/may_sale/qd_pig.jpg" alt=""></div>
+		<p class="qd_stext"></p>
+		<a href="javascript:;" class="come_on"></a> 
+	</div>
+</script>
+
+<script type="text/html" id="coupon_suc">
+	<div class="shade"></div>
+	<div class="win_box">
+		<p class="title">主人，这是我全部的积蓄，<br>都给你！你一定要好好的花完，<br>不留遗憾！</p>
+		<div class="pig_coupon_s"><img src="<%= this.PICTURE_URL%>images/wap/activity/may_sale/coupon_f_pig.jpg" alt=""></div>
+		<div class="coupon_num">
+			<div class="num_text"><span class="num" >-</span>元优惠券</div>
+			<div class="time" id="couponTime">
+				<p>有效期还剩：</p>
+				<!--<dl class="timeStamp" end-date="<%= (new Date().getTime()/1000+1000)%>" now="<%= (new Date().getTime()/1000)%>">
+					<dd><span class="day0" style="display:none;">-</span></dd>
+					<dd><span class="day1" style="display:none;">-</span></dd>
+					<dt style="display:none;">天</dt>
+					<dd><span class="hour0">-</span></dd>
+					<dd><span class="hour1">-</span></dd>
+					<dt class="bigmao">时</dt>
+					<dd><span class="minute0">-</span></dd>
+					<dd><span class="minute1">-</span></dd>
+					<dt class="bigmao">分</dt>
+					<dd><span id="seconds0">-</span></dd>
+					<dd><span id="seconds1">-</span></dd>
+					<dt class="bigmao">秒</dt>
+				</dl>-->
+			</div>
+		</div>
+		<a href="javascript:;" class="coupon_btn"></a>
+	</div>
+</script>
+
+<script type="text/html" id="coupon_qr">
+	<div class="shade"></div>
+	<div class="win_box">
+		<p class="title coupon_dhtext">主人，我们才拥有了<%=this.core.total%>天的感情，<br>你就忍心砸碎我么？<br>兑换后的优惠券24小时内必须使用<br>您不如攒个大的，养肥点再花吧！</p>
+		<div class="pig_dh"><img src="<%= this.PICTURE_URL%>images/wap/activity/may_sale/coupon_s_pig.jpg" alt=""></div>
+		<a href="javascript:;" class="dj_btn"></a>
+		<a href="javascript:;" class="dj1_btn"></a>
+	</div>
+</script>
+
+<script type="text/html" id="820coupon">
+	<div class="shade"></div>
+	<div class="win_box">
+		<p class="title coupon_dhtext">恭喜你！<br>你获得了820秋装上新节<br>签到贵宾优惠券<br>只发给连续签到3天以上的VIP哦~<br>8.20~8.22每天都有，记得明天再来！</p>
+		<div class="pig_820"><img src="<%= this.PICTURE_URL%>images/wap/activity/may_sale/820coupon.png" alt=""></div>
+		
+		<a href="javascript:;" class="coupon_btn"></a>
+	</div>
+</script>
+
+<script type="text/html" id="commonCountdown">
+	<dl id="timeStamp" class="timeStamp" end-date="<%= (new Date().getTime()/1000+400)%>" now="<%= (new Date().getTime()/1000)%>">
+		<dd><span class="day0" style="display:none;">-</span></dd>
+		<dd><span class="day1" style="display:none;">-</span></dd>
+		<dt style="display:none;">天</dt>
+		<dd><span class="hour0">-</span></dd>
+		<dd><span class="hour1">-</span></dd>
+		<dt class="bigmao">时</dt>
+		<dd><span class="minute0">-</span></dd>
+		<dd><span class="minute1">-</span></dd>
+		<dt class="bigmao">分</dt>
+		<dd><span id="seconds0">-</span></dd>
+		<dd><span id="seconds1">-</span></dd>
+		<dt class="bigmao">秒</dt>
+	</dl>
+</script>
+
+<script type="text/html" id="calendar">
+	<div class="shade"></div>
+	<div class="calendar_box">
+		<a href="javascript:;" class="calendar_close"></a>
+	  	<div class="calanderWrap calander_win"></div>
+	</div>
+</script>
+
+<script type="text/html" id="red">
+	<div class="shade"></div>
+	<div class="redMain">
+		<div class="t"></div>
+		<div class="m red">
+			<p class="p1">签到特权</p>
+			<p>小主连续签到<span><?=this.day?></span>天</p>
+			<p>特赠<span>10</span>个签到红包，共计<span><?=this.redTotalPrice?></span>元</p>
+			<p>签到越多，红包越多，快去撒钱～</p>
+			<div class="redMiddle">
+			</div>
+			<div class="redShare"></div>
+			<div class="redClose"></div>
+		</div>
+		<div class="f"></div>
+	</div>
+</script>
+
+<script type="text/html" id="redFor11">
+	<div class="shade"></div>
+	<div class="redMain2">
+		<div class="redShare"></div>
+		<div class="redClose"></div>
+	</div>
+</script>
+
+<script type="text/html" id="j_qzone_layer">
+	<div class="shade"></div>
+	<div class="main qzone">
+		<div class="t"></div>
+		<div class="m">
+			<p class="t1">签到特权</p>
+			<p>分享50元新手礼券到QQ空间</p>
+			<p>立刻获得一张补签卡</p>
+			<div class="tip_bg"></div>
+			<div class="share_btn"></div>
+			<div class="close_btn"></div>
+		</div>
+		<div class="f"></div>
+	</div>
+</script>
+
+<script type="text/html" id="j_succ_layer">
+	<div class="shade"></div>
+	<div class="main succ">
+		<div class="t"></div>
+		<div class="m">
+			<p class="t1">分享成功！</p>
+			<p>恭喜你，获得一张补签卡</p>
+			<div class="tip_bg"></div>
+			<div class="scan_btn"></div>
+		</div>
+		<div class="f"></div>
+	</div>
+</script>
+
+<script type="text/html" id="new_coupon_qr">
+	<div class="shade"></div>
+	<div class="new_dh">
+		<div class="coupons">
+			<?
+				var mark = true,
+					isTime = new Date().getHours() < 12 ? false : true;
+
+			  	for (var i = 0; i < this.coupons.length; i++) {
+			  		var currSel = false,
+						coupon = this.coupons[i],
+						bgStyle = (coupon.price <= this.totalMoney) ? 'canSel' : 'noSel';
+
+					if ((coupon.left > 0) && mark && (coupon.price <= this.totalMoney)) {
+						mark = false;
+						currSel = true;
+						fml.vars.getCouponPrice = coupon.price;
+					}
+			?>
+			<div class="new_dh_coupon <?= bgStyle ?> <? if (currSel) { ?> currSel <? } ?>">
+				<div class="c_content <?= bgStyle + 'ForText' ?>"><span><?= coupon.price ?></span>元优惠券</div>
+				<div class="<? if (!isTime) { ?>isNotTimeGet<? } else { ?>c_left<? } ?>" style="<? if (!isTime) { ?>display:block<? } else if (coupon.left <= 0) { ?>display:block<? } ?>"></div>
+			</div>
+			<?
+				}
+			?>
+		</div>
+		<div class= "coupon_tips" >
+			<?
+				if (!isTime) {
+			?>
+			中午12点开始兑换
+			<?
+				} else if (!mark) {
+			?>
+			兑换<span class="cp"><?= fml.vars.getCouponPrice ?></span>元，还剩<span class="lp"><?= this.totalMoney - fml.vars.getCouponPrice ?></span>元
+			<?
+				} else {
+			?>
+			今日已抢光，下次赶早！
+			<?
+				}
+			?>
+		</div>
+		<div class="new_dj_btn <? if (!isTime || mark) { ?>new_dj_btn_gray<? } ?>"></div>
+		<div class="new_coupon_qr_close"></div>
+	</div>
+</script>
+
+<script type="text/html" id="new_dh_succ">
+	<div class="shade"></div>
+	<div class="dh_succ">
+		<div class="getCouponInfo">
+			<span><?=this.couponPrice?></span>元现金券
+		</div>
+		<div class="new_coupon_btn"></div>
+		<div class="dh_succ_close"></div>
+	</div>
+</script>
+
+<script type="text/html" id="j_exchange_layer">
+	<div class="shade"></div>
+	<div class="main doubt">
+		<div class="t"></div>
+		<div class="m">
+			<p class="t1">美丽说12.12，冬装五折起！</p>
+			<div class="doubt_bg"></div>
+			<p>即日起至12月14日</p>
+			<p>签到优惠券有效期统一改为</p>
+			<p class="prompt">12月11日晚8点~12月14日晚24点</p>
+			<p>记得给自己买件好的！~</p>
+			<a href="javascript:;" class="j_know_btn"></a>
+		</div>
+		<div class="f"></div>
+	</div>
+</script>
+
+<script type="text/html" id="j_nurturing_layer">
+	<div class="shade"></div>
+	<div class="main nurturing">
+		<div class="t"></div>
+		<div class="m">
+			<p class="t1">签到彩蛋</p>
+			<p>美丽12.12来了！！！</p>
+			<p>长草又剁手，没钱怎么办？</p>
+			<p>快去求土豪打赏</p>
+			<p>给自己买件好的！</p>
+			<div class="nurturing_bg"></div>
+			<a href="/wx/baoyang/?frm=qiubaoyang_qiandao" class="nurturing_btn"></a>
+			<a href="javascript:;" class="j_close_btn"></a>
+		</div>
+		<div class="f"></div>
+	</div>
+</script>
+
+<script type="text/html" id="j_signin_layer">
+	<div class="shade"></div>
+	<div class="main signin">
+		<div class="t"></div>
+		<div class="m">
+			<p class="t1">签到小猪和你的年末约会</p>
+			<p class="sub1">12月31日中午12点起<br>开放兑换最后12小时<br>不限兑换日</p>
+			<p class="sub2">1月1日0点起<br>签到新规则上线<br>明年继续约哦！~</p>
+			<a href="javascript:;" class="j_look_btn"></a>
+			<a href="javascript:;" class="j_close_btn"></a>
+		</div>
+		<div class="f"></div>
+	</div>
+</script>
+
+<script>
+	/*fml.vars.isNewest = "<%=this.isNewest%>";
+
+	if(Meilishuo.config.os && Meilishuo.config.os.mlsApp){
+		fml.vars.isApp = true;
+	}*/
+	fml.vars.isLogin = <%=this.isLogin%>;
+
+	var sTime = "<%=sTime%>";
+	var sYear = "<%=sYear%>";
+	var sMonth = "<%=sMonth%>";
+	var sMonthNum = +sMonth - 1;
+	var sDate = "<%=sDate%>";
+	var sLastDate = "<%=sDate - 1%>";
+	var plotStartTime = <%=plotStartTime%>;
+	var plotEndTime = <%=plotEndTime%>;
+	var serverDateStr = "<%=serverDateStr%>";
+	var signData = <%=JSON.stringify(core.data)%>;
+	var regDateArr = signData.registration;
+	var redeemArr = signData.redeem;
+	var convertedArr = signData.converted;
+	var totalMoney = "<%=core.total%>";
+	var capacitySize = "<%=core.size%>";
+	var newGoodsNum = "<%=core.goods_num%>";
+	var freezeMoney = "<%=core.freeze%>";
+	var resetMoney = <%=this.resetMoney%>;
+	var firstView = <%=this.firstView%>;
+	var shareBtn = <%=this.showDhBtn%>;
+	var isNewest = <%=this.isNewest%>;
+	var headPic = '<%=this.mobUserInfo.data.avatar_b%>';
+	var dateDay = <%=JSON.stringify(core.award_date)%>;
+	var lastDays = dateDay.lastDays;
+	var rankNum = <%=JSON.stringify(core.user_rank)%>;
+	var signPatch = <%=JSON.stringify(core.patch)%>;
+	var isShareQzone = <%=JSON.stringify(core.share)%>;
+	var d = <%=JSON.stringify(core)%>;
+	//alert(JSON.stringify(convertedArr));
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/activity/sign');
+_use:", this._JSstack , this._JSmods); %>
+<%# foot_simple.html%>

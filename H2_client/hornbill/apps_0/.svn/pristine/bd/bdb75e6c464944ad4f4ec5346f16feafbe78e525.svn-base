@@ -1,0 +1,26 @@
+<%# head_simple.html%>
+<div class="wrap">
+	<section>
+		<img src="<%=this.PICTURE_URL%>/images/wap/web/wx/coup-bg11.jpg">
+	</section>
+	<section class="share-wrap3">
+		<span class="share">一起分享喜悦</span>
+	</section>
+</div>
+<script type="text/html" id="share_md">
+</script>
+<script>
+	fml.vars.useId = <%= JSON.stringify(this.user_id)%>;
+	var imgUrl = 'http://i.meilishuo.net/css/images/wap/web/wx/stitle.jpg';
+	var lineLink = 'http://m.meilishuo.com/wx/stove?uid=' + fml.vars.useId + '&page_name=xmas_fire&suid=' + fml.vars.useId;
+	var descContent = '【美丽说】圣诞有钱，壁炉点火够任性！每天N次拿礼物，无上限！';
+	var shareTitle = '【美丽说】圣诞炉火大转盘';
+	var shareTimelineText = '【美丽说】圣诞有钱，壁炉点火够任性！每天N次拿礼物，无上限！';
+</script>
+
+<script src="<%= this.JCSTATIC_BASE  %>/js/open/shareCollect.js?<%= this.SVERSION%>"></script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/wx/stove');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

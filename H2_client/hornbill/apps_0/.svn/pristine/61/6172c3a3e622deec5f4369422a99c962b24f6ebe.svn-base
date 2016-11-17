@@ -1,0 +1,110 @@
+<%*
+ * @fileoverview 分类改版
+ * @author qindai@meilishuo.com
+ * @date 2015-11-30
+%>
+<%# wx_new/header.html%>
+<%* 搜索模块 %>
+<%= requireFn('wx_new/mdl_search.html')({
+	'data' : this.default_key.word || '立即搜索你想要的商品'
+	,'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+});%>
+
+<%
+	var page_class = this.page_class || {};
+	var nid = page_class.nid;
+	var q_word = '上衣';
+%>
+<%* 一级分类 %>
+<% if( page_class.rootnav && page_class.rootnav.length ){ %>
+<section class="fir-class">
+	<ul>
+		<% page_class.rootnav.forEach( function( data ){
+				var is_active = '';
+				var color = '';
+				if( data.nid == nid ){
+					q_word = data.query_word;
+					is_active = 'active';
+					color = data.color;
+				}
+			%>
+
+			<li class="item <%= is_active %>">
+				<a class="<%= data.font %>" <% if( color ){ %> style="background-color: #<%=color %>; "<%}%> href="/wx/newclass/index/?nid=<%= data.nid %>">
+					<%= data.word_name%>
+				</a>
+			</li>
+		<% }); %>
+	</ul>
+</section>
+<%};%>
+
+<%* 二级分类 %>
+<%
+var second = page_class.children;
+if( second && second.length ){%>
+<section class="hot">
+	<% second.map(function(data){%>
+		<a class="a-item" href="/wx/search?key=<%=data.query_word %>" style="background-image:url(<%= data.pic_url ? data.pic_url : data.pic %>);">
+			<span class="name"><%=data.word_name %></span>
+		</a>
+	<% }); %>
+</section>
+<%};%>
+
+<div class="posterWall wrap">
+	<section class="tab" id="goods-tab">
+		<%
+			var tabArr = [
+				{ 'dataType' : 'base', 'urlTab' : 'base' ,'name' : '流行'},
+				{ 'dataType' : 'hot', 'urlTab' : 'hot' , 'name' : '热销'},
+				{ 'dataType' : [
+						{ 'dataType' : 'price' ,'urlTab' : 'price-l' , 'name' : '价格' },
+						{ 'dataType' : 'price-l' ,'urlTab' : 'price-h' , 'name' : '价格' },
+						{ 'dataType' : 'price-h' ,'urlTab' : 'price-l' , 'name' : '价格' }
+					] }
+			],
+			tabType = this.tabType;
+		%>
+		<ul class="goods_sort_by">
+		<%
+			function generateHTML( data ) {
+				var d = data.dataType,
+					result;
+				if ( Array.isArray( d ) ) {
+					result = d.filter( function( v ) { return v.dataType == tabType } )
+					generateHTML( result.length ? result[ 0 ] : d[ 0 ] )
+				} else {
+				%>
+				<li class="s_item <%=tabType == d ? 'active' : '' %>" data-type="<%=d %>" >
+					<span class="s-txt"><%= data.name %></span>
+						<i class="icon"></i>
+				</li>
+				<%	
+				}
+			};
+			tabArr.forEach(function( tab ) {
+				generateHTML( tab )
+			})
+		%>
+		</ul>
+	</section>
+
+	<ul class="new_goods goods-wall">
+	</ul>
+	<div class="pullUp" status="loading"></div>
+</div>
+
+<%# wx_new/waterfall.html %>
+
+<script>
+	fml.vars.q_word = '<%= q_word %>';
+	fml.vars.isShare = <%= this.share || false %>;
+
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/wx_new/nclass');
+_use:", this._JSstack , this._JSmods ); %>
+<%# wx_new/side.html%>
+<%# wx_new/footer.html%>

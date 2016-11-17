@@ -1,0 +1,96 @@
+<%#head.html%>
+	<section id="wrapper_main" class="wrapper">
+		<div class="main">
+			<div id="bannerBox">
+				<%if(this.b_banner&&this.b_banner.list&&this.b_banner.list.length){ var b_banner=this.b_banner.list; %>
+					<div class="imageSlide" id="imageSlide">
+						<ul>
+							<% b_banner.forEach(function(data){ %>
+								<li>
+									<a href="javascript:void(0)" data-url="<%=data.url %>" class="bannerLink"><img src="<%= data.img %>"/></a>
+								</li>
+								<% }); %>
+						</ul>
+						<%if(b_banner.length>1){%>
+							<div class="num"></div>
+							<%}%>
+					</div>
+					<%}%>
+			</div>
+			<section class="nav_wap" id="nav_wap">
+				<div class="nav" id="m_ca">
+					<ul>
+						<li data-url='/m_welfare/'>
+							<a href="javascript:void(0)"><span>福利社区</span></a>
+						</li>
+						<li class="curr" data-url='/m_welfare/indexReport/'>
+							<a href="javascript:void(0)"><span>精彩试用</span></a>
+						</li>
+						<li data-url='/m_welfare/mywlf/'>
+							<a href="javascript:void(0)"><span>我的福利</span></a>
+						</li>
+					</ul>
+				</div>
+			</section>
+			<section id="container" class="container">
+				<div class="content show" style="padding-top: 10px;">
+					<div class="reportWrap mywlf">
+						<%if(this.goodReport.num==0){%>
+							<div class="nowlf">
+								<img src="<%=this.PICTURE_URL%>images/m_welfare/wlf_noreport.jpg">
+								<p>精彩试用敬请期待</p>
+							</div>
+							<%}else{%>
+								<div class="reportList">
+
+								</div>
+								<div class="pullUp" status="loading"></div>
+								<%}%>
+					</div>
+				</div>
+			</section>
+		</div>
+	</section>
+	<a class="gotop" style="bottom:<%if(this.isIphone){%>60<%}else{%>20<%}%>px">
+
+		<img src="<%= this.PICTURE_URL%>/images/wap/tuan/gotop.png" />
+
+	</a>
+	<script type="text/html" id="posterWall">
+		<?this.list.forEach(function(item){ ?>
+			<div class="reportItems">
+				<a href="/m_welfare/reprotDetails/<?=item.id?>">
+					<div class="userInfo">
+						<img src="<?=item.user.avatar_c?>" class="userImg" /><span class="userName"><?=item.user.nickname?><br></span><span class="pulishTime">发表于：<?=item.ctime?></span>
+					</div>
+					<div class="imgs">
+						<? var pics=JSON.parse(item.trial_pics); var picsLen=3; if(pics.length<3){ picsLen=pics.length; } for(var i=0;i<picsLen;i++){ if(i==0) {?>
+						<img src='<?=pics[i]?>' alt="pic" title="pic" style="margin-left: 0;" class="reprotImg" />
+						<?}else{?>
+							<img src='<?=pics[i]?>' alt="pic" title="pic" class="reprotImg" />
+							<?}}?>
+					</div>
+					<?if(item.order_by=="0"){?>
+						<h3 class="report_title"><?=item.trial_title?></h3>
+					<?}else{?>
+						<h3 class="report_title isPerfect">
+						<img src="<%=this.PICTURE_URL%>images/m_welfare/wlf_perfectReprot.jpg" alt="精彩报告" title="精彩报告" />
+						<?=item.trial_title?></h3>
+					<?}?>
+					<p class="report_con">
+						<?=item.trial_content?>
+					</p>
+				</a>
+			</div>
+			<? });?>
+	</script>
+	<script>
+		 <%= this.goodReport ? 'Meilishuo.config.poster0=' + JSON.stringify(this.goodReport) + ';' : ''; %>
+		fml.vars.is_lazyload_poster = true;
+	</script>
+	<%! $_ENGINE_SELF.callFn( "useModule")( "<<<_use:
+
+	fml.use('wap/page/welfare_new/report_index');
+
+_use:", this._JSstack , this._JSmods ); %>
+		<%#foot.html%>

@@ -1,0 +1,147 @@
+@import "../block.less";
+
+.frame_simple;
+.navBan;
+.foot;
+
+.doota > .numBox;
+
+.pageNav1{ .page > .pageRed; .c; margin: 30px auto; }
+
+.tab_tle { border-bottom: 1px solid #f69; .bgwhite; .h(28px);.f(140%); .l(18px); .fc(#ccc); .pt(20*@px);
+	a { .block;.h(26px);.c;}
+	.cur{ border-bottom: 2px solid #f69; .red; .pr;
+		.sharp { .bp(-245px,-72px); .block; .h(4px); .w(7px); .pa; bottom: 0; _bottom: -15px; left: 47%; }
+	}
+}
+/*icons*/
+.love_ico, .msg_ico, .big_clock, .small_clock, .tel_ico, .sharp, .hotline_ico {
+	background: url("@{pic_url}/images/doota/@{doota_sale}") no-repeat;
+}
+.btn_box{.clearfix;.mt(20*@px);
+	.buy_btn, .define, .add_cart, .non_buy{
+		.common_button;.l(2.6rem);.left;.w(49%);.c;
+	}
+	.buy_btn, .define{
+		.common_button > .redBtn;
+	}
+	.buy_btn{.ml(2%);}
+	.add_cart{
+		.common_button > .pinkBtn;
+	}
+	.non_buy { 
+		.common_button > .grayBtn;
+	}
+}
+
+.detail { 
+	.sale {
+		.sku_meta { .mt(24px);.f(1.4rem);
+			li { .h(32px); .l(32px);border-top:1px solid #f3f3f3;
+				&:nth-child(1){
+					.border-n;		
+				}
+				.sort { .w(40px);.left;text-align:justify;}
+				.btn {.h(20px); .l(20px); .ml(10px); .pl(5px); .pr(5px);}
+				.del { .t-through; }
+				.price { .red; .left; .f(24px); .fb; }
+			}
+			.activeNews{.ellipsis;}
+		}
+	}
+	/*selected*/
+	.sku_info {
+		.f(140%);
+		.skin { .pt(20*@px);.mb(20*@px);.common_box;.common_box > .lr;}
+		.promptBox { border:2px solid #f69;
+			.buy_btn, .add_cart, .loveBox { .none; }
+		}
+		dl {.clearfix;border-bottom: 1px solid #e6e6e6;.pt(20*@px);.pb(20*@px);
+			dt{.mb(20*@px);}
+			dd {
+				li { .left; .mr(10px);.l(18px); padding: 1px;
+					span {.block;border: 1px solid #e6e6e6; .c; .break-word; .pl(6px); .pr(6px); min-width: 10px; 
+						&.active { border: 2px solid #f69; margin: -1px; }
+					}
+				}
+			}
+		}
+		.img_list span { .left; .h(44px); .w(44px); .hidden; padding: 1px;
+			img { .h(44px); .w(44px); }
+		}
+		.stock { .ml(20px); .l(20px); }
+
+		.define { .none; }
+
+		.out_of_stock { border: 1px dashed #e6e6e6; .fc(#e6e6e6);
+			a { .border-n; }
+			span { background: url("@{pic_url}/images/doota/outof_stock.png") no-repeat; 
+				.h(44px); .w(44px); .indent; .block; .pa; top: 1px; z-index: 5;
+			}
+		}
+		.msg_box {.hidden;}
+		.msg {
+			&_limit, &_over, &_zero ,&_shelf { .bgc(#ffebf2); .border-1(#d2d2d2); padding: 7px 10px; .i_block;}
+			&_limit, &_over, &_zero {
+				.l(16px); .mt(20*@px);.left;.none;
+			}
+			&_shelf { .f(100%);}
+			&_ico { .bp(-2px,-115px); .left; .h(16px); .mr(10px); .w(16px); }
+		}
+		.timeBox { .bgc(#f9f9f9); .gray; .mt(20px); .h(32px); .l(32px); .pl(10px);
+			.big_clock { .bp(-109px,-68px); .left; .h(28px); .w(32px); }
+		}
+		.article { .l(20px); border-top: 1px solid #e6e6e6; .mt(30px); .pt(28px);}
+	}
+	.picture {
+		.mb(20*@px);
+		.share_pic;
+		.pic{.pr;}
+		.common_box;
+		.sale_ico { background: url("@{pic_url}/images/doota/sale_ico.png") no-repeat;.w(79*@px);.pt(79*@px);
+			background-size:100% 100%;
+			.pa;left:0;top:0;
+		}
+	}
+}
+.wrap {.mb(20*@px);
+	.title { border-top: 1px solid #e6e6e6; .l(2); .mt(20*@px);.pb(20*@px); .ml(20*@px);.f(140%);
+		span { .bgc(#e6e6e6); .i_block; .pl(30px); .pr(30px); }
+	}
+	.format { .border-1(#e6e6e6); .hidden; .clearfix; padding: 10*@px 20*@px; margin: 0 20*@px 20*@px;
+		li { .left; .ellipsis; .l(22px);.w(50%);}
+	}
+	.pro_txt{ .ml(20*@px); .mr(20*@px); .hidden;.l(1.6);.f(140%); }
+	.more_pic { .c;.ml(20*@px);.mr(20*@px); 
+		.load_img { .block;.auto; background:url("@{pic_url}/images/share/loading.gif") no-repeat center; }
+		img{max-width:100%;}
+	}
+}
+.comments { 
+	.list { .pl(20*@px); .pr(20*@px); 
+		li {border-top:1px solid #ccc;.pt(20*@px);.pb(20*@px);
+			.avatar {.border-r(40px);.w(80*@px);.h(80*@px);.left; }
+			p {.ml(100*@px);.mb(20*@px);
+				&:nth-of-type(1){.red;.f(140%);}
+				&:nth-of-type(2){.fc(#000);.f(140%);}
+				&:nth-of-type(3){.gray;.f(120%);}
+			}
+			&:nth-child(1) { .border-n; }
+		}
+	}		
+}
+
+.service{
+	.common_box;.common_box > .lr;.mb(20*@px);
+	.promise { .red; .hidden; .l(26px);
+		li { .left;.nowrap;.mr(20*@px);.l(32px);
+			.pro_ico { .left; .h(26px); .w(30px);.mt(3px);}
+		}
+	}
+	.hotline {
+		.hotline_ico { .bp(0,-72px); .left; .h(36px); .w(36px); }
+		p { .ml(44px);.l(14px);}
+		.tel { .red; .f(160%);.l(22px);}
+	}
+}
+

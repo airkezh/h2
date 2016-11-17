@@ -1,0 +1,55 @@
+<!-- 底部nav -->
+<%if(this.bottomNav){%>
+<%= requireFn('sq/nav.html')({
+		'index' : this.tabIndex || 1,
+		'actShow' : this.actShow
+});%>
+<%}%>
+<script src="http://imgcache.gtimg.cn/channel/report/monitor-1.0.js?_bid=2174&appId=20011&speedId=1580-1-1&max_age=86400000"></script>
+<script src="http://imgcache.qq.com/ac/vasapp/webviewlib/qw_open/qw_open.js"></script>
+<script>
+  fml.vars.uid = <%= (this.userInfo && this.userInfo.user_id) || 0 %>;
+  fml.vars.share = {
+		title : (fml.vars.shareInfo && fml.vars.shareInfo.title) || "美丽说"
+		,desc : (fml.vars.shareInfo && fml.vars.shareInfo.price) || "精选款式，实在的价格，供你选择"
+		,share_type : 0
+		,share_url : (fml.vars.shareInfo && fml.vars.shareInfo.url) || 'http://m.meilishuo.com/sq'
+		,image_url : (fml.vars.shareInfo && fml.vars.shareInfo.img_url) || 'http://i.meilishuo.net/css/images/wap/web/sq/share_logo.jpg'
+		,back : true
+	};
+	if (this.os && !fml.vars.shareInfo.share_type) {
+		fml.vars.share.puin = 12345;
+	};
+</script>
+<%# sq/share_box.html%>
+
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use('wap/page/sq/global');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# block/dialog.html %>
+<%= (function(link , jsmods){
+	var str = '';
+	var SVERSION = this.SVERSION;
+	var base = this.M_JCSTATIC_BASE;
+	link && link.map(function(src){
+		str += '<script src="' + src + '?'+SVERSION+'"></script>';
+	 });
+	if (jsmods.length) {
+		jsmods = '~'  +  jsmods.join('+');
+		str += '<script  src="' + base + jsmods + '?'+SVERSION+'"></script>';
+	}
+	return str;
+})(this._JSLinks ,this._JSmods) %>
+<script>
+<% if (this._JSstack && this._JSstack.length) { %>
+<%= this._JSstack.join(";\n"); %>
+<% }
+if (this.JS_Defer) {
+%>
+;fml.iLoad();
+<%}%>
+</script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<%#head.html%>
+<%#tagshow.html%>
+<%
+var cirInfo = this.cirInfo.data;
+var users = this.users;
+var msgs = this.msgs;
+%>
+
+
+<div class="goods-wall js-goods-wall">
+	<div class="pullUp" status="tap"></div>
+</div>
+
+<div class="weiquan">
+    <img src="http://d05.res.meilishuo.net/pic/_o/ac/2f/09392f37828e7ff3e90685f25e82_100_100.cg.png" alt="微圈"/>
+    <a class="wei-btn" href="#" id="wei-btn">
+        我要当群主
+    </a>
+</div>
+
+<script type="text/html" id="posterWall">
+	<?
+    this.poster.forEach(function(poster) {
+    ?>
+        <div class="poster-wrap">
+		<div class="poster">
+			<a class="pic-load"  href="//m.meilishuo.com/share/item/<?= poster.twitter_id ?>" style="background-image:url('<?= poster.goods_img ?>');padding-top:120%;background-repeat:no-repeat;background-position:center">
+		 	</a>
+		 	<p class="clothes-title"><?= poster.goods_title ?></p>
+		 	<p class="detail">
+			 	<span class="price"><?= poster.goods_price ?></span>
+			 	<span class="heart"></span>
+			 	<span class="like_num"><?= poster.count_like ?></span>
+		 	</p>
+		</div>
+	</div>
+    <? }); ?>
+</script>
+
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script>
+fml.vars.users = <%= JSON.stringify(users)%>;
+fml.vars.msgs = <%= JSON.stringify(msgs)%>;
+fml.vars.circle_id = <%= cirInfo.id %>;
+fml.vars.shop_id = <%= cirInfo.shop_id %>;
+fml.vars.circle_info = <%= JSON.stringify( cirInfo )%>
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+    fml.use('circle/page/landing');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot_simple.html%>

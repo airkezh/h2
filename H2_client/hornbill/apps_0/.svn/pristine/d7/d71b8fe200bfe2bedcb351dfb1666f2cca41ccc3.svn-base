@@ -1,0 +1,68 @@
+@import "../block.less";
+
+body{ .bgc(#ebe7e9); }
+a{ .block; outline:none; }
+
+.img100 { .w(100%); .block; }
+.shop_box{ .w(100%); .mt(10px); .mb(10px); .pr; .f(28*@px); .c; 
+	
+
+	.shop_info{ .pa; bottom:0; .w(100%); .h(214*@px);  background-color: rgba(255, 255, 255, .93); .hidden;
+		img{ .h(68*@px); .mt(20*@px); }
+		p{ .h(66*@px); .l(66*@px); margin: 0 10px; .hidden; color:#000;
+			background: url("@{pic_url}/images/wap/new_hdstreet/go.png") no-repeat top right;
+			background-size: 3%;
+		}
+		.num{ color:#808080; .clearfix; .w(100%);
+			.sale{ .w(284*@w); .tr; .left; }
+			.new{ .w(284*@w); .tl; .right; }
+			.shop_icon{ .w(70*@w); .c; .left; }
+			img{ .h(36*@px); .mt(-1px); }
+		}
+	}
+	.wrap{ .pa; top:180*@w;  .w(100%); color:#fff;
+		.tag{ .f(74*@px); font-weight: bolder; .mb(20px); }
+		.shop_btn{ background-color: #ffc231; padding: 9px 20px; .f(14px); }
+	}
+
+}
+/*lunbo banner*/
+.sliderBanner;
+.banner-slider{ .pr; .gpu;  }
+.banner-slider-point{ .pa; .w(100%); left:0; .mb(8px);
+	li{ float: none; .i_block; background-color:#fff; .vm; .w(5px); .h(5px); .mr(2px); }
+	.curr{ background-color:transparent; border:1px solid #fff; }
+}
+/*回顶部*/
+.gotop{ .pf; right:20px; .w(12.5%); .none;  }
+
+/*lazyLoad*/
+.lazy_pic{ .w(100%); .block; }
+.only{
+	.lazy_pic{ .pb(110/640*100%); }
+}
+// .shop_img{ .img100; }
+// 	.only{
+// 		.shop_img{ .pb(110/640*100%); }
+// 	}
+
+/*下拉加载*/
+.pullUp{
+    // display: none;
+    .pullUpDown > .common;.pullUpDown > .loading;
+    &:before{
+        .nowrap;
+        .ml(-10px);
+    }   
+    &[status="stop"]{
+        background:0 none;
+        &:before{
+            content:"木有了...";
+        }
+    }   
+}
+
+
+
+
+

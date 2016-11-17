@@ -1,0 +1,157 @@
+<%
+	/**
+ 	 * @fileoverview 首页－做任务赚美美豆
+     * @requires zepto
+     * @author kehuang@meilishuo.com
+     * @date 2015-12-28
+     */
+%>
+
+<%#head.html%>
+<%
+	var curUserIsLogin = this.isLogin;
+	var curGoodsData = this.goodsData;
+	var curBannerData = this.bannerData;
+	var curIsNormalGetData = this.isNormalGetData;
+	var curUserGoodsData = (curGoodsData && curGoodsData.data) ? curGoodsData.data : [];
+	var curUserBannerData = (curBannerData && curBannerData.data) ? curBannerData.data : {};
+	var isReachGainBeansLimit = curUserBannerData.limit_status || 0;
+%>
+
+<div class="main">
+	<%
+		var top_banner_img = curUserBannerData.img || '',
+			top_beans_desc = curUserBannerData.desc || '',
+			user_gain_beans = curUserBannerData.amount_today || 0,
+			top_banner_style = (top_banner_img != '') ? 'background:url(' + top_banner_img + ') no-repeat;background-size:100%;' : '';
+	%>
+	<div class="top_banner_wrap" style="<%= top_banner_style %>">
+		<p class="top_beans_title">今日已获得</p>
+		<p class="top_beans_text"><%= user_gain_beans %>美美豆</p>
+		<p class="top_beans_desc"><%= top_beans_desc %></p>
+	</div>
+
+	<%
+		var goods_arr_len = curUserGoodsData.length || 0;
+
+		if (goods_arr_len > 0) {
+			var task_item_html = '';
+	%>
+	<ul class="task_list_wrap">
+		<%
+			for (var i = 0; i < goods_arr_len; i++) {
+				var data = curUserGoodsData[i],
+					img = data.img || '',
+					url = data.url || '',
+					item = data.item || [],
+					name = data.name || '',
+					desc = data.desc || '',
+					style = data.style || '',
+					status = data.status || 0,
+					item_len = item.length || 0,
+					style_desc = data.style_desc || '',
+					empty_desc = data.empty_desc || '';
+
+				if ((item_len == 0) && (empty_desc != '')){
+					task_item_html = '<p class="no_task_text">' + empty_desc + '</p>';
+				}
+
+				if ((item_len != 0) && (empty_desc == '')){
+					task_item_html = '<ul class="evaluate_list_wrap">';
+
+					for (var j = 0; j < item_len; j++) {
+						var cur_item = item[j],
+							goods_img = cur_item.img || '',
+							goods_url = cur_item.url || '',
+							goods_name = cur_item.name || '',
+							goods_desc = cur_item.desc || '',
+							goods_style = cur_item.style || '',
+							goods_style_desc = cur_item.style_desc || '';
+
+						if (goods_img != '') {
+							var item_btn_class = isReachGainBeansLimit ? 'ended_btn' : '',
+								goods_item_style = 'background:url(' + goods_img + ') no-repeat;background-size:40px auto;background-position:left center;';
+
+							task_item_html += [
+								'<li>',
+									'<div class="left_item icon_goods" style="' + goods_item_style + '">',
+										'<p class="title">' + goods_name + '</p>',
+										'<p class="desc">' + goods_desc + '</p>',
+									'</div>',
+									'<div class="right_item">',
+										'<div class="receive_btn ' + item_btn_class + ' task_btn" data-href="' + goods_url + '" data-flag="">' + goods_style_desc + '</div>',
+									'</div>',
+								'</li>'
+							].join('');
+						}
+					}
+
+					task_item_html += '</ul>';
+				}
+
+				if (img != '') {
+					var icon_item_style = 'background:url(' + img + ') no-repeat;background-size:60px auto;background-position:left center;';
+		%>
+		<li>
+			<div class="left_item icon_item" style="<%= icon_item_style %>">
+				<p class="title"><%= name %></p>
+				<p class="desc"><%= desc %></p>
+			</div>
+			<%
+					if (style == 'link') {
+			%>
+			<div class="right_item icon_more task_btn" data-href="<%= url %>" data-flag="<%= style %>"><%= style_desc %></div>
+			<%
+					} else if (style == 'button') {
+			%>
+			<div class="right_item">
+				<%
+					var task_btn_class = '';
+
+					if (isReachGainBeansLimit) {
+						task_btn_class = 'unfinished_btn ended_btn';
+					} else {
+						task_btn_class = (status == 1) ? 'finished_btn' : 'unfinished_btn';
+					}
+				%>
+				<div class="btn <%= task_btn_class %> task_btn" data-href="<%= url %>" data-flag="<%= style %>"><%= style_desc %></div>
+			</div>
+			<%
+					}
+			%>
+		</li>
+		<%
+				}
+			}
+		%>
+	</ul>
+
+	<%= task_item_html %>
+
+	<%
+		}
+	%>
+
+    <!-- <div class="pullUp" status="loading"></div>
+
+	<div class="gotop_wrap">
+		<a class="gotop">
+			<img src="http://d03.res.meilishuo.net/pic/_o/d0/68/f89d059f09d440f4ee7a37669383_80_80.cg.png" alt="">
+		</a>
+	</div> -->
+</div>
+
+<script>
+	fml.vars.r = '<%= this.xr.r || '' %>';
+	fml.vars.isLogin = <%= curUserIsLogin %>;
+	fml.vars.isNormalGetData = <%= curIsNormalGetData %>;
+	fml.vars.is_lazyload_poster = true;
+</script>
+
+<!-- <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script> -->
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/member/task_center');
+_use:", this._JSstack, this._JSmods); %>
+
+<%#foot_simple.html%>

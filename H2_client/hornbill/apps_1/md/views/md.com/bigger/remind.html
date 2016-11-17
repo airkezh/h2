@@ -1,0 +1,40 @@
+<%# header.html%>
+<%
+	var remindInfo = this.bg_remind.data
+%>
+<div class="wrapper">
+	<div class="goods_info_wrap pad_l">
+		<img src="<%= remindInfo.bigger_image.image_middle%>"  class="goods_img">
+		<div class="goods_info">
+			<p class="score_red"><%= remindInfo.system_comment.comment_score%>分</p>
+			<p><%= remindInfo.system_comment.comment_content%></p>
+		</div>
+	</div>
+	<div class="remind_wrap">
+		<p>把测试结果<b>分享到朋友圈</b>，看看小伙伴萌的评论和逼格照</p>
+		<p><b>关注蜜店</b>公众账号，查看小伙伴萌的评论和排行榜</p>
+	</div>
+</div>
+<div class="register_wrap"></div>
+<div class="test_btn_wrapper no_bor">
+    <a class="share" href="javascript:void(0);">分享到朋友圈</a>
+    <a href="http://mp.weixin.qq.com/s?__biz=MzA4NjQ5MjcxNg==&mid=201284214&idx=1&sn=6bcb3ab43a47d6a3a6d9ba7f13528ae9#rd">关注蜜店</a>
+</div>
+
+<script type="text/html" id="share_md">
+</script>
+
+<script type="text/javascript">
+    var imgUrl = '<%= remindInfo.bigger_image.image_middle%>';
+	var lineLink = 'http://' + document.domain + '/bigger/activity/mark/?bigger_id=<%= remindInfo.bigger_id%>';
+	var descContent = '<%= remindInfo.system_comment.comment_content%>';
+	var shareTitle = '我的逼格指数【<%= remindInfo.system_comment.comment_score%>】';
+	var shareTimelineText = '我的逼格指数【<%= remindInfo.system_comment.comment_score%>】<%= remindInfo.system_comment.comment_content%>';
+</script>
+
+<script src="<%= this.JCSTATIC_BASE  %>/js/open/shareCollect.js?<%= this.SVERSION%>"></script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('md/page/remind');
+_use:", this._JSstack , this._JSmods ); %>
+<%# footer.html%>

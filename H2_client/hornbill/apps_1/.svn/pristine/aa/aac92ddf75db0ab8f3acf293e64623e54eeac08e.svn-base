@@ -1,0 +1,81 @@
+<%# head.html%>
+<div style="background:url('<%= this.fuide.headImg%>') no-repeat center top;" >
+	<div class="top_box">
+		<% if(this.fuide.audio && this.fuide.audio.audio_url && this.fuide.audio.audio_duration != ''){ %>
+			<div class="audio_box">
+				<%= requireFn('block/audio.html')({
+					'audio' : this.fuide.audio
+					, 'id' : 'fuide'
+					, '_JSstack' : this._JSstack
+					, '_JSmods' : this._JSmods
+				});%>
+			</div>
+		<%}%>
+	</div>
+</div>
+<div class="desc_box">
+	<div class="desc">
+		<div class="big">FASHION GUIDE</div>
+		<p class="text"><%= this.fuide.headDesc%></p> 
+	</div>
+</div>
+<% this.fuide.twitter_post_list && this.fuide.twitter_post_list.map(function(data){ %>
+<div class="item1">
+	<div class="img_tit"><% if(data.banner_image){ %><img src="<%= data.banner_image%>" width="948" /><% } %></div>
+	<div class="goods_box">
+		<a href="<%= data.link%>" target="_blank" class="firstPic"><img src="<%= data.image%>" /></a>
+		<%= requireFn('activity/act_poster.html')({
+			'act_poster' : data.tInfo
+		}); %>
+	</div>
+</div>
+<%});%>
+<% this.fuide.attr_post_list && this.fuide.attr_post_list.map(function(data){ %>
+<div class="item1">
+	<a href="<%= data.banner_link%>" target="_blank" class="img_tit"><img src="<%= data.banner_image%>" width="948" /></a>
+	<div class="attrs_box">
+		<%= requireFn('activity/attrs_poster.html')({
+			'attrs_poster' : data.post
+		}); %>
+	</div>
+</div>
+<%});%>
+<% if(this.fuide.recommend_pop){ %>
+	<div class="item">
+		<div class="tit">
+			<h2>搭配关键词</h2>
+		</div>
+		<ul class="word">
+			<% this.fuide.recommend_pop.map(function(data){ %>
+				<li><a href="<%= data.link%>" target="_blank"><%= data.txt%></a></li>
+			<%});%>
+		</ul>
+	</div>
+<%}%>
+<% if(this.fuide.recommend_shop.shops.length != 0){ %>
+	<div class="item1">
+		<div class="tit">
+			<h2>精选好店</h2>
+			<a href="<%= this.fuide.recommend_shop.more_url%>" target="_blank" class="more">更多 &gt;</a>
+		</div>
+		<div class="shop">
+			<%= requireFn('activity/shopitem.html')({
+				'shop_poster' : this.fuide.recommend_shop.shops
+			});%>
+		</div>
+	</div>
+<%}%>
+<% if(this.fuide.prev_section.items.length !=0 ){ %>
+	<div class="item1">
+		<div class="tit">
+			<h2>往期回顾</h2>
+			<a href="<%= this.fuide.prev_section.link%>" target="_blank" class="more">更多 &gt;</a>
+		</div>
+		<ul class="before">
+			<% this.fuide.prev_section.items && this.fuide.prev_section.items.map(function(data){ %>
+				<li><a href="<%= data.link%>" target="_blank"><img src="<%= data.image%>" /></a></li>
+			<%});%>
+		</ul>
+	</div>
+<%}%>
+<%# foot.html%>

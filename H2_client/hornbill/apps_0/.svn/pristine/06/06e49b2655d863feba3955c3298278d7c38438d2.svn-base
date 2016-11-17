@@ -1,0 +1,36 @@
+<%
+	var detailQa = this.detailQa && this.detailQa.data
+		, detail = {};
+	if(detailQa && detailQa.length > 0){
+		detail = detailQa[0];
+	}
+%>
+<%# head.html%>
+<div class="main">
+	<%# help/help-title.html%>
+	<%if(this.searchParam == 0){%>
+		<div class="help-crumbs">
+			<a href="/helpcenter/">帮助中心</a> > 
+			<a <%if(detail && detail.cate_id == 217){%>href="/helpcenter/issue/"<%}else if(detail && detail.cate_id == 223){%>href="/helpcenter/notice/"<%}else if(detail && (detail.cate_id == 233 || detail.cate_id == 219)){%>class="red_f"<%}%>><%= detail && detail.cate_name%></a> 
+			<%if(detail && detail.sub_cate_name){%>><%}%>
+			<a class="red_f"><%= detail && detail.sub_cate_name %></a>
+			<%if(this.typeParam == 1){%>
+				 > 
+				<a class="red_f"><%= detail && detail.title%></a>
+			<%}%>
+		</div>
+		<div class="help-tit">
+			<%if(this.typeParam == 0){%><span class="circle-icon"></span><%}%>
+			<p <%if(this.typeParam != 0){%>class="f14_f"<%}%>><%= detail && detail.title%></p>
+		</div>
+	<%}else{%>
+		<div class="help-crumbs-search">
+			<a href="/helpcenter/">返回帮助中心首页</a>
+			<span><%= detail && detail.title%></span>
+		</div>
+	<%}%>
+	<div class="help-cont">
+		<%= detail && detail.content%>
+	</div>
+</div>
+<%# foot.html%>

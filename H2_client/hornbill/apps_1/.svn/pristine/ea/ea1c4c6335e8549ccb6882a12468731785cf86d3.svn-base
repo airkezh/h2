@@ -1,0 +1,43 @@
+<%
+var categoryId = this.categoryId,
+    categories = this.categories,
+    shopId     = this.shopId
+%>
+
+<div class="shop-nav" id="shop-nav">
+    <ul class="shop-nav-top">
+        <li><a href="/shop/<%=shopId%>" target="_blank">店铺首页</a></li>
+        <li class="js-new-goods shop-new-goods">
+            <a href="" class="js-new-all" target="_blank">新品到货<span class="js-new-goods-num label-item-new"></span><i class="icon-tr">&#9662;</i></a>
+            <ul class="shop-nav-nest shop-nav-new"></ul>
+        </li>
+
+        <% for ( var i = 0, len = categories.length; i < len; i++ ) {
+            var nav = categories[i],
+                childCats    = nav.childs,
+                catId        = nav.url.match(/\d+$/),
+                hasChildCats = !!( childCats && childCats.length );
+
+            catId && (catId = catId[0]);
+        %>
+        <li class="js-nav-item">
+            <a href="<%= nav.url%>" target="_blank" class="<%= catId == categoryId ? 'is-on' : '' %>">
+                <%=nav.name %>
+                <% if ( hasChildCats ) {%><i class="icon-tr">&#9662;</i><%}%>
+            </a>
+            <% if ( hasChildCats ) {%>
+            <ul class="shop-nav-nest">
+            <% childCats.forEach(function( n ) {%>
+                <li>
+                    <a href="<%= n.url%>" target="_blank" ><%= n.name %></a>
+                </li>
+            <% });%>
+            </ul>
+            <% } %>
+        </li>
+        <% } %>
+        <li>
+            <a href="/help/feedback#wx" target="_blank">支付指引</a>
+        </li>
+    </ul>
+</div>

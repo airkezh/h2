@@ -1,0 +1,346 @@
+/**
+ * @fileoverview 首页－做任务赚美美豆
+ * @requires
+ * @author kehuang@meilishuo.com
+ * @date 2015-12-28
+ */
+
+@import "../block.less";
+
+html{
+	.f(10*@f);
+}
+
+body{
+	.bgc(#f5f5f5);
+}
+
+img{
+	.block;
+	.w(100%);
+}
+
+a{
+	.block;
+	outline:none;
+}
+
+ul{
+	list-style:none;
+}
+
+i{
+	font-style:normal;
+}
+
+@750w: 1/750*100%;
+
+.top_banner_wrap{
+	.pr;
+	.w(100%);
+	.pt(340*@750w);
+	background:url("http://d02.res.meilishuo.net/pic/_o/66/eb/5939b22442832e8276e37439e1f2_750_340.cj.png") no-repeat;
+    background-size:100%;
+
+    p{
+    	.c;
+    	.pa;
+    	.l(1.2);
+    }
+
+    .top_beans_title{
+    	top:25%;
+    	left:0;
+    	.w(100%);
+    	.f(1.6rem);
+    	.fc(#fff);
+    }
+
+    .top_beans_text{
+    	top:40%;
+    	left:0;
+    	.w(100%);
+    	.f(2.5rem);
+    	.fc(#ff604e);
+    }
+
+    .top_beans_desc{
+    	top:63%;
+    	left:36%;
+    	.w(28%);
+    	.f(1.2rem);
+    	.fc(#fff);
+    }
+}
+
+.task_list_wrap{
+	.hidden;
+	.clearfix;
+
+	li{
+		.hidden;
+		.clearfix;
+		.bgc(#fff);
+		.mt(20*@750w);
+		padding:20*@750w 30*@750w;
+
+		.left_item{
+			.vm;
+			.left;
+			.w(45%);
+
+        	p{
+        		.hidden;
+        		white-space:nowrap;
+        		text-overflow:ellipsis;
+        	}
+
+			.title{
+				.l(24px);
+    			.mt(6px);
+    			.f(1.5rem);
+    			.fc(#ff605a);
+			}
+
+			.desc{
+				.l(24px);
+    			.mb(6px);
+				.f(1.2rem);
+				.fc(#999);
+			}
+		}
+
+		.right_item{
+			.vm;
+			.right;
+
+			.btn{
+				.c;
+				.w(84px);
+				.f(1.5rem);
+				.mt(17px);
+				.border-r(16px);
+				padding:6px 0;
+			}
+
+			.finished_btn{
+				.w(82px);
+				.mt(16px);
+				.fc(#ff605a);
+				border:1px solid #ff605a;
+			}
+
+			.unfinished_btn{
+				.fc(#fff);
+				.bgc(#ff604e);
+			}
+
+			.ended_btn{
+				.bgc(#ccc);
+			}
+		}
+
+		.icon_item{
+			.l(60px);
+			.h(60px);
+			.pl(70px);
+		}
+
+		.icon_more{
+			.l(60px);
+			.h(60px);
+			.pr(14px);
+			.f(1.3rem);
+			.fc(#666);
+			background:url("http://d03.res.meilishuo.net/pic/_o/ec/a1/1e6260389a5c6eccbb3af754da85_17_28.cj.png") no-repeat;
+			background-size:9px auto;
+			background-position:right center;
+		}
+	}
+
+	li:last-child{
+		border-bottom:1px solid #e6e6e6;
+	}
+}
+
+.evaluate_list_wrap{
+	.hidden;
+	.clearfix;
+	.bgc(#fff);
+	.pl(30*@750w);
+
+	li{
+		.hidden;
+		.clearfix;
+		padding:30*@750w 30*@750w 30*@750w 0;
+		border-bottom:1px solid #e6e6e6;
+
+		.left_item{
+			.vm;
+			.left;
+			.w(52%);
+			.l(40px);
+			.h(40px);
+
+			p{
+        		.hidden;
+        		white-space:nowrap;
+        		text-overflow:ellipsis;
+        	}
+
+			.title{
+				.l(16px);
+    			.mt(4px);
+				.f(1.5rem);
+				.fc(#666);
+			}
+
+			.desc{
+				.l(20px);
+				.f(1.2rem);
+				.fc(#999);
+			}
+		}
+
+		.right_item{
+			.vm;
+			.right;
+
+			.receive_btn{
+				.c;
+				.w(84px);
+				.f(1.5rem);
+				.fc(#fff);
+				.mt(7px);
+				.bgc(#ff604e);
+				.border-r(16px);
+				padding:6px 0;
+			}
+
+			.ended_btn{
+				.bgc(#ccc);
+			}
+		}
+
+		.icon_goods{
+			.l(40px);
+			.h(40px);
+			.pl(50px);
+		}
+	}
+
+	li:last-child{
+		border:none;
+	}
+}
+
+.no_task_text{
+	.c;
+	.l(44px);
+	.h(44px);
+	.f(1.3rem);
+	.fc(#666);
+	.bgc(#fff);
+}
+
+.pullUp{
+	.pullUpDown > .common;.pullUpDown > .loading;
+	&:before{
+		.nowrap;
+		.ml(-10px);
+	}
+	&[status="tap"]{
+		background:0 none;	
+	}
+	&[status="stop"]{
+		background:0 none;	
+	}
+}
+
+.gotop_wrap{
+	.pf;
+	.none;
+	.w(82*@w);
+	.pt(82*@w);
+	z-index:10;
+	right:10px;
+	bottom:40px;
+
+	.gotop{
+		.block;
+		.w(100%);
+	}
+
+	img{
+		.w(100%);
+	}
+}
+
+.windowDrive{
+	.dialog{
+		.border-r(6px);
+	}
+
+	.dialog-con{
+		.l(1.8);
+		.f(1.4rem);
+		.fc(#666);
+	}
+
+	.dialog-btn{
+	    border-top:1px solid #e5e5e5;
+
+	    span{
+	      	.f(1.5rem);
+	      	.fc(#f66);
+	    }
+	}
+}
+
+@media screen and (min-width:360px){
+	.top_banner_wrap{
+		.top_beans_title{
+			top:26%;
+		}
+
+		.top_beans_text{
+			top:42%;
+		}
+
+		.top_beans_desc{
+			top:64%;
+		}
+	}
+
+	.task_list_wrap li .left_item{
+		.w(52%);
+	}
+
+	.evaluate_list_wrap li .left_item{
+		.w(58%);
+	}
+}
+
+@media screen and (min-width:400px){
+	.top_banner_wrap{
+		.top_beans_title{
+			top:27%;
+		}
+
+		.top_beans_text{
+			top:42%;
+		}
+
+		.top_beans_desc{
+			top:64%;
+		}
+	}
+
+	.task_list_wrap li .left_item{
+		.w(56%);
+	}
+
+	.evaluate_list_wrap li .left_item{
+		.w(62%);
+	}
+}

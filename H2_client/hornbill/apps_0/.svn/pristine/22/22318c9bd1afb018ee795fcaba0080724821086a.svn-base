@@ -1,0 +1,87 @@
+<%# sq/header.html %>
+
+<%
+	var tabData = ['店铺','商品','推荐'];
+%>
+
+<ul class="tab">
+	<% tabData.forEach(function (item){ %>
+	<li class="js-tab-item"><span><%= item %></span></li>
+	<% }); %>
+</ul>
+<div class="js-content content">
+	<div class="shop-list"></div>
+	<div class="goods-wrapper">
+		<div id="js-goods-shelf" class="goods-shelf"></div>
+		<div class="js-pull-up pull-up" data-status="loading"></div>
+	</div>
+	<div class="groom-list"></div>
+</div>
+
+<script type="text/html" id="js-goods-tpl">
+    <?
+        var data = this.v;
+        var goodsUrl = '/sq/detail?twitter_id=' + data.twitter_id + '&d_r=' + data.d_r;
+        var pt = 130;
+    ?>
+    <div class="goods">
+        <a href="<?= goodsUrl ?>" class="goods-pic" style="padding-top:<?= pt ?>%;background-image: url(<?= data.goods_img ?>);"></a>
+        <div class="goods-desc">
+            <h2 class="goods-title"><?= data.goods_title ?></h2>
+            <div class="goods-info">
+                <span class="goods-price">¥ <?= data.discount_price ?></span>
+                <span class="goods-like"><i class="icon-like"></i><?= data.like_nums ?></span>
+            </div>
+            <a class="goods-similar-btn" href="<?= data.similarLink ?>">找相似</a>
+        </div>
+    </div>
+</script>
+
+<script type="text/html" id="js-shop-list-tpl">
+	<?
+		var data = this.v;
+		var DR = data.d_r;
+
+		var shopUrl = '/sq/shop/?shop_id=' + data.shop_id
+	?>
+
+	<section class="shop-list-item">
+		<h1>
+			<a class="js-shop-entrance" href="<?= shopUrl ?>"><?= data.shop_nick ?></a>
+			<a class="js-shop-entrance" href="<?= shopUrl ?>"><span class="shop-logo" style="background-image: url(<?= data.shop_face_img ?>);"></span></a>
+			<? if(data.isfollow == '0'){ ?><span data-id="<?= data.shop_id ?>" class="shop-follow-btn shop-follow-no" data-action="shopFollow"></span><? } ?>
+		</h1>
+		<a class="js-shop-entrance" href="<?= shopUrl ?>">
+			<p class="shop-desc">
+				<span><?= data.alert_new_date ?></span>
+				<span>新品上架</span>
+				<i><? if(data.alert_new > 0){ ?><?= data.alert_new ?>&nbsp;款新品<? } ?></i>
+			</p>
+		</a>
+		<ul class="js-sliders sliders" data-action="loadImage">
+			<? data.shop_goods && data.shop_goods.forEach(function (g){ ?>
+			<li class="sliders-section">
+				<figure class="sliders-section-g" style="background-color:#fff;">
+					<a class="g-entrance" href="/sq/detail/?twitter_id=<?= g.twitter_id ?>&d_r=<?= DR ?>" asrc="<?= g.goods_img ?>"></a>
+					<figcaption>
+						<? if(g.goods_price){ ?><p class="sliders-section-g-price">¥ <?= g.goods_price ?></p><? } ?>
+					</figcaption>
+				</figure>
+			</li>
+			<? }); ?>
+		</ul>
+	</section>
+</script>
+
+<%# sq/default.html %>
+<%# block/dialog.html %>
+
+<%! 
+	$_ENGINE_SELF.callFn("useModule")(
+		"<<<_use:fml.use('wap/page/sq/collect');_use:", 
+		this._JSstack, 
+		this._JSmods 
+	); 
+%>
+
+<%# sq/footer.html %>

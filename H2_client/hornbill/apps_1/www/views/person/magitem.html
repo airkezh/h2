@@ -1,0 +1,39 @@
+<script type="text/html" id="magazineWall">
+<? var wallType;
+$.each(tInfo , function(k , v){?>
+<div class="groupBox poster_wall">
+	<div class="groupCon">
+		<div class="gc_title">
+			<h4><a target="_blank" href="/group/<?= v.group_id?>"><?= v.name.replace(/</g,'&lt;').replace(/>/g,'&gt;')?></a></h4>
+			<p><?= v.num?></p>
+		</div>
+		<a target="_blank" href="/group/<?= v.group_id?>" class="imgBox">
+			<?if(v.mixpic){?>
+				<img src="<?= v.mixpic?>" class="maxpic" />
+			<?}else{?>
+				<?$.each(v.picture_url , function(i , value){?>
+					<img style="<?if(++i % 3 == 0){?> margin-right:0px;<?}?>" src="<?= value?>" class="minpic" />
+				<?});?>	
+			<?};?>
+			<div class="clear_f"></div>
+		</a>
+		<div class="infoBox c_f">
+			<?if(v.is_editor){?>
+				<?if(wallType == 'searchWall'){?>
+					<span class="removeGroupFollow pink_follow" groupid="<?= v.group_id?>">已关注</span>
+				<?}else{?>
+					<a class="btn" href="/board/<?= v.group_id?>" target="_blank">设 置</a>  
+				<?}?>
+			<?}else{?>
+				<?if(v.is_follower){?>
+					<span class="removeGroupFollow pink_follow" groupid="<?= v.group_id?>">已关注</span>
+				<?}else{?>
+					<span  class="addGroupFollow red_follow" groupid="<?= v.group_id?>" >+ 加关注</span>
+				<?}?>
+			<?}?>
+			<div class="clear_f"></div>
+		</div>
+	</div>
+</div>
+<?});?>
+</script>

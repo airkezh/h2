@@ -1,0 +1,488 @@
+<%# head_simple.html%>
+
+<%
+    var query = this._Request_query;
+    var getLink = _extFn.getLink;
+    var navFrm = 'frm=daeh';
+    var mSubstr = _extFn.mSubstr;
+    var nation = this.order.info;
+    var order=this.order;
+%>
+
+<%* for ipad %>
+    <%if(this.is_iPad){%>
+        <%# head_ipad.html %>
+    <% } else { %>
+<%* for not ipad %>
+
+<body>
+
+<div class="uinfo_bar">
+	<div class="header_top">
+		<ul class="menu_leo">
+	    <% if (this.user_id) { %>
+			<li id="setting">
+				<a href="<%=this.DOMAIN.www%>/person/u/<%= this.user_id%>?frm=headerprofile" title="<%= this.userInfo.nickname%>">
+					<%
+					var avatar = this.userInfo.avatar_d
+					if (avatar && avatar.indexOf('http://') == -1 ){
+						avatar = this.avator_pic + avatar
+						}
+					%>
+					<span class="s_face"><img src="<%= avatar%>" /></span>
+					<%= mSubstr(this.userInfo.nickname,7,'...') %><em class="redarrow"></em>
+				</a>
+				<ul class="add_menu_leo hw76 none_f">
+					<% if (1 != this.userInfo.is_mall) {%>
+					<li><a href="<%=this.DOMAIN.www%>/person/u/<%= this.user_id%>?type=editor" target="_blank">我的杂志</a></li>
+					<li><a href="<%=this.DOMAIN.www%>/person/u/<%= this.user_id%>?type=share" target="_blank">我的分享</a></li>
+					<li>
+						<a href="<%=this.DOMAIN.www%>/member/member" target="_blank" class="msg">
+							积分兑换
+						</a>
+					</li>
+					<!--<li><a href="<%=this.DOMAIN.www%>/person/u/<%= this.user_id%>?type=like" target="_blank">我喜欢的</a></li>-->
+					<%}%>
+					<li class="b_line"><a href="<%=this.DOMAIN.www%>/settings/setPersonal" target="_blank">设置账号</a></li>
+					<li><a id="headLogoutBtn" href="<%=this.DOMAIN.www%>/user/logout">退出</a></li>
+				</ul>
+			</li>
+			<li id="message">
+				<a class="msg">
+					消息
+					<b class="mgsTotalNum"></b>
+					<em class="redarrow"></em>
+				</a>
+				<ul class="add_menu_leo hw120 none_f" id="moreMessageBox">
+				</ul>
+			</li>
+			<li>
+				<a class="i_like" href="<%=this.DOMAIN.www%>/person/u/<%= this.user_id%>?type=like" target="_blank">
+					<i></i>我的喜欢
+				</a>
+			</li>
+           <% } else { %>
+			<li><a class="first" href="<%=this.DOMAIN.www%>/connect/auth/weixin"><em style='background:url("http://i.meilishuo.net/css/images/header/i_wx_single.png") no-repeat; padding:1px 8px;'>&nbsp;</em>微信登录</a></li>
+			<li><a href="<%=this.DOMAIN.www%>/connect/auth/qzone"><em class="i_QQ">&nbsp;</em> QQ登录</a></li>
+			<li><a href="<%=this.DOMAIN.www%>/user/login">登录</a></li>
+			<li><a href="<%=this.DOMAIN.www%>/user/register">注册</a></li>
+			<% } %>
+           	<li id="myShoppingCartEl">
+				<a href="<%=this.DOMAIN.www%>/cart" target="_blank">
+					<em class="i_cart">&nbsp;</em>
+					我的购物车
+					<span class="num_bgc num_bgc_none">
+						0
+					</span>
+				</a>
+			</li>
+			<li>
+				<a href="<%=this.DOMAIN.www%>/order" target="_blank"><em class="i_order">&nbsp;</em>	我的订单
+				</a>
+			</li>
+			<li><a href="<%=this.DOMAIN.www%>/client/?<%= navFrm%>" target="_blank"><em class="i_mob">&nbsp;</em>下载App</a></li>
+			<li><a class="last" href="<%=this.DOMAIN.www%>/help/feedback?frm=top_to_help" target="_blank">帮助中心</a></li>
+		</ul>
+	</div>
+	<div class="clear_f"></div>
+</div>
+<%}%>
+<div class="cart_header">
+	<div class="logo_wrap">
+		<% if (this.user_id){%>
+			<a class="logo_new" href="<%=this.DOMAIN.www%>/?frm=logoa"></a>
+			<% }else{%>
+			<a class="logo_new" href="<%=this.DOMAIN.www%>/welcome"></a>
+			<%}
+			this.cart_num = 0
+			var cart_num = this.cart_number && this.cart_number.info && this.cart_number.info.count
+			this.cart_num = cart_num
+		%>
+		<% if(this.logo_act && this.logo_act.logo_src){ %>
+			<a class="logo_act_entrance left_f" href="<%= this.logo_act.logo_link %>" target="_blank"><img src="<%= this.logo_act.logo_src %>"></a>
+		<% } %>
+	</div>
+	<div class="status">
+		<% if ('share' != this._Request_query.ori){ %>
+		<div class="chart"></div>
+        <div class="text">
+			<span class="first current">我的购物车</span>
+			<span class="middle current">填写核对订单信息</span>
+			<span>付款，完成购买</span>
+		</div>
+		<% } %>
+		<div class="chart"></div>
+		<div class="text">
+			<span class="first current">立即购买</span>
+			<span class="middle current">填写核对订单信息</span>
+			<span>付款，完成购买</span>
+		</div>
+	</div>
+</div>
+
+<div class="container">
+	<p class="label">确认收货地址</p>
+	<div class="addr">
+		<% for(var i = 0 ; i < this.addr.addrInfo.length ; i++){%>
+		<% var a = this.addr.addrInfo[i];%>
+		<div class="unit adrl_list <%=a.flag?'adrl_update_list':''%> <%=this.addr_id ? (a.addr_id == this.addr_id ?'active':''):(a.is_default == '1'?'active':'')%>" addr_id="<%= a.addr_id %>" pid="<%= a.pid %>" cid="<%= a.cid%>" did="<%= a.did%>" sid="<%= a.sid%>" street="<%= a.street %>" is_default="<%= a.is_default%>">
+			<div class="hidden">
+				<span class="adrl_nickname"><%= a.nickname%></span>
+				<span class="adrl_address"><%= a.address%></span>
+				<span class="adrl_postcode"><%= a.postcode%></span>
+				<span class="adrl_phone"><%= a.phone%></span>
+			</div>
+			<input type="radio" name="addr" <%=this.addr_id ? (a.addr_id == this.addr_id ?'checked':''):(a.is_default == '1'?'checked':'')%> value="<%= a.addr_id %>" id="addr[<%= a.addr_id %>]" class="mls-input-radio"/>
+			<label for="addr[<%= a.addr_id %>]" class="mls-input-label mls-input-radio-label">
+				<span class="adrl_addr"><%== a.address %></span>
+				<span><%= a.nickname%></span>
+				<span><%= a.postcode ? '邮编'+a.postcode : '' %></span>
+				<span>联系方式<%= a.phone%></span>
+			</label>
+			
+			<span class="orign_edit adrl_edit edit style="<%=a.flag?'display:none':''%>">修改此地址&gt;&gt;</span>
+			<span class="update_edit edit" style="display:none">
+				<span class="adrl_label">为享受更好的配送服务，请</span>
+				<span class="adrl_edit btn-update">
+					升级此地址
+				</span>
+			</span>
+		</div>
+		<% } %>
+
+		<div class="new_addr" id="new_adder_wrapper">
+			<div class="unit ">
+				<input value="-1" type="radio" name="addr" id="addr_new" <%= this.addr.addrInfo.length === 0 ? 'checked' : '' %> class="mls-input-radio"/>
+				<label style="width:200px" for="addr_new" class="mls-input-label mls-input-radio-label">使用新地址</label><span id="addr_tip" class="new_addr_tentext">收货地址最多支持保存10条，超过10条将会自动替换最早创建的地址</span>
+			</div>
+		    <div class="form" id="addr_form" style="<%=this.addr.addrInfo.length?'display:none':''%>">
+				<form id="addressForm" method="post" onsubmit="return false">
+					<div class="infos">
+						<p>
+							<span class="left">
+                <b class="red_f mr4_f">*</b><label for="addressPid">所在地：</label>
+								<select class="mls-select" id="addressPid" name="pid">
+									<option value="0">请选择</option>
+									<% if(this.address_select && this.address_select.data && this.address_select.data.province){ %>
+										<% this.address_select.data.province.map(function(data){%>
+										<option value="<%= data.pid%>"><%= data.province %></option>
+										<%});%>
+									<% }else{ %>
+										<option value="" >所在地信息载入出错</option>
+									<% } %>
+								</select>
+								<select class="mls-select" id="addressCid" name="cid">
+									<option value="0">请选择</option>
+								</select>
+								<select class="mls-select" id="addressDid" name="did">
+									<option value="0">请选择</option>
+								</select>
+								</select><select class="mls-select none_f" id="addressSid" name="sid">
+									<option value="0">请选择</option>
+								</select>
+								<strong>&nbsp;</strong>
+							</span>
+						</p>
+						<p>
+							<b class="red_f mr4_f">*</b><label for="addressStreet">街道地址：</label>
+							<input class="mls-input-text l_ipt_s street" id="addressStreet" type="text" name="street" value=""/><strong>&nbsp;</strong>
+						</p>
+						<p>
+							<span class="left">
+								<span>
+									<b class="red_f mr4_f">*</b><label for="addressUser">收件人：</label>
+									<input class="mls-input-text l_ipt reciever" id="addressUser" type="text" name="nickname" value=""/><strong>&nbsp;</strong>
+								</span>
+						    </span>
+						</p>
+						<p>
+							<span class="phone">
+									<b class="red_f mr4_f">*</b><label for="addressPhone">联系电话：</label>
+									<input class="mls-input-text l_ipt contact" id="addressPhone" type="text" name="phone" value=""/><strong>&nbsp;</strong>
+								</span>
+						</p>
+					</div>
+					<div class="buttons">
+						<div class="left_f">
+							<input class="addressBtn button" type="submit" value="保存并使用"/>
+							<input class="addressBtn cancel" type="button" value="取消"/>
+						</div>
+						<span class="set_default_con">
+                        <input class="mls-input-checkbox" type="checkbox" name="is_default" id="is_default" value=""/>
+                        <label class="mls-input-label  mls-input-checkbox-label" for="is_default">设为默认</label>
+                    	</span>
+					</div>
+				</form>
+			</div>
+		</div>
+    </div>
+
+	<p class="label">商品清单</p>
+	<div class="order">
+		<table cellpadding="0" cellspacing="0">
+			<thead>
+				<tr>
+					<th width="20px" class="first"></th>
+					<th width="390">商品信息</th>
+					<th width="100px">单价（元）</th>
+					<th width="284px">数量</th>
+					<th width="137px">小计</th>
+					<th width="20px" class="last"></th>				</tr>
+			</thead>
+        <% for(var i = 0 ; i < order.info.goods.length ; i ++){ %>
+			<% var shop = order.info.goods[i]; %>
+			<tbody class="shop">
+				<tr class="blank_tr"><td></td></tr>
+				<tr>
+					<td class="shop_title" colspan="6">
+						<span>商家：<a class="red_f" href="<%=this.DOMAIN.www%>/shop/<%= shop.shop_id %>" target="_blank"><%= shop.shop_name%></a></span>
+						<% if(shop.im || shop.qq){ %><a class="getserviceqq knilmi" href="<%= this.ViewTools.callIM(shop.im , shop.qq) %>" target="_blank">&nbsp;</a><% } %>
+					</td>
+				</tr>
+			</tbody>
+			<tbody class="goods">
+				<% for(var j = 0 ; j < shop.goods.length ; j++){ %>
+                    <% var goods = shop.goods[j];
+                        shop.stockedOnPlaceOrder = shop.stockedOnPlaceOrder || goods.stocked_type == 2;
+                    %>
+                    <tr class="<%= j===0?'first':'' %> <%= j===shop.goods.length-1?'last':'' %>" id="goods_<%= goods.sid %>">
+                        <td class="first"></td>
+                        <td class="content">
+                            <a class="content-link" target="_blank" href="<%=this.DOMAIN.www%>/share/item/<%= goods.twitter_id %>">
+                                <img src="<%= goods.b_pic_url %>"/>
+                                <span class="title"><%= goods.goods_title %></span>
+                                <span class="props">
+                                    <% goods.prop.forEach(function(p){ %>
+                                    <% if(p.is_show === '1'){ %>
+                                    <span><%= p.name %>：<%= p.value %></span>
+                                    <% } %>
+                                    <% }); %>
+                                </span>
+                                <% if(goods.pre_sale && goods.pre_sale.type==2){%><span class="presale presale-btn"><%= goods.pre_sale.label_text%></span><%}%>
+                            </a>
+                        </td>
+                        <td>
+                            <div class="u_price"><%= goods.goods_activity_price %></div>
+                            <% if(goods.promote){%>
+                                <div class="promote_wrapper">
+                                    <a class="promote"><%= goods.promote %></a>
+                                </div>
+                            <%}%>
+                            <% if(goods.pre_sale && goods.pre_sale.type==2){%><span class="presale presale-time red_f"><%= goods.pre_sale.text%></span><%}%>
+                        </td>
+                        <td><%= goods.amount %></td>
+                        <td>
+                            <%= (Number(goods.amount)*Number(goods.goods_activity_price)).toFixed(2) %>
+                        </td>
+                        <td class="last"></td>
+                    </tr>
+				<% } %>
+				<tr class="total">
+					<td class="first"></td>
+					<td colspan="2" class="buyer_msg">
+						<label>购买留言：</label>
+						<textarea name="comment[]" value="" class="mls-input-text comment" id="comment_<%= shop.shop_id %>" placeholder="选填：建议填写已经与卖家达成一致的说明"></textarea>
+					</td>
+					<td colspan="2" style="vertical-align:top;">
+						<ul class="coupon_freight">
+							<%if(shop.campaign_discount_info && shop.campaign_discount_info.length){%>
+							<%var credit = 0;%>
+							<li>
+								<div class="info">
+									<label class="lb">店铺促销：</label>
+									<select class="mls-select shop_campaign" id="campaign_<%=shop.shop_id%>">
+										<%shop.campaign_discount_info.map && shop.campaign_discount_info.map(function(c,i){%>
+										<p><%=c.credit%></p>
+										<option data-save="<%=c.credit%>"<%if(c.is_check){%>selected<%}%> data-available="<%=c.available_credit || 0%>" value="<%=c.item_id%>"><%=c.title%></option>
+                                        <%if(c.is_check){credit=c.available_credit;}%>
+										<%});%>
+									</select>
+								</div>
+								<div class="price">-<span id="campaignSave_<%=shop.shop_id%>" class="credit"><%=credit%></span></div>
+							</li>
+							<%}%>
+
+							<%credit = 0;%>
+							<li <%if(!(shop.coupon_info && shop.coupon_info.length)){%>style="display:none"<%}%>  id="coupon_list_<%=shop.shop_id%>">
+								<div class="info">
+									<label class="lb">店铺优惠券：</label>
+									<select class="mls-select shop_coupon" id="coupon_<%=shop.shop_id%>">
+										<%shop.coupon_info && shop.coupon_info.map && shop.coupon_info.map(function(c,i){%>
+										<option data-save="<%=c.credit%>" <%if(c.is_check){%>selected<%}%> data-available="<%= c.available_credit || 0 %>" value="<%=c.coupon_id%>"><%==c.title%></option>
+										<%if(c.is_check){credit = c.available_credit;}%>
+										<%});%>
+									</select>
+								</div>
+								<div class="price">-<span class="credit"><%= credit %></span></div>
+
+							</li>
+							<li>
+								<div id="freight_show"class="info freight_show_<%=shop.shop_id%>">
+									<label class="lb">运费：</label>
+									<span class="freight_info"><%= shop.freight_show %>
+									</span>
+								</div>
+								<div class="price"><span><%=shop.freight%></span></div>
+							</li>
+						</ul>
+				    </td>
+					<td class="last"></td>
+				</tr>
+				<tr class="total">
+					<td class="first"></td>
+					<td colspan="2"><%if(shop.stocked_type_text){%><span class="x-highlight">温馨提示：</span><%= shop.stocked_type_text || ''%><%}%></td>
+					<td colspan="2" class="shop_total">
+						<span>共<%=shop.count%>件商品，</span>
+						<span>店铺合计：<span id="shop_total_price_<%= shop.shop_id %>" class="price"><%=shop.total_price%></span>元</span>
+					</td>
+					<td class="last"></td>
+				</tr>
+			</tbody>
+			<% } %>
+
+			<%
+				var coupon_list = order.info.plat_coupon_info;
+				var credit = 0;
+			%>
+			<tbody id="plat_coupon_info" class="empty" style="<%if( !coupon_list || !coupon_list.length){%>display:none<%}%>">
+				<tr>
+					<td colspan="3" class="first"></td>
+					<td colspan="2">
+						<div class="platform_coupon">
+							<div class="info">
+								<label class="lb">美丽说优惠券：</label>
+								<select class="mls-select" id="coupon">
+
+									<% for(var i=0;i<coupon_list.length;i++){ %>
+									<% var coupon = coupon_list[i]; %>
+									<option value="<%= coupon.coupon_id %>" data-save="<%= coupon.credit %>" data-available="<%= coupon.available_credit||0 %>" <%if(coupon.is_check){%>selected<%}%>>
+										<%= coupon.title %>
+									</option>
+									<%if(coupon.is_check){credit = coupon.available_credit;}%>
+									<% } %>
+								</select>
+							</div>
+							<div class="price">
+								<span>-<span class="credit " id="coupon_save"><%= credit %></span></span>
+							</div>
+						</div>
+                    </td>
+					<td class="last"></td>
+				</tr>
+			</tbody>
+			<tbody class="empty" id="weixin_info" <%if(!order.info.weixin_coupon_info.title){%>style="display:none"<%}%>>
+				<tr>
+					<td colspan="3" class="first"></td>
+					<td colspan="2">
+						<div class="weixin_pro">
+							<div class="info">
+								<span class="weixin_tips">
+									<%=order.info.weixin_coupon_info.title||''%>
+								</span>
+							</div>
+							<div class="price">
+								-<span class="x-credit-pay"><%= order.info.weixin_coupon_info.credit||'0.00'%></span>
+							</div>
+						</div>
+					</td>
+					<td class="last"></td>
+				</tr>
+			</tbody>
+			<tbody class="empty" id="weixin_warn" <%if(!order.info.weixin_coupon_warn){%>style="display:none"<%}%>>
+				<tr>
+					<td colspan="2" class="first"></td>
+					<td colspan="2">
+						<span class="red_f weixin_tips"><%= order.info.weixin_coupon_warn %></span>
+					</td>
+					<td class="c red_f">-0.00元</td>
+					<td class="last"></td>
+				</tr>
+			</tbody>
+			<tbody class="empty">
+				<tr>
+					<td colspan="3" class="first" style="height:10px;"></td>
+					<td colspan="3" class="last" style="height:10px;"></td>
+				</tr>
+			</tbody>
+			<tfoot>
+				<tr>
+					<td class="first">&nbsp;</td>
+					<td colspan="5" class="last">
+
+						<span class="right">
+							<% if ('share' != this._Request_query.ori){ %>
+							<a class="cart" href="<%= this.DOMAIN.order%>/cart/?select_sid=<%= this._Request_query.sid %>">&lt;&lt;返回购物车</a>
+							<% } %>
+							<span>商品总价：</span>
+							<span class="price">￥<span id="total_price"><%= order.info.total_price %></span></span>
+							<a href="javascript:;" class="go_charge" id="charge"></a>
+						</span>
+					</td>
+				</tr>
+				<%if(order.info.init_msg){%>
+					<tr class="init_msg">
+						<td colspan="6"><p class="init_msg_content red_f"><em>温馨提示</em><%=order.info.init_msg%></p></td>
+					</tr>
+				<%}%>
+        <% if(this.isShowFestivalMsg){ %>
+          <tr class="init_msg">
+            <td colspan="6"><p class="init_msg_content red_f"><em>温馨提醒</em>春节期间，因快递放假等原因发货以商家公告为准，购物前请与商家确认。</p></td>
+          </tr>
+        <% } %>
+			</tfoot>
+		</table>
+	</div>
+</div>
+<script type="text/html" id="address_template">
+	<div class="unit adrl_list" addr_id="<?= addr_id ?>" pid="<?= pid ?>" cid="<?= cid ?>" did="<?= did ?>" sid="<?= sid ?>" street="<?= street ?>" is_default="<?= is_default ?>">
+		<div class="hidden">
+			<span class="adrl_nickname"><?= nickname ?></span>
+			<span class="adrl_address"><?= address ?></span>
+			<span class="adrl_postcode"><?= postcode ?></span>
+			<span class="adrl_phone"><?= phone ?></span>
+		</div>
+		<input class="mls-input-radio" type="radio" name="addr" <?= (is_default === "1" ? "checked" : "") ?> value="<?= addr_id ?>" id="addr_<?= addr_id ?>"/>
+		<label class="mls-input-label mls-input-radio-label" for="addr_<?= addr_id ?>">
+			<span class="adrl_addr"><?= address ?></span>
+			<span><?= nickname?></span>
+			<span>邮编<?= postcode?></span>
+			<span>联系电话<?= phone?></span>
+		</label>
+		<span class="adrl_edit edit">修改此地址&gt;&gt;</span>
+	</div>
+</script>
+
+<script type="text/html" id="address_select_city">
+<option value="0">请选择</option>
+<? $.each(city , function(k , v){ ?>
+	<option value="<?= v.cid?>"><?= v.city ?></option>
+<? }); ?>
+</script>
+<script type="text/html" id="address_select_district">
+<? $.each(district , function(k , v){ ?>
+	<option value="<?= v.did?>"><?= v.district ?></option>
+<? }); ?>
+</script>
+<script type="text/html" id="address_select_street">
+<? $.each(street , function(k , v){ ?>
+	<option value="<?= v.sid?>"><?= v.street ?></option>
+<? }); ?>
+</script>
+<script type="text/html" id="address_select">
+<option value="0">请选择</option>
+</script>
+
+<input id="weixin_coupon" value="<%= order.info.weixin_coupon_info.title ? '1' : '0'%>" type="hidden"/>
+<form action="/order/create/" method="post" style="display:none" id="confirm_form"></form>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('order_pc/order/order_confirm');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%* for ipad %>
+    <%if(this.is_iPad){%>
+        <%# foot_ipad.html %>
+    <% } else { %>
+<%* for ipad %>
+<%# foot.html%>
+<%}%>

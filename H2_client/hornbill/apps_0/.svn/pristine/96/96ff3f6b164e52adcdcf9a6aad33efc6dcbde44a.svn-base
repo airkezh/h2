@@ -1,0 +1,76 @@
+<%#head.html%>
+<%
+var riskInfo = this.urlRiskControl.info || {};
+var actionUrl = ''
+switch (riskInfo.punish_type){
+	case 'p3':
+	case 'p4':
+	case 'p5':
+		actionUrl = '/aj/risk_control/pic'
+		break;
+	case 'p2':
+		actionUrl = '/aj/risk_control/sms'
+		break;
+	case 'p1':
+		break;
+	default:
+		break;
+}
+
+%>
+<div class="container">
+	<form onsubmit="return false" id="risk_form" action="<%=actionUrl %>">
+		<%
+		var captchaType;
+		switch (riskInfo.punish_type){
+			case 'p3':
+				captchaType = 2;
+			case 'p4':
+				captchaType = 1;
+			case 'p5':
+				captchaType = 3;
+		%>
+			<h3>系统检测到您的账号存在异常，请完成验证后继续访问。</h3>
+			<p>
+				<input type="hidden" name="ruleid" value="<%=riskInfo.rule_id || '' %>">
+				<input type="text" value="" placeholder="请输入验证码" name="captcha" class="pic_captcha_input" min="1" max="10">
+				<img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="验证码" id="pic_code_img" data-ctype="<%=captchaType %>">
+			</p>
+			<p class="error_tip"></p>
+			<p><button type="submit" class="submit_btn">提 交</button></p>
+		<% 
+				break;
+			case 'p2':
+		%>
+			<% if(this.userInfo.mobile){%>
+			<h3>系统检测到您的账号存在异常，请完成验证后继续访问。</h3>
+			<p>
+				<input type="text" value="" placeholder="请输入短信验证码" name="captcha" class="sms_captcha_input" min="1" max="10">
+				<input type="hidden" name="smstype" value="active_sm_captcha">
+				<input type="hidden" name="ruleid" value="<%=riskInfo.rule_id || '' %>">
+				<button type="button" class="send_sms">发送短信</button>
+			</p>
+			<p class="error_tip"></p>
+			<p><button type="submit" class="submit_btn">提 交</button></p>
+			<% } else { %>
+			<h3>系统检测到您的账号存在异常，请绑定手机后继续访问。</h3>
+			<p>
+				<a href="/settings/bindMobile" class="go_to_bindmobile">去绑定手机</a>
+			</p>
+			<% } %>
+		<%
+				break;
+			case 'p1':
+		%>
+			<h3>系统检测到您的账号存在异常，访问失败，请稍后重试或联系客服。</h3>
+		<% 
+				break;
+		%>
+		<% } %>
+		
+	</form>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+    fml.use('page/secuity_code');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot.html%>

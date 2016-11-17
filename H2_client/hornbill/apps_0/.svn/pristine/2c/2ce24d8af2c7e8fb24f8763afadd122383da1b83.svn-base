@@ -1,0 +1,23 @@
+/*common*/
+var $ = require('wap/zepto')
+	,openAppLink = require('wap/app/openAppLink')
+
+/*获取店铺链接*/
+function getShopUrl(ele) {
+	var url = Meilishuo.config.os.mlsApp ? openAppLink.getAppLink({
+		'protocol': 'shop',
+		'param': {
+			'shop_id': ele
+		}
+	}) : '/shop/shop/' + ele;
+	// window.location.href = window.__get_r(Url , designerGoods.data('xr')+param) ;
+	window.location.href = url;
+}
+$('.goods a').on('click',function(){
+	var shop_id = $(this).data('shop');
+	if(shop_id){
+		getShopUrl(shop_id);
+	}else{
+		return false;
+	}
+});

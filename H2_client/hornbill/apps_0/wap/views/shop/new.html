@@ -1,0 +1,152 @@
+<%#head_simple.html%>
+
+<% 
+	var data    = this.basic;
+	var navD    = data.head;
+	var couponD = this.coupon;
+	var goodsD  = data.body; 
+%>
+
+<nav>
+	<ul class="nav-list">
+	<% 
+		navD.forEach(function (item, index){ 
+
+			if(!item) return
+
+			var textCn = '';
+			var textEn = '';
+
+			switch (index){
+				case 0:
+					textCn = '上期回顾';
+					textEn = 'Ago';
+					break;
+				case 1:
+					textCn = '新品到货';
+					textEn = 'New Arrival';
+					break;
+				case 2:
+					textCn = '下期预告';
+					textEn = 'Herald';
+			}
+	%>
+		<li class="nav-list-item <% if( item.id == this.topicId ){ %>active<% } %>">
+			<a href="/shop/new/?shop_id=<%= data.shop_id %>&tid=<%= item.id %>">
+				<p class="top"><%= item.title %></p>
+				<p class="middle"><%= textCn %></p>
+				<p class="bottom"><span><%= textEn %></span></p>
+			</a>
+		</li>
+	<% }); %>
+	</ul>
+</nav>
+
+<% if(couponD){ %>
+<section class="coupons">
+	<% couponD.forEach(function(v, k){ %>
+		<% if(v.can_apply_status==0 || v.can_apply_status==3){ %>
+			<div class="get coupon<%= k %>" id="<%= v.coupon_apply_code %>">
+				<img src="<%= this.PICTURE_URL %>images/shop/new/c_get.png" />
+				<p class="credit">￥<span><%= v.credit %></span></p>
+				<span class="threshold"><% if(v.threshold){ %>消费<%= v.threshold %>满使用<% }else{ %>无门槛使用<% } %></span>
+			</div>
+		<% }else if(v.can_apply_status==1){ %>
+			<div class="out coupon<%= k %>" id="<%= v.coupon_apply_code %>">
+				<img src="<%= this.PICTURE_URL %>images/shop/new/c_out.png" />
+				<p class="credit">￥<span><%= v.credit %></span></p>
+				<span class="threshold"><% if(v.threshold){ %>消费<%= v.threshold %>满使用<% }else{ %>无门槛使用<% } %></span>
+			</div>
+		<% }else if(v.can_apply_status==2){ %>
+			<div class="got coupon<%= k %>" id="<%= v.coupon_apply_code %>">
+				<img src="<%= this.PICTURE_URL %>images/shop/new/c_got.png" />
+				<p class="credit">￥<span><%= v.credit %></span></p>
+				<span class="threshold"><% if(v.threshold){ %>消费<%= v.threshold %>满使用<% }else{ %>无门槛使用<% } %></span>
+			</div>
+		<% } %>
+	<% }); %>
+</section>
+<% } %>
+
+<section class="main">
+	<header>
+		<% 
+			var shopUrl = _extFn.getAppLink('shop', {'shop_id' : data.shop_id}, this.os, this.r);
+		%>
+		<a class="shop_logo" href="<%= shopUrl %>">
+			<img src="<%= data.logo %>" alt="shop logo">
+		</a>
+		<div class="theme">
+			<span class="theme-content"><%= goodsD.desc %></span>
+			<span class="theme-goods_num">上新<br><i><%= goodsD.count %></i></span>
+		</div>
+	</header>
+	<div class="goods_shelf">
+		<% 
+			goodsD.goods && goodsD.goods.forEach(function (v,k){
+				var total = v.sale_num + v.repertory;
+		%>
+		<figure>
+			<a class="goods_entrance"<% if(v.link){ %> href="<%= v.link %>"<% } %> asrc="<%= v.img %>"></a>
+
+			<% if(v.sign){ %>
+				<span class="new_logo"><img src="<%= this.PICTURE_URL %>images/shop/new/new_logo.png?preview=1" /></span>
+			<% } %>
+			<% if(v.repertory == 0 && !!v.twitter_id){ %>
+				<span class="sold_out_logo"><img src="<%= this.PICTURE_URL %>images/shop/new/sold_out.png?preview=1" /></span>
+			<% } %>
+			<figcaption>
+				<% if(v.repertory<20 && v.repertory>0 && !!v.twitter_id){ %>
+					<p class="remainder">库存紧张&nbsp;&nbsp;最后<%= v.repertory %>件</p>
+				<% }else if(v.repertory<0.3*total && v.repertory>0 && !!v.twitter_id){ %>
+					<p class="remainder">库存紧张</p>
+				<% } %>
+				<div class="base_info">
+					<p class="left"><%= v.title %>&nbsp;<span class="price_red">￥<%= v.price %></span>
+					<% if(!!v.ore_price){ %>
+						&nbsp;<span class="price">￥<%= v.ore_price %></span>
+					<% } %>
+					</p>
+					<% if(!!v.twitter_id || v.repertory != 0){ %>
+						<p class="right">已售<span><%= v.sale_num %></span>/<%= total %>件</p>
+					<% } %>
+				</div>
+			</figcaption>
+		</figure>	
+		<% }) %>
+		<div class="tips">
+			<p>本期新品没有更多了~</p>
+		</div>
+	</div>
+</section>
+
+<footer>
+	<div class="txt">
+		<p>及时接收店铺上新和优惠信息，马上关注店铺吧</p>
+	</div>
+	<div class="attention <%if(data.is_following == 1){%>att<%}%>">
+		<a class="shop_logo" href="<%= shopUrl %>" ><img src="<%= data.logo %>" /></a>
+		<span class="shop_name"><%= _extFn.mSubstr(data.shop_nick, 8) %></span>
+		<span class="att_btn">
+			<% if(data.is_following == 1){ %>
+				取消关注			
+			<% }else{ %>
+				<span class="icon_plus"><img src="<%= this.PICTURE_URL %>images/shop/new/icon_plus.png" /></span>关注
+			<% } %>
+		</span>
+	</div>
+</footer>
+
+<script>
+	fml.vars.shopId = "<%= data.shop_id %>";
+</script>
+
+<%! 
+	$_ENGINE_SELF.callFn("useModule")(
+		"<<<_use:fml.use('wap/page/shop/new');_use:", 
+		this._JSstack, 
+		this._JSmods 
+	); 
+%>
+
+<%#foot_simple.html%>

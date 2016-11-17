@@ -1,0 +1,109 @@
+.eat_candies_loading( @candiesSize: .4em, @color: #d9d9d9, @duration: .3s ){
+	@-webkit-keyframes runing-dot {
+	  to { 
+	  	-webkit-transform : translate3d( -3*@candiesSize,0,0 );
+	  	-moz-transform    : translate3d( -3*@candiesSize,0,0 );
+	  	-o-transform      : translate3d( -3*@candiesSize,0,0 );
+	  	transform         : translate3d( -3*@candiesSize,0,0 ); 
+	  }
+	}
+	@-moz-keyframes runing-dot {
+	  to { 
+	  	-webkit-transform : translate3d( -3*@candiesSize,0,0 );
+	  	-moz-transform    : translate3d( -3*@candiesSize,0,0 );
+	  	-o-transform      : translate3d( -3*@candiesSize,0,0 );
+	  	transform         : translate3d( -3*@candiesSize,0,0 ); 
+	  }
+	}
+	@-o-keyframes runing-dot {
+	  to { 
+	  	-webkit-transform : translate3d( -3*@candiesSize,0,0 );
+	  	-moz-transform    : translate3d( -3*@candiesSize,0,0 );
+	  	-o-transform      : translate3d( -3*@candiesSize,0,0 );
+	  	transform         : translate3d( -3*@candiesSize,0,0 ); 
+	  }
+	}
+	@keyframes runing-dot {
+	  to { 
+	  	-webkit-transform : translate3d( -3*@candiesSize,0,0 );
+	  	-moz-transform    : translate3d( -3*@candiesSize,0,0 );
+	  	-o-transform      : translate3d( -3*@candiesSize,0,0 );
+	  	transform         : translate3d( -3*@candiesSize,0,0 ); 
+	  }
+	}
+
+	.pull-up {
+	  margin     : 1em auto;
+	  text-align : center;
+	  color 	 : #888;
+	  font-size  : 14px;
+	  overflow   : hidden;
+		&[data-status="loading"] {
+			width      : 18*@candiesSize;
+			.face {
+			  position      : relative;
+			  width			: 0;
+			  height		: 0;
+			  border-top    : 2.5*@candiesSize solid @color;
+			  border-right  : 2.5*@candiesSize solid transparent;
+			  border-bottom : 2.5*@candiesSize solid @color;
+			  border-left   : 2.5*@candiesSize solid @color;
+			  border-radius : 50%;
+			}
+
+			.candies {
+			  position		   : absolute;
+			  top  			   : -.5*@candiesSize;
+			  width			   : @candiesSize;
+			  height		   : @candiesSize;
+			  border-radius	   : 50%;
+			  background-color : @color;
+			}
+			.c0,
+			.c1,
+			.c2,
+			.c3,
+			.c4 {
+			  -webkit-animation : runing-dot (@duration) linear 0s infinite;
+			  -moz-animation    : runing-dot (@duration) linear 0s infinite;
+			  -o-animation      : runing-dot (@duration) linear 0s infinite;
+			  animation         : runing-dot (@duration) linear 0s infinite;
+			}
+			.c0 {
+			  left: 2*@candiesSize;
+			}
+			.c1 {
+			  left: 5*@candiesSize;
+			}
+			.c2 {
+			  left: 8*@candiesSize;
+			}
+			.c3 {
+			  left: 11*@candiesSize;
+			}
+			.c4 {
+			  left: 14*@candiesSize;
+			}
+		}
+
+		&[data-status="stop"] {
+			width : 100%;
+			.face { 
+			  &::before {
+			  	content : "亲~ 木有了";
+			  }
+			  .c0,
+			  .c1,
+			  .c2,
+			  .c3,
+			  .c4 {
+			  	display 			   : none;
+			    -webkit-animation-name : none;
+			    -moz-animation-name    : none;
+			    -o-animation-name      : none;
+			    animation-name         : none;
+			  }
+			}
+		}
+	}
+}

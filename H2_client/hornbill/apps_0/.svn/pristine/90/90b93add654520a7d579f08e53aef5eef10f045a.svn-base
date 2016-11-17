@@ -1,0 +1,189 @@
+@import "../block.less";
+@import "item_foot.less";
+@icon: 'http://d01.res.meilishuo.net/pic/_o/f9/de/e3b33c247881e867203514276b50_1280_1200.cf.png';
+.icon(@x:0, @y:0){
+	background: url(@icon) no-repeat;background-size: 6.4rem;background-position: @x @y;
+}
+
+body{ .w(6.4rem);.f(.24rem);.fc(#999);.bgc(#f4f4f4); }
+
+/* buy_wrap style */
+.item_foot;
+
+.page_head{
+	.h(.88rem);.w(100%);.hidden;.c;border-bottom: .05rem solid #F69;.bgc(#fff);.f(.28rem);
+
+	.back_icon{ .pr;z-index: 5;.left;.w(2em);padding: 0 .3rem;.h(.88rem);.icon(0, -4%); }
+	.right_btn{ .none; }
+	.title{ .w(6.4rem);.f(.32rem);.h(.88rem);.pa;left: 0;z-index: 1;.l(.88rem);.fc(#666); }
+}
+
+#wrapper_main{ .mt(.2rem);.h(100%); }
+
+.nav{
+	.h(.88rem);.bgc(#fff);.f(.24rem);.fc(#666);.l(.88rem);.c;
+
+	li{ .pr;.left;.w(33.3%);box-sizing: border-box; }
+	li:after{ content: '';.pa;top: .31rem;right: 0;.w(1px);.h(.26rem);.bgc(#E5E5E5); }
+	li:last-child:after{ .w(0); }
+	.cur{ .fc(#FF7A9A); }
+}
+
+.contentArea{ .bgc(#fff);padding: 0 .3rem;.pb(.2rem); }
+.comments_content{ .pr(0); }
+.goods_detail {
+	.norms {
+		.pt(.40rem);
+		h3 { .f(.28rem); font-weight: normal;border-bottom: 1px solid #e6e5e6; .l(.36rem); .pb(.10rem); .fc(#333);}
+		.no_cmt { .c; .pt(.20rem); .pb(.20rem);}
+	}
+	.evaluate li{ .pt(.3rem);.pr(.3rem);.f(.22rem);border-bottom: 1px solid #d9d9d9; }
+	.public {
+		li {
+			.pt(.30rem); .f(.24rem);
+		}
+		.beacuse { .pt(.20rem);}
+	}
+	.public_info {
+	 .ml(.80rem);.pb(.20rem);
+	 p { .l(.32rem);}
+	}
+	.user_picture {
+		.left; .mr(.16rem);.vm; .w(.60rem); .h(.60rem); .i_block; .left;.hidden;
+		img { .border-r(50%);.w(100%); }
+	}
+	.nickname { .pb(.10rem);}
+	.pub_right { .right; .fc(#ccc2c9);.f(.2rem); }
+	.content { .pt(.40rem);}
+	.good_info { .fc(#ccc2c9); }
+	.comment_time { .pt(.12rem); .fc(#999);}
+	.star, .star b { .h(12px); .left; }
+	.star { .mr(5px);.mt(1px);}
+	.star b { .w(14px);.fn;}
+	.star .open { background: url("@{pic_url}/images/wap/web/wx/open.png") no-repeat;background-size: .14rem;}
+	.star .shut { background: url("@{pic_url}/images/wap/web/wx/shut.png") no-repeat;background-size: .14rem;}
+	.ml_color { .red;}
+	.more { .w(5.8rem);.f(.28rem); .mt(40*@w);.block; .c; .h(.56rem); .l(.56rem); .border-1(#998f95); .border-r(.08rem); .fc(#80737b);}
+	// .eva_more { .l(26*@px);}
+
+	.f(.28rem);
+	.title { .f(.28rem);.l(2);.pt(.20rem);.fc(#595056); .pb(.20rem);}
+	.format {.clearfix;.f(.28rem);
+		li { .left; .ellipsis; .l(22px);.w(48%);.mr(2%);}
+	}
+	.pro_txt{.hidden;.l(1.6);.f(.28rem); }
+	.more_pic {
+		.lazyLoad > .img;
+		span{
+			background-size:100% 100%;
+		}
+	}
+	.moreDetailBtn{
+		.f(.28rem); .border-1(#998f95); .h(.56rem); .l(.56rem);
+		.mt(.20rem); .fc(#80737b);.c; .border-r(.08rem);
+		.hide{.none;}
+	}
+	.details{
+		&.hide{
+			.more_pic:nth-of-type(n+4){.none;}
+			.title:nth-of-type(n+2){.none;}
+			.pro_txt:nth-of-type(n+4){.none;}
+			.moreDetailBtn{
+				.hide{.block;}
+				.show{.none;}
+			}
+		}
+	}
+
+	.recommend {
+		.rmd_info { .clearfix; .l(.40rem);}
+		.rmd_icon {
+			.left; .mr(.20rem);
+			img { .border-r(50%); .w(.60rem); .h(.60rem); .hidden;}
+		}
+		.rmd_user { .left; .mt(.10rem); .fc(#595056);}
+		.rmd_time { .right; .fc(#ccc2c9);}
+		.rmd_word {
+			.pt(.10rem); .fc(#80737b); .f(.24rem); .l(.32rem);
+		}
+	}
+}
+
+
+.size_table {
+	.w(100%); .fc(#80737b);
+	td {
+		.c;
+	}
+	thead {
+		td {
+			&:first-of-type {
+				.tl;
+			}
+		}
+	}
+	tr {
+		.h(.78rem); border-bottom: 1px solid #e6e5e6; .l(.78rem);
+	}
+	tbody {
+		td {
+			.red;
+			&:first-of-type {
+				.tl; .fc(#80737b);
+			}
+		}
+	}
+}
+
+.size_format {
+	.f(.24rem);
+
+	li{
+		.pt(.3rem); .pb(.24rem); .fc(#747474); border-bottom: 1px solid #ededed;
+
+		label { .fc(#9b9b9b); }
+	}
+}
+
+
+.rate { .red; .f(.38rem);}
+
+.cmt_evaluate {
+	.pt(.3rem);
+	p {
+		.fc(#ccc2c9); .f(.22rem); .pb(.3rem);
+		label {
+			.f(.26rem); .fc(#83707b);
+		}
+		span {
+			.bgc(#ffcc33); .mr(.1rem); .ml(.1rem); .w(33%); .h(.22rem); .i_block;
+		}
+	}
+}
+
+.cmt_nav {
+	.pt(.1rem);
+	.tab {
+		.clearfix;.mr(.3rem);
+		.tab_list {
+			.left; border-top: 1px solid #cdcacc; border-bottom: 1px solid #cdcacc; .h(.56rem); .l(.56rem); .c; .w(24.5%); border-right: 1px solid #cdcacc;
+			&:first-of-type {
+				border-left: 1px solid #cdcacc;
+				border-radius: 5px 0 0 5px;
+			}
+			&:last-of-type {
+				border-radius: 0 5px 5px 0;
+			}
+			span { .fc(#ccc2c9); .f(.2rem);}
+		}
+		.cur {
+			.bgc(#9b969a); .white;
+		}
+	}
+}
+
+
+.goTopRem;
+.goTop, #goTop{
+	bottom: 1.2rem;
+}

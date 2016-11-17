@@ -1,0 +1,129 @@
+<%#head.html%>
+
+<%
+	var getLink = _extFn.getLink,
+		pageData = this.pageData;
+
+%>
+<div class="main">
+	<% pageData.bannar.length > 0 && pageData.bannar.map(function(data, index){ %>
+		<div class="head_bg" style="background-image:url('<%= data.pic %>');height:<%= data.h %>px;"></div>
+	<% }); %>
+	<div class="sec_nav_wrap">
+		<div class="inner">
+			<div class="p_tab_active tab0" go="hot"><span>品牌街</span></div>
+			<div class="tab1" go="rec"><span class="s_biao"></span><span>功效区</span></div>
+			<div class="tab2" go="poster"><span class="s_biao"></span><span>单品榜</span></div>
+		</div>
+		<div class="sec_nav"></div>
+	</div>
+	<div class="title hot_title"></div>
+	<div class="hot">
+		<div class="shop_wrap">
+			<% pageData.hot.forEach(function(shop, index){ %>
+			<%
+				var link = shop.link;
+				if(link != ''){
+					var ac_id = link.match(/ac_id=(\d+)/);
+					ac_id = ac_id && ac_id[1];
+					link += '&hdtrc=mz' + ac_id + '_1212fenhuichang';
+				} else {
+					link = 'javascript:;';
+				}
+			%>
+				<a href="<%= link %>" data-picid="<%= index+1 %>" target="_blank"><span class="lazyimg" asrc="<%= shop.pic %>"></span></a>
+			<% }); %>
+		</div>
+	</div>
+	<div class="title rec_title"></div>
+	<div class="rec">
+		<div class="shop_wrap">
+			<% pageData.rec.forEach(function(shop, index){ %>
+				<%
+					var link = shop.link;
+					if(link != ''){
+						var ac_id = link.match(/cid=(\d+)/);
+						ac_id = ac_id && ac_id[1];
+						link += '&hdtrc=mz' + ac_id + '_1212fenhuichang';
+					} else {
+						link = 'javascript:;';
+					}
+				%>
+				<a href="<%= link %>" target="_blank" class="func_<%= index %>"><img src="<%= shop.pic %>"></a>
+			<% }); %>
+		</div>
+	</div>
+	<div class="title poster_title"></div>
+	<div class="poster" id="poster">
+		<div class="spinner botSpinner"></div>
+	</div>
+	<div class="footer_bannar">
+		<% pageData.foot_bannar.forEach(function(bannar, index){ %>
+			<a href="<%= bannar.link || '###' %>" target="_blank"><img src="<%= bannar.pic %>"></a>
+		<% }); %>
+	</div>
+</div>
+<div class="nav_right d-nav">
+	<div class="menu_main">
+	</div>
+</div>
+
+<script type="text/html" id="posterWall">
+	<div class="goods_units">
+		<?
+			$.each(data, function(index, goods_data){
+				var goods_link = '';
+				if(goods_data.link){
+					goods_link = goods_data.link;
+				} else {
+					goods_link = '/share/item/' + goods_data.twitter_id + '?d_r=' + goods_data.d_r;
+				}
+		?>
+			<a href="<?= goods_link ?>" target="_blank" class="productCon">
+				<?var _l = 0;?>
+				<? goods_data.marks.forEach(function(v1 , k1){ ?>
+					<div class="new-png"  style="left:<?=6 + _l?>px"><img src="<?= v1.img_url?>" /></div>
+					<?_l += (+v1.img_width + 2);?>
+				<? });?>
+				<div class="proImg">
+					<img width="220" src="<?=goods_data.image?>" />
+				</div>
+				<div class="proTitle">
+					<?=goods_data.goods_title?>
+				</div>
+				<div class="proPrice">
+					<b><em>￥</em><?=goods_data.price?></b>
+					<? if(goods_data.original_price){ ?>
+						<span class="original_price">￥<?=goods_data.original_price?></span>
+						<?
+							var sale_price = '' + Math.round(goods_data.price/goods_data.original_price*100)/10;
+							if(sale_price.indexOf('.')<0){
+								sale_price += '.0';
+							}
+						?>
+						<span class="sale_price"><?= sale_price ?>折</span>
+					<? } ?>
+				</div>
+				<div class="proBtnWrap">
+					<span class="js-addToCart btn-addToCart buy_btn" data-tid="<?=goods_data.twitter_id?>">立即抢购</span>
+				</div>
+			</a>
+		<? }); ?>
+	</div>
+</script>
+<script type="text/html" id="tmplAddToCart">
+	<%# tmpl/app.addToCart.html%>
+</script>
+
+<script>
+	fml.vars.huodong_code = '<%= pageData.poster.huodong_code || "mztx_common" %>';
+	fml.vars.acid = '<%== pageData.poster.acid %>';
+	fml.vars.tab = '<%== pageData.poster.tab || "分会场" %>';
+	fml.vars.hdtrc = '<%== this.hdtrc %>';
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/huodong/beauty_sales_pro_main');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot.html%>

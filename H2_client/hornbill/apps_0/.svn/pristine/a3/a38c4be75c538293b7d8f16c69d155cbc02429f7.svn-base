@@ -1,0 +1,137 @@
+<%# wx_new/header.html%>
+<%
+	var couponInfo = this.coupon.coupons
+	    ,bg_color = ["pink", "yellow", "blue", "gray"]
+
+%>
+<div class="wrap">
+	<% if(this.coupon && couponInfo && couponInfo.length > 0){%>
+	<div class="coupon_wrap">
+		<ul class="discount_wrap">
+			<% 
+				couponInfo.map(function(data){ 
+				var coupon_rmb = data.credit;
+				var color = '';
+				if(coupon_rmb <= 50){
+					color = bg_color[0];
+				} else if(coupon_rmb <= 100){
+					color = bg_color[1];
+				} else if(coupon_rmb > 100){
+					color = bg_color[2];
+				}
+				if(data.status == 'expired' || data.status == 'frozen'){
+					color = bg_color[3];
+				} 
+			%>
+			<li coupon_id="<%= data.coupon_id%>">
+				<div class="dis_list">
+					<div class="dis_l_bg"></div>
+					<div class="dis_r_bg"></div>
+					<div class='dis_cont coupon_<%= color%>'>
+						<% if(data.status == 'used'){ %>
+								<div class="coupon_used">
+									<img src="<%=this.PICTURE_URL%>/images/wap/web/wx/used_icon.png"/>
+								</div>
+								<div class="title"><span><%=data.status_text %></span><%= data.coupon_sign %> - NO.<%= data.coupon_id%></div>
+							<% } else { %>
+								<div class="title">
+									<span><%=data.status_text %></span>
+									<%= data.coupon_sign %> - NO.<%= data.coupon_id%>
+								</div>
+						<% } %>
+						<div class="value_wrap value_<%= color%>">
+							<div class="value_bg <%= color%>_l_bg"></div>
+							<div class="value_bg <%= color%>_r_bg"></div>
+							<div class="value">
+								<span class="money_icon">¥</span>
+								<span class="money"><%= coupon_rmb%></span>
+								<span class="vshop_name"><%= data.remark%></span>
+							</div>
+						</div>
+						<div class="condition">
+							<p><b class="coupon_icon <%= color%>_type"></b><%= data.condition%></p>
+							<p><b class="coupon_icon <%= color%>_time"></b>有效期：<%= data.start_time%> ~ <%= data.expire_time%></p>
+						</div>
+					</div>
+				</div>
+			</li>
+			<%});%>
+		</ul>
+		<% if(couponInfo.length < this.coupon.totalNum ){%>
+		<p class="more">
+			查看更多优惠券
+			<span class="xiala_icon">
+				<img src="http://i.meilishuo.net/css/images/wap/web/wx/xiala.png">
+			</span>
+		</p>
+		<%}%>
+	</div>
+	<% } else {%>
+		<div class="order_empty">
+			<div class="empty_icon">
+				<img src="<%=this.PICTURE_URL%>/images/wap/web/wx/nothing.png">
+			</div>
+			<h3>暂无内容~</h3>
+			<a href="/wx/mall/daily" class="btn">去逛逛</a>
+		</div>
+	<%}%>
+</div>
+<script type="text/html" id="posterCoupon">
+<?
+ item && $.each(item , function(key , data){
+    var coupon_rmb = data.credit
+	, color = ''
+	,bg_color = ["pink", "yellow", "blue", "gray"];
+	if(coupon_rmb <= 50){
+		color = bg_color[0];
+	} else if(coupon_rmb <= 100){
+		color = bg_color[1];
+	} else if(coupon_rmb > 100){
+		color = bg_color[2];
+	}
+	if(data.status == 'expired' || data.status == 'frozen'){
+		color = bg_color[3];
+	} 
+?>
+
+<li coupon_id="<?= data.coupon_id?>">
+	<div class="dis_list">
+		<div class="dis_l_bg"></div>
+		<div class="dis_r_bg"></div>
+		<div class='dis_cont coupon_<?= color?>'>
+			<? if(data.status == 'used'){ ?>
+					<div class="coupon_used">
+						<img src="<%=this.PICTURE_URL%>/images/wap/web/wx/used_icon.png"/>
+					</div>
+					<div class="title"><?= data.coupon_sign ?> - NO.<?= data.coupon_id?></div>
+				<? } else { ?>
+					<div class="title">
+						<span><?= data.status_text?></span>
+						<?= data.coupon_sign ?> - NO.<?= data.coupon_id?>
+					</div>
+			<? } ?>
+			<div class="value_wrap value_<?= color?>">
+				<div class="value_bg <?= color?>_l_bg"></div>
+				<div class="value_bg <?= color?>_r_bg"></div>
+				<div class="value">
+					<span class="money_icon">¥</span>
+					<span class="money"><?= coupon_rmb?></span>
+					<span class="vshop_name"><?= data.remark?></span>
+				</div>
+			</div>
+			<div class="condition">
+				<p><b class="coupon_icon <?= color?>_type"></b><?= data.condition?></p>
+				<p><b class="coupon_icon <?= color?>_time"></b>有效期：<?= data.start_time?> ~ <?= data.expire_time?></p>
+			</div>
+		</div>
+	</div>
+</li>
+<?});?>
+</script>
+<script>
+fml.vars.status = '<%= this.status || "available"%>';
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/wx_new/coupon');
+_use:", this._JSstack , this._JSmods ); %>
+<%# wx_new/footer.html%>

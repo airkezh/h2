@@ -1,0 +1,86 @@
+@import "../block.less";
+
+.starBox{ .star_box; }
+.appshare{ .none; .pf; bottom: 0; left: 0; right: 0; }
+
+.dialog();
+
+#dialogLayer{ .border-r(0); padding: 0; .bgc(#fe499a);
+	.dialogTitle{ .none;}
+	.tips{ .w(80%); .auto;}
+}
+
+html,body { .h(100%);}
+img{ .w(100%); .block;}
+
+//首页
+// .home-main{ .w(100%); .h(100%); overflow-y:hidden; .pr; .box; .align-items(end); background: url("@{pic_url}/images/wap/activity/fuide/luhan-cover.jpg") no-repeat; background-size: 100%;
+// 	.content{ .flex(1); max-height:66%;
+// 		.pic_box{ .box; .align-items(end);
+// 			figure{ .flex(1);
+// 				a{ .block;}
+// 			}
+// 		}
+// 	}
+// }
+.new-main{ .w(100%); .h(100%); .hidden; .pr; .box; .align-items(end); background: url("@{pic_url}/images/wap/activity/fuide/luhan-cover.jpg") no-repeat; background-size: 100%;
+	.audio_box{ .pa; top:31%; left: 3.3%; .w(42%); z-index: 100;
+		.start, .pause{ .block;}
+	}
+	.content{ .pa; top: 42%; left: 0; .w(100%); z-index: 60;
+		.new-text{ .w(100%);}
+		.link-area{ .w(100%); .mt(3%); .pr; .h(200px);
+			.game-link{ .pa; .block; .w(35.3%); left: 21%; top: 0; z-index: 100;}
+			.pics-link{ .pa; .block; .w(27.5%); left: 50.8%; top: 29%; z-index: 80;}
+		}
+	}
+	.btn-rule{ .pa; left: 39%; .w(23%); bottom: 0.5%; z-index:100; }
+	.rules-txt{ .pa; .w(80%); left: 10%; top: 15%; z-index: 120; .none;}
+}
+.mask {
+  	display          : none;
+  	position         : absolute;
+  	left             : 0;
+  	top              : 0;
+  	right            : 0;
+  	bottom           : 0;
+  	background-color : rgba(0, 0, 0, .7);
+  	z-index          : 110;
+}
+
+/*radio*/
+input[type=radio]{
+	-webkit-appearance: none;
+  	.w(24px);
+  	.h(24px);
+   .border-1(#1eabec);
+   .border-r(50%);
+   outline: none;
+	&:checked{
+		.bgc(#78cdf3);
+	}
+	.mr(38*@px);
+}
+
+//问答
+.qa-main{ .h(100%); .w(100%); background: url("@{pic_url}/images/wap/activity/fuide/question-bg.jpg") #fff no-repeat; background-size: 100%;
+	.qa-list{ .none;}
+	.qa-cont{
+		   display: -webkit-box;
+	      -webkit-box-orient: vertical;
+	      .align-items(center);
+		li{
+			-webkit-box-sizing: border-box;
+			padding: 0 40*@px;
+			.mb(50*@px);
+  			min-width: 60%;
+			label{ .box;}
+			span{ .block; .flex(1); .l(26px); .mt(3px); .f(30*@px); min-height: 50px;
+			}
+		}
+	 }
+	.btn-area{ //.pr;
+		.btn_qa_next{ .w(40%); .bgc(#ffa504); .fc(#000); .f(50*@px); .block; .auto; .l(45px); .c;
+		}
+	}
+}

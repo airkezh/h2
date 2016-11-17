@@ -1,0 +1,118 @@
+@import "../block";
+@import "user.import.less";
+@import "item.import.less";
+@import "circle.import.less";
+@import "../component/gotop";
+@import "../component/loading";
+
+html, body {
+  height : 100%;
+}
+
+body {
+  position         : relative;
+  background-color : #f8f8f8;
+}
+
+.tabs {
+  position         : relative;
+  border-bottom    : 20*@px solid #f8f8f8;
+  height           : 88*@px;
+  line-height      : 40*@px;
+  background-color : #fff;
+  font-size        : 0;
+  z-index          : 10;
+
+  li {
+    display            : inline-block;
+    width              : 33.3333%;
+    margin             : 24*@px 0;
+    color              : #666;
+    font-size          : 26*@px;
+    text-align         : center;
+    -webkit-box-sizing : border-box;
+    -moz-box-sizing    : border-box;
+    box-sizing         : border-box;
+    border-left        : 1px solid #ebebeb;
+    border-right       : 1px solid #ebebeb;
+
+    &:first-child, &:last-child {
+      border : 0;
+    }
+  }
+
+  .active {
+    font-size : 30*@px;
+    color     : #ff7a9a;
+  }
+}
+
+#cont-addr-user {
+  background-color : #fff;
+}
+
+[class^="container"] {
+  position : relative;
+
+  .item-wrap {
+    position : absolute;
+  }
+}
+
+/******************************
+            user
+******************************/
+.container-user {
+  .user()
+}
+
+/******************************
+            item
+******************************/
+.container-item {
+  .item()
+}
+
+/******************************
+            Circle
+******************************/
+.container-circle {
+  .circle()
+}
+
+/* 空白页面 */
+.blank {
+  display            : none;
+  position           : absolute;
+  top                : 0;
+  left               : 0;
+  padding-top        : 30%;
+  width              : 100%;
+  height             : 100%;
+  background-color   : #fff;
+  -webkit-box-sizing : border-box;
+  -moz-box-sizing    : border-box;
+  box-sizing         : border-box;
+
+  img {
+    display : block;
+    width   : 318*@px;
+    margin  : auto;
+  }
+}
+
+.add-goods {
+  display       : block;
+  width         : 32.8125%;
+  margin        : 30*@px auto;
+  padding       : 12*@px;
+  font-size     : 24*@px;
+  color         : #80737B;
+  border        : 1px solid #80737b;
+  border-radius : 3px;
+  text-align    : center;
+
+  &:visited, &:focus, &:active {
+    color : inherit;
+  }
+}

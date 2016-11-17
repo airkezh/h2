@@ -1,0 +1,183 @@
+/*common*/
+var $ = require('wap/zepto'),
+	shareTmp = require('wap/component/shareTmp'),
+	pin = require('wap/component/wapfall'),
+	timedown = require('wap/app/doota/timedown'),
+	scroll = require('wap/component/windowScroll'),
+	touchSlide = require('wap/app/touchSlide'),
+	menu = require('wap/page/tuan/tabSlide'),
+	lazy = require('wap/component/lazzyLoad'),
+	countdow = require('wap/app/countdown2'),
+	tracking = require('wap/app/tracking'),
+	Alert = require('wap/ui/alert'),
+	Cwidth = document.body.clientWidth > 640 ? 640 : document.body.clientWidth //内容窗口宽度
+	,
+	$pullUp = $('.pullUp'),
+	$check = $('.select'),
+	$imageSlide = $('#imageSlide'),
+	$bannerBox = $('#bannerBox'),
+	$gotop = $('.gotop'),
+	$applyBtn = $('#applyBtn'),
+	$addrArea = $("#addrArea"),
+	$edit_address = $("#edit_address");
+
+/*拼接r参数（用于模版里）*/
+function joinurl(protocol, param, isosapp, r, wapHref) {
+	if (!protocol || !param) return false
+	if (!isosapp) return wapHref || '###noapp'
+	if (r) param.r = r
+	var link = 'meilishuo'
+	link += '://' + protocol + '.meilishuo?json_params=' + encodeURIComponent(JSON.stringify(param))
+	return link
+};
+
+var welfare = {
+	init: function() {
+		this.eventInit();
+	},
+	eventInit: function() {
+		var _this = this;
+		if(fml.vars.isWx=="false"){
+			var share_bg = shareTmp("wlf_share_end");
+		}else{
+			var share_bg = shareTmp("wx_dialog");
+		}
+		$("body").append(share_bg);
+		/*领取优惠券*/
+		$(".wlf_coupon_btn").on("click", function() {
+			var $item = $(this);
+			var code = $(this).attr("data_code");
+			var item_index=$item.attr("data_index");
+			$.post('/aj/single_aj/m_welfare/wlf_coupon_apply', {
+				"code": code,
+			}, function(res) {
+				if (typeof res == "string") {
+					res = JSON.parse(res);
+				}
+				if (res.error_code == 0) {
+					if (res.data.info.code == 0) {
+						new Alert({
+							width: 370,
+							confirmTxt: '确定',
+							content: '在"我"的页面"优惠券"中查看',
+							onClose: function() {}
+						});
+						$item.children('.coupon_bg').attr("src", "http://i.meilishuo.net/css/images/m_welfare/wlf_coupon_no.jpg");
+						$item.removeClass("wlf_coupon_btn");
+					}
+				}
+				console.log($item.index());
+				tracking.cr('welfare_coupon', {
+					action: 'click',
+					"area": 'coupon' + item_index,
+					"user_id": Meilishuo.config.user_id,
+					"shop_id": fml.vars.shop_id,
+					"coupon_id": res.data.info.data.coupon_id
+				});
+			});
+			//			$(this).children('.coupon_bg').attr("src", "http://i.meilishuo.net/css/images/m_welfare/wlf_coupon_no.jpg");
+			//$(this).removeClass("wlf_coupon_btn");
+		});
+		/*埋点－－start 1:四个单宝页面*/
+		$("#productList .link_box").on("click", function(event) {
+			var index = $("#productList .link_box").index(this);
+			var adItem = Number(index) + 1;
+			tracking.cr('welfare_detail', {
+				area: 'ad' + adItem,
+				action: 'click'
+			});
+			/*传递r参数*/
+			var twitter_id = $(this).attr("data-twitter");
+			var detailUrl = joinurl('twitter_single', {
+				'twitter_info': {
+					'twitter_id': twitter_id,
+					'is_doota': 1
+				}
+			}, Meilishuo.config.os.mlsApp, Meilishuo.config.r, '/share/item/' + twitter_id);
+			window.location.href = detailUrl;
+			return false;
+		});
+		/*新增店铺埋点跳转*/
+		$("#shop_title").on("click", function() {
+			tracking.cr('welfare_detail', {
+				area: 'shop',
+				action: 'click'
+			});
+			/*传递r参数*/
+			var urlStr = window.location.href;
+			if (urlStr.indexOf('?') > 0) {
+				var shop_r = "2_mapp-m_welfare.2_mapp-m_welfare_item:rw_param_1=979:";
+			} else {
+				var shop_r = "navigation-home_top:_page_id=1200002:pos=4:area=sales:_page_area=sales:_pos_id=4:_pos_name=welfare.2_mapp-m_welfare";
+			}
+			var twitter_id = $(this).attr("data_id");
+			var detailUrl = joinurl('shop', {
+				'shop_id': twitter_id
+			}, Meilishuo.config.os.mlsApp, shop_r, '/shop/' + twitter_id);
+			window.location.href = detailUrl;
+			return false;
+		});
+		/*店铺埋点end*/
+	}
+};
+welfare.init();
+//分享文字内容 
+var shareText = fml.vars.wx_cont,
+	shareImg = fml.vars.wx_pic,
+	shareTitle = fml.vars.wx_title,
+	shareUrl = "http://mapp.meilishuo.com/m_welfare/item/" + fml.vars.id;
+
+if (Meilishuo.config.os.mlsApp) {
+	var schemeJsonWx = {
+			type: 'weixin',
+			message_type: 'webpage',
+			title: shareTitle,
+			text: shareText,
+			url: shareUrl,
+			thumb_url: shareImg
+		},
+		schemeLinkWx = "meilishuo://share.meilishuo/?json_params=" + encodeURIComponent(JSON.stringify(schemeJsonWx));
+
+	$('#shareBut_wx').attr('href', schemeLinkWx);
+
+	var schemeJsonPyq = {
+			type: 'weixin_timeline',
+			message_type: 'webpage',
+			title: shareTitle,
+			text: shareText,
+			url: shareUrl + '&frm=pengyouquan',
+			thumb_url: shareImg
+		},
+		schemeLinkPyq = "meilishuo://share.meilishuo/?json_params=" + encodeURIComponent(JSON.stringify(schemeJsonPyq));
+
+	$('#shareBut_pyq').attr('href', schemeLinkPyq);
+	$('#shareBut_wx').on("click", function() {
+		$(".wlf_share_dialog").remove();
+	});
+	$(".shareBut").on("click", function() {
+		$(".wlf_share_dialog").remove();
+	});
+};
+$(".close_share_btn").on("click", function() {
+	tracking.cr('welfare_share', {
+		action: 'click',
+		area: 'noshare'
+	});
+	$(".wlf_share_dialog").remove();
+});
+$('#shareBut_pyq').on('touchstart', function() {
+	tracking.cr('welfare_share', {
+		action: 'click',
+		area: 'moment'
+	});
+});
+$('#shareBut_wx').on('touchstart', function() {
+	tracking.cr('welfare_share', {
+		action: 'click',
+		area: 'wechat'
+	});
+});
+/*关闭微信分享弹层*/
+$(".wx_share_dialog").on("click",function(){
+	$('.wx_share_dialog').remove();
+});

@@ -1,0 +1,224 @@
+<%# head.html %>
+
+<%
+	function getTimeRemain(end_time){
+		var cur_time  = (new Date).getTime() / 1000;
+		if(end_time && end_time > cur_time){
+			return end_time - cur_time;
+		} else {
+			return '';
+		}
+	}
+
+	var goodsInfo = this.goods_info.data || {};
+	var promptRemain = getTimeRemain(goodsInfo.end_time);
+	var shop_in = this.shop_in.data || '';
+%>
+
+<input type="hidden" name="order_init_r" value="<%= this.xr.r %>" />
+
+<header class="header" id="header">
+	<span class="icon-back icon_back"></span>
+	<% if(!this.noHomeBtn){ %>
+		<a class="icon-home" href="/cart" xr="<%= this.xr.r %>"></a>
+	<% } %>
+</header>
+
+<section id="wrapper_main" class="wrapper">
+	<%
+		var goods_image = goodsInfo.image.image;
+		goods_image.length = goods_image.length > 5 ? 5 : goods_image.length;
+		var goods_image_l = goods_image.length;
+	%>
+	<div class="picture_wrap">
+		<div id='slider' class="slider_wrap swipe">
+			<div class='swipe-wrap'>
+				<% goods_image.forEach(function(image, index){ %>
+					<div class="image_item bs_load_img" asrc="<%= image %>"></div>
+				<% }); %>
+			</div>
+		</div>
+		<% if (promptRemain && 1 == goodsInfo.shelf){ %>
+			<div class="time_box countdown" remain="<%= promptRemain %>">距折扣结束仅剩<span >-天--小时--分--秒</div>
+		<% } %>
+		<% if(goods_image_l > 1){ %><div class="slide_num"><span class="cur">1</span>/<span class="all"><%= goods_image_l %></span></div><% } %>
+	</div>
+
+	<div class="sku_meta">
+		<div class="price_info">
+			<div class="price red_f">
+				¥<%= goodsInfo.price %>
+					<% if(goodsInfo.price_max && (goodsInfo.price != goodsInfo.price_max)){ %>
+							~ <%= goodsInfo.price_max %>
+					<% } %>
+			</div>
+			<p class="label">
+				<% if(goodsInfo.freight ){ %>
+					<span class="sort">运费：¥<%= Number(goodsInfo.freight).toFixed(2) %></span>
+				<% } else { %>
+					<% goodsInfo.label.forEach(function(label){ %>
+						<span><%= label.text %></span>
+					<% }); %>
+				<% } %>
+			</p>
+		</div>
+		<h2 class="title"><%= goodsInfo.goods_title %></h2>
+		<h4 class="desc"><%= _extFn.mSubstr(goodsInfo.goods_desc, 70, '...') %></h4>
+		<div class="goods_cmt">销量 <span class="red_f"><%= goodsInfo.sales %></span>件<span class="space"></span>喜欢 <span class="red_f"><%= goodsInfo.twitter_stat.count_like ? goodsInfo.twitter_stat.count_like : '0' %></span>人</div>
+	</div>
+
+	<a class="service" href="/help/return/" xr="<%= this.service.r %>">
+		<ul class="promise">
+			<%
+				var service_data = [
+					{
+						type: 2,
+						text: "7天退货",
+						mini_text: "轻松购物有保障",
+						icon_pc: "http://d06.res.meilishuo.net/img/_o/4e/fb/4e1c2c755ae05cf846ef1694b895_40_46.cf.png"
+					},
+					{
+						type: 3,
+						text: "先行赔付",
+						mini_text: "轻松购物有保障",
+						icon_pc: "http://d02.res.meilishuo.net/img/_o/a7/87/61dfebd0571a64acbf577280b718_40_46.cg.png"
+					},
+					{
+						type: 4,
+						text: "退货补贴",
+						mini_text: "轻松购物有保障",
+						icon_pc: "http://d06.res.meilishuo.net/img/_o/47/99/936d5692a7a372e0c6495cf7288c_40_46.cf.png"
+					}
+				];
+			%>
+			<% service_data.map(function(data){ %>
+				<li>
+					<img src="<%= data.icon_pc %>" /><span class="words"><%= data.text %></span>
+				</li>
+			<% }); %>
+		</ul>
+	</a>
+
+	<%# share/item_welfare.html %>
+
+	<%
+		var small_images = [];
+		var small_images_l = 3;
+		var goods_detail = this.details.data.detail[0].content;
+		goods_detail.forEach(function(item, index){
+			if(item.type == 'img' && small_images_l){
+				small_images_l -= 1;
+				small_images.push(item.value);
+			}
+		});
+
+		var goods_comments = this.goods_comments.data;
+		var goods_comments_l = goods_comments.pages.totalNum;
+	%>
+	<div class="sku_main">
+		<div class="sku_detail js_open_detail" data-href="/share/item_detail/<%= goodsInfo.twitter_id %>?tab=0">
+			<div class="title">商品详情<div class="small_img_wrap"><% small_images.forEach(function(imgs){ %><div class="small_img" style="background-image:url(<%= imgs %>);"></div><% }); %></div></div>
+		</div>
+		<div class="sku_size js_open_detail" data-href="/share/item_detail/<%= goodsInfo.twitter_id %>?tab=1"><div class="title">商品规格</div></div>
+		<div class="sku_comment js_open_detail" data-href="/share/item_detail/<%= goodsInfo.twitter_id %>?tab=2">
+			<% if(goods_comments_l == 0){ %>
+				<div class="no_title">暂无评价</div>
+			<% } else { %>
+				<div class="title">商品评价<span><%= goods_comments.levelsNum[0] %>条</span></div>
+				<ul class="list">
+					<% goods_comments.cInfos.forEach(function(item, index){ %>
+						<% if(index > 1) return ''; %>
+
+						<li class="item">
+							<div class="img_wrap"><img src="<%= item.uInfo.avatar_a %>"></div>
+							<div class="info"><%= item.uInfo.nickname %><span class="words">好评</span><span class="time"><%= item.time %></span></div>
+							<p class="content"><%= _extFn.mSubstr(item.content, 42, '...') %></p>
+							<p class="sku"><%= item.style %></p>
+						</li>
+					<% }); %>
+				</ul>
+			<% } %>
+		</div>
+	</div>
+
+	<%if(shop_in.shop_id != ''){%>
+		<a href="/shop/<%= shop_in.shop_id%>" xr="<%= this.shop_in.r%>" class="sku_shop">
+			<div class="shop_info">
+				<span class="guang">进店逛逛</span>
+				<dl>
+					<dt>
+						<img src="<%= shop_in.shop_face_img %>" />
+					</dt>
+					<dd>
+						<p class="title"><%= shop_in.shop_nick %></p>
+						<p class="info">宝贝数<%= shop_in.shop_goods_num %>  销量<%= shop_in.goods_sales %></p>
+					</dd>
+				</dl>
+			</div>
+			<ul class="shop_eva">
+				<%
+					var points_trend = shop_in.points_trend,
+						hasProp = false;
+					if(typeof points_trend === "object" && !(points_trend instanceof Array)){
+						for (var prop in points_trend){
+							hasProp = true;
+							break;
+						}
+						var accord = points_trend.accord,
+							quality = points_trend.quality,
+							attitude = points_trend.attitude,
+							fast = points_trend.fast;
+				%>
+					<% if(hasProp){ %>
+						<li>
+							描述:<span class="<%= accord.mark == 0 ? 'equal' : (accord.mark == -1 ? 'down' : 'up') %>"><%= accord.avg %></span>
+						</li>
+						<li>
+							质量:<span class="<%= quality.mark == 0 ? 'equal' : (quality.mark == -1 ? 'down' : 'up') %>"><%= quality.avg %></span>
+						</li>
+						<li>
+							服务:<span class="<%= attitude.mark == 0 ? 'equal' : (attitude.mark == -1 ? 'down' : 'up') %>"><%= attitude.avg %></span>
+						</li>
+						<li>
+							发货:<span class="<%= fast.mark == 0 ? 'equal' : (fast.mark == -1 ? 'down' : 'up') %>"><%= fast.avg %></span>
+						</li>
+					<% } %>
+				<% } %>
+			</ul>
+		</a>
+	<% } %>
+	<div class="shop_wrap">
+		<h3>店内精选</h3>
+		<div id="goods_wall"></div>
+		<div class="status_tips"></div>
+	</div>
+
+	<script type="text/html" id="poster_tpl">
+		<? var v = this.v; ?>
+		<div class="poster">
+			<figure>
+				<a xr="<?= fml.vars.poster_r?>" class="poster-link img_frame" href="/share/<?= v.twitter_id ?>">
+					<span class="bs_load_img" asrc="<?= v.goods_img ?>"></span>
+				</a>
+				<figcaption>
+					<p class="poster-info-title"><?= v.goods_title ?></p>
+					<div>
+						<span class="poster-info-price"><?= v.goods_price ?></span>
+						<span class="poster-info-like"><?= v.count_like ?></span>
+					</div>
+				</figcaption>
+			</figure>
+		</div>
+	</script>
+
+	<% this.show_bar_item = '.sku_detail' ; %>
+	<%# share/item_foot.html %>
+</section>
+
+<%# block/gotop.html %>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/share/item_new');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot_simple.html %>

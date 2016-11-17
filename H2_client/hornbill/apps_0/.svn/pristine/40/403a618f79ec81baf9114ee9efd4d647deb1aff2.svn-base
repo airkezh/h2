@@ -1,0 +1,111 @@
+@import "../../block.less";
+.dialog;
+.ranking{
+	.bgc(#fbd5e3);.pb(60*@w);
+	&_top{
+		.pt(240*@w);
+		background:url("@{pic_url}/images/activity/fouryears/rank_top0.jpg") no-repeat;
+	}
+	&_intro{
+		.pr;
+		background:url("@{pic_url}/images/activity/fouryears/rank_award1.jpg") no-repeat;
+		.link{.block;.w(600*@w);.pt(100*@w);.auto;}
+	}
+	&_top, &_intro{
+		.w(100%);
+		background-size:100%;
+	}
+	&_title{
+		.w(600*@w);.auto;.f(28*@px);.l(80*@px);.fc(#000);
+	}
+	&_ad{
+		.w(600*@w);.pt(340*600/640*@w);.mt(30*@px);
+		.auto;.block;
+		.border-r-a(4*@px);
+		&.wyg{
+			background:url("@{pic_url}/images/activity/fouryears/wyg131129.jpg") no-repeat;
+		}
+		&.zer{
+			background:url("@{pic_url}/images/activity/fouryears/zer0.jpg") no-repeat;
+		}
+		&.wyg,&.zer{
+			background-size:100%;
+		}
+	}
+	&_info{
+		.auto;.bgc(#ff92b7);.w(600*@w);.white;.c;
+		.mt(300*@w);
+		.border-r-a(8*@px);
+		p{
+			&:nth-of-type(1){.f(32*@px);.l(36*@px);
+				.pt(14*@w);
+			}
+			&:nth-of-type(2){.f(28*@px);.l(32*@px);
+				.pb(14*@w);
+			}
+		}
+	}
+	&_yesterday{
+		.pt(107*@w);.block;	
+		background:url("@{pic_url}/images/activity/fouryears/rank_yesterday0.jpg") no-repeat;
+		background-size:100%;
+	}
+	&_list{
+		.auto;.w(600*@w);.mt(30*@px);	
+		.border-r-a(8*@px);
+		background:#fbfcfd url("@{pic_url}/images/activity/fouryears/rank_list0.jpg") no-repeat;
+		background-size:100%;
+		ul{
+			.pt(66*@w);
+			.pl(32/600*100%);.pr(32/600*100%);	
+		}
+		li{
+			.pl(54*@px);.fc(#000);.pr;
+			border-top:1px dotted #999;
+			&:nth-of-type(1){.border-n;}
+			b{
+				.pa;left:0px;.white;.f(10px);.fn;.w(32*@px);.h(28*@px);.border-r-a(32*@px);.mt(10px);.c;
+				.bgred;.pt(2px);.ml(3px);
+			}
+			&:nth-of-type(1), &:nth-of-type(2), &:nth-of-type(3){
+				b{
+					.w(47*@px);.h(25*@px);.pt(18*@px);.mt(5px);.ml(0px);
+					background:url("@{pic_url}/images/activity/fouryears/rank_list_icon.png") no-repeat;
+					background-size:100%;
+				}
+			}
+			span{
+				.f(26*@px);.l(70*@px);
+				.i_block;.ellipsis;
+				&:nth-of-type(1){.w(24%);}
+				&:nth-of-type(2){.w(46%);.c;}
+				&:nth-of-type(3){.w(30%);.tr;}
+			}	
+		}
+	}
+}
+.yesterday{
+	.ranking{
+		&_list{
+			background:#fbfcfd url("@{pic_url}/images/activity/fouryears/rank_wyg1.jpg") no-repeat top right;
+			background-size:144/600*100%;
+			ul{
+				.pt(20*@w);
+			}
+			li{.pl(0px);
+				b{.none;}
+				&:nth-of-type(1), &:nth-of-type(2), &:nth-of-type(3){
+					span{
+						&:nth-of-type(1){.red;}
+					}
+				}
+			}
+		}
+		&_info{
+			.mt(0px);
+		}
+	}
+}
+
+/*分享*/
+.starBox{ .star_box;  }

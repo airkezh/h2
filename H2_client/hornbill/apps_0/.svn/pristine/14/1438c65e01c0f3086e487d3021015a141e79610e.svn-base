@@ -1,0 +1,112 @@
+<%#head_simple.html%>
+<%
+var riskInfo = this.riskInfo || {};
+var query = this._Request_query;
+var actionUrl = ''
+switch (riskInfo.punish_type){
+	case 'p3':
+	case 'p4':
+	case 'p5':
+		if(this.isDoota){
+			actionUrl = '/welcome/risk_control/pic_dfz'
+		} else {
+			actionUrl = '/aj/risk_control/pic'
+		}
+		break;
+	case 'p2':
+		if(this.isDoota){
+			actionUrl = '/welcome/risk_control/sms_dfz'
+		} else {
+			actionUrl = '/aj/risk_control/sms'
+		}
+		break;
+	case 'p1':
+		break;
+	default:
+		break;
+}
+
+%>
+<section>
+	<form onsubmit="return false" id="risk_form" action="<%=actionUrl %>">
+		<%
+		var captchaType;
+		switch (riskInfo.punish_type){
+			case 'p3':
+				captchaType = 2;
+				break;
+			case 'p4':
+				captchaType = 1;
+				break;
+			case 'p5':
+				captchaType = 3;
+				break;
+		}
+		switch( riskInfo.punish_type ){
+				case 'p3':
+				case 'p4':
+				case 'p5':
+		%>
+			<h3>账号异常，请在下方输入图片中得验证码</h3>
+			<p class="pic_code_wrapper">
+				<input type="hidden" name="ruleid" value="<%==riskInfo.rule_id || query.rule_id ||'' %>">
+				<input type="text" value="" autocomplete="off" placeholder="请输入验证码" name="captcha" class="pic_captcha_input" min="1" max="10">
+				<img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="验证码" id="pic_code_img" data-ctype="<%=captchaType %>">
+				<img src="http://d02.res.meilishuo.net/pic/_o/0a/3a/bb027f7ccbf208fa0f80c3a7ff70_32_30.cf.png" class="refresh_btn">
+			</p>
+			<p><button type="submit" class="submit_btn">确定</button></p>
+		<% 
+				break;
+			case 'p2':
+		%>
+			<% if(this.userInfo.mobile){%>
+			<h3>账号异常，请获取短信验证码，并输入</h3>
+			<div class="mobile_info">
+				<span><%=this.userInfo.mobile.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2') %></span>
+				<button type="button" class="send_sms">发送短信</button>
+			</div>
+			<p>
+				<input type="text" value="" autocomplete="off" placeholder="请输入短信验证码" name="captcha" class="sms_captcha_input" min="1" max="10">
+				<input type="hidden" name="smstype" value="active_sm_captcha">
+				<input type="hidden" name="ruleid" value="<%==riskInfo.rule_id|| query.rule_id  || '' %>">
+			</p>
+			<p><button type="submit" class="submit_btn">确定</button></p>
+			<% } else { %>
+			<h3>系统检测到您的账号存在异常，请绑定手机后继续访问。</h3>
+			<p>
+				<a href="/user/bindMobile" class="go_to_bindmobile">去绑定手机</a>
+			</p>
+			<% } %>
+		<%
+				break;
+			case 'p1':
+		%>
+			<h3>系统检测到您的账号存在异常，访问失败，请稍后重试或联系客服。</h3>
+			<p>
+				<button type="button" class="back_btn">返回</button>
+			</p>
+		<% 
+				break;
+			default:
+		%>
+			<h3>服务器开小差啦～ 请稍后再试</h3>
+			<p>
+				<button type="button" class="back_btn">返回</button>
+			</p>
+		<%
+				break;
+		%>
+		<% } %>
+		
+	</form>
+</section>
+<p class="error_tip"></p>
+<% if(this.isEnter){ %>
+<script>
+	fml.vars.isEnter = true;
+</script>
+<% } %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+    fml.use('wap/page/secuity_code');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

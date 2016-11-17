@@ -1,0 +1,128 @@
+<%
+	/**
+ 	 * @fileoverview 首页－评价商品赚美美豆
+     * @requires zepto
+     * @author kehuang@meilishuo.com
+     * @date 2015-12-28
+     */
+%>
+
+<%#head.html%>
+<%
+	var curUserIsLogin = this.isLogin;
+	var curIsNormalGetData = this.isNormalGetData;
+%>
+
+<div class="main">
+	<ul class="top_nav_wrap">
+		<li class="active" data-status="">
+			<div class="text">全部</div>
+		</li>
+		<li class="" data-status="0">
+			<div class="text">去领豆</div>
+		</li>
+		<li class="" data-status="1">
+			<div class="text">已完成</div>
+		</li>
+		<li class="last" data-status="2">
+			<div class="text">已过期</div>
+		</li>
+	</ul>
+
+	<div class="evaluate_list_wrap">
+		<ul class="evaluate_list_box"></ul>
+	</div>
+
+    <div class="pullUp" status="loading"></div>
+
+	<div class="gotop_wrap">
+		<a class="gotop">
+			<img src="http://d03.res.meilishuo.net/pic/_o/d0/68/f89d059f09d440f4ee7a37669383_80_80.cg.png" alt="">
+		</a>
+	</div>
+</div>
+
+<script type="text/html" id="goods_item_tpl">
+	<?
+		var json_data = this.data,
+			task_data = json_data.data,
+			is_first_load = this.isFirstLoad,
+			task_data_arr = (task_data && task_data.item) ? task_data.item : [],
+			task_data_len = task_data_arr.length || 0,
+			task_data_desc = (task_data && task_data.empty_desc) ? task_data.empty_desc : '您尚未购买参与评价返豆的商品哦';
+
+		if (task_data_len > 0) {
+			for (var i = 0; i < task_data_len; i++) {
+				var data = task_data_arr[i],
+					goods_img = data.img || '',
+					goods_url = data.url || '',
+					goods_name = data.name || '',
+					goods_desc = data.desc || '',
+					btn_style = data.style || '',
+					task_status = data.status || 0,
+					btn_style_desc = data.style_desc || '',
+					task_status_desc = data.status_desc || '';
+
+				if (goods_img != '') {
+					var task_btn_class = '',
+						goods_img_style = 'background:url(' + goods_img + ') no-repeat;background-size:40px auto;background-position:left center;';
+
+					switch (task_status) {
+						case 0:
+							task_btn_class = 'receive_btn';
+
+							break;
+						case 1:
+							task_btn_class = 'received_btn';
+
+							break;
+						case 2:
+							task_btn_class = 'ended_btn';
+
+							break;
+						default:
+
+							break;
+					}
+	?>
+	<li>
+		<div class="task_item">
+			<div class="left_item icon_goods" style="<?= goods_img_style ?>">
+				<p class="title"><?= goods_name ?></p>
+				<p class="desc"><?= goods_desc ?></p>
+			</div>
+			<div class="right_item">
+				<div class="btn <?= task_btn_class ?>" data-href="<?= goods_url ?>"><?= btn_style_desc ?></div>
+			</div>
+		</div>
+
+		<p class="explain_text"><?= task_status_desc ?></p>
+	</li>
+	<?
+				}
+			}
+		} else {
+			if (is_first_load) {
+	?>
+	<div class="no_data_bg"></div>
+	<div class="no_data_text"><?= task_data_desc ?></div>
+	<?
+			}
+		}
+	?>
+</script>
+
+<script>
+	fml.vars.r = '<%= this.xr.r || '' %>';
+	fml.vars.isLogin = <%= curUserIsLogin %>;
+	fml.vars.isNormalGetData = <%= curIsNormalGetData %>;
+	fml.vars.is_lazyload_poster = true;
+</script>
+
+<!-- <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script> -->
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/member/task_list');
+_use:", this._JSstack, this._JSmods); %>
+
+<%#foot_simple.html%>

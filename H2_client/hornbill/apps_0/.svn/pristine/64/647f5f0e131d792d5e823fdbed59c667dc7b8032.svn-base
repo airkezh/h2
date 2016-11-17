@@ -1,0 +1,11 @@
+<%#head.html%>
+<% var item = this.rapid.data;%>
+<div class="container" style="width:<%=item.pageWidth||1200 %>px;">
+	<% item.picArr && item.picArr.forEach(function(o){ %>
+	<div style="background:url('<%=o.o_pic_url %>');width:<%=o.width %>px;height:<%=o.height %>px;"></div>
+	<% }); %>
+	<% item.hotArr && item.hotArr.forEach(function(o){ %>
+	<a class="hotarea"<%if(o.opennew){%> target="_blank"<%}%> href="<%=o.link || '###' %>" style="left:<%=o.left %>px;top:<%=o.top %>px;width:<%=o.width %>px;height:<%=o.height %>px;"></a>
+	<% }); %>
+</div>
+<%#foot.html%>

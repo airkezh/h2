@@ -1,0 +1,27 @@
+<form class="passport-form" id="mobileForm" method="post" onsubmit="return false" action="">
+	<?if(this.mobile && this.mobile !== '0'){?>
+	<div class="passport-form-list">
+		<p class="passport-form-item">
+			<span><?= this.mobile ?></span>
+			<input style="display:none;" class="passport-form-input" id="mobile" name="mobile" type="text" value="<?= this.mobile ?>"/>
+		</p>
+	</div>
+
+	<?}else{?>
+	<div class="passport-form-list">
+		<p class="passport-form-item">
+			<input class="passport-form-input" id="mobile" name="mobile" type="text" placeholder="<?= this.mobilePlaceholder ?>" maxlength="11"/>
+			<span></span>
+			<label for="mobile" class="icon-code"><?= this.mobileLabelText || ''?></label>
+		</p>
+	</div>
+	<?}?>
+
+	<div class="passport-form-message"></div>
+	<div class="sendSMSArea">
+		<div class="passport-form-submit mobileBtn">
+			<input type="submit" value="<?= this.submitBtnText || '发送验证码' ?>"/>
+		</div>
+		<div class="waitBox"><b></b>秒后可重新发送</div>
+	</div>
+</form>

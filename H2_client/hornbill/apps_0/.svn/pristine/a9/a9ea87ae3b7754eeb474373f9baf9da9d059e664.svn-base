@@ -1,0 +1,36 @@
+<%# head.html %>
+
+<% var shopInfo = this.shopInfo; %>
+<section>
+	<header style="background-image:url(<%= shopInfo.shop_focus_img %>);">
+		<div class="shop_info">
+			<span class="shop_logo"><img src="<%= shopInfo.shop_face_img %>" /></span>
+			<h3><%= shopInfo.shop_nick %></h3>
+		</div>
+	</header>
+	<nav>
+		<ul>
+			<li class="order current"><strong>默认</strong></li>
+			<li class="order"><strong>最新</strong></li>
+			<li class="order"><strong>销量</strong></li>
+			<li class="order on_price"><strong>价格<span id="price_order"></span></strong></li>
+		</ul>
+	</nav>
+	<div id="goods_wall"></div>
+	<div class="status_tips"></div>
+</section>
+<span id="gotop" style="bottom:<%if(this.os.iphone){%>60<%}else{%>20<%}%>px">
+	<img src="http://i.meilishuo.net/css/images/wap/tuan/gotop.png" />
+</span>
+
+<script>
+	<%= 'fml.vars.shopId = ' + this.shopId + ';' %>
+</script>
+
+<%# shop/poster_tpl.html %>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/shop/shop');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot_simple.html %>

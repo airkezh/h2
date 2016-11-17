@@ -1,0 +1,35 @@
+<div class="ads_banner brand_bnr showBanner hidden_f" defHeight="<%=this.height%>" maxHeight="<%=this.ad[0].ad_backupdata_height%>"
+ bigPic = "<%= this.ad[0].ad_backupdata%>" smPic="<%= this.ad[0].ad_filedata%>" style="background:url(<%= this.ad[0].ad_filedata %>) center top no-repeat;width:<%= this.width || 'auto'%>">
+	<a class="clickBanner adm_mon" style="width:auto;display:block" href="/api/adm/?spm=<%=this.ad[0].ad_clickspm%>" target="_blank" monitor="<%=this.ad[0].ad_click_monitor%>" show_mon="<%=this.ad[0].ad_view_monitor%>"></a>
+</div>
+<%
+var jsLoaded = false;
+if (!jsLoaded) {
+	jsLoaded = true;
+%>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use(['jquery'] , function(){
+		var $ = this.jquery;
+		var $obj = $('.showBanner');  
+		var defaultHeight = $obj.attr('defHeight');
+		var animateHeight = $obj.attr('maxHeight');
+		$obj.bind('mouseenter' , function(){
+			var banner = $(this);
+			var bigPic = banner.attr('bigPic');
+			banner.stop(true , true).animate({height : animateHeight} , 300)
+			.css({'background' : 'url('+bigPic+') center top no-repeat'})
+			.find('.clickBanner').height(animateHeight);
+		}); 
+		$obj.bind('mouseleave' , function(){
+			var mSelf = this;   
+			setTimeout(function(){
+				var smPic = $(mSelf).attr('smPic');
+				$(mSelf).stop(true , true).animate({'height' : defaultHeight} , 300 , function(){
+					$(mSelf).css({'background' : 'url('+smPic+') center top no-repeat'})
+						.find('.clickBanner').height(defaultHeight);
+				}); 
+			} , 300);
+		}); 
+	});
+_use:",  this._JSstack , this._JSmods); %>
+<%}%>

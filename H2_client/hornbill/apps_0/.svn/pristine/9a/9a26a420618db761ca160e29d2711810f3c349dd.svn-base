@@ -1,0 +1,51 @@
+<%# head_simple.html%>
+<%* for ipad %>
+	<%if(this.is_iPad){%>
+		<%# head_ipad.html %>
+	<% } else { %>
+<%* for ipad %>
+
+</head>
+<body>
+	<div class="header">
+		<img class="left" src="http://i.meilishuo.net/css/images/jobs/logo.png?preview=1" alt="logo of meilishuo  campus recruitment" />
+		<img class="right" src="http://i.meilishuo.net/css/images/jobs/logo1.png" alt="logo" />
+	</div>
+	<div class="content">
+		<div class="primary">
+			<div class="head_info">校招职位<span>（在线申请或公共接收简历邮箱:campus@meilishuo.com）</span></div>
+				<% var data = this.job_info.data.jobs; %>
+				<% if(data.length == 0){ %>
+					<div class="empty">还没有在招职位哦 ...</div>
+				<% } %>
+				<ul>
+					<% data.forEach(function(v){  %>
+						<li>
+							<div class="recruit_info">
+								<div><span class="job_name"><%= v.job_type %> - <%= v.name %></span>&nbsp;&nbsp;&nbsp;&nbsp;（工作地点：<%= v.work_place %>）</div>
+								<%*<p class="keywords">关键词：</p>%>
+								<div class="details"><%= v.description %></div>
+							</div>
+							<a href="<%= v.apply_url %>" target="_blank"><span class="apply_btn">立即申请</span></a>
+						</li>
+					<% }); %>											
+				</ul>
+
+			</div>
+		<div class="secondary">
+		</div>
+
+	</div>
+	<div class="footer"><span>Copyright ©2014 Meilishuo.com</span></div>
+	<div class="_2vma">
+		<img calss="mob" src="http://i.meilishuo.net/css/images/jobs/2vma_mob_logo.png" alt="logo" />
+		<img calss="weixin" src="http://i.meilishuo.net/css/images/jobs/2vma_weixin_logo.png" alt="logo" />
+	</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/campus_recruitment');
+_use:", this._JSstack , this._JSmods); %>
+
+<%# foot_simple.html %>
+<%* for ipad %>
+	<%}%>
+<%* for ipad %>

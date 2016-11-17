@@ -1,0 +1,401 @@
+<%#head.html%>
+<%
+
+function markLast(data){
+	if (data && data.length){
+		data[data.length-1].isLast = true;
+	}
+}
+
+var addTrace = this.ViewTools.addTrace;
+
+var fashion_focus = this.fashion_focus;
+var debut = this.debut;
+var fashion_new = this.fashion_new;
+var desire = this.desire;
+var beauty = this.beauty;
+var recommend_shop = this.recommend_shop;
+
+%>
+<!-- START 热词轮播  old-->
+<div class="top_wrap">
+	<div class="top_bnr">
+		<ul class="banner">
+			<% this.top_bnr && this.top_bnr.forEach(function(data,index){ 
+				data.links = addTrace(data.links , 'wlc_banner_top_' + index)		
+			%>
+			<li>
+				<a class="pic" href="<%= data.links%>" target="_blank" data-img ="<%= data.img_url%>" style="background: repeat center top;"></a>
+			</li>
+			<% }); %>
+		</ul>
+	</div>
+	<div class="top_box">
+		<div class="bnr_btn_wrap">
+			<span class="bnr_btn bnr_btn_left"></span>
+			<span class="bnr_btn bnr_btn_right"></span>
+		</div>
+		<div class="attr_box">
+			<ul class="sec_attr">
+				<% 
+				markLast(this.sec_nav);
+				this.sec_nav && this.sec_nav.map(function(data,i,k) { 
+					data.link = addTrace(data.url , 'wlc_attr_'+i)		
+				%>
+				<li class="list<%= data.isLast?' last':'' %>">
+					<div class="list_cont<%= data.isLast?' list_cont_last':'' %>">
+						<h3 class="nav_tle">
+							<a href="<%= data.link%>" target="_blank">
+								<%= data.word_name%>
+							</a>
+						</h3>
+						<p class="listP">
+							<% data.sub_words && data.sub_words.map(function(data, j){ %>
+							<a <% if(data.isred == 1){%> class="red_f"<%}%> href="<%= addTrace(data.url,'wlc_words_'+i+'_'+j)%>" target="_blank"><%= data.word_name%></a>
+							<% }); %>
+						</p>
+						<samp class="corner">&gt;</samp>
+					</div>
+					<ul class="nav_list">
+						<% 
+						data.children && data.children.map(function(data,i,k) { 
+						data.link = addTrace(data.url , 'wlc_nav_'+i)		
+						%>
+						<li>
+							<h4><a href="<%= data.link%>" target="_blank"><%= data.word_name%></a></h4>
+							<p>
+								<% data.sub_words && data.sub_words.map(function(data,j){ %>
+								<a <% if(data.isred == 1){%> class="red_f"<%}%> href="<%= addTrace(data.url,'wlc_navwords_'+i+'_'+j)%>" target="_blank"><%= data.word_name%></a>
+								<% }); %>
+							</p>
+						</li>
+						<% }); %>
+					</ul>
+				</li>
+				<% }); %>
+			</ul>
+		</div>
+		<div class="round">
+			<div class="adType">
+				<% this.top_bnr && this.top_bnr.length>1  && this.top_bnr.forEach(function(data){ %>
+				<a></a>
+				<% }); %>
+			</div>
+		</div>
+		<div class="bnr_box">
+			<ul class="pic_attr">
+				<% this.bnr_ct && this.bnr_ct.map(function(data, i){
+				data.links = addTrace(data.links , 'wlc_bnr_ct_'+i)		
+					%>
+				<li><a href="<%= data.links%>" target="_blank"><img src="<%= data.img_url%>" /></a></li>
+				<% }); %>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- END -->
+
+<!-- START NEW-->
+<div class="auto_wrap" style="margin-top:154px">
+	<!-- 今日新款发布 -->
+	<% if(debut){ %>
+	<div class="module debut">
+		<div class="tit">
+			<h2>
+				<%=debut.title%>
+				<span class="subtit"><%=debut.subtitle%></span>
+			</h2> 
+			<div class="operate">
+				<a href="<%=debut.more.url%>" target="_blank"><%=debut.more.title%></a>
+			</div>
+		</div>
+		<div class="cont">
+			<% debut.debut_banner.forEach(function(item){ %>
+				<div class="item">
+					<ul>
+						<li>
+							<a href="<%=item.url%>" target="_blank" class="first">
+								<img src="<%=item.image.pic_url%>">
+							</a>
+						</li>
+						<% item.sub_figure.forEach(function(subItem){ %>
+							<li>
+								<a href="<%=subItem.url%>" target="_blank">
+									<img src="<%=subItem.image.pic_url%>">
+								</a>
+							</li>
+						<% }); %>
+					</ul>
+				</div>
+			<% }); %>
+		</div>
+	</div>
+	<% } %>
+
+	<!-- 正在流行与潮搭 -->
+	<% if(fashion_focus){ %>
+	<% Object.keys(fashion_focus).forEach(function(key){ %>
+		<div class="module <%=key%>">
+			<div class="tit">
+				<h2>
+					<%= fashion_focus[key].title%>
+					<span class="subtit"><%= fashion_focus[key].subtitle%></span>
+				</h2>
+				<div class="operate">
+					&nbsp;
+					<% if(fashion_focus[key].more){%>
+					<a target="_blank" href="<%=fashion_focus[key].more.url%>"><%=fashion_focus[key].more.title%></a>
+					<% } %>
+				</div>
+			</div>
+			<div class="cont">
+				<% fashion_focus[key].items.forEach(function(item){ %>
+					<a target="_blank" href="<%=item.url%>">
+						<img src="<%=item.image.pic_url%>" >
+					</a>
+				<% }); %>
+			</div>
+		</div>
+	<% }); %>
+	<% } %>
+
+	<!-- old ad -->
+	<%if(this.adm65 && this.adm65.ad){%>
+		<%
+		this.adm65.admId = 'adm_top';
+		this.adm65._JSstack = this._JSstack;
+		this.adm65._JSmods = this._JSmods;
+		%>
+		<%= requireFn('commerce/adm_banner.html')(this.adm65);%>
+	<% } %>
+
+	<!-- 新品精选 -->
+	<% if(fashion_new){ %>
+	<div class="module fashion_new">
+		<div class="tit">
+			<h2>
+				<%=fashion_new.title%>
+				<span class="subtit"><%=fashion_new.subtitle%></span>
+			</h2> 
+			<div class="operate">
+				<a target="_blank" href="<%=fashion_new.more.url%>"><%=fashion_new.more.text%></a>
+			</div>
+		</div>
+		<div class="cont">
+			<% fashion_new.list.forEach(function(item){ %>
+				<div class="item">
+					<div class="pic">
+						<a target="_blank" href="<%=item.url %>"><img src="<%=item.show_pic %>"></a>
+					</div>
+					<div class="desc">
+						<div>
+							<span class="price"><%=item.ginfo.goods_price%></span>
+							<span class="like"><%=item.count_like %></span>
+						</div>
+						<div class="tit">
+							<a target="_blank" href="<%=item.url %>">
+							<%=item.ginfo.goods_title%>
+							</a>
+						</div>
+					</div>
+				</div>
+			<% }); %>
+		</div>
+	</div>
+	<% } %>
+
+	<!-- Desire 明星同款 -->
+	<% if(desire){ %>
+	<div class="module desire">
+		<div class="tit">
+			<h2>
+				<%=desire.title%>
+				<span class="subtit"><%=desire.subtitle%></span>
+			</h2> 
+			<div class="operate">
+				<a target="_blank" href="<%=desire.more.url%>"><%=desire.more.text%></a>
+			</div>
+		</div>
+		<div class="cont">
+			<% desire.tInfo.forEach(function(item){ %>
+				<div class="item">
+					<div class="pic">
+						<a target="_blank" href="<%=item.url %>"><img src="<%=item.big_img %>"></a>
+					</div>
+					<div class="desc">
+						<div>
+							<span class="price">
+								DESIRE价:
+								<i>￥<%=item.sale_price %></i>
+							</span>
+							<span class="ori-price">原款价:￥<%=item.original_price %></span>
+						</div>
+						<div class="tit">
+							<a target="_blank" href="<%=item.url %>">
+							<%=item.desire_title %>
+							</a>
+						</div>
+						<div class="subtit"><%=item.desire_desc %></div>
+					</div>
+				</div>
+			<% }); %>
+		</div>
+	</div>
+	<% } %>
+
+	<!-- 时尚美妆 -->
+	<% if(beauty){ %>
+	<div class="module beauty">
+		<div class="tit">
+			<h2>
+				<%=beauty.title%>
+				<span class="subtit"><%=beauty.subtitle%></span>
+			</h2> 
+			<div class="operate">
+				<a target="_blank" href="<%=beauty.more.url%>"><%=beauty.more.text%></a>
+			</div>
+		</div>
+		<div class="cont">
+			<% beauty.tInfo.forEach(function(item){ %>
+				<div class="item">
+					<div class="pic">
+						<a target="_blank" href="<%=item.url %>"><img src="<%=item.image %>"></a>
+					</div>
+					<div class="desc">
+						<div>
+							<span class="price">
+								<i>￥<%=item.price %></i>
+							</span>
+							<span class="ori-price">￥<%=item.orogin_price %></span>
+						</div>
+						<div class="tit">
+							<a target="_blank" href="<%=item.url %>">
+							<%=item.goods_title %>
+							</a>
+						</div>
+						<div class="subtit"><%=item.goods_desc %></div>
+						<div class="tag">
+							<% item.search_word.forEach(function(word){ %>
+								<a target="_blank" href="<%=word.words_link%>"><%=word.words%></a>
+							<% }); %>
+						</div>
+					</div>
+				</div>
+			<% }); %>
+		</div>
+	</div>
+	<% } %>
+
+	<!-- 好店推荐 -->
+	<% if(recommend_shop){ %>
+	<div class="module recommend_shop">
+		<div class="tit">
+			<h2>
+				<%=recommend_shop.title%>
+				<span class="subtit"><%=recommend_shop.subtitle%></span>
+			</h2> 
+			<div class="operate">
+				<a target="_blank" href="<%=recommend_shop.more.url%>"><%=recommend_shop.more.text%></a>
+			</div>
+		</div>
+		<div class="cont">
+			<div class="tab">
+				<% Object.keys(recommend_shop.list).forEach(function(key,index){  %>
+				<div class="<%= index == 0 ? 'active' : '' %>">
+					<%=recommend_shop.list[key].title%>
+				</div>
+				<% }); %>
+			</div>
+			<div class="tab-inner">
+				<% Object.keys(recommend_shop.list).forEach(function(key,index){ %>
+				<div class="tab-item <%= index == 0 ? 'active' : '' %>">
+					<% recommend_shop.list[key].item.forEach(function(item){ %>
+						<div class="item">
+							<img src="<%=item.bg_image%>">
+							<div class="mask">
+								<div class="bg"></div>
+								<% if(item.isFollowing){%>
+									<div class="unadd" data-shop="<%=item.shop_id%>">已关注</div>
+								<% }else {%>
+									<div class="add" data-shop="<%=item.shop_id%>">+ &nbsp;&nbsp;关注</div>
+								<% } %>
+								<div class="go"><a target="_blank" href="<%=item.shop_url%>">去逛逛</a></div>
+							</div>
+							<div class="desc">
+								<div class="tit">
+									<a target="_blank" href="<%=item.shop_url%>">
+										<%=item.shop_nick%>
+									</a>
+								</div>
+								<div class="subtit"><%=item.shop_title_desc%></div>
+								<div>
+									销量 <i><%=item.goods_sale%></i> 
+									评分 <i class="last"><%=item.point.avg_quality%></i>
+								</div>
+							</div>
+						</div>
+					<% }); %>
+				</div>
+				<% }); %>
+			</div>
+		</div>
+	</div>
+	<% } %>
+
+	<!-- 为你精选 ajax -->
+</div>
+<!-- END -->
+
+<!-- START 广告杂志  old-->
+<div class="auto_wrap">
+	<div class="module" style="margin-bottom:10px;margin-top:0;">
+		<div class="tit">
+			<h2>
+				热门杂志
+				<!-- <span class="subtit">Tide Duild Plan</span> -->
+			</h2> 
+			<div class="operate">
+				<% this.group.attr_words && this.group.attr_words.forEach(function(data , i){ %>
+				<a class="words" href="<%= addTrace(data.url,'wlc_mgz_'+i)%>" target="_blank"><%= data.name%></a>
+				<% }); %>
+				<a class="ml10_f" href="/magazine?trc=wlc_mgz_more" target="_blank">更多杂志</a>
+			</div>
+		</div>
+	</div>
+	<% 
+	markLast(this.group.group_info);
+	this.group.group_info && this.group.group_info.map(function(data,i,k) { 
+	%>
+	<div class="groupBox <%= data.isLast?'last':'' %>">
+		<div class="groupCon">
+			<div class="gc_title">
+				<h4><a href="/group/<%= addTrace(data.group_id,'wlc_mgz_info')%>" target="_blank"><%= data.name%></a></h4>
+			</div>
+			<a href="/group/<%= addTrace(data.group_id,'wlc_mgz_info_'+i)%>" target="_blank" class="imgBox">
+				<span asrc="<%= data.mixpic%>" class="maxpic" ></span>
+			</a>
+			<div class="lookBox">
+				<a class="btn" href="/group/<%= data.group_id%>" target="_blank">去看看</a>
+				<span class="tex"><%= data.num%>个分享</span>
+			</div>
+		</div>
+	</div>
+	<% }); %>
+</div>
+<div class="auto_wrap mt20_f">
+	<%if(this.adm67 && this.adm67.ad){%>
+		<%
+		this.adm67.admId = 'adm_bot';
+		this.adm67._JSstack = this._JSstack;
+		this.adm67._JSmods = this._JSmods;
+		%>
+		<%= requireFn('commerce/adm_banner.html')(this.adm67);%>
+	<%}%>
+</div>
+<!-- END -->
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/welcome2015');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot.html%>

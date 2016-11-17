@@ -1,0 +1,185 @@
+<%# head.html%>
+<%
+	var miniReplyRenderFn = requireFn('wins/reply_box.html');
+%>
+<div class="minisite_wapper" style="background:url(<%=this.mini_main.bg_url.src%>) <%=this.mini_main.bg_url.bgmethod%> fixed <%=this.mini_main.bg_url.method%> <%=this.mini_main.bg_url.top_height%>px;">
+	<div class="minisite_box">
+		<div class="minisite_left">
+			<div class="minisite_bnr">
+				<% if( !this.mini_main.banner && this.mini_main.is_admin == 1 ){ %>
+					您还没有设在你的焦点图,赶快去<a href="/mall/setMall/banner" target="_blank" class="red_f"> 设置吧</a>
+				<%}else{%>
+					<div class="boxImg" style="width:720px; height:330px;">
+						<% var mini_topbanner = this.mini_main.banner ? this.mini_main.banner.length : 0; %>
+						<ul class="_img" style="position:absolute;left:0;width:<%= (mini_topbanner+1)*720 %>px;display:inline-block;">
+							<% this.mini_main.banner && this.mini_main.banner.map(function(data){  %>
+								<li class="left_f"><a target="_blank" href="<%= data.linkurl%>"><img width="720" height="330" src="<%= data.imgurl%>"></a></li>
+							<%}); %>
+						</ul>
+					</div>
+					<div class="_num adType1 <% if(mini_topbanner == 1) { %>none_f<% } %>">
+						<% for (var i=1; i <= mini_topbanner; i++) { %>
+						<% var current = i==1 ? 'current' : ''; %>
+						<a class="<%= current %>"><span class="none_f"><%= i %></span></a>
+						<% } %>
+					</div>
+				<%}%>
+			</div>
+			<% if(this.type != 3){ %>
+				<div class="mini_mainbox">
+					<h3 class="f16_f">公告栏</h3>
+					<div class="mini_text mt14_f">
+						<%if( !this.mini_main.notice && this.mini_main.is_admin == 1 ){%>
+							您还没有设置品牌公告栏，赶快去<a class="red_f" href="/mall/setMall/notice" target="_blank">设置吧</a>
+						<% }else{ %>
+							<%=this.mini_main.notice%>
+						<% } %>
+					</div>
+					<% if(this.mini_main.active){ %>
+						<div class="mt10 dashedline"></div>
+						<% if(this.type == 1){ %>
+							<h3 class="f16_f mt10_f">她们在说</h3>
+							<div class="shesay"><%=this.mini_main.active%></div>
+							<a href="/minisite/<%=this.brand_name%>?type=2" target="_blank" class="italk">我要说>></a>
+						<% }else if(this.type == 2){ %>
+							<h3 class="f16_f mt10_f">热门话题</h3>
+							<ul class="hot_topic">
+								<% this.mini_topic && this.mini_topic.map(function(data){ %>
+									<li># <a href="/minisite/<%=this.brand_name%>?type=2&topic_id=<%=data.topic_id%>" target="_blank" style="color:#666;"><%=data.topic_title%></a><span class="red_f">（<%=data.twitter_number%>）</span></li>
+								<%});%>
+							</ul>
+						<% } %>
+					<%}%>
+				</div>
+			<% } %>
+			<% if(this.type == 2 && this.mini_main.is_admin == 1){ %>
+				<%#wins/publishor.html%>	
+			<%}%>
+			<div class="f16_f mt14_f">
+				<% if(this.mini_twitter.group_name && this.type==1){ %>
+					<a href="/minisite/<%=this.brand_name%>?type=1" class="red_f right_f">返回品牌主页>></a>
+				<% } %>
+				<a href="/minisite/<%=this.brand_name%>?type=1" class="f16_f <% if(this.type == 1){ %> red_f <%}%>">
+					<% if(this.mini_twitter.group_name){ %>
+						<%=this.mini_twitter.group_name%>
+					<% }else{ %>
+						<%=this.mini_userinfo.nickname%><span>的美丽说</span>
+					<% } %>
+				</a>
+				<div class="clear_f"></div>
+			</div>
+			<% if(this.type == 1){ %>
+				<div class="content_fluid">
+					<div class="goods_wall" style="width:708px;">
+					<%#poster.html%>
+					</div>
+					<div class="clear_f"></div>
+				</div>
+				<div class="clear_f"></div>
+				<div class="paging_panel c_f none_f">
+					<%#paging.html%>
+				</div>
+			<% }else if(this.type == 2){ %>
+				<div class="mini_mainbox mt14_f comments">
+					<% this.mini_topiclist && this.mini_topiclist.tInfo.map(function(data){	 %>
+						<%data.isAdmin = this.isAdmin; %>
+						<%data.headTag = this.headTag;%>
+						<%data.isEditor = this.is_admin.is_editor && this.mini_userinfo.user_id == data.uinfo.user_id;%>
+						<%data.isList = true;%>
+						<%=miniReplyRenderFn(data)%>
+					<% }); %>
+					<div class="paging_panel c_f none_f"></div>
+					<%#paging.html%>
+				</div>
+			<% }else if(this.type == 3){ %>
+				<%
+					var showimg = 0;
+					var magItemRenderFn = requireFn('minisite/miniMagitem.html');
+					this.mini_magazine && this.mini_magazine.map(function(data){ %>
+					<% data.brand_name = this.brand_name; %>
+					<% data.mini_main = this.mini_main; %>
+					<%= magItemRenderFn(data , showimg++ )%>
+				<% }); %>
+			<%}else if(this.type==1 && this.group_id){ %>
+				<div class="content_fluid">
+					<div class="goods_wall" style="width:720px;">
+						<%#poster.html%>
+					</div>
+					<div class="clear_f"></div>
+					<div class="paging_panel c_f none_f"></div>
+					<%#paging.html%>
+				</div>
+			<% } %>
+		</div>
+
+
+		<div class="minisite_sider">
+			<%# minisite/miniUserInfo.html%>
+			<div class="mini_sidebox">
+				<h3 class="f16_f">品牌故事</h3>
+				<% if( !this.mini_main.story && this.mini_main.is_admin == 1 ){ %>
+					您还没有设置品牌档案,赶快去<a class="red_f" href="/mall/setMall/story" target="_blank">设置吧</a>
+				<%}else{%>
+					<div class="mt14_f story"><%= this.mini_main.story%></div>
+				<%}%>
+			</div>
+			<% if(this.mini_main.mall_vedio){ %>
+				<div class="mini_sidebox">
+					<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" id="storage" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,19,0" width="200" height="200">
+						<param name="movie" value="<%=this.mini_main.mall_vedio%>" />
+						<param name="quality" value="high" />
+						<param name="wmode" value="transparent" />
+						<embed src="<%=this.mini_main.mall_vedio%>" id="cache2" quality="high" wmode="transparent" pluginspage="http://www.macromedia.com/go/getflashplayer" allowScriptAccess="always" allowFullScreen="false" type="application/x-shockwave-flash" width="200" height="200">
+						</embed>
+					</object>
+				</div>
+			<%}%>
+			<div class="mini_sidebox">
+				<a class="title_r" href="/ur/fans/<%=this.mini_userinfo.user_id%>" target="_blank"><%=this.mini_fans.num%>人</a>
+				<h3 class="f16_f">粉丝列表</h3>
+				<div class="clearfix_f">
+					<% this.mini_fans.list && this.mini_fans.list.map(function(data){ %>
+						<a href="/person/u/<%=data.user_id%>" class="fans_face" target="_blank">
+							<img src="<%=data.avatar_b%>" />
+						</a>
+					<%});%>
+				</div>
+			</div>
+			<% if(this.type != 3){ %>
+				<h3 class="f16_f mt14_f">
+					<% if( this.mini_main.is_admin == 1 ){ %>
+						我的杂志
+					<%}else if( this.mini_main.is_admin == 0 ){%>
+						她的杂志
+					<%}%>
+				</h3>
+				<%
+					var showimg = 0;
+					var magItemRenderFn = requireFn('minisite/miniMagitem.html');
+					this.mini_magazine && this.mini_magazine.map(function(data){ %>
+					<% data.brand_name = this.brand_name; %>
+					<% data.mini_main = this.mini_main; %>
+					<%= magItemRenderFn(data , showimg++ )%>
+				<% }); %>
+				<a href="/minisite/<%=this.brand_name%>?type=3" target="_blank" class="mt14_f right_f">查看更多>></a>
+			<% } %>
+		</div>
+	</div>
+</div>
+<script>
+	Meilishuo.config.brand_name = '<%=this.brand_name%>';
+	Meilishuo.config.mini_group_id = '<%=this.group_id%>';
+</script>
+<% if(this.type == 1){ %>
+	<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+		fml.use('page/minisite/minisite_haibao');
+	_use:", this._JSstack , this._JSmods ); %>
+<% }else if(this.type == 2 && this.mini_main.is_admin == 1){ %>
+	<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+		fml.use('app/publishor');
+	_use:", this._JSstack , this._JSmods ); %>
+<% } %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+    fml.use('page/minisite/minisite');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

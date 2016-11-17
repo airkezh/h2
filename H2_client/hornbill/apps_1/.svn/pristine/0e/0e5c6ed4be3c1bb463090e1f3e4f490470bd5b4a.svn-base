@@ -1,0 +1,40 @@
+<%#head.html%>
+<%
+	var page_content = this.content;
+%>
+<div class="main">
+	<div class="top">
+		<% page_content.top.length > 0 && page_content.top.map(function(data){ %>
+			<img src="<%= data.img_src %>">
+		<% }); %>
+	</div>
+	<div class="link">
+		<% if(this.headTag.indexOf('old') > -1){ %>
+			<a class="apply_coupon" href="javascript:;" dataUrl="<%= page_content.action.url %>"><img src="<%= page_content.action.img_src %>" alt=""></a>
+		<% } else if(this.reg_status.status == 2){ %>
+			<a class="j_close get_coupon" href="<%= page_content.action.url %>"><img src="<%= page_content.action.img_src %>" alt=""></a>
+		<% } else if(this.headTag == 'reg_ss') { %>
+			<a class="apply_coupon" href="javascript:;" dataUrl="<%= page_content.action.url %>"><img src="<%= page_content.action.img_src %>" alt=""></a>
+		<% } else  { %>
+			<a class="j_close" href="<%= page_content.action.url %>"><img src="<%= page_content.action.img_src %>" alt=""></a>
+		<% } %>
+	</div>
+	<div class="rule">
+		<% page_content.foot.length > 0 && page_content.foot.map(function(data){ %>
+			<img src="<%= data.img_src %>">
+		<% }); %>
+	</div>
+</div>
+<script>
+	fml.vars.headTag = '<%= this.headTag %>';
+	fml.vars.reload = '<%= this.reload %>';
+	<% if(this.reg_status){ %>
+		fml.vars.reg_status = '<%= this.reg_status.status %>';
+	<% } else { %>
+		fml.vars.reg_status = -1;
+	<% } %>
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/biz/reg_feedback');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>

@@ -1,0 +1,56 @@
+<%# demo/head.html%>
+
+<section class="page">
+	<h2>posterWallPa</h2>
+
+	<dl>
+		<dt>特点：</dt>
+		<dd></dd>
+		<dt>less：</dt>
+		<dd>
+		.posterWall{
+			.posterPa(20, 10);
+		}
+		//@参数1:外容器单边值
+		//@参数2:海报间距(中缝)
+		</dd>
+		<dt>js：</dt>
+		<dd>
+fml.use(['m/app/posterWall', 'm/app/posterPa', 'm/component/lazyLoad'] , function(){
+	var poster = this.posterPa
+		, lazyLoad = this.lazyLoad
+
+	var data = {
+		url : '/aj/getGoods/new'
+		, poster : poster
+		, lazyLoad : lazyLoad.init({xpath:'.pic_load'})
+	}
+	//data.lazyLoad 是否lazyLoad
+	this.posterWall.scroll(data);
+});
+		</dd>
+	</dl>
+
+	<div class="posterWall">
+		<div class="goods_wall">
+		</div>
+		<div class="pullUp" status="tap"></div>
+	</div>
+</section>
+
+<%# poster.html%>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use(['m/app/posterWall', 'm/app/posterPa', 'm/component/lazyLoad'] , function(){
+	var poster = this.posterPa
+		, lazyLoad = this.lazyLoad
+
+	var data = {
+		url : '/aj/getGoods/new'
+		, poster : poster
+		, lazyLoad : lazyLoad.init({xpath:'.pic_load'})
+	}
+	this.posterWall.scroll(data, true);
+});
+_use:", this._JSstack , this._JSmods ); %>
+<%# demo/foot.html%>

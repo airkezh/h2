@@ -1,0 +1,176 @@
+<%
+	/**
+ 	 * @fileoverview 美美豆权益－会员中心
+     * @requires jquery
+     * @author kehuang@meilishuo.com
+     * @date 2015-08-28
+     */
+%>
+
+<%# head.html%>
+<%
+	var curUserIsLogin = this.isLogin;
+	var curUserInfo = this.userInfo || {};
+	var curSignData = this.signData || {};
+	var curUserSignData = curSignData.data || {};
+	var curUserName = curUserInfo.nickname || '';
+	var curUserLevel = curUserSignData.level || 0;
+	var curUserBeans = curUserSignData.beans_available || 0;
+	var curUserBeansDetailData = this.beansDetailData.data || {};
+	var curUserBeansDetailArr = curUserBeansDetailData.list || [];
+%>
+
+<div class="header_bg">
+	<div class="header_top logo_wrap">
+		<%
+			var logo_href = curUserIsLogin ? '/?frm=logoa' : '/welcome';
+		%>
+		<a class="logo_new" href="<%= logo_href %>"></a>
+
+		<div class="tab_nav">
+			<ul>
+				<li><a href="/member/main/">会员首页</a></li>
+				<li><a href="/member/interests/">会员特权</a></li>
+				<li class="active"><a href="/member/beans_interests/">美美豆特权</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<div class="wrap">
+	<div class="user_info_wrap">
+		<ul class="user_info_box">
+			<li>
+				<div class="qr_code_box"></div>
+				<div class="user_info">
+					<div class="name">
+						<span class="user_name"><%= curUserName %></span>
+						<span class="user_level level_<%= curUserLevel %>"></span>
+					</div>
+					<div class="desc">扫左侧二维码领取美美豆</div>
+				</div>
+			</li>
+			<li>
+				<div class="user_beans">
+					<div>我的美美豆：<span><%= curUserBeans %></span></div>
+					<div><a href="#j_beans_detail">查看美美豆明细 ></a></div>
+				</div>
+			</li>
+			<li>
+				<div class="beans_desc">美美豆是美丽说的积分</div>
+			</li>
+			<li>
+				<div class="beans_expire">清理美美豆时间：2015年12月31日</div>
+			</li>
+		</ul>
+	</div>
+
+	<div class="member_beans_wrap">
+		<div class="beans_title">如何获得美美豆</div>
+
+		<div class="beans_desc">目前美美豆仅支持在美丽说App上签到获得，可以通过“打开美丽说App”-“滑出左侧栏”-“点击会员签到”，即可获得<br>或者扫描左上方二维码，在美丽说App上签到即可获得</div>
+
+		<div class="beans_tips">用户会员等级不同，每次签到获得的美美豆数量也不同，连续10天签到还可获得相应的美美豆奖励</div>
+
+		<ul class="beans_box beans_gain">
+			<li class="title">
+				<div>V0会员</div>
+				<div>V1会员</div>
+				<div>V2会员</div>
+				<div>V3会员</div>
+				<div>V4会员</div>
+			</li>
+			<li class="desc">
+				<div>每日领5美美豆<br>连续10天奖励22美美豆</div>
+				<div>每日领10美美豆<br>连续10天奖励22美美豆</div>
+				<div>每日领15美美豆<br>连续10天奖励66美美豆</div>
+				<div>每日领20美美豆<br>连续10天奖励66美美豆</div>
+				<div>每日领25美美豆<br>连续10天奖励66美美豆</div>
+			</li>
+		</ul>
+
+		<div class="beans_tips">更多获得美美豆的方法，在积极准备中，敬请期待</div>
+	</div>
+
+	<div class="member_beans_wrap mt70">
+		<div class="beans_title">如何使用美美豆</div>
+
+		<div class="beans_desc">会员可用美美豆参与全民大转盘抽奖、美美豆换好礼、会员兑礼券、美美豆会员特卖活动，根据活动规则，兑换相应的美美豆商品<br>不同等级的用户可参与相应的等级专区的商品，具体可参考活动规则</div>
+
+		<ul class="beans_use_box">
+			<li class="turntable"></li>
+			<li class="trade"></li>
+		</ul>
+	</div>
+
+	<div class="member_beans_wrap mt70">
+		<div class="beans_title">美美豆的有效期</div>
+
+		<div class="beans_desc">美美豆的有效期为半年到一年之间，每年6月30日和12月31日0点将清理半年前领取但未使用的美美豆，我们会以站内信、客户端消息方式通知提醒用户<br>建议您及时使用美美豆，并关注我们的客户端消息提示</div>
+	</div>
+
+	<div id="j_beans_detail" class="member_beans_wrap mt70">
+		<div class="beans_title">我的美美豆明细</div>
+
+		<ul class="beans_box beans_detail">
+			<li class="title">
+				<div>&nbsp;</div>
+				<div class="left">美美豆来源</div>
+				<div>美美豆数量</div>
+				<div>获得时间</div>
+				<div>有效期</div>
+			</li>
+			<%
+				beansDetailLen = curUserBeansDetailArr.length || 0;
+
+				for (var i = 0; i < beansDetailLen; i++) {
+					var data = curUserBeansDetailArr[i] || {},
+						secondHtml = '',
+						type = data.type || '',
+						text = data.text || '无',
+						ctime = data.ctime || '无',
+						amount = data.amount || '无',
+						order_id = data.order_id || 0,
+						expire_time = data.expire_time || {},
+						expire_start_time = expire_time.start || '无',
+						expire_end_time = expire_time.end || '无',
+						pic = data.pic || 'http://d03.res.meilishuo.net/pic/_o/e5/b6/3acf5960c0822fb6b002adaa89d1_70_70.cf.png';
+
+					if (order_id == 0) {
+						secondHtml = '<div class="left one">' + text + '</div>';
+					} else {
+						secondHtml = '<div class="two">' + text + '<br>订单号：<a href="http://order.meilishuo.com/order/detail/?order_id=' + order_id + '" target="_blank">' + order_id + '</a></div>';
+					}
+			%>
+			<li>
+				<div><p class="icon" style="background:url(<%= pic %>) no-repeat; background-size:100%;"></p></div>
+				<%= secondHtml %>
+				<div class="one"><%= amount %></div>
+				<div class="one"><%= ctime %></div>
+				<div class="one"><%= expire_start_time %>－<%= expire_end_time %></div>
+			</li>
+			<%
+                }
+			%>
+		</ul>
+
+		<div class="clear_f"></div>
+		<div class="paging_panel c_f">
+			<%#member/paging.html%>
+		</div>
+	</div>
+</div>
+
+<script>
+	fml.vars.isLogin = <%= curUserIsLogin %>;
+	fml.vars.pageNum = <%= this.groupPg.page_num || 5 %>;
+	fml.vars.totalNum = <%= this.groupPg.total_num || 0 %>;
+	fml.vars.pageSize = <%= this.groupPg.page_size || 20 %>;
+	fml.vars.currentPage = <%= this.groupPg.current_page || 0 %>;
+</script>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/member/beans_interests');
+_use:", this._JSstack, this._JSmods); %>
+
+<%# foot.html%>

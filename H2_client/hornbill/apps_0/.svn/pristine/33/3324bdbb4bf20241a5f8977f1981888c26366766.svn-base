@@ -1,0 +1,165 @@
+<%# sq/header.html%>
+<%
+	var lists = this.banner_list;
+%>
+<div class="posterWall wrap scroller">
+	<% if(this.banner.head){%>
+	<section style="-webkit-transform: translateZ(0);">
+		<%= requireFn('block/banner.html')({
+			'banner' : this.banner.head
+			,'hide_btn' : true
+			,'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+		});%>
+	</section>
+	<% }%>
+	
+	<!-- 豆腐块 -->
+	<%if(lists && this.pageName != 'cosmetic'){%>
+	<ul class="square">
+		<% lists.forEach(function(list,index){%>
+		<li class="sq-list">
+			<a href="<%= list.link%>"><img src="<%= list.imgurl%>" alt=""></a>
+		</li>
+		<%})%>
+	</ul>
+	<%}%>
+	
+	<!-- 平铺广告位 -->
+	<%if(this.ban_list){%>
+	<ul class="ban-box">
+		<% this.ban_list.forEach(function(list,index){%>
+		<li class="ban-li">
+			<a href="<%= list.url %>"><img src="<%= list.img%>" alt="">
+			  <span class="mark"><%= list.mark %></span>
+			  <span class="time"><%= list.last %></span>
+			</a>
+		</li>
+	<%})%>
+	</ul>
+	<%}%>
+
+	<!-- 分类9宫格 -->
+	<div class="class-box">
+		<a href="/sq/search?page_name=裙子" class="class-a">
+			<p class="s-title">裙子</p>
+		</a>
+		<a href="/sq/search?page_name=包包" class="class-a">
+			<p class="s-title">包包</p>
+		</a>
+		<a href="/sq/search?page_name=裤子" class="class-a">
+			<p class="s-title">裤子</p>
+		</a>
+		<a href="/sq/search?page_name=鞋子" class="class-a">
+			<p class="s-title">鞋子</p>
+		</a>
+		<a href="/sq/search?page_name=上衣" class="class-a">
+			<p class="s-title">上衣</p>
+		</a>
+		<a href="/sq/search?page_name=配饰" class="class-a">
+			<p class="s-title">配饰</p>
+		</a>
+		<a href="/sq/search?page_name=家居" class="class-a">
+			<p class="s-title">家居</p>
+		</a>
+		<a href="/sq/search?page_name=内衣" class="class-a">
+			<p class="s-title">内衣</p>
+		</a>
+		<a href="/sq/search?page_name=男装" class="class-a">
+			<p class="s-title">男装</p>
+		</a>
+	</div>
+
+	<!-- 横条广告位 -->
+	<%if(0 && this.egg_able && this.egg_able.ret == -4){%>
+	<a href="/sq/egg_act?from=eggBreak&coupon_id=<%= this.egg_able.coupon_id;%>&uid=<%= this.userInfo.user_id%>">
+		<img src="<%=this.PICTURE_URL%>/images/wap/sq/box-banner.jpg" width="100%" style="width:100%;"/>
+	</a>
+	<%}%>
+
+	<!-- 瀑布流 -->
+	<%
+		var time = new Date();
+		var month = time.getMonth() + 1
+		var date = time.getDate()
+		var hour = time.getHours()
+
+		month = month < 10 ? '0' + month : month
+		date = date < 10 ? '0' + date : date
+
+		var day = ""
+        var numOfWeek = time.getDay();
+        switch (numOfWeek) {
+            case 0:
+                day = "星期日";
+                break;
+            case 1:
+                day="星期一";
+                break;
+            case 2:
+                day = "星期二";
+                break;
+            case 3:
+                day = "星期三";
+                break;
+            case 4:
+                day = "星期四";
+                break;
+            case 5:
+                day = "星期五";
+                break;
+            case 6:
+                day = "星期六";
+                break;
+        }
+
+
+	%>
+	<div class="wall-box">
+		<div class="time-box">
+			<span class="t-hour"><%=hour %>:00更新</span>
+			<span class="t-date">
+				<p class="p-l"><%=date %>/<%=month %></p>
+				<p class="p-l"><%=day %></p>
+			</span>
+		</div>
+		<ul class="new_goods goods_wall" >
+		
+		</ul>
+
+		<div class="pullUp" status="loading"></div>
+	</div>
+	
+	
+	<!-- 底部轮播 -->
+	<% if(this.banner.bottom){%>
+	<section class="content_daily">
+		<% this.banner.bottom.map(function(data, idx){%>
+		<a href="<%==data.url%>"><img class="mb10" src="<%= data.image_url%>" /></a>
+		<% });%>
+	</section>
+	<% }%>
+</div>
+<%# sq/posterSQ.html%>
+
+<ul id="goTop">
+	<li class="none_f" id="go_top"><span class="icon-gotop"></span></li>
+</ul>
+
+
+<!-- 砸蛋 -->
+<% if(this.egg_able && this.egg_able.ret == 0){%>
+<div id="egg">
+	<img src="<%=this.PICTURE_URL%>/images/wap/sq/box-1.png" class="egg"/>
+	<img src="<%=this.PICTURE_URL%>/images/wap/sq/box-2.png" class="egg-open"/>
+</div>
+<%};%>
+
+<script>
+fml.vars.time_space = 3000;
+fml.vars.pid = '<%= this.pid %>';
+</script>
+<script src="http://pub.idqqimg.com/qqmobile/qqapi.js?_bid=152"></script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/sq/sel_jx');
+_use:", this._JSstack , this._JSmods ); %>
+<%# sq/footer.html%>

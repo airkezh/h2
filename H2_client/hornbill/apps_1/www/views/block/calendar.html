@@ -1,0 +1,42 @@
+<div class="calendarBox">
+	<div class="calendar">
+		<%
+			var date = new Date()
+				, month = date.getMonth()
+				, day = date.getDate()
+				, hours = date.getHours()
+		%>
+		<p class="month">2013<span>9月</span></p>	
+		<p class="week">
+			<span>日</span>
+			<span>一</span>
+			<span>二</span>
+			<span>三</span>
+			<span>四</span>
+			<span>五</span>
+			<span>六</span>
+		</p>
+		<%for(var i = 1;i <= 30; i++){%>
+			<% if(i%7 == 1){ %><p class="day"><%}%>
+
+			<%if(this.calendar[i]){%>
+				<%if(month == 8 && ((i == day && hours < 10) || (i == day +1 && hours >= 10))){%>
+				<span class="tomorrow"><%= i%></span>
+				<a href="javascript:;" class="calImg comming">
+					<samp></samp>
+					<img asrc="<%= this.calendar[i].img_url %>"/>
+				</a>
+				<%}else{%>
+				<span class="acted"><%= i%></span>
+				<a target="_blank" class="calImg" href="<%= this.calendar[i].img_link %>">
+					<img asrc="<%= this.calendar[i].img_url %>"/>
+				</a>
+				<%}%>
+			<%}else{%>
+				<span><%= i%></span>
+			<%}%>
+
+			<% if(i%7 == 0 || i == 30){ %></p><%}%>
+		<%}%>
+	</div>
+</div>

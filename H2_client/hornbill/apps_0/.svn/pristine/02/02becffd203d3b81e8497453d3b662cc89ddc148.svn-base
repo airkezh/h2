@@ -1,0 +1,133 @@
+<%#head.html%>
+	<%var item=this.report.info;%>
+		<section id="wrapper_main" class="wrapper">
+			<div class="reprot_detail">
+				<div class="reportH" id="reportH">
+					<div class="evaluate">使用者评分：<span>外观<b>(&nbsp;<%=item.appearance%>&nbsp;)</b></span><span>功效<b>(&nbsp;<%=item.effect%>&nbsp;)</b></span><span>推荐<b>(&nbsp;<%=item.recommend%>&nbsp;)</b></span>
+					</div>
+					<div class="reportItem">
+						<div class="slide" id="slide">
+							<div class="slide-box clearfix">
+								<%for(var i=0;i<item.trial_pics.length;i++){%>
+									<div class="smain" style="background: url(<%=item.trial_pics[i]%>);background-position: center center;background-repeat: no-repeat; background-size: cover;">
+										<img src="<%=item.trial_pics[i]%>" />
+									</div>
+									<%}%>
+							</div>
+							<div id="scur">
+								<%for(var i=0;i<item.trial_pics.length;i++){
+										if(i==0){%>
+									<i class="cur"></i>
+									<%}else{%>
+										<i></i>
+										<%}}%>
+							</div>
+						</div>
+						<div class="repContent">
+							<div class="userInfo">
+								<img src="<%=item.user.avatar_c%>" class="userImg" /><span class="userName"><%=item.user.nickname%><br></span><span class="pulishTime">发表于：<%=item.ctime%></span><span class="readNo"></span>
+							</div>
+							<h3 class="report_title"><%=item.trial_title%></h3>
+							<p class="report_con">
+								<%=item.trial_content%>
+							</p>
+							<%if(this.userInfo.user_id==item.user_id){%>
+								<a href="/m_welfare/updateReport/<%=item.id%>" id="updateRep"><img src="<%=this.PICTURE_URL%>images/m_welfare/wlf_icon_update.png" alt="修改报告" title="修改报告" />修改报告</a>
+								<%}%>
+
+						</div>
+
+						<div class="reportLike">
+							<span class="likeed" id="likeNum"><i></i><b class="like_num"><%=item.likeNum%></b>人喜欢</span>
+							<span class="commentNo" id="commentNum"><i></i><b class="totalNum"><%=this.commentList.data.totalNum%></b>条评论</span></div>
+					</div>
+
+				</div>
+				<div class="commentWrap" id="commentWrap">
+					<div style="height:130px ;">
+						<div class="subArea" id="subArea">
+							<h3 class="comentTitle">活动讨论</h3>
+							<textarea class="commentArea" id="tContent" maxlength="140"></textarea>
+							<div class="btnWrap">
+								<a href="javascript:;" class="subComment" id="subComment">发表</a>
+							</div>
+						</div>
+					</div>
+					<div class="commentCon">
+						<%if(this.commentList.data.list.length>0){%>
+							<ul class="topicList goods_wall">
+							</ul>
+							<p class="loadMore">下拉加载更多</p>
+							<%}else{%>
+								<h2 class="noReprotTIps">暂无评论</h2>
+								<%}%>
+									<div class="pullUp" status="loading"></div>
+					</div>
+
+				</div>
+			</div>
+
+			<div class="rep_btn_wrap clearfix">
+				<a class="tabStyle shareStyle" id="wlf_shareBtn" href="javascript:;">
+					<i></i>
+					<b>分享</b></a>
+				<%if(item.isLiked==0){%>
+					<a class="tabStyle unlikeStyle" id="likeBtn" href="javascript:;">
+						<i></i>
+						<b>喜欢</b>
+					</a>
+					<%}else{%>
+						<a class="tabStyle likeStyle" id="likeBtn" href="javascript:;">
+							<i></i>
+							<b>喜欢</b>
+						</a>
+						<%}%>
+							<%if(item.products_id!=0){%>
+								<a class="buyStyle" id="btnWantBuy" href="javascript:void(0)" data_id="<%=item.products_id%>" style="background: #ff6666;">想要购买</a>
+								<%}else{%>
+									<a class="buyStyle" href="javascript:void(0)" style="background: #CCCCCC;">想要购买</a>
+									<%}%>
+			</div>
+
+		</section>
+		<a class="gotop" style="bottom:<%if(this.isIphone){%>60<%}else{%>50<%}%>px">
+		<img src="<%= this.PICTURE_URL%>/images/wap/tuan/gotop.png" />
+	</a>
+		<script type="text/html" id="posterWall">
+			<?this.data.list.forEach(function(item){?>
+				<li>
+					<img src="<?=item.uinfo.avatar_c?>" alt="pic" title="pic" class="user_img" />
+					<div class="con_r">
+						<h3 class="user_info"><?=item.uinfo.nickname?> <span class="topic_date"><?=item.twitter_create_time?></span></h3>
+						<p class="user_topic">
+							<?=item.twitter_htmlcontent?>
+						</p>
+					</div>
+				</li>
+				<?});?>
+		</script>
+		<div class="dialog_box" style="display: none;">
+
+			<%if(this.share){ %>
+				<div class="share_con">
+					<div style="margin-top: 10px;margin-bottom: 10px;">
+						<%=requireFn( 'wapShare.html')({ 'share' : this.share , 'shareTitle' : '选择分享到' , '_JSstack' : this._JSstack , '_JSmods' : this._JSmods }); %>
+							<a href="javascript:;" name="topicList"></a>
+					</div>
+				</div>
+				<%}else{%>
+					<img src="<%= this.PICTURE_URL%>/images/m_welfare/wlf_wx_share.png" style="position: absolute;width: 100%;top:0;left: 0;" />
+				<%}%>
+
+		</div>
+		<script>
+			<%= this.commentList ? 'Meilishuo.config.poster0=' + JSON.stringify(this.commentList) + ';' : ''; %>
+			fml.vars.reportNum = "<%=this.commentList.data.totalNum%>";
+			fml.vars.isLogin = "<%= this.userInfo.user_id%>";
+			fml.vars.pics = "<%=this.report.info.trial_pics%>";
+			fml.vars.itemId = "<%=this.itemId%>";
+		</script>
+		<%! $_ENGINE_SELF.callFn( "useModule")( "<<<_use:
+	fml.use('wap/page/welfare_new/wlf_reportDetails');
+	_use:", this._JSstack , this._JSmods ); %>
+			<%#foot.html%>

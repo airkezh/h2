@@ -1,0 +1,101 @@
+<%# head_simple.html%>
+<%
+ var all = this.all;
+%>
+</head>
+<body>
+<%if (all.headImg) {
+	var bannerPt = all.headImgSize.height/all.headImgSize.width*100
+%>
+<div class="banner loadingImg" style="padding-top:<%=bannerPt+'%'%>">
+	<span class="bs_load_img" asrc="<%= all.headImg %>"  ></span>
+</div>
+<%}%>
+
+<%if (all.banners && all.banners.length>0) {
+	var noticePt = all.banners[0].height/all.banners[0].width*100
+%>
+<div class="notice loadingImg" style="padding-top:<%=noticePt+'%'%>">
+	<span class="bs_load_img" asrc="<%= all.banners[0].banner %>"  ></span>
+</div>
+<% } %>
+<div class="postWall">
+	<% if (all.content) {
+		var postOffset = 0;
+	 	all.content.forEach(function(c){
+	%>
+	<div class="line"></div>
+	<article class="content">
+		<h3 class="c_title"><%=c.title%></h3>
+		<p class="c_desc"><%=c.desc0%></p>
+	</article>
+	<!--海报start-->
+	<% if (all.post && c.postNum) {
+		var posts = all.post;
+		for (var i = postOffset; i < c.postNum; i++) {
+			var p = posts[i];
+			if (!p) {break;}
+			var postPt = p.height/p.width*100;
+	%>
+		<% if (p.flag == 1) {%>
+	<figure class="bigPic">
+		<a class="loadingImg" href="<%=p.link%>" style="padding-top:<%=postPt+'%'%>">
+			<span class="bs_load_img" asrc="<%= p.image%>"  ></span>
+		</a>
+
+	</figure>
+		<% } else {%>
+	<figure class="smallPic">
+		<a class="loadingImg" href="<%=p.link%>" style="padding-top:<%=postPt+'%'%>">
+			<span class="bs_load_img" asrc="<%= p.image%>"  ></span>
+		</a>
+		<figcaption>
+			<div class="proTitle"><%=p.title%></div>
+			<div class="proPrice">
+				<span class="price">￥<%=p.price%></span>
+				<%if (p.original_price) {%>
+				<del  class="orig_price">￥<%=p.original_price%></del>
+				<%}%>
+				<%if (p.discount) {%>
+				<span class="discount"><%=p.discount%>折</span>
+				<%}%>
+			</div>
+			<div class="proStatis" style="border-bottom:none;">
+				<span style="display: block;float:right"><%=p.likeNum%></span><i class="like" style="float:right"></i>
+			</div>
+		</figcaption>
+	</figure>
+		<% } %>
+	<%
+	   }
+	 }
+	%>
+	<!--海报end-->
+	<%
+			postOffset += c.postNum - 1;
+		})
+	}
+	%>
+
+
+</div>
+
+<span class="gotop" style="bottom:<%if(this.isIphone){%>60<%}else{%>20<%}%>px">
+	<img src="http://i.meilishuo.net/css/images/wap/tuan/gotop.png" />
+</span>
+
+<%= requireFn('wapShare.html')({
+'share' : this.share
+, 'shareTitle' : '选择分享到'
+, '_JSstack' : this._JSstack
+, '_JSmods' : this._JSmods
+}); %>
+
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+
+fml.use('wap/page/activity/boutique');
+
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot_simple.html%>

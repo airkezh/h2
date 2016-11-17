@@ -1,0 +1,35 @@
+<%# head.html %>
+<div class="registerSuccess">
+	<h3>邮件已发送，快去激活你的美丽说</h3>
+	<div>
+		一封确认邮件已经发送到你的邮箱<span class="regEmail red_f"><%= this.registerSuccess.email %></span></br>点击邮件里的确认链接即可登录，快去查收邮件吧！<% if(this.subtitleMsg){ %><%= this.subtitleMsg %><% } %>
+		<% if(this.registerSuccess.emailUrl){ %>
+			<a href="<%= this.registerSuccess.emailUrl %>" target="_blank">立即查看邮箱</a>
+		<% } %>
+	</div>
+	<p>还没有收到确认邮件？</p>
+	<ul>
+		<li>可以点击这里<span class="sendemail" id="sendemail">重新发送邮件</span></li>
+		<li>可以尝试到垃圾邮件里找找看</li>
+		<li>如有问题？请发邮件到<span class="red_f">kefu@meilishuo.com</span></li>
+	</ul>
+</div>
+
+<%# user/windows.html%>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use('page/register');
+_use:", this._JSstack , this._JSmods ); %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+fml.use('jquery' , function($){
+	$('#sendemail').bind('click' , function(){
+		var url = '/aj/forcemail/';	
+		var data = {};
+		var callback = function(){
+			alert('发送成功，稍后请注意查收哦！');
+		};
+		$.get(url , data , callback);
+	});
+});
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html %>

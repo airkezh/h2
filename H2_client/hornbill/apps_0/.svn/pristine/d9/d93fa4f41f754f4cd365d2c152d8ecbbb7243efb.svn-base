@@ -1,0 +1,47 @@
+<script type="text/html" id="posterWall">
+<?
+    $.each(tInfo, function(k , v) {
+        var url = '/shop/' + v.shop_id + '?frm=all_shop',
+            className = 'mod-shop';
+
+        if ( v.is_cs == 1 ) {
+            className += ' competitive-shop '
+        } else if ( v.is_star == 1 ) {
+            className += ' star-shop '
+        }
+?>
+<div class="shop-wrap">
+    <div class="<?= className ?>">
+        <i class="icon-shop"></i>
+        <a href="<?=url?>" class="shop-img-wrap" target="_blank"><img src="<?= v.img ?>" width="371" height="259">
+        </a>
+        <div class="info">
+            <ul class="wrap">
+                <li class="title-info">
+                    <a class="link" href="<?=url?>" target="_blank">去逛逛&gt;&gt;</a><i class="shop-ico"></i><a href="<?=url?>" class="title"><?= v.shop_nick ?></a><? v.horizontal_mark && $.each(v.horizontal_mark, function(_, m) {?><span class="label"><? if(~m.mark_text.indexOf('满')) { ?> 满减<? } else {?><?= m.mark_text?><?}?></span>
+                    <?
+                    });
+                    ?>
+                </li>
+                <?if(v.is_star == 1){?>
+                <li class="assess-info">
+                    <span>粉丝<i class="gray"><?= v.follower_num ?></i></span>
+                    <span>评分<i class="gray"><?= v.avg_point ?></i></span>
+                </li>
+                <?}else{?>
+                <li class="shop-intro">
+                    <p class="intro"><?= v.shop_desc ?></p>
+                </li>
+                <?}?>
+                <li class="sale-info">
+                    <? if(v.location) {?><span>地区<i class="gray"><?= v.location ?></i></span><?}?>
+                    <span>销量<i class="gray"><?=v.sales_num?></i></span>
+                    <span>商品数<i class="gray"><?= v.goods_count ?></i></span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<?});?>
+</script>
+

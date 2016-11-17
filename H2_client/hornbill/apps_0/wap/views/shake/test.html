@@ -1,0 +1,54 @@
+<%#head_simple.html%>
+<script>
+fml.vars.shake = {
+	name:"<%= this.name%>"
+	, state:"<%= this.state%>"
+}
+fml.vars.CONFIG_SHARE = <%= JSON.stringify(this.info.share) || '{}' %>;
+</script>
+</head>
+<body>
+<%
+	var images = this.images || {};
+%>
+<div class="testArea" style="background-image:url('<%= images.background %>');">
+	<div class="bannerBox"></div>
+
+	<div class="selectBox">
+		<div class="border">
+			<img src="<%= images.border %>"/>
+		</div>
+		<div class="cols">
+		<% this.info && this.info.detail && this.info.detail.map(function(col){%>
+			<div class="col">
+				<% col.map(function(v){%>
+				<div itemid="<%= v.id %>" style="background-image:url('<%= v.img_url %>');"></div>
+				<%})%>
+			</div>
+		<% }); %>
+		</div>
+	</div>
+
+
+	<div class="logo">
+		<img src="<%= images.logo %>" />
+	</div>
+</div>
+
+<div class="testLayout mask">
+	<div class="resultBtn" id="redultBtn">
+		<img src="<%= images.resultbtn %>" />
+	</div>
+	<a class="link" href="<%= this.info.link.url%>"> 
+		<img src="<%= images.link %>"/>
+	</a>
+</div>
+
+<div class="mask shareWXMask"></div>
+	
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/shake/test');
+_use:", this._JSstack , this._JSmods); %>
+
+<%#foot_simple.html%>

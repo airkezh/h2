@@ -1,0 +1,48 @@
+<script type="text/html" id="facePop" >
+<div class="face_pop">
+	<div class="corner corner_t none_f"></div>
+	<div class="corner corner_tr none_f"></div>
+	<div class="pop_con">
+		<div class="fp_con">
+			<div class="fp_info">
+				<a class="avatar64_f" href="/person/u/<?=user_id?>" target="_blank"><img src="<?= avatar_c?>" /></a>
+				<p>
+					<a class="<?if(online_status){?> online <?}else{?> notonline <?}?>" href="/person/u/<?=user_id?>" target="_blank"><?= nickname?>
+					</a>
+					<span class="identity_small_style">
+						<%# identity.html%>
+					</span>
+				</p>
+				<?if(province || city){?>
+					<p><?=province?> <?=city?></p>
+				<?}?>
+				<p class="nowrap_f"> 
+					<span><a href="/ur/fans/<?=user_id?>" target="_blank">粉丝</a><a class="red_f" href="/ur/fans/<?=user_id?>" target="_blank"><?= follower_num?></a></span>
+					<span><a href="/person/u/<?=user_id?>#personNavBar?type=book" target="_blank">分享</a><a class="red_f" href="/person/u/<?=user_id?>/all#personNavBar" target="_blank"><?= twitter_num?></a></span>
+					<a class="red_f" href="/atme/recommend/<?= user_id?>" target="_blank"><em class="lm_love">&nbsp;</em><?= heart_num?></a>
+				</p>
+			</div>
+			<div class="clear_f"></div>
+			<p class="fp_labels">标签：
+				<?if(label == ''){?><span class="gray_f">这个爱美丽真懒，什么标签都没给自己贴</span><?}?>
+					<? $.each(label , function(k , v){?>
+						<a class="labels"><?= v.label_name?></a>
+					<?});?>
+			</p>
+			<div class="isFollowedStatus">
+				<? if(followed == 0){?>
+					<p class="fp_follow"><span class="btn addFollow" fuid='<?=user_id?>' followed="<?= followed?>">+ 加关注</span></p>
+				<?}else if(followed == 1){?>
+					<p class="fp_follow"><span class="removeFollow followed" fuid='<?=user_id?>'>已关注</span></p>
+				<?}else if(followed == 2){?>
+					<p class="fp_follow"><span class="followed removeFollow" fuid='<?= user_id?>' followed="<?= followed?>">互相关注</span></p>
+				<?}?>
+			</div>	
+		</div>
+	</div>
+	<div class="corner corner_b none_f"></div>
+	<div class="corner corner_br none_f"></div>
+</div>
+</script>
+
+

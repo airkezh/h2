@@ -1,0 +1,49 @@
+<%# head.html%>
+<div class="order_area">
+<div class="route">
+	<div class="route_bread">
+		<a href="<%=this.DOMAIN.www%>/">美丽说</a>
+		<samp>&gt;</samp>
+		<a href="<%= this.DOMAIN.order%>/order/list/">我的美丽说订单</a>
+		<samp>&gt;</samp>
+		<span class="red_f">物流详情</span>
+	</div>
+</div>
+<div class="order_goods order_express">
+	<ul>
+		<li>
+			<p>
+				<span>订单号：<%= this.express.order_id %></span>
+				<span>下单时间：<%= this.express.ctime %></span>
+				<span>商家：<%= this.express.seller_nickname %></span>
+			</p>
+		</li>
+		<li>
+			<p>物流信息：</p>
+			<div class="express_info">
+				<p>
+					<span>物流公司：<%= this.express.express_company %></span>
+					<span class="ml35">物流单号：<%= this.express.express_id %></span>
+				</p>
+				<% if(this.express.express && this.express.express.length){%>
+				<p class="l">物流状态：</p>
+				<ul>
+					<% this.express.express.forEach(function(e,i){ %>
+					<li <%= i===this.express.express.length-1 ? 'class="current"' : '' %>><%== e %></li>
+					<% }); %>
+				</ul>
+				<%}%>
+			</div>
+		</li>
+		<li>
+			<%if(this.express.buyer_address){%>
+			<p>收货人：<%== this.express.buyer_address.address %>，<%== this.express.buyer_address.postcode %>，<%== this.express.buyer_address.nickname %>，<%== this.express.buyer_address.phone %></p>
+			<%}%>
+			<%if(this.express.seller_address){%>
+			<p>发货人：<%== this.express.seller_address.refund_addr%>，<%== this.express.seller_address.partner_zipcode%>，<%== this.express.seller_address.partner_name%>，<%== this.express.seller_address.partner_tel%></p>
+			<%}%>
+		</li>
+	</ul>
+</div>
+</div>
+<%# foot.html%>

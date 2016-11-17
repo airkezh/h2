@@ -1,0 +1,65 @@
+/*common*/
+var $=require('wap/zepto');
+var tracking = require('wap/app/tracking');
+
+var QRCode = require('component/qrcode');
+var timer;
+$(".start").on("click",function(){
+	$(".step1").hide();
+	$(".step2").show();
+	init();
+	timer = setInterval(search,4000);
+	//埋点
+	tracking.cr('bilayer_game',{action:'click',page:'home_page',area:'home_page_start'});
+
+});
+function init(){
+	var code = $('#qrcode_c'),
+		screenWidth = $(window).width();
+		qrcodeWidth = code.width(),
+		code.height(qrcodeWidth);
+		code.html('');
+		useCode();
+};
+function useCode(){
+	var code = $('#qrcode_c');
+	var thisURL = 'http://mlxq.fedevot.meilishuo.com/activity/twoScreen/guest/?gid='+fml.vars.gid ;
+	if(code){
+		var qrcode = new QRCode(qrcode_c, {  
+	        width : qrcodeWidth,  
+	        height : qrcodeWidth  
+	    }); 
+			qrcode.makeCode(thisURL); 
+			
+	}
+};
+//轮询二维码
+function search(){
+	$.ajax({
+		type:"get",
+		url:"/aj/twoScreen/player",
+		data : {
+			gid : fml.vars.gid
+		},
+		dataType:'json',
+		success : function(res){
+			if( res.data.flag == 1){
+				alert('sao guo1');
+				window.location.href = '/activity/twoScreen/guest/?gid='+fml.vars.gid ;
+				clearInterval(timer);
+			}
+			if( res.data.flag == 0){
+				alert('weisao')
+			}	
+		},
+		error : function(){					
+		}
+
+	});
+};
+
+
+
+
+
+

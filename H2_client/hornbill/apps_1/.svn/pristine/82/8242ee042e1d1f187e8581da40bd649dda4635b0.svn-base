@@ -1,0 +1,34 @@
+<script type="text/html" id="posterWall">
+<?
+var scale = <% if (this.os.iphone) {%>30 <%} else {%>20 *  fml.vars.poster.scale<%}%>;
+$.each(this.tInfo , function(k , v){ 
+	v.pic_height = 270;
+	var pic_height = v.pic_height * fml.vars.poster.scale;
+	var len = fml.vars.poster.totalColNum * 2;
+?>
+	<div class="productBox" style="width:<?= fml.vars.poster.colWidth?>px;" poster_height="<?= pic_height + scale?>">
+			<a class="link_box" href="<?= v.client_url?>">
+				<figure>
+					<img src="<?= v.image?>" alt="" />
+				</figure>
+				<figcaption>
+					<div class="proTitle"><?= v.buyer_desc?></div>
+					<div class="proPrice">
+						<span class="price"><i>￥</i><?= v.price?></span>
+						<?if(!v.is_end){?><del class="orig_price">￥<?= v.original_price?></del><?}?>
+					</div>
+					<div class="proStatis">
+						<span class="likes_status">
+							<i class="like">&nbsp;</i><?= v.count_like?>
+						</span>
+						<span class="num">
+							<?= v.sell_num?>人已购买
+						</span>
+					</div>
+				</figcaption>
+			</a>
+		</div>
+	<?});?>
+</script>
+
+

@@ -1,0 +1,62 @@
+<%#head.html%>
+<%
+	var pageData = this.pageData;
+%>
+<div class="top">
+	<% pageData.head.forEach(function(data){ %>
+		<img src="<%= data.img_src %>" />
+	<% }); %>
+</div>
+
+<%
+	var now = parseInt(Date.parse(new Date())/1000);
+	pageData.countTime = pageData.countTime || 340;
+%>
+<div class="countTime" style="padding-top: <%= (pageData.countTime-50)/640*100 %>%;">
+	<p><%= this.countdown_text %></p>
+	<% if(this.status != 'end'){ %>
+		<dl class="timeStamp" end-date="<%= this.countdown_time %>" now="<%= now %>">
+			<dd><span id="day0">-</span></dd>
+			<dd><span id="day1">-</span></dd>
+			<dt>天</dt>
+			<dd><span id="hour0">-</span></dd>
+			<dd><span id="hour1">-</span></dd>
+			<dt class="bigmao">时</dt>
+			<dd><span id="minute0">-</span></dd>
+			<dd><span id="minute1">-</span></dd>
+			<dt class="bigmao">分</dt>
+			<dd><span id="seconds0">-</span></dd>
+			<dd><span id="seconds1">-</span></dd>
+			<dt class="bigmao">秒</dt>
+		</dl>
+	<% } %>
+</div>
+
+<%# activity/March_sale/March_apparel_coupon_1.html %>
+
+<div class="bottom">
+	<%
+		pageData.bottom_links.forEach(function(data){
+			data.pb = data.pb || 20;
+	%>
+		<a href="<%= data.link %>" style="padding-bottom: <%= data.pb/640*100 %>%;"><img src="<%= data.img_src %>" alt=""></a>
+	<% }); %>
+</div>
+
+<% if(this.share){ %>
+	<%= requireFn('wapShare.html')({
+		'share' : this.share 
+		, 'shareTitle' : '选择分享到'
+		, '_JSstack' : this._JSstack
+		, '_JSmods' : this._JSmods
+	}); %>
+<%}%>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/app/countdown2' , function(){
+			this();  
+		});
+_use:", this._JSstack , this._JSmods); %>
+	</div>
+
+<%#foot_simple.html%>

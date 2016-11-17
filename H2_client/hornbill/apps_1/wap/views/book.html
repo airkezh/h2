@@ -1,0 +1,52 @@
+<%#head_frame.html%>
+<%
+var getLink = _extFn.getLink;
+var query = this._Request_query;
+%>
+<%= requireFn('slider.html')({
+	'os' : this.os
+	, 'footBanner' : true
+	,'_JSstack' : this._JSstack ,'_JSmods' :  this._JSmods
+	, 'bookid' : this.bookid
+	, 'title' : this.currentWord 
+	, 'showDaoLiu' : this.showDaoLiu
+	, 'showZhiDing' : this.showZhiDing
+	, 'leadApp' : this.leadApp
+	, 'appUrl' : this.appUrl
+	, 'frm' : this.frm
+});%>
+<%#head_guang.html%>
+	</div>
+
+</header>
+
+<section id="wrapper_main" class="wrapper normal" status="normal">
+	<div class="scroller">
+		<span class="colFlag"></span>
+		<div class="goods_wall">
+		</div>
+	</div>
+</section>
+
+<%#posterBook.html%>
+<% if (this.bdZhiShu && this.bdZhiShu.res) {%>
+<iframe style="display:none;" src="http://www.baidu.com/s?wd=%E7%BE%8E%E4%B8%BD%E8%AF%B4&rsv_bp=0&ch=&tn=baidu&bar=&rsv_spt=3&ie=utf-8&rsv_sug3=6&rsv_sug4=58&rsv_sug1=6&rsv_sug2=0&inputT=9"></iframe>
+<% }%>
+<script>
+fml.vars.frm = '<%= this.frm %>';
+fml.vars.poster = {
+	'ptype' : '<%= this.ptype%>'
+	, 'pid' : '<%= this.pid%>'
+};
+<%= this.poster0? 'Meilishuo.config.poster0 = '+JSON.stringify(this.poster0)+';':'' ;%>
+</script>
+
+<% $_ENGINE_SELF.callFn("useModule")("fml.use('wap/page/poster0');", this._JSstack , this._JSmodsFast ); %>
+<%if(0){%>
+<input type="search" value="<%= this.poster0.wordname%>">
+<%}%>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/book');
+	fml.use('wap/page/global');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_frame.html%>

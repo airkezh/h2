@@ -1,0 +1,69 @@
+<%# sq/header.html %>
+
+<%
+	var tabData = ['店铺','商品','推荐'];
+%>
+
+<ul class="tab">
+	<% tabData.forEach(function (item){ %>
+	<li class="js-tab-item"><span><%= item %></span></li>
+	<% }); %>
+</ul>
+<div class="js-content content">
+	<div class="shop-list"></div>
+	<div class="goods-wrapper">
+		<div id="js-goods-shelf"></div>
+		<div class="js-pull-up pull-up" data-status="loading"></div>
+	</div>
+	<div class="groom-list"></div>
+</div>
+
+<script type="text/html" id="js-shop-tpl">
+	<?
+		var data = this.v;
+		var DR = data.d_r;
+
+		var shopUrl = '/sq/shop/?shop_id=' + data.shop_id
+	?>
+
+	<section class="shop-list-item">
+		<h1>
+			<?= data.shop_nick ?>
+			<a href="<?= shopUrl ?>"><span class="shop-logo" style="background-image: url(<?= data.shop_face_img ?>);"></span></a>
+			<? if(data.isfollow == '0'){ ?><span data-id="<?= data.shop_id ?>" class="shop-follow-btn shop-follow-no" data-action="shopFollow"></span><? } ?>
+		</h1>
+		<a href="<?= shopUrl ?>">
+			<p class="shop-desc">
+				<span><?= data.alert_new_date ?></span>
+				<span>新品上架</span>
+				<i><? if(data.alert_new > 0){ ?><?= data.alert_new ?>&nbsp;款新品<? } ?></i>
+			</p>
+		</a>
+		<ul class="js-sliders sliders" data-action="loadImage">
+			<? data.shop_goods && data.shop_goods.forEach(function (g){ ?>
+			<li class="sliders-section">
+				<figure class="sliders-section-g" style="background-color:#fff;">
+					<a class="g-entrance" href="/sq/detail/?twitter_id=<?= g.twitter_id ?>&d_r=<?= DR ?>" asrc="<?= g.goods_img ?>"></a>
+					<figcaption>
+						<? if(g.goods_price){ ?><p class="sliders-section-g-price">¥ <?= g.goods_price ?></p><? } ?>
+					</figcaption>
+				</figure>
+			</li>
+			<? }); ?>
+		</ul>
+	</section>
+</script>
+
+<%# sq/goods_tpl.html %>
+<%# sq/sliders.html %>
+<%# sq/default.html %>
+
+<%! 
+	$_ENGINE_SELF.callFn("useModule")(
+		"<<<_use:fml.use('wap/page/sq/collect');_use:", 
+		this._JSstack, 
+		this._JSmods 
+	); 
+%>
+
+<%# sq/footer.html %>

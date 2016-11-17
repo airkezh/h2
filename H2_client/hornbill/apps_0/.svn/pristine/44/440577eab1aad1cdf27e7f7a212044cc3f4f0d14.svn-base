@@ -1,0 +1,27 @@
+/*common*/
+require('wap/zepto')
+
+var $f  = $('#js-search-form')
+var $cc = $('#js-search-cancel')
+var $ct = $('#js-search-cart')
+var $i  = $f.find('input')
+
+$f.on('submit', function (e){
+	e.preventDefault()
+
+	var v = $.trim( $i.val() )
+
+	if(v){
+		location.href = '/sq/search/?key=' + encodeURIComponent(v)
+	}else{
+		$i.val('')
+	}
+})
+
+$i.on('focus', function (){
+	$ct.hide()
+	$cc.show()
+}).on('blur', function (){
+	$ct.show()
+	$cc.hide()
+})

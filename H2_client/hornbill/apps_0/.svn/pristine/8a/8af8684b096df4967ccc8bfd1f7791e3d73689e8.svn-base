@@ -1,0 +1,50 @@
+<?if(this.item ){?>
+	<? for(var s in this.item){
+		var item = this.item;
+	?>
+		<div class="period">
+			<div class="line-bg"></div>
+			<h6><?= s ?>点场</h6>
+		</div>
+		<?if(item[s] && item[s].length){
+			var items = item[s];
+		?>
+		<ul class="forshow-box">
+			<?for( var i = 0 ; i < items.length; i++){
+				var data = items[i];
+				var _url = "javascript:void(0);",
+				  	detail_url = fml.vars.joinurl('twitter_single', {'twitter_info' : {'twitter_id' : data.twitter_id , 'is_doota' : 1}}, fml.vars._os, fml.vars._r, '/share/item/'+data.twitter_id);
+				if(fml.vars.isexit(fml.vars.tids,data.twitter_id)){
+				   var btn_content="<i class='clock'></i>已提醒",
+				   	 btn_class="reminded_btn";
+				}else{
+				   if(fml.vars.timeunix<=600){
+				   	var btn_content="<i class='clock'></i>即将开抢",
+				          btn_class="reminded_btn";
+				   }else{
+				      var btn_content="<i class='clock'></i>提醒我",
+				      	 btn_class="remind_btn";
+				   }
+				}
+			?>
+			<li class="goodinfo good_box" twid="<?=data.twitter_id?>" shopid="<?=data.shop_id?>" stime="<?=data.start_time?>">
+				<figure>
+					<a href=""><img src="<?= data.goods_image ?>"></a>
+				</figure>
+				<figcaption>
+					<div class="foretit"><a href=""><?= data.goods_name ?></a></div>	
+					<div class="foreprice">
+						<span class="now_price">￥<?= data.off_price ?></span>
+						<del class="old_price">￥<?= data.origin_price ?></del>
+						<span class="discout">3.3折</span>
+					</div>	
+					<!-- <div class="btn-box statusinfo">
+						<span class="status-btn <?= btn_class ?>"><?= btn_content?></span>
+					</div> -->	
+				</figcaption>
+			</li>
+			<?}?>
+		</ul>
+		<?}?>
+	<?}?>
+<?}?>

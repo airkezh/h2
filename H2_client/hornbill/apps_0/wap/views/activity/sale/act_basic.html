@@ -1,0 +1,82 @@
+<%#head.html%>
+<div class="scroller">
+<% if(this.download == 1){ %>
+<a href="/goto/download/"><img src="<%= this.PICTURE_URL%>images/wap/activity/summer_match/down.jpg" /></a>
+<%}%>
+<% if(this.top_banner && this.top_banner.ac_banner){ %>
+<div class="top_img"><img src="<%=this.top_banner.ac_banner%>" /></div>
+<%}
+var query = this._Request_query
+function reLink(str){
+	var buy_link = str
+	if(this.phoneType == 'ipad'){
+		buy_link = 'meilishuohd' + buy_link 
+	}else{
+		buy_link = 'meilishuo'+ buy_link 
+	}
+	if (query.frmOpen)
+		buy_link = '/goto/open/?url='+ encodeURIComponent(buy_link)
+		if(this.download == 1) 
+			buy_link = '/goto/download/'
+			return buy_link
+}
+if(this.top_banner.banner_words_black && this.top_banner.banner_words_red){
+%>
+<p class="banner_words">
+<% if(this.top_banner.banner_words_red){ %>
+<span class="red_word"><%=this.top_banner.banner_words_red%></span>
+<%}%>
+<span><%=this.top_banner.banner_words_black%></span>
+</p>
+<%}%>
+<% var end = this.top_banner.time , now = parseInt(Date.parse(new Date())/1000); %>
+<% if( end && end > now + 3) { %>
+<div class="countTime">
+<span class="line left_f"></span>
+<%= requireFn("/activity/sale/countTmp.html")({
+	'end_date':end,
+	'now':now,
+	'timeStyle' : 'time',
+	'timewords' : this.top_banner.word,
+	'_JSstack':this._JSstack,
+	'_JSmods':this._JSmods
+});%>
+<span class="line right_f"></span>
+</div>
+<%}%>
+<%= requireFn(this.actTpl)({
+	'PICTURE_URL':this.PICTURE_URL,
+	'summer_goods':this.summer_goods,
+	'phoneType':this.phoneType,	
+	'ac_id':this.ac_id,
+	'download':this.download,
+	'access_token':this.access_token,
+	'reLink': reLink,	
+	'_JSstack':this._JSstack,
+	'_JSmods':this._JSmods
+}); %>
+<% this.act_ads && this.act_ads.map(function(data){  %>
+<div class="single_goods3">
+<% if(data.ad_link){ %>
+<a href="<%=data.ad_link%>"><img class="radiusTop" alt="<%=data.ad_words%>" src="<%=data.ad_banner%>" /></a>
+<%}else{%>
+<img class="radiusTop" alt="<%=data.ad_words%>" src="<%=data.ad_banner%>" />
+<%}%>
+</div>
+<% }); %>
+</div>
+<div id=sharePnl style="display:none;">
+<% if(this.share){ %>
+<%= requireFn('wapShare.html')({
+	'share' : this.share 
+	, 'shareTitle' : '选择分享到：'
+	, '_JSstack' : this._JSstack
+	, '_JSmods' : this._JSmods
+}); %>
+<%}%>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+     fml.use('wap/app/hackWeixin');
+_use:", this._JSstack , this._JSmods ); %>
+<%#foot_simple.html%>
+

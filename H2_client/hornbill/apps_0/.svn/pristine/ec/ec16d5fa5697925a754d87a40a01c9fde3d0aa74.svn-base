@@ -1,0 +1,116 @@
+@import "wx-rem.less";
+
+@bgc: #f8f8f8;
+
+
+body{  .bgc(@bgc); .fc(#353535); .f(.12rem); }
+h2{.i_block; .f(.26rem);}
+i{ font-style: normal;}
+.red{ .fc(#fe7e9d); }
+.ohide{ .hidden;}
+.tc{.c;}
+
+.wrap{
+	.bgwhite; .pt(.1rem);
+}
+
+/* 一级分类 */
+.fir-class{
+	.mb(.2rem); .pt(.12rem); .bgwhite; .clearfix; .w(100%); z-index: 100; top: 0; left: 0;
+	
+	.item{
+		.left; .f(.22rem); .ml(.34rem); min-width: .54rem; .h(.54rem); background-repeat: no-repeat; background-position: center; background-size: contain;  .c; .l(.54rem); .mb(.05rem);
+		a{ display: inherit; .fc(#333);}
+	}
+	.active{ 
+		a{.fc(#fff); .border-r(50%); .c;} 
+		.small{ .f(.16rem);}
+	}
+
+	
+}
+
+/* 热门分类 */
+.hot{
+	.pl(.1rem); .clearfix; .f(.14rem); .mb(.2rem);
+	.a-item{ .pr; .left; .bgwhite; background-size: auto 1.1rem; background-repeat: no-repeat; background-position: center .21rem;
+		.mr(.02rem); .c;  .mt(0); .mb(0.02rem); .w(1.55rem); .h(1.9rem);  
+		.name{ .pr; .i_block; .h(.3rem); .l(.3rem); .hidden; top: 1.4rem; .f(.22rem); .w(100%); .box_sizing; .pl(.04rem); .pr(.04rem); .fc(#333); }
+	}
+}
+
+
+
+nav.nav-c{
+    .nav-c-new();
+}
+
+.mdl-search();
+.search{.mb(.2rem);}
+
+.goTop();
+.go-top-rem();
+
+/* 瀑布流样式 */
+.goods-wall-rem();
+
+/* 二级分类tab样式 */
+.goods_sort_by {
+	.flexbox; .mt(.2rem);
+	.mb(.26rem);
+	.f(.32rem);
+	li {
+		.flex(1);.l(.35rem);.c;
+		.s-txt{.i_block; .h(100%); .pl(.04rem); .pr(.04rem); }
+		&:nth-of-type(2){
+			.border-ld9;.border-rd9;
+			// border-right: 1px solid red;
+		}
+		// a{.block;}
+	}
+	.active{ 
+		span{.red; }
+	}
+	li[data-type=price-l],li[data-type=price],li[data-type=price-h]{
+		.icon{
+			.pr;
+			.ml(1px);
+			.c;
+			&::before,
+			&::after {
+				content: '';
+				.pa; top: 0; left: 0;
+				.i_block;
+				.w(.13rem);
+				.h(.13rem);
+			}
+			&::before {
+				border-top: 1px solid @gray;
+				border-left: 1px solid @gray;
+				-webkit-transform: translateY(.04rem) rotateZ(45deg) scale(.7,.7);
+				transform: translateY(.05rem) rotateZ(45deg) scale(.7,.7);
+			}
+			&::after {
+				border-right: 1px solid @gray;
+				border-bottom: 1px solid @gray;
+				-webkit-transform: translateY(.15rem) rotateZ(45deg) scale(.7,.7);
+				transform: translateY(.15rem) rotateZ(45deg) scale(.7,.7);
+			}
+		
+		}
+	}
+	
+	
+	li[data-type=price-l] {
+		.icon::before {
+			border-top: 1px solid @red;
+			border-left: 1px solid @red;
+		}
+	}
+	li[data-type=price-h] {
+		.icon::after {
+			border-right: 1px solid @red;
+			border-bottom: 1px solid @red;
+		}
+	}
+}

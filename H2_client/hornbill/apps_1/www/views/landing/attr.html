@@ -1,0 +1,65 @@
+<%# head.html%>
+<%
+var query = this._Request_query;
+var getLink = _extFn.getLink;
+%>
+<div class="spinner topSpinner"></div>
+<div class="content_fluid v_hidden">
+	<div class="cata_title">
+		<h2><%= this.attr_title_keywords.word_name%></h2>
+		<span class="right_f">
+			<a class="<%if(query.section=='hot' || !query.section){%>btn<%}%>" href="<%=getLink({'section' : 'hot' , 'page' : '0' , 'price' : 'all'} , query)%>">最热</a>
+			<a class="<%if(query.section=='new'){%>btn<%}%>" href="<%=getLink({'section' : 'new' , 'page' : '0' , 'price' : 'all'} , query)%>">最新</a>
+		</span>
+		<span class="sortattr">
+			<a class="<%if(!query.filterword){%>btn<%}%>" href="<%=getLink({'section' : 'hot' , 'page' : '0' , 'price' : 'all' , 'filterword' : null} , query)%>">全部<%= this.attr_title_keywords.word_name%></a>
+			<% this.attr_style && this.attr_style.map(function(data){%>
+		<a class="<%if(query.filterword == data.word_name){%>btn<%}%>" href="<%if(data.isBrand){%>/guang/brand/<%= data.word_name%><%}else{%>/guang/attr/<%=getLink({'section' : 'hot' , 'page' : '0' , 'price' : 'all' , 'filterword' : data.word_name} , query)%><%};%>" target="_self"><%= data.word_name%></a>
+			<%});%>
+		</span>
+		<span>价格:</span>
+		<span class="show_price">
+			<%if(query.price && query.price != 'all' && query.price != '501~10000'){%>
+				<%== query.price %>
+			<%}else if(query.price == '501~10000'){%>
+				500元以上
+			<%}else{%>
+				全部
+			<%}%>
+			<small style="font-size: 8px;"> ▼</small>
+		</span>
+	</div>
+	<div class="clear_f"></div>
+	<div class="goods_wall">
+		<div class="corner_notic">
+			<%# block/goods_sidebar.html%>
+		</div>
+	</div>
+	<div class="spinner botSpinner none_f"></div>
+	<div class="clear_f"></div>
+	<div class="paging_panel c_f none_f">
+	<%# paging.html%>
+	</div>
+	<div class="ads_banner ads_bottom none_f"></div>
+</div>
+<%# block/attr_word.html%>
+<%# landing/poster.html%>
+<script type="text/html" id="poster_price">
+<ul class="poster_price add_menu_leo hw76">
+	<li><a href="<%=getLink({'price' : 'all'} , query)%>">全部</a></li>
+	<li><a href="<%=getLink({'price' : '0~50'} , query)%>">0~50</a></li>
+	<li><a href="<%=getLink({'price' : '51~100'} , query)%>">51~100</a></li>
+	<li><a href="<%=getLink({'price' : '101~200'} , query)%>">101~200</a></li>
+	<li><a href="<%=getLink({'price' : '201~500'} , query)%>">201~500</a></li>
+	<li><a href="<%=getLink({'price' : '501~10000'} , query)%>">500以上</a></li>
+</ul>
+</script>
+<script>
+	fml.vars.word_id = <%= this.attr_title_keywords.word_id%> 
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/landing');
+	fml.use('page/poster');
+_use:", this._JSstack , this._JSmods); %>
+<%# foot.html%>
+

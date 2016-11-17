@@ -1,0 +1,84 @@
+<%#head.html%>
+<div class="t_main">
+	<div class="mp_top">
+		<div class="clock"><%=this.banner.text%><span class="time" time="<%= new Date(this.banner.date).getTime()/1000 - new Date().getTime() / 1000%>">-天-时-分-秒</span></div>
+	</div>
+	<div id="coupon" class="mp_time"></div>
+	<div class="t_center">
+		<div class="mp_usebtn"><a href="/biz/huodong/meili99sed/?banner_id=bdd6515074970005e2b034c52ec288fa&view=1" target="_blank">使用攻略</a></div>
+		<%# biz/huodong/520coupon.html %>
+		<div id="sub_store" class="mp_special" style="background:url(<%=this.banner.substore_img%>) top center no-repeat">
+			<a href="/tuan/?hdtrc=tuan1015_m520mid" target="_blank">团购专场</a>
+			<a href="/biz/sale/beautySale/?top_id=1021&sidebar_id=1031&beauty_id=779_781_783_785&mz_id=1097&hdtrc=mz1097_m520mid" target="_blank">美妆专场</a>
+			<a href="/biz/huodong/youdian/" target="_blank">名店专场</a>
+		</div>
+	</div>
+	<div class="mp_firlook" style="background:url(<%=this.banner.banner%>) top center no-repeat"></div>
+	<div class="links">
+		<div class="content">
+			<% this.list && this.list.length && this.list.map(function(data,i){%><a <%if(i===0){ %>class="first"<%}%> href="#anchor<%=i%>"></a><% });%>
+		</div>
+	</div>
+	<div class="list">
+	<% this.list && this.list.length && this.list.map(function(data,i){%>
+		<div id="anchor<%=i%>" style="height:40px"></div>
+		<div class="title" style="background:url(<%=data.title_bg%>)">
+			<a href="<%=data.link%>" target="_blank"></a>
+		</div>
+		<div class="s_list">
+		<% data.list && data.list.length && data.list.map(function(d){%>
+			<div class="unit">
+				<div>
+					<a href="<%=d.link%>" target="_blank">
+						<img src="<%=d.img%>" width="216px" height="320px"/>
+					</a>
+				</div>
+				<div class="s_title"><div><span><%=d.title%></span></div></div>
+				<p>
+					<span class="c">
+						<span>精选</span>
+						<span class="red_f"><%=d.amount%></span>
+						<span>款</span>
+					</span>
+					<span class="_l">
+						<span>全场</span>
+						<span class="red_f"><%=d.discount%></span>
+						<span>折起</span>
+					</span>
+				</p>
+				<div class="link"><a href="<%= d.link %>" target="_blank"></a></div>
+				<div class="cover"><a href="<%= d.link%>" target="_blank"></a></div>
+			</div>
+		<%}); %>
+		</div>
+	<%}); %>
+	</div>
+	<div class="rignav">
+		<div class="space"></div>
+		<div class="btn_box">
+			<a href="#coupon" class="btn_b">抢券专区</a>
+			<a target="_blank" href="/tuan/?hdtrc=tuan1015_m520right" class="btn_b">团购专区</a>
+			<a target="_blank" href="/biz/sale/beautySale/?top_id=1021&sidebar_id=1031&beauty_id=779_781_783_785&mz_id=1097&hdtrc=mz1097_m520right" class="btn_b">美妆专场</a>
+			<a target="_blank" href="/biz/huodong/youdian/" class="btn_b">名店专场</a>
+			<a href="#anchor0" class="btn_b mb">服饰专场</a>
+			<% this.list && this.list.length && this.list.map(function(data,i){%>
+			<%
+				var klass="btn_s";
+				if(i==6) klass = "btn_b mt";
+			%>
+			<a href="#anchor<%=i%>" class="<%=klass%>"><%=data.name%></a>
+			<%});%>
+			<a target="_blank" href="/biz/huodong/meili99sed/?banner_id=bdd6515074970005e2b034c52ec288fa&view=1" class="btn_b">现金卷使用规则</a>
+			<a href="#" class="btn_b">top</a>
+		</div>
+	</div>
+</div>
+
+
+
+<% this.hideGoTop = true; %>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+     fml.use('page/huodong/mainpro');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%#foot.html%>

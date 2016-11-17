@@ -1,0 +1,11 @@
+<% if(this.notice_text){
+	var displayText = this.notice_text.msg;
+	var _redmsg = this.notice_text.redmsg;
+	if(_redmsg){
+		for(var i = 0;i<_redmsg.length;i++){
+			displayText = displayText.replace('%s','<span class="red_f">'+_redmsg[i]+'</span>');
+		}
+	}
+	%>
+	<p class="display_text"><%= displayText %></p>
+<%}%>

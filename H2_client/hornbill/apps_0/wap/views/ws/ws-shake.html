@@ -1,0 +1,158 @@
+<%# head_simple.html%>
+</head>
+<body>
+<!-- <div class="loading">
+	<div id="test_but" > 点我  发送ajax 请求</div>
+</div> -->
+<!-- <div id="clearBut" > clearBut <br> dscsdv </div> -->
+<section class="main">
+	<div class="shake">
+		<img class="swimg" src="http://d03.res.meilishuo.net/pic/_o/40/ec/9567f469b2a9d0b14843a634d35d_344_674.cf.png" />
+	</div>
+	<div class="cover">
+		<img src="<%=this.PICTURE_URL%>/images/wap/web/wx_new/wx_active1.png"/>
+	</div>
+</section>
+
+
+<div class="fixedWarp">
+	<div class="box">
+		<div class="scrollWarp" id="scrollWarp">
+			<ul class="scrollDom" id="scrollDom">
+				<li>李洪山	130*****989	获得iPhone 6Plus一台</li>
+				<li>王明文	130*****542	分享获得三次抽奖机会</li>
+				<li>赵萌飞	130*****355	获得iPadmini3一台</li>
+				<li>雷尚飞	130*****169	获得Beats头戴耳机一付</li>
+				<li>李娜	  130*****890	获得小恶魔电源一台</li>
+				<li>杨慧萌	130*****002	与大奖擦肩而过</li>
+				<li>牟翔	  130*****317	与大奖擦肩而过</li>
+				<li>孙思邈	131*****090	与大奖擦肩而过</li>
+				<li>张景	 131*****011	与大奖擦肩而过</li>
+				<li>白亚楠	131*****147	与大奖擦肩而过</li>
+				<li>吕峰	  131*****805	与大奖擦肩而过</li>
+				<li>曾云	  131*****741	与大奖擦肩而过</li>
+				<li>李云帆	131*****031	获得小恶魔电源一台</li>
+				<li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<div class="mypopbox" id="mypopbox"  style="display:;">
+	<div class="dialog" id="dialogOver" >
+		<span class="close"></span>
+		<div class="con">
+			<img class="expression" src="http://d01.res.meilishuo.net/pic/_o/c4/cc/b0f29cfd12e10aadd0ee48639930_244_246.cg.jpg" />
+			<p>
+				微信摇一摇活动已结束<br />
+				感谢您对美丽说微店的支持
+			</p>
+		</div>
+		
+	</div>
+
+	<div class="dialog" id="dialogNocount" >
+		<span class="close"></span>
+		<div class="con">
+			<img class="expression"  src="http://d01.res.meilishuo.net/pic/_o/c4/cc/b0f29cfd12e10aadd0ee48639930_244_246.cg.jpg" />
+			<p>  
+				<span class="fz16">明天再来吧~ </span><br />
+				您今天的7次摇奖机会已经用完
+			</p>
+		</div>
+	</div>
+
+	<div class="dialog" id="dialogNowin" >
+		<span class="close"></span>
+		<div class="con">
+			<img  class="expression" src="http://d03.res.meilishuo.net/pic/_o/58/e6/fbb22e3a90ebc0754bf51ae95a93_247_241.cf.jpg" />
+			<p>
+				<span class="fz16">没摇中耶，再来一发</span><br />
+				<a id="againBut"  class="againBut" href="javascript:;">
+					再摇一次
+				</a>
+			</p>
+			
+		</div>
+	</div>
+	
+	<div class="dialog" id="dialogShare" >
+		<span class="close"></span>
+		<div class="con">
+			<img  class="expression" src="http://d03.res.meilishuo.net/pic/_o/58/e6/fbb22e3a90ebc0754bf51ae95a93_247_241.cf.jpg" />
+			<p>
+				<span class="fz16">摇奖次数用光了！</span><br />
+				<span>分享再得3次抽奖机会</span>
+			</p>
+			<div class="shareTo">
+				<a class="shareTo_pyq" name="pyq" href=""></a>
+				<a class="shareTo_wx" name="wx" href=""></a>
+			</div>
+
+		</div>
+	</div>
+
+	<div class="dialog" id="dialogWin">
+		
+		<div class="con">
+			<img  class="expression" src="http://d05.res.meilishuo.net/pic/_o/75/93/d42b7864e17b84d579e968419e1c_220_220.cf.jpg" />
+			<p>
+				<span class="fz16">恭喜您!</span><br />
+				中<span id="dialogWinPrize" class="dialogWinPrize"></span>
+			</p>
+			<a id="winBut"  class="winBut" href="javascript:;">
+					马上填写收货地址
+			</a>
+		</div>
+	</div>
+
+	<div class="dialog" id="dialogSubmit">
+		<span class="close"></span>
+		<div class="con">
+			<img  class="expression" src="http://d05.res.meilishuo.net/pic/_o/75/93/d42b7864e17b84d579e968419e1c_220_220.cf.jpg" />
+			<p>
+				<span class="fz16">感谢您的参与！</span><br />
+				<span class="fz16">我们会在活动结束后10个工作日内安排寄发礼品</span>
+				<br />&nbsp;<br />
+				<span class="">和你的好友分享喜悦吧！</span>
+			</p>
+			<div class="shareTo">
+				<a class="shareTo_pyq" name="pyq" href=""></a>
+				<a class="shareTo_wx" name="wx" href=""></a>
+			</div>
+		</div>
+	</div>
+
+	<div class="dialog dialog_input" id="dialogInput" style="display: ;">
+		<img src="http://d02.res.meilishuo.net/pic/_o/94/02/6d5fd129265ead857e2783542b6c_511_712.cf.png">
+		<div class="mask-msg">
+			<div class="mask-msg-inner">
+				<label>收件人：</label>
+				<input id="name" type="text">
+			</div>
+			<div class="mask-msg-inner">
+				<label>地&nbsp;&nbsp;址：</label>
+				<input id="addr" type="text" class="addr">
+			</div>
+			<div class="mask-msg-inner">
+				<label>手机号：</label>
+				<input id="tel" type="text">
+			</div>
+		</div>
+		<div class="mask-sub">
+			<a class="mask-btn-one">
+				<img src="http://d04.res.meilishuo.net/pic/_o/6e/12/9bb9f9e3f6c1a56eedd6dfd2087d_330_74.ch.png">
+			</a>
+		</div>
+	</div>
+
+
+	<div class="overlay">
+	</div>
+</div>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/ws/ws-shake');
+_use:", this._JSstack , this._JSmods ); %>
+
+<%# foot.html%>

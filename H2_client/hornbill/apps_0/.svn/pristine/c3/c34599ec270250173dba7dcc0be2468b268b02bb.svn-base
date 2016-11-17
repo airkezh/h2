@@ -1,0 +1,268 @@
+<%
+	function cutstr(str,len){
+		var strLength=0, strLen=str.length ,strCut='', a=''
+		for(var i=0;i<strLen;i++){
+			a = str.charAt(i);
+			strLength++;
+			if(escape(a).length>4) 
+				strLength++;
+			strCut += a;
+			if(strLength>=len){
+				strCut += '...';
+				return strCut;
+			}
+		}
+		return str;
+	}
+	function getLevelHtml(o, name, isSelected){
+		var mark = o.mark, ratio = o.ratio;
+		var color = "", btnText = "";
+		if(mark==='1'){
+			color = 'h_level';
+			btnText = '高于同行业';
+		} else if(mark==='0'){
+			color = 'm_level';
+			btnText = '持平同行业'
+			ratio = '— —';
+		} else{
+			color = 'l_level';
+			btnText = '低于同行业';
+		}
+%>
+	<div class="score_item <%=isSelected ? 'score_selected' : '' %>" data-score-name="<%=name %>">
+		<span class="ml20"><%=o.text %>：</span>
+		<span class="avg_score"><%=o.avg || '--' %></span>
+		<span>分</span>
+		<span class="level_icon <%=color %>"><%=btnText %></span>
+		<span><%=ratio %></span>
+		<div class="clear_f"></div>
+	</div>
+<%
+	}
+%>
+<%
+	function getScoreDetail(o, name, isSelected){
+		var avgKey = 'avg_' + name,
+			detailKey = name + '_detail',
+			totalKey = name + '_total';
+		var detailObj = o[detailKey],
+			avgLen = o[avgKey]*17;
+%>
+	<div class="score_detail <%=isSelected ? 'score_selected' : '' %>" data-score-name="<%=name %>">
+		<div class="star_wrapper">
+			<span class="star_gray">
+				<span class="star_yellow" style="width:<%=avgLen %>px;"></span>
+			</span>
+			<span class="avg_score"><%=o[avgKey] %></span>
+			<span class="mt8 score-extra-text">分（最近90天共&nbsp;<%=o[totalKey] || 0 %>&nbsp;人评分）</span>
+			<div class="clear_f"></div>
+		</div>
+		<% for(var i=5;i>0;i--){ %>
+		<div class="score_detail_list">
+			<span class="score_title"><%=i %>分</span>
+			<span class="score_icon" style="width:<%=detailObj['ratio_'+i]*2 %>px;"></span>
+			<span class="score_percent"><%=detailObj['ratio_'+i] %>%</span>
+			<div class="clear_f"></div>
+		</div>
+		<% } %>
+	</div>
+<%
+	}
+%>
+<%
+	function getServiceList(o, shop_intro, isSelected){
+		var title = o.title
+			,unit = o.unit
+			,shopKey = 'shop'+o.field
+			,industryKey = 'industry'+o.field;
+%>
+	<div class="service_item <%=isSelected ? 'service_selected' : '' %>" data-service-name="<%=o.field %>">
+		<div class="s_title"><%=title %></div>
+		<div class="shop">
+			<span class="shop_num"><%=shop_intro[shopKey] || 0 %></span>
+			<span><%=unit %></span>
+		</div>
+		<div class="industry">
+			<span class="industry_num"><%=shop_intro[industryKey] || 0 %></span>
+			<span><%=unit %></span>
+		</div>
+		<p class="clear_f"><p>
+	</div>
+<%
+	}
+%>
+<%
+	function getServiceDetail(o, shop_intro, isSelected){
+		var title = o.title
+			,unit = o.unit
+			,shopKey = 'shop'+o.field;
+%>
+	<div class="service_detail <%=isSelected ? 'service_selected' : '' %>" data-service-name="<%=o.field %>">
+		<p>
+			<span><%=title %></span>
+			<span class="shop_num"><%=shop_intro[shopKey] || 0 %></span>
+			<span><%=unit %></span>
+		</p>
+		<p class="desc"><%=o.desc %></p>
+	</div>
+<%
+	}
+%>
+<%
+	var shop_intro = this.shop_intro;
+	var shopNick = cutstr(shop_intro.shop_nick,36) || '',
+		shopLocation = shop_intro.location || '',
+		shopCtime = shop_intro.shop_ctime || '',
+		shopGoodsSales = shop_intro.shop_goods_sales || '';
+%>
+
+<%# head.html%>
+<div class="main">
+    <%= requireFn('shop/shop_header.html')({
+        'shop_info' : this.shop_info,
+        'shop_rate' : this.shop_points,
+        'shop_intro' : this.shop_intro,
+        'qqUrl' : this._serviceIM ? this.ViewTools.callIM(this._serviceIM) : '',
+        'shop_id' : this.shop_info.shop_id,
+        'category_id' : this.category_id,
+        'categories' : this.shop_cata.datas,
+        'PIC_URL' : this.PICTURE_URL,
+        '_JSstack' : this._JSstack,
+        '_JSmods' : this._JSmods,
+        'query' : this._Request_query,
+        'is_show' : 1,
+    }); %>
+	<div class="shop_info">
+		<div class="seller_info">
+			<div class="s_title">卖家信息</div>
+			<ul class="s_info">
+				<li>店铺名称：<%=shopNick %></li>
+				<li>所在地区：<%=shopLocation %></li>
+				<li>创店时间：<%=shopCtime %></li>
+				<li>累计销售：<%=shopGoodsSales %></li>
+			</ul>
+			<div class="clear_f"></div>
+			<% if(this.shop_service && this.shop_service.length){ %>
+			<div class="shop_service">
+				<% this.shop_service.forEach(function(item){ %>
+				<div class="ser_item">
+					<img src="<%=item.icon_pc %>" />
+					<span><%=item.text %></span>
+				</div>
+				<% }); %>
+				<div class="clear_f"></div>
+			</div>
+			<% } %>
+		</div>
+		<div class="shop_detail">
+			<%
+			var scoreList = ['accord','quality','attitude','fast'],
+				trends = this.shop_points.trends;
+			%>
+			<div class="shop_score">
+				<% %>
+				<div class="score_list">
+					<h3 class="detail_title">店铺动态评分</h3>
+					<span class="detail_desc">(最近90天)</span>
+					<% scoreList.forEach(function(key,inx){
+						if(trends[key]){getLevelHtml(trends[key],key,!inx);} 
+					});%>
+				</div>
+				<% scoreList.forEach(function(key,inx){
+					if(trends[key]){getScoreDetail(this.shop_points.details,key,!inx);}
+				});%>
+				<div class="clear_f"></div>
+			</div>
+			<div class="recent_service">
+				<div class="service_list">
+					<h3 class="detail_title">店铺90天内服务情况</h3>
+					<div class="service_title">
+						<div class="shop">本店</div>
+						<div class="industry">行业</div>
+						<p class="clear_f"></p>
+					</div>
+					<%
+					var service_list = [
+						{
+							title : '平均发货时间：',
+							field : '_avg_send_time',
+							unit : '天',
+							desc : '最近90天商家平均发货时间'
+						},
+						{
+							title : '有理由退款率：',
+							field : '_refund_rate',
+							unit : '%',
+							desc : '最近90天商家全部支付订单中，发生退款且责任划分在商家一方的订单比例'
+						}
+					];
+					%>
+					<% service_list.forEach(function(item,inx){
+						getServiceList(item, shop_intro, !inx);
+					});%>
+				</div>
+				<% service_list.forEach(function(item,inx){
+					getServiceDetail(item, shop_intro, !inx);
+				});%>
+				<div class="clear_f"></div>
+			</div>
+		</div>
+		<div class="clear_f"></div>
+	</div>
+	<% if(this.comment_list && this.comment_list.cInfos && this.comment_list.cInfos.length){ 
+		var commentList = this.comment_list.cInfos;
+	%>
+	<div class="comment_wrapper">
+		<h2>购买评价（<%=this.comment_list.pages.totalNum %>）</h2>
+		<ul class="comment_list">
+			<%
+                commentList.forEach(function( comment ) {
+                    var level = comment.level,
+                        txt, icon;
+
+                    if ( level < 3 ) {
+                        txt  = '差评';
+                        icon = 'bad-level'
+                    } else if( level > 3 ) {
+                        txt  = '好评';
+                        icon = 'good-level'
+                    } else {
+                        txt  = '中评';
+                        icon = 'normal-level'
+                    }
+            %>
+			<li>
+				<a class="avatar" href="/person/u/<%=comment.uInfo.user_id %>" target="_blank">
+					<img src="<%=comment.uInfo.avatar_a %>">
+                    <p class="nickname"><%=comment.uInfo.nickname %></p>
+				</a>
+                <p class="comment-hd <%=icon%>">
+                    <i class="icon-<%=icon%>"></i><%=txt%>
+                </p>
+				<table>
+					<tr>
+						<td class="tle"><b>购买商品：</b></td>
+						<td>
+							<a href="/share/item/<%=comment.twitter_id %>" target="_blank">
+								<span><%=comment.goods_title %></span>
+								<span class="goods_style"><%=comment.style %></span>
+							</a>
+						</td>
+					</tr>
+					<tr>
+						<td class="tle"><b>商品评价：</b></td>
+						<td><span><%=comment.content || '此用户没有填写评价' %></span></td>
+					</tr>
+				</table>
+			</li>
+			<% }); %>
+		</ul>
+	</div>
+	<%#paging.html%>
+	<% } %>
+	<%# doota/promise.html%>
+</div>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('page/shop_rating');
+_use:", this._JSstack , this._JSmods ); %>
+<%# foot.html%>

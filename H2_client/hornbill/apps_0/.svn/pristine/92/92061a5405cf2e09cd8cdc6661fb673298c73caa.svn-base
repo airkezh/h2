@@ -1,0 +1,22 @@
+<span class="colFlag"></span>
+<div class="waterfall clearfix_f goods_wall"></div>
+<div class="pullUp" status="loading"></div>
+<%# activity/sale/summer_match_waters.html%>
+<script>
+fml.vars.poster = {
+	'access_token' : '<%= this.access_token%>',
+	'_Request_query' : '<%= this._Request_query%>',
+	'phoneType' : '<%= this.phoneType%>',
+	'download' : '<%= this.download%>',
+	'PICTURE_URL' : '<%= this.PICTURE_URL%>',
+	'ac_id' : '<%= this.ac_id%>'
+};
+<%= this.summer_goods? 'Meilishuo.config.poster0 = '+JSON.stringify(this.summer_goods)+';':'' ;%>
+</script>
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use('wap/page/summer_match');
+	fml.use('wap/page/summer_guang');
+	fml.use('wap/app/countdown' , function(){
+		this();  
+	});
+_use:", this._JSstack , this._JSmods);%>

@@ -1,0 +1,113 @@
+@import "../block.less";
+body{
+  .bgwhite;
+}
+//banenr
+.banner{
+	.pr; .h(340px); .hidden; .w(100%);
+    ul,li,a{.h(100%); .w(100%);}
+    li{.left;
+        a{.block;}
+    }
+    .focus{.w(100%);.pa;bottom:10px;z-index:10;.c;
+        a{.bgwhite; .border-r(10px); .cursor; .i_block; .mr(22px); .h(10px); .w(10px); }
+        a.current{.bgnone; border: 3px solid #fff; .mb(-4px); .h(12px); .w(12px); }
+    }
+}
+
+//瀑布流
+.spinner{.mt(30px)}
+// .botSpinner{.mt(130px)}
+.goods_wall_box{.w(1200px);min-height:500px;.auto;.hidden;}
+.fluid;
+.poster;
+.poster_icons;
+.poster_grid .new_poster .comm_num{padding:10px}
+.poster_grid .new_poster .title{  padding: 4px 10px;
+  height: 40px;
+  line-height: 20px;
+  overflow: hidden;
+  display: block;}
+.poster_grid .new_poster .price{
+	padding:0 10px;opacity:1;  filter: alpha(opacity=100);position:static;.fc(#f69);.f(14px)
+}
+.poster_grid{.w(226px)}
+.poster_grid .new_poster,.poster_grid .new_poster .np_pic,.poster_grid .new_poster .np_pic img{.w(100%);box-sizing:border-box}
+.likes{cursor:default}
+// .poster_grid .new_poster .np_pic{.h(328px);.hidden}
+.poster_grid .new_poster .pic_load{.h(300px);.hidden}
+// page
+.page;
+.pageNav{.page > .pageRed; }
+
+// shadow
+.shadow{.mt(-20px);box-shadow: 0 -7px 0 white,-7px 0px 0 white,7px 0 0 white,0px 2px 7px #e6e6e6;
+    /*兼容IE6、 7、8*/
+.w(100%);
+filter: progid:DXImageTransform.Microsoft.Shadow(Strength=7, Direction=180, Color='#e6e6e6'); /*for ie6,7,8*/}
+
+.menu-box{.h(96px);}
+.menu-inner{.bgc(#fff);.hidden}
+
+// kinds-menu
+.light_all{.bp(-26px,-84px); .fc(#fd6699);}
+.light_cloth{.bp(-220px, -86px);.fc(#fd6699);}
+.light_shoes{.bp(-415px ,-84px);.fc(#fd6699);}
+.light_baobao{.bp(-608px, -84px);.fc(#fd6699);}
+.light_jiaju{.bp(-963px ,-86px);.fc(#fd6699);}
+.light_peishi{.bp(-801px ,-84px);.fc(#fd6699);}
+.light_beauty{.bp(-121px ,-86px);.fc(#fd6699);}
+.tab_active{border-top:solid 1px #e6e6e6; border-left:solid 1px #e6e6e6; 
+        border-right:solid 1px #e6e6e6; border-bottom: solid 1px #fff; background-color:#fff; .fc(#fd6699);
+    .border{.none}
+}
+.kinds-menu{border-bottom:1px solid #e6e6e6;margin:20px 0 10px 0;.h(41px);.w(1148px);.auto;.pl(40px);
+  // ul{.hidden;}
+  li{.left;.w(90px);list-style: none;.l(40px);.h(40px);.pl(36px);.pr(36px);.pr;}
+  .border{.pa;top:13px;right:-1px;height:15px;border-right:1px dotted #999;}
+  .split{.w(0px);.pr(0px);.pl(0px);
+    span{.l(40px);border-left: dotted 1px #999;}
+  }
+  .link{.block; margin: 0 1px;.h(100%);.cursor;.f(16px);
+    font-weight: 400;}
+  .all{.bp(-26px ,-16px);}
+  .all:hover{.light_all;}
+  .cloth{.bp(-220px ,-15px);}
+  .cloth:hover{.light_cloth;}
+  .shoes{.bp(-415px ,-13px);}
+  .shoes:hover{.light_shoes;}
+  .baobao{.bp(-608px ,-13px);}
+  .baobao:hover{.light_baobao;}
+  .jiaju{.bp(-964px ,-13px);}
+  .jiaju:hover{.light_jiaju;}
+  .peishi{.bp(-801px ,-13px);}
+  .peishi:hover{.light_peishi;}
+  .beauty{.bp(-121px ,-16px);}
+  .beauty:hover{.light_beauty;}
+  .cicon{ background-image: url('http://imgtest.meiliworks.com/img/_o/64/1e/702ef76257a7e34337fb4c46bc02_1024_139.cg.png');.i_block;.w(100%);.h(40px);
+  }
+  .ctitle{.w(40px);.ml(40px);.left;}
+}
+#com-nav .kinds-menu a{float:none;.f(16px);.fn;.fc(#666);padding:0}
+#com-nav .kinds-menu .tab_active a{.fc(#fd6699)}
+// sort-menu
+.sort-menu{.w(1194px);.auto;.hidden;.pb(10px);
+  ul{.right;.l(30px);}
+  li {.left;span {.gray;}
+        &.active a {.red;}
+        a {padding:0 0 0 20px;.cursor;}
+    }
+    .arrow_t, .arrow_d, a:hover .arrow_t, a:hover .arrow_d, li.active .arrow_t, li.active .arrow_d {.w(10px);.h(10px);padding:0 3px;.ml(10px);background:url("@{pic_url}/images/doota/huodong/shareact/i_4arrow.gif") no-repeat 0 0; }
+    .arrow_t {.bp(0, 1px);}
+    .arrow_d {.bp (-10px, 1px);}
+    a:hover .arrow_t, li.active .arrow_t {.bp(-20px, 1px);}
+    a:hover .arrow_d, li.active .arrow_d {.bp(-30px, 1px);}
+  .special{.ml(20px);}
+}
+#com-nav .sort-menu a{float:none;.f(12px);.fn;.fc(#666);padding:0 0 0 20px}
+#com-nav .sort-menu .active a{.fc(#f69)}
+
+//如果不要导航图标
+// .kinds-menu li{.c;}
+// .kinds-menu .cicon{background:none}
+// .kinds-menu .ctitle{float:none;.ml(0)}

@@ -1,0 +1,52 @@
+<%
+var query = _extFn.cloneObj(this._Request_query);
+delete query['frm']
+delete query['frame']
+
+if (!this.groupPg) this.groupPg = {};
+var total_num = Math.ceil((this.groupPg.total_num || 0) / (this.groupPg.page_size || 160)),
+	current_page = this.groupPg.current_page|0,
+	show_page_num = this.groupPg.page_num || 5;
+this.isLastPage = ((total_num - 1) == current_page);
+function getLink(page){
+	if (page<0 ) page = 0;
+	if (page >= total_num) page = total_num -1;
+	query.page = page;
+	var url = [];
+	for (var k in query){
+		k = k.replace(/[\<\>\&\"\']/g , '')
+		//k = k.replace(/[^\w\-\[\]]/g, '')
+		if (!k) continue
+		url.push( k + '=' + encodeURIComponent(query[k]));
+		}
+	return '?' + url.join('&') + '#tabNew';
+	}
+if (total_num> 1 ){
+%>
+<div class="pageNav <%if (this.PGStyle_Flower){%>bgcnt<%}%>">
+	<a class="pagePrev " style="<%= current_page >0 ?'':'display:none' %>" href="<%= getLink(current_page-1);%>">&lt;上一页</a>
+	<%
+	//var left_num = Math.floor(current_page/10) *10 , right_num = left_num + 10;
+	var left_num = current_page>show_page_num ? current_page - show_page_num: 0 , right_num = left_num + show_page_num*2;
+	if ( right_num > total_num) right_num = total_num;
+	if (left_num >= 1){
+		%>
+		
+	<a href="<%= getLink(0); %>"><%= 1%></a>
+	<i>...</i>
+	<%	}
+	for (var i = left_num ;i < right_num;i++ ){
+
+	%>		
+		<a <% if (current_page == i) { %> class="currentpage" <% } %> href="<%= getLink(i);%>"><%= i+1%></a>
+	<% }
+	if (right_num < total_num) {
+	%>
+	<i>...</i>
+	<a href="<%= getLink(total_num); %>"><%= total_num%></a>
+	<% }
+	%>
+	<a class="pageNext" style="<%= current_page < total_num-1?'':'display:none'%>" href="<%= getLink(current_page+1);%>">下一页&gt;</a>
+	<a class="pageNext2" style="background: none; border: none; height: 58px; width: 55px; position: absolute; right: 0; top: 0;" href="<%= getLink(current_page+1);%>"> </a>
+</div>
+<% } %>

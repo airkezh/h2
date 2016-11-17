@@ -1,0 +1,16 @@
+<%# head_simple.html%>
+<%
+var query = this._Request_query;
+var getLink = _extFn.getLink;
+%>
+
+<%! $_ENGINE_SELF.callFn("useModule")("<<<_use:
+	fml.use(['app/doota/shopping_carts','component/urlHandle'],function(){
+		var shopping_carts = this.shopping_carts,
+			urlHandle = this.urlHandle;
+		shopping_carts.clearCartsNumCache();
+		urlHandle.redirect('/%s');
+			
+		});
+_use:", this._JSstack , this._JSmods, this.logout.redirect||'' ); %>
+<%# foot_simple.html%>
